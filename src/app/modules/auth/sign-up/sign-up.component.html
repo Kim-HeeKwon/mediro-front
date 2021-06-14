@@ -2,17 +2,17 @@
     <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-12">
-                <img src="assets/images/logo/logo.svg">
+            <div class="w-26">
+                <img src="assets/images/logo/logo-text.png">
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign up</div>
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">가입하기</div>
             <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Already have an account?</div>
+                <div>계정이 이미 있으신가요?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/pages/authentication/sign-in']">Sign in
+                    [routerLink]="['/pages/authentication/sign-in']">로그인
                 </a>
             </div>
 
@@ -29,39 +29,40 @@
 
             <!-- Sign Up form -->
             <form
+                *ngIf="showStep1"
                 class="mt-8"
                 [formGroup]="signUpForm">
 
-                <!-- Name field -->
+                <!-- 이름 -->
                 <mat-form-field class="w-full">
-                    <mat-label>Full name</mat-label>
+                    <mat-label>이름</mat-label>
                     <input
                         id="name"
                         matInput
                         [formControlName]="'name'">
                     <mat-error *ngIf="signUpForm.get('name').hasError('required')">
-                        Full name is required
+                        가입자 이름을 입력해 주세요.
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Email field -->
+                <!-- 이메일 -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
+                    <mat-label>이메일</mat-label>
                     <input
                         id="email"
                         matInput
                         [formControlName]="'email'">
                     <mat-error *ngIf="signUpForm.get('email').hasError('required')">
-                        Email address is required
+                        이메일을 입력해 주세요.
                     </mat-error>
                     <mat-error *ngIf="signUpForm.get('email').hasError('email')">
-                        Please enter a valid email address
+                        올바른 이메일 형식이 아닙니다.
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Password field -->
+                <!-- 비밀번호 -->
                 <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                    <mat-label>비밀번호</mat-label>
                     <input
                         id="password"
                         matInput
@@ -83,17 +84,48 @@
                             [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
                     <mat-error>
-                        Password is required
+                        비밀번호를 입력해주세요.
                     </mat-error>
                 </mat-form-field>
 
-                <!-- Company field -->
+                <!-- 휴대폰 번호 -->
                 <mat-form-field class="w-full">
-                    <mat-label>Company</mat-label>
+                    <mat-label>휴대폰 번호</mat-label>
+                    <input
+                        id="phone"
+                        matInput
+                        type="number"
+                        [formControlName]="'phone'">
+                    <mat-error *ngIf="signUpForm.get('phone').hasError('required')">
+                        휴대폰 번호를 입력해 주세요. ex) 01012345678
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- 회사명 -->
+                <mat-form-field class="w-full">
+                    <mat-label>회사명</mat-label>
                     <input
                         id="company-confirm"
                         matInput
                         [formControlName]="'company'">
+                </mat-form-field>
+
+                <!-- 사업자번호 -->
+                <mat-form-field class="w-full">
+                    <mat-label>사업자번호</mat-label>
+                    <input
+                        id="company-confirm"
+                        matInput
+                        type="number"
+                        [formControlName]="'businessNumber'">
+<!--                    <button class="fuse-mat-button-medium"-->
+<!--                            mat-flat-button-->
+<!--                            [color]="'accent'"-->
+<!--                            (click)="checkBusinessNumber()">인증-->
+<!--                    </button>-->
+                    <mat-error *ngIf="signUpForm.get('businessNumber').hasError('required')">
+                        사업자번호를 입력해주세요. ex) 1231231234 (숫자만 입력해주세요.)
+                    </mat-error>
                 </mat-form-field>
 
                 <!-- ToS and PP -->
@@ -101,16 +133,17 @@
                     <mat-checkbox
                         [color]="'primary'"
                         [formControlName]="'agreements'">
-                        <span>I agree to the</span>
+                        <span>회원가입시</span>
                         <a
                             class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Terms of Service
+                            [routerLink]="['./']">이용약관
                         </a>
-                        <span>and</span>
+                        <span>,</span>
                         <a
                             class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']">Privacy Policy
+                            [routerLink]="['./']">개인정보처리 방침
                         </a>
+                        <span>에 동의합니다.</span>
                     </mat-checkbox>
                 </div>
 
@@ -122,7 +155,7 @@
                     [disabled]="signUpForm.disabled"
                     (click)="signUp()">
                     <span *ngIf="!signUpForm.disabled">
-                        Create your free account
+                        가입하기
                     </span>
                     <mat-progress-spinner
                         *ngIf="signUpForm.disabled"
@@ -157,29 +190,11 @@
         <!-- Content -->
         <div class="z-10 relative w-full max-w-2xl">
             <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
+                <div>병원 유통 플랫폼</div>
+                <div>메디로</div>
             </div>
             <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
-                Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules.
-                Join us and start building your application today.
-            </div>
-            <div class="flex items-center mt-8">
-                <div class="flex flex-0 items-center -space-x-1.5">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-18.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-11.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-09.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-16.jpg">
-                </div>
-                <div class="ml-4 font-medium tracking-tight text-gray-400">More than 17k people joined us, it's your turn</div>
+                메디로는 블라블라블라.....
             </div>
         </div>
     </div>

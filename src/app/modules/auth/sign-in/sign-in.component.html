@@ -2,17 +2,17 @@
     <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-12">
-                <img src="assets/images/logo/logo.svg">
+            <div class="w-26">
+                <img src="assets/images/logo/logo-text.png">
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign in</div>
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">로그인</div>
             <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Don't have an account?</div>
+                <div>계정이 없으신가요?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-up']">Sign up
+                    [routerLink]="['/sign-up']">가입하기
                 </a>
             </div>
 
@@ -35,22 +35,22 @@
 
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
+                    <mat-label>이메일</mat-label>
                     <input
                         id="email"
                         matInput
                         [formControlName]="'email'">
                     <mat-error *ngIf="signInForm.get('email').hasError('required')">
-                        Email address is required
+                        이메일이 필요합니다.
                     </mat-error>
                     <mat-error *ngIf="signInForm.get('email').hasError('email')">
-                        Please enter a valid email address
+                        올바른 이메일 형식으로 입력해주세요.
                     </mat-error>
                 </mat-form-field>
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                    <mat-label>비밀번호</mat-label>
                     <input
                         id="password"
                         matInput
@@ -72,7 +72,7 @@
                             [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
                     <mat-error>
-                        Password is required
+                        비밀번호가 정확하지 않습니다.
                     </mat-error>
                 </mat-form-field>
 
@@ -81,11 +81,11 @@
                     <mat-checkbox
                         [color]="'primary'"
                         [formControlName]="'rememberMe'">
-                        Remember me
+                        아이디 저장
                     </mat-checkbox>
                     <a
                         class="text-md font-medium text-primary-500 hover:underline"
-                        [routerLink]="['/forgot-password']">Forgot password?
+                        [routerLink]="['/forgot-password']">비밀번호를 잊어버리셨나요?
                     </a>
                 </div>
 
@@ -97,7 +97,7 @@
                     [disabled]="signInForm.disabled"
                     (click)="signIn()">
                     <span *ngIf="!signInForm.disabled">
-                        Sign in
+                        로그인
                     </span>
                     <mat-progress-spinner
                         *ngIf="signInForm.disabled"
@@ -106,39 +106,39 @@
                 </button>
 
                 <!-- Separator -->
-                <div class="flex items-center mt-8">
-                    <div class="flex-auto mt-px border-t"></div>
-                    <div class="mx-2 text-secondary">Or continue with</div>
-                    <div class="flex-auto mt-px border-t"></div>
-                </div>
+<!--                <div class="flex items-center mt-8">-->
+<!--                    <div class="flex-auto mt-px border-t"></div>-->
+<!--                    <div class="mx-2 text-secondary">Or continue with</div>-->
+<!--                    <div class="flex-auto mt-px border-t"></div>-->
+<!--                </div>-->
 
                 <!-- Single sign-on buttons -->
-                <div class="flex items-center mt-8 space-x-4">
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:facebook'"></mat-icon>
-                    </button>
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:twitter'"></mat-icon>
-                    </button>
-                    <button
-                        class="flex-auto"
-                        type="button"
-                        mat-stroked-button>
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'feather:github'"></mat-icon>
-                    </button>
-                </div>
+<!--                <div class="flex items-center mt-8 space-x-4">-->
+<!--                    <button-->
+<!--                        class="flex-auto"-->
+<!--                        type="button"-->
+<!--                        mat-stroked-button>-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5"-->
+<!--                            [svgIcon]="'feather:facebook'"></mat-icon>-->
+<!--                    </button>-->
+<!--                    <button-->
+<!--                        class="flex-auto"-->
+<!--                        type="button"-->
+<!--                        mat-stroked-button>-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5"-->
+<!--                            [svgIcon]="'feather:twitter'"></mat-icon>-->
+<!--                    </button>-->
+<!--                    <button-->
+<!--                        class="flex-auto"-->
+<!--                        type="button"-->
+<!--                        mat-stroked-button>-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5"-->
+<!--                            [svgIcon]="'feather:github'"></mat-icon>-->
+<!--                    </button>-->
+<!--                </div>-->
             </form>
         </div>
     </div>
@@ -166,29 +166,11 @@
         <!-- Content -->
         <div class="z-10 relative w-full max-w-2xl">
             <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
+                <div>병원 유통 플랫폼</div>
+                <div>메디로</div>
             </div>
             <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
-                Fuse helps developers to build organized and well coded dashboards full of beautiful and rich modules.
-                Join us and start building your application today.
-            </div>
-            <div class="flex items-center mt-8">
-                <div class="flex flex-0 items-center -space-x-1.5">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-18.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-11.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-09.jpg">
-                    <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/male-16.jpg">
-                </div>
-                <div class="ml-4 font-medium tracking-tight text-gray-400">More than 17k people joined us, it's your turn</div>
+                메디로는 블라블라블라.....
             </div>
         </div>
     </div>

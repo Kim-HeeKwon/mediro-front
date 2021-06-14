@@ -2,12 +2,12 @@
     <div class="w-full sm:w-auto py-8 px-4 sm:p-12 sm:rounded-2xl sm:shadow sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-12 mx-auto">
-                <img src="assets/images/logo/logo.svg">
+            <div class="w-26 mx-auto">
+                <img src="assets/images/logo/logo-text.png">
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">You have signed out!</div>
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">안전하게 로그아웃 되었습니다.</div>
             <div class="flex justify-center mt-0.5 font-medium">
                 <!-- Redirect countdown -->
                 <ng-container *ngIf="countdown > 0">
@@ -16,7 +16,7 @@
 
                 <!-- Redirect message -->
                 <ng-container *ngIf="countdown === 0">
-                    You are now being redirected!
+                    로그인 페이지로 이동합니다.
                 </ng-container>
             </div>
 
@@ -25,7 +25,7 @@
                 <span>Go to</span>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-in']">sign in
+                    [routerLink]="['/sign-in']">로그인
                 </a>
             </div>
         </div>

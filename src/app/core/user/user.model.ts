@@ -3,6 +3,8 @@ export interface User
     id: string;
     name: string;
     email: string;
+    businessNumber?: string;
+    businessName?: string;
     avatar?: string;
     status?: string;
     accessToken?: string;

@@ -18,7 +18,7 @@ export class Api {
         this.url = environment.serverUrl; // 운영: https://fashiony.co.kr/fashionyFw/ 개발 http://117.52.87.40/fashionyFw/
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get(endpoint: string, params?: any, reqOpts?: any) {
         if (!reqOpts) {
             reqOpts = {
@@ -37,7 +37,7 @@ export class Api {
         return this.http.get(this.url + '/' + endpoint, reqOpts);
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     post(endpoint: string, body: any, reqOpts?: any) {
 
         if (!reqOpts) {
@@ -71,7 +71,7 @@ export class Api {
         return req;
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     postFile(endpoint: string, body: any, reqOpts?: any) {
 
         if (!reqOpts) {
@@ -82,6 +82,7 @@ export class Api {
         let req = this.http.post(this.url + endpoint, body);
         return req;
     }
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     postToken(endpoint: string, body: any, reqOpts?: any) {
 
@@ -112,17 +113,17 @@ export class Api {
         return req;
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     put(endpoint: string, body: any, reqOpts?: any) {
         return this.http.put(this.url + '/' + endpoint, body, reqOpts);
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     delete(endpoint: string, reqOpts?: any) {
         return this.http.delete(this.url + '/' + endpoint, reqOpts);
     }
 
-    // tslint:disable-next-line:typedef
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     patch(endpoint: string, body: any, reqOpts?: any) {
         return this.http.patch(this.url + '/' + endpoint, body, reqOpts);
     }

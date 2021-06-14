@@ -118,6 +118,20 @@
         max-height: 48px;
     }
 
+    /* medium button */
+    &.fuse-mat-button-medium {
+        height: 32px;
+        min-height: 32px;
+        max-height: 32px;
+    }
+
+    /* small button */
+    &.fuse-mat-button-medium {
+        height: 24px;
+        min-height: 24px;
+        max-height: 24px;
+    }
+
     /* Lower the icon opacity on disabled buttons */
     &.mat-button-disabled {
 

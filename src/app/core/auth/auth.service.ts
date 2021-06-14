@@ -1,21 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import {catchError, share, switchMap} from 'rxjs/operators';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { Common } from '@teamplat/providers/common/common';
+import { Crypto } from '@teamplat/providers/common/crypto';
+import { Api } from '@teamplat/providers/api/api';
+import { User } from '../user/user.model';
+import { SessionStore } from '../session/state/session.store';
 
 @Injectable()
 export class AuthService
 {
     private _authenticated: boolean = false;
+    private _user: User;
 
     /**
      * Constructor
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
+        private _userService: UserService,
+        private _common: Common,
+        private _api: Api,
+        private _cryptoJson: Crypto,
+        private _sessionStore: SessionStore
     )
     {
     }
@@ -29,12 +39,21 @@ export class AuthService
      */
     set accessToken(token: string)
     {
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem('access_token', token);
     }
 
     get accessToken(): string
     {
-        return localStorage.getItem('accessToken') ?? '';
+        return localStorage.getItem('access_token') ?? '';
+    }
+
+    set userEmail(email: string){
+        localStorage.setItem('email', email);
+    }
+
+    get userEmail(): string
+    {
+        return localStorage.getItem('email') ?? '';
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,25 +85,51 @@ export class AuthService
      *
      * @param credentials
      */
-    signIn(credentials: { email: string; password: string }): Observable<any>
+    signIn(user: any): Observable<any>
     {
+        // id == email
+        user.id = user.email;
+
+        let strJson = this._cryptoJson.getStringCryto(user.password);
+        strJson.id = user.id;
+        strJson.email = user.id;
+
+        // + 나 스페이스 들어가 있을 경우 다시 생성
+        while (strJson.ciphertext.indexOf(' ') !== -1 || strJson.ciphertext.indexOf('+') !== -1) {
+            // console.log('reCreateCipher');
+            strJson = this._cryptoJson.getStringCryto(user.password);
+        }
+        strJson.ciphertext = encodeURIComponent(strJson.ciphertext);
+
+
         // Throw error, if the user is already logged in
         if ( this._authenticated )
         {
+            console.log('User is alerady logged in');
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        console.log('user Check!!');
+        console.log(strJson);
+
+        return this._api.post('user.userLogin.do', strJson).pipe(
             switchMap((response: any) => {
 
-                // Store the access token in the local storage
-                this.accessToken = response.accessToken;
+                // tslint:disable-next-line:triple-equals
+                if (response.status !== 95){
+                    return throwError('패스워드가 옳지 않습니다.');
+                }
 
-                // Set the authenticated flag to true
+                this.accessToken = response.resultD.accessToken;
+                this.userEmail = response.resultD.email;
+
                 this._authenticated = true;
-
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._user = response.resultD;
+                this._userService.user = response.resultD;
+
+                // Store the akita store
+                this._sessionStore.update(response.resultD);
 
                 // Return a new observable with the response
                 return of(response);
@@ -97,30 +142,36 @@ export class AuthService
      */
     signInUsingToken(): Observable<any>
     {
+        // console.log(this.accessToken);
+        const vData = {
+            'accessToken': this.accessToken,
+            'email' : this.userEmail
+        };
         // Renew token
-        return this._httpClient.post('api/auth/refresh-access-token', {
-            accessToken: this.accessToken
-        }).pipe(
-            catchError(() =>
-
-                // Return false
-                of(false)
-            ),
+        return this._api.postToken('auth.renewToken.do', vData).pipe(
             switchMap((response: any) => {
 
-                // Store the access token in the local storage
-                this.accessToken = response.accessToken;
+                //
+                const status = response.status;
+                if(status === '99'){
 
-                // Set the authenticated flag to true
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('email');
+
+                    return of(false);
+                }
+
                 this._authenticated = true;
 
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._user = response.resultD;
+                this._userService.user = response.resultD;
 
-                // Return true
                 return of(true);
             })
         );
+
+        return of(true);
     }
 
     /**
@@ -129,7 +180,8 @@ export class AuthService
     signOut(): Observable<any>
     {
         // Remove the access token from the local storage
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('email');
 
         // Set the authenticated flag to false
         this._authenticated = false;
@@ -140,12 +192,95 @@ export class AuthService
 
     /**
      * Sign up
-     *
-     * @param user
+     * 휴대폰인증 후 가입완료
+     * @param userauth.renewToken.do
      */
-    signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
+    signUp(user: any): Observable<any>
     {
-        return this._httpClient.post('api/auth/sign-up', user);
+        const formData = new FormData();
+
+        // 비밀번호 암호화
+        let strJson = this._cryptoJson.getStringCryto(user.password);
+
+        while (strJson.ciphertext.indexOf(' ') !== -1 || strJson.ciphertext.indexOf('+') !== -1){
+            strJson = this._cryptoJson.getStringCryto(user.password);
+        }
+
+        if (!this._common.gfn_isNull(user.avatar)){
+            user.handler = 'pic';
+        }
+
+        formData.append('id', user.email);
+        formData.append('name', user.name);
+        formData.append('phone', user.phone);
+        formData.append('businessNumber', user.businessNumber);
+        formData.append('company', user.company);
+        formData.append('userType', user.userType);
+        formData.append('password', user.password);
+        formData.append('email', user.email);
+        formData.append('fileName', 'none');
+        formData.append('ciphertext', strJson.ciphertext);
+        formData.append('iv', strJson.iv);
+        formData.append('salt', strJson.salt);
+        formData.append('passPhrase', strJson.passPhrase);
+        formData.append('index', this.generateRandom(1, 100));
+        formData.append('handle', 'insert');
+
+        return this._api.postFile('user.setCreateUser.do', formData).pipe(share());
+        // return this._httpClient.post('api/auth/sign-up', user);
+    }
+
+    /**
+     * Sign up Temp
+     * 휴대폰 인증을 위한 임시 가입자 정보 저장
+     * @param
+     */
+    signUpTemp(user: any): Observable<any>
+    {
+        const formData = new FormData();
+
+        // 비밀번호 암호화
+        let strJson = this._cryptoJson.getStringCryto(user.password);
+
+        while (strJson.ciphertext.indexOf(' ') !== -1 || strJson.ciphertext.indexOf('+') !== -1){
+            strJson = this._cryptoJson.getStringCryto(user.password);
+        }
+
+        if (!this._common.gfn_isNull(user.avatar)){
+            user.handler = 'pic';
+        }
+
+        formData.append('id', user.email);
+        formData.append('name', user.name);
+        formData.append('phone', user.phone);
+        formData.append('businessNumber', user.businessNumber);
+        formData.append('company', user.company);
+        formData.append('userType', user.userType);
+        formData.append('password', user.password);
+        formData.append('email', user.email);
+        formData.append('fileName', 'none');
+        formData.append('ciphertext', strJson.ciphertext);
+        formData.append('iv', strJson.iv);
+        formData.append('salt', strJson.salt);
+        formData.append('passPhrase', strJson.passPhrase);
+        formData.append('index', this.generateRandom(1, 100));
+        formData.append('handle', 'insert');
+
+        return this._api.postFile('user.setCreateTempUser.do', formData).pipe(share());
+        // return this._httpClient.post('api/auth/sign-up', user);
+    }
+
+    /**
+     * Sign up
+     *
+     * @param 사업자번호
+     */
+    checkBusinessNumber(_businessNumber: number): Observable<any>
+    {
+        const param = {
+            businessNumber : _businessNumber
+        };
+        return this._api.get('v1/api/business',param).pipe(share());
     }
 
     /**
@@ -176,12 +311,22 @@ export class AuthService
         }
 
         // Check the access token expire date
-        if ( AuthUtils.isTokenExpired(this.accessToken) )
-        {
-            return of(false);
-        }
+        // console.log('여기 accessToken 체크');
+        // if ( AuthUtils.isTokenExpired(this.accessToken) )
+        // {
+        //     return of(false);
+        // }
 
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
+    }
+
+    /**
+     * create the authentication status
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    generateRandom(min, max) {
+        const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
+        return ranNum;
     }
 }

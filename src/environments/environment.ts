@@ -9,7 +9,7 @@ export const environment = {
         id: 'UA-128668132-1' // test: UA-128668132-1   main : UA-128083111-1
     },
     userLogtest: 'Y',
-    defaultUserId: 'nomadrianDefault',
+    defaultUserId: 'mediroDefault',
     serverUrl: '',
     test: true
 };

@@ -21,6 +21,8 @@ export class AuthSignUpComponent implements OnInit
     };
     signUpForm: FormGroup;
     showAlert: boolean = false;
+    showStep1: boolean = true;
+    showStep2: boolean = false;
 
     /**
      * Constructor
@@ -44,11 +46,23 @@ export class AuthSignUpComponent implements OnInit
     {
         // Create the form
         this.signUpForm = this._formBuilder.group({
+                id        : [''],
                 name      : ['', Validators.required],
                 email     : ['', [Validators.required, Validators.email]],
                 password  : ['', Validators.required],
+                phone     : ['', Validators.required],
+                businessNumber  : ['', Validators.required],
+                agreements: ['', Validators.requiredTrue],
                 company   : [''],
-                agreements: ['', Validators.requiredTrue]
+                avatar    : [''],
+                userType        : [''],
+                fileName        : [''],
+                ciphertext        : [''],
+                iv        : [''],
+                salt        : [''],
+                passPhrase        : [''],
+                index        : [''],
+                handle        : ['insert'],
             }
         );
     }
@@ -62,43 +76,73 @@ export class AuthSignUpComponent implements OnInit
      */
     signUp(): void
     {
+        console.log(this.signUpForm.value);
         // Do nothing if the form is invalid
         if ( this.signUpForm.invalid )
         {
             return;
         }
 
-        // Disable the form
-        this.signUpForm.disable();
-
-        // Hide the alert
-        this.showAlert = false;
-
-        // Sign up
-        this._authService.signUp(this.signUpForm.value)
+        // 사업자번호 조회
+        this._authService.checkBusinessNumber(this.signUpForm.value.businessNumber)
             .subscribe(
                 (response) => {
+                    if(response.status !== 'success'){
+                        // Set the alert
+                        this.alert = {
+                            type   : 'error',
+                            message: '국세청에 조회가 되지 않는 사업자등록번호 입니다. 다시 확인해주세요.'
+                        };
+                        this.showAlert = true;
+                        this.showStep1 = true;
+                        return;
+                    }else{
+                        // 사업자 등록증 확인 되면 임시 계정에 저장
+                        // 임시계정에 저장된 휴대폰 번호를 가지고 휴대폰번호 인증확인
+                        // 인증이 완료되면 본 계정으로 변환
+                        // Disable the form
+                        this.signUpForm.disable();
 
-                    // Navigate to the confirmation required page
-                    this._router.navigateByUrl('/confirmation-required');
-                },
-                (response) => {
+                        // Hide the alert
+                        this.showAlert = false;
 
-                    // Re-enable the form
-                    this.signUpForm.enable();
+                        // Sign up
+                        this._authService.signUp(this.signUpForm.value)
+                            .subscribe(
+                                (response) => {
 
-                    // Reset the form
-                    this.signUpNgForm.resetForm();
+                                    // Navigate to the confirmation required page
+                                    this._router.navigateByUrl('/confirmation-required');
+                                },
+                                (response) => {
 
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Something went wrong, please try again.'
-                    };
+                                    // Re-enable the form
+                                    this.signUpForm.enable();
 
-                    // Show the alert
-                    this.showAlert = true;
+                                    // Reset the form
+                                    this.signUpNgForm.resetForm();
+
+                                    // Set the alert
+                                    this.alert = {
+                                        type   : 'error',
+                                        message: 'Something went wrong, please try again.'
+                                    };
+
+                                    // Show the alert
+                                    this.showAlert = true;
+                                }
+                            );
+                    }
                 }
             );
     }
+
+    // /**
+    //  * 사업자등록증 체크
+    //  */
+    // checkBusinessNumber(): void
+    // {
+    //     console.log('check 사업자등록증');
+    //     console.log(this.signUpForm.value.businessNumber);
+    // }
 }
