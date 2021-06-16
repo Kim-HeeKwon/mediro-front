@@ -84,11 +84,43 @@ export const appRoutes: Route[] = [
                     // items
                     {path: 'items', loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
+            // estimate-order
+            {path: 'estimate-order', children: [
+                    // estimate
+                    {path: 'estimate', loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
+                    // order
+                    {path: 'order', loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
+                ]},
+            // in-out
+            {path: 'in-out', children: [
+                    // in
+                    {path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
+                    // out
+                    {path: 'out', loadChildren: () => import('app/modules/admin/in-out/out/out.module').then(m => m.OutModule)},
+                ]},
+            // stock
+            {path: 'stock', children: [
+                    // stock
+                    {path: 'stock', loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
+                ]},
+            // calculate
+            {path: 'calculate', children: [
+                    // bill
+                    {path: 'bill', loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
+                    // tax
+                    {path: 'tax', loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
+                ]},
+            // udi
+            {path: 'udi', children: [
+                    // manages
+                    {path: 'manages', loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
+                ]},
             // Monitoring
             {path: 'monitoring', children: [
-                    // stock
+                    // dashboards
                     {path: 'dashboards', loadChildren: () => import('app/modules/admin/monitoring/dashboards/dashboards.module').then(m => m.DashboardsModule)},
                 ]},
+
             // example
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             // Pages

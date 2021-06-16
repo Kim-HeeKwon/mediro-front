@@ -98,7 +98,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id      : 'estimate-order.order',
-                title   : '주문/출고관리',
+                title   : '출고관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:folder-remove',
@@ -107,18 +107,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'item-stock',
+        id      : 'stock',
         title   : '재고관리',
         subtitle: '의료기기 재고관리',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'item-stock.stock',
+                id   : 'stock.stock',
                 title: '재고관리',
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
-                link : '/item-stock/stock'
+                link : '/stock/stock'
             }
         ]
     },
@@ -130,11 +130,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'calculate.pay',
-                title: '정산관리',
+                id   : 'calculate.bill',
+                title: '청구서',
                 type : 'basic',
-                icon : 'heroicons_outline:currency-dollar',
-                link : '/calculate/pay'
+                icon : 'heroicons_outline:archive',
+                link : '/calculate/bill'
             },
             {
                 id   : 'calculate.tax',
@@ -142,13 +142,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calculator',
                 link : '/calculate/tax'
-            },
-            {
-                id   : 'money-manage.bill',
-                title: '청구서',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/bill'
             }
         ]
     },
@@ -160,11 +153,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'udi.report',
-                title: 'UDI',
+                id   : 'udi.manages',
+                title: '공급내역 보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
-                link : '/udi/report'
+                link : '/udi/manages'
             }
         ]
     },
