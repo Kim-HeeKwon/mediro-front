@@ -3,17 +3,17 @@ import { FuseNavigationItem } from '@teamplat/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
     {
-        id      : 'dashboards',
+        id      : 'monitoring',
         title   : '모니터링',
         subtitle: '모니터링',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'dashboards.project',
+                id   : 'monitoring.dashboards',
                 title: '대쉬보드',
                 type : 'basic',
-                icon : 'heroicons_outline:clipboard-check',
+                icon : 'heroicons_outline:presentation-chart-bar',
                 link : '/example'
             }
         ]
@@ -29,32 +29,32 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'basic-info.stock',
                 title: '재고등록',
                 type : 'basic',
-                icon : 'heroicons_outline:academic-cap',
-                link : '/apps/stock'
+                icon : 'heroicons_outline:cube',
+                link : '/basic-info/stock'
             },
             {
-                id      : 'basic-info.company',
+                id      : 'basic-info.account',
                 title   : '거래처관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:calendar',
-                link    : '/apps/company'
+                icon    : 'heroicons_outline:library',
+                link    : '/basic-info/account'
             },
             {
                 id      : 'basic-info.supplier',
                 title   : '공급사관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:calendar',
-                link    : '/apps/supplier'
+                icon    : 'heroicons_outline:office-building',
+                link    : '/basic-info/supplier'
             },
             {
-                id      : 'basic-info.item',
+                id      : 'basic-info.items',
                 title   : '제품관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:calendar',
-                link    : '/apps/item'
+                icon    : 'heroicons_outline:cube',
+                link    : '/basic-info/item'
             }
         ]
     },
@@ -69,16 +69,16 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'estimate-order.estimate',
                 title: '견적관리',
                 type : 'basic',
-                icon : 'heroicons_outline:academic-cap',
-                link : '/apps/estimate'
+                icon : 'heroicons_outline:pencil-alt',
+                link : '/estimate-order/estimate'
             },
             {
                 id      : 'estimate-order.order',
                 title   : '발주관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:calendar',
-                link    : '/apps/order'
+                icon    : 'heroicons_outline:pencil',
+                link    : '/estimate-order/order'
             },
         ]
     },
@@ -93,16 +93,16 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'estimate-order.estimate',
                 title: '입고관리',
                 type : 'basic',
-                icon : 'heroicons_outline:academic-cap',
-                link : '/apps/in'
+                icon : 'heroicons_outline:folder-add',
+                link : '/in-out/in'
             },
             {
                 id      : 'estimate-order.order',
                 title   : '주문/출고관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:calendar',
-                link    : '/apps/out'
+                icon    : 'heroicons_outline:folder-remove',
+                link    : '/in-out/out'
             },
         ]
     },
@@ -117,21 +117,67 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'item-stock.stock',
                 title: '재고관리',
                 type : 'basic',
-                icon : 'heroicons_outline:academic-cap',
-                link : '/apps/in'
+                icon : 'heroicons_outline:cube',
+                link : '/item-stock/stock'
             }
         ]
     },
     {
-        id      : 'pages',
-        title   : 'Pages',
-        subtitle: '부가기능',
+        id      : 'calculate',
+        title   : '정산관리',
+        subtitle: '의료기기 정산관리',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'apps.setting',
-                title: '세팅',
+                id   : 'calculate.pay',
+                title: '정산관리',
+                type : 'basic',
+                icon : 'heroicons_outline:currency-dollar',
+                link : '/calculate/pay'
+            },
+            {
+                id   : 'calculate.tax',
+                title: '세금계산서',
+                type : 'basic',
+                icon : 'heroicons_outline:calculator',
+                link : '/calculate/tax'
+            },
+            {
+                id   : 'money-manage.bill',
+                title: '청구서',
+                type : 'basic',
+                icon : 'heroicons_outline:archive',
+                link : '/calculate/bill'
+            }
+        ]
+    },
+    {
+        id      : 'udi',
+        title   : 'UDI',
+        subtitle: 'UDI 관리',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'udi.report',
+                title: 'UDI',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/report'
+            }
+        ]
+    },
+    {
+        id      : 'my-pages',
+        title   : '마이페이지',
+        subtitle: '부가기능 관리',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'my-pages.setting',
+                title: '마이페이지',
                 type : 'basic',
                 icon : 'heroicons_outline:cog',
                 link : '/pages/settings'
@@ -194,6 +240,39 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         link : '/ui/icons/feather'
                     }
                 ]
+            },
+            {
+                id      : 'user-interface.forms',
+                title   : 'Forms',
+                type    : 'collapsable',
+                icon    : 'heroicons_outline:pencil-alt',
+                children: [
+                    {
+                        id   : 'user-interface.forms.fields',
+                        title: 'Fields',
+                        type : 'basic',
+                        link : '/ui/forms/fields'
+                    },
+                    {
+                        id   : 'user-interface.forms.layouts',
+                        title: 'Layouts',
+                        type : 'basic',
+                        link : '/ui/forms/layouts'
+                    },
+                    {
+                        id   : 'user-interface.forms.wizards',
+                        title: 'Wizards',
+                        type : 'basic',
+                        link : '/ui/forms/wizards'
+                    }
+                ]
+            },
+            {
+                id   : 'user-interface.cards',
+                title: 'Cards',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/ui/cards'
             },
         ]
     },

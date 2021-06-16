@@ -73,7 +73,33 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
+            //
+            {path: 'basic-info', children: [
+                    // stock
+                    {path: 'stock', loadChildren: () => import('app/modules/admin/basic-info/stock/stock.module').then(m => m.StockModule)},
+                    // account
+                    {path: 'account', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
+                ]},
+            // example
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            // Pages
+            {path: 'pages', children: [
+                    // Settings
+                    {path: 'settings', loadChildren: () => import('app/modules/admin/pages/settings/settings.module').then(m => m.SettingsModule)},
+                ]},
+            // User interface
+            {path: 'ui', children: [
+                    // Icons
+                    {path: 'icons', loadChildren: () => import('app/modules/admin/ui/icons/icons.module').then(m => m.IconsModule)},
+                    // Forms
+                    {path: 'forms', children: [
+                            {path: 'fields', loadChildren: () => import('app/modules/admin/ui/forms/fields/fields.module').then(m => m.FormsFieldsModule)},
+                            {path: 'layouts', loadChildren: () => import('app/modules/admin/ui/forms/layouts/layouts.module').then(m => m.FormsLayoutsModule)},
+                            {path: 'wizards', loadChildren: () => import('app/modules/admin/ui/forms/wizards/wizards.module').then(m => m.FormsWizardsModule)}
+                        ]},
+                    // Cards
+                    {path: 'cards', loadChildren: () => import('app/modules/admin/ui/cards/cards.module').then(m => m.CardsModule)}
+                ]},
         ]
     }
 ];

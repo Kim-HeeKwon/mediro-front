@@ -16,7 +16,7 @@
             </div>
             <!-- Components -->
             <div class="flex items-center ml-auto">
-                <notifications [notifications]="data.notifications"></notifications>
+                <!-- <notifications [notifications]="data.notifications"></notifications>-->
                 <user-menu [showAvatar]="false"></user-menu>
             </div>
         </div>
@@ -24,10 +24,10 @@
         <div class="flex flex-col items-center w-full p-4">
             <div class="flex flex-col items-center justify-center w-full">
                 <div class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
-                    {{data.user.name}}
+                    {{user.name}}
                 </div>
                 <div class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
-                    {{data.user.email}}
+                    {{user.email}}
                 </div>
             </div>
         </div>
@@ -55,11 +55,11 @@
         </button>
         <!-- Components -->
         <div class="flex items-center pl-2 ml-auto space-x-2">
-            <language></language>
+            <!--<language></language>-->
             <fuse-fullscreen></fuse-fullscreen>
             <search [appearance]="'bar'"></search>
             <shortcuts [shortcuts]="data.shortcuts"></shortcuts>
-            <messages [messages]="data.messages"></messages>
+            <!--<messages [messages]="data.messages"></messages>-->
         </div>
     </div>
 
