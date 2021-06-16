@@ -114,7 +114,6 @@ export class AuthService
 
         return this._api.post('user.userLogin.do', strJson).pipe(
             switchMap((response: any) => {
-
                 // tslint:disable-next-line:triple-equals
                 if (response.status !== 95){
                     return throwError('패스워드가 옳지 않습니다.');
@@ -223,10 +222,11 @@ export class AuthService
         formData.append('iv', strJson.iv);
         formData.append('salt', strJson.salt);
         formData.append('passPhrase', strJson.passPhrase);
+        formData.append('randomNumber', user.randomNumber);
         formData.append('index', this.generateRandom(1, 100));
         formData.append('handle', 'insert');
 
-        return this._api.postFile('user.setCreateUser.do', formData).pipe(share());
+        return this._api.postFile('/v1/api/auth/user', formData).pipe(share());
         // return this._httpClient.post('api/auth/sign-up', user);
     }
 
@@ -266,7 +266,7 @@ export class AuthService
         formData.append('index', this.generateRandom(1, 100));
         formData.append('handle', 'insert');
 
-        return this._api.postFile('user.setCreateTempUser.do', formData).pipe(share());
+        return this._api.postFile('/v1/api/auth/temp-user', formData).pipe(share());
         // return this._httpClient.post('api/auth/sign-up', user);
     }
 

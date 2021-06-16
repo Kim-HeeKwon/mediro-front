@@ -6,6 +6,6 @@ export const environment = {
     },
     userLogtest: 'N',
     defaultUserId: 'nomadrianDefault',
-    serverUrl: 'http://13.209.22.43/jjboxFw/',
+    serverUrl: 'http://13.209.22.43/jjboxFw',
     test: false,
 };

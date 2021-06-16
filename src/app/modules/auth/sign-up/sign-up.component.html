@@ -7,13 +7,21 @@
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">가입하기</div>
-            <div class="flex items-baseline mt-0.5 font-medium">
-                <div>계정이 이미 있으신가요?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/pages/authentication/sign-in']">로그인
-                </a>
+            <div *ngIf="showStep1">
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">가입하기</div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>계정이 이미 있으신가요?</div>
+                    <a
+                        class="ml-1 text-primary-500 hover:underline"
+                        [routerLink]="['/pages/authentication/sign-in']">로그인
+                    </a>
+                </div>
+            </div>
+            <div *ngIf="showStep2">
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">문자인증</div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>휴대폰 인증을 완료하여 주세요.</div>
+                </div>
             </div>
 
             <!-- Alert -->
@@ -156,6 +164,39 @@
                     (click)="signUp()">
                     <span *ngIf="!signUpForm.disabled">
                         가입하기
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="signUpForm.disabled"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+
+            </form>
+
+            <form
+                *ngIf="showStep2"
+                class="mt-8"
+                [formGroup]="signUpForm">
+
+                <!-- 사업자번호 -->
+                <mat-form-field class="w-full">
+                    <mat-label>인증번호</mat-label>
+                    <input
+                        id="randomNumber-confirm"
+                        matInput
+                        type="number"
+                        [formControlName]="'randomNumber'">
+                </mat-form-field>
+
+                <!-- Submit button -->
+                <button
+                    class="fuse-mat-button-large w-full mt-6"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="signUpForm.disabled"
+                    (click)="checkRandomNumber()">
+                    <span *ngIf="!signUpForm.disabled">
+                        인증하기
                     </span>
                     <mat-progress-spinner
                         *ngIf="signUpForm.disabled"

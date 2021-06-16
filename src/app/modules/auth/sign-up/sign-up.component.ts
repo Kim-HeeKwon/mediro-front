@@ -62,6 +62,7 @@ export class AuthSignUpComponent implements OnInit
                 salt        : [''],
                 passPhrase        : [''],
                 index        : [''],
+                randomNumber : [''],
                 handle        : ['insert'],
             }
         );
@@ -107,13 +108,20 @@ export class AuthSignUpComponent implements OnInit
                         this.showAlert = false;
 
                         // Sign up
-                        this._authService.signUp(this.signUpForm.value)
+                        this._authService.signUpTemp(this.signUpForm.value)
                             .subscribe(
+                                // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (response) => {
-
+                                    console.log(response);
+                                    if(response.status === 'SUCCESS'){
+                                        this.showStep1 = false;
+                                        this.showStep2 = true;
+                                        this.signUpForm.enable();
+                                    }
                                     // Navigate to the confirmation required page
-                                    this._router.navigateByUrl('/confirmation-required');
+                                    // this._router.navigateByUrl('/confirmation-required');
                                 },
+                                // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (response) => {
 
                                     // Re-enable the form
@@ -133,6 +141,46 @@ export class AuthSignUpComponent implements OnInit
                                 }
                             );
                     }
+                }
+            );
+    }
+
+    /**
+     * check Random Number
+     */
+    checkRandomNumber(): void
+    {
+        // Sign up
+        this._authService.signUp(this.signUpForm.value)
+            .subscribe(
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (response) => {
+                    console.log(response);
+                    if(response.status === 'SUCCESS'){
+                        this.showStep1 = false;
+                        this.showStep2 = true;
+                        this.signUpForm.enable();
+                    }
+                    // Navigate to the confirmation required page
+                    this._router.navigateByUrl('/confirmation-required');
+                },
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (response) => {
+
+                    // Re-enable the form
+                    this.signUpForm.enable();
+
+                    // Reset the form
+                    this.signUpNgForm.resetForm();
+
+                    // Set the alert
+                    this.alert = {
+                        type   : 'error',
+                        message: 'Something went wrong, please try again.'
+                    };
+
+                    // Show the alert
+                    this.showAlert = true;
                 }
             );
     }

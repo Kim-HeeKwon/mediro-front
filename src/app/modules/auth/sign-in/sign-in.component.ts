@@ -63,6 +63,7 @@ export class AuthSignInComponent implements OnInit
         // Return if the form is invalid
         if ( this.signInForm.invalid )
         {
+            console.log('인벨리드?');
             return;
         }
 

@@ -47,23 +47,18 @@ export class Api {
         }
         const arrayOfArraysData = [{
             'sessionDtctCd': 'korea',
-            'sessionSupplier': 'Nomadrian',
-            'sessionOwnrgCd': 'Nomadrian', // NMDN FW
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0'
         }];
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    'Content-Type ': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    'X-Requested-With ': 'XMLHttpRequest',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'Access-Control-Allow-Origin': '*',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     'Accept': 'application/json, text/plain, */*; q=0.01',
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     'Accept-Language': 'ko-KR'
                 }
             });
