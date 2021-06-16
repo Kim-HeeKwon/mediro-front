@@ -14,7 +14,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: '대쉬보드',
                 type : 'basic',
                 icon : 'heroicons_outline:presentation-chart-bar',
-                link : '/example'
+                link : '/dashboards'
             }
         ]
     },
@@ -54,7 +54,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
-                link    : '/basic-info/item'
+                link    : '/basic-info/items'
             }
         ]
     },
