@@ -1,1 +1,171 @@
-<p>items works!</p>
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+    <!-- Header -->
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="flex-row text-4xl font-extrabold tracking-tight">제품관리</div>
+    </div>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+        <!-- Date -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
+                <input
+                    matInput
+                    [matDatepicker]="picker1">
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <div class=""> - </div>
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
+                <input
+                    matInput
+                    [matDatepicker]="picker2">
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
+                <mat-icon
+                    matPrefix
+                    [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'상품검색'">
+            </mat-form-field>
+            <!-- Add product button -->
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'">
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">조회</span>
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'accent'">
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">신규등록</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Item list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <ng-container *ngIf="itemsCount > 0; else noProducts">
+                <!-- Table wrapper -->
+                <div
+                    class="overflow-x-auto sm:overflow-y-auto"
+                    cdkScrollable>
+                    <!-- Table -->
+                    <table
+                        class="w-full min-w-320 table-fixed bg-transparent"
+                        [ngClass]="{'pointer-events-none': isLoading}"
+                        mat-table
+                        matSort
+                        [matSortActive]="'name'"
+                        [matSortDisableClear]="true"
+                        [matSortDirection]="'asc'"
+                        [multiTemplateDataRows]="true"
+                        [dataSource]="items"
+                        [trackBy]="trackByFn">
+
+                        <!-- Name -->
+                        <ng-container matColumnDef="name">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                Name
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.name}}
+                            </td>
+                        </ng-container>
+                        <!-- Sku -->
+                        <ng-container matColumnDef="sku">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                Sku
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.sku}}
+                            </td>
+                        </ng-container>
+                        <!-- Price -->
+                        <ng-container matColumnDef="price">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                Price
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.price}}
+                            </td>
+                        </ng-container>
+                        <tr
+                            class="shadow"
+                            mat-header-row
+                            *matHeaderRowDef="itemsTableColumns; sticky: true"></tr>
+                        <tr
+                            class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+                            mat-row
+                            *matRowDef="let product; columns: itemsTableColumns;"></tr>
+                    </table>
+                </div>
+                <mat-paginator
+                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                    [ngClass]="{'pointer-events-none': isLoading}"
+                    [length]="pagination.length"
+                    [pageIndex]="pagination.page"
+                    [pageSize]="pagination.size"
+                    [pageSizeOptions]="[5, 10, 25, 100]"
+                    [showFirstLastButtons]="true"></mat-paginator>
+
+            </ng-container>
+            <ng-template #noProducts>
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                    <p>데이터가 없습니다.</p>
+                    <p>기준정보 -> 재고등록</p>
+                    <p>화면으로 이동하여 제품을 등록해주세요.</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+</div>
+

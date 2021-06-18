@@ -267,6 +267,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:duplicate',
                 link : '/ui/cards'
             },
+            {
+                id   : 'user-interface.example',
+                title: 'Example',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/example'
+            },
         ]
     },
     {
