@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-supplier',
-  templateUrl: './supplier.component.html',
-  styleUrls: ['./supplier.component.scss']
+    selector: 'app-supplier',
+    templateUrl: './supplier.component.html',
+    styleUrls: ['./supplier.component.scss']
 })
 export class SupplierComponent implements OnInit {
 
-  constructor() { }
+    isLoading: boolean = false;
+    searchInputControl: FormControl = new FormControl();
+    itemsCount: number = 1;
+    itemsTableColumns: string[] = ['name', 'sku', 'price'];
+    selectedItemsForm: FormGroup;
 
-  ngOnInit(): void {
-  }
+    formFieldHelpers: string[] = [''];
+
+    constructor() {
+    }
+
+    ngOnInit(): void {
+    }
 
 }

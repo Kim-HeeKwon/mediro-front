@@ -25,13 +25,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
-            {
-                id   : 'basic-info.stock',
-                title: '재고등록',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/basic-info/stock'
-            },
+            // {
+            //     id   : 'basic-info.stock',
+            //     title: '재고등록',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:cube',
+            //     link : '/basic-info/stock'
+            // },
             {
                 id      : 'basic-info.account',
                 title   : '거래처관리',
@@ -50,7 +50,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id      : 'basic-info.items',
-                title   : '제품관리',
+                title   : '품목관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
@@ -122,29 +122,29 @@ export const defaultNavigation: FuseNavigationItem[] = [
             }
         ]
     },
-    {
-        id      : 'calculate',
-        title   : '정산관리',
-        subtitle: '의료기기 정산관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'calculate.bill',
-                title: '청구서',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/bill'
-            },
-            {
-                id   : 'calculate.tax',
-                title: '세금계산서',
-                type : 'basic',
-                icon : 'heroicons_outline:calculator',
-                link : '/calculate/tax'
-            }
-        ]
-    },
+    // {
+    //     id      : 'calculate',
+    //     title   : '정산관리',
+    //     subtitle: '의료기기 정산관리',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'calculate.bill',
+    //             title: '청구서',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:archive',
+    //             link : '/calculate/bill'
+    //         },
+    //         {
+    //             id   : 'calculate.tax',
+    //             title: '세금계산서',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:calculator',
+    //             link : '/calculate/tax'
+    //         }
+    //     ]
+    // },
     {
         id      : 'udi',
         title   : 'UDI',
