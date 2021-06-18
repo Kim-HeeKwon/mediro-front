@@ -1,0 +1,235 @@
+/**=====================
+    Mediro themes Start
+    made by super-steve
+    2021.06.17
+==========================**/
+// Theme colors variables
+$primary-color: #544efa ;
+$secondary-color: #13c9ca ;
+$success-color: #81ba00  ;
+$info-color   : #00a8ff  ;
+$warning-color: #ffbc58;
+$danger-color: #a5a5a5 ;
+$light-color   : #f8f8f9 ;
+$semi-dark  :#aaaaaa;
+$light-semi-gray   :#eff0f1;
+$light-gray   :#e8ebf2;
+$dark-gray 	:#898989;
+$dark-color   : #2a3142;
+$gray-60   :#999999 ;
+$transparent-color: transparent;
+$auth-bg-color:#fafafa;
+$light : #f6f6f6;
+$light-text: #999;
+$white : #f6f6f6;
+
+// Tables settings
+$horizontal-border-color:    #dee2e6;
+$table-b-margin:             0px;
+$table-footer-font-weight:   bold;
+$table-inverse-color:        $white;
+$table-hover-color:          $light;
+$table-padding:              0.75rem;
+$table-xl-padding:           1.25rem 2rem;
+$table-xl-font:              120%;
+$table-lg-padding:           .9rem 2rem;
+$table-lg-font:              110%;
+$table-de-padding:           .75rem 2rem;
+$table-de-font:              100%;
+$table-sm-padding:           .5rem 2rem;
+$table-sm-font:              90%;
+$table-xs-padding:           0.2rem 2rem;
+$table-xs-font:              80%;
+$horizontal-border-color:    #dee2e6;
+$horizontal-padding:         .75rem 2rem;
+$table-inverse-bg-color:     #292b2c;
+
+
+// General variables
+$theme-font-color: #1b252a;
+$theme-body-font-color: #313131;
+$theme-body-sub-title-color: #777777;
+
+/**=====================
+    Data-table CSS Start made by super-steve
+==========================**/
+
+.ngx-datatable {
+    .datatable-body-cell {
+        padding: .5rem 0.75rem;
+    }
+}
+ngx-datatable {
+    .datatable-header {
+        padding: 0.75rem;
+    }
+    &.bootstrap {
+        .datatable-header, .datatable-body {
+            border: 1px solid #e8efff !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .ngx-datatable.bootstrap {
+        .datatable-footer {
+            .datatable-pager {
+                a {
+                    min-width: 32px !important;
+                    line-height: 34px !important;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 575px){
+    .ngx-datatable.bootstrap {
+        .datatable-footer {
+            .datatable-pager {
+                a {
+                    min-width: 22px !important;
+                    line-height: 27px !important;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 360px){
+    .ngx-datatable.bootstrap {
+        .datatable-footer {
+            .datatable-pager {
+                a {
+                    min-width: 16px !important;
+                    line-height: 22px !important;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}
+
+.datatable-icon-right {
+    &:before {
+        content: "\f101";
+        //font-family: 'Inter var';
+        font-size: 14px;
+    }
+}
+.datatable-icon-left {
+    &:before {
+        content: "\f100";
+        //font-family: 'Inter var';
+        font-size: 14px;
+    }
+}
+
+.ngx-datatable {
+    .datatable-checkbox {
+        margin-bottom: 0;
+
+        input {
+            width: auto;
+            margin-bottom: 0;
+        }
+    }
+
+    &.bootstrap {
+        .datatable-header {
+            border: 1px solid #e8efff;
+            border-bottom: none;
+
+            .datatable-header-cell {
+                border-bottom: none;
+            }
+        }
+
+        .datatable-body  {
+            border: 1px solid #e8efff;
+            border-top: none;
+            //margin-bottom: 5px; // super-steve modified
+            .datatable-selection {
+                .datatable-scroll {
+                    .datatable-row-wrapper {
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                }
+            }
+
+            .datatable-body-row {
+                input {
+                    margin-bottom: 0;
+                }
+                &.active {
+                    background-color: rgba($primary-color, 0.05);
+                }
+                &.datatable-row-even {
+                    background-color: rgba(241,244,251,0.5);
+                    &:hover {
+                        background-color: rgba(241,244,251,0.5);
+                    }
+                    &.active {
+                        background-color: rgba($primary-color, 0.05);
+                    }
+                }
+                &.datatable-row-odd {
+                    &:hover {
+                        background-color: rgba(241,244,251,0.3);
+                    }
+                }
+            }
+        }
+        .datatable-footer {
+            background: $white;
+            color: inherit;
+            padding-left: 1em;
+            padding-right: 1em;
+            .datatable-pager {
+                margin-right: 0;
+                ul {
+                    li {
+                        margin: 0;
+                        &:not(.disabled).active {
+                            a {
+                                background-color: $primary-color;
+                                color: $white;
+                            }
+                        }
+                        &:not(.disabled):hover {
+                            a {
+                                border: 1px solid $primary-color;
+                                background-color: $transparent-color;
+                                color: inherit;
+                            }
+                        }
+                    }
+                }
+                a {
+                    color: inherit;
+                    min-width: 38px;
+                    line-height: 38px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    .datatable-body-row, .datatable-row-center, .datatable-header-inner {
+        display: -webkit-box !important;
+    }
+    .datatable-footer {
+        .datatable-pager {
+            .pager {
+                border: 1px solid $light-gray;
+                border-radius: 4px;
+            }
+        }
+    }
+
+}
+
+/**=====================
+     Data-table CSS Ends
+==========================**/
