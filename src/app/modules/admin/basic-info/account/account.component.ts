@@ -10,7 +10,7 @@ export class AccountComponent implements OnInit {
 
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
-    itemsCount: number = 1;
+    itemsCount: number = 0;
     itemsTableColumns: string[] = ['name','sku','price'];
     selectedItemsForm: FormGroup;
 

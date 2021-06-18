@@ -1,6 +1,6 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
     <!-- Header -->
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2">
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
         <!-- Loader -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -11,7 +11,23 @@
         <div class="flex-row text-4xl font-extrabold tracking-tight">출고 관리</div>
     </div>
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-
+        <!-- 검색조건 -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 mr-2">
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'유형'">
+            </mat-form-field>
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'거래처'">
+            </mat-form-field>
+        </div>
         <!-- Actions -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -27,19 +43,43 @@
             </mat-form-field>
             <!-- Add product button -->
             <button
-                class="ml-4"
+                class="ml-2"
                 mat-flat-button
                 [color]="'primary'">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                 <span class="ml-2 mr-1">조회</span>
             </button>
             <button
-                class="ml-4"
+                class="ml-2"
                 mat-flat-button
                 [color]="'accent'">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">신규등록</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Item list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <ng-container *ngIf="itemsCount > 0; else noProducts">
+                <!-- Table wrapper -->
+                <div
+                    class="overflow-x-auto sm:overflow-y-auto"
+                    cdkScrollable>
+                    <!-- Table -->
+
+                </div>
+
+
+            </ng-container>
+            <ng-template #noProducts>
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                    <p>데이터가 없습니다.</p>
+                    <p>신규등록 버튼을 클릭하여 거래처를 등록해 주세요.</p>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>
