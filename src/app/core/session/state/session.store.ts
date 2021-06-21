@@ -4,6 +4,7 @@ import { User } from '../../user/user.model';
 
 export function createInitialState(): User {
     return {
+        mId: null,
         id: null,
         name: null,
         email: null,

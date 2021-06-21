@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
     providedIn: 'root'
 })
 export class ItemsResolver implements Resolve<any> {
-    coinChartWidget: any[];
+    // coinChartWidget: any[];
 
     /**
      * Constructor

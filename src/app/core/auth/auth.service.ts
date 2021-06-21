@@ -56,6 +56,15 @@ export class AuthService
         return localStorage.getItem('email') ?? '';
     }
 
+    set userMid(mId: string){
+        localStorage.setItem('mId', mId);
+    }
+
+    get userMid(): string
+    {
+        return localStorage.getItem('mId') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -93,6 +102,7 @@ export class AuthService
         let strJson = this._cryptoJson.getStringCryto(user.password);
         strJson.id = user.id;
         strJson.email = user.id;
+        strJson.mId = 'mediroDefault';
 
         // + 나 스페이스 들어가 있을 경우 다시 생성
         while (strJson.ciphertext.indexOf(' ') !== -1 || strJson.ciphertext.indexOf('+') !== -1) {
@@ -119,8 +129,12 @@ export class AuthService
                     return throwError('패스워드가 옳지 않습니다.');
                 }
 
+                console.log(response);
                 this.accessToken = response.resultD.accessToken;
                 this.userEmail = response.resultD.email;
+                this.userMid = response.resultD.mid;
+
+                response.resultD.mId = response.resultD.mid;
 
                 this._authenticated = true;
                 // Store the user on the user service
@@ -129,6 +143,8 @@ export class AuthService
 
                 // Store the akita store
                 this._sessionStore.update(response.resultD);
+
+                console.log(this._sessionStore.getValue());
 
                 // Return a new observable with the response
                 return of(response);
@@ -144,7 +160,8 @@ export class AuthService
         // console.log(this.accessToken);
         const vData = {
             'accessToken': this.accessToken,
-            'email' : this.userEmail
+            'email' : this.userEmail,
+            'mId'   : this.userMid
         };
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
@@ -156,6 +173,7 @@ export class AuthService
 
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('email');
+                    localStorage.removeItem('mId');
 
                     return of(false);
                 }
@@ -181,6 +199,7 @@ export class AuthService
         // Remove the access token from the local storage
         localStorage.removeItem('access_token');
         localStorage.removeItem('email');
+        localStorage.removeItem('mId');
 
         // Set the authenticated flag to false
         this._authenticated = false;
@@ -210,6 +229,7 @@ export class AuthService
         }
 
         formData.append('id', user.email);
+        formData.append('mId', user.businessNumber);
         formData.append('name', user.name);
         formData.append('phone', user.phone);
         formData.append('businessNumber', user.businessNumber);

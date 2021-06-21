@@ -1,24 +1,20 @@
 export interface InventoryItem
 {
-    id: string;
-    category?: string;
-    name: string;
-    description?: string;
-    tags?: string[];
-    sku?: string | null;
-    barcode?: string | null;
-    brand?: string | null;
-    vendor: string | null;
-    stock: number;
-    reserved: number;
-    cost: number;
-    basePrice: number;
-    taxPercent: number;
-    price: number;
-    weight: number;
-    thumbnail: string;
-    images: string[];
-    active: boolean;
+    mId: string;         //회원아이디
+    itemCd: string;      //품목코드
+    itemNm: string;      //품목명
+    grade: number;       //품목명
+    category?: string;   //카테고리
+    unit: string;        //단위
+    standard: string;    //규격
+    supplier: string;    //공급사
+    buyPrice: number;    //구매단가
+    sellPrice: number;   //판매단가
+    active: boolean;     //cell상태
+    addDate?: string;
+    addUser?: string;
+    updDate?: string;
+    updUser?: string;
 }
 
 export interface InventoryPagination

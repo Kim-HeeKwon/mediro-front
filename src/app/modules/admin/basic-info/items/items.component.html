@@ -86,55 +86,181 @@
                         [dataSource]="items"
                         [trackBy]="trackByFn">
 
-                        <!-- Name -->
-                        <ng-container matColumnDef="name">
+                        <!-- Details -->
+                        <ng-container matColumnDef="details">
                             <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                Name
+                                *matHeaderCellDef>
+                                상세
                             </th>
                             <td
-                                class="pr-8 truncate"
+                                class="pr-8"
                                 mat-cell
                                 *matCellDef="let product">
-                                {{product.name}}
+                                <button
+                                    class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                    mat-stroked-button
+                                    (click)="rowClick(product.itemCd)">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="selectedProduct?.itemCd === product.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                </button>
                             </td>
                         </ng-container>
-                        <!-- Sku -->
-                        <ng-container matColumnDef="sku">
+
+                        <!-- itemCd -->
+                        <ng-container matColumnDef="itemCd">
                             <th
                                 class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
                                 mat-sort-header
                                 disableClear>
-                                Sku
+                                품목코드
                             </th>
                             <td
                                 class="pr-8 truncate"
                                 mat-cell
-                                *matCellDef="let product">
-                                {{product.sku}}
+                                *matCellDef="let product"
+                                >
+                                {{product.itemCd}}
                             </td>
                         </ng-container>
-                        <!-- Price -->
-                        <ng-container matColumnDef="price">
+                        <!-- itemNm -->
+                        <ng-container matColumnDef="itemNm">
                             <th
                                 class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                 mat-header-cell
                                 *matHeaderCellDef
                                 mat-sort-header
                                 disableClear>
-                                Price
+                                품목명
                             </th>
                             <td
                                 class="pr-8 truncate"
                                 mat-cell
                                 *matCellDef="let product">
-                                {{product.price}}
+                                {{product.itemNm}}
+                            </td>
+                        </ng-container>
+                        <!-- grade -->
+                        <ng-container matColumnDef="grade">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                등급
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.grade}}
+                            </td>
+                        </ng-container>
+                        <!-- category -->
+                        <ng-container matColumnDef="category">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                카테고리
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.category}}
+                            </td>
+                        </ng-container>
+                        <!-- unit -->
+                        <ng-container matColumnDef="unit">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                단위
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.unit}}
+                            </td>
+                        </ng-container>
+                        <!-- standard -->
+                        <ng-container matColumnDef="standard">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                규격
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.standard}}
+                            </td>
+                        </ng-container>
+                        <!-- supplier -->
+                        <ng-container matColumnDef="supplier">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                공급사
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.supplier}}
+                            </td>
+                        </ng-container>
+                        <!-- buyPrice -->
+                        <ng-container matColumnDef="buyPrice">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                구매단가
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.buyPrice}}
+                            </td>
+                        </ng-container>
+                        <!-- sellPrice -->
+                        <ng-container matColumnDef="sellPrice">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                판매단가
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product">
+                                {{product.sellPrice}}
                             </td>
                         </ng-container>
                         <tr
