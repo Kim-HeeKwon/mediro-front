@@ -13,7 +13,7 @@ export class ItemsResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _analyticsService: ItemsService,
+    constructor(private _itemsService: ItemsService,
                 private _common: Common) {
     }
 
@@ -29,6 +29,8 @@ export class ItemsResolver implements Resolve<any> {
 
             Promise.all([]).then(
                 () => {
+                    console.log('resolver start!!');
+                    this._itemsService.getItems();
                     // @ts-ignore
                     resolve();
                 },

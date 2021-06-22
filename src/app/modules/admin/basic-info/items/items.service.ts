@@ -48,6 +48,7 @@ export class ItemsService {
         );
     }
 
+    // @ts-ignore
     /**
      * Post getItems
      *
@@ -56,22 +57,24 @@ export class ItemsService {
     getItems(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
-        let param = {};
-        if (this._common.gfn_isNull(search)) {
-            param= {
-                marketCode: 'KRW-XRP',
-                count: 30
-            };
-        }
+        const param = {
+            search: search,
+            order: order,
+            sort: sort
+        };
+
+        const pageParam = {
+            page: page + page,
+            size: size,
+        };
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendData('', '/v1/api/item/item-info')
+            this._common.sendDataWithPageNation(param, pageParam, '/v1/api/item/item-info')
                 .subscribe((response: any) => {
-                    console.log(response.resultD);
-                    console.log(response.resultD[0]);
+                    console.log(response);
 
-                    this._data = response.resultD[0];
+                    //this._data = response.resultD[0];
                     resolve(this._data);
                 }, reject);
         });

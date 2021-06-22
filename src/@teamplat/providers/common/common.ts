@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Api} from '../api/api';
 import {map, share} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-
+import {Observable, Subject} from 'rxjs';
 
 @Injectable()
 export class Common {
@@ -10,22 +9,16 @@ export class Common {
     constructor(public api: Api) {
     }
 
-    // tslint:disable-next-line:typedef
-    sendData(accountInfo: any, Uri: string) {
-        return this.api.post(Uri, accountInfo).pipe(share()); // seq;
+    sendData(accountInfo: any, url: string): Observable<any> {
+        return this.api.post(url, accountInfo).pipe(share()); // seq;
     }
 
-    // tslint:disable-next-line:typedef
-    sendFile(accountInfo: any, Uri: string) {
-        return this.api.postFile(Uri, accountInfo).pipe(share()); // seq;
+    sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
+        return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
     }
 
-    // tslint:disable-next-line:typedef
-    sendData1(accountInfo: any, Uri: string) {
-        return this.api.post(Uri, accountInfo).pipe(
-            map((rs: any) => {
-                return rs;
-            }));
+    sendFile(accountInfo: any, url: string): Observable<any> {
+        return this.api.postFile(url, accountInfo).pipe(share()); // seq;
     }
 
     // NULL 체크

@@ -11,15 +11,12 @@ import {environment} from 'environments/environment';
 export class Api {
 
     private url: string;
-    private appUrl: string;
-    private payTestUrl: string;
 
     constructor(public http: HttpClient) {
-        this.url = environment.serverUrl; // 운영: https://fashiony.co.kr/fashionyFw/ 개발 http://117.52.87.40/fashionyFw/
+        this.url = environment.serverUrl;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    get(endpoint: string, params?: any, reqOpts?: any) {
+    get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()
@@ -37,8 +34,7 @@ export class Api {
         return this.http.get(this.url + '/' + endpoint, reqOpts);
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    post(endpoint: string, body: any, reqOpts?: any) {
+    post(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
             reqOpts = {
@@ -66,20 +62,46 @@ export class Api {
         return req;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    postFile(endpoint: string, body: any, reqOpts?: any) {
+    postWithPage(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()
             };
         }
-        let req = this.http.post(this.url + endpoint, body);
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0'
+        }];
+
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+
         return req;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    postToken(endpoint: string, body: any, reqOpts?: any) {
+    postFile(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const req = this.http.post(this.url + endpoint, body);
+        return req;
+    }
+
+    postToken(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
             reqOpts = {
@@ -103,23 +125,20 @@ export class Api {
                     'Accept-Language': 'ko-KR',
                     'Authorization': 'Bearer ' + body.accessToken,
                 }
-        });
+            });
 
         return req;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    put(endpoint: string, body: any, reqOpts?: any) {
+    put(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         return this.http.put(this.url + '/' + endpoint, body, reqOpts);
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    delete(endpoint: string, reqOpts?: any) {
+    delete(endpoint: string, reqOpts?: any): Observable<any> {
         return this.http.delete(this.url + '/' + endpoint, reqOpts);
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    patch(endpoint: string, body: any, reqOpts?: any) {
+    patch(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         return this.http.patch(this.url + '/' + endpoint, body, reqOpts);
     }
 }
