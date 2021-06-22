@@ -83,7 +83,7 @@
                         [matSortDisableClear]="true"
                         [matSortDirection]="'asc'"
                         [multiTemplateDataRows]="true"
-                        [dataSource]="items"
+                        [dataSource]="items$"
                         [trackBy]="trackByFn">
 
                         <!-- Details -->
@@ -101,12 +101,54 @@
                                 <button
                                     class="min-w-10 min-h-7 h-7 px-2 leading-6"
                                     mat-stroked-button
-                                    (click)="rowClick(product.itemCd)">
+                                    (click)="toggleDetails(product.itemCd)">
                                     <mat-icon
                                         class="icon-size-5"
-                                        [svgIcon]="selectedProduct?.itemCd === product.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                        [svgIcon]="selectedItem?.itemCd === product.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
                                 </button>
                             </td>
+                        </ng-container>
+
+                        <!-- item details row -->
+                        <ng-container matColumnDef="itemDetails">
+                            <td
+                                class="p-0 border-b-0"
+                                mat-cell
+                                *matCellDef="let product"
+                                [attr.colspan]="itemsTableColumns.length">
+                                <ng-container *ngIf="selectedItem?.itemCd === product.itemCd">
+                                    <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                                </ng-container>
+                            </td>
+                            <ng-template
+                                #rowDetailsTemplate
+                                let-product>
+                                <div
+                                    class="shadow-lg overflow-hidden"
+                                    [@expandCollapse]="selectedItem?.itemCd === product.itemCd ? 'expanded' : 'collapsed'">
+                                    <div class="flex border-b">
+                                        <!-- Selected product form -->
+                                        <form
+                                            class="flex flex-col w-full"
+                                            [formGroup]="selectedItemForm">
+                                            <div class="flex p-8">
+
+                                                <!-- Product images and status -->
+                                                <div class="flex flex-col">
+                                                    <div class="flex flex-col mt-8">
+                                                        <span class="font-semibold mb-2">Product status</span>
+                                                        <mat-slide-toggle
+                                                            [formControlName]="'active'"
+                                                            [color]="'primary'">
+                                                            {{selectedItemForm.get('active').value === true ? 'Active' : 'Disabled'}}
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </ng-container>
 
                         <!-- itemCd -->
@@ -271,6 +313,10 @@
                             class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
                             mat-row
                             *matRowDef="let product; columns: itemsTableColumns;"></tr>
+                        <tr
+                            class="h-0"
+                            mat-row
+                            *matRowDef="let row; columns: ['itemDetails']"></tr>
                     </table>
                 </div>
                 <mat-paginator

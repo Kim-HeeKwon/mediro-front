@@ -1,36 +1,51 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild, ViewEncapsulation
+} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {InventoryItem} from './items.types';
+import {Observable, Subject} from 'rxjs';
+import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {InventoryItem, InventoryPagination} from './items.types';
+import {ItemsService} from './items.service';
+import {fuseAnimations} from '@teamplat/animations';
 
 @Component({
     selector: 'app-items',
     templateUrl: './items.component.html',
-    styleUrls: ['./items.component.scss']
+    styleUrls: ['./items.component.scss'],
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations     : fuseAnimations
 })
 export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatSort) private _sort: MatSort;
+
+    items$: Observable<InventoryItem[]>;
+
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
-    itemsCount: number = 1;
+    itemsCount: number = 0;
     itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'grade','category','unit','standard','supplier','buyPrice','sellPrice'];
-    selectedItemsForm: FormGroup;
-    selectedProduct: InventoryItem | null = null;
+    selectedItemForm: FormGroup;
+    selectedItem: InventoryItem | null = null;
 
+    //pagination: InventoryPagination;
+
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     formFieldHelpers: string[] = [''];
 
-    items: any = [{'mId': 'test1', 'itemCd': '1', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '2', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '3', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '4', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '5', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '6', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '7', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '8', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '9', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '10', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '11', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},
-        {'mId': 'test1', 'itemCd': '12', 'itemNm': '1000', 'grade':'1', 'category':'재료','unit':'pkg','standard':'소','supplier':'메디로','buyPrice':'100','sellPrice':'200'},];
-
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     pagination: any = {
         endIndex: 9,
         lastPage: 3,
@@ -42,13 +57,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private _formBuilder: FormBuilder,
+        private _itemService: ItemsService,
+        private _changeDetectorRef: ChangeDetectorRef,
     ) {
     }
 
     ngOnInit(): void {
         // 아이템(품목) Form 생성
-        this.selectedItemsForm = this._formBuilder.group({
-            mId: [''], // 회원아이디
+        this.selectedItemForm = this._formBuilder.group({
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
             grade: [''], // 등급
@@ -60,6 +76,19 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             sellPrice: [''], // 판매단가
             active: [false]  // cell상태
         });
+
+        // getItems
+        this.items$ = this._itemService.items$;
+
+        this._itemService.items$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((items: any) => {
+                // Update the counts
+                this.itemsCount = items.length;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     /**
@@ -74,8 +103,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
-        //this._unsubscribeAll.next();
-        //this._unsubscribeAll.complete();
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     /**
@@ -88,8 +117,41 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         return item.id || index;
     }
 
-    rowClick(itemCd: any): void{
-        console.log('rowClick');
+    /**
+     * Toggle product details
+     *
+     * @param itemCd
+     */
+    toggleDetails(itemCd: string): void
+    {
+        // If the Item is already selected...
+        if ( this.selectedItem && this.selectedItem.itemCd === itemCd )
+        {
+            // Close the details
+            this.closeDetails();
+            return;
+        }
+
+        // Get the product by itemCd
+        this._itemService.getItemsById(itemCd)
+            .subscribe((item) => {
+                // Set the selected Item
+                this.selectedItem = item;
+
+                // Fill the form
+                this.selectedItemForm.patchValue(item);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    /**
+     * Close the details
+     */
+    closeDetails(): void
+    {
+        this.selectedItem = null;
     }
 
 

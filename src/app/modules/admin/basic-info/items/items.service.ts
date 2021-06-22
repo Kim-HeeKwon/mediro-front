@@ -10,12 +10,39 @@ import {Common} from '@teamplat/providers/common/common';
 })
 export class ItemsService {
 
-    private _data: BehaviorSubject<InventoryItem> = new BehaviorSubject(null);
+    private _item: BehaviorSubject<InventoryItem> = new BehaviorSubject(null);
+    private _items: BehaviorSubject<InventoryItem[]> = new BehaviorSubject(null);
+    private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
     constructor(private _httpClient: HttpClient, private _common: Common) {
+    }
+
+    /**
+     * Getter for product
+     */
+    get item$(): Observable<InventoryItem>
+    {
+        return this._item.asObservable();
+    }
+
+
+    /**
+     * Getter for products
+     */
+    get items$(): Observable<InventoryItem[]>
+    {
+        return this._items.asObservable();
+    }
+
+    /**
+     * Getter for pagenation
+     */
+    get pagenation$(): Observable<InventoryPagination>
+    {
+        return this._pagination.asObservable();
     }
 
     /**
@@ -60,7 +87,8 @@ export class ItemsService {
         const param = {
             search: search,
             order: order,
-            sort: sort
+            sort: sort,
+            mId: '1'
         };
 
         const pageParam = {
@@ -70,13 +98,43 @@ export class ItemsService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(param, pageParam, '/v1/api/item/item-info')
+            this._common.sendDataWithPageNation(param, pageParam, 'v1/api/basicInfo/item/item-info')
                 .subscribe((response: any) => {
                     console.log(response);
-
-                    //this._data = response.resultD[0];
-                    resolve(this._data);
+                    this._items.next(response.data);
+                    resolve(this._items);
                 }, reject);
         });
+    }
+
+    /**
+     * Get product by id
+     */
+    getItemsById(itemCd: string): Observable<InventoryItem>
+    {
+        return this._items.pipe(
+            take(1),
+            map((products) => {
+
+                // Find the product
+                // @ts-ignore
+                const product = products.find(item => item.itemCd === itemCd) || null;
+
+                // Update the product
+                this._item.next(product);
+
+                // Return the product
+                return product;
+            }),
+            switchMap((product) => {
+
+                if ( !product )
+                {
+                    return throwError('Could not found product with id of ' + itemCd + '!');
+                }
+
+                return of(product);
+            })
+        );
     }
 }
