@@ -88,7 +88,6 @@ export class ItemsService {
             search: search,
             order: order,
             sort: sort,
-            mId: '1'
         };
 
         const pageParam = {
@@ -134,6 +133,37 @@ export class ItemsService {
                 }
 
                 return of(product);
+            })
+        );
+    }
+
+    /**
+     * Create product
+     */
+    createItem(): Observable<InventoryItem>
+    {
+        return this._items.pipe(
+            take(1),
+            map((items) => {
+                const item = null;
+                // Update the product
+                this._item.next(item);
+                // Return the product
+                return item;
+            }),
+            switchMap((items) => {
+
+                const item = null;
+                // Update the product
+                this._item.next(item);
+                console.log('Items');
+                console.log(item);
+                // Update the products with the new product
+                // this._products.next([product, ...products]);
+                 this._items.next([item,...items]);
+                // Return the new product
+                //return product;
+                return of(item);
             })
         );
     }

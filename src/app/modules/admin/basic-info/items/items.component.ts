@@ -7,14 +7,16 @@ import {
     OnInit,
     ViewChild, ViewEncapsulation
 } from '@angular/core';
+import {fuseAnimations} from '@teamplat/animations';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {ItemsService} from './items.service';
-import {fuseAnimations} from '@teamplat/animations';
+import {NewItemComponent} from "./new-item/new-item.component";
 
 @Component({
     selector: 'app-items',
@@ -56,6 +58,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     constructor(
+        private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _itemService: ItemsService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -152,6 +155,23 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     closeDetails(): void
     {
         this.selectedItem = null;
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Add a new note
+     */
+    createProduct(): void
+    {
+        this._matDialog.open(NewItemComponent, {
+            autoFocus: false,
+            data     : {
+                note: {}
+            }
+        });
     }
 
 

@@ -21,6 +21,8 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ItemsResolver } from './items.resolvers';
+import { NewItemComponent } from './new-item/new-item.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const itemsRoutes: Route[] = [
     {
@@ -34,7 +36,8 @@ const itemsRoutes: Route[] = [
 
 @NgModule({
   declarations: [
-    ItemsComponent
+    ItemsComponent,
+    NewItemComponent
   ],
   imports: [
     CommonModule,
@@ -55,6 +58,7 @@ const itemsRoutes: Route[] = [
     MatSlideToggleModule,
     MatTableModule,
     MatTooltipModule,
+    MatDialogModule,
     SharedModule
   ]
 })

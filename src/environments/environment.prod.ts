@@ -6,6 +6,6 @@ export const environment = {
     },
     userLogtest: 'N',
     defaultUserId: 'nomadrianDefault',
-    serverUrl: 'http://13.209.22.43/jjboxFw',
+    serverUrl: 'http://52.78.184.115/teamPlatFw/',
     test: false,
 };

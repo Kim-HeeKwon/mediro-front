@@ -45,7 +45,8 @@ export class Api {
             'sessionDtctCd': 'korea',
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
-            'sessionUserIp': '0.0.0.0'
+            'sessionUserIp': '0.0.0.0',
+            'mId': localStorage.getItem('mId')
         }];
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
@@ -73,7 +74,8 @@ export class Api {
             'sessionDtctCd': 'korea',
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
-            'sessionUserIp': '0.0.0.0'
+            'sessionUserIp': '0.0.0.0',
+            'mId': localStorage.getItem('mId')
         }];
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
@@ -112,7 +114,8 @@ export class Api {
             'sessionDtctCd': 'korea',
             'sessionSupplier': 'Nomadrian',
             'sessionOwnrgCd': 'Nomadrian', // NMDN FW
-            'sessionUserIp': '0.0.0.0'
+            'sessionUserIp': '0.0.0.0',
+            'mId': localStorage.getItem('mId')
         }];
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)

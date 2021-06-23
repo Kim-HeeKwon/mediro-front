@@ -12,11 +12,12 @@ import { mockApiServices } from 'app/mock-api';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
+import { environment } from '../environments/environment';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
     preloadingStrategy       : PreloadAllModules,
-    useHash: true
+    useHash: environment.test
 };
 
 @NgModule({
