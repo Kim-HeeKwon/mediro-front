@@ -95,9 +95,11 @@ export class ExampleComponent implements OnInit, AfterViewInit, OnDestroy
     onSelect({ selected }): void {
         this.selected.splice(0, this.selected.length);
         this.selected.push(...selected);
+        console.log('onSelect');
     }
 
     onActivate(event): boolean{
+        console.log('onActivate');
         if(event.type === 'checkbox'){
             event.cellElement.blur();
             return false;
@@ -108,6 +110,7 @@ export class ExampleComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     displayCheck(row): any{
+        console.log('displayCheck');
         return row.name !== 'Ethel Price';
     }
 

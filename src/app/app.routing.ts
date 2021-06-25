@@ -3,6 +3,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
+import { InitialCommonCodeDataResolver } from 'app/app.resolvers';
 
 // @formatter:off
 // tslint:disable:max-line-length
@@ -71,6 +72,7 @@ export const appRoutes: Route[] = [
         component  : LayoutComponent,
         resolve    : {
             initialData: InitialDataResolver,
+            initialCommonCodeData:InitialCommonCodeDataResolver
         },
         children   : [
             //
