@@ -81,8 +81,12 @@ export class ItemsService {
      *
      * @returns
      */
-    getItems(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getItems(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
+
+        console.log(order);
+        console.log(sort);
+        console.log(search);
 
         const param = {
             search: search,
@@ -91,7 +95,7 @@ export class ItemsService {
         };
 
         const pageParam = {
-            page: page + page,
+            page: page,
             size: size,
         };
 
@@ -101,6 +105,7 @@ export class ItemsService {
                 .subscribe((response: any) => {
                     console.log(response);
                     this._items.next(response.data);
+                    this._pagination.next(response.pageNation);
                     resolve(this._items);
                 }, reject);
         });
@@ -133,37 +138,6 @@ export class ItemsService {
                 }
 
                 return of(product);
-            })
-        );
-    }
-
-    /**
-     * Create product
-     */
-    createItem(): Observable<InventoryItem>
-    {
-        return this._items.pipe(
-            take(1),
-            map((items) => {
-                const item = null;
-                // Update the product
-                this._item.next(item);
-                // Return the product
-                return item;
-            }),
-            switchMap((items) => {
-
-                const item = null;
-                // Update the product
-                this._item.next(item);
-                console.log('Items');
-                console.log(item);
-                // Update the products with the new product
-                // this._products.next([product, ...products]);
-                 this._items.next([item,...items]);
-                // Return the new product
-                //return product;
-                return of(item);
             })
         );
     }

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import {fuseAnimations} from '@teamplat/animations';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
+import {merge, Observable, Subject} from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -92,12 +92,51 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        // Get the pagination
+        this._itemService.pagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: InventoryPagination) => {
+                // Update the pagination
+                this.pagination = pagination;
+                console.log('pageNation');
+                console.log(this.pagination);
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     /**
      * After view init
      */
     ngAfterViewInit(): void {
+        // If the user changes the sort order...
+        // this._sort.sortChange
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(() => {
+        //         // Reset back to the first page
+        //         this._paginator.pageIndex = 0;
+        //
+        //         // Close the details
+        //         this.closeDetails();
+        //     });
+
+        // Get products if sort or page changes
+        merge(this._sort.sortChange, this._paginator.page).pipe(
+            switchMap(() => {
+                console.log('change paginator!!');
+                console.log(this._paginator.pageIndex);
+                console.log(this._paginator.pageSize);
+                console.log(this._sort.active);
+                console.log(this._sort);
+                // this.closeDetails();
+                this.isLoading = true;
+                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).subscribe();
 
     }
 
@@ -164,7 +203,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * Add a new note
      */
-    createProduct(): void
+    createItem(): void
     {
         this._matDialog.open(NewItemComponent, {
             autoFocus: false,

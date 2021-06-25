@@ -1,12 +1,6 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
     <!-- Header -->
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
-        <!-- Loader -->
-        <div
-            class="absolute inset-x-0 bottom-0"
-            *ngIf="isLoading">
-            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-        </div>
         <!-- Title -->
         <div class="flex-row text-4xl font-extrabold tracking-tight">품목관리</div>
     </div>
@@ -58,10 +52,16 @@
                 class="ml-2"
                 mat-flat-button
                 [color]="'accent'"
-                (click)="createProduct()">
+                (click)="createItem()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                 <span class="ml-2 mr-1">신규등록</span>
             </button>
+        </div>
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
                         [ngClass]="{'pointer-events-none': isLoading}"
                         mat-table
                         matSort
-                        [matSortActive]="'name'"
+                        [matSortActive]="'itemCd'"
                         [matSortDisableClear]="true"
                         [matSortDirection]="'asc'"
                         [multiTemplateDataRows]="true"
