@@ -1198,7 +1198,7 @@
         justify-content: space-between;
 
         @screen sm {
-            justify-content: normal;
+            justify-content: space-between; //super-steve modified
         }
 
         /* Page size select */

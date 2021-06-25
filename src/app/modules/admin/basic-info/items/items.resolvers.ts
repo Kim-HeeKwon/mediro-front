@@ -25,7 +25,6 @@ export class ItemsResolver implements Resolve<any> {
      * @param state
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-        console.log('resolver start');
         return new Promise((resolve, reject) => {
             Promise.all([
                 this._itemsService.getItems()

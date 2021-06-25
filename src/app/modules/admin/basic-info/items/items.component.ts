@@ -16,7 +16,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {ItemsService} from './items.service';
-import {NewItemComponent} from "./new-item/new-item.component";
+import {NewItemComponent} from './new-item/new-item.component';
 
 @Component({
     selector: 'app-items',
@@ -36,9 +36,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 0;
-    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'grade','category','unit','standard','supplier','buyPrice','sellPrice'];
+    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','unit','standard','supplier','buyPrice','salesPrice'];
     selectedItemForm: FormGroup;
     selectedItem: InventoryItem | null = null;
+    flashMessage: 'success' | 'error' | null = null;
 
     //pagination: InventoryPagination;
 
@@ -70,13 +71,13 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedItemForm = this._formBuilder.group({
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
-            grade: [''], // 등급
+            itemGrade: [''], // 등급
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
             supplier: [''], // 공급단가
             buyPrice: [''], // 구매단가
-            sellPrice: [''], // 판매단가
+            salesPrice: [''], // 판매단가
             active: [false]  // cell상태
         });
 
@@ -104,6 +105,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this._paginator._intl.itemsPerPageLabel = 'test';
     }
 
     /**

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 import { User } from '../../user/user.model';
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function createInitialState(): User {
     return {
         mId: null,
