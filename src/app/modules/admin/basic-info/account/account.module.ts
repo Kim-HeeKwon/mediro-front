@@ -20,6 +20,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {SharedModule} from "../../../../shared/shared.module";
+import {FuseFindByKeyPipeModule} from "../../../../../@teamplat/pipes/find-by-key";
 
 
 const accountRoutes: Route[] = [
@@ -55,7 +56,8 @@ const accountRoutes: Route[] = [
       MatSlideToggleModule,
       MatTableModule,
       MatTooltipModule,
-      SharedModule
+      SharedModule,
+      FuseFindByKeyPipeModule
   ]
 })
 export class AccountModule { }

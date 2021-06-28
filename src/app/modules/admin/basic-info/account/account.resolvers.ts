@@ -27,7 +27,9 @@ export class AccountResolver implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
 
-            Promise.all([]).then(
+            Promise.all([
+                this._accountService.getAccount()
+            ]).then(
                 () => {
                     // @ts-ignore
                     resolve();
