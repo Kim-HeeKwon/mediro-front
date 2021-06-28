@@ -11,20 +11,110 @@
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </button>
     </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
     <div class="m-4">
-        <!-- Title -->
-        <div>
-            <input
-                class="w-full p-2 text-2xl"
-                [placeholder]="'Title'">
-        </div>
-        <!-- Note -->
-        <div class="flex w-full py-5 px-2">
-                <textarea
-                    class="w-full"
-                    [placeholder]="'Note'"
-                    matTextareaAutosize></textarea>
-        </div>
+<!--        &lt;!&ndash; Title &ndash;&gt;-->
+<!--        <div>-->
+<!--            <input-->
+<!--                class="w-full p-2 text-2xl"-->
+<!--                [placeholder]="'Title'">-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Note &ndash;&gt;-->
+<!--        <div class="flex w-full py-5 px-2">-->
+<!--                <textarea-->
+<!--                    class="w-full"-->
+<!--                    [placeholder]="'Note'"-->
+<!--                    matTextareaAutosize></textarea>-->
+<!--        </div>-->
+        <!-- Selected product form -->
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="selectedItemForm">
+            <div class="p-8">
+                <div class="flex w-full">
+                    <!-- Name -->
+                    <mat-form-field class="w-2/3 pr-2">
+                        <mat-label>품목코드</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'itemCd'">
+                    </mat-form-field>
+                    <!-- Name -->
+                    <mat-form-field class="w-1/3 pr-2">
+                        <mat-label>품목 등급</mat-label>
+                        <mat-select [formControlName]="'itemGrade'">
+                            <ng-container *ngFor="let itemgrade of itemGrades">
+                                <mat-option [value]="itemgrade.id">
+                                    {{itemgrade.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <!-- Name -->
+                    <mat-form-field class="w-3/6 pr-2">
+                        <mat-label>품목명</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'itemNm'">
+                    </mat-form-field>
+                    <mat-form-field class="w-2/6 pr-2">
+                        <mat-label>공급사</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'supplier'">
+                    </mat-form-field>
+                    <button
+                        class="w-1/6"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="supplierSearch()"
+                        [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
+                        검색
+                    </button>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-1/4 pr-2">
+                        <mat-label>구매단가</mat-label>
+                        <input
+                            matInput
+                            type = 'number'
+                            [placeholder]="'0'"
+                            [formControlName]="'buyPrice'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pr-2">
+                        <mat-label>판매단가</mat-label>
+                        <input
+                            matInput
+                            type = 'number'
+                            [placeholder]="'0'"
+                            [formControlName]="'salesPrice'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pr-2">
+                        <mat-label>단위</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'unit'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pr-2">
+                        <mat-label>규격</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'standard'">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
         <ng-container>
             <div class="flex items-center justify-between mt-4">
                 <!-- Close -->
@@ -36,7 +126,7 @@
                 <!-- Save -->
                 <button
                     mat-flat-button
-                    matDialogClose>
+                    (click)="itemCreate()">
                     등록
                 </button>
             </div>

@@ -24,6 +24,7 @@ import { ItemsResolver } from './items.resolvers';
 import { NewItemComponent } from './new-item/new-item.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
+import {FuseAlertModule} from '@teamplat/components/alert';
 
 const itemsRoutes: Route[] = [
     {
@@ -61,7 +62,8 @@ const itemsRoutes: Route[] = [
         MatTooltipModule,
         MatDialogModule,
         SharedModule,
-        FuseFindByKeyPipeModule
+        FuseFindByKeyPipeModule,
+        FuseAlertModule,
     ]
 })
 export class ItemsModule { }
