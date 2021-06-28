@@ -152,10 +152,14 @@
                                                                     [formControlName]="'itemNm'">
                                                             </mat-form-field>
                                                             <mat-form-field class="w-1/4 pl-2">
-                                                                <mat-label>등급</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'itemGrade'">
+                                                                <mat-label>품목 등급</mat-label>
+                                                                <mat-select [formControlName]="'itemGrade'">
+                                                                    <ng-container *ngFor="let itemgrade of itemGrades">
+                                                                        <mat-option [value]="itemgrade.id">
+                                                                            {{itemgrade.name}}
+                                                                        </mat-option>
+                                                                    </ng-container>
+                                                                </mat-select>
                                                             </mat-form-field>
                                                         </div>
                                                         <!-- SKU and Barcode -->
@@ -328,7 +332,7 @@
                                 class="pr-8 truncate"
                                 mat-cell
                                 *matCellDef="let product">
-                                {{product.itemGrade}}
+                                {{(product.itemGrade | fuseFindByKey:'id':itemGrades).name}}
                             </td>
                         </ng-container>
                         <!-- category -->

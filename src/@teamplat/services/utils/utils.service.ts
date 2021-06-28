@@ -64,4 +64,34 @@ export class FuseUtilsService
 
         return name;
     }
+
+    /**
+     * Generates a random id
+     *
+     * @param commonCode
+     */
+    commonValue(commonCode: any[], value: string): any  // CommonCode[]
+    {
+        const commonValues: CommonCode[] = [];
+
+        const childValues = commonCode.filter((item: any) => item.mainCd === value).map((param: any) => {
+            return param.child;
+        });
+
+        childValues[0].forEach((param1: any) => {
+            const commonValue: CommonCode = {
+                id : param1.subCd,
+                name : param1.descr
+            };
+            commonValues.push(commonValue);
+        });
+        return commonValues;
+    }
+
+}
+
+export interface CommonCode
+{
+    id: string;         //ID
+    name: string;       //NAME
 }

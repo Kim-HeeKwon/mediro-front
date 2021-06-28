@@ -83,10 +83,10 @@ export class InitialCommonCodeDataResolver implements Resolve<any>
                 if (response.status !== 'SUCCESS'){
                     return throwError(response.message);
                 }
-                //this._codeStore._setState(response.data);
-                this._codeStore.update(response.data);
-
-                console.log(this._codeStore.getValue()[0]);
+                const commonCodeData = {
+                    data : response.data
+                };
+                this._codeStore.update(commonCodeData);
 
                 return of(response);
             })

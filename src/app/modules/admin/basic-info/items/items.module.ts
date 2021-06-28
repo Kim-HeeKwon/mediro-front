@@ -23,6 +23,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ItemsResolver } from './items.resolvers';
 import { NewItemComponent } from './new-item/new-item.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
 
 const itemsRoutes: Route[] = [
     {
@@ -39,27 +40,28 @@ const itemsRoutes: Route[] = [
     ItemsComponent,
     NewItemComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(itemsRoutes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
-    MatRippleModule,
-    MatSortModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatTableModule,
-    MatTooltipModule,
-    MatDialogModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(itemsRoutes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatRippleModule,
+        MatSortModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTableModule,
+        MatTooltipModule,
+        MatDialogModule,
+        SharedModule,
+        FuseFindByKeyPipeModule
+    ]
 })
 export class ItemsModule { }

@@ -17,6 +17,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {ItemsService} from './items.service';
 import {NewItemComponent} from './new-item/new-item.component';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 
 @Component({
     selector: 'app-items',
@@ -32,6 +34,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatSort) private _sort: MatSort;
 
     items$: Observable<InventoryItem[]>;
+    pagination: InventoryPagination | null = null;
 
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
@@ -41,29 +44,39 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedItem: InventoryItem | null = null;
     flashMessage: 'success' | 'error' | null = null;
 
-    //pagination: InventoryPagination;
+    itemGrades: any[] = [
+        {
+          id: '1',
+          name: '1 등급'
+        },
+        {
+            id: '2',
+            name: '2 등급'
+        },
+        {
+            id: '3',
+            name: '3 등급'
+        }];
+
+    test: CommonCode[] = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     formFieldHelpers: string[] = [''];
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    pagination: any = {
-        endIndex: 9,
-        lastPage: 3,
-        length: 23,
-        page: 0,
-        size: 10,
-        startIndex: 0
-    };
-
     constructor(
         private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _itemService: ItemsService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _codeStore: CodeStore,
+        private _utilService: FuseUtilsService
     ) {
+        // console.log('hello CodeStore');
+        // console.log(_codeStore.getValue());
+        this.test = _utilService.commonValue(_codeStore.getValue().data,'x');
+        console.log(this.test);
     }
 
     ngOnInit(): void {
@@ -106,7 +119,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        this._paginator._intl.itemsPerPageLabel = 'test';
+        //this._paginator._intl.itemsPerPageLabel = 'test';
     }
 
     /**

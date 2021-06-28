@@ -1,29 +1,29 @@
 export interface Code
 {
-    //data: child[];
     mainCd: string;
     descr: string;
-    useYn: string;
-    delFlag: string;
-    ipaddr: string;
-    addUser: string;
-    addDate: string;
-    updUser: string;
-    updDate: string;
-    child: child[];
+    useYn?: string;
+    delFlag?: string;
+    ipaddr?: string;
+    addUser?: string;
+    addDate?: string;
+    updUser?: string;
+    updDate?: string;
+    child: childData[];
 }
 
-export interface child
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface childData
 {
     mainCd: string;
     subCd: string;
     descr: string;
-    useYn: string;
-    delFlag: string;
-    ipaddr: string;
-    addUser: string;
-    addDate: string;
-    updUser: string;
-    updDate: string;
+    useYn?: string;
+    delFlag?: string;
+    ipaddr?: string;
+    addUser?: string;
+    addDate?: string;
+    updUser?: string;
+    updDate?: string;
 }
 
