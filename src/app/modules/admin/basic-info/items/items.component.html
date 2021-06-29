@@ -2,49 +2,79 @@
     <!-- Header -->
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
         <!-- Title -->
-        <div class="flex-row text-4xl font-extrabold tracking-tight">품목관리</div>
+        <div class="flex-row text-3xl font-extrabold tracking-tight">
+            품목관리</div>
     </div>
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-        <!-- Date -->
+        <!-- 검새조건 -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
-                <input
-                    matInput
-                    [matDatepicker]="picker1">
-                <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <div class=""> -</div>
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
-                <input
-                    matInput
-                    [matDatepicker]="picker2">
-                <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
+            <form
+                [formGroup]="searchForm">
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                    <mat-select [formControlName]="'itemGrade'">
+                        <ng-container *ngFor="let itemgrade of itemGrades">
+                            <mat-option [value]="itemgrade.id">
+                                {{itemgrade.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                    <mat-select [formControlName]="'searchCondition'">
+                        <ng-container *ngFor="let searchcondition of searchCondition">
+                            <mat-option [value]="searchcondition.id">
+                                {{searchcondition.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                    <input
+                        matInput
+                        [formControlName]="'searchText'"
+                        [autocomplete]="'off'"
+                        [placeholder]="'검색조건을 선택해주세요.'">
+                </mat-form-field>
+                <!-- Search -->
+<!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+<!--                    <mat-icon-->
+<!--                        matPrefix-->
+<!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+<!--                    <input-->
+<!--                        matInput-->
+<!--                        [formControlName]="'searchText'"-->
+<!--                        [autocomplete]="'off'"-->
+<!--                        [placeholder]="'상품검색'">-->
+<!--                </mat-form-field>-->
+            </form>
+<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+<!--                <input-->
+<!--                    matInput-->
+<!--                    [matDatepicker]="picker1">-->
+<!--                <mat-datepicker-toggle-->
+<!--                    matSuffix-->
+<!--                    [for]="picker1"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #picker1></mat-datepicker>-->
+<!--            </mat-form-field>-->
+<!--            <div class=""> -</div>-->
+<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+<!--                <input-->
+<!--                    matInput-->
+<!--                    [matDatepicker]="picker2">-->
+<!--                <mat-datepicker-toggle-->
+<!--                    matSuffix-->
+<!--                    [for]="picker2"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #picker2></mat-datepicker>-->
+<!--            </mat-form-field>-->
         </div>
         <!-- Actions -->
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-                <mat-icon
-                    matPrefix
-                    [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                <input
-                    matInput
-                    [formControl]="searchInputControl"
-                    [autocomplete]="'off'"
-                    [placeholder]="'상품검색'">
-            </mat-form-field>
             <!-- Add product button -->
             <button
                 class="ml-2"
                 mat-flat-button
-                [color]="'primary'">
+                [color]="'primary'"
+                (click)="searchItem()">
                 <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                 <span class="ml-2 mr-1">조회</span>
             </button>

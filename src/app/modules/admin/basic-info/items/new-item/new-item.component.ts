@@ -11,6 +11,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
+import {ItemsService} from "../items.service";
 
 
 @Component({
@@ -52,6 +53,7 @@ export class NewItemComponent implements OnInit, OnDestroy
 
     constructor(
         public matDialogRef: MatDialogRef<NewItemComponent>,
+        private _itemService: ItemsService,
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
     ) {
@@ -96,6 +98,18 @@ export class NewItemComponent implements OnInit, OnDestroy
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
             console.log(this.selectedItemForm.getRawValue());
+            this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem) => {
+
+                console.log(newItem);
+                // Go to new product
+                //this.selectedProduct = newProduct;
+
+                // Fill the form
+                //this.selectedProductForm.patchValue(newProduct);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         }else{
             // Set the alert
             this.alert = {

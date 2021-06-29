@@ -41,10 +41,15 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     itemsCount: number = 0;
     itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','unit','standard','supplier','buyPrice','salesPrice'];
     selectedItemForm: FormGroup;
+    searchForm: FormGroup;
     selectedItem: InventoryItem | null = null;
     flashMessage: 'success' | 'error' | null = null;
 
-    itemGrades: any[] = [
+    itemGrades: CommonCode[] = [
+        {
+            id: 'all',
+            name: '전체 등급'
+        },
         {
           id: '1',
           name: '1 등급'
@@ -56,6 +61,16 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             id: '3',
             name: '3 등급'
+        }];
+
+    searchCondition: CommonCode[] = [
+        {
+            id: '100',
+            name: '품목코드'
+        },
+        {
+            id: '101',
+            name: '품목명'
         }];
 
     test: CommonCode[] = null;
@@ -80,6 +95,15 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        // 검색 Form 생성
+        this.searchForm = this._formBuilder.group({
+            itemGrade: ['all'],
+            itemNm: [''],
+            itemCd: [''],
+            searchCondition: ['100'],
+            searchText: [''],
+        });
+
         // 아이템(품목) Form 생성
         this.selectedItemForm = this._formBuilder.group({
             itemCd: ['', [Validators.required]], // 품목코드
@@ -229,5 +253,16 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-
+    searchItem(): void
+    {
+        if(this.searchForm.getRawValue().searchCondition === '100') {
+            this.searchForm.patchValue({'itemCd': this.searchForm.getRawValue().searchText});
+            this.searchForm.patchValue({'itemNm': ''});
+        }else if(this.searchForm.getRawValue().searchCondition === '101'){
+            this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
+            this.searchForm.patchValue({'itemCd': ''});
+        }
+        console.log(this.searchForm.getRawValue());
+        this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
+    }
 }

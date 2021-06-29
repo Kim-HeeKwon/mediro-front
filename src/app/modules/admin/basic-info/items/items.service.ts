@@ -75,24 +75,25 @@ export class ItemsService {
         );
     }
 
-    // @ts-ignore
     /**
      * Post getItems
      *
      * @returns
      */
-    getItems(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getItems(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
-        console.log(order);
-        console.log(sort);
-        console.log(search);
+        let searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
 
-        const param = {
-            search: search,
-            order: order,
-            sort: sort,
-        };
+        // 검색조건 Null Check
+        if((Object.keys(search).length === 0) === false){
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
 
         const pageParam = {
             page: page,
@@ -101,7 +102,7 @@ export class ItemsService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(param, pageParam, 'v1/api/basicInfo/item/item-info')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/item/item-info')
                 .subscribe((response: any) => {
                     console.log(response);
                     this._items.next(response.data);
@@ -141,4 +142,72 @@ export class ItemsService {
             })
         );
     }
+
+    /**
+     * Create Item
+     */
+    createItem(item: any): Observable<InventoryItem>
+    {
+        return this.items$.pipe(
+            take(1),
+            switchMap(products => this._common.sendData(item, 'v1/api/basicInfo/item').pipe(
+                map((newProduct) => {
+
+                    if(newProduct.status === 'SUCCESS'){
+                        // Update the products with the new product
+                        // this._items.next([newProduct.data, ...products]);
+
+                        // Return the new product
+                        return newProduct;
+                    }else{
+                        return throwError('Error');
+                    }
+                })
+            ))
+        );
+    }
+
+    /**
+     * Delete the product
+     *
+     * @param id
+     */
+    // deleteProduct(id: string): Observable<boolean>
+    // {
+    //     return this.items$.pipe(
+    //         take(1),
+    //         switchMap(
+    //             products => this._httpClient.delete('api/apps/ecommerce/inventory/product', {params: {id}}).pipe(
+    //             map((isDeleted: boolean) => {
+    //
+    //                 // Find the index of the deleted product
+    //                 const index = products.findIndex(item => item.id === id);
+    //
+    //                 // Delete the product
+    //                 products.splice(index, 1);
+    //
+    //                 // Update the products
+    //                 this._products.next(products);
+    //
+    //                 // Return the deleted status
+    //                 return isDeleted;
+    //             })
+    //             )
+    //         )
+    //     );
+    // }
+
+    // deleteProduct(id: string): Observable<boolean>
+    // {
+    //     // @ts-ignore
+    //     return this._common.sendData(param, 'v1/api/basicInfo/item/item-info')
+    //         .subscribe((response: any) => {
+    //             console.log(response);
+    //             this._items.next(response.data);
+    //             this._pagination.next(response.pageNation);
+    //             return false;
+    //         },(error => {
+    //           console.log(error);
+    //         }));
+    // }
 }
