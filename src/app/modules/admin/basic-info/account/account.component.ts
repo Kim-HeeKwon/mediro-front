@@ -16,9 +16,10 @@ import {AccountService} from './account.service';
 import {AccountData, AccountPagenation} from './account.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '../../../../../@teamplat/animations';
-import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
+import {CommonCode, CommonPopup, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FuseAlertType} from '../../../../../@teamplat/components/alert';
+import {PopupStore} from '../../../../core/common-popup/state/popup.store';
 
 @Component({
     selector: 'app-account',
@@ -58,6 +59,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedAccount: AccountData | null = null;
     flashMessage: 'success' | 'error' | null = null;
     accountType: CommonCode[] = null;
+    pAccount: CommonPopup[] = null;
 
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -75,12 +77,16 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         private _accountService: AccountService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
+        private _popupStore: PopupStore,
         private _utilService: FuseUtilsService)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.pAccount = _utilService.commonPopupValue(_popupStore.getValue().data, 'P$_ACCOUNT');
     }
 
     ngOnInit(): void {
+
+        console.log(this.pAccount);
         // 고객사 Form 생성
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
