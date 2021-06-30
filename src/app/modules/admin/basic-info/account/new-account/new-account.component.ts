@@ -1,9 +1,9 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, ElementRef,
     OnDestroy,
-    OnInit,
+    OnInit, Renderer2, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 import {Subject, throwError} from 'rxjs';
@@ -16,6 +16,10 @@ import {CommonCode, CommonPopup, FuseUtilsService} from '../../../../../../@team
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 
+import { postcode } from 'assets/js/postCode.js';
+import { geodata } from 'assets/js/geoCode.js';
+
+declare let daum: any;
 
 @Component({
     selector       : 'new-account',
@@ -26,7 +30,7 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 })
 export class NewAccountComponent implements OnInit, OnDestroy
 {
-
+    @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
     pAccount: CommonPopup[] = null;
@@ -43,6 +47,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     constructor(
         public matDialogRef: MatDialogRef<NewAccountComponent>,
+        private _renderer: Renderer2,
         private _accountService: AccountService,
         private _formBuilder: FormBuilder,
         private _codeStore: CodeStore,
@@ -140,5 +145,22 @@ export class NewAccountComponent implements OnInit, OnDestroy
     accountSearch(): void
     {
         console.log('clisk');
+    }
+
+    openDaumPopup(): void
+    {
+        let geoValue;
+        postcode(this._renderer, this.popup.nativeElement, (data: any) => {
+            console.log(data.address);
+            geodata(data.address, (result: any) => {
+                console.log('geoData');
+                console.log(result);
+            });
+        });
+    }
+
+    closeDaumPopup(): void
+    {
+        this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
 }
