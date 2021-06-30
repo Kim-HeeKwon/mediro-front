@@ -83,7 +83,7 @@ export class ItemsService {
     getItems(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
-        let searchParam = {};
+        const searchParam = {};
         searchParam['order'] = order;
         searchParam['sort'] = sort;
 
@@ -104,7 +104,6 @@ export class ItemsService {
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/item/item-info')
                 .subscribe((response: any) => {
-                    console.log(response);
                     this._items.next(response.data);
                     this._pagination.next(response.pageNation);
                     resolve(this._items);
@@ -151,17 +150,13 @@ export class ItemsService {
         return this.items$.pipe(
             take(1),
             switchMap(products => this._common.sendData(item, 'v1/api/basicInfo/item').pipe(
-                map((newProduct) => {
-
-                    if(newProduct.status === 'SUCCESS'){
+                map((newItem) => {
+                    if(newItem.status === 'SUCCESS'){
                         // Update the products with the new product
                         // this._items.next([newProduct.data, ...products]);
-
-                        // Return the new product
-                        return newProduct;
-                    }else{
-                        return throwError('Error');
                     }
+                    // Return the new product
+                    return newItem;
                 })
             ))
         );

@@ -6,12 +6,12 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, throwError} from 'rxjs';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
-import {ItemsService} from "../items.service";
+import {ItemsService} from '../items.service';
 
 
 @Component({
@@ -98,14 +98,9 @@ export class NewItemComponent implements OnInit, OnDestroy
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
             console.log(this.selectedItemForm.getRawValue());
-            this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem) => {
+            this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem: any) => {
 
-                console.log(newItem);
-                // Go to new product
-                //this.selectedProduct = newProduct;
-
-                // Fill the form
-                //this.selectedProductForm.patchValue(newProduct);
+                this.alertMessage(newItem);
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -119,6 +114,26 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             // Show the alert
             this.showAlert = true;
+        }
+    }
+
+    alertMessage(param: any): void
+    {
+        if(param.status !== 'SUCCESS'){
+            this.alert = {
+                type   : 'error',
+                message: param.msg
+            };
+            // Show the alert
+            this.showAlert = true;
+        }else{
+            this.alert = {
+                type   : 'success',
+                message: '등록완료 하였습니다.'
+            };
+            // Show the alert
+            this.showAlert = true;
+            this._itemService.getItems(0,10,'itemCd','asc','');
         }
     }
 

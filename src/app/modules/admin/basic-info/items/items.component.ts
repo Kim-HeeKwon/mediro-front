@@ -91,7 +91,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
         this.test = _utilService.commonValue(_codeStore.getValue().data,'x');
-        console.log(this.test);
+
     }
 
     ngOnInit(): void {
@@ -137,8 +137,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((pagination: InventoryPagination) => {
                 // Update the pagination
                 this.pagination = pagination;
-                console.log('pageNation');
-                console.log(this.pagination);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -164,11 +162,11 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Get products if sort or page changes
         merge(this._sort.sortChange, this._paginator.page).pipe(
             switchMap(() => {
-                console.log('change paginator!!');
-                console.log(this._paginator.pageIndex);
-                console.log(this._paginator.pageSize);
-                console.log(this._sort.active);
-                console.log(this._sort);
+                // console.log('change paginator!!');
+                // console.log(this._paginator.pageIndex);
+                // console.log(this._paginator.pageSize);
+                // console.log(this._sort.active);
+                // console.log(this._sort);
                 // this.closeDetails();
                 this.isLoading = true;
                 return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
@@ -262,7 +260,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
             this.searchForm.patchValue({'itemCd': ''});
         }
-        console.log(this.searchForm.getRawValue());
+
         this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
     }
 }
