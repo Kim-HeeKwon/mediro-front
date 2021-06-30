@@ -251,6 +251,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    /**
+     * SearchItem
+     */
     searchItem(): void
     {
         if(this.searchForm.getRawValue().searchCondition === '100') {
@@ -262,5 +265,44 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
+    }
+
+    /**
+     * Delete Item From Items
+     */
+    deleteItem(): void
+    {
+        const itemData = this.selectedItemForm.value;
+
+        this._itemService.deleteItem(itemData)
+            .subscribe(
+                (param: any) => {
+                    if(param.status === 'SUCCESS'){
+                        //this._accountService.getAccount();
+                        this.closeDetails();
+                    }
+
+                },(response) => {
+                });
+    }
+
+    /**
+     * Update Item From Items
+     */
+    updateItem(): void
+    {
+        const itemData = this.selectedItemForm.value;
+        console.log(itemData);
+
+        this._itemService.updateItem(itemData)
+            .subscribe(
+                (param: any) => {
+                    if(param.status === 'SUCCESS'){
+                        //this._accountService.getAccount();
+                        this.closeDetails();
+                    }
+
+                },(response) => {
+                });
     }
 }

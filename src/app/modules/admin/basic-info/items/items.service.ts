@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {Common} from '@teamplat/providers/common/common';
+import {AccountData} from "../account/account.types";
 
 @Injectable({
     providedIn: 'root'
@@ -145,28 +146,45 @@ export class ItemsService {
     /**
      * Create Item
      */
-    createItem(item: any): Observable<InventoryItem>
+    createItem(item: InventoryItem): Observable<InventoryItem>
     {
         return this.items$.pipe(
             take(1),
             switchMap(products => this._common.sendData(item, 'v1/api/basicInfo/item').pipe(
-                map((newItem) => {
-                    if(newItem.status === 'SUCCESS'){
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
                         // Update the products with the new product
                         // this._items.next([newProduct.data, ...products]);
                     }
                     // Return the new product
-                    return newItem;
+                    return result;
                 })
             ))
         );
     }
 
     /**
-     * Delete the product
+     * Delete the item
      *
-     * @param id
+     * @param InventoryItem
      */
+    deleteItem(itemData: InventoryItem): Observable<{response: any}> {
+        return this._common.delete('v1/api/basicInfo/item', itemData).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+
+    /**
+     * Update the item
+     *
+     * @param InventoryItem
+     */
+    updateItem(itemData: InventoryItem): Observable<{response: any}> {
+        return this._common.put('v1/api/basicInfo/item', itemData).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+
     // deleteProduct(id: string): Observable<boolean>
     // {
     //     return this.items$.pipe(
