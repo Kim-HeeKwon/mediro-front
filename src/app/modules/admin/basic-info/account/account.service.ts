@@ -74,6 +74,26 @@ export class AccountService {
         });
     }
 
+    /**
+     * Create Account
+     */
+    createAccount(accountData: AccountData): Observable<AccountData>
+    {
+        return this.accounts$.pipe(
+            take(1),
+            switchMap(products => this._common.sendData(accountData, 'v1/api/basicInfo/account').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                        // Update the products with the new product
+                        // this._items.next([newProduct.data, ...products]);
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
     /* Put updateAccount
      * @param accountData
      */

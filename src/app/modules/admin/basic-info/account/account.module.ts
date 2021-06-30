@@ -21,6 +21,9 @@ import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {SharedModule} from "../../../../shared/shared.module";
 import {FuseFindByKeyPipeModule} from "../../../../../@teamplat/pipes/find-by-key";
+import {NewAccountComponent} from "../account/new-account/new-account.component";
+import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 const accountRoutes: Route[] = [
@@ -35,29 +38,32 @@ const accountRoutes: Route[] = [
 
 @NgModule({
   declarations: [
-    AccountComponent
+    AccountComponent,
+    NewAccountComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(accountRoutes),
-      MatButtonModule,
-      MatCheckboxModule,
-      MatFormFieldModule,
-      MatIconModule,
-      MatInputModule,
-      MatMenuModule,
-      MatPaginatorModule,
-      MatProgressBarModule,
-      MatDatepickerModule,
-      MatMomentDateModule,
-      MatRippleModule,
-      MatSortModule,
-      MatSelectModule,
-      MatSlideToggleModule,
-      MatTableModule,
-      MatTooltipModule,
-      SharedModule,
-      FuseFindByKeyPipeModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(accountRoutes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatRippleModule,
+        MatSortModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTableModule,
+        MatTooltipModule,
+        MatDialogModule,
+        SharedModule,
+        FuseFindByKeyPipeModule,
+        FuseAlertModule,
+    ]
 })
 export class AccountModule { }

@@ -20,6 +20,8 @@ import {CommonCode, CommonPopup, FuseUtilsService} from '@teamplat/services/util
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FuseAlertType} from '../../../../../@teamplat/components/alert';
 import {PopupStore} from '../../../../core/common-popup/state/popup.store';
+import {NewAccountComponent} from '../account/new-account/new-account.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-account',
@@ -73,6 +75,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     formFieldHelpers: string[] = [''];
 
     constructor(
+        private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _accountService: AccountService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -86,7 +89,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
-        console.log(this.pAccount);
         // 고객사 Form 생성
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
@@ -227,6 +229,18 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     selectAccount(): void
     {
         this._accountService.getAccount();
+    }
+    /**
+     * Add a new note
+     */
+    createAccount(): void
+    {
+        this._matDialog.open(NewAccountComponent, {
+            autoFocus: false,
+            data     : {
+                note: {}
+            }
+        });
     }
     /**
      * 업데이트

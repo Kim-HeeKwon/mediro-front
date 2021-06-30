@@ -1,0 +1,156 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">고객사 신규등록</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <!--        &lt;!&ndash; Title &ndash;&gt;-->
+        <!--        <div>-->
+        <!--            <input-->
+        <!--                class="w-full p-2 text-2xl"-->
+        <!--                [placeholder]="'Title'">-->
+        <!--        </div>-->
+        <!--        &lt;!&ndash; Note &ndash;&gt;-->
+        <!--        <div class="flex w-full py-5 px-2">-->
+        <!--                <textarea-->
+        <!--                    class="w-full"-->
+        <!--                    [placeholder]="'Note'"-->
+        <!--                    matTextareaAutosize></textarea>-->
+        <!--        </div>-->
+        <!-- Selected product form -->
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="selectedAccountForm">
+            <div class="p-8">
+                <div class="flex w-full">
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>고객사</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'account'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>고객사 유형</mat-label>
+                        <mat-select [formControlName]="'accountType'">
+                            <ng-container *ngFor="let accountType of accountType">
+                                <mat-option [value]="accountType.id">
+                                    {{accountType.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <button
+                        class="w-1/6"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="accountSearch()"
+                        [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
+                        검색
+                    </button>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>고객사명</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'descr'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>사업자번호</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'custBusinessNumber'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>사업자명</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'custBusinessName'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>대표자명</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'representName'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>업태</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'businessCondition'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>종목</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'businessCategory'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-3/4 pl-2">
+                        <mat-label>주소</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'address'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>대표 전화</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'phoneNumber'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>팩스</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'fax'">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/4 pl-2">
+                        <mat-label>이메일</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'email'">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex items-center justify-between mt-4">
+                <!-- Close -->
+                <button
+                    mat-flat-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <!-- Save -->
+                <button
+                    mat-flat-button
+                    (click)="accountCreate()">
+                    등록
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>
