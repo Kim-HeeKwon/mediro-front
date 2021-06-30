@@ -6,6 +6,7 @@ import {map, switchMap} from 'rxjs/operators';
 import { InitialData } from 'app/app.types';
 import { Api } from '../@teamplat/providers/api/api';
 import { CodeStore } from './core/common-code/state/code.store';
+import { PopupStore } from './core/common-popup/state/popup.store';
 
 @Injectable({
     providedIn: 'root'
@@ -95,4 +96,39 @@ export class InitialCommonCodeDataResolver implements Resolve<any>
 
 }
 
+@Injectable({
+    providedIn: 'root'
+})
+export class InitialCommonPopupDataResolver implements Resolve<any>
+{
+    /**
+     * Constructor
+     */
+    constructor(private _httpClient: HttpClient,
+                private _api: Api,
+                private _popupStore: PopupStore)
+    {
+    }
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+    {
+        return this.commonPopupFunction();
+    }
+
+    commonPopupFunction(): Observable<any>{
+        return this._api.post('/v1/api/common/popup/module-column', '').pipe(
+            switchMap((response: any) => {
+                if (response.status !== 'SUCCESS'){
+                    return throwError(response.message);
+                }
+                const commonPopupData = {
+                    data : response.data
+                };
+                this._popupStore.update(commonPopupData);
+
+                return of(response);
+            })
+        );
+    }
+}
 

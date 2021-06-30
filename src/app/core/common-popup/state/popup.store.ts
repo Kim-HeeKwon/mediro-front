@@ -9,20 +9,9 @@ export function createInitialState(): any {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'code' })
-export class CodeStore extends Store<any> {
+@StoreConfig({ name: 'popup' })
+export class PopupStore extends Store<any> {
     constructor() {
         super(createInitialState());
     }
 }
-
-// addDate: "2021-06-21"
-// addUser: ""
-// child: (3) [{…}, {…}, {…}]
-// delFlag: "N"
-// descr: "헤더설명수정"
-// ipaddr: "0:0:0:0:0:0:0:1"
-// mainCd: "x"
-// updDate: "2021-06-21"
-// updUser: ""
-// useYn: "Y"

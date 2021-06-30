@@ -254,8 +254,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     searchItem(): void
     {
         if(this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'itemCd': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'itemNm': ''});
+                this.searchForm.patchValue({'itemCd': this.searchForm.getRawValue().searchText});
+                this.searchForm.patchValue({'itemNm': ''});
         }else if(this.searchForm.getRawValue().searchCondition === '101'){
             this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
             this.searchForm.patchValue({'itemCd': ''});
