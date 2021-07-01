@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
-        <div class="text-lg font-medium">고객사 신규등록</div>
+        <div class="text-lg font-medium">거래처 신규등록</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -41,21 +41,17 @@
             [formGroup]="selectedAccountForm">
             <div class="p-8">
                 <div class="flex w-full">
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-w/6 pr-2">
                         <mat-label>고객사</mat-label>
                         <input
                             matInput
                             [formControlName]="'account'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
-                        <mat-label>고객사 유형</mat-label>
-                        <mat-select [formControlName]="'accountType'">
-                            <ng-container *ngFor="let accountType of accountType">
-                                <mat-option [value]="accountType.id">
-                                    {{accountType.name}}
-                                </mat-option>
-                            </ng-container>
-                        </mat-select>
+                    <mat-form-field class="w-3/6 pr-2">
+                        <mat-label>고객사명</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'descr'">
                     </mat-form-field>
                     <button
                         class="w-1/6"
@@ -67,19 +63,23 @@
                     </button>
                 </div>
                 <div class="flex w-full">
-                    <mat-form-field class="w-1/4 pl-2">
-                        <mat-label>고객사명</mat-label>
-                        <input
-                            matInput
-                            [formControlName]="'descr'">
+                    <mat-form-field class="w-2/6 pr-2">
+                        <mat-label>고객사 유형</mat-label>
+                        <mat-select [formControlName]="'accountType'">
+                            <ng-container *ngFor="let accountType of accountType">
+                                <mat-option [value]="accountType.id">
+                                    {{accountType.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>사업자번호</mat-label>
                         <input
                             matInput
                             [formControlName]="'custBusinessNumber'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>사업자명</mat-label>
                         <input
                             matInput
@@ -87,19 +87,19 @@
                     </mat-form-field>
                 </div>
                 <div class="flex w-full">
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>대표자명</mat-label>
                         <input
                             matInput
                             [formControlName]="'representName'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>업태</mat-label>
                         <input
                             matInput
                             [formControlName]="'businessCondition'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>종목</mat-label>
                         <input
                             matInput
@@ -107,28 +107,35 @@
                     </mat-form-field>
                 </div>
                 <div class="flex w-full">
-                    <mat-form-field class="w-3/4 pl-2">
+                    <mat-form-field class="w-2/4 pr-2">
                         <mat-label>주소</mat-label>
                         <input
                             matInput
                             [formControlName]="'address'"
                             (click)="openDaumPopup()">
                     </mat-form-field>
+                    <mat-form-field class="w-2/4 pr-2">
+                        <mat-label>상세주소</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'addressDetail'">
+                    </mat-form-field>
+
                 </div>
                 <div class="flex w-full">
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>대표 전화</mat-label>
                         <input
                             matInput
                             [formControlName]="'phoneNumber'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>팩스</mat-label>
                         <input
                             matInput
                             [formControlName]="'fax'">
                     </mat-form-field>
-                    <mat-form-field class="w-1/4 pl-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>이메일</mat-label>
                         <input
                             matInput

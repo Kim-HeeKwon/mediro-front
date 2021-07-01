@@ -196,11 +196,17 @@
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="flex">
-                                                            <mat-form-field class="w-3/4 pl-2">
+                                                            <mat-form-field class="w-1/4 pl-2">
                                                                 <mat-label>주소</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'address'">
+                                                            </mat-form-field>
+                                                            <mat-form-field class="w-1/4 pl-2">
+                                                                <mat-label>상세주소</mat-label>
+                                                                <input
+                                                                    matInput
+                                                                    [formControlName]="'addressDetail'">
                                                             </mat-form-field>
                                                         </div>
 
@@ -430,6 +436,22 @@
                                 mat-cell
                                 *matCellDef="let account">
                                 {{account.address}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="addressDetail">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                상세주소
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let account">
+                                {{account.addressDetail}}
                             </td>
                         </ng-container>
                         <!-- phoneNumber -->

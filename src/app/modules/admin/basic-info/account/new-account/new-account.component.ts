@@ -76,6 +76,9 @@ export class NewAccountComponent implements OnInit, OnDestroy
             businessCondition: [''],
             businessCategory: [''],
             address: [''],
+            addressDetail: [''],
+            addressX: [''],
+            addressY: [''],
             phoneNumber: [''],
             fax: [''],
             email: [''],
@@ -151,10 +154,12 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         let geoValue;
         postcode(this._renderer, this.popup.nativeElement, (data: any) => {
-            console.log(data.address);
             geodata(data.address, (result: any) => {
-                console.log('geoData');
                 console.log(result);
+
+                (this.selectedAccountForm.controls['address']).setValue(result.address_name);
+                (this.selectedAccountForm.controls['addressX']).setValue(result.address.x);
+                (this.selectedAccountForm.controls['addressY']).setValue(result.address.y);
             });
         });
     }

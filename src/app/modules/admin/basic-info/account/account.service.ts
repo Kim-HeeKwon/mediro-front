@@ -79,6 +79,7 @@ export class AccountService {
      */
     createAccount(accountData: AccountData): Observable<AccountData>
     {
+        console.log(accountData);
         return this.accounts$.pipe(
             take(1),
             switchMap(products => this._common.sendData(accountData, 'v1/api/basicInfo/account').pipe(

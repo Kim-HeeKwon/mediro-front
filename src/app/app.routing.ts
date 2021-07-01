@@ -83,7 +83,7 @@ export const appRoutes: Route[] = [
                     // account
                     {path: 'account', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
                     // supplier
-                    {path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
+                    //{path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
                     // items
                     {path: 'items', loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
@@ -94,6 +94,12 @@ export const appRoutes: Route[] = [
                     // order
                     {path: 'order', loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
                 ]},
+            // salesorder
+            {path: 'salesorder', children: [
+                    // estimate
+                    {path: 'salesorder', loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
+                ]
+            },
             // in-out
             {path: 'in-out', children: [
                     // in

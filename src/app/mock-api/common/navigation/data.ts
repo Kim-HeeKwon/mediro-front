@@ -40,14 +40,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:library',
                 link    : '/basic-info/account'
             },
-            {
+            /*{
                 id      : 'basic-info.supplier',
                 title   : '공급사관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:office-building',
                 link    : '/basic-info/supplier'
-            },
+            },*/
             {
                 id      : 'basic-info.items',
                 title   : '품목관리',
@@ -79,6 +79,23 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:pencil',
                 link    : '/estimate-order/order'
+            },
+        ]
+    },
+    {
+        id: 'salesorder',
+        title: '주문',
+        subtitle: '의료기기 주문관리',
+        type: 'group',
+        icon: 'heroicons_outline:home',
+        children: [
+            {
+                id      : 'salesorder.salesorder',
+                title   : '주문관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:pencil',
+                link    : '/salesorder/salesorder'
             },
         ]
     },
