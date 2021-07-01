@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
     selector     : 'auth-sign-in',
@@ -29,7 +30,8 @@ export class AuthSignInComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router
+        private _router: Router,
+        private cookieService: CookieService
     )
     {
     }
@@ -49,6 +51,13 @@ export class AuthSignInComponent implements OnInit
             password  : ['', Validators.required],
             rememberMe: ['']
         });
+
+        if(this.cookieService.get('remeberMe') === 'Y'){
+            const cookieEmail = this.cookieService.get('email');
+            this.signInForm.patchValue({email:cookieEmail});
+            this.signInForm.patchValue({rememberMe:true});
+        }
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -60,6 +69,7 @@ export class AuthSignInComponent implements OnInit
      */
     signIn(): void
     {
+        console.log(this.signInForm);
         // Return if the form is invalid
         if ( this.signInForm.invalid )
         {
@@ -77,6 +87,9 @@ export class AuthSignInComponent implements OnInit
         this._authService.signIn(this.signInForm.value)
             .subscribe(
                 () => {
+                    // ID Cookies Setting
+                    this.cookieService.set( 'remeberMe', 'Y' );
+                    this.cookieService.set( 'email', this.signInForm.value.email );
 
                     // Set the redirect url.
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
