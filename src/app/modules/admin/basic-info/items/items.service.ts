@@ -4,7 +4,6 @@ import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {Common} from '@teamplat/providers/common/common';
-import {AccountData} from "../account/account.types";
 
 @Injectable({
     providedIn: 'root'

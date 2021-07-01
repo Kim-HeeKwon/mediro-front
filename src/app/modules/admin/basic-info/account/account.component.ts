@@ -59,10 +59,21 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         'email',
     ];
     selectedAccountForm: FormGroup;
+    searchForm: FormGroup;
     selectedAccount: AccountData | null = null;
     flashMessage: 'success' | 'error' | null = null;
     accountType: CommonCode[] = null;
     pAccount: CommonPopup[] = null;
+
+    searchCondition: CommonCode[] = [
+        {
+            id: '100',
+            name: '고객사'
+        },
+        {
+            id: '101',
+            name: '고객사 명'
+        }];
 
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -90,6 +101,15 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
+        // 검색 Form 생성
+        this.searchForm = this._formBuilder.group({
+            accountType: ['all'],
+            descr: [''],
+            account: [''],
+            searchCondition: ['100'],
+            searchText: [''],
+        });
+
         // 고객사 Form 생성
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
@@ -105,6 +125,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             addressDetail: [''],
             addressX: [''],
             addressY: [''],
+            addressZoneNo: [''],
             phoneNumber: [''],
             fax: [''],
             email: [''],
@@ -123,7 +144,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((accounts: any) => {
                 // Update the counts
-                this.accountsCount = accounts.length;
+                if(accounts !== null){
+                    this.accountsCount = accounts.length;
+                }
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -155,17 +178,25 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //         this.closeDetails();
         //     });
 
-        // Get products if sort or page changes
-        merge(this._sort.sortChange, this._paginator.page).pipe(
-            switchMap(() => {
-                // this.closeDetails();
-                this.isLoading = true;
-                return this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-            }),
-            map(() => {
-                this.isLoading = false;
-            })
-        ).subscribe();
+        if(this._sort !== undefined){
+            // Get products if sort or page changes
+            merge(this._sort.sortChange, this._paginator.page).pipe(
+                switchMap(() => {
+                    // console.log('change paginator!!');
+                    // console.log(this._paginator.pageIndex);
+                    // console.log(this._paginator.pageSize);
+                    // console.log(this._sort.active);
+                    // console.log(this._sort);
+                    // this.closeDetails();
+                    this.isLoading = true;
+                    // eslint-disable-next-line max-len
+                    return this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+                }),
+                map(() => {
+                    this.isLoading = false;
+                })
+            ).subscribe();
+        }
     }
 
     /**
@@ -232,7 +263,15 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     selectAccount(): void
     {
-        this._accountService.getAccount();
+        if(this.searchForm.getRawValue().searchCondition === '100') {
+            this.searchForm.patchValue({'account': this.searchForm.getRawValue().searchText});
+            this.searchForm.patchValue({'descr': ''});
+        }else if(this.searchForm.getRawValue().searchCondition === '101'){
+            this.searchForm.patchValue({'account': ''});
+            this.searchForm.patchValue({'descr': this.searchForm.getRawValue().searchText});
+        }
+
+        this._accountService.getAccount(0,10,'account','asc',this.searchForm.getRawValue());
     }
     /**
      * Add a new note

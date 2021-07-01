@@ -79,6 +79,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             addressDetail: [''],
             addressX: [''],
             addressY: [''],
+            addressZoneNo: [''],
             phoneNumber: [''],
             fax: [''],
             email: [''],
@@ -147,7 +148,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        console.log('clisk');
+        //console.log('clisk');
     }
 
     openDaumPopup(): void
@@ -155,11 +156,10 @@ export class NewAccountComponent implements OnInit, OnDestroy
         let geoValue;
         postcode(this._renderer, this.popup.nativeElement, (data: any) => {
             geodata(data.address, (result: any) => {
-                console.log(result);
-
-                (this.selectedAccountForm.controls['address']).setValue(result.address_name);
-                (this.selectedAccountForm.controls['addressX']).setValue(result.address.x);
-                (this.selectedAccountForm.controls['addressY']).setValue(result.address.y);
+                this.selectedAccountForm.patchValue({'address': result.road_address.address_name});
+                this.selectedAccountForm.patchValue({'addressX': result.road_address.x});
+                this.selectedAccountForm.patchValue({'addressY': result.road_address.y});
+                this.selectedAccountForm.patchValue({'addressZoneNo': result.road_address.zone_no});
             });
         });
     }

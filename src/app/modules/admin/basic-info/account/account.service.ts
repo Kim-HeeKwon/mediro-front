@@ -47,14 +47,20 @@ export class AccountService {
      *
      * @returns
      */
-    getAccount(page: number = 0, size: number = 10, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
+    getAccount(page: number = 0, size: number = 10, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagenation: AccountPagenation; account: AccountData[] }> {
 
-        const param = {
-            search: search,
-            order: order,
-            sort: sort,
-        };
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if((Object.keys(search).length === 0) === false){
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
 
         const pageParam = {
             page: page,
@@ -63,7 +69,7 @@ export class AccountService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(param, pageParam, 'v1/api/basicInfo/account/account-list')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/account/account-list')
                 .subscribe((response: any) => {
                     if(response.status === 'SUCCESS'){
                         this._accounts.next(response.data);
@@ -79,14 +85,12 @@ export class AccountService {
      */
     createAccount(accountData: AccountData): Observable<AccountData>
     {
-        console.log(accountData);
         return this.accounts$.pipe(
             take(1),
             switchMap(products => this._common.sendData(accountData, 'v1/api/basicInfo/account').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                         // Update the products with the new product
-                        // this._items.next([newProduct.data, ...products]);
                     }
                     // Return the new product
                     return result;
