@@ -291,7 +291,7 @@ export class AuthService
     }
 
     /**
-     * Sign up
+     * checkBusinessNumber
      *
      * @param 사업자번호
      */
@@ -301,6 +301,29 @@ export class AuthService
             businessNumber : _businessNumber
         };
         return this._api.get('v1/api/business',param).pipe(share());
+    }
+
+    /**
+     * checkBusinessNumber
+     *
+     * @param 사업자번호
+     */
+    sendSms(user: any): Observable<any>
+    {
+        const formData = new FormData();
+
+        formData.append('id', user.email);
+        formData.append('name', user.name);
+        formData.append('phone', user.phone);
+        formData.append('businessNumber', user.businessNumber);
+        formData.append('company', user.company);
+        formData.append('userType', user.userType);
+        formData.append('password', user.password);
+        formData.append('email', user.email);
+        formData.append('index', this.generateRandom(1, 100));
+        formData.append('handle', 'update');
+
+        return this._api.postFile('v1/api/business/send-sms', formData).pipe(share());
     }
 
     /**

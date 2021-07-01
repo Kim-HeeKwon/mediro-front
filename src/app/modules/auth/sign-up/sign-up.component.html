@@ -196,7 +196,7 @@
 
                 <!-- Submit button -->
                 <button
-                    class="fuse-mat-button-large w-full mt-6"
+                    class="fuse-mat-button-large w-6/12 mt-6 mr-5"
                     mat-flat-button
                     [color]="'primary'"
                     [disabled]="signUpForm.disabled"
@@ -208,6 +208,16 @@
                         *ngIf="signUpForm.disabled"
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+                <button
+                    class="fuse-mat-button-large w-5/12 mt-6"
+                    mat-flat-button
+                    [color]="'accent'"
+                    [disabled]="signUpForm.disabled"
+                    (click)="sendSms()">
+                    <span *ngIf="!signUpForm.disabled">
+                        인증번호 재전송
+                    </span>
                 </button>
 
             </form>

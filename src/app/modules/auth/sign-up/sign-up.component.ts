@@ -162,9 +162,60 @@ export class AuthSignUpComponent implements OnInit
                         this.showStep1 = false;
                         this.showStep2 = true;
                         this.signUpForm.enable();
+                        this._router.navigateByUrl('/confirmation-required');
+                    }else{
+                        this.alert = {
+                            type   : 'error',
+                            message: '인증번호가 유효하지 않습니다.'
+                        };
+                        this.showAlert = true;
                     }
-                    // Navigate to the confirmation required page
-                    this._router.navigateByUrl('/confirmation-required');
+                },
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (response) => {
+
+                    // Re-enable the form
+                    this.signUpForm.enable();
+
+                    // Reset the form
+                    this.signUpNgForm.resetForm();
+
+                    // Set the alert
+                    this.alert = {
+                        type   : 'error',
+                        message: 'Something went wrong, please try again.'
+                    };
+
+                    // Show the alert
+                    this.showAlert = true;
+                }
+            );
+    }
+
+    /**
+     * sendSms
+     */
+    sendSms(): void
+    {
+        // Sign up
+        this._authService.sendSms(this.signUpForm.value)
+            .subscribe(
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (response) => {
+                    console.log(response);
+                    if(response.status === 'SUCCESS'){
+                        this.alert = {
+                            type   : 'success',
+                            message: '인증번호를 재전송 하였습니다.'
+                        };
+                        this.showAlert = true;
+                    }else{
+                        this.alert = {
+                            type   : 'error',
+                            message: '관리자에게 문의해주세요.'
+                        };
+                        this.showAlert = true;
+                    }
                 },
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 (response) => {

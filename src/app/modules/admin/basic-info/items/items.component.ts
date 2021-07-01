@@ -169,7 +169,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // console.log(this._sort);
                 // this.closeDetails();
                 this.isLoading = true;
-                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
+                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
             }),
             map(() => {
                 this.isLoading = false;
