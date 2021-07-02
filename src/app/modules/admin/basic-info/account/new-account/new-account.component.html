@@ -41,7 +41,7 @@
             [formGroup]="selectedAccountForm">
             <div class="p-8">
                 <div class="flex w-full">
-                    <mat-form-field class="w-w/6 pr-2">
+                    <mat-form-field class="w-2/6 pr-2">
                         <mat-label>고객사</mat-label>
                         <input
                             matInput
@@ -76,6 +76,7 @@
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>사업자번호</mat-label>
                         <input
+                            type="number"
                             matInput
                             [formControlName]="'custBusinessNumber'">
                     </mat-form-field>
@@ -126,12 +127,14 @@
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>대표 전화</mat-label>
                         <input
+                            type="number"
                             matInput
                             [formControlName]="'phoneNumber'">
                     </mat-form-field>
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>팩스</mat-label>
                         <input
+                            type="number"
                             matInput
                             [formControlName]="'fax'">
                     </mat-form-field>

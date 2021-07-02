@@ -6,8 +6,8 @@ import {
     OnInit, Renderer2, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {Subject, throwError} from 'rxjs';
-import {MatDialogRef} from '@angular/material/dialog';
+import {Observable, Subject, throwError} from 'rxjs';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
@@ -18,6 +18,7 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
+import {PopupComponent} from "../../../util/common/popup/popup.component";
 
 declare let daum: any;
 
@@ -47,6 +48,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     constructor(
         public matDialogRef: MatDialogRef<NewAccountComponent>,
+        public _matDialogPopup: MatDialog,
         private _renderer: Renderer2,
         private _accountService: AccountService,
         private _formBuilder: FormBuilder,
@@ -56,8 +58,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
         private _utilService: FuseUtilsService
     ) {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
-        //this.pAccount = _utilService.commonPopupValue(_popupStore.getValue().data, 'P$_ACCOUNT');
-
     }
 
     /**
@@ -106,7 +106,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         if(!this.selectedAccountForm.invalid){
             this.showAlert = false;
-            console.log(this.selectedAccountForm.getRawValue());
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
 
                 this.alertMessage(newAccount);
@@ -148,7 +147,17 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        //console.log('clisk');
+        const popup =this._matDialogPopup.open(PopupComponent, {
+            data: {
+                popup : 'P$_ACCOUNT'
+            }
+        });
+        popup.afterClosed().subscribe((result) => {
+            if(result){
+                this.selectedAccountForm.patchValue({'account': result.accountCd});
+                this.selectedAccountForm.patchValue({'descr': result.accountNm});
+            }
+        });
     }
 
     openDaumPopup(): void

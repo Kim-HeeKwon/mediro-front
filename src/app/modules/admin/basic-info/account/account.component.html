@@ -149,20 +149,29 @@
                                                     <div class="flex flex-col w-full pl-8">
                                                         <div class="flex">
                                                             <!-- Name -->
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>고객사</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'account'">
                                                             </mat-form-field>
-
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-3/6 pr-2">
                                                                 <mat-label>고객사명</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'descr'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <button
+                                                                class="w-1/6"
+                                                                mat-flat-button
+                                                                [color]="'accent'"
+                                                                (click)="accountSearch()"
+                                                                [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
+                                                                검색
+                                                            </button>
+                                                        </div>
+                                                        <div class="flex">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>고객사 유형</mat-label>
                                                                 <mat-select [formControlName]="'accountType'">
                                                                     <ng-container *ngFor="let accountType of accountType">
@@ -172,15 +181,13 @@
                                                                     </ng-container>
                                                                 </mat-select>
                                                             </mat-form-field>
-                                                        </div>
-                                                        <div class="flex">
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>사업자번호</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'custBusinessNumber'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>사업자명</mat-label>
                                                                 <input
                                                                     matInput
@@ -190,19 +197,19 @@
 
                                                         <div class="flex">
 
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>대표자명</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'representName'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>업태</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'businessCondition'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>종목</mat-label>
                                                                 <input
                                                                     matInput
@@ -210,13 +217,14 @@
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="flex">
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/4 pr-2">
                                                                 <mat-label>주소</mat-label>
                                                                 <input
                                                                     matInput
-                                                                    [formControlName]="'address'">
+                                                                    [formControlName]="'address'"
+                                                                    (click)="openAddressPopup()">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/4 pr-2">
                                                                 <mat-label>상세주소</mat-label>
                                                                 <input
                                                                     matInput
@@ -225,19 +233,19 @@
                                                         </div>
 
                                                         <div class="flex">
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>대표 전화</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'phoneNumber'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>팩스</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'fax'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
+                                                            <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>이메일</mat-label>
                                                                 <input
                                                                     matInput
@@ -259,6 +267,8 @@
                                                 <!--                                                    </div>-->
                                                 <!--                                                </div>-->
                                                 <!--                                                (click)="deleteSelectedProduct()" (click)="updateSelectedProduct()"-->
+
+
                                             </div>
                                             <div class="flex items-center justify-between w-full border-t px-8 py-4">
                                                 <button
@@ -268,6 +278,7 @@
                                                     (click)="deleteAccount()">
                                                     삭제
                                                 </button>
+
                                                 <div class="flex items-center">
                                                     <div
                                                         class="flex items-center mr-4"
@@ -296,9 +307,10 @@
                                         </form>
                                     </div>
                                 </div>
-                            </ng-template>
-                        </ng-container>
 
+                            </ng-template>
+
+                        </ng-container>
                         <!-- account -->
                         <ng-container matColumnDef="account">
                             <th
@@ -533,6 +545,7 @@
                             *matRowDef="let row; columns: ['accountDetails']"></tr>
 
                     </table>
+
                 </div>
                 <mat-paginator
                     class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
@@ -550,5 +563,11 @@
                 </div>
             </ng-template>
         </div>
+
+
+        <div #daum_popup style="display:none;position:fixed;overflow:hidden;z-index:100;-webkit-overflow-scrolling:touch;">
+            <img (click)="closeAddressPopup()" src="//t1.daumcdn.net/postcode/resource/images/close.png" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1;width: 6%;" />
+        </div>
     </div>
+
 </div>

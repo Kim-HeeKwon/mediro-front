@@ -2,9 +2,9 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, ElementRef,
     OnDestroy,
-    OnInit,
+    OnInit, Renderer2,
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
@@ -18,10 +18,12 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '../../../../../@teamplat/animations';
 import {CommonCode, CommonPopup, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {FuseAlertType} from '../../../../../@teamplat/components/alert';
 import {PopupStore} from '../../../../core/common-popup/state/popup.store';
 import {NewAccountComponent} from '../account/new-account/new-account.component';
+import {DeleteComponent} from '../../util/alert/delete/delete.component';
 import {MatDialog} from '@angular/material/dialog';
+import {postcode} from '../../../../../assets/js/postCode';
+import {geodata} from '../../../../../assets/js/geoCode';
 
 @Component({
     selector: 'app-account',
@@ -32,10 +34,9 @@ import {MatDialog} from '@angular/material/dialog';
     animations     : fuseAnimations
 })
 export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
-
+    @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
 
@@ -75,28 +76,23 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             name: '고객사 명'
         }];
 
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
-    };
-    showAlert: boolean = false;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     formFieldHelpers: string[] = [''];
 
+
     constructor(
         private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
+        private _renderer: Renderer2,
         private _accountService: AccountService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
-        private _popupStore: PopupStore,
         private _utilService: FuseUtilsService)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
-        this.pAccount = _utilService.commonPopupValue(_popupStore.getValue().data, 'P$_ACCOUNT');
     }
 
     ngOnInit(): void {
@@ -255,6 +251,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     closeDetails(): void
     {
+        this.closeAddressPopup();
         this.selectedAccount = null;
     }
 
@@ -306,7 +303,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 },(response) => {
                 });
     }
-
     /**
      * 삭제
      */
@@ -317,16 +313,48 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
 
-        this._accountService.deleteAccount(accountData)
-            .subscribe(
-            (param: any) => {
-                if(param.status === 'SUCCESS'){
-                    this._accountService.getAccount();
-                    this.closeDetails();
-                }
 
-            },(response) => {
-            });
+        const deleteConfirm =this._matDialog.open(DeleteComponent, {
+            data: {
+            }
+        });
+
+        deleteConfirm.afterClosed().subscribe((result) => {
+
+            if(result.status){
+                this._accountService.deleteAccount(accountData)
+                    .subscribe(
+                        (param: any) => {
+                            if(param.status === 'SUCCESS'){
+                                this._accountService.getAccount();
+                                this.closeDetails();
+                            }
+
+                        },(response) => {
+                        });
+            }
+        });
     }
 
+    accountSearch(): void{
+
+    }
+
+    openAddressPopup(): void
+    {
+        postcode(this._renderer, this.popup.nativeElement, (data: any) => {
+            geodata(data.address, (result: any) => {
+                this.selectedAccountForm.patchValue({'address': result.road_address.address_name});
+                this.selectedAccountForm.patchValue({'addressX': result.road_address.x});
+                this.selectedAccountForm.patchValue({'addressY': result.road_address.y});
+                this.selectedAccountForm.patchValue({'addressZoneNo': result.road_address.zone_no});
+            });
+        });
+    }
+
+
+    closeAddressPopup(): void
+    {
+        this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
+    }
 }

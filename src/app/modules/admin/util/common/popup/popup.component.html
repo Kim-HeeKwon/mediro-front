@@ -1,0 +1,108 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">공통팝업</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+        <!-- 검색조건 -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+            <form
+                [formGroup]="searchForm">
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                    <mat-select [formControlName]="'type'">
+                        <ng-container *ngFor="let type of type">
+                            <mat-option [value]="type.id">
+                                {{type.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <!--<mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                    <mat-select [formControlName]="'accountType'">
+                        <ng-container *ngFor="let accountType of accountType">
+                            <mat-option [value]="accountType.id">
+                                {{accountType.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                    <mat-select [formControlName]="'searchCondition'">
+                        <ng-container *ngFor="let searchcondition of searchCondition">
+                            <mat-option [value]="searchcondition.id">
+                                {{searchcondition.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>-->
+                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                    <input
+                        matInput
+                        [formControlName]="'searchText'"
+                        [autocomplete]="'off'"
+                        [placeholder]="'검색조건을 선택해주세요.'">
+                </mat-form-field>
+                <!-- Search -->
+                <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+                <!--                    <mat-icon-->
+                <!--                        matPrefix-->
+                <!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+                <!--                    <input-->
+                <!--                        matInput-->
+                <!--                        [formControlName]="'searchText'"-->
+                <!--                        [autocomplete]="'off'"-->
+                <!--                        [placeholder]="'상품검색'">-->
+                <!--                </mat-form-field>-->
+            </form>
+        </div>
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Add product button -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="select()">
+                <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                <span class="ml-2 mr-1">조회</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+
+            <table mat-table [dataSource]="getList$" class="mat-elevation-z8 demo-table">
+                <!-- Column -->
+                <ng-container matColumnDef="accountCd">
+                    <th mat-header-cell *matHeaderCellDef>{{this.accountNm1}}</th>
+                    <td mat-cell *matCellDef="let element">{{element.accountCd}}</td>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="accountNm">
+                    <th mat-header-cell *matHeaderCellDef>{{this.accountNm2}}</th>
+                    <td mat-cell *matCellDef="let element">{{element.accountNm}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    (click)="selectRow(row)"
+                    [class.demo-row-is-clicked]="clickedRows.has(row)"
+                    *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
