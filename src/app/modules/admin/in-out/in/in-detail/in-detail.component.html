@@ -1,0 +1,35 @@
+<div class="flex flex-col flex-auto w-full">
+    <!-- Back button -->
+    <a
+        class="lg:hidden md:-ml-2"
+        mat-icon-button
+        (click)="isBack()">
+        <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+    </a>
+    <!-- Title -->
+<!--    <div class="mt-10 mb-8 mx-6 text-4xl font-extrabold tracking-tight leading-none">디테일디테일</div>-->
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Item list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <ng-container *ngIf="itemsCount > 0; else noProducts">
+                <!-- Table wrapper -->
+                <div
+                    class="overflow-x-auto sm:overflow-y-auto"
+                    cdkScrollable>
+                    <!-- Table -->
+
+                </div>
+
+
+            </ng-container>
+            <ng-template #noProducts>
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                    <p>데이터가 없습니다.(디테일)</p>
+                    <p>신규등록 버튼을 클릭하여 거래처를 등록해 주세요.</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

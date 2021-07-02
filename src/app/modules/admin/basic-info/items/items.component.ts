@@ -186,7 +186,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
-
     /**
      * Track by function for ngFor loops
      *

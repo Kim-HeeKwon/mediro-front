@@ -1194,7 +1194,7 @@
 .mat-paginator {
 
     .mat-paginator-container {
-        padding: 8px 16px;
+        padding: 8px 8px; // super-steve modified 8px 16px;
         justify-content: space-between;
 
         @screen sm {
