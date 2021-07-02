@@ -1,6 +1,13 @@
-<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+<div style="top: 10% !important;right: 10% !important;bottom: 10% !important;left: 10% !important;border-radius: 20px;"
+    class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
         <div class="text-lg font-medium">공통팝업</div>
         <button
             mat-icon-button
@@ -80,27 +87,76 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <ng-container *ngIf="popupCount > 0; else noPopup">
 
-            <table mat-table [dataSource]="getList$" class="mat-elevation-z8 demo-table">
-                <!-- Column -->
-                <ng-container matColumnDef="accountCd">
-                    <th mat-header-cell *matHeaderCellDef>{{this.accountNm1}}</th>
-                    <td mat-cell *matCellDef="let element">{{element.accountCd}}</td>
-                </ng-container>
+                <!-- Table wrapper -->
+                <div
+                    class="overflow-x-auto sm:overflow-y-auto"
+                    cdkScrollable>
+                    <!-- Table -->
+                    <table
+                            class="w-full min-w-320 table-fixed bg-transparent"
+                            [ngClass]="{'pointer-events-none': isLoading}"
+                            mat-table
+                            matSort
+                            [matSortActive]="'data'"
+                            [matSortDisableClear]="true"
+                            [matSortDirection]="'asc'"
+                            [multiTemplateDataRows]="true"
+                            [dataSource]="getList$"
+                            [trackBy]="trackByFn">
+                            <!-- Column -->
+                            <ng-container matColumnDef="accountCd">
+                                <th style="width: 200px;"
+                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header
+                                    disableClear>
+                                    {{this.accountNm1}}
+                                </th>
+                                <td mat-cell *matCellDef="let element">{{element.accountCd}}</td>
+                            </ng-container>
 
-                <!-- Column -->
-                <ng-container matColumnDef="accountNm">
-                    <th mat-header-cell *matHeaderCellDef>{{this.accountNm2}}</th>
-                    <td mat-cell *matCellDef="let element">{{element.accountNm}}</td>
-                </ng-container>
+                            <!-- Column -->
+                            <ng-container matColumnDef="accountNm">
+                                <th tyle="width: 200px;"
+                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header
+                                    disableClear>
+                                    {{this.accountNm2}}
+                                </th>
+                                <td mat-cell *matCellDef="let element">{{element.accountNm}}</td>
+                            </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr
-                    mat-row
-                    (click)="selectRow(row)"
-                    [class.demo-row-is-clicked]="clickedRows.has(row)"
-                    *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                            <tr
+                                class="shadow"
+                                mat-header-row
+                                *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr
+                                mat-row
+                                (click)="selectRow(row)"
+                                [class.demo-row-is-clicked]="clickedRows.has(row)"
+                                *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <mat-paginator
+                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                    [ngClass]="{'pointer-events-none': isLoading}"
+                    [length]="pagenation.length"
+                    [pageIndex]="pagenation.page"
+                    [pageSize]="pagenation.size"
+                    [pageSizeOptions]="[8, 10, 25, 100]"
+                    [showFirstLastButtons]="true"></mat-paginator>
+            </ng-container>
+            <ng-template #noPopup>
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                    <p>데이터가 없습니다.</p>
+                </div>
+            </ng-template>
+
         </div>
 
     </div>
