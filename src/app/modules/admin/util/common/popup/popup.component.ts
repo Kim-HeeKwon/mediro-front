@@ -52,9 +52,6 @@ export class PopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     commonValues: Column[] = [];
 
-    accountNm1 = '고객사';
-    accountNm2 = '고객사 명';
-
     type: CommonCode[] = [];
 
     private _dataSet: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -69,8 +66,6 @@ export class PopupComponent implements OnInit, OnDestroy, AfterViewInit {
         private _popupStore: PopupStore) {
         this.popupInfo = _utilService.commonPopupValue(_popupStore.getValue().data, data.popup);
         this.asPopupCd = data.popup;
-
-
     }
 
     ngOnInit(): void {
@@ -176,7 +171,9 @@ export class PopupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
         this.searchForm.patchValue({'acWhereVal': 'K:LIKE_BOTH:'});
         this._popupService.getDynamicSql(0,10,'accountCd','asc',this.searchForm.getRawValue());
+    }
 
-
+    getProperty(element, id: string): string{
+        return element[id];
     }
 }

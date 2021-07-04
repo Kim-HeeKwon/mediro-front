@@ -106,6 +106,21 @@
                             [dataSource]="getList$"
                             [trackBy]="trackByFn">
                             <!-- Column -->
+
+                            <ng-container *ngFor="let popupObject of commonValues">
+                                <ng-container matColumnDef="{{popupObject.id}}">
+                                    <th
+                                        class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                        mat-header-cell
+                                        *matHeaderCellDef
+                                        mat-sort-header
+                                        disableClear>
+                                        {{popupObject.name}}
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">{{getProperty(element, popupObject.id)}}</td>
+                                </ng-container>
+                            </ng-container>
+                            <!--&lt;!&ndash; Column &ndash;&gt;
                             <ng-container matColumnDef="accountCd">
                                 <th style="width: 200px;"
                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -117,8 +132,7 @@
                                 </th>
                                 <td mat-cell *matCellDef="let element">{{element.accountCd}}</td>
                             </ng-container>
-
-                            <!-- Column -->
+                            &lt;!&ndash; Column &ndash;&gt;
                             <ng-container matColumnDef="accountNm">
                                 <th tyle="width: 200px;"
                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -129,7 +143,7 @@
                                     {{this.accountNm2}}
                                 </th>
                                 <td mat-cell *matCellDef="let element">{{element.accountNm}}</td>
-                            </ng-container>
+                            </ng-container>-->
 
                             <tr
                                 class="shadow"
