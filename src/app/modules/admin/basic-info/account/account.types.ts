@@ -1,8 +1,8 @@
 export interface AccountData
 {
     mId: string;                //회원사
-    account: string;            //고객사
-    descr: string;              //고객사 명
+    account: string;            //거래처 코드
+    descr: string;              //거래처 명
     accountType: string;        //유형
     custBusinessNumber: string; //사업자 번호
     custBusinessName: string;   //사업자명

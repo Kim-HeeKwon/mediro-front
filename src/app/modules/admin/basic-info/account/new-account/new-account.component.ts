@@ -18,7 +18,7 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
-import {PopupComponent} from "../../../util/common/popup/popup.component";
+import {PopupComponent} from '../../../util/common/popup/popup.component';
 
 declare let daum: any;
 
@@ -35,6 +35,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
     pAccount: CommonPopup[] = null;
+    filterList: string[];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -57,7 +58,8 @@ export class NewAccountComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService
     ) {
-        this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.filterList = ['ALL'];
+        this.accountType = _utilService.commonValueFilter(_codeStore.getValue().data,'ACCOUNT_TYPE', this.filterList);
     }
 
     /**

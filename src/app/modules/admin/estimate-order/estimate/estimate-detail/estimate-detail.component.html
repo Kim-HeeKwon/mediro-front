@@ -1,0 +1,203 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+    <!-- Header -->
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="flex-row text-2xl font-extrabold tracking-tight">
+            견적서 작성
+        </div>
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button
+                class="mr-2"
+                mat-icon-button
+                (click)="backPage()">
+                <mat-icon [svgIcon]="'feather:arrow-left-circle'"></mat-icon>
+            </button>
+            <button
+                class="mr-2"
+                mat-flat-button
+                [color]="'accent'"
+                (click)="createEstimate()">
+                <span class="ml-2 mr-1">저장</span>
+            </button>
+        </div>
+    </div>
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+            <mat-tab-group class="flex flex-col flex-auto overflow-hidden"
+                           [color]="'accent'"
+                           [backgroundColor]="'accent'">
+                <mat-tab label="신규 등록">
+                    <div class="flex">
+                        <!-- Selected product form -->
+                        <form
+                            class="flex flex-col w-full"
+                            [formGroup]="estimateHeaderForm">
+                            <div class="flex p-2">
+                                <div class="flex flex-auto">
+                                    <div class="flex flex-col w-full pr-0">
+                                        <div class="flex">
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>견적 번호</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'qtNo'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/6 pr-2">
+                                                <mat-label>거래처 코드</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'account'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>거래처 명</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'accountNm'">
+                                            </mat-form-field>
+                                            <button
+                                                class="w-1/6"
+                                                mat-flat-button
+                                                [color]="'accent'"
+                                                [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
+                                                검색
+                                            </button>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="w-1/6 pr-2">
+                                                <mat-label>유형</mat-label>
+                                                <mat-select [formControlName]="'type'">
+                                                    <ng-container *ngFor="let type of type">
+                                                        <mat-option [value]="type.id">
+                                                            {{type.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/6 pr-2">
+                                                <mat-label>상태</mat-label>
+                                                <mat-select [formControlName]="'status'">
+                                                    <ng-container *ngFor="let status of status">
+                                                        <mat-option [value]="status.id">
+                                                            {{status.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>견적 금액</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'qtAmt'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>주문 번호</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'soNo'">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="w-1/6 pr-2">
+                                                <mat-label>견적 생성일자</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'qtCreDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/6 pr-2">
+                                                <mat-label>견적일자</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'qtDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-4/6 pr-2">
+                                                <mat-label>비고</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'remarkHeader'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--<div class="flex items-center justify-between w-full border-t px-8 py-4">
+                                <button
+                                    class="-ml-4"
+                                    mat-button
+                                    [color]="'warn'">
+                                    삭제
+                                </button>
+
+                                <div class="flex items-center">
+                                    <div
+                                        class="flex items-center mr-4"
+                                        *ngIf="flashMessage">
+                                        <ng-container *ngIf="flashMessage === 'success'">
+                                            <mat-icon
+                                                class="text-green-500"
+                                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                            <span class="ml-2">Product updated</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="flashMessage === 'error'">
+                                            <mat-icon
+                                                class="text-red-500"
+                                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                            <span class="ml-2">An error occurred, try again!</span>
+                                        </ng-container>
+                                    </div>
+                                    <button
+                                        mat-flat-button
+                                        [color]="'primary'">
+                                        수정
+                                    </button>
+                                </div>
+                            </div>-->
+                        </form>
+                    </div>
+                    <div style="border:solid;height:10%"
+                         (paste)="pasteData($event)">
+                    </div>
+                    <!-- Table wrapper -->
+                    <div
+                        class="overflow-x-auto sm:overflow-y-auto"
+                        cdkScrollable>
+
+                        <!--<div>{{val}}</div>-->
+                        <table mat-table [dataSource]="dataSource" class="w-full min-w-320 table-fixed bg-transparent">
+                            <ng-container *ngFor="let column of displayedColumns"
+                                          [matColumnDef]="column">
+                                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                    mat-header-cell
+                                    *matHeaderCellDef> {{column}} </th>
+                                <td class="pr-8 truncate"
+                                    mat-cell
+                                    *matCellDef="let element"> {{element[column]}} </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div>
+                    <!--<ng-container *ngIf="1 > 0; else noProducts">
+
+                    </ng-container>
+                    <ng-template #noProducts>
+                        <div class="p-8 sm:p-0 border text-2xl font-semibold tracking-tight text-center">
+                            <p>데이터가 없습니다.</p>
+                            <p>등록해 주세요.</p>
+                        </div>
+                    </ng-template>-->
+                </mat-tab>
+                <mat-tab label="최근 견적서">
+                </mat-tab>
+                <mat-tab label="자주 쓰는 거래처">
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

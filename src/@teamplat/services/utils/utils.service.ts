@@ -83,6 +83,36 @@ export class FuseUtilsService {
     }
 
     /**
+     * Generates a random id (밸리데이션
+     *
+     * @param commonCode
+     */
+    commonValueFilter(commonCode: any[], value: string, filterList: string[]): any  // CommonCode[]
+    {
+        const commonValues: CommonCode[] = [];
+
+        const childValues = commonCode.filter((item: any) => item.mainCd === value).map((param: any) => {
+            return param.child;
+        });
+        childValues[0].forEach((param1: any) => {
+            const commonValue: CommonCode = {
+                id: param1.subCd,
+                name: param1.descr
+            };
+            commonValues.push(commonValue);
+        });
+
+        // @ts-ignore
+        let finalValue;
+        filterList.forEach((filter: string) => {
+            finalValue = commonValues.filter((item: any) => item.id !== filter).map((param: any) => {
+                return param;
+            });
+        });
+        return finalValue;
+    }
+
+    /**
      * Generates a random id
      *
      * @param commonPopup

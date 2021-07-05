@@ -69,11 +69,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     searchCondition: CommonCode[] = [
         {
             id: '100',
-            name: '고객사'
+            name: '거래처 코드'
         },
         {
             id: '101',
-            name: '고객사 명'
+            name: '거래처 명'
         }];
 
 
@@ -99,7 +99,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            accountType: ['all'],
+            accountType: ['ALL'],
             descr: [''],
             account: [''],
             searchCondition: ['100'],
@@ -109,8 +109,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         // 고객사 Form 생성
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            account: ['', [Validators.required]], // 고객사
-            descr: ['', [Validators.required]],   // 고객사 명
+            account: ['', [Validators.required]], // 거래처 코드
+            descr: ['', [Validators.required]],   // 거래처 명
             accountType: ['', [Validators.required]],   // 유형
             custBusinessNumber : [''],
             custBusinessName: [''],
