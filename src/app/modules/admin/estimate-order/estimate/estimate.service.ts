@@ -2,7 +2,15 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {Common} from '../../../../../@teamplat/providers/common/common';
-import {EstimateDetail, EstimateDetailPagenation, EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
+import {
+    Estimate,
+    EstimateDetail,
+    EstimateDetailPagenation,
+    EstimateHeader,
+    EstimateHeaderPagenation
+} from './estimate.types';
+import {AccountData} from "../../basic-info/account/account.types";
+import {map, switchMap, take} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +22,7 @@ export class EstimateService {
     private _estimateDetail: BehaviorSubject<EstimateDetail> = new BehaviorSubject(null);
     private _estimateDetails: BehaviorSubject<EstimateDetail[]> = new BehaviorSubject(null);
     private _estimateDetailPagenation: BehaviorSubject<EstimateDetailPagenation | null> = new BehaviorSubject(null);
+    private _estimates: BehaviorSubject<Estimate[]> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -56,6 +65,14 @@ export class EstimateService {
     get estimateDetailPagenation$(): Observable<EstimateDetailPagenation>
     {
         return this._estimateDetailPagenation.asObservable();
+    }
+
+    /**
+     * Getter
+     */
+    get estimates$(): Observable<Estimate[]>
+    {
+        return this._estimates.asObservable();
     }
 
     /**
@@ -132,5 +149,30 @@ export class EstimateService {
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * Create
+     */
+    createEstimate(estimate: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendData(estimate, 'v1/api/estimateOrder/estimate').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    updateEstimate(estimate: Estimate[]): Observable<{estimate: Estimate[] }> {
+
+        return this._common.listPut('v1/api/estimateOrder/estimate', estimate).pipe(
+            switchMap((response: any) => of(response))
+        );
     }
 }

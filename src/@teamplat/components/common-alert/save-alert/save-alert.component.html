@@ -1,0 +1,28 @@
+<!--<h1 mat-dialog-title>!!!!</h1>-->
+<div mat-dialog-content>
+
+</div>
+<div class="m-4">
+    <p style="text-align: center;">저장하시겠습니까?</p>
+    <ng-container>
+        <div class="flex items-center justify-between mt-4">
+            <!-- confirm -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="onSave()">
+                저장
+            </button>
+            <!-- Close -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'"
+                (click)="onClose()">
+                취소
+            </button>
+
+        </div>
+    </ng-container>
+</div>

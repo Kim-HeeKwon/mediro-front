@@ -24,6 +24,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {EstimateService} from '../estimate.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
+import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 
 @Component({
     selector       : 'estimate-detail',
@@ -47,6 +49,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     filterList: string[];
+    showButton: boolean = true;
 
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
@@ -65,6 +68,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
+        private _matDialog: MatDialog,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
@@ -85,15 +89,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // 고객사 Form 생성
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            qtNo: [''],   // 견적번호
+            qtNo: [{value:'',disabled:true}],   // 견적번호
             account: ['', [Validators.required]], // 거래처 코드
-            accountNm: [''],   // 거래처 명
-            type: ['', [Validators.required]],   // 유형
-            status: ['', [Validators.required]],   // 상태
-            qtAmt: [''],   // 견적금액
-            soNo: [''],   // 주문번호
-            qtCreDate: [''],//견적 생성일자
-            qtDate: [''], //견적일자
+            accountNm: [{value:'',disabled:true}],   // 거래처 명
+            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
+            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
+            qtAmt: [{value:'',disabled:true}],   // 견적금액
+            soNo: [{value:'',disabled:true}],   // 주문번호
+            qtCreDate: [{value:'',disabled:true}],//견적 생성일자
+            qtDate: [{value:'',disabled:true}], //견적일자
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -132,7 +136,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         //this.estimateHeaderForm.controls['qtNo'].disable();
 
     }
-
     /**
      * After view init
      */
@@ -172,11 +175,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const arr = this.estimateDetails$.subscribe({
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             next(estimateDetail) {
-                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                for (let i=0; i<estimateDetail.length; i++) {
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    sendData.push(<Estimate>estimateDetail[i]);
-
+                if(estimateDetail !== null){
+                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                    for (let i=0; i<estimateDetail.length; i++) {
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        sendData.push(<Estimate>estimateDetail[i]);
+                    }
                 }
             },
         });
@@ -190,14 +194,44 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
         if(route === 'C'){
 
-        }else if(route === 'U'){
+            if(!this.estimateHeaderForm.invalid){
+                this._estimateService.createEstimate(sendData).subscribe((estimate: any) => {
+                    this._router.navigate(['estimate-order/estimate']);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            }
 
+        }else if(route === 'U'){
+            if(!this.estimateHeaderForm.invalid){
+                this._estimateService.updateEstimate(sendData).subscribe((estimate: any) => {
+                    this._router.navigate(['estimate-order/estimate']);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            }
         }
     }
 
     createEstimate(): void{
 
         this.commonTransactionData('C');
+    }
+
+    updateEstimate(): void{
+
+        const updateConfirm =this._matDialog.open(SaveAlertComponent, {
+            data: {
+            }
+        });
+
+        updateConfirm.afterClosed().subscribe((result) => {
+
+            if(result.status){
+                this.commonTransactionData('U');
+            }
+        });
+
     }
 
     nullChk(value: any): any{

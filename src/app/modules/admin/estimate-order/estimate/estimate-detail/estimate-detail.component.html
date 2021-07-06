@@ -21,7 +21,16 @@
                 class="mr-2"
                 mat-flat-button
                 [color]="'accent'"
+                [hidden]="showButton"
                 (click)="createEstimate()">
+                <span class="ml-2 mr-1">등록</span>
+            </button>
+            <button
+                class="mr-2"
+                mat-flat-button
+                [color]="'accent'"
+                [hidden]="showButton"
+                (click)="updateEstimate()">
                 <span class="ml-2 mr-1">저장</span>
             </button>
         </div>
@@ -32,7 +41,7 @@
             <mat-tab-group class="flex flex-col flex-auto overflow-hidden"
                            [color]="'accent'"
                            [backgroundColor]="'accent'">
-                <mat-tab label="신규 등록">
+                <mat-tab label="상세 정보">
                     <div class="flex">
                         <!-- Selected product form -->
                         <form
@@ -186,7 +195,7 @@
 
                             <ng-container matColumnDef="itemCd">
                                 <th mat-header-cell *matHeaderCellDef>품목코드</th>
-                                <td mat-cell *matCellDef="let row">
+                                <td mat-cell *matCellDef="let row; let rowIdx = index;">
                                     <!--<input type="text" formControlName="itemCd">-->
                                     {{row.itemCd}}
                                 </td>
@@ -245,6 +254,7 @@
                             <tr mat-row *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
 
                         </table>
+
                     </div>
                     <mat-paginator
                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"

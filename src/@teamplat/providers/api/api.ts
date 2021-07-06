@@ -161,6 +161,30 @@ export class Api {
         //return this.http.put(this.url + '/' + endpoint, body, reqOpts);
     }
 
+    apiListPut(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'mId': localStorage.getItem('mId')
+        }];
+
+        return this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }
+            });
+        //return this.http.put(this.url + '/' + endpoint, body, reqOpts);
+    }
+
     apiDelete(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         const arrayOfArraysData = [{

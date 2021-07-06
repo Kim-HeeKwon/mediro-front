@@ -15,11 +15,11 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
 import {SharedModule} from "../../../../app/shared/shared.module";
-import {DeleteAlertComponent} from "./delete-alert.component";
+import {SaveAlertComponent} from "./save-alert.component";
 
 @NgModule({
     declarations: [
-        DeleteAlertComponent
+        SaveAlertComponent
     ],
     imports     : [
         CommonModule,
@@ -40,9 +40,9 @@ import {DeleteAlertComponent} from "./delete-alert.component";
         SharedModule,
     ],
     exports     : [
-        DeleteAlertComponent
+        SaveAlertComponent
     ]
 })
-export class DeleteAlertModule
+export class SaveAlertModule
 {
 }
