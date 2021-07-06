@@ -16,14 +16,13 @@ import {AccountService} from './account.service';
 import {AccountData, AccountPagenation} from './account.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '../../../../../@teamplat/animations';
-import {CommonCode, CommonPopup, FuseUtilsService} from '@teamplat/services/utils';
+import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {PopupStore} from '../../../../core/common-popup/state/popup.store';
 import {NewAccountComponent} from '../account/new-account/new-account.component';
-import {DeleteComponent} from '../../util/alert/delete/delete.component';
 import {MatDialog} from '@angular/material/dialog';
 import {postcode} from '../../../../../assets/js/postCode';
 import {geodata} from '../../../../../assets/js/geoCode';
+import {DeleteAlertComponent} from '../../../../../@teamplat/components/common-alert/delete-alert';
 
 @Component({
     selector: 'app-account',
@@ -64,7 +63,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedAccount: AccountData | null = null;
     flashMessage: 'success' | 'error' | null = null;
     accountType: CommonCode[] = null;
-    pAccount: CommonPopup[] = null;
 
     searchCondition: CommonCode[] = [
         {
@@ -314,7 +312,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         accountData.accountType = this.selectedAccount.accountType;
 
 
-        const deleteConfirm =this._matDialog.open(DeleteComponent, {
+        const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
             data: {
             }
         });

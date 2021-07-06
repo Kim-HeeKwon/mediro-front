@@ -1,10 +1,20 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation
+} from '@angular/core';
 import {fuseAnimations} from '../../../../../../@teamplat/animations';
-import {EstimateDetail, EstimateHeader} from '../estimate.types';
+import {EstimateDetail, EstimateDetailPagenation, EstimateHeader, EstimateHeaderPagenation} from '../estimate.types';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CommonCode, CommonPopup, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
+import {EstimateService} from "../estimate.service";
 
 @Component({
     selector       : 'estimate-detail',
@@ -25,14 +35,28 @@ export class EstimateDetailComponent implements OnInit
     status: CommonCode[] = null;
     filterList: string[];
 
-    displayedColumns: string[] ;
-    dataSource: any[] = [];
-    val: any;
+    estimateDetailsTableColumns: string[] = [
+        'qtLineNo',
+        'itemCd',
+        'itemNm',
+        'standard',
+        'unit',
+        'qty',
+        'qtPrice',
+        'qtAmt',
+        'remarkDetail',
+    ];
+    estimateDetailPagenation: EstimateDetailPagenation | null = null;
+    estimateDetails$ = new Observable<EstimateDetail[]>();
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         private _codeStore: CodeStore,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _estimateService: EstimateService,
         private _utilService: FuseUtilsService)
     {
         this.filterList = ['ALL'];
@@ -64,33 +88,22 @@ export class EstimateDetailComponent implements OnInit
         }else{
 
         }
+
+        // Get the pagenation
+        this._estimateService.estimateHeaderPagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateDetailPagenation: EstimateDetailPagenation) => {
+                // Update the pagination
+                this.estimateDetailPagenation = estimateDetailPagenation;
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
     }
 
     backPage(): void{
         this._router.navigate(['estimate-order/estimate']);
     }
     createEstimate(): void{
-
-    }
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    pasteData(event: ClipboardEvent) {
-        const clipboardData = event.clipboardData;
-        const pastedText = clipboardData.getData('text');
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const row_data = pastedText.split('\n');
-        this.displayedColumns = row_data[0].split('\t');
-        delete row_data[0];
-        // Create table dataSource
-        const data=[];
-
-        // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-shadow
-        row_data.forEach((row_data)=>{
-            const row={};
-            this.displayedColumns.forEach((a, index)=>{row[a]= row_data.split('\t')[index];});
-            data.push(row);
-        });
-        this.dataSource = data;
-
-        console.log(this.dataSource);
     }
 }

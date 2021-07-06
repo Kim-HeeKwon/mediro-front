@@ -12,13 +12,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
 import {AccountService} from '../account.service';
-import {CommonCode, CommonPopup, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
-import {PopupComponent} from "../../../util/common/popup/popup.component";
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 
 declare let daum: any;
 
@@ -34,7 +34,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
-    pAccount: CommonPopup[] = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -147,7 +146,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        const popup =this._matDialogPopup.open(PopupComponent, {
+        const popup =this._matDialogPopup.open(CommonPopupComponent, {
             data: {
                 popup : 'P$_ACCOUNT'
             }

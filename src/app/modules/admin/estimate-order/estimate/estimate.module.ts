@@ -25,6 +25,7 @@ import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {EstimateDetailComponent} from './estimate-detail/estimate-detail.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const estimateRoutes: Route[] = [
     {
@@ -69,6 +70,7 @@ const estimateRoutes: Route[] = [
         FuseAlertModule,
         MatCardModule,
         MatTabsModule,
+        MatDialogModule,
     ]
 })
 export class EstimateModule { }

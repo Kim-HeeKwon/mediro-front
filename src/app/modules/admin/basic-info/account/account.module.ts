@@ -24,8 +24,6 @@ import {FuseFindByKeyPipeModule} from '../../../../../@teamplat/pipes/find-by-ke
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatDialogModule} from '@angular/material/dialog';
-import {DeleteComponent} from '../../util/alert/delete/delete.component';
-import {PopupComponent} from '../../util/common/popup/popup.component';
 
 
 const accountRoutes: Route[] = [
@@ -41,9 +39,7 @@ const accountRoutes: Route[] = [
 @NgModule({
   declarations: [
     AccountComponent,
-    NewAccountComponent,
-    DeleteComponent,
-    PopupComponent
+    NewAccountComponent
   ],
     imports: [
         CommonModule,
@@ -67,7 +63,7 @@ const accountRoutes: Route[] = [
         MatDialogModule,
         SharedModule,
         FuseFindByKeyPipeModule,
-        FuseAlertModule,
+        FuseAlertModule
     ]
 })
 export class AccountModule { }
