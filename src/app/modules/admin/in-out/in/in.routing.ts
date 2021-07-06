@@ -3,7 +3,7 @@ import {isEqual} from 'lodash-es';
 import {InComponent} from './in.component';
 import {InHeaderComponent} from './in-header/in-header.component';
 import {InDetailComponent} from './in-detail/in-detail.component';
-import {InDetailResolver, InResolver} from "./in.resolvers";
+import {InDetailResolver, InResolver} from './in.resolvers';
 
 /**
  * Mailbox custom route matcher

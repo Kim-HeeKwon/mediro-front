@@ -45,23 +45,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedItem: InventoryItem | null = null;
     flashMessage: 'success' | 'error' | null = null;
 
-    itemGrades: CommonCode[] = [
-        {
-            id: 'all',
-            name: '전체 등급'
-        },
-        {
-          id: '1',
-          name: '1 등급'
-        },
-        {
-            id: '2',
-            name: '2 등급'
-        },
-        {
-            id: '3',
-            name: '3 등급'
-        }];
+    itemGrades: CommonCode[] = [];
 
     searchCondition: CommonCode[] = [
         {
@@ -72,8 +56,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             id: '101',
             name: '품목명'
         }];
-
-    test: CommonCode[] = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -90,14 +72,13 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
-        this.test = _utilService.commonValue(_codeStore.getValue().data,'x');
-
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
     }
 
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            itemGrade: ['all'],
+            itemGrade: ['ALL'],
             itemNm: [''],
             itemCd: [''],
             searchCondition: ['100'],

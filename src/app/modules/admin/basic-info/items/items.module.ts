@@ -39,7 +39,7 @@ const itemsRoutes: Route[] = [
 @NgModule({
   declarations: [
     ItemsComponent,
-    NewItemComponent
+    NewItemComponent,
   ],
     imports: [
         CommonModule,

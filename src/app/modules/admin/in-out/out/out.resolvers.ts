@@ -7,7 +7,7 @@ import {OutService} from './out.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AccountResolver implements Resolve<any> {
+export class OutResolver implements Resolve<any> {
     coinChartWidget: any[];
 
     /**

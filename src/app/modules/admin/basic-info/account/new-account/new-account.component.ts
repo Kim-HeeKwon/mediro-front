@@ -19,6 +19,7 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
 import {PopupComponent} from "../../../util/common/popup/popup.component";
+import {CommonPopupComponent} from '@teamplat/components/common-popup';
 
 declare let daum: any;
 
@@ -147,7 +148,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        const popup =this._matDialogPopup.open(PopupComponent, {
+        const popup =this._matDialogPopup.open(CommonPopupComponent, {
             data: {
                 popup : 'P$_ACCOUNT'
             }

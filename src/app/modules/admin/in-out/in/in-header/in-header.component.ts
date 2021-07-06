@@ -4,7 +4,7 @@ import {InService} from '../in.service';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SelectionModel} from '@angular/cdk/collections';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -45,7 +45,8 @@ export class InHeaderComponent implements OnInit, OnDestroy
      */
     constructor(
         private _inService: InService,
-        private _router: ActivatedRoute,
+        private _route: ActivatedRoute,
+        private _router: Router
     )
     {
     }
@@ -69,6 +70,9 @@ export class InHeaderComponent implements OnInit, OnDestroy
             });
     }
 
+    /**
+     * On Destroy
+     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -80,14 +84,14 @@ export class InHeaderComponent implements OnInit, OnDestroy
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
+    isAllSelected(): any {
         const numSelected = this.selection.selected.length;
         const numRows = this.testData.length;
         return numSelected === numRows;
     }
 
     /** Selects all rows if they are not all selected; otherwise clear selection. */
-    masterToggle() {
+    masterToggle(): SelectionModel<any> {
         if (this.isAllSelected()) {
             this.selection.clear();
             return;
@@ -107,7 +111,7 @@ export class InHeaderComponent implements OnInit, OnDestroy
     rowClick(row?: any): void {
         this.selection.toggle(row);
         this._inService.setShowMobile(true);
-
+        this._router.navigate(['in-out/in/inbox/1', row.price]);
         //this._router.snapshot.nav(['/product-list'], {  queryParams: {  page: pageNum } });
     }
 }
