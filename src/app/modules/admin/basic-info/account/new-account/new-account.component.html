@@ -42,13 +42,13 @@
             <div class="p-8">
                 <div class="flex w-full">
                     <mat-form-field class="w-2/6 pr-2">
-                        <mat-label>고객사</mat-label>
+                        <mat-label>거래처 코드</mat-label>
                         <input
                             matInput
                             [formControlName]="'account'">
                     </mat-form-field>
                     <mat-form-field class="w-3/6 pr-2">
-                        <mat-label>고객사명</mat-label>
+                        <mat-label>거래처 명</mat-label>
                         <input
                             matInput
                             [formControlName]="'descr'">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="flex w-full">
                     <mat-form-field class="w-2/6 pr-2">
-                        <mat-label>고객사 유형</mat-label>
+                        <mat-label>유형</mat-label>
                         <mat-select [formControlName]="'accountType'">
                             <ng-container *ngFor="let accountType of accountType">
                                 <mat-option [value]="accountType.id">
