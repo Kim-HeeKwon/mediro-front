@@ -9,6 +9,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatPaginator} from '@angular/material/paginator';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {ActivatedRoute, NavigationExtras, Router, RouterModule} from '@angular/router';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
     selector: 'app-estimate',
@@ -24,6 +25,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     searchInputControl: FormControl = new FormControl();
     estimateHeadersCount: number = 0;
     estimateHeadersTableColumns: string[] = [
+        'select',
         'qtCreDate',
         'qtDate',
         'qtNo',
@@ -49,6 +51,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             name: '거래처 명'
         }];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    selection = new SelectionModel<any>(true, []);
 
     constructor(
         private _activatedRoute: ActivatedRoute,
@@ -70,6 +74,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm = this._formBuilder.group({
             status: ['ALL'],
             type: ['ALL'],
+            account: [''],
+            accountNm: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
@@ -151,16 +157,37 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectClickRow(row: any): void{
-        const navigationExtras: NavigationExtras = {
-            queryParams: {
-                data: row
-            }
-        };
         this._router.navigate(['estimate-order/estimate/estimate-detail' , row]);
     }
 
     createDetail(): void{
         this._router.navigate(['estimate-order/estimate/estimate-detail' , {}]);
     }
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    masterToggle(): SelectionModel<any> {
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            return;
+        }
+
+        this.selection.select(this.estimateHeaders$);
+    }
+
+    /** Whether the number of selected elements matches the total number of rows. */
+    isAllSelected(): any {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.estimateHeadersCount;
+        return numSelected === numRows;
+    }
+
+    /** The label for the checkbox on the passed row */
+    checkboxLabel(row?: any): string {
+        if (!row) {
+            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    }
+
+
 
 }

@@ -25,7 +25,8 @@ import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {EstimateDetailComponent} from './estimate-detail/estimate-detail.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatDialogModule} from '@angular/material/dialog';
+import {EstimateDetailResolvers} from './estimate-detail/estimate-detail.resolvers';
 
 const estimateRoutes: Route[] = [
     {
@@ -37,7 +38,10 @@ const estimateRoutes: Route[] = [
     },
     {
         path     : 'estimate-detail',
-        component: EstimateDetailComponent
+        component: EstimateDetailComponent,
+        resolve  : {
+            data: EstimateDetailResolvers
+        }
     }
 ];
 

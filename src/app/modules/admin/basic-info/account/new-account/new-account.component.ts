@@ -44,6 +44,8 @@ export class NewAccountComponent implements OnInit, OnDestroy
     };
     // eslint-disable-next-line @typescript-eslint/member-ordering
     showAlert: boolean = false;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    filterList: string[];
 
     constructor(
         public matDialogRef: MatDialogRef<NewAccountComponent>,
@@ -56,7 +58,8 @@ export class NewAccountComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService
     ) {
-        this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.filterList = ['ALL'];
+        this.accountType = _utilService.commonValueFilter(_codeStore.getValue().data,'ACCOUNT_TYPE',this.filterList);
     }
 
     /**
