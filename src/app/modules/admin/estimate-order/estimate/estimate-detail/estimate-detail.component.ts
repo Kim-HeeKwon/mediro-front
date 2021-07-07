@@ -13,7 +13,8 @@ import {
     EstimateDetail,
     EstimateDetailPagenation,
     EstimateHeader,
-    EstimateHeaderPagenation
+    EstimateHeaderPagenation,
+    TableColumn
 } from '../estimate.types';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -26,6 +27,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
+import {DeleteAlertComponent} from '../../../../../../@teamplat/components/common-alert/delete-alert';
 
 @Component({
     selector       : 'estimate-detail',
@@ -39,10 +43,13 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 {
     @ViewChild(MatPaginator) private _estimateDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _estimateDetailSort: MatSort;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
 
     isLoading: boolean = false;
     estimateHeader: EstimateHeader;
     estimateHeaderForm: FormGroup;
+    estimateDetailForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     estimateDetailsCount: number = 0;
 
@@ -54,7 +61,24 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
     estimateDetail: EstimateDetail = null;
+    selection = new SelectionModel<any>(true, []);
+
+    gridColumnRight: string = 'text-align: right;';
+    gridColumnCenter: string = 'text-align: center;';
+    gridColumnleft: string = 'text-align: left;';
+    detailColumn: TableColumn[] = [
+        {headerText : '라인번호' , dataField : 'qtLineNo', display : false},
+        {headerText : '품목코드' , dataField : 'itemCd', display : true, type: 'text'},
+        {headerText : '품목명' , dataField : 'itemNm', display : true, type: 'text'},
+        {headerText : '규격' , dataField : 'standard', display : true, type: 'text'},
+        {headerText : '단위' , dataField : 'unit', display : true, type: 'date'},
+        {headerText : '수량' , dataField : 'qty', display : true, type: 'number', style: this.gridColumnRight},
+        {headerText : '단가' , dataField : 'qtPrice', display : true, type: 'number', style: this.gridColumnRight},
+        {headerText : '견적금액' , dataField : 'qtAmt', display : true, type: 'number', style: this.gridColumnRight},
+        {headerText : '비고' , dataField : 'remarkDetail', display : true, type: 'text'},
+    ];
     estimateDetailsTableColumns: string[] = [
+        'select',
         'qtLineNo',
         'itemCd',
         'itemNm',
@@ -108,7 +132,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this.nullChk(this._activatedRoute.snapshot.paramMap['params'])
             );
 
-            this._estimateService.getDetail(0,8,'itemCd','asc',this.estimateHeaderForm.getRawValue());
+            this._estimateService.getDetail(0,10,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
 
             this.estimateDetails$ = this._estimateService.estimateDetails$;
 
@@ -168,11 +192,9 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     backPage(): void{
         this._router.navigate(['estimate-order/estimate']);
     }
-
-    commonTransactionData(route: string): void{
-
+    createEstimate(): void{
         const sendData: Estimate[] = [];
-        const arr = this.estimateDetails$.subscribe({
+        this.estimateDetails$.subscribe({
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             next(estimateDetail) {
                 if(estimateDetail !== null){
@@ -184,6 +206,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 }
             },
         });
+
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
@@ -192,34 +216,18 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
             sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
         }
-        if(route === 'C'){
-
-            if(!this.estimateHeaderForm.invalid){
-                this._estimateService.createEstimate(sendData).subscribe((estimate: any) => {
-                    this._router.navigate(['estimate-order/estimate']);
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
-            }
-
-        }else if(route === 'U'){
-            if(!this.estimateHeaderForm.invalid){
-                this._estimateService.updateEstimate(sendData).subscribe((estimate: any) => {
-                    this._router.navigate(['estimate-order/estimate']);
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
-            }
+        if(!this.estimateHeaderForm.invalid){
+            this._estimateService.createEstimate(sendData).subscribe((estimate: any) => {
+                this.backPage();
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
         }
-    }
-
-    createEstimate(): void{
-
-        this.commonTransactionData('C');
     }
 
     updateEstimate(): void{
 
+        this._table.renderRows();
         const updateConfirm =this._matDialog.open(SaveAlertComponent, {
             data: {
             }
@@ -228,12 +236,40 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         updateConfirm.afterClosed().subscribe((result) => {
 
             if(result.status){
-                this.commonTransactionData('U');
+                const sendData: Estimate[] = [];
+                this.estimateDetails$.subscribe({
+                    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                    next(estimateDetail) {
+                        if(estimateDetail !== null){
+                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                            for (let i=0; i<estimateDetail.length; i++) {
+                                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                                sendData.push(<Estimate>estimateDetail[i]);
+                            }
+                        }
+                    },
+                });
+
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for (let i=0; i<sendData.length; i++) {
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
+                    sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
+                    sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
+                    sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
+                    sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
+                }
+                /*if(!this.estimateHeaderForm.invalid){
+                    this._estimateService.updateEstimate(sendData).subscribe((estimate: any) => {
+                        this.backPage();
+                        // Mark for check
+                        this._changeDetectorRef.markForCheck();
+                    });
+                }*/
             }
         });
 
     }
-
     nullChk(value: any): any{
 
         /*const data = {};
@@ -255,5 +291,106 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     trackByFn(index: number, estimateDetail: any): any {
         return estimateDetail.id || index;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    transactionRow(action,row) {
+        if(action === 'Add'){
+
+            this.addRowData();
+
+        }else if(action === 'Delete'){
+
+            if(this.selection.selected.length === 0){
+                return;
+            }
+
+            const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
+                data: {
+                }
+            });
+
+            deleteConfirm.afterClosed().subscribe((result) => {
+                if(result.status){
+                    const sendData: Estimate[] = [];
+                    if(this.selection.selected.length !== 0){
+
+                        this.selection.selected.forEach((param: any) => {
+                            sendData.push(param);
+                        });
+
+                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                        for (let i=0; i<sendData.length; i++) {
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
+                            sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
+                            sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
+                            sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
+                            sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
+                        }
+                    }
+
+                    this._estimateService.deleteEstimate(sendData)
+                        .subscribe(
+                            (param: any) => {
+                                if(param.status === 'SUCCESS'){
+                                    this.backPage();
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                }
+                            },(response) => {});
+                }
+            });
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
+    addRowData(){
+        this.estimateDetails$.subscribe({
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            next(estimateDetail) {
+                if(!estimateDetail){
+                    estimateDetail = [];
+                }else{
+                    estimateDetail.push({
+                        itemCd: '',
+                        itemNm: '',
+                        qtLineNo: 0,
+                        qtPrice: 0,
+                        qty: 0,
+                        remarkDetail: '',
+                        standard: '',
+                        unit: '',
+                        qtAmt:0});
+                }
+            },
+        });
+        this._table.renderRows();
+
+    }
+
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    masterToggle(): SelectionModel<any> {
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            return;
+        }
+
+        this.selection.select(this.estimateDetails$);
+    }
+
+    /** Whether the number of selected elements matches the total number of rows. */
+    isAllSelected(): any {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.estimateDetailsCount;
+        return numSelected === numRows;
+    }
+
+    /** The label for the checkbox on the passed row */
+    checkboxLabel(row?: any): string {
+        if (!row) {
+            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
 }

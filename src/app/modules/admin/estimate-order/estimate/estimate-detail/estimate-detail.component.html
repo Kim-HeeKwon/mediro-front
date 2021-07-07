@@ -169,101 +169,98 @@
                             </div>-->
                         </form>
                     </div>
+                    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                        <button mat-button
+                                class="mr-2"
+                                mat-flat-button
+                                (click)="transactionRow('Add',{})" mat-flat-button color="accent">+</button>
+                        <button mat-button
+                                class="mr-2"
+                                mat-flat-button
+                                (click)="transactionRow('Delete',selection)" mat-flat-button color="accent">-</button>
+                    </div>
                     <!-- Table wrapper -->
                     <div
-                        class="overflow-x-auto sm:overflow-y-auto heightFull"
+                        class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
                         cdkScrollable>
+
                         <table
-                            class="w-full min-w-320 table-fixed bg-transparent"
+                            class="mediro-grid-table w-full min-w-320 table-fixed bg-transparent"
                             [ngClass]="{'pointer-events-none': isLoading}"
                             mat-table
                             matSort
-                            [matSortActive]="'itemCd'"
+                            [matSortActive]="'qtLineNo'"
                             [matSortDisableClear]="true"
                             [matSortDirection]="'asc'"
                             [multiTemplateDataRows]="true"
                             [dataSource]="estimateDetails$"
                             [trackBy]="trackByFn">
 
-                            <ng-container matColumnDef="qtLineNo">
-                                <th mat-header-cell *matHeaderCellDef>Line No</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="number" formControlName="qtLineNo">-->
-                                    {{row.qtLineNo}}
+                            <ng-container matColumnDef="select">
+                                <th style="background: #ECEFF3;width:3%; border-right: 1px solid #DAD9FF;padding-left: 10px;"
+                                    mat-header-cell
+                                    *matHeaderCellDef>
+                                    <!--<mat-checkbox (change)="$event ? masterToggle() : null"
+                                                  [checked]="selection.hasValue() && isAllSelected()"
+                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                  [aria-label]="checkboxLabel()">
+                                    </mat-checkbox>-->
+                                </th>
+                                <td style="background: #ECEFF3;padding-right: 0px; border-right: 1px solid #DAD9FF;width:3%;padding-left: 10px;"
+                                    mat-cell *matCellDef="let row">
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                  (change)="$event ? selection.toggle(row) : null"
+                                                  [checked]="selection.isSelected(row)"
+                                                  [aria-label]="checkboxLabel(row)">
+                                    </mat-checkbox>
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="itemCd">
-                                <th mat-header-cell *matHeaderCellDef>품목코드</th>
-                                <td mat-cell *matCellDef="let row; let rowIdx = index;">
-                                    <!--<input type="text" formControlName="itemCd">-->
-                                    {{row.itemCd}}
+                            <ng-container *ngFor="let column of detailColumn"
+                                          [matColumnDef]="column.dataField">
+                                <th class="mediro-th-background"
+                                    mat-header-cell
+                                    [hidden]="!column.display"
+                                    *matHeaderCellDef>
+                                    <div
+                                        class="mediro-grid-default-header mediro-th-display">
+                                        <span mat-sort-header>{{column.headerText}}</span>
+                                    </div>
+                                </th>
+                                <td class="mediro-td"
+                                    mat-cell
+                                    [hidden]="!column.display"
+                                    *matCellDef="let element; let i = index;">
+                                    <input class="mat-table-input"
+                                           [style]="column.style"
+                                           [type]="column.type"
+                                           [value]="element[column.dataField]">
+                                    <!--{{element[column.id]}}-->
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="itemNm">
-                                <th mat-header-cell *matHeaderCellDef>품목명</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="text" formControlName="itemNm">-->
-                                    {{row.itemNm}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="standard">
-                                <th mat-header-cell *matHeaderCellDef>규격</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="text" formControlName="standard">-->
-                                    {{row.standard}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="unit">
-                                <th mat-header-cell *matHeaderCellDef>단위</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="text" formControlName="unit">-->
-                                    {{row.unit}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="qty">
-                                <th mat-header-cell *matHeaderCellDef>수량</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="number" formControlName="qty">-->
-                                    {{row.qty}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="qtPrice">
-                                <th mat-header-cell *matHeaderCellDef>단가</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="number" formControlName="qtPrice">-->
-                                    {{row.qtPrice}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="qtAmt">
-                                <th mat-header-cell *matHeaderCellDef>견적금액</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="number" formControlName="qtAmt">-->
-                                    {{row.qtAmt}}
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="remarkDetail">
-                                <th mat-header-cell *matHeaderCellDef>비고</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <!--<input type="text" formControlName="remarkDetail">-->
-                                    {{row.remarkDetail}}
-                                </td>
-                            </ng-container>
+
                             <!-- Row definitions -->
-                            <tr mat-header-row *matHeaderRowDef="estimateDetailsTableColumns"></tr>
-                            <tr mat-row *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
+                            <tr style="height: 20px;border-bottom: 1.5px solid #577084;"
+                                class="mediro-tr-header"
+                                mat-header-row
+                                *matHeaderRowDef="estimateDetailsTableColumns"></tr>
+                            <tr style="height: 25px;cursor: default;"
+                                class="mediro-tr-row"
+                                mat-row
+                                *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
 
                         </table>
+                        <mat-paginator
+                            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                            [ngClass]="{'pointer-events-none': isLoading}"
+                            [length]="estimateDetailPagenation.length"
+                            [pageIndex]="estimateDetailPagenation.page"
+                            [pageSize]="estimateDetailPagenation.size"
+                            [pageSizeOptions]="[10,100]"
+                            [showFirstLastButtons]="true"></mat-paginator>
 
                     </div>
-                    <mat-paginator
-                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                        [ngClass]="{'pointer-events-none': isLoading}"
-                        [length]="estimateDetailPagenation.length"
-                        [pageIndex]="estimateDetailPagenation.page"
-                        [pageSize]="estimateDetailPagenation.size"
-                        [pageSizeOptions]="[8]"
-                        [showFirstLastButtons]="true"></mat-paginator>
+
                     <!--<ng-container *ngIf="1 > 0; else noProducts">
 
                     </ng-container>
@@ -275,10 +272,10 @@
                     </ng-template>-->
 
                 </mat-tab>
-                <mat-tab label="최근 견적서">
+                <!--<mat-tab label="최근 견적서">
                 </mat-tab>
                 <mat-tab label="자주 쓰는 거래처">
-                </mat-tab>
+                </mat-tab>-->
             </mat-tab-group>
         </div>
     </div>

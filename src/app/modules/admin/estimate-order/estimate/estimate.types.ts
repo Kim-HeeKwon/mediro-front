@@ -1,3 +1,17 @@
+export class TableColumn{
+    headerText: string;
+    dataField: string;
+    display?: boolean;
+    type?: string;
+    placeholder?: string;
+    style?: any;
+
+    constructor(display: boolean = true, type: string = 'text', placeholder: string = ''){
+        this.display = display;
+        this.type = type;
+        this.placeholder = placeholder;
+    }
+}
 export interface Estimate
 {
     mId: string;                //회원사
@@ -24,7 +38,7 @@ export interface Estimate
     updDate?: string;
     updUser?: string;
 }
-export interface EstimateHeader
+export class EstimateHeader
 {
     mId: string;                //회원사
     account: string;            //고객사
@@ -41,7 +55,14 @@ export interface EstimateHeader
     addUser?: string;
     updDate?: string;
     updUser?: string;
+
+    constructor(email: string = '',soNo: string = '',remarkHeader: string = ''){
+        this.email = email;
+        this.soNo = soNo;
+        this.remarkHeader = remarkHeader;
+    }
 }
+
 
 export interface EstimateDetail
 {

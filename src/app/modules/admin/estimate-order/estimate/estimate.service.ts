@@ -175,4 +175,17 @@ export class EstimateService {
             switchMap((response: any) => of(response))
         );
     }
+    deleteEstimate(estimate: Estimate[]): Observable<{estimate: Estimate[]}> {
+
+        return this._common.listDelete('v1/api/estimateOrder/estimate', estimate).pipe(
+            switchMap((response: any) => of(response))
+        );
+        // @ts-ignore
+        // return new Promise((resolve, reject) => {
+        //     this._common.delete('v1/api/basicInfo/account', accountData)
+        //         .subscribe((response: any) => {
+        //             this.getAccount();
+        //         }, reject);
+        // });
+    }
 }

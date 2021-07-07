@@ -188,6 +188,4 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
 
-
-
 }

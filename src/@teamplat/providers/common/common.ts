@@ -29,6 +29,10 @@ export class Common {
         return this.api.apiDelete(url, param).pipe(share()); // seq;
     }
 
+    listDelete(url: string, param: any): Observable<any> {
+        return this.api.apiListDelete(url, param).pipe(share()); // seq;
+    }
+
     sendFile(accountInfo: any, url: string): Observable<any> {
         return this.api.postFile(url, accountInfo).pipe(share()); // seq;
     }
