@@ -45,13 +45,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatSort) private _estimateDetailSort: MatSort;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
-
+    dataSource = new MatTableDataSource([]);
     isLoading: boolean = false;
     estimateHeader: EstimateHeader;
     estimateHeaderForm: FormGroup;
     estimateDetailForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     estimateDetailsCount: number = 0;
+    item: string = 'item';
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
@@ -105,12 +106,25 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_STATUS', this.filterList);
     }
+    initiateForm(): FormGroup {
+        return this._formBuilder.group({
+            qtLineNo: [''],
+            itemCd: [''],
+            itemNm: [''],
+            standard: [''],
+            unit: [''],
+            qty: [0],
+            qtPrice: [0],
+            qtAmt: [0],
+            remarkDetail: [''],
+        });
+    }
     /**
      * On init
      */
     ngOnInit(): void
     {
-        // 고객사 Form 생성
+        // Form 생성
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             qtNo: [{value:'',disabled:true}],   // 견적번호
@@ -135,7 +149,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._estimateService.getDetail(0,10,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
 
             this.estimateDetails$ = this._estimateService.estimateDetails$;
-
             this._estimateService.estimateDetails$
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimateDetail: any) => {
@@ -147,6 +160,32 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+
+
+            this.estimateDetailForm = this._formBuilder.group({
+                datas: this._formBuilder.array([
+                    this.initiateForm()
+                ]),
+            });
+            /*this.estimateDetailForm = this._formBuilder.group({
+                item: [''],
+                qtLineNo: [''],
+                itemCd: [''],
+                itemNm: [''],
+                standard: [''],
+                unit: [''],
+                qty: [0],
+                qtPrice: [0],
+                qtAmt: [0],
+                remarkDetail: [''],
+            });*/
+
+            //this.estimateDetailForm.patchValue(this.estimateDetails$);
+            /*this.estimateDetailForm = this._formBuilder.group({
+                dates: new FormArray([this.initiateForm()])
+            });*/
+            //this.estimateDetails$.forEach(() => this.ordersFormArray.push(new FormControl(false)));
+
         }
 
         this._estimateService.estimateDetailPagenation$
@@ -189,6 +228,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._unsubscribeAll.complete();
     }
 
+
     backPage(): void{
         this._router.navigate(['estimate-order/estimate']);
     }
@@ -226,7 +266,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     updateEstimate(): void{
-
         this._table.renderRows();
         const updateConfirm =this._matDialog.open(SaveAlertComponent, {
             data: {
@@ -237,7 +276,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             if(result.status){
                 const sendData: Estimate[] = [];
-                this.estimateDetails$.subscribe({
+                /*this.estimateDetails$.subscribe({
                     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
                     next(estimateDetail) {
                         if(estimateDetail !== null){
@@ -248,7 +287,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             }
                         }
                     },
-                });
+                });*/
+
+                console.log(this.estimateDetailForm);
+                // @ts-ignore
+                sendData.push(this.estimateDetailForm);
 
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for (let i=0; i<sendData.length; i++) {
@@ -266,6 +309,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this._changeDetectorRef.markForCheck();
                     });
                 }*/
+                console.log(sendData);
             }
         });
 
@@ -346,11 +390,21 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
     addRowData(){
+
         this.estimateDetails$.subscribe({
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             next(estimateDetail) {
                 if(!estimateDetail){
-                    estimateDetail = [];
+                    estimateDetail.push({
+                        itemCd: '',
+                        itemNm: '',
+                        qtLineNo: 0,
+                        qtPrice: 0,
+                        qty: 0,
+                        remarkDetail: '',
+                        standard: '',
+                        unit: '',
+                        qtAmt:0});
                 }else{
                     estimateDetail.push({
                         itemCd: '',
@@ -393,4 +447,5 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
+
 }

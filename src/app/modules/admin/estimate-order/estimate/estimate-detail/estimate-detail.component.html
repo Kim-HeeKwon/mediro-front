@@ -173,7 +173,7 @@
                         <button mat-button
                                 class="mr-2"
                                 mat-flat-button
-                                (click)="transactionRow('Add',{})" mat-flat-button color="accent">+</button>
+                                (click)="transactionRow('Add',selection)" mat-flat-button color="accent">+</button>
                         <button mat-button
                                 class="mr-2"
                                 mat-flat-button
@@ -184,72 +184,78 @@
                         class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
                         cdkScrollable>
 
-                        <table
-                            class="mediro-grid-table w-full min-w-320 table-fixed bg-transparent"
-                            [ngClass]="{'pointer-events-none': isLoading}"
-                            mat-table
-                            matSort
-                            [matSortActive]="'qtLineNo'"
-                            [matSortDisableClear]="true"
-                            [matSortDirection]="'asc'"
-                            [multiTemplateDataRows]="true"
-                            [dataSource]="estimateDetails$"
-                            [trackBy]="trackByFn">
+                        <form [formGroup]="estimateDetailForm">
 
-                            <ng-container matColumnDef="select">
-                                <th style="background: #ECEFF3;width:3%; border-right: 1px solid #DAD9FF;padding-left: 10px;"
-                                    mat-header-cell
-                                    *matHeaderCellDef>
-                                    <!--<mat-checkbox (change)="$event ? masterToggle() : null"
-                                                  [checked]="selection.hasValue() && isAllSelected()"
-                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                                  [aria-label]="checkboxLabel()">
-                                    </mat-checkbox>-->
-                                </th>
-                                <td style="background: #ECEFF3;padding-right: 0px; border-right: 1px solid #DAD9FF;width:3%;padding-left: 10px;"
-                                    mat-cell *matCellDef="let row">
-                                    <mat-checkbox (click)="$event.stopPropagation()"
-                                                  (change)="$event ? selection.toggle(row) : null"
-                                                  [checked]="selection.isSelected(row)"
-                                                  [aria-label]="checkboxLabel(row)">
-                                    </mat-checkbox>
-                                </td>
-                            </ng-container>
+                            <table
+                                class="mediro-grid-table w-full min-w-320 table-fixed bg-transparent"
+                                [ngClass]="{'pointer-events-none': isLoading}"
+                                mat-table
+                                matSort
+                                [matSortActive]="'qtLineNo'"
+                                [matSortDisableClear]="true"
+                                [matSortDirection]="'asc'"
+                                [multiTemplateDataRows]="true"
+                                [dataSource]="estimateDetails$"
+                                [trackBy]="trackByFn">
 
-                            <ng-container *ngFor="let column of detailColumn"
-                                          [matColumnDef]="column.dataField">
-                                <th class="mediro-th-background"
-                                    mat-header-cell
-                                    [hidden]="!column.display"
-                                    *matHeaderCellDef>
-                                    <div
-                                        class="mediro-grid-default-header mediro-th-display">
-                                        <span mat-sort-header>{{column.headerText}}</span>
-                                    </div>
-                                </th>
-                                <td class="mediro-td"
-                                    mat-cell
-                                    [hidden]="!column.display"
-                                    *matCellDef="let element; let i = index;">
-                                    <input class="mat-table-input"
-                                           [style]="column.style"
-                                           [type]="column.type"
-                                           [value]="element[column.dataField]">
-                                    <!--{{element[column.id]}}-->
-                                </td>
-                            </ng-container>
 
-                            <!-- Row definitions -->
-                            <tr style="height: 20px;border-bottom: 1.5px solid #577084;"
-                                class="mediro-tr-header"
-                                mat-header-row
-                                *matHeaderRowDef="estimateDetailsTableColumns"></tr>
-                            <tr style="height: 25px;cursor: default;"
-                                class="mediro-tr-row"
-                                mat-row
-                                *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
+                                <ng-container matColumnDef="select">
+                                    <th style="background: #ECEFF3;width:3%; border-right: 1px solid #DAD9FF;padding-left: 10px;"
+                                        mat-header-cell
+                                        *matHeaderCellDef>
+                                        <!--<mat-checkbox (change)="$event ? masterToggle() : null"
+                                                      [checked]="selection.hasValue() && isAllSelected()"
+                                                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                      [aria-label]="checkboxLabel()">
+                                        </mat-checkbox>-->
+                                    </th>
+                                    <td style="background: #ECEFF3;padding-right: 0px; border-right: 1px solid #DAD9FF;width:3%;padding-left: 10px;"
+                                        mat-cell *matCellDef="let row">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                      (change)="$event ? selection.toggle(row) : null"
+                                                      [checked]="selection.isSelected(row)"
+                                                      [aria-label]="checkboxLabel(row)">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngFor="let column of detailColumn; let i=index;"
+                                              [matColumnDef]="column.dataField">
+                                    <th class="mediro-th-background"
+                                        mat-header-cell
+                                        [hidden]="!column.display"
+                                        *matHeaderCellDef>
+                                        <div
+                                            class="mediro-grid-default-header mediro-th-display">
+                                            <span mat-sort-header>{{column.headerText}}</span>
+                                        </div>
+                                    </th>
+                                    <td class="mediro-td"
+                                        mat-cell
+                                        [hidden]="!column.display"
+                                        *matCellDef="let element; let i = index;">
+                                        <input class="mat-table-input"
+                                               [style]="column.style"
+                                               [type]="column.type"
+                                               [value]="element[column.dataField]">
 
-                        </table>
+                                        <!--{{element[column.id]}}-->
+                                    </td>
+
+                                </ng-container>
+                                <!-- Row definitions -->
+                                <tr style="height: 20px;border-bottom: 1.5px solid #577084;"
+                                    class="mediro-tr-header"
+                                    mat-header-row
+                                    *matHeaderRowDef="estimateDetailsTableColumns"></tr>
+                                <tr style="height: 25px;cursor: default;"
+                                    class="mediro-tr-row"
+                                    mat-row
+                                    *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
+
+                            </table>
+
+                        </form>
+
                         <mat-paginator
                             class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                             [ngClass]="{'pointer-events-none': isLoading}"
