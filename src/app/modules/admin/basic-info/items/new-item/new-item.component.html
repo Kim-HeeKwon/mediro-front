@@ -46,7 +46,8 @@
                         <mat-label>품목코드</mat-label>
                         <input
                             matInput
-                            [formControlName]="'itemCd'">
+                            [formControlName]="'itemCd'"
+                            (click)="openItemSearch()">
                     </mat-form-field>
                     <!-- Name -->
                     <mat-form-field class="w-1/3 pr-2">

@@ -1,0 +1,310 @@
+<div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary modal-sticky">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">품목검색</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="m-4">
+        <!-- 검색조건 -->
+            <form
+                class="flex flex-col"
+                [formGroup]="searchForm">
+                <div class="pt-4 pr-4 pl-4 pb-0">
+                    <div class="flex w-full">
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>UDI 코드</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'udidiCode'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'UDI 코드를 입력하여 주세요.'">
+                        </mat-form-field>
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>업체명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'entpName'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'업체명을 입력해주세요.'">
+                            <mat-error *ngIf="searchForm.get('entpName').hasError('required')">
+                                업체명을 입력해주세요.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>품목명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemName'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'품목명을 입력해주세요.'">
+                            <mat-error *ngIf="searchForm.get('itemName').hasError('required')">
+                                품목명을 입력해주세요.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex w-full">
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>모델명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'brandName'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'모델명을 입력해주세요.'">
+                        </mat-form-field>
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>제품명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'typeName'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'제품명을 입력해주세요.'">
+                        </mat-form-field>
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>품목허가번호</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemNoFullname'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'품목허가번호를 입력해주세요.'">
+                        </mat-form-field>
+                    </div>
+                    <div class="flex w-full justify-between">
+                        <!-- Name -->
+                        <mat-form-field class="w-1/3 pr-2">
+                            <mat-label>등급</mat-label>
+                            <mat-select [formControlName]="'grade'">
+                                <ng-container *ngFor="let itemgrade of itemGrades">
+                                    <mat-option [value]="itemgrade.id">
+                                        {{itemgrade.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <button
+                            class="mr-2 min-w-1/3"
+                            mat-flat-button
+                            [color]="'accent'"
+                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}"
+                            (click)="searchUdiItem()"
+                        >
+                            검색
+                        </button>
+                    </div>
+                </div>
+            </form>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto overflow-hidden">
+            <ng-container *ngIf="itemsCount > 0; else noPopup">
+
+                <!-- Table wrapper  sm:overflow-y-auto-->
+                <div
+                    class="overflow-x-auto sm:overflow-y-auto"
+                    cdkScrollable>
+                    <!-- Table -->
+                    <table
+                        class="w-full min-w-320 table-fixed bg-transparent"
+                        [ngClass]="{'pointer-events-none': isLoading}"
+                        mat-table
+                        matSort
+                        [matSortActive]="'data'"
+                        [matSortDisableClear]="true"
+                        [matSortDirection]="'asc'"
+                        [multiTemplateDataRows]="true"
+                        [dataSource]="udiItemList$"
+                        [trackBy]="trackByFn">
+                        <!-- medDevSeq -->
+                        <ng-container matColumnDef="medDevSeq">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                NO
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.medDevSeq}}
+                            </td>
+                        </ng-container>
+                        <!-- entpName -->
+                        <ng-container matColumnDef="entpName">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                업체명
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.entpName}}
+                            </td>
+                        </ng-container>
+                        <!-- itemCd -->
+                        <ng-container matColumnDef="itemName">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                품목명
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.itemName}}
+                            </td>
+                        </ng-container>
+                        <!-- udidiCode -->
+                        <ng-container matColumnDef="udidiCode">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                UDI코드
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.udidiCode}}
+                            </td>
+                        </ng-container>
+                        <!-- udidiCode -->
+                        <ng-container matColumnDef="itemNoFullname">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                품목허가번호
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.itemNoFullname}}
+                            </td>
+                        </ng-container>
+                        <!-- brandName -->
+                        <ng-container matColumnDef="brandName">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                제품명
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.brandName}}
+                            </td>
+                        </ng-container>
+                        <!-- typeName -->
+                        <ng-container matColumnDef="typeName">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                품목코드
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.typeName}}
+                            </td>
+                        </ng-container>
+                        <!-- grade -->
+                        <ng-container matColumnDef="grade">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                품목등급
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.grade}}
+                            </td>
+                        </ng-container>
+                        <tr
+                            class="shadow"
+                            mat-header-row
+                            *matHeaderRowDef="itemsTableColumns; sticky: true"></tr>
+                        <tr
+                            mat-row
+                            (click)="selectRow(row)"
+                            [class.demo-row-is-clicked]="clickedRows.has(row)"
+                            *matRowDef="let row; columns: itemsTableColumns;"></tr>
+                    </table>
+                </div>
+                <mat-paginator
+                    class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                    [ngClass]="{'pointer-events-none': isLoading}"
+                    [length]="pagenation.length"
+                    [pageIndex]="pagenation.page"
+                    [pageSize]="pagenation.size"
+                    [pageSizeOptions]="[8, 10, 25, 100]"
+                    [showFirstLastButtons]="true"></mat-paginator>
+            </ng-container>
+            <ng-template #noPopup>
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                    <p>데이터가 없습니다.</p>
+                </div>
+            </ng-template>
+
+        </div>
+
+    </div>
+</div>
+

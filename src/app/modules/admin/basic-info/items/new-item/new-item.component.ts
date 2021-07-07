@@ -7,12 +7,12 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {Subject, throwError} from 'rxjs';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
 import {ItemsService} from '../items.service';
-
+import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
 
 @Component({
     selector       : 'new-item',
@@ -53,6 +53,7 @@ export class NewItemComponent implements OnInit, OnDestroy
 
     constructor(
         public matDialogRef: MatDialogRef<NewItemComponent>,
+        public _matDialogPopup: MatDialog,
         private _itemService: ItemsService,
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -140,5 +141,18 @@ export class NewItemComponent implements OnInit, OnDestroy
     supplierSearch(): void
     {
         console.log('clisk');
+    }
+
+    openItemSearch(): void
+    {
+        console.log('click openItemSearch');
+        console.log('click openItemSearch test');
+        const popup =this._matDialogPopup.open(ItemSearchComponent, {
+            data: {
+                popup : 'P$_ACCOUNT'
+            },
+            autoFocus: false,
+            maxHeight: '90vh'
+        });
     }
 }
