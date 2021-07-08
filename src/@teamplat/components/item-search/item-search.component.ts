@@ -8,7 +8,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CommonCode, CommonPopup, FuseUtilsService} from '@teamplat/services/utils';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ITemSearchService} from './item-search.service';
@@ -16,7 +16,7 @@ import {BehaviorSubject, merge, Observable, Subject} from 'rxjs';
 import {ItemSearchPagination, UdiItem} from './item-search.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {MatSort} from '@angular/material/sort';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {fuseAnimations} from '@teamplat/animations';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
@@ -42,20 +42,27 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
 
+    // MatPaginator Output
+    pageEvent: PageEvent;
+
     udiItemList$: Observable<UdiItem[]>;
 
     isLoading: boolean = false;
     itemsCount: number = 0;
     displayedColumns: DisplayedColumn[] = [];
-    //itemsTableColumns: string[] = ['medDevSeq', 'entpName', 'itemName', 'udidiCode','itemNoFullname','brandName','typeName','grade'];
-    itemsTableColumns: string[] = ['entpName','itemName','udidiCode','itemNoFullname','brandName','typeName','grade'];
+    itemsTableColumns: string[] = ['entpName','itemName','itemNoFullname','brandName','typeName','udidiCode','grade'];
     clickedRows = new Set<any>();
-    getList$: Observable<any>;
     searchForm: FormGroup;
-    pagenation: ItemSearchPagination | null = null;
+    pagination: ItemSearchPagination | null = null;
 
     itemHeader: any;
     itemGrades: CommonCode[] = [];
+
+    selectedItem: UdiItem | null = null;
+
+    commonAlertForm: FormGroup;
+
+    flashMessage: 'success' | 'error' | null = null;
 
     private _dataSet: BehaviorSubject<any> = new BehaviorSubject(null);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -67,8 +74,21 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         private _itemSearchService: ITemSearchService,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _popupStore: PopupStore) {
+        private _popupStore: PopupStore,
+        private dialog: MatDialog,
+        //private commonAlertDialog: CommonAlertService
+    ) {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+
+        this.commonAlertForm = _formBuilder.group({
+            dialogTitle: ['Title', [Validators.required]],
+            dialogMsg: ['', [Validators.minLength(5), Validators.maxLength(1000)]],
+            dialogType: ['alert'],
+            okBtnColor: [''],
+            okBtnLabel: [''],
+            cancelBtnColor: [''],
+            cancelBtnLabel: ['']
+        });
     }
 
     ngOnInit(): void {
@@ -102,12 +122,12 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the pagenation
-        this._itemSearchService.pagenation$
+        // Get the pagination
+        this._itemSearchService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((pagenation: ItemSearchPagination) => {
+            .subscribe((pagination: ItemSearchPagination) => {
                 // Update the pagination
-                this.pagenation = pagenation;
+                this.pagination = pagination;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -128,7 +148,6 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
      * After view init
      */
     ngAfterViewInit(): void {
-        //console.log(this._sort);
     }
 
     /**
@@ -137,7 +156,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this.itemsCount = 0;
-        this.pagenation = null;
+        this.pagination = null;
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
@@ -154,10 +173,34 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectRow(row: any): void {
+        //this.commonAlertDialog.openAlertDialog(this.comonAlertForm.value);
+        //this._matDialogRef.close(row);
+        // If the Item is already selected...
+        if ( this.selectedItem )
+        {
+            // Close the details
+            this.closeDetails();
+            return;
+        }
+
+        this.selectedItem = row;
+        this._changeDetectorRef.markForCheck();
+    }
+
+    /**
+     * Close the details
+     */
+    closeDetails(): void
+    {
+        this.selectedItem = null;
+    }
+
+    saveItem(row: any): void
+    {
         this._matDialogRef.close(row);
     }
+
     select(): void{
-        //this._itemSearchService.getDynamicSql(0,10,'accountCd','asc',this.searchForm.getRawValue());
     }
 
     getProperty(element, id: string): string{
@@ -174,6 +217,20 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'grade':''});
         }
 
-        this._itemSearchService.getUdiSearchItems(0,100,'itemName','asc',this.searchForm.getRawValue());
+        this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+    }
+
+    pageChange(evt: any): void{
+        this._itemSearchService.getUdiSearchItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+        // Get products if sort or page changes
+        // merge(this._sort.sortChange, this._paginator.page).pipe(
+        //     switchMap(() => {
+        //         this.isLoading = true;
+        //         return this._itemSearchService.getUdiSearchItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+        //     }),
+        //     map(() => {
+        //         this.isLoading = false;
+        //     })
+        // ).subscribe();
     }
 }

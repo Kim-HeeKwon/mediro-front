@@ -272,7 +272,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     updateItem(): void
     {
         const itemData = this.selectedItemForm.value;
-        console.log(itemData);
 
         this._itemService.updateItem(itemData)
             .subscribe(

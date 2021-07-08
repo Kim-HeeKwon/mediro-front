@@ -16,12 +16,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {ItemSearchComponent} from './item-search.component';
+import {FuseFindByKeyPipeModule} from "../../pipes/find-by-key";
 
 @NgModule({
     declarations: [
         ItemSearchComponent
     ],
-    imports     : [
+    imports: [
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -38,6 +39,7 @@ import {ItemSearchComponent} from './item-search.component';
         MatTableModule,
         MatDialogModule,
         SharedModule,
+        FuseFindByKeyPipeModule,
     ],
     exports     : [
         ItemSearchComponent

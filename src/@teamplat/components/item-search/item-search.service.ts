@@ -28,7 +28,7 @@ export class ITemSearchService{
     /**
      * Getter for pagenation
      */
-    get pagenation$(): Observable<ItemSearchPagination>
+    get pagination$(): Observable<ItemSearchPagination>
     {
         return this._pagination.asObservable();
     }
@@ -46,7 +46,7 @@ export class ITemSearchService{
      *
      * @returns
      */
-    getUdiSearchItems(page: number = 0, size: number = 100, sort: string = 'itemName', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getUdiSearchItems(page: number = 0, size: number = 10, sort: string = 'itemName', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagination: ItemSearchPagination; products: UdiSearchItem[] }>{
 
         const searchParam = {};
@@ -70,14 +70,12 @@ export class ITemSearchService{
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/scraping/udi-portal/udi-portal-item-list')
                 .subscribe((response: any) => {
-                    console.log(response);
                     if(response.data.length > 0){
                         const itemHeader: any = [];
                         // eslint-disable-next-line guard-for-in
                         for(const key in response.data[0]) {
                             itemHeader.push(key);
                         }
-                        console.log(itemHeader);
                         this._itemHeaderList.next(itemHeader);
                     }
                     this._udiItemList.next(response.data);

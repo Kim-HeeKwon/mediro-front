@@ -63,7 +63,7 @@
                             <mat-label>모델명</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'brandName'"
+                                [formControlName]="'typeName'"
                                 [autocomplete]="'off'"
                                 [placeholder]="'모델명을 입력해주세요.'">
                         </mat-form-field>
@@ -72,7 +72,7 @@
                             <mat-label>제품명</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'typeName'"
+                                [formControlName]="'brandName'"
                                 [autocomplete]="'off'"
                                 [placeholder]="'제품명을 입력해주세요.'">
                         </mat-form-field>
@@ -249,7 +249,7 @@
                                 *matHeaderCellDef
                                 mat-sort-header
                                 disableClear>
-                                품목코드
+                                모델명
                             </th>
                             <td
                                 class="pr-8 truncate"
@@ -274,9 +274,70 @@
                                 mat-cell
                                 *matCellDef="let product"
                             >
-                                {{product.grade}}
+                                {{(product.grade | fuseFindByKey:'id':itemGrades).name}}
                             </td>
                         </ng-container>
+
+                        <!-- item details row -->
+                        <ng-container matColumnDef="itemDetails">
+                            <td
+                                class="p-0 border-b-0"
+                                mat-cell
+                                *matCellDef="let product"
+                                [attr.colspan]="itemsTableColumns.length">
+                                <ng-container *ngIf="selectedItem === product">
+                                    <ng-container
+                                        *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                                </ng-container>
+                            </td>
+                            <ng-template
+                                #rowDetailsTemplate
+                                let-product>
+                                <div
+                                    class="shadow-lg overflow-hidden"
+                                    [@expandCollapse]="selectedItem === product ? 'expanded' : 'collapsed'">
+                                    <div class="flex border-b">
+                                        <!-- Selected product form -->
+                                        <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                                            <button
+                                                class="-ml-4"
+                                                mat-flat-button
+                                                [color]="'accent'"
+                                                (click)="saveItem(product)"
+                                            >
+                                                적용
+                                            </button>
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="flex items-center mr-4"
+                                                    *ngIf="flashMessage">
+                                                    <ng-container *ngIf="flashMessage === 'success'">
+                                                        <mat-icon
+                                                            class="text-green-500"
+                                                            [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                                        <span class="ml-2">Product updated</span>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="flashMessage === 'error'">
+                                                        <mat-icon
+                                                            class="text-red-500"
+                                                            [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                                        <span class="ml-2">An error occurred, try again!</span>
+                                                    </ng-container>
+                                                </div>
+                                                <button
+                                                    mat-flat-button
+                                                    [color]="'primary'"
+                                                    (click)="saveItem(product)"
+                                                >
+                                                    적용
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+
                         <tr
                             class="shadow"
                             mat-header-row
@@ -286,16 +347,21 @@
                             (click)="selectRow(row)"
                             [class.demo-row-is-clicked]="clickedRows.has(row)"
                             *matRowDef="let row; columns: itemsTableColumns;"></tr>
+                        <tr
+                            class="h-0"
+                            mat-row
+                            *matRowDef="let row; columns: ['itemDetails']"></tr>
                     </table>
                 </div>
                 <mat-paginator
                     class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                     [ngClass]="{'pointer-events-none': isLoading}"
-                    [length]="pagenation.length"
-                    [pageIndex]="pagenation.page"
-                    [pageSize]="pagenation.size"
+                    [length]="pagination.length"
+                    [pageIndex]="pagination.page"
+                    [pageSize]="pagination.size"
                     [pageSizeOptions]="[8, 10, 25, 100]"
-                    [showFirstLastButtons]="true"></mat-paginator>
+                    [showFirstLastButtons]="true"
+                    (page)="pageEvent = pageChange($event)"></mat-paginator>
             </ng-container>
             <ng-template #noPopup>
                 <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">

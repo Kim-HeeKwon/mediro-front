@@ -12,7 +12,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
 import {ItemsService} from '../items.service';
-import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
+import {ItemSearchComponent} from '@teamplat/components/item-search';
+import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
 
 @Component({
     selector       : 'new-item',
@@ -25,18 +27,12 @@ export class NewItemComponent implements OnInit, OnDestroy
 {
 
     selectedItemForm: FormGroup;
-
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
     };
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     showAlert: boolean = false;
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     itemGrades: any[] = [
         {
             id: '1',
@@ -49,15 +45,26 @@ export class NewItemComponent implements OnInit, OnDestroy
         {
             id: '3',
             name: '3 등급'
+        },
+        {
+            id: '4',
+            name: '4 등급'
         }];
+    is_edit:boolean = false;
+    itemUnit: CommonCode[] = [];
+    itemStandard: CommonCode[] = [];
 
     constructor(
         public matDialogRef: MatDialogRef<NewItemComponent>,
         public _matDialogPopup: MatDialog,
         private _itemService: ItemsService,
         private _formBuilder: FormBuilder,
+        private _codeStore: CodeStore,
+        private _utilService: FuseUtilsService,
         private _changeDetectorRef: ChangeDetectorRef,
     ) {
+        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
+        this.itemStandard = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
     }
 
     /**
@@ -71,13 +78,16 @@ export class NewItemComponent implements OnInit, OnDestroy
             itemGrade: [3], // 등급
             category: [''], // 카테고리
             unit: ['PKG'], // 단위
-            standard: ['KG'], // 규격
+            standard: ['PKG'], // 규격
             supplier: [''], // 공급사
             buyPrice: [], // 구매단가
             salesPrice: [], // 판매단가
+            entpName: [], // 업체명
+            typeName: [], // 모델명
+            itemNoFullname: [], // 품목허가번호
+            medDevSeq: [], // modelSeq
             active: [false]  // cell상태
         });
-
     }
 
     /**
@@ -98,7 +108,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     {
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
-            console.log(this.selectedItemForm.getRawValue());
+            //console.log(this.selectedItemForm.getRawValue());
             this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem: any) => {
 
                 this.alertMessage(newItem);
@@ -145,14 +155,26 @@ export class NewItemComponent implements OnInit, OnDestroy
 
     openItemSearch(): void
     {
-        console.log('click openItemSearch');
-        console.log('click openItemSearch test');
         const popup =this._matDialogPopup.open(ItemSearchComponent, {
             data: {
                 popup : 'P$_ACCOUNT'
             },
             autoFocus: false,
-            maxHeight: '90vh'
+            maxHeight: '90vh',
+            disableClose: true
+        });
+
+        popup.afterClosed().subscribe((result) => {
+            if(result){
+                this.selectedItemForm.patchValue({'itemCd': result.modelId});
+                this.selectedItemForm.patchValue({'itemNm': result.itemName});
+                this.selectedItemForm.patchValue({'itemGrade': result.grade});
+                this.selectedItemForm.patchValue({'entpName': result.entpName});
+                this.selectedItemForm.patchValue({'typeName': result.typeName});
+                this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                this.is_edit = true;
+            }
         });
     }
 }
