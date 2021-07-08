@@ -3,12 +3,14 @@ export class TableConfig{
     dataField: string;
     width?: number;
     display?: boolean;
+    disabled?: boolean;
     type?: string;
     placeholder?: string;
     style?: any;
 
-    constructor(display: boolean = true, type: string = 'text', placeholder: string = ''){
+    constructor(display: boolean = true, disabled: boolean = false, type: string = 'text', placeholder: string = ''){
         this.display = display;
+        this.disabled = disabled;
         this.type = type;
         this.placeholder = placeholder;
     }

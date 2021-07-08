@@ -17,7 +17,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
-import {merge, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, merge, Observable, Subject} from 'rxjs';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {EstimateService} from '../estimate.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -28,6 +28,9 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {MatTable} from '@angular/material/table';
 import {DeleteAlertComponent} from '../../../../../../@teamplat/components/common-alert/delete-alert';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {data} from "autoprefixer";
+import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
+import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
 
 @Component({
     selector       : 'estimate-detail',
@@ -61,16 +64,17 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'qtLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
-        {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, type: 'text'},
-        {headerText : '규격' , dataField : 'standard', width: 100, display : true, type: 'text'},
-        {headerText : '단위' , dataField : 'unit', width: 100, display : true, type: 'text'},
+        {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'qtPrice', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
-        {headerText : '견적금액' , dataField : 'qtAmt', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
+        {headerText : '견적금액' , dataField : 'qtAmt', width: 50, display : true, disabled : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     estimateDetailsTableColumns: string[] = [
         'select',
+        'no',
         'qtLineNo',
         'itemCd',
         'itemNm',
@@ -88,6 +92,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
+        public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _estimateService: EstimateService,
@@ -125,20 +130,19 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             );
 
             this._estimateService.getDetail(0,10,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
-
-            this.estimateDetails$ = this._estimateService.estimateDetails$;
-            this._estimateService.estimateDetails$
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((estimateDetail: any) => {
-                    // Update the counts
-                    if(estimateDetail !== null){
-                        this.estimateDetailsCount = estimateDetail.length;
-                    }
-
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
         }
+        this.estimateDetails$ = this._estimateService.estimateDetails$;
+        this._estimateService.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateDetail: any) => {
+                // Update the counts
+                if(estimateDetail !== null){
+                    this.estimateDetailsCount = estimateDetail.length;
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
         this._estimateService.estimateDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -166,7 +170,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 map(() => {
                     this.isLoading = false;
                 })
-            ).subscribe();
+            ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
         }
     }
 
@@ -185,17 +189,19 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
     createEstimate(): void{
         const sendData: Estimate[] = [];
-        this.estimateDetails$.subscribe({
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            next(estimateDetail) {
-                if(estimateDetail !== null){
-                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                    for (let i=0; i<estimateDetail.length; i++) {
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                        sendData.push(<Estimate>estimateDetail[i]);
+        this.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe({
+                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                next(estimateDetail) {
+                    if(estimateDetail !== null){
+                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                        for (let i=0; i<estimateDetail.length; i++) {
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            sendData.push(<Estimate>estimateDetail[i]);
+                        }
                     }
-                }
-            },
+                },
         });
 
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -207,58 +213,64 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
             sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
         }
-        if(!this.estimateHeaderForm.invalid){
-            this._estimateService.createEstimate(sendData).subscribe((estimate: any) => {
-                this.backPage();
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
+        console.log(sendData);
+        /*if(!this.estimateHeaderForm.invalid){
+            this._estimateService.createEstimate(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this.backPage();
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
             });
-        }
+        }*/
     }
 
     updateEstimate(): void{
-        this._table.renderRows();
         const updateConfirm =this._matDialog.open(SaveAlertComponent, {
             data: {
             }
         });
 
-        updateConfirm.afterClosed().subscribe((result) => {
-
-            if(result.status){
-                const sendData: Estimate[] = [];
-                this.estimateDetails$.subscribe({
-                    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                    next(estimateDetail) {
-                        if(estimateDetail !== null){
-                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                            for (let i=0; i<estimateDetail.length; i++) {
-                                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                                sendData.push(<Estimate>estimateDetail[i]);
-                            }
-                        }
-                    },
-                });
-
-                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                for (let i=0; i<sendData.length; i++) {
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
-                    sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
-                    sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
-                    sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
-                    sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
-                }
-                if(!this.estimateHeaderForm.invalid){
-                    this._estimateService.updateEstimate(sendData).subscribe((estimate: any) => {
-                        this.backPage();
-                        // Mark for check
-                        this._changeDetectorRef.markForCheck();
+        updateConfirm.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result.status){
+                    const sendData: Estimate[] = [];
+                    this.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe({
+                            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                            next(estimateDetail) {
+                                if(estimateDetail !== null){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    for (let i=0; i<estimateDetail.length; i++) {
+                                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                                        sendData.push(<Estimate>estimateDetail[i]);
+                                    }
+                                }
+                            },
                     });
-                }
-            }
-        });
 
+                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                    for (let i=0; i<sendData.length; i++) {
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
+                        sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
+                        sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
+                        sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
+                        sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
+                    }
+                    if(!this.estimateHeaderForm.invalid){
+                        this._estimateService.updateEstimate(sendData)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimate: any) => {
+                                this.backPage();
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                        });
+                    }
+                }
+        });
     }
 
     /**
@@ -270,66 +282,39 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     trackByFn(index: number, estimateDetail: any): any {
         return estimateDetail.id || index;
     }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    tableClear(){
+        this._table.renderRows();
+    }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     transactionRow(action,row) {
-        if(action === 'Add'){
+        if(action === 'Row_Add'){
 
-            this.addRowData();
+            this.addRowData(row);
+
+        }else if(action === 'Row_Delete'){
+
+            this.deleteRowData(row);
 
         }else if(action === 'Delete'){
 
-            if(this.selection.selected.length === 0){
-                return;
-            }
-
-            const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
-                data: {
-                }
-            });
-
-            deleteConfirm.afterClosed().subscribe((result) => {
-                if(result.status){
-                    const sendData: Estimate[] = [];
-                    if(this.selection.selected.length !== 0){
-
-                        this.selection.selected.forEach((param: any) => {
-                            sendData.push(param);
-                        });
-
-                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                        for (let i=0; i<sendData.length; i++) {
-                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                            sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
-                            sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
-                            sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
-                            sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
-                            sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
-                        }
-                    }
-
-                    this._estimateService.deleteEstimate(sendData)
-                        .subscribe(
-                            (param: any) => {
-                                if(param.status === 'SUCCESS'){
-                                    this.backPage();
-                                    // Mark for check
-                                    this._changeDetectorRef.markForCheck();
-                                }
-                            },(response) => {});
-                }
-            });
+            this.realDeleteData();
         }
+        this.tableClear();
     }
+    private _estimateDetails: BehaviorSubject<EstimateDetail[]> = new BehaviorSubject(null);
 
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
-    addRowData(){
+    addRowData(row: any){
 
-        this.estimateDetails$.subscribe({
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            next(estimateDetail) {
+        /*this.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateDetail) => {
                 if(!estimateDetail){
+
                     estimateDetail.push({
+                        no: estimateDetail.length + 1,
                         itemCd: '',
                         itemNm: '',
                         qtLineNo: 0,
@@ -338,9 +323,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         remarkDetail: '',
                         standard: '',
                         unit: '',
-                        qtAmt:0});
+                        qtAmt:0
+                    });
                 }else{
+                    // @ts-ignore
                     estimateDetail.push({
+                        no: estimateDetail.length + 1,
                         itemCd: '',
                         itemNm: '',
                         qtLineNo: 0,
@@ -351,10 +339,65 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         unit: '',
                         qtAmt:0});
                 }
-            },
-        });
-        this._table.renderRows();
+        });*/
+        this.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe({
+                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                next(estimateDetail) {
+                    if(estimateDetail){
+                        // @ts-ignore
+                        estimateDetail.push({
+                            no: estimateDetail.length + 1,
+                            itemCd: '',
+                            itemNm: '',
+                            qtLineNo: 0,
+                            qtPrice: 0,
+                            qty: 0,
+                            remarkDetail: '',
+                            standard: '',
+                            unit: '',
+                            qtAmt:0});
+                    }else{
+                    }
+                    console.log(estimateDetail);
+                }
+            });
+    }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    deleteRowData(row: any) {
+
+        if(this.selection.hasValue()){
+            if(row.selected.length > 0){
+                let check = false;
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for(let i=0; i<row.selected.length; i++){
+                    if(row.selected[i].length){
+                        check = true;
+                    }
+                }
+
+                if(check){
+                    this.realDeleteData();
+                    return;
+                }else{
+                    this.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((estimateDetail) => {
+                            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                            for(let i=0; i<estimateDetail.length; i++){
+                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                for(let r=0; r<row.selected.length; r++){
+                                    if(row.selected[r].no === estimateDetail[i].no){
+                                        estimateDetail.splice(i,1);
+                                    }
+                                }
+                            }
+                        });
+                }
+            }
+        }
     }
 
     /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -364,7 +407,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return;
         }
 
-        this.selection.select(this.estimateDetails$);
+        this.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateDetail) =>{
+                this.selection.select(...estimateDetail);
+        });
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
@@ -379,7 +426,84 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if (!row) {
             return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
         }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.no + 1}`;
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    realDeleteData() {
+        if(this.selection.selected.length === 0){
+            return;
+        }
+
+        const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
+            data: {
+            }
+        });
+
+        deleteConfirm.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result.status){
+                    const sendData: Estimate[] = [];
+                    if(this.selection.selected.length !== 0){
+
+                        this.selection.selected.forEach((param: any) => {
+                            if(param.length){
+                                sendData.push(param);
+                            }
+                        });
+
+                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                        for (let i=0; i<sendData.length; i++) {
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
+                            sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
+                            sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
+                            sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
+                            sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
+                        }
+                    }
+
+                    this._estimateService.deleteEstimate(sendData)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(
+                            (param: any) => {
+                                if(param.status === 'SUCCESS'){
+                                    this.backPage();
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                }
+                            },(response) => {});
+                }
+        });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    cellClick(element, column: TableConfig, i) {
+        if(column.dataField === 'itemCd'){
+
+            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_ALL_ITEM'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.isLoading = true;
+                        element.itemCd = result.itemCd;
+                        element.itemNm = result.itemNm;
+                        element.standard = result.standard;
+                        element.unit = result.unit;
+                        this.tableClear();
+                        this.isLoading = false;
+                    }
+                });
+        }
+    }
 }

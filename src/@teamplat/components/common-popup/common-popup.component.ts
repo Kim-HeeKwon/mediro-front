@@ -126,7 +126,6 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
      * After view init
      */
     ngAfterViewInit(): void {
-        console.log(this._sort);
         if(this._sort !== undefined){
             // Get products if sort or page changes
             merge(this._sort.sortChange, this._paginator.page).pipe(

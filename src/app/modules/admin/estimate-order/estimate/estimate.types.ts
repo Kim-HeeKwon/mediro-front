@@ -52,6 +52,7 @@ export class EstimateHeader
 
 export interface EstimateDetail
 {
+    no?: number;
     qtLineNo: number;
     itemCd: string;
     itemNm: string;

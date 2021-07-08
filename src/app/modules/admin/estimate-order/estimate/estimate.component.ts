@@ -161,7 +161,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     createDetail(): void{
-        this._router.navigate(['estimate-order/estimate/estimate-detail' , {}]);
+        //this._router.navigate(['estimate-order/estimate/estimate-detail' , {}]);
     }
     /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle(): SelectionModel<any> {

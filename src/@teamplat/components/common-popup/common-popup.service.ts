@@ -44,7 +44,6 @@ export class CommonPopupService{
                 searchParam[k] = search[k];
             }
         }
-        console.log('getDynamicSql');
 
         const pageParam = {
             page: page,

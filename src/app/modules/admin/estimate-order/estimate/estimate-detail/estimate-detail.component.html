@@ -55,7 +55,7 @@
                                                     matInput
                                                     [formControlName]="'qtNo'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-1/6 pr-2">
+                                            <mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>거래처 코드</mat-label>
                                                 <input
                                                     matInput
@@ -67,13 +67,6 @@
                                                     matInput
                                                     [formControlName]="'accountNm'">
                                             </mat-form-field>
-                                            <button
-                                                class="w-1/6"
-                                                mat-flat-button
-                                                [color]="'accent'"
-                                                [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
-                                                검색
-                                            </button>
                                         </div>
                                         <div class="flex">
                                             <mat-form-field class="w-1/6 pr-2">
@@ -134,21 +127,24 @@
                             </div>
                         </form>
                     </div>
-                    <div class="flex">
-                        <div class="flex flex-col w-full">
-                            <div class="flex p-2">
-                                <div class="flex flex-auto">
-                                    <button mat-button
-                                            class="mr-2"
-                                            mat-flat-button
-                                            (click)="transactionRow('Add',selection)" mat-flat-button color="accent">+</button>
-                                    <button mat-button
-                                            class="mr-2"
-                                            mat-flat-button
-                                            (click)="transactionRow('Delete',selection)" mat-flat-button color="accent">-</button>
+                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+                        <div class="flex-row text-1xl font-extrabold tracking-tight">
+                            리스트
+                        </div>
+                        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                            <button mat-button
+                                    class="mr-2"
+                                    mat-flat-button
+                                    (click)="transactionRow('Row_Add',selection)" mat-flat-button color="accent">+</button>
+                            <button mat-button
+                                    class="mr-2"
+                                    mat-flat-button
+                                    (click)="transactionRow('Row_Delete',selection)" mat-flat-button color="accent">-</button>
+                            <button mat-button
+                                    class="mr-2"
+                                    mat-flat-button
+                                    (click)="transactionRow('Delete',selection)" mat-flat-button color="accent">삭제</button>
 
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!-- Table wrapper -->
@@ -188,7 +184,21 @@
                                         </mat-checkbox>
                                     </td>
                                 </ng-container>
-                                <ng-container *ngFor="let column of estimateDetailsTable; let i=index;"
+
+                                <ng-container matColumnDef="no">
+                                    <th mat-header-cell
+                                        class="mediro-th-header-checkbox"
+                                        *matHeaderCellDef
+                                        [hidden]="true">
+                                        No.
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"
+                                        [hidden]="true">
+                                        {{row.no}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container *ngFor="let column of estimateDetailsTable; let i=dataIndex;"
                                               [matColumnDef]="column.dataField">
                                     <th
                                         mat-header-cell
@@ -203,10 +213,13 @@
                                     <td class="mediro-td"
                                         mat-cell
                                         [hidden]="!column.display"
-                                        *matCellDef="let element; let i = index;">
+                                        (click)="cellClick(element,column,i)"
+                                        *matCellDef="let element; let i = dataIndex;">
                                         <input class="mat-table-input"
+                                               [disabled]="column.disabled"
                                                [style]="column.style"
                                                [type]="column.type"
+                                               [required]="true"
                                                [(ngModel)]="element[column.dataField]"
                                                [value]="element[column.dataField]">
                                     </td>
@@ -216,15 +229,16 @@
                                 <tr
                                     class="mediro-tr-header"
                                     mat-header-row
-                                    *matHeaderRowDef="estimateDetailsTableColumns"></tr>
+                                    *matHeaderRowDef="estimateDetailsTableColumns; sticky: true"></tr>
                                 <tr
                                     class="mediro-tr-row"
                                     mat-row
-                                    *matRowDef="let row; let i = index; columns: estimateDetailsTableColumns;"></tr>
+                                    *matRowDef="let row; columns: estimateDetailsTableColumns; let i = dataIndex;"></tr>
 
                             </table>
 
                             <mat-paginator
+                                style="position: sticky;"
                                 class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                 [ngClass]="{'pointer-events-none': isLoading}"
                                 [length]="estimateDetailPagenation.length"
