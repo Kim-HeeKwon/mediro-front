@@ -27,6 +27,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
 import {EstimateDetailResolvers} from './estimate-detail/estimate-detail.resolvers';
+import {FormsModule} from "@angular/forms";
 
 const estimateRoutes: Route[] = [
     {

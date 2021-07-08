@@ -1,17 +1,3 @@
-export class TableColumn{
-    headerText: string;
-    dataField: string;
-    display?: boolean;
-    type?: string;
-    placeholder?: string;
-    style?: any;
-
-    constructor(display: boolean = true, type: string = 'text', placeholder: string = ''){
-        this.display = display;
-        this.type = type;
-        this.placeholder = placeholder;
-    }
-}
 export interface Estimate
 {
     mId: string;                //회원사

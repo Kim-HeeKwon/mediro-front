@@ -12,15 +12,12 @@ import {
     Estimate,
     EstimateDetail,
     EstimateDetailPagenation,
-    EstimateHeader,
-    EstimateHeaderPagenation,
-    TableColumn
 } from '../estimate.types';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder,FormGroup, Validators} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
-import {BehaviorSubject, merge, Observable, Subject} from 'rxjs';
+import {merge, Observable, Subject} from 'rxjs';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {EstimateService} from '../estimate.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -28,8 +25,9 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
+import {MatTable} from '@angular/material/table';
 import {DeleteAlertComponent} from '../../../../../../@teamplat/components/common-alert/delete-alert';
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 
 @Component({
     selector       : 'estimate-detail',
@@ -45,38 +43,31 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatSort) private _estimateDetailSort: MatSort;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
-    dataSource = new MatTableDataSource([]);
     isLoading: boolean = false;
-    estimateHeader: EstimateHeader;
     estimateHeaderForm: FormGroup;
-    estimateDetailForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     estimateDetailsCount: number = 0;
-    item: string = 'item';
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     filterList: string[];
-    showButton: boolean = true;
 
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
     estimateDetail: EstimateDetail = null;
     selection = new SelectionModel<any>(true, []);
 
-    gridColumnRight: string = 'text-align: right;';
-    gridColumnCenter: string = 'text-align: center;';
-    gridColumnleft: string = 'text-align: left;';
-    detailColumn: TableColumn[] = [
+    estimateDetailsTableStyle: TableStyle = new TableStyle();
+    estimateDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'qtLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', display : true, type: 'text'},
-        {headerText : '품목명' , dataField : 'itemNm', display : true, type: 'text'},
-        {headerText : '규격' , dataField : 'standard', display : true, type: 'text'},
-        {headerText : '단위' , dataField : 'unit', display : true, type: 'date'},
-        {headerText : '수량' , dataField : 'qty', display : true, type: 'number', style: this.gridColumnRight},
-        {headerText : '단가' , dataField : 'qtPrice', display : true, type: 'number', style: this.gridColumnRight},
-        {headerText : '견적금액' , dataField : 'qtAmt', display : true, type: 'number', style: this.gridColumnRight},
-        {headerText : '비고' , dataField : 'remarkDetail', display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, type: 'text'},
+        {headerText : '규격' , dataField : 'standard', width: 100, display : true, type: 'text'},
+        {headerText : '단위' , dataField : 'unit', width: 100, display : true, type: 'text'},
+        {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
+        {headerText : '단가' , dataField : 'qtPrice', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
+        {headerText : '견적금액' , dataField : 'qtAmt', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
+        {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     estimateDetailsTableColumns: string[] = [
         'select',
@@ -106,19 +97,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_STATUS', this.filterList);
     }
-    initiateForm(): FormGroup {
-        return this._formBuilder.group({
-            qtLineNo: [''],
-            itemCd: [''],
-            itemNm: [''],
-            standard: [''],
-            unit: [''],
-            qty: [0],
-            qtPrice: [0],
-            qtAmt: [0],
-            remarkDetail: [''],
-        });
-    }
     /**
      * On init
      */
@@ -128,7 +106,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             qtNo: [{value:'',disabled:true}],   // 견적번호
-            account: ['', [Validators.required]], // 거래처 코드
+            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
             type: [{value:'',disabled:true}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
@@ -143,7 +121,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if(this._activatedRoute.snapshot.paramMap['params'].length !== (null || undefined)){
 
             this.estimateHeaderForm.patchValue(
-                this.nullChk(this._activatedRoute.snapshot.paramMap['params'])
+                this._activatedRoute.snapshot.paramMap['params']
             );
 
             this._estimateService.getDetail(0,10,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
@@ -160,32 +138,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-
-
-            this.estimateDetailForm = this._formBuilder.group({
-                datas: this._formBuilder.array([
-                    this.initiateForm()
-                ]),
-            });
-            /*this.estimateDetailForm = this._formBuilder.group({
-                item: [''],
-                qtLineNo: [''],
-                itemCd: [''],
-                itemNm: [''],
-                standard: [''],
-                unit: [''],
-                qty: [0],
-                qtPrice: [0],
-                qtAmt: [0],
-                remarkDetail: [''],
-            });*/
-
-            //this.estimateDetailForm.patchValue(this.estimateDetails$);
-            /*this.estimateDetailForm = this._formBuilder.group({
-                dates: new FormArray([this.initiateForm()])
-            });*/
-            //this.estimateDetails$.forEach(() => this.ordersFormArray.push(new FormControl(false)));
-
         }
 
         this._estimateService.estimateDetailPagenation$
@@ -196,7 +148,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-        //this.estimateHeaderForm.controls['qtNo'].disable();
 
     }
     /**
@@ -276,7 +227,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             if(result.status){
                 const sendData: Estimate[] = [];
-                /*this.estimateDetails$.subscribe({
+                this.estimateDetails$.subscribe({
                     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
                     next(estimateDetail) {
                         if(estimateDetail !== null){
@@ -287,11 +238,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             }
                         }
                     },
-                });*/
-
-                console.log(this.estimateDetailForm);
-                // @ts-ignore
-                sendData.push(this.estimateDetailForm);
+                });
 
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for (let i=0; i<sendData.length; i++) {
@@ -302,29 +249,16 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
                     sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
                 }
-                /*if(!this.estimateHeaderForm.invalid){
+                if(!this.estimateHeaderForm.invalid){
                     this._estimateService.updateEstimate(sendData).subscribe((estimate: any) => {
                         this.backPage();
                         // Mark for check
                         this._changeDetectorRef.markForCheck();
                     });
-                }*/
-                console.log(sendData);
+                }
             }
         });
 
-    }
-    nullChk(value: any): any{
-
-        /*const data = {};
-        // 검색조건 Null Check
-        if ((Object.keys(value).length === 0) === false) {
-            // eslint-disable-next-line guard-for-in
-            for (const k in value) {
-                data[k] = value[k];
-            }
-        }*/
-        return value;
     }
 
     /**

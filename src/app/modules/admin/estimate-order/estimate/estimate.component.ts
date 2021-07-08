@@ -39,7 +39,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         'remarkHeader',
         'soNo',
     ];
-    selectedEstimateHeader: EstimateHeader | null = null;
+    selectedEstimateHeader: EstimateHeader = new EstimateHeader();
     searchForm: FormGroup;
 
     status: CommonCode[] = null;
