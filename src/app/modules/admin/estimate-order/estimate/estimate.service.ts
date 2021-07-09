@@ -9,8 +9,7 @@ import {
     EstimateHeader,
     EstimateHeaderPagenation
 } from './estimate.types';
-import {AccountData} from "../../basic-info/account/account.types";
-import {map, switchMap, take} from "rxjs/operators";
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -152,13 +151,46 @@ export class EstimateService {
     }
 
     /**
+     * Post getNew
+     *
+     * @returns
+     */
+    getNew(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Observable<{ estimateDetailPagenation: EstimateDetailPagenation; estimateDetail: EstimateDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._estimateDetails.next([]);
+            // @ts-ignore
+            this._estimateDetailPagenation.next([]);
+        });
+    }
+
+    /**
      * Create
      */
     createEstimate(estimate: Estimate[]): Observable<Estimate>
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendData(estimate, 'v1/api/estimateOrder/estimate').pipe(
+            switchMap(products => this._common.sendListData(estimate, 'v1/api/estimateOrder/estimate').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -187,5 +219,12 @@ export class EstimateService {
         //             this.getAccount();
         //         }, reject);
         // });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    totalAmt(estimate: Estimate[]): Observable<{estimate: Estimate[]}> {
+        return this._common.put('v1/api/estimateOrder/estimate/estimate-total-amt', estimate).pipe(
+            switchMap((response: any) => of(response))
+        );
     }
 }

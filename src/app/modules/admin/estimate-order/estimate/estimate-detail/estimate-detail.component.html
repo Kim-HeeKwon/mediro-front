@@ -21,14 +21,7 @@
                 class="mr-2"
                 mat-flat-button
                 [color]="'accent'"
-                (click)="createEstimate()">
-                <span class="ml-2 mr-1">등록</span>
-            </button>
-            <button
-                class="mr-2"
-                mat-flat-button
-                [color]="'accent'"
-                (click)="updateEstimate()">
+                (click)="saveEstimate()">
                 <span class="ml-2 mr-1">저장</span>
             </button>
         </div>
@@ -91,7 +84,9 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>견적 금액</mat-label>
-                                                <input type="number"
+                                                <input
+                                                    class="text-right"
+                                                    type="number"
                                                     matInput
                                                     [formControlName]="'qtAmt'">
                                             </mat-form-field>
@@ -135,15 +130,11 @@
                             <button mat-button
                                     class="mr-2"
                                     mat-flat-button
-                                    (click)="transactionRow('Row_Add',selection)" mat-flat-button color="accent">+</button>
+                                    (click)="transactionRow('ADD',selection)" mat-flat-button color="accent">+</button>
                             <button mat-button
                                     class="mr-2"
                                     mat-flat-button
-                                    (click)="transactionRow('Row_Delete',selection)" mat-flat-button color="accent">-</button>
-                            <button mat-button
-                                    class="mr-2"
-                                    mat-flat-button
-                                    (click)="transactionRow('Delete',selection)" mat-flat-button color="accent">삭제</button>
+                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>
 
                         </div>
                     </div>
@@ -155,7 +146,7 @@
                             cdkScrollable>
 
                             <table
-                                class="mediro-grid-table w-full min-w-320 table-fixed bg-transparent"
+                                class="w-full min-w-320 table-fixed bg-transparent"
                                 [ngClass]="{'pointer-events-none': isLoading}"
                                 mat-table
                                 matSort
@@ -214,6 +205,7 @@
                                         mat-cell
                                         [hidden]="!column.display"
                                         (click)="cellClick(element,column,i)"
+                                        (change)="updateRowData(element, column, i)"
                                         *matCellDef="let element; let i = dataIndex;">
                                         <input class="mat-table-input"
                                                [disabled]="column.disabled"

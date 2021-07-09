@@ -27,7 +27,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
 import {EstimateDetailResolvers} from './estimate-detail/estimate-detail.resolvers';
-import {FormsModule} from "@angular/forms";
+import {EstimateNewComponent} from './estimate-new/estimate-new.component';
+import {EstimateNewResolvers} from './estimate-new/estimate-new.resolvers';
 
 const estimateRoutes: Route[] = [
     {
@@ -43,13 +44,21 @@ const estimateRoutes: Route[] = [
         resolve  : {
             data: EstimateDetailResolvers
         }
+    },
+    {
+        path     : 'estimate-new',
+        component: EstimateNewComponent,
+        resolve  : {
+            data: EstimateNewResolvers
+        }
     }
 ];
 
 @NgModule({
   declarations: [
     EstimateComponent,
-    EstimateDetailComponent
+    EstimateDetailComponent,
+    EstimateNewComponent
   ],
     imports: [
         CommonModule,

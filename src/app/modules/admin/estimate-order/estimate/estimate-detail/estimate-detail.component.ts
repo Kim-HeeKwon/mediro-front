@@ -26,11 +26,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatTable} from '@angular/material/table';
-import {DeleteAlertComponent} from '../../../../../../@teamplat/components/common-alert/delete-alert';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
-import {data} from "autoprefixer";
-import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 
 @Component({
     selector       : 'estimate-detail',
@@ -50,6 +48,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     estimateDetailsCount: number = 0;
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    alert: { type: FuseAlertType; message: string } = {
+        type   : 'success',
+        message: ''
+    };
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    showAlert: boolean = false;
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
@@ -187,90 +193,173 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     backPage(): void{
         this._router.navigate(['estimate-order/estimate']);
     }
-    createEstimate(): void{
-        const sendData: Estimate[] = [];
-        this.estimateDetails$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe({
-                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                next(estimateDetail) {
-                    if(estimateDetail !== null){
-                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                        for (let i=0; i<estimateDetail.length; i++) {
-                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                            sendData.push(<Estimate>estimateDetail[i]);
-                        }
-                    }
-                },
-        });
 
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i=0; i<sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
-            sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
-            sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
-            sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
-            sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
+    alertMessage(param: any): void
+    {
+        if(param.status !== 'SUCCESS'){
+            this.alert = {
+                type   : 'error',
+                message: param.msg
+            };
+            // Show the alert
+            this.showAlert = true;
+        }else{
+            this.alert = {
+                type   : 'success',
+                message: '등록완료 하였습니다.'
+            };
+            // Show the alert
+            this.showAlert = true;
         }
-        console.log(sendData);
-        /*if(!this.estimateHeaderForm.invalid){
+    }
+
+    /* 저장
+     *
+     */
+    saveEstimate(): void{
+
+        if(!this.estimateHeaderForm.invalid){
+            this.showAlert = false;
+
+            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+                data: {
+                }
+            });
+
+            saveConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    let createList;
+                    let updateist;
+                    let deleteList;
+                    if (result.status) {
+                        createList = [];
+                        updateist = [];
+                        deleteList = [];
+                        this.estimateDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimateDetail) => {
+                                estimateDetail.forEach((sendData: any) => {
+                                    if (sendData.flag) {
+                                        if (sendData.flag === 'C') {
+                                            createList.push(sendData);
+                                        } else if (sendData.flag === 'U') {
+                                            updateist.push(sendData);
+                                        } else if (sendData.flag === 'D') {
+                                            deleteList.push(sendData);
+                                        }
+                                    }
+                                });
+                            });
+                        if (createList.length > 0) {
+                            this.createEstimate(createList);
+                        }
+                        if (updateist.length > 0) {
+                            this.updateEstimate(updateist);
+                        }
+                        if (deleteList.length > 0) {
+                            this.deleteEstimate(deleteList);
+                        }
+                        if(createList.length > 0 || updateist.length > 0 ||
+                            deleteList.length > 0){
+                            this.totalAmt();
+                        }
+                        this.backPage();
+                    }
+                });
+
+            this.alertMessage('');
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+        }else{
+            // Set the alert
+            this.alert = {
+                type   : 'error',
+                message: '거래처를 선택해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+        }
+
+    }
+
+    /*견적 금액 업데이트
+     *
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    totalAmt() {
+        this._estimateService.totalAmt(this.estimateHeaderForm.getRawValue())
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimate: any) => {
+            });
+    }
+
+    /* 추가
+     *
+     * @param sendData
+     */
+    createEstimate(sendData: Estimate[]): void{
+        if(sendData){
+            sendData = this.headerDataSet(sendData);
+
             this._estimateService.createEstimate(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
-                    this.backPage();
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-            });
-        }*/
+                });
+        }
+
     }
 
-    updateEstimate(): void{
-        const updateConfirm =this._matDialog.open(SaveAlertComponent, {
-            data: {
-            }
-        });
+    /* 수정
+     *
+     * @param sendData
+     */
+    updateEstimate(sendData: Estimate[]): void{
+        if(sendData){
+            sendData = this.headerDataSet(sendData);
 
-        updateConfirm.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result.status){
-                    const sendData: Estimate[] = [];
-                    this.estimateDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe({
-                            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                            next(estimateDetail) {
-                                if(estimateDetail !== null){
-                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                                    for (let i=0; i<estimateDetail.length; i++) {
-                                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                                        sendData.push(<Estimate>estimateDetail[i]);
-                                    }
-                                }
-                            },
-                    });
+            this._estimateService.updateEstimate(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                });
+        }
 
-                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                    for (let i=0; i<sendData.length; i++) {
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                        sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
-                        sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
-                        sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
-                        sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
-                        sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
-                    }
-                    if(!this.estimateHeaderForm.invalid){
-                        this._estimateService.updateEstimate(sendData)
-                            .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe((estimate: any) => {
-                                this.backPage();
-                                // Mark for check
-                                this._changeDetectorRef.markForCheck();
-                        });
-                    }
-                }
-        });
+    }
+
+    /* 삭제
+     * @param sendData
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    deleteEstimate(sendData: Estimate[]) {
+        if(sendData){
+            sendData = this.headerDataSet(sendData);
+
+            this._estimateService.deleteEstimate(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(
+                    (estimate: any) => {
+                    },(response) => {});
+        }
+
+    }
+
+    /* 트랜잭션 전 data Set
+     * @param sendData
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    headerDataSet(sendData: Estimate[]) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i=0; i<sendData.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            sendData[i].account = this.estimateHeaderForm.controls['account'].value;
+            sendData[i].qtNo = this.estimateHeaderForm.controls['qtNo'].value;
+            sendData[i].type = this.estimateHeaderForm.controls['type'].value;
+            sendData[i].status = this.estimateHeaderForm.controls['status'].value;
+            sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
+        }
+        return sendData;
     }
 
     /**
@@ -288,113 +377,105 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    tableStatusChange(){
+        console.log('change');
+    }
+
+    /* 그리드 컨트롤
+     * @param action
+     * @param row
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     transactionRow(action,row) {
-        if(action === 'Row_Add'){
+        if(action === 'ADD'){
 
             this.addRowData(row);
 
-        }else if(action === 'Row_Delete'){
+        }else if(action === 'DELETE'){
 
             this.deleteRowData(row);
 
-        }else if(action === 'Delete'){
-
-            this.realDeleteData();
         }
         this.tableClear();
     }
-    private _estimateDetails: BehaviorSubject<EstimateDetail[]> = new BehaviorSubject(null);
 
+    /* 그리드 추가
+     * @param row
+     */
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
     addRowData(row: any){
 
-        /*this.estimateDetails$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((estimateDetail) => {
-                if(!estimateDetail){
-
-                    estimateDetail.push({
-                        no: estimateDetail.length + 1,
-                        itemCd: '',
-                        itemNm: '',
-                        qtLineNo: 0,
-                        qtPrice: 0,
-                        qty: 0,
-                        remarkDetail: '',
-                        standard: '',
-                        unit: '',
-                        qtAmt:0
-                    });
-                }else{
-                    // @ts-ignore
-                    estimateDetail.push({
-                        no: estimateDetail.length + 1,
-                        itemCd: '',
-                        itemNm: '',
-                        qtLineNo: 0,
-                        qtPrice: 0,
-                        qty: 0,
-                        remarkDetail: '',
-                        standard: '',
-                        unit: '',
-                        qtAmt:0});
-                }
-        });*/
         this.estimateDetails$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe({
-                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                next(estimateDetail) {
-                    if(estimateDetail){
-                        // @ts-ignore
-                        estimateDetail.push({
-                            no: estimateDetail.length + 1,
-                            itemCd: '',
-                            itemNm: '',
-                            qtLineNo: 0,
-                            qtPrice: 0,
-                            qty: 0,
-                            remarkDetail: '',
-                            standard: '',
-                            unit: '',
-                            qtAmt:0});
-                    }else{
-                    }
-                    console.log(estimateDetail);
-                }
-            });
+            .subscribe((estimateDetail) => {
+                // @ts-ignore
+                estimateDetail.push({
+                    no: estimateDetail.length + 1,
+                    flag: 'C',
+                    itemCd: '',
+                    itemNm: '',
+                    qtLineNo: 0,
+                    qtPrice: 0,
+                    qty: 0,
+                    remarkDetail: '',
+                    standard: '',
+                    unit: '',
+                    qtAmt:0});
+        });
     }
 
+    /* 그리드 업데이트
+     * @param element
+     * @param column
+     * @param i
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    updateRowData(element, column: TableConfig, i) {
+
+        if(element.flag !== 'C' || !element.flag){
+            element.flag = 'U';
+        }
+    }
+
+    /* 그리드 삭제
+     * @param row
+     */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     deleteRowData(row: any) {
 
         if(this.selection.hasValue()){
             if(row.selected.length > 0){
-                let check = false;
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let i=0; i<row.selected.length; i++){
                     if(row.selected[i].length){
-                        check = true;
-                    }
-                }
-
-                if(check){
-                    this.realDeleteData();
-                    return;
-                }else{
-                    this.estimateDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((estimateDetail) => {
-                            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                            for(let i=0; i<estimateDetail.length; i++){
-                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                                for(let r=0; r<row.selected.length; r++){
-                                    if(row.selected[r].no === estimateDetail[i].no){
-                                        estimateDetail.splice(i,1);
+                        this.estimateDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimateDetail) => {
+                                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions,@typescript-eslint/prefer-for-of
+                                for(let e=0; e<estimateDetail.length; e++){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    if(row.selected[i].no === estimateDetail[e].no){
+                                        if(estimateDetail[e].flag === 'D'){
+                                            estimateDetail[e].flag = '';
+                                        }else{
+                                            estimateDetail[e].flag = 'D';
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                    }else{
+                        this.estimateDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimateDetail) => {
+                                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                                for(let e=0; e<estimateDetail.length; e++){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    if(row.selected[i].no === estimateDetail[e].no){
+                                        estimateDetail.splice(e,1);
+                                    }
+                                }
+                            });
+                    }
                 }
             }
         }
@@ -429,62 +510,19 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.no + 1}`;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    realDeleteData() {
-        if(this.selection.selected.length === 0){
-            return;
-        }
-
-        const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
-            data: {
-            }
-        });
-
-        deleteConfirm.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result.status){
-                    const sendData: Estimate[] = [];
-                    if(this.selection.selected.length !== 0){
-
-                        this.selection.selected.forEach((param: any) => {
-                            if(param.length){
-                                sendData.push(param);
-                            }
-                        });
-
-                        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                        for (let i=0; i<sendData.length; i++) {
-                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                            sendData[i]['account'] = this.estimateHeaderForm.getRawValue().account;
-                            sendData[i]['qtNo'] = this.estimateHeaderForm.getRawValue().qtNo;
-                            sendData[i]['type'] = this.estimateHeaderForm.getRawValue().type;
-                            sendData[i]['status'] = this.estimateHeaderForm.getRawValue().status;
-                            sendData[i]['remarkHeader'] = this.estimateHeaderForm.getRawValue().remarkHeader;
-                        }
-                    }
-
-                    this._estimateService.deleteEstimate(sendData)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe(
-                            (param: any) => {
-                                if(param.status === 'SUCCESS'){
-                                    this.backPage();
-                                    // Mark for check
-                                    this._changeDetectorRef.markForCheck();
-                                }
-                            },(response) => {});
-                }
-        });
-    }
-
+    /* 그리드 셀 클릭(팝업)
+     * @param element
+     * @param column
+     * @param i
+     */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
         if(column.dataField === 'itemCd'){
 
             const popup =this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
-                    popup : 'P$_ALL_ITEM'
+                    popup : 'P$_ALL_ITEM',
+                    headerText : '품목 조회',
                 },
                 autoFocus: false,
                 maxHeight: '90vh',

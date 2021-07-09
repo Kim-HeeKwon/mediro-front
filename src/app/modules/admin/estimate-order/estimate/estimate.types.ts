@@ -26,6 +26,7 @@ export interface Estimate
 }
 export class EstimateHeader
 {
+    no?: number;
     mId: string;                //회원사
     account: string;            //고객사
     qtNo: string;               //견적번호
@@ -53,6 +54,7 @@ export class EstimateHeader
 export interface EstimateDetail
 {
     no?: number;
+    flag?: string;
     qtLineNo: number;
     itemCd: string;
     itemNm: string;

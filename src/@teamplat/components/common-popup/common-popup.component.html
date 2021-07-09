@@ -8,7 +8,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">공통팝업</div>
+        <div class="text-lg font-medium">{{headerText}}</div>
         <button
             mat-icon-button
             (click)="_matDialogRef.close()"

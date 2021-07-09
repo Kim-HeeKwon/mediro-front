@@ -151,8 +151,12 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         const popup =this._matDialogPopup.open(CommonPopupComponent, {
             data: {
-                popup : 'P$_ACCOUNT'
-            }
+                popup : 'P$_ACCOUNT',
+                headerText : '거래처 조회',
+            },
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
         });
         popup.afterClosed().subscribe((result) => {
             if(result){

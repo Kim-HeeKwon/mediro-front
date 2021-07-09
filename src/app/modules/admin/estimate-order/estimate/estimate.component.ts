@@ -26,6 +26,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     estimateHeadersCount: number = 0;
     estimateHeadersTableColumns: string[] = [
         'select',
+        'no',
         'qtCreDate',
         'qtDate',
         'qtNo',
@@ -79,6 +80,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             searchCondition: ['100'],
             searchText: [''],
         });
+
+        this._estimateService.getHeader();
 
         // getHeader
         this.estimateHeaders$ = this._estimateService.estimateHeaders$;
@@ -160,8 +163,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['estimate-order/estimate/estimate-detail' , row]);
     }
 
-    createDetail(): void{
-        //this._router.navigate(['estimate-order/estimate/estimate-detail' , {}]);
+    newEstimate(): void{
+        this._router.navigate(['estimate-order/estimate/estimate-new' , {}]);
     }
     /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle(): SelectionModel<any> {
@@ -169,8 +172,11 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selection.clear();
             return;
         }
-
-        this.selection.select(this.estimateHeaders$);
+        this.estimateHeaders$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateHeader) =>{
+                this.selection.select(...estimateHeader);
+            });
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
@@ -185,7 +191,11 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!row) {
             return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
         }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.no + 1}`;
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateConfirm() {
+        console.log(this.selection.selected);
+    }
 }

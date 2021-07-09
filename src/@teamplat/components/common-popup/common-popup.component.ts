@@ -51,6 +51,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     pagenation: PopupPagenation | null = null;
 
     commonValues: Column[] = [];
+    headerText: string = '공통팝업';
 
     type: CommonCode[] = [];
 
@@ -66,6 +67,9 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         private _popupStore: PopupStore) {
         this.popupInfo = _utilService.commonPopupValue(_popupStore.getValue().data, data.popup);
         this.asPopupCd = data.popup;
+        if(data.headerText){
+            this.headerText = data.headerText;
+        }
     }
 
     ngOnInit(): void {
