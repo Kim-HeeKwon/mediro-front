@@ -30,21 +30,21 @@ export class EstimateService {
                 private _common: Common) {
     }
     /**
-     * Getter for product
+     * Getter for Header
      */
     get estimateHeader$(): Observable<EstimateHeader>
     {
         return this._estimateHeader.asObservable();
     }
     /**
-     * Getter for Estimate Header
+     * Getter for Header
      */
     get estimateHeaders$(): Observable<EstimateHeader[]>
     {
         return this._estimateHeaders.asObservable();
     }
     /**
-     * Getter for EstimateHeader Pagenation
+     * Getter for Header Pagenation
      */
     get estimateHeaderPagenation$(): Observable<EstimateHeaderPagenation>
     {
@@ -52,14 +52,14 @@ export class EstimateService {
     }
 
     /**
-     * Getter for Estimate Header
+     * Getter for Detail
      */
     get estimateDetails$(): Observable<EstimateDetail[]>
     {
         return this._estimateDetails.asObservable();
     }
     /**
-     * Getter for EstimateHeader Pagenation
+     * Getter for Detail Pagenation
      */
     get estimateDetailPagenation$(): Observable<EstimateDetailPagenation>
     {

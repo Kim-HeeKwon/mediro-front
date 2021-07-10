@@ -7,7 +7,7 @@ import {OrderService} from './order.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AccountResolver implements Resolve<any> {
+export class OrderResolvers implements Resolve<any> {
     coinChartWidget: any[];
 
     /**
@@ -27,7 +27,9 @@ export class AccountResolver implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
 
-            Promise.all([]).then(
+            Promise.all([
+                this._orderService.getHeader()
+            ]).then(
                 () => {
                     // @ts-ignore
                     resolve();

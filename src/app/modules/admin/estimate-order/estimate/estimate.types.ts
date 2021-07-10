@@ -28,7 +28,7 @@ export class EstimateHeader
 {
     no?: number;
     mId: string;                //회원사
-    account: string;            //고객사
+    account: string;            //거래처
     qtNo: string;               //견적번호
     type: string;               //유형
     status: string;             //상태
