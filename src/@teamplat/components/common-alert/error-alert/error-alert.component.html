@@ -1,0 +1,20 @@
+<!--<h1 mat-dialog-title>!!!!</h1>-->
+<div mat-dialog-content>
+
+</div>
+<div class="m-4">
+    <p style="text-align: center;">{{errorMsg}}</p>
+    <ng-container>
+        <div class="flex items-center justify-between mt-4" style="float: right;">
+            <!-- Close -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'"
+                (click)="onClose()">
+                확인
+            </button>
+
+        </div>
+    </ng-container>
+</div>

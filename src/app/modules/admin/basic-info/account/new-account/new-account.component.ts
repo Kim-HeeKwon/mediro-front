@@ -19,6 +19,7 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
 
 declare let daum: any;
 
@@ -149,19 +150,24 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
+        const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
             data: {
-                popup : 'P$_ACCOUNT',
                 headerText : '거래처 조회',
+                url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                code: 'UDI_BCNC',
+                tail : false,
+                mediroUrl : 'bcnc/company-info',
+                tailKey : '',
             },
             autoFocus: false,
             maxHeight: '90vh',
             disableClose: true
         });
-        popup.afterClosed().subscribe((result) => {
+        popupUdi.afterClosed().subscribe((result) => {
             if(result){
-                this.selectedAccountForm.patchValue({'account': result.accountCd});
-                this.selectedAccountForm.patchValue({'descr': result.accountNm});
+                this.selectedAccountForm.patchValue({'account': result.bcncCode});
+                this.selectedAccountForm.patchValue({'descr': result.companyName});
             }
         });
     }
