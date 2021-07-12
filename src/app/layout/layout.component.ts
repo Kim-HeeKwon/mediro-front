@@ -6,7 +6,7 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { FuseConfigService } from '@teamplat/services/config';
 import { FuseMediaWatcherService } from '@teamplat/services/media-watcher';
 import { FuseTailwindService } from '@teamplat/services/tailwind/tailwind.service';
-import { FUSE_VERSION } from '@teamplat/version';
+import { FUSE_VERSION, TEAMPLAT_VERSION } from '@teamplat/version';
 import { Layout } from 'app/layout/layout.types';
 import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 
@@ -110,7 +110,8 @@ export class LayoutComponent implements OnInit, OnDestroy
         });
 
         // Set the app version
-        this._renderer2.setAttribute(this._document.querySelector('[ng-version]'), 'fuse-version', FUSE_VERSION);
+        //this._renderer2.setAttribute(this._document.querySelector('[ng-version]'), 'fuse-version', FUSE_VERSION);
+        this._renderer2.setAttribute(this._document.querySelector('[ng-version]'), 'fuse-version', TEAMPLAT_VERSION);
     }
 
     /**

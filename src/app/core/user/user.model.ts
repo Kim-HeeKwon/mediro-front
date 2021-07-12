@@ -18,4 +18,8 @@ export interface User
     phone?: number;
     userType?: string;
     imgPath?: string;
+    udiClientSecret?: string;
+    udiClientId?: string;
+    initYn?: string;
+    udiInfoYn?: string;
 }

@@ -5,17 +5,19 @@
         <mat-form-field
             class="fuse-mat-no-subscript w-full"
             [floatLabel]="'always'">
-            <mat-label>Add team members</mat-label>
+            <mat-label>멤버 추가</mat-label>
             <mat-icon
                 class="icon-size-5"
                 [svgIcon]="'heroicons_solid:user'"
                 matPrefix></mat-icon>
             <input
                 matInput
+                [(ngModel)]="teamEmail"
                 [placeholder]="'Email address'">
             <button
                 mat-icon-button
-                matSuffix>
+                matSuffix
+                (click)="openAddTeam()">
                 <mat-icon
                     class="icon-size-5"
                     [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>

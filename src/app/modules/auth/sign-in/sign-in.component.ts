@@ -5,6 +5,7 @@ import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import {SessionStore} from "../../../core/session/state/session.store";
 
 @Component({
     selector     : 'auth-sign-in',
@@ -31,7 +32,8 @@ export class AuthSignInComponent implements OnInit
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
         private _router: Router,
-        private cookieService: CookieService
+        private cookieService: CookieService,
+        private _sessionStore: SessionStore,
     )
     {
     }
@@ -69,11 +71,9 @@ export class AuthSignInComponent implements OnInit
      */
     signIn(): void
     {
-        console.log(this.signInForm);
         // Return if the form is invalid
         if ( this.signInForm.invalid )
         {
-            console.log('인벨리드?');
             return;
         }
 
@@ -91,14 +91,21 @@ export class AuthSignInComponent implements OnInit
                     this.cookieService.set( 'remeberMe', 'Y' );
                     this.cookieService.set( 'email', this.signInForm.value.email );
 
-                    // Set the redirect url.
-                    // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                    // to the correct page after a successful sign in. This way, that url can be set via
-                    // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                    //첫 로그인 유저 패스원드 강제 입력
+                    console.log(this._sessionStore.getValue());
 
-                    // Navigate to the redirect url
-                    this._router.navigateByUrl(redirectURL);
+                    if(this._sessionStore.getValue().initYn === 'Y'){
+                        this._router.navigateByUrl('/pages/settings/security');
+                    }else{
+                        // Set the redirect url.
+                        // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+                        // to the correct page after a successful sign in. This way, that url can be set via
+                        // routing file and we don't have to touch here.
+                        const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+
+                        // Navigate to the redirect url
+                        this._router.navigateByUrl(redirectURL);
+                    }
 
                 },
                 (response) => {

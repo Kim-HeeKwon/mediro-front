@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector       : 'settings-security',
@@ -31,10 +31,22 @@ export class SettingsSecurityComponent implements OnInit
     {
         // Create the form
         this.securityForm = this._formBuilder.group({
-            currentPassword  : [''],
-            newPassword      : [''],
+            currentPassword  : ['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9@$!%*#?&]+$/),
+                Validators.minLength(8),
+                Validators.maxLength(20)]],
+            newPassword      : ['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9@$!%*#?&]+$/),
+                Validators.minLength(8),
+                Validators.maxLength(20)]],
             twoStep          : [true],
-            askPasswordChange: [false]
+            askPasswordChange: [false],
+            id        : [''],
+            password  : ['', [Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9@$!%*#?&]+$/),
+                Validators.minLength(8),
+                Validators.maxLength(20)]],
         });
+    }
+
+    changePassword(): void{
+        console.log(this.securityForm.getRawValue());
     }
 }

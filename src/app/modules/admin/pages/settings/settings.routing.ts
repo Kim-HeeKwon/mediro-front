@@ -5,5 +5,9 @@ export const settingsRoutes: Route[] = [
     {
         path     : '',
         component: SettingsComponent
+    },
+    {
+        path     : ':id',
+        component: SettingsComponent
     }
 ];

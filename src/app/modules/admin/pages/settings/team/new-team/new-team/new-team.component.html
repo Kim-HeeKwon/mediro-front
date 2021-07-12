@@ -1,0 +1,117 @@
+<div class="flex flex-col flex-auto md:w-180 md:min-w-180 sm:w-full sm:min-w-full -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">멤버등록</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="userForm">
+            <div class="p-8">
+                <div class="flex w-full">
+                    <!-- Name -->
+                    <mat-form-field class="w-full">
+                        <mat-label>이메일(아이디)</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:pencil'"
+                            matPrefix></mat-icon>
+                        <input
+                            matInput
+                            [formControlName]="'id'"
+                            [attr.disabled]="is_edit?'':false">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <!-- Name -->
+                    <mat-form-field class="w-full">
+                        <mat-label>초기비밀번호</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:key'"
+                            matPrefix></mat-icon>
+                        <input
+                            matInput
+                            type="password"
+                            [formControlName]="'password'"
+                            [attr.disabled]="is_edit?'':false">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <!-- Name -->
+                    <mat-form-field class="w-full">
+                        <mat-label>이름</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:user'"
+                            matPrefix></mat-icon>
+                        <input
+                            matInput
+                            [formControlName]="'name'"
+                            [attr.disabled]="is_edit?'':false">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-full">
+                        <mat-label>전화번호</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:phone'"
+                            matPrefix></mat-icon>
+                        <input
+                            matInput
+                            type="number"
+                            [formControlName]="'phone'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full">
+                    <mat-form-field class="w-full">
+                        <mat-label>역할</mat-label>
+                        <mat-select [formControlName]="'userType'" [attr.disabled]="is_edit?'':false">
+                            <ng-container *ngFor="let itemgrade of itemGrades">
+                                <mat-option [value]="itemgrade.id">
+                                    {{itemgrade.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex items-center justify-between mt-4">
+                <!-- Close -->
+                <button
+                    mat-flat-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <!-- Save -->
+                <button
+                    mat-flat-button
+                    [color]="'accent'"
+                    (click)="addTeamMember()">
+                    멤버추가
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>

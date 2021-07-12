@@ -119,17 +119,12 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        console.log('user Check!!');
-        console.log(strJson);
-
         return this._api.post('user.userLogin.do', strJson).pipe(
             switchMap((response: any) => {
                 // tslint:disable-next-line:triple-equals
                 if (response.status !== 95){
                     return throwError('패스워드가 옳지 않습니다.');
                 }
-
-                console.log(response);
                 this.accessToken = response.resultD.accessToken;
                 this.userEmail = response.resultD.email;
                 this.userMid = response.resultD.mid;
@@ -140,6 +135,9 @@ export class AuthService
                 // Store the user on the user service
                 this._user = response.resultD;
                 this._userService.user = response.resultD;
+
+                console.log('user Check!!');
+                console.log(response.resultD);
 
                 // Store the akita store
                 this._sessionStore.update(response.resultD);
@@ -183,6 +181,8 @@ export class AuthService
                 // Store the user on the user service
                 this._user = response.resultD;
                 this._userService.user = response.resultD;
+
+                this._sessionStore.update(response.resultD);
 
                 return of(true);
             })

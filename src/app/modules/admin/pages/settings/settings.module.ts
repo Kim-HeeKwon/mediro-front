@@ -17,6 +17,10 @@ import { SettingsPlanBillingComponent } from 'app/modules/admin/pages/settings/p
 import { SettingsNotificationsComponent } from 'app/modules/admin/pages/settings/notifications/notifications.component';
 import { SettingsTeamComponent } from 'app/modules/admin/pages/settings/team/team.component';
 import { settingsRoutes } from 'app/modules/admin/pages/settings/settings.routing';
+import {MatTableModule} from "@angular/material/table";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatDialogModule} from "@angular/material/dialog";
+import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
 
 @NgModule({
     declarations: [
@@ -25,7 +29,8 @@ import { settingsRoutes } from 'app/modules/admin/pages/settings/settings.routin
         SettingsSecurityComponent,
         SettingsPlanBillingComponent,
         SettingsNotificationsComponent,
-        SettingsTeamComponent
+        SettingsTeamComponent,
+        NewTeamComponent
     ],
     imports     : [
         RouterModule.forChild(settingsRoutes),
@@ -37,6 +42,9 @@ import { settingsRoutes } from 'app/modules/admin/pages/settings/settings.routin
         MatSelectModule,
         MatSidenavModule,
         MatSlideToggleModule,
+        MatTableModule,
+        MatTooltipModule,
+        MatDialogModule,
         FuseAlertModule,
         SharedModule
     ]

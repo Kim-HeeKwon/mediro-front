@@ -3,6 +3,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@teamplat/services/media-watcher';
+import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
 
 @Component({
     selector       : 'settings',
@@ -23,6 +24,7 @@ export class SettingsComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(
+        private _route: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     )
@@ -38,37 +40,40 @@ export class SettingsComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        if(this._route.snapshot.paramMap.get('id') !== null){
+            this.goToPanel(this._route.snapshot.paramMap.get('id'));
+        }
         // Setup available panels
         this.panels = [
             {
                 id         : 'account',
                 icon       : 'heroicons_outline:user-circle',
                 title      : '계정',
-                description: 'Manage your public profile and private information'
+                description: '프로필 및 개인 정보 관리'
             },
             {
                 id         : 'security',
                 icon       : 'heroicons_outline:lock-closed',
                 title      : '비밀번호',
-                description: 'Manage your password and 2-step verification preferences'
+                description: '비밀번호 정보 관리'
             },
-            {
-                id         : 'plan-billing',
-                icon       : 'heroicons_outline:credit-card',
-                title      : '결제',
-                description: 'Manage your subscription plan, payment method and billing information'
-            },
-            {
-                id         : 'notifications',
-                icon       : 'heroicons_outline:bell',
-                title      : '셋팅',
-                description: 'Manage when you\'ll be notified on which channels'
-            },
+            // {
+            //     id         : 'plan-billing',
+            //     icon       : 'heroicons_outline:credit-card',
+            //     title      : '결제',
+            //     description: 'Manage your subscription plan, payment method and billing information'
+            // },
+            // {
+            //     id         : 'notifications',
+            //     icon       : 'heroicons_outline:bell',
+            //     title      : '셋팅',
+            //     description: 'Manage when you\'ll be notified on which channels'
+            // },
             {
                 id         : 'team',
                 icon       : 'heroicons_outline:user-group',
-                title      : '계정',
-                description: 'Manage your existing team and change roles/permissions'
+                title      : '멤버',
+                description: '팀 권한 및 멤버 정보 관리'
             }
         ];
 

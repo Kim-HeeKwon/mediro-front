@@ -1,4 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {NewItemComponent} from "../../../basic-info/items/new-item/new-item.component";
+import {MatDialog} from "@angular/material/dialog";
+import {NewTeamComponent} from "./new-team/new-team/new-team.component";
 
 @Component({
     selector       : 'settings-team',
@@ -10,11 +13,12 @@ export class SettingsTeamComponent implements OnInit
 {
     members: any[];
     roles: any[];
+    teamEmail: string = '';
 
     /**
      * Constructor
      */
-    constructor()
+    constructor( private _matDialog: MatDialog,)
     {
     }
 
@@ -106,5 +110,17 @@ export class SettingsTeamComponent implements OnInit
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
+    }
+
+    openAddTeam(): void{
+        this._matDialog.open(NewTeamComponent, {
+            autoFocus: false,
+            data     : {
+                teamData: {'id':this.teamEmail}
+            },
+            maxHeight: '90vh',
+            //width: '90vw',
+            disableClose: true
+        });
     }
 }
