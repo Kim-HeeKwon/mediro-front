@@ -90,6 +90,10 @@
                 <div class="flex w-full">
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>대표자명</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:user'"
+                            matPrefix></mat-icon>
                         <input
                             matInput
                             [formControlName]="'representName'">
@@ -126,6 +130,10 @@
                 <div class="flex w-full">
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>대표 전화</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:phone'"
+                            matPrefix></mat-icon>
                         <input
                             type="number"
                             matInput
@@ -140,6 +148,10 @@
                     </mat-form-field>
                     <mat-form-field class="w-2/6 pr-2">
                         <mat-label>이메일</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:mail'"
+                            matPrefix></mat-icon>
                         <input
                             matInput
                             [formControlName]="'email'">
