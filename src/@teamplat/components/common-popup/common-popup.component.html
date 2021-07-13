@@ -1,5 +1,4 @@
-<div style="top: 10% !important;right: 10% !important;bottom: 10% !important;left: 10% !important;border-radius: 20px;"
-     class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+<div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
         <!-- Loader -->
@@ -86,7 +85,7 @@
 
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
-        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+        <div class="flex flex-col flex-auto overflow-hidden">
             <ng-container *ngIf="popupCount > 0; else noPopup">
 
                 <!-- Table wrapper -->
@@ -157,7 +156,7 @@
                     </table>
                 </div>
                 <mat-paginator
-                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                    class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                     [ngClass]="{'pointer-events-none': isLoading}"
                     [length]="pagenation.length"
                     [pageIndex]="pagenation.page"

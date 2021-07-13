@@ -247,8 +247,7 @@
                             </table>
 
                             <mat-paginator
-                                style="position: sticky;"
-                                class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                 [ngClass]="{'pointer-events-none': isLoading}"
                                 [length]="0"
                                 [pageIndex]="0"
@@ -260,10 +259,10 @@
 
                     </div>
                 </mat-tab>
-                <!--<mat-tab label="최근 견적서">
+                <mat-tab label="최근 견적서">
                 </mat-tab>
                 <mat-tab label="자주 쓰는 거래처">
-                </mat-tab>-->
+                </mat-tab>
             </mat-tab-group>
         </div>
     </div>
