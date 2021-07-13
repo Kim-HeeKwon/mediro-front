@@ -18,7 +18,6 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
-import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
 
 declare let daum: any;
@@ -70,10 +69,12 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            account: ['', [Validators.required]], // 고객사
-            descr: ['', [Validators.required]],   // 고객사 명
+            account: [{value:'',disabled:true}, [Validators.required]], // 거래처
+            udiAccount: [''],
+            udiHptlSymbl: [''],
+            descr: ['', [Validators.required]],   // 거래처 명
             accountType: ['', [Validators.required]],   // 유형
-            custBusinessNumber : [''],
+            custBusinessNumber : [[Validators.required]],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],
@@ -109,6 +110,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         if(!this.selectedAccountForm.invalid){
             this.showAlert = false;
+            this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
 
                 this.alertMessage(newAccount);
@@ -120,7 +122,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '고객사와 고객사 명을 입력해주세요.'
+                message: '사업자 번호와 거래처 명, 유형을 입력해주세요.'
             };
 
             // Show the alert
@@ -166,8 +168,32 @@ export class NewAccountComponent implements OnInit, OnDestroy
         });
         popupUdi.afterClosed().subscribe((result) => {
             if(result){
-                this.selectedAccountForm.patchValue({'account': result.bcncCode});
+                this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
+                this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
                 this.selectedAccountForm.patchValue({'descr': result.companyName});
+                this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
+                this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
+                this.selectedAccountForm.patchValue({'representName': result.bossName});
+                this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
+
+                const taxNo = Number((result.taxNo).replace(/-/g,''));
+                const entpAddr = result.entpAddr.split(',');
+
+                let address = '';
+                if(entpAddr[0] !== undefined){
+                    address = entpAddr[0];
+                }
+                let addressDetail = '';
+                if(entpAddr[1] !== undefined){
+                    for(let i=1; i<entpAddr.length; i++){
+                        addressDetail += entpAddr[i];
+                    }
+                }
+
+                this.selectedAccountForm.patchValue({'address': address});
+                this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
+                this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
+                this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
             }
         });
     }

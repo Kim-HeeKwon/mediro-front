@@ -23,6 +23,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {postcode} from '../../../../../assets/js/postCode';
 import {geodata} from '../../../../../assets/js/geoCode';
 import {DeleteAlertComponent} from '../../../../../@teamplat/components/common-alert/delete-alert';
+import {CommonUdiComponent} from "../../../../../@teamplat/components/common-udi";
 
 @Component({
     selector: 'app-account',
@@ -83,6 +84,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private _matDialog: MatDialog,
+        public _matDialogPopup: MatDialog,
         private _formBuilder: FormBuilder,
         private _renderer: Renderer2,
         private _accountService: AccountService,
@@ -108,6 +110,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             account: ['', [Validators.required]], // 거래처 코드
+            udiAccount: [''],
+            udiHptlSymbl: [''],
             descr: ['', [Validators.required]],   // 거래처 명
             accountType: ['', [Validators.required]],   // 유형
             custBusinessNumber : [''],
@@ -228,6 +232,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.selectedAccountForm.controls['account'].disable();
         this.selectedAccountForm.controls['accountType'].disable();
+        this.selectedAccountForm.controls['custBusinessNumber'].disable();
 
         // Get the product by account
         this._accountService.getAccountsById(account)
@@ -281,6 +286,32 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
     /**
+     * Add a new note
+     */
+    createUdiAccount(): void
+    {
+        const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+            data: {
+                headerText : '거래처 조회',
+                url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                code: 'UDI_BCNC',
+                tail : false,
+                mediroUrl : 'bcnc/company-info',
+                tailKey : '',
+            },
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
+        });
+
+        popupUdi.afterClosed().subscribe((result) => {
+            if(result){
+                console.log(result);
+            }
+        });
+    }
+    /**
      * 업데이트
      */
     updateAccount(): void
@@ -289,6 +320,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
+        accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
 
         this._accountService.updateAccount(accountData)
             .subscribe(
@@ -310,7 +342,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
-
+        accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
 
         const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
             data: {

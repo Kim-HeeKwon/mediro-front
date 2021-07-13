@@ -68,9 +68,16 @@
                 class="ml-2"
                 mat-flat-button
                 [color]="'accent'"
+                (click)="createUdiAccount()">
+                <span class="ml-2 mr-1">UDI Portal 거래처 가져오기</span>
+            </button>
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'accent'"
                 (click)="createAccount()">
                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">신규등록</span>
+                <span class="ml-2 mr-1">신규</span>
             </button>
         </div>
     </div>
@@ -155,20 +162,12 @@
                                                                     matInput
                                                                     [formControlName]="'account'">
                                                             </mat-form-field>
-                                                            <mat-form-field class="w-3/6 pr-2">
+                                                            <mat-form-field class="w-4/6 pr-2">
                                                                 <mat-label>거래처 명</mat-label>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'descr'">
                                                             </mat-form-field>
-                                                            <button
-                                                                class="w-1/6"
-                                                                mat-flat-button
-                                                                [color]="'accent'"
-                                                                (click)="accountSearch()"
-                                                                [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
-                                                                검색
-                                                            </button>
                                                         </div>
                                                         <div class="flex">
                                                             <mat-form-field class="w-2/6 pr-2">
@@ -184,6 +183,7 @@
                                                             <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>사업자번호</mat-label>
                                                                 <input
+                                                                    type="number"
                                                                     matInput
                                                                     [formControlName]="'custBusinessNumber'">
                                                             </mat-form-field>
@@ -199,6 +199,10 @@
 
                                                             <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>대표자명</mat-label>
+                                                                <mat-icon
+                                                                    class="icon-size-5"
+                                                                    [svgIcon]="'heroicons_solid:user'"
+                                                                    matPrefix></mat-icon>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'representName'">
@@ -235,18 +239,28 @@
                                                         <div class="flex">
                                                             <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>대표 전화</mat-label>
+                                                                <mat-icon
+                                                                    class="icon-size-5"
+                                                                    [svgIcon]="'heroicons_solid:phone'"
+                                                                    matPrefix></mat-icon>
                                                                 <input
+                                                                    type="number"
                                                                     matInput
                                                                     [formControlName]="'phoneNumber'">
                                                             </mat-form-field>
                                                             <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>팩스</mat-label>
                                                                 <input
+                                                                    type="number"
                                                                     matInput
                                                                     [formControlName]="'fax'">
                                                             </mat-form-field>
                                                             <mat-form-field class="w-2/6 pr-2">
                                                                 <mat-label>이메일</mat-label>
+                                                                <mat-icon
+                                                                    class="icon-size-5"
+                                                                    [svgIcon]="'heroicons_solid:mail'"
+                                                                    matPrefix></mat-icon>
                                                                 <input
                                                                     matInput
                                                                     [formControlName]="'email'">
