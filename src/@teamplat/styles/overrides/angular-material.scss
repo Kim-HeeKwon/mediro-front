@@ -1368,7 +1368,12 @@
                             min-width: 0 !important;
                             height: 40px !important;
                             padding: 0 20px !important;
-                            border-radius: 9999px !important;
+                            //border-radius: 9999px !important;
+                            border-top-right-radius: 3px !important;
+                            border-top-left-radius: 3px !important;
+                            border-bottom-right-radius: 0 !important;
+                            border-bottom-left-radius: 0 !important;
+                            background-color: #b7b7b7b3 !important;
                             @apply text-secondary;
 
                             &.mat-tab-label-active {
