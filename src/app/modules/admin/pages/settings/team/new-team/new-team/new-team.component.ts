@@ -13,7 +13,10 @@ import {FuseAlertType} from '@teamplat/components/alert';
 import {fuseAnimations} from '@teamplat/animations';
 import {ItemSearchComponent} from '@teamplat/components/item-search';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
-import {Crypto} from "../../../../../../../../@teamplat/providers/common/crypto";
+import {Crypto} from "@teamplat/providers/common/crypto";
+import {Common} from "@teamplat/providers/common/common";
+import {SessionStore} from "../../../../../../../core/session/state/session.store";
+import {CodeStore} from "../../../../../../../core/common-code/state/code.store";
 
 @Component({
     selector       : 'new-team',
@@ -24,7 +27,6 @@ import {Crypto} from "../../../../../../../../@teamplat/providers/common/crypto"
 })
 export class NewTeamComponent implements OnInit, OnDestroy
 {
-    selectedItemForm: FormGroup;
     userForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     alert: { type: FuseAlertType; message: string } = {
@@ -47,8 +49,10 @@ export class NewTeamComponent implements OnInit, OnDestroy
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
+        private _sessionStore: SessionStore,
+        private _codeStore: CodeStore,
+        private _common: Common,
         public matDialogRef: MatDialogRef<NewTeamComponent>,
-        public _matDialogPopup: MatDialog,
         private _cryptoJson: Crypto,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
@@ -61,7 +65,6 @@ export class NewTeamComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        console.log(this.data.teamData);
         this.userForm = this._formBuilder.group({
             id: [this.data.teamData.id, [Validators.required, Validators.email]],
             name: ['', [Validators.required]],
@@ -70,8 +73,9 @@ export class NewTeamComponent implements OnInit, OnDestroy
             businessName: [''],
             userType: [''],
             phone:  [ '', [Validators.required]],
+            ciphertext: [''],
             password:[''],
-            passphrase: [],
+            passPhrase: [],
             salt: [],
             iv: []
         });
@@ -102,13 +106,18 @@ export class NewTeamComponent implements OnInit, OnDestroy
                 strJson = this._cryptoJson.getStringCryto(this.userForm.getRawValue().password);
             }
             strJson.ciphertext = encodeURIComponent(strJson.ciphertext);
-            this.userForm.patchValue({password:strJson.ciphertext});
-            this.userForm.patchValue({passphrase:strJson.passPhrase});
+            this.userForm.patchValue({ciphertext:strJson.ciphertext});
+            this.userForm.patchValue({passPhrase:strJson.passPhrase});
             this.userForm.patchValue({salt:strJson.salt});
             this.userForm.patchValue({iv:strJson.iv});
             this.userForm.patchValue({email:this.userForm.getRawValue().id});
 
-            console.log(this.userForm.getRawValue());
+            this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/add-member')
+                .subscribe((response: any) => {
+                    this.alertMessage(response);
+
+                    this._changeDetectorRef.markForCheck();
+                });
         }else{
             // Set the alert
             this.alert = {

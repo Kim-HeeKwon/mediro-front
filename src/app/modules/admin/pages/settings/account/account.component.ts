@@ -26,9 +26,9 @@ export class SettingsAccountComponent implements OnInit
      */
     constructor(
         private _sessionStore: SessionStore,
+        private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _cryptoJson: Crypto,
-        private _codeStore: CodeStore,
         private _common: Common,
         private _formBuilder: FormBuilder
     )

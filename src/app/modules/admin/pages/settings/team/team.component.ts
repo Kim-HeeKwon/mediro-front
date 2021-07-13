@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NewItemComponent} from "../../../basic-info/items/new-item/new-item.component";
 import {MatDialog} from "@angular/material/dialog";
 import {NewTeamComponent} from "./new-team/new-team/new-team.component";
+import {SessionStore} from "../../../../../core/session/state/session.store";
+import {CodeStore} from "../../../../../core/common-code/state/code.store";
+import {Common} from "@teamplat/providers/common/common";
+import {User} from "../../../../../core/user/user.model";
 
 @Component({
     selector       : 'settings-team',
@@ -12,13 +16,18 @@ import {NewTeamComponent} from "./new-team/new-team/new-team.component";
 export class SettingsTeamComponent implements OnInit
 {
     members: any[];
+    teamMembers: User[];
     roles: any[];
     teamEmail: string = '';
 
     /**
      * Constructor
      */
-    constructor( private _matDialog: MatDialog,)
+    constructor( private _matDialog: MatDialog,
+                 private _sessionStore: SessionStore,
+                 private _codeStore: CodeStore,
+                 private _changeDetectorRef: ChangeDetectorRef,
+                 private _common: Common)
     {
     }
 
@@ -31,6 +40,7 @@ export class SettingsTeamComponent implements OnInit
      */
     ngOnInit(): void
     {
+        this.memberList();
         // Setup the team members
         this.members = [
             {
@@ -80,19 +90,14 @@ export class SettingsTeamComponent implements OnInit
         // Setup the roles
         this.roles = [
             {
-                label      : 'Read',
-                value      : 'read',
-                description: 'Can read and clone this repository. Can also open and comment on issues and pull requests.'
+                label      : 'ADMIN',
+                value      : 'UG10',
+                description: '멤버를 추가,삭제 할 수 있으며, UDI 정보를 셋팅할 수 있습니다.'
             },
             {
-                label      : 'Write',
-                value      : 'write',
-                description: 'Can read, clone, and push to this repository. Can also manage issues and pull requests.'
-            },
-            {
-                label      : 'Admin',
-                value      : 'admin',
-                description: 'Can read, clone, and push to this repository. Can also manage issues, pull requests, and repository settings, including adding collaborators.'
+                label      : 'MEMBER',
+                value      : 'UG20',
+                description: '멤버를 추가,삭제 할수 없으며, UDI 정보를 셋팅할 수 없습니다.'
             }
         ];
     }
@@ -122,5 +127,12 @@ export class SettingsTeamComponent implements OnInit
             //width: '90vw',
             disableClose: true
         });
+    }
+    memberList(): void{
+        this._common.sendData(this._sessionStore.getValue(),' /v1/api/auth/member-list')
+            .subscribe((response: any) => {
+                this.teamMembers = response.data;
+                this._changeDetectorRef.markForCheck();
+            });
     }
 }
