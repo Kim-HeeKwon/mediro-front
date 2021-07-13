@@ -149,7 +149,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.orderHeaderForm.patchValue({'account': ''});
-        this.orderHeaderForm.patchValue({'type': 'PN'});
+        this.orderHeaderForm.patchValue({'type': '1'});
         this.orderHeaderForm.patchValue({'status': 'N'});
         this.orderHeaderForm.patchValue({'ibNo': ''});
         this.orderHeaderForm.patchValue({'remarkHeader': ''});

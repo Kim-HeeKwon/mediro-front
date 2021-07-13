@@ -149,7 +149,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.salesorderHeaderForm.patchValue({'account': ''});
-        this.salesorderHeaderForm.patchValue({'type': 'SN'});
+        this.salesorderHeaderForm.patchValue({'type': '1'});
         this.salesorderHeaderForm.patchValue({'status': 'N'});
         this.salesorderHeaderForm.patchValue({'obNo': ''});
         this.salesorderHeaderForm.patchValue({'remarkHeader': ''});
