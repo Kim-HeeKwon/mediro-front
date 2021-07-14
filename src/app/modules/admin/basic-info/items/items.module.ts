@@ -25,6 +25,7 @@ import { NewItemComponent } from './new-item/new-item.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '@teamplat/components/alert';
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 const itemsRoutes: Route[] = [
     {
@@ -44,6 +45,7 @@ const itemsRoutes: Route[] = [
     imports: [
         CommonModule,
         RouterModule.forChild(itemsRoutes),
+        MatSidenavModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,

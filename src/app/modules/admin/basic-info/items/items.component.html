@@ -1,507 +1,626 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
-    <!-- Header -->
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
-        <!-- Title -->
-        <div class="flex-row text-3xl font-extrabold tracking-tight">
-            품목관리</div>
-    </div>
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-        <!-- 검새조건 -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-            <form
-                [formGroup]="searchForm">
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                    <mat-select [formControlName]="'itemGrade'">
-                        <ng-container *ngFor="let itemgrade of itemGrades">
-                            <mat-option [value]="itemgrade.id">
-                                {{itemgrade.name}}
-                            </mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                    <mat-select [formControlName]="'searchCondition'">
-                        <ng-container *ngFor="let searchcondition of searchCondition">
-                            <mat-option [value]="searchcondition.id">
-                                {{searchcondition.name}}
-                            </mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                    <input
-                        matInput
-                        [formControlName]="'searchText'"
-                        [autocomplete]="'off'"
-                        [placeholder]="'검색조건을 선택해주세요.'">
-                </mat-form-field>
-                <!-- Search -->
-<!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
-<!--                    <mat-icon-->
-<!--                        matPrefix-->
-<!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
-<!--                    <input-->
-<!--                        matInput-->
-<!--                        [formControlName]="'searchText'"-->
-<!--                        [autocomplete]="'off'"-->
-<!--                        [placeholder]="'상품검색'">-->
-<!--                </mat-form-field>-->
-            </form>
-<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
-<!--                <input-->
-<!--                    matInput-->
-<!--                    [matDatepicker]="picker1">-->
-<!--                <mat-datepicker-toggle-->
-<!--                    matSuffix-->
-<!--                    [for]="picker1"></mat-datepicker-toggle>-->
-<!--                <mat-datepicker #picker1></mat-datepicker>-->
-<!--            </mat-form-field>-->
-<!--            <div class=""> -</div>-->
-<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
-<!--                <input-->
-<!--                    matInput-->
-<!--                    [matDatepicker]="picker2">-->
-<!--                <mat-datepicker-toggle-->
-<!--                    matSuffix-->
-<!--                    [for]="picker2"></mat-datepicker-toggle>-->
-<!--                <mat-datepicker #picker2></mat-datepicker>-->
-<!--            </mat-form-field>-->
-        </div>
-        <!-- Actions -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <!-- Add product button -->
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="searchItem()">
-                <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                <span class="ml-2 mr-1">조회</span>
-            </button>
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'accent'"
-                (click)="createItem()">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">신규등록</span>
-            </button>
-        </div>
-        <!-- Loader -->
-        <div
-            class="absolute inset-x-0 bottom-0"
-            *ngIf="isLoading">
-            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-        </div>
-    </div>
+<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
 
-    <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
-        <!-- Item list -->
-        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-            <ng-container *ngIf="itemsCount > 0; else noItems">
-                <!-- Table wrapper -->
-                <div
-                    class="overflow-x-auto sm:overflow-y-auto"
-                    cdkScrollable>
-                    <!-- Table -->
-                    <table
-                        class="w-full min-w-320 table-fixed bg-transparent"
-                        [ngClass]="{'pointer-events-none': isLoading}"
-                        mat-table
-                        matSort
-                        [matSortActive]="'itemCd'"
-                        [matSortDisableClear]="true"
-                        [matSortDirection]="'asc'"
-                        [multiTemplateDataRows]="true"
-                        [dataSource]="items$"
-                        [trackBy]="trackByFn">
+    <mat-drawer-container class="flex-auto sm:h-full">
 
-                        <!-- Details -->
-                        <ng-container matColumnDef="details">
-                            <th
-                                class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef>
-                                상세
-                            </th>
-                            <td
-                                class="pr-8"
-                                mat-cell
-                                *matCellDef="let product">
-                                <button
-                                    class="min-w-10 min-h-7 h-7 px-2 leading-6"
-                                    mat-stroked-button
-                                    (click)="toggleDetails(product.itemCd)">
-                                    <mat-icon
-                                        class="icon-size-5"
-                                        [svgIcon]="selectedItem?.itemCd === product.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
-                                </button>
-                            </td>
-                        </ng-container>
-
-                        <!-- item details row -->
-                        <ng-container matColumnDef="itemDetails">
-                            <td
-                                class="p-0 border-b-0"
-                                mat-cell
-                                *matCellDef="let product"
-                                [attr.colspan]="itemsTableColumns.length">
-                                <ng-container *ngIf="selectedItem?.itemCd === product.itemCd">
-                                    <ng-container
-                                        *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #drawer>
+            <!-- Header -->
+            <div class="flex items-center justify-between m-4 mr-4 sm:my-4">
+                <!-- Title -->
+                <div class="text-3xl font-extrabold tracking-tight leading-none">검색조건</div>
+                <!-- Close button -->
+                <div class="lg:hidden">
+                    <button
+                        mat-icon-button
+                        (click)="drawer.close()">
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- Panel links -->
+            <div class="flex flex-col divide-y border-t border-b">
+                <!-- 검새조건 -->
+                <div class="flex items-center justify-between m-4 mr-6 sm:my-10">
+                    <form
+                        [formGroup]="searchForm">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
+                            <mat-select [formControlName]="'itemGrade'">
+                                <ng-container *ngFor="let itemgrade of itemGrades">
+                                    <mat-option [value]="itemgrade.id">
+                                        {{itemgrade.name}}
+                                    </mat-option>
                                 </ng-container>
-                            </td>
-                            <ng-template
-                                #rowDetailsTemplate
-                                let-product>
-                                <div
-                                    class="shadow-lg overflow-hidden"
-                                    [@expandCollapse]="selectedItem?.itemCd === product.itemCd ? 'expanded' : 'collapsed'">
-                                    <div class="flex border-b">
-                                        <!-- Selected product form -->
-                                        <form
-                                            class="flex flex-col w-full"
-                                            [formGroup]="selectedItemForm">
-                                            <div class="flex p-8">
-                                                <div class="flex flex-auto">
-                                                    <div class="flex flex-col w-full pl-8">
-                                                        <div class="flex">
-                                                            <!-- Name -->
-                                                            <mat-form-field class="w-1/4 pr-2">
-                                                                <mat-label>품목코드</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'itemCd'">
-                                                            </mat-form-field>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
+                            <mat-select [formControlName]="'searchCondition'">
+                                <ng-container *ngFor="let searchcondition of searchCondition">
+                                    <mat-option [value]="searchcondition.id">
+                                        {{searchcondition.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
+                            <input
+                                matInput
+                                [formControlName]="'searchText'"
+                                [autocomplete]="'off'"
+                                [placeholder]="'검색조건을 선택해주세요.'">
+                        </mat-form-field>
+                    </form>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center justify-between m-4 mr-6 sm:my-10">
+                    <!-- Add product button -->
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="searchItem()">
+                        <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                        <span class="ml-2 mr-1">조회</span>
+                    </button>
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="createItem()">
+                        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                        <span class="ml-2 mr-1">신규등록</span>
+                    </button>
+                </div>
+            </div>
+        </mat-drawer>
 
-                                                            <mat-form-field class="w-2/4 pl-2">
-                                                                <mat-label>품목명</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'itemNm'">
-                                                            </mat-form-field>
-                                                            <mat-form-field class="w-1/4 pl-2">
-                                                                <mat-label>품목 등급</mat-label>
-                                                                <mat-select [formControlName]="'itemGrade'">
-                                                                    <ng-container *ngFor="let itemgrade of itemGrades">
-                                                                        <mat-option [value]="itemgrade.id">
-                                                                            {{itemgrade.name}}
-                                                                        </mat-option>
-                                                                    </ng-container>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <!-- SKU and Barcode -->
-                                                        <div class="flex">
-                                                            <mat-form-field class="w-1/5 pr-2">
-                                                                <mat-label>공급사</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'supplier'">
-                                                            </mat-form-field>
-                                                            <mat-form-field class="w-1/5 pr-2">
-                                                                <mat-label>구매단가</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'buyPrice'">
-                                                            </mat-form-field>
-                                                            <mat-form-field class="w-1/5 pr-2">
-                                                                <mat-label>판매단가</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'salesPrice'">
-                                                            </mat-form-field>
-                                                            <mat-form-field class="w-1/5 pr-2">
-                                                                <mat-label>단위</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'unit'">
-                                                            </mat-form-field>
-                                                            <mat-form-field class="w-1/5 pr-2">
-                                                                <mat-label>규격</mat-label>
-                                                                <input
-                                                                    matInput
-                                                                    [formControlName]="'standard'">
-                                                            </mat-form-field>
-                                                        </div>
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col">
 
-                                                        <!-- Category, Brand & Vendor -->
-<!--                                                        <div class="flex">-->
-<!--                                                            <mat-form-field class="w-1/3 pr-2">-->
-<!--                                                                <mat-label>Category</mat-label>-->
-<!--                                                                <mat-select [formControlName]="'category'">-->
-<!--                                                                    <ng-container *ngFor="let category of categories">-->
-<!--                                                                        <mat-option [value]="category.id">-->
-<!--                                                                            {{category.name}}-->
-<!--                                                                        </mat-option>-->
-<!--                                                                    </ng-container>-->
-<!--                                                                </mat-select>-->
-<!--                                                            </mat-form-field>-->
-<!--                                                            <mat-form-field class="w-1/3 px-2">-->
-<!--                                                                <mat-label>Brand</mat-label>-->
-<!--                                                                <mat-select [formControlName]="'brand'">-->
-<!--                                                                    <ng-container *ngFor="let brand of brands">-->
-<!--                                                                        <mat-option [value]="brand.id">-->
-<!--                                                                            {{brand.name}}-->
-<!--                                                                        </mat-option>-->
-<!--                                                                    </ng-container>-->
-<!--                                                                </mat-select>-->
-<!--                                                            </mat-form-field>-->
-<!--                                                            <mat-form-field class="w-1/3 pl-2">-->
-<!--                                                                <mat-label>Vendor</mat-label>-->
-<!--                                                                <mat-select [formControlName]="'vendor'">-->
-<!--                                                                    <ng-container *ngFor="let vendor of vendors">-->
-<!--                                                                        <mat-option [value]="vendor.id">-->
-<!--                                                                            {{vendor.name}}-->
-<!--                                                                        </mat-option>-->
-<!--                                                                    </ng-container>-->
-<!--                                                                </mat-select>-->
-<!--                                                            </mat-form-field>-->
-<!--                                                        </div>-->
-                                                    </div>
-                                                </div>
-                                                <!-- Product images and status -->
-<!--                                                <div class="flex flex-col">-->
-<!--                                                    <div class="flex flex-col mt-8">-->
-<!--                                                        <span class="font-semibold mb-2">Product status</span>-->
-<!--                                                        <mat-slide-toggle-->
-<!--                                                            [formControlName]="'active'"-->
-<!--                                                            [color]="'primary'">-->
-<!--                                                            {{selectedItemForm.get('active').value === true ? 'Active' : 'Disabled'}}-->
-<!--                                                        </mat-slide-toggle>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                (click)="deleteSelectedProduct()" (click)="updateSelectedProduct()"-->
-                                            </div>
-                                            <div class="flex items-center justify-between w-full border-t px-8 py-4">
-                                                <button
-                                                    class="-ml-4"
-                                                    mat-button
-                                                    [color]="'warn'"
-                                                    (click)="deleteItem()"
-                                                    >
-                                                    삭제
-                                                </button>
-                                                <div class="flex items-center">
-                                                    <div
-                                                        class="flex items-center mr-4"
-                                                        *ngIf="flashMessage">
-                                                        <ng-container *ngIf="flashMessage === 'success'">
-                                                            <mat-icon
-                                                                class="text-green-500"
-                                                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                                            <span class="ml-2">Product updated</span>
-                                                        </ng-container>
-                                                        <ng-container *ngIf="flashMessage === 'error'">
-                                                            <mat-icon
-                                                                class="text-red-500"
-                                                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                                                            <span class="ml-2">An error occurred, try again!</span>
-                                                        </ng-container>
-                                                    </div>
+            <!-- Main -->
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+
+                <!-- Load settings panel -->
+                <div class="mt-8">
+                    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between">
+                            <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                                <!-- Add product button -->
+                                <div class="text-3xl font-extrabold tracking-tight">
+                                    품목관리</div>
+                                <button
+                                    class="lg:hidden -ml-2"
+                                    mat-icon-button
+                                    (click)="drawer.toggle()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Header -->
+<!--                        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">-->
+<!--                            &lt;!&ndash; Title &ndash;&gt;-->
+<!--                            <div class="flex-row text-3xl font-extrabold tracking-tight">-->
+<!--                                품목관리</div>-->
+<!--                            &lt;!&ndash; Drawer toggle &ndash;&gt;-->
+<!--                            <button-->
+<!--                                class="lg:hidden -ml-2"-->
+<!--                                mat-icon-button-->
+<!--                                (click)="drawer.toggle()">-->
+<!--                                <mat-icon [svgIcon]="'heroicons_outline:filter'"></mat-icon>-->
+<!--                            </button>-->
+<!--                        </div>-->
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+                            <!-- 검새조건 -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <form
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'itemGrade'">
+                                            <ng-container *ngFor="let itemgrade of itemGrades">
+                                                <mat-option [value]="itemgrade.id">
+                                                    {{itemgrade.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition'">
+                                            <ng-container *ngFor="let searchcondition of searchCondition">
+                                                <mat-option [value]="searchcondition.id">
+                                                    {{searchcondition.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                    <!-- Search -->
+                                    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+                                    <!--                    <mat-icon-->
+                                    <!--                        matPrefix-->
+                                    <!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+                                    <!--                    <input-->
+                                    <!--                        matInput-->
+                                    <!--                        [formControlName]="'searchText'"-->
+                                    <!--                        [autocomplete]="'off'"-->
+                                    <!--                        [placeholder]="'상품검색'">-->
+                                    <!--                </mat-form-field>-->
+                                </form>
+                                <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+                                <!--                <input-->
+                                <!--                    matInput-->
+                                <!--                    [matDatepicker]="picker1">-->
+                                <!--                <mat-datepicker-toggle-->
+                                <!--                    matSuffix-->
+                                <!--                    [for]="picker1"></mat-datepicker-toggle>-->
+                                <!--                <mat-datepicker #picker1></mat-datepicker>-->
+                                <!--            </mat-form-field>-->
+                                <!--            <div class=""> -</div>-->
+                                <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+                                <!--                <input-->
+                                <!--                    matInput-->
+                                <!--                    [matDatepicker]="picker2">-->
+                                <!--                <mat-datepicker-toggle-->
+                                <!--                    matSuffix-->
+                                <!--                    [for]="picker2"></mat-datepicker-toggle>-->
+                                <!--                <mat-datepicker #picker2></mat-datepicker>-->
+                                <!--            </mat-form-field>-->
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <!-- Add product button -->
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="searchItem()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                                    <span class="ml-2 mr-1">조회</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="createItem()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                    <span class="ml-2 mr-1">신규등록</span>
+                                </button>
+                            </div>
+                            <!-- Loader -->
+                            <div
+                                class="absolute inset-x-0 bottom-0"
+                                *ngIf="isLoading">
+                                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                            </div>
+                        </div>
+
+                        <!-- Main -->
+                        <div class="flex flex-auto overflow-hidden">
+                            <!-- Item list -->
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <ng-container *ngIf="itemsCount > 0; else noItems">
+                                    <!-- Table wrapper -->
+                                    <div
+                                        class="overflow-x-auto sm:overflow-y-auto"
+                                        cdkScrollable>
+                                        <!-- Table -->
+                                        <table
+                                            class="w-full min-w-320 table-fixed bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            mat-table
+                                            matSort
+                                            [matSortActive]="'itemCd'"
+                                            [matSortDisableClear]="true"
+                                            [matSortDirection]="'asc'"
+                                            [multiTemplateDataRows]="true"
+                                            [dataSource]="items$"
+                                            [trackBy]="trackByFn">
+
+                                            <!-- Details -->
+                                            <ng-container matColumnDef="details">
+                                                <th
+                                                    class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef>
+                                                    상세
+                                                </th>
+                                                <td
+                                                    class="pr-8"
+                                                    mat-cell
+                                                    *matCellDef="let product">
                                                     <button
-                                                        mat-flat-button
-                                                        [color]="'primary'"
-                                                        (click)="updateItem()"
-                                                        >
-                                                        수정
+                                                        class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                                        mat-stroked-button
+                                                        (click)="toggleDetails(product.itemCd)">
+                                                        <mat-icon
+                                                            class="icon-size-5"
+                                                            [svgIcon]="selectedItem?.itemCd === product.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
                                                     </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                                </td>
+                                            </ng-container>
+
+                                            <!-- item details row -->
+                                            <ng-container matColumnDef="itemDetails">
+                                                <td
+                                                    class="p-0 border-b-0"
+                                                    mat-cell
+                                                    *matCellDef="let product"
+                                                    [attr.colspan]="itemsTableColumns.length">
+                                                    <ng-container *ngIf="selectedItem?.itemCd === product.itemCd">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: product}"></ng-container>
+                                                    </ng-container>
+                                                </td>
+                                                <ng-template
+                                                    #rowDetailsTemplate
+                                                    let-product>
+                                                    <div
+                                                        class="shadow-lg overflow-hidden"
+                                                        [@expandCollapse]="selectedItem?.itemCd === product.itemCd ? 'expanded' : 'collapsed'">
+                                                        <div class="flex border-b">
+                                                            <!-- Selected product form -->
+                                                            <form
+                                                                class="flex flex-col w-full"
+                                                                [formGroup]="selectedItemForm">
+                                                                <div class="flex p-8">
+                                                                    <div class="flex flex-auto">
+                                                                        <div class="flex flex-col w-full pl-8">
+                                                                            <div class="flex">
+                                                                                <!-- Name -->
+                                                                                <mat-form-field class="w-1/4 pr-2">
+                                                                                    <mat-label>품목코드</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'itemCd'">
+                                                                                </mat-form-field>
+
+                                                                                <mat-form-field class="w-2/4 pl-2">
+                                                                                    <mat-label>품목명</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'itemNm'">
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/4 pl-2">
+                                                                                    <mat-label>품목 등급</mat-label>
+                                                                                    <mat-select [formControlName]="'itemGrade'">
+                                                                                        <ng-container *ngFor="let itemgrade of itemGrades">
+                                                                                            <mat-option [value]="itemgrade.id">
+                                                                                                {{itemgrade.name}}
+                                                                                            </mat-option>
+                                                                                        </ng-container>
+                                                                                    </mat-select>
+                                                                                </mat-form-field>
+                                                                            </div>
+                                                                            <!-- SKU and Barcode -->
+                                                                            <div class="flex">
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>공급사</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'supplier'">
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>구매단가</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'buyPrice'">
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>판매단가</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'salesPrice'">
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>단위</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'unit'">
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>규격</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'standard'">
+                                                                                </mat-form-field>
+                                                                            </div>
+
+                                                                            <!-- Category, Brand & Vendor -->
+                                                                            <!--                                                        <div class="flex">-->
+                                                                            <!--                                                            <mat-form-field class="w-1/3 pr-2">-->
+                                                                            <!--                                                                <mat-label>Category</mat-label>-->
+                                                                            <!--                                                                <mat-select [formControlName]="'category'">-->
+                                                                            <!--                                                                    <ng-container *ngFor="let category of categories">-->
+                                                                            <!--                                                                        <mat-option [value]="category.id">-->
+                                                                            <!--                                                                            {{category.name}}-->
+                                                                            <!--                                                                        </mat-option>-->
+                                                                            <!--                                                                    </ng-container>-->
+                                                                            <!--                                                                </mat-select>-->
+                                                                            <!--                                                            </mat-form-field>-->
+                                                                            <!--                                                            <mat-form-field class="w-1/3 px-2">-->
+                                                                            <!--                                                                <mat-label>Brand</mat-label>-->
+                                                                            <!--                                                                <mat-select [formControlName]="'brand'">-->
+                                                                            <!--                                                                    <ng-container *ngFor="let brand of brands">-->
+                                                                            <!--                                                                        <mat-option [value]="brand.id">-->
+                                                                            <!--                                                                            {{brand.name}}-->
+                                                                            <!--                                                                        </mat-option>-->
+                                                                            <!--                                                                    </ng-container>-->
+                                                                            <!--                                                                </mat-select>-->
+                                                                            <!--                                                            </mat-form-field>-->
+                                                                            <!--                                                            <mat-form-field class="w-1/3 pl-2">-->
+                                                                            <!--                                                                <mat-label>Vendor</mat-label>-->
+                                                                            <!--                                                                <mat-select [formControlName]="'vendor'">-->
+                                                                            <!--                                                                    <ng-container *ngFor="let vendor of vendors">-->
+                                                                            <!--                                                                        <mat-option [value]="vendor.id">-->
+                                                                            <!--                                                                            {{vendor.name}}-->
+                                                                            <!--                                                                        </mat-option>-->
+                                                                            <!--                                                                    </ng-container>-->
+                                                                            <!--                                                                </mat-select>-->
+                                                                            <!--                                                            </mat-form-field>-->
+                                                                            <!--                                                        </div>-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Product images and status -->
+                                                                    <!--                                                <div class="flex flex-col">-->
+                                                                    <!--                                                    <div class="flex flex-col mt-8">-->
+                                                                    <!--                                                        <span class="font-semibold mb-2">Product status</span>-->
+                                                                    <!--                                                        <mat-slide-toggle-->
+                                                                    <!--                                                            [formControlName]="'active'"-->
+                                                                    <!--                                                            [color]="'primary'">-->
+                                                                    <!--                                                            {{selectedItemForm.get('active').value === true ? 'Active' : 'Disabled'}}-->
+                                                                    <!--                                                        </mat-slide-toggle>-->
+                                                                    <!--                                                    </div>-->
+                                                                    <!--                                                </div>-->
+                                                                    <!--                                                (click)="deleteSelectedProduct()" (click)="updateSelectedProduct()"-->
+                                                                </div>
+                                                                <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                                                                    <button
+                                                                        class="-ml-4"
+                                                                        mat-button
+                                                                        [color]="'warn'"
+                                                                        (click)="deleteItem()"
+                                                                    >
+                                                                        삭제
+                                                                    </button>
+                                                                    <div class="flex items-center">
+                                                                        <div
+                                                                            class="flex items-center mr-4"
+                                                                            *ngIf="flashMessage">
+                                                                            <ng-container *ngIf="flashMessage === 'success'">
+                                                                                <mat-icon
+                                                                                    class="text-green-500"
+                                                                                    [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                                                                <span class="ml-2">Product updated</span>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="flashMessage === 'error'">
+                                                                                <mat-icon
+                                                                                    class="text-red-500"
+                                                                                    [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                                                                <span class="ml-2">An error occurred, try again!</span>
+                                                                            </ng-container>
+                                                                        </div>
+                                                                        <button
+                                                                            mat-flat-button
+                                                                            [color]="'primary'"
+                                                                            (click)="updateItem()"
+                                                                        >
+                                                                            수정
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ng-container>
+
+                                            <!-- itemCd -->
+                                            <ng-container matColumnDef="itemCd">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    품목코드
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product"
+                                                >
+                                                    {{product.itemCd}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- itemNm -->
+                                            <ng-container matColumnDef="itemNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    품목명
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.itemNm}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- grade -->
+                                            <ng-container matColumnDef="itemGrade">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    등급
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{(product.itemGrade | fuseFindByKey:'id':itemGrades).name}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- category -->
+                                            <!--                        <ng-container matColumnDef="category">-->
+                                            <!--                            <th-->
+                                            <!--                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"-->
+                                            <!--                                mat-header-cell-->
+                                            <!--                                *matHeaderCellDef-->
+                                            <!--                                mat-sort-header-->
+                                            <!--                                disableClear>-->
+                                            <!--                                카테고리-->
+                                            <!--                            </th>-->
+                                            <!--                            <td-->
+                                            <!--                                class="pr-8 truncate"-->
+                                            <!--                                mat-cell-->
+                                            <!--                                *matCellDef="let product">-->
+                                            <!--                                {{product.category}}-->
+                                            <!--                            </td>-->
+                                            <!--                        </ng-container>-->
+                                            <!-- unit -->
+                                            <ng-container matColumnDef="unit">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    단위
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.unit}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- standard -->
+                                            <ng-container matColumnDef="standard">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    규격
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.standard}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- supplier -->
+                                            <ng-container matColumnDef="supplier">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    공급사
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.supplier}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- buyPrice -->
+                                            <ng-container matColumnDef="buyPrice">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    구매단가
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.buyPrice}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- sellPrice -->
+                                            <ng-container matColumnDef="salesPrice">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    판매단가
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.salesPrice}}
+                                                </td>
+                                            </ng-container>
+                                            <tr
+                                                class="shadow"
+                                                mat-header-row
+                                                *matHeaderRowDef="itemsTableColumns; sticky: true"></tr>
+                                            <tr
+                                                class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+                                                mat-row
+                                                *matRowDef="let product; columns: itemsTableColumns;"></tr>
+                                            <tr
+                                                class="h-0"
+                                                mat-row
+                                                *matRowDef="let row; columns: ['itemDetails']"></tr>
+                                        </table>
                                     </div>
-                                </div>
-                            </ng-template>
-                        </ng-container>
+                                    <mat-paginator
+                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                        [ngClass]="{'pointer-events-none': isLoading}"
+                                        [length]="pagination.length"
+                                        [pageIndex]="pagination.page"
+                                        [pageSize]="pagination.size"
+                                        [pageSizeOptions]="[8, 10, 25, 100]"
+                                        [showFirstLastButtons]="true"></mat-paginator>
 
-                        <!-- itemCd -->
-                        <ng-container matColumnDef="itemCd">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                품목코드
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product"
-                            >
-                                {{product.itemCd}}
-                            </td>
-                        </ng-container>
-                        <!-- itemNm -->
-                        <ng-container matColumnDef="itemNm">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                품목명
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.itemNm}}
-                            </td>
-                        </ng-container>
-                        <!-- grade -->
-                        <ng-container matColumnDef="itemGrade">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                등급
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{(product.itemGrade | fuseFindByKey:'id':itemGrades).name}}
-                            </td>
-                        </ng-container>
-                        <!-- category -->
-<!--                        <ng-container matColumnDef="category">-->
-<!--                            <th-->
-<!--                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"-->
-<!--                                mat-header-cell-->
-<!--                                *matHeaderCellDef-->
-<!--                                mat-sort-header-->
-<!--                                disableClear>-->
-<!--                                카테고리-->
-<!--                            </th>-->
-<!--                            <td-->
-<!--                                class="pr-8 truncate"-->
-<!--                                mat-cell-->
-<!--                                *matCellDef="let product">-->
-<!--                                {{product.category}}-->
-<!--                            </td>-->
-<!--                        </ng-container>-->
-                        <!-- unit -->
-                        <ng-container matColumnDef="unit">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                단위
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.unit}}
-                            </td>
-                        </ng-container>
-                        <!-- standard -->
-                        <ng-container matColumnDef="standard">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                규격
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.standard}}
-                            </td>
-                        </ng-container>
-                        <!-- supplier -->
-                        <ng-container matColumnDef="supplier">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                공급사
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.supplier}}
-                            </td>
-                        </ng-container>
-                        <!-- buyPrice -->
-                        <ng-container matColumnDef="buyPrice">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                구매단가
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.buyPrice}}
-                            </td>
-                        </ng-container>
-                        <!-- sellPrice -->
-                        <ng-container matColumnDef="salesPrice">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                판매단가
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let product">
-                                {{product.salesPrice}}
-                            </td>
-                        </ng-container>
-                        <tr
-                            class="shadow"
-                            mat-header-row
-                            *matHeaderRowDef="itemsTableColumns; sticky: true"></tr>
-                        <tr
-                            class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
-                            mat-row
-                            *matRowDef="let product; columns: itemsTableColumns;"></tr>
-                        <tr
-                            class="h-0"
-                            mat-row
-                            *matRowDef="let row; columns: ['itemDetails']"></tr>
-                    </table>
-                </div>
-                <mat-paginator
-                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                    [ngClass]="{'pointer-events-none': isLoading}"
-                    [length]="pagination.length"
-                    [pageIndex]="pagination.page"
-                    [pageSize]="pagination.size"
-                    [pageSizeOptions]="[8, 10, 25, 100]"
-                    [showFirstLastButtons]="true"></mat-paginator>
+                                </ng-container>
+                                <ng-template #noItems>
+                                    <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                                        <p>데이터가 없습니다.</p>
+                                        <p>재고관리 화면으로 이동하여</p>
+                                        <p>제품을 등록해주세요.</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
 
-            </ng-container>
-            <ng-template #noItems>
-                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
-                    <p>데이터가 없습니다.</p>
-                    <p>재고관리 화면으로 이동하여</p>
-                    <p>제품을 등록해주세요.</p>
+                    </div>
                 </div>
-            </ng-template>
-        </div>
-    </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
 
 </div>
+
 

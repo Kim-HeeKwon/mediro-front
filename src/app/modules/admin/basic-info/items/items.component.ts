@@ -20,6 +20,8 @@ import {NewItemComponent} from './new-item/new-item.component';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 @Component({
     selector: 'app-items',
     templateUrl: './items.component.html',
@@ -32,6 +34,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
+    isMobile: boolean = false;
+
+    drawerMode: 'over' | 'side' = 'side';
+    drawerOpened: boolean = false;
 
     items$: Observable<InventoryItem[]>;
     pagination: InventoryPagination | null = null;
@@ -68,12 +74,15 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _itemService: ItemsService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
-        private _utilService: FuseUtilsService
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
     ) {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        this.isMobile = this._deviceService.isMobile();
     }
+
 
     ngOnInit(): void {
         // 검색 Form 생성

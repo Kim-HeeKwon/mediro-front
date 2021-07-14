@@ -86,7 +86,7 @@ export class ITemSearchService{
     }
 
     setInitList(): void{
-        this._udiItemList.complete();
+        this._udiItemList.next(null);
     }
 
 }
