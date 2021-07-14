@@ -515,6 +515,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         element.unit = result.unit;
                         this.tableClear();
                         this.isLoading = false;
+                        this._changeDetectorRef.markForCheck();
                     }
                 });
         }

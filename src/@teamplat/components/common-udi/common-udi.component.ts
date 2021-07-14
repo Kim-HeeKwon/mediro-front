@@ -136,7 +136,6 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.searchForm.patchValue({'mediroUrl': this.mediroUrl});
                     this.isLoading = true;
                     // eslint-disable-next-line max-len
-                    console.log('ss');
                     return this._udiService.getUdi(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
                 }),
                 map(() => {
@@ -162,7 +161,6 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
      * @param account
      */
     trackByFn(index: number, data: any): any {
-        //console.log(data);
         return data.id || index;
     }
 

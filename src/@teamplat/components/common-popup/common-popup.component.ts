@@ -85,10 +85,12 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 id: param.extColId,              //컬럼ID;
                 name: param.extColNm,            //컬럼명;
             };
-            this.type.push({
-                id : param.extColId,
-                name : param.extColNm,
-            });
+            if(param.extColCondGbnVal !== ''){
+                this.type.push({
+                    id : param.extColId,
+                    name : param.extColNm,
+                });
+            }
 
             if(param.extColCondGbnVal === 'K'){
                 this.searchForm.patchValue({'type' : param.extColId});
@@ -134,8 +136,22 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
             // Get products if sort or page changes
             merge(this._sort.sortChange, this._paginator.page).pipe(
                 switchMap(() => {
+                    let whereVal;
+                    const curVal = this.searchForm.controls['type'].value;
+                    const textCond = this.searchForm.controls['searchText'].value;
+
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
+                        return param;
+                    });
+
+                    if(textCond === ''){
+                        whereVal = 'K:LIKE_BOTH:';
+                    }else{
+                        whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
+                    }
                     this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
-                    this.searchForm.patchValue({'acWhereVal': 'K:LIKE_BOTH:'});
+                    this.searchForm.patchValue({'acWhereVal': whereVal});
                     this.isLoading = true;
                     // eslint-disable-next-line max-len
                     return this._popupService.getDynamicSql(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
@@ -165,7 +181,6 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
      * @param account
      */
     trackByFn(index: number, data: any): any {
-        //console.log(data);
         return data.id || index;
     }
 
@@ -173,9 +188,24 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         this._matDialogRef.close(row);
     }
     select(): void{
+        let whereVal;
+        const curVal = this.searchForm.controls['type'].value;
+        const textCond = this.searchForm.controls['searchText'].value;
+
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
+            return param;
+        });
+
+        if(textCond === ''){
+            whereVal = 'K:LIKE_BOTH:';
+        }else{
+            whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
+        }
+
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
-        this.searchForm.patchValue({'acWhereVal': 'K:LIKE_BOTH:'});
-        this._popupService.getDynamicSql(0,10,'accountCd','asc',this.searchForm.getRawValue());
+        this.searchForm.patchValue({'acWhereVal': whereVal});
+        this._popupService.getDynamicSql(0,1000,'','asc',this.searchForm.getRawValue());
     }
 
     getProperty(element, id: string): string{
