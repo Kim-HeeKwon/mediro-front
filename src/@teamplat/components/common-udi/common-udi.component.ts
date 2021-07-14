@@ -150,6 +150,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
+        this._udiService.setInitList();
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }

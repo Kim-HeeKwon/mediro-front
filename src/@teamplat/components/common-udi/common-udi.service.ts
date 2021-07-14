@@ -85,4 +85,8 @@ export class CommonUdiService{
                 }, reject);
         });
     }
+
+    setInitList(): void{
+        this._getList.next(null);
+    }
 }

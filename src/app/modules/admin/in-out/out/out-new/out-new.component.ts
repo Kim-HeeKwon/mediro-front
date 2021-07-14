@@ -1,38 +1,41 @@
 import {
     AfterViewInit,
-    ChangeDetectorRef,
+    ChangeDetectionStrategy, ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {OutService} from '../out.service';
+} from "@angular/core";
+import {fuseAnimations} from "../../../../../../@teamplat/animations";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatTable} from "@angular/material/table";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
 import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {EstimateDetail, EstimateDetailPagenation} from "../../../estimate-order/estimate/estimate.types";
+import {OutBound, OutDetail, OutDetailPagenation, OutHeader} from "../out.types";
 import {merge, Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {OutDetail, OutDetailPagenation} from "../out.types";
 import {TableConfig, TableStyle} from "../../../../../../@teamplat/components/common-table/common-table.types";
+import {OutService} from "../out.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {EstimateService} from "../../../estimate-order/estimate/estimate.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
+import {SaveAlertComponent} from "../../../../../../@teamplat/components/common-alert/save-alert";
+import {Estimate} from "../../../estimate-order/estimate/estimate.types";
 
 @Component({
-    selector     : 'out-detail',
-    templateUrl  : './out-detail.component.html',
-    styleUrls    : ['./out-detail.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    selector       : 'out-new',
+    templateUrl    : './out-new.component.html',
+    styleUrls: ['./out-new.component.scss'],
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations
 })
-export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
+export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
 {
     @ViewChild(MatPaginator) private _outDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _outDetailSort: MatSort;
@@ -80,6 +83,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'remarkDetail',
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     /**
      * Constructor
      */
@@ -100,10 +104,6 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterList);
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
     /**
      * On init
      */
@@ -116,7 +116,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             account: [{value:''},[Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
             address: [{value:''}, [Validators.required]],   // 거래처 주소
-            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
+            type: [{value:''}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             dlvAccount: [{value:''}],   // 배송처
             dlvAddress: [{value:''}, [Validators.required]],   // 배송처 주소
@@ -126,18 +126,8 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
-        //console.log(this._activatedRoute.snapshot.queryParams.row);
+        this._outService.getNew(0,10,'','asc', {});
 
-        if(this._activatedRoute.snapshot.queryParams.row !== (null || undefined)){
-            const headerForm = JSON.parse(this._activatedRoute.snapshot.queryParams.row);
-            if(headerForm !== (null || undefined)){
-                this.outHeaderForm.patchValue(
-                    headerForm
-                );
-
-            }
-            this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
-        }
         this.outDetails$ = this._outService.outDetails$;
         this._outService.outDetails$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -159,6 +149,16 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this.outHeaderForm.patchValue({'account': ''});
+        this.outHeaderForm.patchValue({'address': ''});
+        this.outHeaderForm.patchValue({'type': '1'});
+        this.outHeaderForm.patchValue({'status': 'N'});
+        this.outHeaderForm.patchValue({'dlvAccount': ''});
+        this.outHeaderForm.patchValue({'dlvAddress': ''});
+        this.outHeaderForm.patchValue({'dlvDate': ''});
+        this.outHeaderForm.patchValue({'remarkHeader': ''});
+
     }
 
     /**
@@ -166,25 +166,9 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     ngAfterViewInit(): void {
 
-        console.log('ngAfterViewInit');
-
-        if(this._outDetailSort !== undefined){
-            // Get products if sort or page changes
-            merge(this._outDetailSort.sortChange, this._outDetailPagenator.page).pipe(
-                switchMap(() => {
-                    this.isLoading = true;
-                    // eslint-disable-next-line max-len
-                    return this._outService.getDetail(this._outDetailPagenator.pageIndex, this._outDetailPagenator.pageSize, this._outDetailSort.active, this._outDetailSort.direction, this.outHeaderForm.getRawValue());
-                }),
-                map(() => {
-                    this.isLoading = false;
-                })
-            ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
-        }
     }
 
     ngOnDestroy(): void {
-        console.log('ngOnDestroy');
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -209,10 +193,97 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    isBack(): void{
-        this._outService.setShowMobile(false);
+    /* 트랜잭션 전 data Set
+     * @param sendData
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    headerDataSet(sendData: OutBound[]) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i=0; i<sendData.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            sendData[i].account = this.outHeaderForm.controls['account'].value;
+            sendData[i].address = this.outHeaderForm.controls['address'].value;
+            sendData[i].obNo = this.outHeaderForm.controls['obNo'].value;
+            sendData[i].type = this.outHeaderForm.controls['type'].value;
+            sendData[i].status = this.outHeaderForm.controls['status'].value;
+            sendData[i].dlvAccount = this.outHeaderForm.controls['dlvAccount'].value;
+            sendData[i].dlvAddress = this.outHeaderForm.controls['dlvAddress'].value;
+            sendData[i].dlvDate = this.outHeaderForm.controls['dlvDate'].value;
+            sendData[i].remarkHeader = this.outHeaderForm.controls['remarkHeader'].value;
+        }
+        return sendData;
+    }
+    /* 저장
+     *
+     */
+    saveEstimate(): void{
+
+        if(!this.outHeaderForm.invalid){
+            this.showAlert = false;
+
+            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+                data: {
+                }
+            });
+
+            saveConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    let createList;
+                    if (result.status) {
+                        createList = [];
+                        this.outDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimateDetail) => {
+                                estimateDetail.forEach((sendData: any) => {
+                                    if (sendData.flag) {
+                                        if (sendData.flag === 'C') {
+                                            createList.push(sendData);
+                                        }
+                                    }
+                                });
+                            });
+                        if (createList.length > 0) {
+                            this.createEstimate(createList);
+                            //this.totalAmt();
+                        }
+                        this.backPage();
+                    }
+                });
+
+            this.alertMessage('');
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+        }else{
+            // Set the alert
+            this.alert = {
+                type   : 'error',
+                message: '(빨간색 표시)필수값 들을 입력해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+        }
+
     }
 
+    /* 추가
+     *
+     * @param sendData
+     */
+    createEstimate(sendData: OutBound[]): void{
+        if(sendData){
+            sendData = this.headerDataSet(sendData);
+
+            this._outService.createOut(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                });
+        }
+
+    }
     /**
      * Track by function for ngFor loops
      *
@@ -240,14 +311,79 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
     transactionRow(action,row) {
         if(action === 'ADD'){
 
-            //this.addRowData(row);
+            this.addRowData(row);
 
         }else if(action === 'DELETE'){
 
-            //this.deleteRowData(row);
+            this.deleteRowData(row);
 
         }
         this.tableClear();
+    }
+
+    /* 그리드 추가
+     * @param row
+     */
+    // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
+    addRowData(row: any){
+        this.outDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outDetail) => {
+                // @ts-ignore
+                outDetail.push({
+                    no: outDetail.length + 1,
+                    flag: 'C',
+                    obLineNo: 0,
+                    itemCd: '',
+                    itemNm: '',
+                    obExpQty: 0,
+                    qty: 0,
+                    remarkDetail: ''});
+            });
+    }
+
+    /* 그리드 삭제
+     * @param row
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    deleteRowData(row: any) {
+
+        if(this.selection.hasValue()){
+            if(row.selected.length > 0){
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for(let i=0; i<row.selected.length; i++){
+                    if(row.selected[i].length){
+                        this.outDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((outDetail) => {
+                                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions,@typescript-eslint/prefer-for-of
+                                for(let e=0; e<outDetail.length; e++){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    if(row.selected[i].no === outDetail[e].no){
+                                        if(outDetail[e].flag === 'D'){
+                                            outDetail[e].flag = '';
+                                        }else{
+                                            outDetail[e].flag = 'D';
+                                        }
+                                    }
+                                }
+                            });
+                    }else{
+                        this.outDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((outDetail) => {
+                                // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                                for(let e=0; e<outDetail.length; e++){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    if(row.selected[i].no === outDetail[e].no){
+                                        outDetail.splice(e,1);
+                                    }
+                                }
+                            });
+                    }
+                }
+            }
+        }
     }
 
     /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -315,8 +451,31 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    saveOut() {
+    openAccountSearch(): void
+    {
+        const popup =this._matDialogPopup.open(CommonPopupComponent, {
+            data: {
+                popup : 'P$_ACCOUNT',
+                headerText : '거래처 조회'
+            },
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
+        });
 
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result){
+                    this.outHeaderForm.patchValue({'account': result.accountCd});
+                    this.outHeaderForm.patchValue({'accountNm': result.accountNm});
+                    this.outHeaderForm.patchValue({'address': result.address});
+                }
+            });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    backPage() {
+        this._router.navigate(['in-out/out']);
     }
 }
