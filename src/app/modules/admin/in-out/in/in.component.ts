@@ -1,10 +1,12 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MatDrawer} from '@angular/material/sidenav';
 import {Observable, Subject} from 'rxjs';
 import {FuseMediaWatcherService} from '@teamplat/services/media-watcher';
 import {takeUntil} from 'rxjs/operators';
 import {InService} from "./in.service";
+import {CodeStore} from "../../../../core/common-code/state/code.store";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
 
 @Component({
     selector: 'app-in',
@@ -24,14 +26,35 @@ export class InComponent implements OnInit, OnDestroy {
     itemsCount: number = 1;
     itemsTableColumns: string[] = ['name', 'sku', 'price'];
     selectedItemsForm: FormGroup;
+    searchForm: FormGroup;
+    ibType: CommonCode[] = [];
+    ibStatus: CommonCode[] = [];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    constructor(private _fuseMediaWatcherService: FuseMediaWatcherService,
-                private _inService: InService) {
+    constructor(
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _codeStore: CodeStore,
+        private _utilService: FuseUtilsService,
+        private _formBuilder: FormBuilder,
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private _inService: InService) {
+        this.ibType = _utilService.commonValue(_codeStore.getValue().data,'IB_TYPE');
+        this.ibStatus = _utilService.commonValue(_codeStore.getValue().data,'IB_STATUS');
     }
 
     ngOnInit(): void {
+        // 검색 Form 생성
+        this.searchForm = this._formBuilder.group({
+            ibType: [''],
+            ibStatus: [''],
+            accountType: [''],
+            accountName: [''],
+            itemCd: [''],
+            searchCondition: ['100'],
+            searchText: [''],
+        });
+
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))

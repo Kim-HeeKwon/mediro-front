@@ -5,6 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Router} from "@angular/router";
+import {TableConfig, TableStyle} from "@teamplat/components/common-table/common-table.types";
 
 
 @Component({
@@ -38,6 +39,18 @@ export class InHeaderComponent implements OnInit, OnDestroy
         {name: 'name7', sku: 'sku7', price:7},
         {name: 'name8', sku: 'sku8', price:8},
         {name: 'name9', sku: 'sku9', price:9},
+    ];
+
+    inHeaderTableStyle: TableStyle = new TableStyle();
+    inHeaderTable: TableConfig[] = [
+        {headerText : '작성일' , dataField : 'createDate', display : false},
+        {headerText : '입고일' , dataField : 'ibDate', width: 80, display : true, type: 'text'},
+        {headerText : '입고번호' , dataField : 'ibNo', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '공급사' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '입고수량' , dataField : 'totalCnt', width: 50, display : true, type: 'number', style: this.inHeaderTableStyle.textAlign.center},
+        {headerText : '구매가' , dataField : 'totalPrice', width: 50, display : true, type: 'number', style: this.inHeaderTableStyle.textAlign.center},
+        {headerText : '입고명세서' , dataField : 'outPage', width: 100, display : true, type: 'text'},
     ];
 
     /**

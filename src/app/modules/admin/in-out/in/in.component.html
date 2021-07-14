@@ -23,33 +23,36 @@
             </div>
         </div>
         <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-2 px-6 border-b">
-            <!-- Actions -->
+            <!-- 검새조건 -->
             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 mr-2">
-                    <input
-                        matInput
-                        [formControl]="searchInputControl"
-                        [autocomplete]="'off'"
-                        [placeholder]="'유형'">
-                </mat-form-field>
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 mr-2">
-                    <input
-                        matInput
-                        [formControl]="searchInputControl"
-                        [autocomplete]="'off'"
-                        [placeholder]="'거래처'">
-                </mat-form-field>
-                <!-- Search -->
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-                    <mat-icon
-                        matPrefix
-                        [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                    <input
-                        matInput
-                        [formControl]="searchInputControl"
-                        [autocomplete]="'off'"
-                        [placeholder]="'상품검색'">
-                </mat-form-field>
+                <form
+                    [formGroup]="searchForm">
+                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-44 mr-2">
+                        <input
+                            matInput
+                            [formControlName]="'accountName'"
+                            [autocomplete]="'off'"
+                            [placeholder]="'공급사'">
+                    </mat-form-field>
+                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                        <mat-select [formControlName]="'ibType'">
+                            <ng-container *ngFor="let type of ibType">
+                                <mat-option [value]="type.id">
+                                    {{type.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                        <mat-select [formControlName]="'ibStatus'">
+                            <ng-container *ngFor="let status of ibStatus">
+                                <mat-option [value]="status.id">
+                                    {{status.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
             </div>
             <!-- Actions -->
             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
