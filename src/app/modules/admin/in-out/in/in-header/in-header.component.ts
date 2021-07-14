@@ -19,6 +19,9 @@ export class InHeaderComponent implements OnInit, OnDestroy
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
 
+    sizeLeft: number = 60;
+    sizeRight: number = 40;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     isLoading: boolean = false;
@@ -80,6 +83,14 @@ export class InHeaderComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((showMobile: any) => {
                 this.showMobile = showMobile;
+                console.log(showMobile);
+                if(showMobile){
+                    this.sizeLeft = 60;
+                    this.sizeRight = 40;
+                }else{
+                    this.sizeLeft = 60;
+                    this.sizeRight = 40;
+                }
             });
     }
 

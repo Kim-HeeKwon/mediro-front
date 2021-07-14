@@ -157,6 +157,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         // Unsubscribe from all subscriptions
         this.itemsCount = 0;
         this.pagination = null;
+        this._itemSearchService.setInitList();
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }

@@ -169,6 +169,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         this.popupCount = 0;
         this.pagenation = null;
+        this._popupService.setInitList();
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();

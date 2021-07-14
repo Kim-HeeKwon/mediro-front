@@ -62,4 +62,7 @@ export class CommonPopupService{
         });
     }
 
+    setInitList(): void{
+        this._getList.complete();
+    }
 }

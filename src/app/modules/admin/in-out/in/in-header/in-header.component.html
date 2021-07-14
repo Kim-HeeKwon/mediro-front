@@ -1,6 +1,8 @@
 <div class="flex flex-auto w-full bg-card dark:bg-transparent">
     <as-split direction="horizontal">
-        <as-split-area [size]="40">
+        <as-split-area [size]=sizeLeft
+                       [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
+                        'hidden lg:flex': showMobile}">
             <div class="flex flex-auto flex-col w-full min-w-0 border-r z-10">
                 <!-- Title -->
                 <!--        <div class="mt-10 mb-8 mx-6 text-4xl font-extrabold tracking-tight leading-none">해더해더</div>-->
@@ -126,7 +128,10 @@
                 </div>
             </div>
         </as-split-area>
-        <as-split-area [size]="60">
+        <as-split-area
+            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
+                        'hidden lg:flex': !showMobile}"
+            [size]=sizeRight>
             <div
                 class="flex-auto"
                 [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
