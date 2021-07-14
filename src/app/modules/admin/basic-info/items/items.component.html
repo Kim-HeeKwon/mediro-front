@@ -24,56 +24,68 @@
             </div>
             <!-- Panel links -->
             <div class="flex flex-col divide-y border-t border-b">
-                <!-- 검새조건 -->
-                <div class="flex items-center justify-between m-4 mr-6 sm:my-10">
-                    <form
-                        [formGroup]="searchForm">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
-                            <mat-select [formControlName]="'itemGrade'">
-                                <ng-container *ngFor="let itemgrade of itemGrades">
-                                    <mat-option [value]="itemgrade.id">
-                                        {{itemgrade.name}}
-                                    </mat-option>
-                                </ng-container>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
-                            <mat-select [formControlName]="'searchCondition'">
-                                <ng-container *ngFor="let searchcondition of searchCondition">
-                                    <mat-option [value]="searchcondition.id">
-                                        {{searchcondition.name}}
-                                    </mat-option>
-                                </ng-container>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full m-1">
-                            <input
-                                matInput
-                                [formControlName]="'searchText'"
-                                [autocomplete]="'off'"
-                                [placeholder]="'검색조건을 선택해주세요.'">
-                        </mat-form-field>
-                    </form>
-                </div>
+                <!-- 검색조건 -->
+                <form [formGroup]="searchForm">
+                    <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+                        <!-- Name -->
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-select [formControlName]="'itemGrade'">
+                                    <ng-container *ngFor="let itemgrade of itemGrades">
+                                        <mat-option [value]="itemgrade.id">
+                                            {{itemgrade.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-select [formControlName]="'searchCondition'">
+                                    <ng-container *ngFor="let searchcondition of searchCondition">
+                                        <mat-option [value]="searchcondition.id">
+                                            {{searchcondition.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <input
+                                    matInput
+                                    [formControlName]="'searchText'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'검색조건을 선택해주세요.'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
                 <!-- Actions -->
-                <div class="flex items-center justify-between m-4 mr-6 sm:my-10">
+                <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
                     <!-- Add product button -->
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="searchItem()">
-                        <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                        <span class="ml-2 mr-1">조회</span>
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'accent'"
-                        (click)="createItem()">
-                        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                        <span class="ml-2 mr-1">신규등록</span>
-                    </button>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="searchItem()">
+                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                            <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="createItem()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">신규등록</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </mat-drawer>
@@ -94,26 +106,13 @@
                                 <div class="text-3xl font-extrabold tracking-tight">
                                     품목관리</div>
                                 <button
-                                    class="lg:hidden -ml-2"
+                                    class="sm:hidden -ml-2"
                                     mat-icon-button
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
                             </div>
                         </div>
-                        <!-- Header -->
-<!--                        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">-->
-<!--                            &lt;!&ndash; Title &ndash;&gt;-->
-<!--                            <div class="flex-row text-3xl font-extrabold tracking-tight">-->
-<!--                                품목관리</div>-->
-<!--                            &lt;!&ndash; Drawer toggle &ndash;&gt;-->
-<!--                            <button-->
-<!--                                class="lg:hidden -ml-2"-->
-<!--                                mat-icon-button-->
-<!--                                (click)="drawer.toggle()">-->
-<!--                                <mat-icon [svgIcon]="'heroicons_outline:filter'"></mat-icon>-->
-<!--                            </button>-->
-<!--                        </div>-->
                         <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
                             <!-- 검새조건 -->
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
@@ -334,54 +333,8 @@
                                                                                         [formControlName]="'standard'">
                                                                                 </mat-form-field>
                                                                             </div>
-
-                                                                            <!-- Category, Brand & Vendor -->
-                                                                            <!--                                                        <div class="flex">-->
-                                                                            <!--                                                            <mat-form-field class="w-1/3 pr-2">-->
-                                                                            <!--                                                                <mat-label>Category</mat-label>-->
-                                                                            <!--                                                                <mat-select [formControlName]="'category'">-->
-                                                                            <!--                                                                    <ng-container *ngFor="let category of categories">-->
-                                                                            <!--                                                                        <mat-option [value]="category.id">-->
-                                                                            <!--                                                                            {{category.name}}-->
-                                                                            <!--                                                                        </mat-option>-->
-                                                                            <!--                                                                    </ng-container>-->
-                                                                            <!--                                                                </mat-select>-->
-                                                                            <!--                                                            </mat-form-field>-->
-                                                                            <!--                                                            <mat-form-field class="w-1/3 px-2">-->
-                                                                            <!--                                                                <mat-label>Brand</mat-label>-->
-                                                                            <!--                                                                <mat-select [formControlName]="'brand'">-->
-                                                                            <!--                                                                    <ng-container *ngFor="let brand of brands">-->
-                                                                            <!--                                                                        <mat-option [value]="brand.id">-->
-                                                                            <!--                                                                            {{brand.name}}-->
-                                                                            <!--                                                                        </mat-option>-->
-                                                                            <!--                                                                    </ng-container>-->
-                                                                            <!--                                                                </mat-select>-->
-                                                                            <!--                                                            </mat-form-field>-->
-                                                                            <!--                                                            <mat-form-field class="w-1/3 pl-2">-->
-                                                                            <!--                                                                <mat-label>Vendor</mat-label>-->
-                                                                            <!--                                                                <mat-select [formControlName]="'vendor'">-->
-                                                                            <!--                                                                    <ng-container *ngFor="let vendor of vendors">-->
-                                                                            <!--                                                                        <mat-option [value]="vendor.id">-->
-                                                                            <!--                                                                            {{vendor.name}}-->
-                                                                            <!--                                                                        </mat-option>-->
-                                                                            <!--                                                                    </ng-container>-->
-                                                                            <!--                                                                </mat-select>-->
-                                                                            <!--                                                            </mat-form-field>-->
-                                                                            <!--                                                        </div>-->
                                                                         </div>
                                                                     </div>
-                                                                    <!-- Product images and status -->
-                                                                    <!--                                                <div class="flex flex-col">-->
-                                                                    <!--                                                    <div class="flex flex-col mt-8">-->
-                                                                    <!--                                                        <span class="font-semibold mb-2">Product status</span>-->
-                                                                    <!--                                                        <mat-slide-toggle-->
-                                                                    <!--                                                            [formControlName]="'active'"-->
-                                                                    <!--                                                            [color]="'primary'">-->
-                                                                    <!--                                                            {{selectedItemForm.get('active').value === true ? 'Active' : 'Disabled'}}-->
-                                                                    <!--                                                        </mat-slide-toggle>-->
-                                                                    <!--                                                    </div>-->
-                                                                    <!--                                                </div>-->
-                                                                    <!--                                                (click)="deleteSelectedProduct()" (click)="updateSelectedProduct()"-->
                                                                 </div>
                                                                 <div class="flex items-center justify-between w-full border-t px-8 py-4">
                                                                     <button

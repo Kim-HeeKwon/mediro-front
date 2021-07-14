@@ -24,6 +24,7 @@ import {FuseFindByKeyPipeModule} from '../../../../../@teamplat/pipes/find-by-ke
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 
 const accountRoutes: Route[] = [
@@ -61,6 +62,7 @@ const accountRoutes: Route[] = [
         MatTableModule,
         MatTooltipModule,
         MatDialogModule,
+        MatSidenavModule,
         SharedModule,
         FuseFindByKeyPipeModule,
         FuseAlertModule

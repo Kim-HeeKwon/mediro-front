@@ -24,6 +24,7 @@ import {postcode} from '../../../../../assets/js/postCode';
 import {geodata} from '../../../../../assets/js/geoCode';
 import {DeleteAlertComponent} from '../../../../../@teamplat/components/common-alert/delete-alert';
 import {CommonUdiComponent} from "../../../../../@teamplat/components/common-udi";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'app-account',
@@ -37,6 +38,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
+    isMobile: boolean = false;
+
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
+
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
 
@@ -90,9 +96,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         private _accountService: AccountService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
-        private _utilService: FuseUtilsService)
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.isMobile = this._deviceService.isMobile();
     }
 
     ngOnInit(): void {

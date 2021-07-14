@@ -36,7 +36,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
 
-    drawerMode: 'over' | 'side' = 'side';
+    drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
 
     items$: Observable<InventoryItem[]>;
