@@ -25,6 +25,9 @@ import {InHeaderComponent} from './in-header/in-header.component';
 import {InDetailComponent} from './in-detail/in-detail.component';
 import {InComponent} from './in.component';
 import {inboxRoutes} from './in.routing';
+import { FuseScrollbarModule } from '@teamplat/directives/scrollbar';
+import { FuseScrollResetModule } from '@teamplat/directives/scroll-reset';
+import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
     declarations: [
@@ -54,6 +57,9 @@ import {inboxRoutes} from './in.routing';
         MatDialogModule,
         MatDividerModule,
         MatSidenavModule,
+        FuseScrollbarModule,
+        FuseScrollResetModule,
+        AngularSplitModule,
         SharedModule
     ]
 })
