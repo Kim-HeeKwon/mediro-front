@@ -6,6 +6,7 @@ import {takeUntil} from 'rxjs/operators';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableConfig, TableStyle} from "@teamplat/components/common-table/common-table.types";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 
 @Component({
@@ -18,6 +19,7 @@ export class InHeaderComponent implements OnInit, OnDestroy
 {
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
+    isMobile: boolean = false;
 
     sizeLeft: number = 60;
     sizeRight: number = 40;
@@ -62,9 +64,11 @@ export class InHeaderComponent implements OnInit, OnDestroy
     constructor(
         private _inService: InService,
         private _route: ActivatedRoute,
-        private _router: Router
+        private _router: Router,
+        private _deviceService: DeviceDetectorService,
     )
     {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -79,14 +83,23 @@ export class InHeaderComponent implements OnInit, OnDestroy
         // 모바일에서 페이지 나누기 옵션
         this.showMobile$ = this._inService.showMobile$;
 
+        if(this.isMobile){
+            // 모바일이면
+            this.sizeLeft = 60;
+            this.sizeRight = 40;
+        }else{
+            // 모바일 아니면
+            this.sizeLeft = 60;
+            this.sizeRight = 40;
+        }
         this._inService.showMobile$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((showMobile: any) => {
                 this.showMobile = showMobile;
                 console.log(showMobile);
                 if(showMobile){
-                    this.sizeLeft = 60;
-                    this.sizeRight = 40;
+                    this.sizeLeft = 100;
+                    this.sizeRight = 0;
                 }else{
                     this.sizeLeft = 60;
                     this.sizeRight = 40;
@@ -137,5 +150,18 @@ export class InHeaderComponent implements OnInit, OnDestroy
         this._inService.setShowMobile(true);
         this._router.navigate(['in-out/in/inbox/1', row.price]);
         //this._router.snapshot.nav(['/product-list'], {  queryParams: {  page: pageNum } });
+
+        //모바일 디테일
+        if(this.isMobile){
+            if(this.sizeLeft = 100){
+                // 모바일이면
+                this.sizeLeft = 0;
+                this.sizeRight = 100;
+            }else{
+                // 모바일 아니면
+                this.sizeLeft = 100;
+                this.sizeRight = 0;
+            }
+        }
     }
 }
