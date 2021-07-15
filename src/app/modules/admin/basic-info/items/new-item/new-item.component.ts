@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import {Subject, throwError} from 'rxjs';
+import {Observable, Subject, throwError} from 'rxjs';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '@teamplat/components/alert';
@@ -15,6 +15,8 @@ import {ItemsService} from '../items.service';
 import {ItemSearchComponent} from '@teamplat/components/item-search';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from "ngx-device-detector";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 
 @Component({
     selector       : 'new-item',
@@ -25,7 +27,11 @@ import {CodeStore} from '../../../../../core/common-code/state/code.store';
 })
 export class NewItemComponent implements OnInit, OnDestroy
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
 
+    isMobile: boolean = false;
     selectedItemForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     alert: { type: FuseAlertType; message: string } = {
@@ -62,9 +68,12 @@ export class NewItemComponent implements OnInit, OnDestroy
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver,
     ) {
         this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemStandard = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
+        this.isMobile = this._deviceService.isMobile();
     }
 
     /**
@@ -155,26 +164,56 @@ export class NewItemComponent implements OnInit, OnDestroy
 
     openItemSearch(): void
     {
-        const popup =this._matDialogPopup.open(ItemSearchComponent, {
-            data: {
-                popup : 'P$_ACCOUNT'
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(ItemSearchComponent, {
+                data: {
+                    popup : 'P$_ACCOUNT'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
 
-        popup.afterClosed().subscribe((result) => {
-            if(result){
-                this.selectedItemForm.patchValue({'itemCd': result.modelId});
-                this.selectedItemForm.patchValue({'itemNm': result.itemName});
-                this.selectedItemForm.patchValue({'itemGrade': result.grade});
-                this.selectedItemForm.patchValue({'entpName': result.entpName});
-                this.selectedItemForm.patchValue({'typeName': result.typeName});
-                this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
-                this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
-                this.is_edit = true;
-            }
-        });
+            popup.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedItemForm.patchValue({'itemCd': result.modelId});
+                    this.selectedItemForm.patchValue({'itemNm': result.itemName});
+                    this.selectedItemForm.patchValue({'itemGrade': result.grade});
+                    this.selectedItemForm.patchValue({'entpName': result.entpName});
+                    this.selectedItemForm.patchValue({'typeName': result.typeName});
+                    this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.is_edit = true;
+                }
+            });
+        }else{
+            const d = this._matDialogPopup.open(ItemSearchComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '90vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedItemForm.patchValue({'itemCd': result.modelId});
+                    this.selectedItemForm.patchValue({'itemNm': result.itemName});
+                    this.selectedItemForm.patchValue({'itemGrade': result.grade});
+                    this.selectedItemForm.patchValue({'entpName': result.entpName});
+                    this.selectedItemForm.patchValue({'typeName': result.typeName});
+                    this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.is_edit = true;
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

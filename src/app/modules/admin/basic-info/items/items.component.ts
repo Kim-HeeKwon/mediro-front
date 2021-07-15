@@ -246,6 +246,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         if(!this.isMobile){
             this._matDialog.open(NewItemComponent, {
                 autoFocus: false,
+                disableClose: true,
                 data     : {
                     note: {}
                 },
@@ -254,7 +255,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             const d = this._matDialog.open(NewItemComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
-                maxWidth: '100vw'
+                maxWidth: '100vw',
+                disableClose: true
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
