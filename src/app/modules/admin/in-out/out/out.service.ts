@@ -3,9 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import {OutBound, OutDetail, OutDetailPagenation, OutHeader, OutHeaderPagenation} from './out.types';
-import {Estimate, EstimateDetail, EstimateDetailPagenation} from "../../estimate-order/estimate/estimate.types";
-import {OutDetailResolver} from "./out.resolvers";
-import {map, switchMap, take} from "rxjs/operators";
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -158,18 +156,18 @@ export class OutService {
                 searchParam[k] = search[k];
             }
         }
+        this._outDetails.next([]);
 
         const pageParam = {
             page: page,
             size: size,
         };
-
         // @ts-ignore
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/inOut/outBound/detail-List')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
-                        console.log(response);
+                        this._outHeader.next(search);
                         this._outDetails.next(response.data);
                         this._outDetailPagenation.next(response.pageNation);
                         resolve(this._outDetails);
@@ -227,6 +225,25 @@ export class OutService {
                 })
             ))
         );
+    }
+    updateOut(outBound: OutBound[]): Observable<{outBound: OutBound[] }> {
+
+        return this._common.listPut('v1/api/inOut/outBound', outBound).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+    deleteOut(outBound: OutBound[]): Observable<{outBound: OutBound[]}> {
+
+        return this._common.listDelete('v1/api/inOut/outBound', outBound).pipe(
+            switchMap((response: any) => of(response))
+        );
+        // @ts-ignore
+        // return new Promise((resolve, reject) => {
+        //     this._common.delete('v1/api/basicInfo/account', accountData)
+        //         .subscribe((response: any) => {
+        //             this.getAccount();
+        //         }, reject);
+        // });
     }
 }
 

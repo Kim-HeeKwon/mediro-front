@@ -8,18 +8,17 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
-import {FormControl, FormGroup} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OutService} from '../out.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {EstimateDetail, EstimateDetailPagenation} from "../../../estimate-order/estimate/estimate.types";
-import {OutHeader, OutHeaderPagenation} from "../out.types";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import {OutHeader, OutHeaderPagenation} from '../out.types';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector     : 'out-header',
@@ -36,6 +35,10 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
 
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
+    isMobile: boolean = false;
+
+    sizeLeft: number = 60;
+    sizeRight: number = 40;
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     isLoading: boolean = false;
@@ -93,8 +96,10 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
         private _route: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
         private _router: Router
     ) {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     /**
@@ -104,6 +109,29 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
     {
         // 모바일에서 페이지 나누기 옵션
         this.showMobile$ = this._outService.showMobile$;
+
+        if(this.isMobile){
+            // 모바일이면
+            this.sizeLeft = 60;
+            this.sizeRight = 40;
+        }else{
+            // 모바일 아니면
+            this.sizeLeft = 60;
+            this.sizeRight = 40;
+        }
+
+        this._outService.showMobile$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((showMobile: any) => {
+                this.showMobile = showMobile;
+                if(showMobile){
+                    this.sizeLeft = 60;
+                    this.sizeRight = 40;
+                }else{
+                    this.sizeLeft = 60;
+                    this.sizeRight = 40;
+                }
+            });
 
         this.outHeaders$ = this._outService.outHeaders$;
         this._outService.outHeaders$
@@ -122,12 +150,6 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
                 this.outHeaderPagenation = outHeaderPagenation;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
-
-        this._outService.showMobile$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((showMobile: any) => {
-                this.showMobile = showMobile;
             });
 
     }
@@ -204,7 +226,19 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
                     row : JSON.stringify(row)
                 }
             });
-        //this._router.snapshot.nav(['/product-list'], {  queryParams: {  page: pageNum } });
 
+        //모바일 디테일
+        if(this.isMobile){
+            // eslint-disable-next-line no-cond-assign
+            if(this.sizeLeft = 100){
+                // 모바일이면
+                this.sizeLeft = 60;
+                this.sizeRight = 40;
+            }else{
+                // 모바일 아니면
+                this.sizeLeft = 60;
+                this.sizeRight = 40;
+            }
+        }
     }
 }
