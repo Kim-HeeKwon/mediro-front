@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {OrderService} from './order.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'app-order',
@@ -20,6 +21,10 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild(MatPaginator) private _orderHeaderPagenator: MatPaginator;
     @ViewChild(MatSort) private _orderHeaderSort: MatSort;
+    isMobile: boolean = false;
+
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
     orderHeaders$: Observable<OrderHeader[]>;
     orderHeaderPagenation: OrderHeaderPagenation | null = null;
     isLoading: boolean = false;
@@ -62,11 +67,13 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _orderService: OrderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _codeStore: CodeStore,
-                private _utilService: FuseUtilsService)
+                private _utilService: FuseUtilsService,
+                private _deviceService: DeviceDetectorService,)
     {
         this.status = _utilService.commonValue(_codeStore.getValue().data,'PO_STATUS');
         this.type = _utilService.commonValue(_codeStore.getValue().data,'PO_TYPE');
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.isMobile = this._deviceService.isMobile();
     }
 
     ngOnInit(): void {

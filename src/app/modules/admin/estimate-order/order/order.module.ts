@@ -29,6 +29,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {OrderResolvers} from './order.resolvers';
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 const orderRoutes: Route[] = [
     {
@@ -84,6 +85,7 @@ const orderRoutes: Route[] = [
         FuseAlertModule,
         MatTabsModule,
         MatCardModule,
+        MatSidenavModule,
         MatDialogModule
     ]
 })

@@ -10,6 +10,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {ActivatedRoute, NavigationExtras, Router, RouterModule} from '@angular/router';
 import {SelectionModel} from '@angular/cdk/collections';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'app-estimate',
@@ -19,6 +20,10 @@ import {SelectionModel} from '@angular/cdk/collections';
 export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _estimateHeaderPagenator: MatPaginator;
     @ViewChild(MatSort) private _estimateHeaderSort: MatSort;
+    isMobile: boolean = false;
+
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
     estimateHeaders$: Observable<EstimateHeader[]>;
     estimateHeaderPagenation: EstimateHeaderPagenation | null = null;
     isLoading: boolean = false;
@@ -62,11 +67,13 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         private _estimateService: EstimateService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
-        private _utilService: FuseUtilsService)
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,)
     {
         this.status = _utilService.commonValue(_codeStore.getValue().data,'QT_STATUS');
         this.type = _utilService.commonValue(_codeStore.getValue().data,'QT_TYPE');
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.isMobile = this._deviceService.isMobile();
     }
 
     ngOnInit(): void {

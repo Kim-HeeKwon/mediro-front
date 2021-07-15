@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {SalesorderService} from './salesorder.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-salesorder',
@@ -20,6 +21,10 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild(MatPaginator) private _salesorderHeaderPagenator: MatPaginator;
     @ViewChild(MatSort) private _salesorderHeaderSort: MatSort;
+    isMobile: boolean = false;
+
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
     salesorderHeaders$: Observable<SalesOrderHeader[]>;
     salesorderHeaderPagenation: SalesOrderHeaderPagenation | null = null;
     isLoading: boolean = false;
@@ -63,11 +68,13 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _salesorderService: SalesorderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _codeStore: CodeStore,
-                private _utilService: FuseUtilsService)
+                private _utilService: FuseUtilsService,
+                private _deviceService: DeviceDetectorService,)
     {
         this.status = _utilService.commonValue(_codeStore.getValue().data,'SO_STATUS');
         this.type = _utilService.commonValue(_codeStore.getValue().data,'SO_TYPE');
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.isMobile = this._deviceService.isMobile();
     }
     ngOnInit(): void {
 

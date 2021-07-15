@@ -29,6 +29,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {EstimateDetailResolvers} from './estimate-detail/estimate-detail.resolvers';
 import {EstimateNewComponent} from './estimate-new/estimate-new.component';
 import {EstimateNewResolvers} from './estimate-new/estimate-new.resolvers';
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 const estimateRoutes: Route[] = [
     {
@@ -84,6 +85,7 @@ const estimateRoutes: Route[] = [
         FuseAlertModule,
         MatCardModule,
         MatTabsModule,
+        MatSidenavModule,
         MatDialogModule,
     ]
 })

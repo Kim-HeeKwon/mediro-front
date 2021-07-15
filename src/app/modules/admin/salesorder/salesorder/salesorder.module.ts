@@ -29,6 +29,7 @@ import {SalesorderNewComponent} from './salesorder-new/salesorder-new.component'
 import {SalesorderNewResolvers} from './salesorder-new/salesorder-new.resolvers';
 import {SalesorderDetailResolvers} from './salesorder-detail/salesorder-detail.resolvers';
 import {SalesorderDetailComponent} from './salesorder-detail/salesorder-detail.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 
 const salesorderRoutes: Route[] = [
@@ -85,6 +86,7 @@ const salesorderRoutes: Route[] = [
         FuseAlertModule,
         MatTabsModule,
         MatCardModule,
+        MatSidenavModule,
         MatDialogModule
     ]
 })

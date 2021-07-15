@@ -1,368 +1,491 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
-    <!-- Header -->
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
-        <!-- Loader -->
-        <div
-            class="absolute inset-x-0 bottom-0"
-            *ngIf="isLoading">
-            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-        </div>
-        <!-- Title -->
-        <div class="flex-row text-3xl font-extrabold tracking-tight">발주 관리</div>
-    </div>
-    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-        <!-- 검색조건 -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-            <form
-                [formGroup]="searchForm">
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                    <mat-select [formControlName]="'status'">
-                        <ng-container *ngFor="let status of status">
-                            <mat-option [value]="status.id">
-                                {{status.name}}
-                            </mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                    <mat-select [formControlName]="'searchCondition'">
-                        <ng-container *ngFor="let searchCondition of searchCondition">
-                            <mat-option [value]="searchCondition.id">
-                                {{searchCondition.name}}
-                            </mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                    <input
-                        matInput
-                        [formControlName]="'searchText'"
-                        [autocomplete]="'off'"
-                        [placeholder]="'검색조건을 선택해주세요.'">
-                </mat-form-field>
-                <!-- Search -->
-                <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
-                <!--                    <mat-icon-->
-                <!--                        matPrefix-->
-                <!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
-                <!--                    <input-->
-                <!--                        matInput-->
-                <!--                        [formControlName]="'searchText'"-->
-                <!--                        [autocomplete]="'off'"-->
-                <!--                        [placeholder]="'상품검색'">-->
-                <!--                </mat-form-field>-->
-            </form>
-        </div>
-        <!-- Actions -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <!-- Search -->
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="selectHeader()">
-                <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                <span class="ml-2 mr-1">조회</span>
-            </button>
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'accent'"
-                (click)="newOrder()">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">작성</span>
-            </button>
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'accent'"
-                (click)="orderConfirm()">
-                <span class="ml-2 mr-1">확정</span>
-            </button>
-        </div>
-    </div>
+<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <mat-drawer-container class="flex-auto sm:h-full">
 
-    <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
-        <!-- Item list -->
-        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-            <ng-container *ngIf="orderHeadersCount > 0; else noOrders">
-                <!-- Table wrapper -->
-                <div
-                    class="overflow-x-auto sm:overflow-y-auto"
-                    cdkScrollable>
-                    <!-- Table -->
-                    <table
-                        class="w-full min-w-320 table-fixed bg-transparent"
-                        [ngClass]="{'pointer-events-none': isLoading}"
-                        mat-table
-                        matSort
-                        [matSortActive]="'accountNm'"
-                        [matSortDisableClear]="true"
-                        [matSortDirection]="'asc'"
-                        [multiTemplateDataRows]="true"
-                        [dataSource]="orderHeaders$"
-                        [trackBy]="trackByFn">
-
-                        <ng-container matColumnDef="select">
-                            <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                style="width:7%"
-                                mat-header-cell
-                                *matHeaderCellDef>
-                                <mat-checkbox (change)="$event ? masterToggle() : null"
-                                              [checked]="selection.hasValue() && isAllSelected()"
-                                              [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                              [aria-label]="checkboxLabel()">
-                                </mat-checkbox>
-                            </th>
-                            <td mat-cell *matCellDef="let row"
-                                style="width:7%">
-                                <mat-checkbox (click)="$event.stopPropagation()"
-                                              (change)="$event ? selection.toggle(row) : null"
-                                              [checked]="selection.isSelected(row)"
-                                              [aria-label]="checkboxLabel(row)">
-                                </mat-checkbox>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="no">
-                            <th mat-header-cell
-                                class="mediro-th-header-checkbox"
-                                *matHeaderCellDef
-                                [hidden]="true">
-                                No.
-                            </th>
-                            <td mat-cell *matCellDef="let orderHeader"
-                                [hidden]="true">
-                                {{orderHeader.no}}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="poCreDate">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                [width]="120"
-                                mat-sort-header
-                                disableClear>
-                                발주생성일자
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.poCreDate}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="poDate">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                [width]="120"
-                                mat-sort-header
-                                disableClear>
-                                발주일자
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.poDate}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="poNo">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                발주 번호
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.poNo}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="account">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                거래처 코드
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.account}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="accountNm">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                거래처 명
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.accountNm}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="accountType">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                거래처 유형
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{(orderHeader.accountType | fuseFindByKey:'id':accountType).name}}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="type">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                유형
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{(orderHeader.type | fuseFindByKey:'id':type).name}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                상태
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{(orderHeader.status | fuseFindByKey:'id':status).name}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="email">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                이메일
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.email}}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="poAmt">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                발주금액
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.poAmt}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="remarkHeader">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                비고
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.remarkHeader}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="ibNo">
-                            <th
-                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                mat-header-cell
-                                *matHeaderCellDef
-                                mat-sort-header
-                                disableClear>
-                                입고번호
-                            </th>
-                            <td
-                                class="pr-8 truncate"
-                                mat-cell
-                                *matCellDef="let orderHeader">
-                                {{orderHeader.ibNo}}
-                            </td>
-                        </ng-container>
-                        <tr
-                            class="shadow"
-                            mat-header-row
-                            *matHeaderRowDef="orderHeadersTableColumns; sticky: true"></tr>
-                        <tr
-                            class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
-                            mat-row
-                            (click)="selectClickRow(orderHeader)"
-                            *matRowDef="let orderHeader; columns: orderHeadersTableColumns;"></tr>
-                        <!--(dblclick)="selectDoubleClickRow(orderHeader)"-->
-
-
-                    </table>
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #drawer>
+            <!-- Header -->
+            <div class="flex items-center justify-between m-4 mr-4 sm:my-4">
+                <!-- Title -->
+                <div class="text-3xl font-extrabold tracking-tight leading-none">검색조건</div>
+                <!-- Close button -->
+                <div class="lg:hidden">
+                    <button
+                        mat-icon-button
+                        (click)="drawer.close()">
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
                 </div>
-                <mat-paginator
-                    class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                    [ngClass]="{'pointer-events-none': isLoading}"
-                    [length]="orderHeaderPagenation.length"
-                    [pageIndex]="orderHeaderPagenation.page"
-                    [pageSize]="orderHeaderPagenation.size"
-                    [pageSizeOptions]="[8, 10, 25, 100]"
-                    [showFirstLastButtons]="true"></mat-paginator>
-            </ng-container>
-            <ng-template #noOrders>
-                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
-                    <p>데이터가 없습니다.</p>
-                    <p>발주서 작성 버튼을 클릭하여 발주를 등록해 주세요.</p>
+            </div>
+            <!-- Panel links -->
+            <div class="flex flex-col divide-y border-t border-b">
+                <!-- 검색조건 -->
+                <form [formGroup]="searchForm">
+                    <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+                        <!-- Name -->
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'status'">
+                                    <ng-container *ngFor="let status of status">
+                                        <mat-option [value]="status.id">
+                                            {{status.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'searchCondition'">
+                                    <ng-container *ngFor="let searchCondition of searchCondition">
+                                        <mat-option [value]="searchCondition.id">
+                                            {{searchCondition.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'searchText'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'검색조건을 선택해주세요.'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <!-- Actions -->
+                <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
+                    <!-- Add product button -->
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="selectHeader()">
+                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                            <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="newOrder()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">작성</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="orderConfirm()">
+                            <span class="ml-2 mr-1">확정</span>
+                        </button>
+                    </div>
                 </div>
-            </ng-template>
-        </div>
-    </div>
+            </div>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+                <!-- Load settings panel -->
+                <div class="mt-8">
+                    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between">
+                            <!-- Loader -->
+                            <div
+                                class="absolute inset-x-0 bottom-0"
+                                *ngIf="isLoading">
+                                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                            </div>
+                            <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                                <!-- Add product button -->
+                                <div class="text-3xl font-extrabold tracking-tight">
+                                    발주 관리</div>
+                                <button
+                                    class="sm:hidden -ml-2"
+                                    mat-icon-button
+                                    (click)="drawer.toggle()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+                            <!-- 검색조건 -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <form
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'status'">
+                                            <ng-container *ngFor="let status of status">
+                                                <mat-option [value]="status.id">
+                                                    {{status.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition'">
+                                            <ng-container *ngFor="let searchCondition of searchCondition">
+                                                <mat-option [value]="searchCondition.id">
+                                                    {{searchCondition.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                    <!-- Search -->
+                                    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+                                    <!--                    <mat-icon-->
+                                    <!--                        matPrefix-->
+                                    <!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+                                    <!--                    <input-->
+                                    <!--                        matInput-->
+                                    <!--                        [formControlName]="'searchText'"-->
+                                    <!--                        [autocomplete]="'off'"-->
+                                    <!--                        [placeholder]="'상품검색'">-->
+                                    <!--                </mat-form-field>-->
+                                </form>
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <!-- Search -->
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectHeader()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                                    <span class="ml-2 mr-1">조회</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="newOrder()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                    <span class="ml-2 mr-1">작성</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="orderConfirm()">
+                                    <span class="ml-2 mr-1">확정</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Main -->
+                        <div class="flex flex-auto overflow-hidden">
+                            <!-- Item list -->
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <ng-container *ngIf="orderHeadersCount > 0; else noOrders">
+                                    <!-- Table wrapper -->
+                                    <div
+                                        class="overflow-x-auto sm:overflow-y-auto"
+                                        cdkScrollable>
+                                        <!-- Table -->
+                                        <table
+                                            class="w-full min-w-320 table-fixed bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            mat-table
+                                            matSort
+                                            [matSortActive]="'accountNm'"
+                                            [matSortDisableClear]="true"
+                                            [matSortDirection]="'asc'"
+                                            [multiTemplateDataRows]="true"
+                                            [dataSource]="orderHeaders$"
+                                            [trackBy]="trackByFn">
+
+                                            <ng-container matColumnDef="select">
+                                                <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    style="width:7%"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef>
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                  [checked]="selection.hasValue() && isAllSelected()"
+                                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                                  [aria-label]="checkboxLabel()">
+                                                    </mat-checkbox>
+                                                </th>
+                                                <td mat-cell *matCellDef="let row"
+                                                    style="width:7%">
+                                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                                  (change)="$event ? selection.toggle(row) : null"
+                                                                  [checked]="selection.isSelected(row)"
+                                                                  [aria-label]="checkboxLabel(row)">
+                                                    </mat-checkbox>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="no">
+                                                <th mat-header-cell
+                                                    class="mediro-th-header-checkbox"
+                                                    *matHeaderCellDef
+                                                    [hidden]="true">
+                                                    No.
+                                                </th>
+                                                <td mat-cell *matCellDef="let orderHeader"
+                                                    [hidden]="true">
+                                                    {{orderHeader.no}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="poCreDate">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    [width]="120"
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    발주생성일자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.poCreDate}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="poDate">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    [width]="120"
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    발주일자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.poDate}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="poNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    발주 번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.poNo}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="account">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    거래처 코드
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.account}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="accountNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    거래처 명
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.accountNm}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="accountType">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    거래처 유형
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{(orderHeader.accountType | fuseFindByKey:'id':accountType).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="type">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    유형
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{(orderHeader.type | fuseFindByKey:'id':type).name}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="status">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    상태
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{(orderHeader.status | fuseFindByKey:'id':status).name}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="email">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    이메일
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.email}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="poAmt">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    발주금액
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.poAmt}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="remarkHeader">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    비고
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.remarkHeader}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="ibNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    입고번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.ibNo}}
+                                                </td>
+                                            </ng-container>
+                                            <tr
+                                                class="shadow"
+                                                mat-header-row
+                                                *matHeaderRowDef="orderHeadersTableColumns; sticky: true"></tr>
+                                            <tr
+                                                class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
+                                                mat-row
+                                                (click)="selectClickRow(orderHeader)"
+                                                *matRowDef="let orderHeader; columns: orderHeadersTableColumns;"></tr>
+                                            <!--(dblclick)="selectDoubleClickRow(orderHeader)"-->
+
+
+                                        </table>
+                                    </div>
+                                    <mat-paginator
+                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                        [ngClass]="{'pointer-events-none': isLoading}"
+                                        [length]="orderHeaderPagenation.length"
+                                        [pageIndex]="orderHeaderPagenation.page"
+                                        [pageSize]="orderHeaderPagenation.size"
+                                        [pageSizeOptions]="[8, 10, 25, 100]"
+                                        [showFirstLastButtons]="true"></mat-paginator>
+                                </ng-container>
+                                <ng-template #noOrders>
+                                    <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                                        <p>데이터가 없습니다.</p>
+                                        <p>발주서 작성 버튼을 클릭하여 발주를 등록해 주세요.</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer-content>
+
+    </mat-drawer-container>
 </div>
+
