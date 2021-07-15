@@ -6,26 +6,25 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {MatTable} from "@angular/material/table";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {OutBound, OutDetail, OutDetailPagenation, OutHeader} from "../out.types";
-import {merge, Observable, Subject} from "rxjs";
-import {SelectionModel} from "@angular/cdk/collections";
-import {TableConfig, TableStyle} from "../../../../../../@teamplat/components/common-table/common-table.types";
-import {OutService} from "../out.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
-import {SaveAlertComponent} from "../../../../../../@teamplat/components/common-alert/save-alert";
-import {Estimate} from "../../../estimate-order/estimate/estimate.types";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTable} from '@angular/material/table';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {OutBound, OutDetail, OutDetailPagenation, OutHeader} from '../out.types';
+import {merge, Observable, Subject} from 'rxjs';
+import {SelectionModel} from '@angular/cdk/collections';
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {OutService} from '../out.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 
 @Component({
     selector       : 'out-new',
@@ -216,7 +215,7 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
     /* 저장
      *
      */
-    saveEstimate(): void{
+    saveOut(): void{
 
         if(!this.outHeaderForm.invalid){
             this.showAlert = false;
@@ -234,8 +233,8 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
                         createList = [];
                         this.outDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe((estimateDetail) => {
-                                estimateDetail.forEach((sendData: any) => {
+                            .subscribe((outDetail) => {
+                                outDetail.forEach((sendData: any) => {
                                     if (sendData.flag) {
                                         if (sendData.flag === 'C') {
                                             createList.push(sendData);
@@ -244,7 +243,7 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
                                 });
                             });
                         if (createList.length > 0) {
-                            this.createEstimate(createList);
+                            this.createOut(createList);
                             //this.totalAmt();
                         }
                         this.backPage();
@@ -273,13 +272,13 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
      *
      * @param sendData
      */
-    createEstimate(sendData: OutBound[]): void{
+    createOut(sendData: OutBound[]): void{
         if(sendData){
             sendData = this.headerDataSet(sendData);
 
             this._outService.createOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((estimate: any) => {
+                .subscribe((outBound: any) => {
                 });
         }
 

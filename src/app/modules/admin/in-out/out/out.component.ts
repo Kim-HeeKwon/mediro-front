@@ -7,7 +7,7 @@ import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FuseMediaWatcherService} from '../../../../../@teamplat/services/media-watcher';
 import {OutService} from './out.service';
 import {takeUntil} from 'rxjs/operators';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-out',
@@ -21,8 +21,8 @@ export class OutComponent implements OnInit, OnDestroy {
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
 
-    drawerMode: 'over' | 'side' = 'side';
-    drawerOpened: boolean = true;
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
     searchInputControl: FormControl = new FormControl();
     searchForm: FormGroup;
     obType: CommonCode[] = [];
@@ -43,11 +43,9 @@ export class OutComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            obType: ['1'],
-            obStatus: ['N'],
-            accountType: [''],
+            obType: ['ALL'],
+            obStatus: ['ALL'],
             accountNm: [''],
-            itemCd: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
@@ -61,7 +59,7 @@ export class OutComponent implements OnInit, OnDestroy {
                 if ( matchingAliases.includes('md') )
                 {
                     this.drawerMode = 'side';
-                    this.drawerOpened = true;
+                    this.drawerOpened = false;
                 }
                 else
                 {

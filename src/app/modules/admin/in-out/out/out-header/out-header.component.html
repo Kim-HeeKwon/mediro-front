@@ -1,16 +1,9 @@
-<!--<as-split direction="horizontal">-->
-<!--    <as-split-area [size]="40">-->
-<!--        <p>LEFT</p>-->
-<!--    </as-split-area>-->
-<!--    <as-split-area [size]="60">-->
-<!--        <p>RIGHT</p>-->
-<!--    </as-split-area>-->
-<!--</as-split>-->
-
-<div class="flex flex-auto w-full bg-card dark:bg-transparent">
+<div class="inset-0 flex flex-col min-w-0 w-full border-t overflow-hidden bg-card dark:bg-transparent">
     <as-split direction="horizontal">
-        <as-split-area [size]="40">
-            <div class="flex flex-auto flex-col w-full min-w-0 border-r z-10">
+        <as-split-area [size]=sizeLeft
+                       [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
+                        'hidden lg:flex': showMobile}">
+            <div class="flex flex-auto flex-col min-w-0 border-r z-10">
                 <!-- Title -->
                 <!--        <div class="mt-10 mb-8 mx-6 text-4xl font-extrabold tracking-tight leading-none">해더해더</div>-->
                 <div
@@ -18,7 +11,7 @@
                     [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
                         'hidden lg:flex': showMobile}">
                     <!-- Main -->
-                    <div class="flex flex-auto overflow-hidden">
+                    <div class="flex flex-col flex-auto overflow-hidden">
                         <!-- Item list -->
                         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
                             <ng-container *ngIf="outHeadersCount > 0; else noHeaders">
@@ -108,16 +101,18 @@
                                             *matRowDef="let row; columns: outHeadersTableColumns; let i = dataIndex;"
                                             (click)="rowClick(row, i)"></tr>
                                     </table>
-                                    <mat-paginator
 
-                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                                        [ngClass]="{'pointer-events-none': isLoading}"
-                                        [length]="outHeaderPagenation.length"
-                                        [pageIndex]="outHeaderPagenation.page"
-                                        [pageSize]="outHeaderPagenation.size"
-                                        [pageSizeOptions]="[10,100]"
-                                        [showFirstLastButtons]="true"></mat-paginator>
                                 </div>
+                                <mat-paginator
+
+                                    class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                    [ngClass]="{'pointer-events-none': isLoading}"
+                                    [length]="outHeaderPagenation.length"
+                                    [pageIndex]="outHeaderPagenation.page"
+                                    [pageSize]="outHeaderPagenation.size"
+                                    [pageSizeOptions]="[10,100]"
+                                    [showFirstLastButtons]="true"></mat-paginator>
+
                             </ng-container>
                             <ng-template #noHeaders>
                                 <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
@@ -130,11 +125,10 @@
                 </div>
             </div>
         </as-split-area>
-        <as-split-area [size]="60">
+        <as-split-area
+            [size]=sizeRight>
             <div
-                class="flex-auto"
-                [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
-                        'hidden lg:flex': !showMobile}">
+                class="flex-auto">
                 <router-outlet></router-outlet>
             </div>
         </as-split-area>
