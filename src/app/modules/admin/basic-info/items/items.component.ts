@@ -20,6 +20,12 @@ import {NewItemComponent} from './new-item/new-item.component';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 
+import {
+    BreakpointObserver,
+    Breakpoints,
+    BreakpointState
+} from '@angular/cdk/layout';
+
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -31,6 +37,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
     animations     : fuseAnimations
 })
 export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
 
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
@@ -76,6 +86,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver
     ) {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
@@ -232,12 +243,30 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     createItem(): void
     {
-        this._matDialog.open(NewItemComponent, {
-            autoFocus: false,
-            data     : {
-                note: {}
-            }
-        });
+        if(!this.isMobile){
+            this._matDialog.open(NewItemComponent, {
+                autoFocus: false,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(NewItemComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw'
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     /**

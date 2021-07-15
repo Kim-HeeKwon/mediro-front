@@ -1,9 +1,9 @@
-<div class="flex flex-auto w-full bg-card dark:bg-transparent">
+<div class="inset-0 flex flex-col min-w-0 w-full border-t overflow-hidden bg-card dark:bg-transparent">
     <as-split direction="horizontal">
         <as-split-area [size]=sizeLeft
                        [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
                         'hidden lg:flex': showMobile}">
-            <div class="flex flex-auto flex-col w-full min-w-0 border-r z-10">
+            <div class="flex flex-auto flex-col min-w-0 border-r z-10">
                 <!-- Title -->
                 <!--        <div class="mt-10 mb-8 mx-6 text-4xl font-extrabold tracking-tight leading-none">해더해더</div>-->
                 <div
@@ -13,7 +13,7 @@
                     <!-- Main -->
                     <div class="flex flex-auto overflow-hidden">
                         <!-- Item list -->
-                        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                        <div class="flex flex-col flex-auto overflow-hidden">
                             <ng-container *ngIf="itemsCount > 0; else noProducts">
                                 <!-- Table wrapper -->
                                 <div class="overflow-x-auto sm:overflow-y-auto"
@@ -116,6 +116,14 @@
                                             (click)="rowClick(product)"></tr>
                                     </table>
                                 </div>
+                                <mat-paginator
+                                    class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                    [ngClass]="{'pointer-events-none': isLoading}"
+                                    [length]="10"
+                                    [pageIndex]="1"
+                                    [pageSize]="1"
+                                    [pageSizeOptions]="[8, 10, 25, 100]"
+                                    [showFirstLastButtons]="true"></mat-paginator>
                             </ng-container>
                             <ng-template #noProducts>
                                 <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
@@ -129,13 +137,9 @@
             </div>
         </as-split-area>
         <as-split-area
-            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
-                        'hidden lg:flex': !showMobile}"
             [size]=sizeRight>
             <div
-                class="flex-auto"
-                [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': showMobile,
-                        'hidden lg:flex': !showMobile}">
+                class="flex-auto">
                 <router-outlet></router-outlet>
             </div>
         </as-split-area>

@@ -20,8 +20,8 @@ export class InComponent implements OnInit, OnDestroy {
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
 
-    drawerMode: 'over' | 'side' = 'side';
-    drawerOpened: boolean = true;
+    drawerMode: 'over' | 'side' = 'over';
+    drawerOpened: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 1;
     itemsTableColumns: string[] = ['name', 'sku', 'price'];
@@ -64,7 +64,7 @@ export class InComponent implements OnInit, OnDestroy {
                 if ( matchingAliases.includes('md') )
                 {
                     this.drawerMode = 'side';
-                    this.drawerOpened = true;
+                    this.drawerOpened = false;
                 }
                 else
                 {

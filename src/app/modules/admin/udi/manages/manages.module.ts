@@ -19,6 +19,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {SharedModule} from "../../../../shared/shared.module";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 const managesRoutes: Route[] = [
     {
@@ -50,6 +51,7 @@ const managesRoutes: Route[] = [
         MatSlideToggleModule,
         MatTableModule,
         MatTooltipModule,
+        MatSidenavModule,
         SharedModule
     ]
 })
