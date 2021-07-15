@@ -1,7 +1,7 @@
 import {
     AfterViewInit,
     ChangeDetectorRef,
-    Component,
+    Component, OnChanges,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -19,7 +19,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {OutBound, OutDetail, OutDetailPagenation, OutHeader} from '../out.types';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
@@ -79,6 +79,8 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'qty',
         'remarkDetail',
     ];
+    navigationSubscription: any;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     /**
      * Constructor
@@ -95,10 +97,61 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
-        console.log('detail');
+        this.navigationSubscription = this._router.events.subscribe((e: any) => {
+            // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
+            // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
+            if (e instanceof NavigationEnd) {
+                this.initialiseInvites();
+            }
+        });
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterList);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    initialiseInvites() {
+        // 이곳에 페이지가 리로드되면 바뀔 데이터들이나 로직을 정리한다.
+        //console.log('initialiseInvites');
+        this._outService.setInitList();
+        this.outDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outDetails: any) => {
+                console.log(outDetails);
+                this._changeDetectorRef.markForCheck();
+        });
+
+        if(this._outService.outHeader$ !== undefined){
+            this.outHeader = this._outService.outHeader$;
+            this._outService.outHeader$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outHeader: any) => {
+                    // Update the counts
+                    if(outHeader !== null){
+                        this.outHeaderForm.patchValue(
+                            outHeader
+                        );
+                    }
+
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+
+        }
+        //this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
+
+        this.outDetails$ = this._outService.outDetails$;
+        this._outService.outDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outDetail: any) => {
+                // Update the counts
+                if(outDetail !== null){
+                    this.outDetailsCount = outDetail.length;
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -114,7 +167,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.outHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             obNo: [{value:'',disabled:true}],   // 출고번호
-            account: [{value:''},[Validators.required]], // 거래처 코드
+            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
             address: [{value:''}, [Validators.required]],   // 거래처 주소
             type: [{value:'',disabled:true}, [Validators.required]],   // 유형
@@ -127,13 +180,30 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
+        this.outDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outDetails: any) => {
+                console.log(outDetails);
+                this._changeDetectorRef.markForCheck();
+            });
 
         if(this._outService.outHeader$ !== undefined){
             this.outHeader = this._outService.outHeader$;
-            console.log(this.outHeader);
+            this._outService.outHeader$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outHeader: any) => {
+                    // Update the counts
+                    if(outHeader !== null){
+                        this.outHeaderForm.patchValue(
+                            outHeader
+                        );
+                    }
 
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
         }
-        //this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
+        this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
 
         this.outDetails$ = this._outService.outDetails$;
         this._outService.outDetails$
@@ -271,7 +341,6 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.outDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((outDetail) => {
-                console.log(outDetail);
                 // @ts-ignore
                 outDetail.push({
                     no: outDetail.length + 1,
@@ -407,7 +476,6 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     saveOut() {
-        return;
         if(!this.outHeaderForm.invalid){
             this.showAlert = false;
 
@@ -451,7 +519,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         if (deleteList.length > 0) {
                             this.deleteOut(deleteList);
                         }
-                        //this.backPage();
+                        this.backPage();
                     }
                 });
 
@@ -470,6 +538,10 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             // Show the alert
             this.showAlert = true;
         }
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    backPage() {
+        this._router.navigate(['in-out/out']);
     }
     /* 추가
      *

@@ -19,18 +19,16 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {SharedModule} from '../../../../shared/shared.module';
-import {outboxRoutes} from "./out.routing";
-import {InHeaderComponent} from "../in/in-header/in-header.component";
-import {InDetailComponent} from "../in/in-detail/in-detail.component";
-import {OutHeaderComponent} from "./out-header/out-header.component";
-import {OutDetailComponent} from "./out-detail/out-detail.component";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {FuseScrollbarModule} from "../../../../../@teamplat/directives/scrollbar";
-import {AngularSplitModule} from "angular-split";
-import {FuseScrollResetModule} from "../../../../../@teamplat/directives/scroll-reset";
-import {MatDialogModule} from "@angular/material/dialog";
-import {OutNewComponent} from "./out-new/out-new.component";
-import {MatTabsModule} from "@angular/material/tabs";
+import {outboxRoutes} from './out.routing';
+import {OutHeaderComponent} from './out-header/out-header.component';
+import {OutDetailComponent} from './out-detail/out-detail.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {FuseScrollbarModule} from '../../../../../@teamplat/directives/scrollbar';
+import {AngularSplitModule} from 'angular-split';
+import {FuseScrollResetModule} from '../../../../../@teamplat/directives/scroll-reset';
+import {MatDialogModule} from '@angular/material/dialog';
+import {OutNewComponent} from './out-new/out-new.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
     declarations: [

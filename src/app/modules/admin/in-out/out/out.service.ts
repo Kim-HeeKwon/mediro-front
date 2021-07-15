@@ -168,6 +168,7 @@ export class OutService {
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._outHeader.next(search);
+                        console.log(response.data);
                         this._outDetails.next(response.data);
                         this._outDetailPagenation.next(response.pageNation);
                         resolve(this._outDetails);
@@ -244,6 +245,11 @@ export class OutService {
         //             this.getAccount();
         //         }, reject);
         // });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    setInitList() {
+        this._outDetails.next([]);
     }
 }
 

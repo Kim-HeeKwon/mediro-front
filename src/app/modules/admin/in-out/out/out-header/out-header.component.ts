@@ -220,6 +220,7 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
         this.selection.clear();
         this.selection.toggle(row);
         this._outService.setShowMobile(true);
+        this._outService.setInitList();
         this._router.navigate(['in-out/out/outbox/1' , row.no]
             , {
                 queryParams: {
