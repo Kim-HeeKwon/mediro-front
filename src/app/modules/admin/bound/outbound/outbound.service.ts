@@ -1,16 +1,15 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Common} from "../../../../../@teamplat/providers/common/common";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Common} from '../../../../../@teamplat/providers/common/common';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {
     OutBound,
     OutBoundDetail,
     OutBoundDetailPagenation,
     OutBoundHeader,
     OutBoundHeaderPagenation
-} from "./outbound.types";
-import {map, switchMap, take} from "rxjs/operators";
-import {InBoundHeader} from "../inbound/inbound.types";
+} from './outbound.types';
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

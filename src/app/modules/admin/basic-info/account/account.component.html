@@ -80,6 +80,16 @@
                             mat-raised-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="createUdiEntrpsAccount()">
+                            <span class="ml-2 mr-1">UDI 통합업체</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="createUdiAccount()">
                             <span class="ml-2 mr-1">UDI Portal 거래처 가져오기</span>
                         </button>
@@ -184,6 +194,13 @@
                                     (click)="selectAccount()">
                                     <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                                     <span class="ml-2 mr-1">조회</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="createUdiEntrpsAccount()">
+                                    <span class="ml-2 mr-1">UDI 통합업체</span>
                                 </button>
                                 <button
                                     class="ml-2"

@@ -6,25 +6,23 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../@teamplat/animations";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {SelectionModel} from "@angular/cdk/collections";
-import {InBoundHeader, InBoundHeaderPagenation} from "../inbound/inbound.types";
-import {OutBoundHeader, OutBoundHeaderPagenation} from "./outbound.types";
-import {TableConfig, TableStyle} from "../../../../../@teamplat/components/common-table/common-table.types";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {MatDialog} from "@angular/material/dialog";
-import {InboundService} from "../inbound/inbound.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {OutboundService} from "./outbound.service";
-import {map, switchMap, takeUntil} from "rxjs/operators";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../@teamplat/animations';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {SelectionModel} from '@angular/cdk/collections';
+import {OutBoundHeader, OutBoundHeaderPagenation} from './outbound.types';
+import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {MatDialog} from '@angular/material/dialog';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {OutboundService} from './outbound.service';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-outbound',

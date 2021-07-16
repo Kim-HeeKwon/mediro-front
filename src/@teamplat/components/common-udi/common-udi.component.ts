@@ -8,7 +8,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {fuseAnimations} from '../../animations';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {BehaviorSubject, merge, Observable, Subject} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
@@ -39,6 +39,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     getList$: Observable<any>;
     searchForm: FormGroup;
     pagenation: UdiPagenation | null = null;
+    pageEvent: PageEvent;
 
     commonValues: Column[] = [];
 
@@ -197,5 +198,12 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getProperty(element, id: string): string{
         return element[id];
+    }
+
+    pageChange(evt: any): void{
+        this.searchForm.patchValue({'offset': this._paginator.pageIndex + 1});
+        this.searchForm.patchValue({'limit': this._paginator.pageSize});
+        this._udiService.getUdi(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+
     }
 }

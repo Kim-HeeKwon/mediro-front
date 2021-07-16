@@ -6,27 +6,25 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {MatTable} from "@angular/material/table";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {InBound, InBoundDetail, InBoundDetailPagenation} from "../../inbound/inbound.types";
-import {Observable, Subject} from "rxjs";
-import {SelectionModel} from "@angular/cdk/collections";
-import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from "../outbound.types";
-import {TableConfig, TableStyle} from "../../../../../../@teamplat/components/common-table/common-table.types";
-import {InboundService} from "../../inbound/inbound.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {OutboundService} from "../outbound.service";
-import {takeUntil} from "rxjs/operators";
-import {SaveAlertComponent} from "../../../../../../@teamplat/components/common-alert/save-alert";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTable} from '@angular/material/table';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {Observable, Subject} from 'rxjs';
+import {SelectionModel} from '@angular/cdk/collections';
+import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from '../outbound.types';
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {OutboundService} from '../outbound.service';
+import {takeUntil} from 'rxjs/operators';
+import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 
 @Component({
     selector       : 'outbound-new',

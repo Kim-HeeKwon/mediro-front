@@ -1,20 +1,20 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {MatTable} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {SelectionModel} from "@angular/cdk/collections";
-import {merge, Observable, Subject} from "rxjs";
-import {TableConfig, TableStyle} from "../../../../../../@teamplat/components/common-table/common-table.types";
-import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from "../outbound.types";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder} from "@angular/forms";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {OutboundService} from "../outbound.service";
-import {SaveAlertComponent} from "../../../../../../@teamplat/components/common-alert/save-alert";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatTable} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {SelectionModel} from '@angular/cdk/collections';
+import {merge, Observable, Subject} from 'rxjs';
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from '../outbound.types';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder} from '@angular/forms';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {OutboundService} from '../outbound.service';
+import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 
 @Component({
     selector       : 'outbound-detail',

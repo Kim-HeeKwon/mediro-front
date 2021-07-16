@@ -378,6 +378,64 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     /**
+     * Add a new note
+     */
+    createUdiEntrpsAccount(): void
+    {
+        if(!this.isMobile){
+            const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+                data: {
+                    headerText : '통합업체 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/entrps',
+                    searchList : ['entpName', 'cobFlagCode'],
+                    code: 'UDI_ENTRPS',
+                    tail : false,
+                    mediroUrl : 'entrps/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            popupUdi.afterClosed().subscribe((result) => {
+                if(result){
+                    console.log(result);
+                }
+            });
+        }else{
+            const d = this._matDialog.open(CommonUdiComponent, {
+                data: {
+                    headerText : '통합업체 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/entrps',
+                    searchList : ['entpName', 'cobFlagCode'],
+                    code: 'UDI_ENTRPS',
+                    tail : false,
+                    mediroUrl : 'entrps/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                smallDialogSubscription.unsubscribe();
+                if(result){
+                    console.log(result);
+                }
+            });
+        }
+    }
+    /**
      * 업데이트
      */
     updateAccount(): void
