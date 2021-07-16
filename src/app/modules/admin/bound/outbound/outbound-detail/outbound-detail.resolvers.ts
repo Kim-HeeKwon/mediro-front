@@ -1,20 +1,22 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Common} from '../../../../../../@teamplat/providers/common/common';
-import {InboundService} from '../inbound.service';
-import {Observable} from 'rxjs';
+import {Injectable} from "@angular/core";
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import {Common} from "../../../../../../@teamplat/providers/common/common";
+import {OutboundService} from "../outbound.service";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
-export class InboundNewResolvers implements Resolve<any> {
+export class OutboundDetailResolvers implements Resolve<any> {
     coinChartWidget: any[];
+
     /**
      * Constructor
      */
-    constructor(private _inboundService: InboundService,
+    constructor(private _outboundService: OutboundService,
                 private _common: Common) {
     }
+
     /**
      * Resolver
      *
@@ -25,7 +27,7 @@ export class InboundNewResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                //this._inboundService.getNew()
+                //this._outboundService.getDetail()
             ]).then(
                 () => {
                     // @ts-ignore

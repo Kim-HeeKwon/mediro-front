@@ -105,7 +105,7 @@ export const appRoutes: Route[] = [
                     //{path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
                     {path: 'inbound', loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
                     // outbound
-                    //{path: 'outbound', loadChildren: () => import('app/modules/admin/in-out/out/out.module').then(m => m.OutModule)},
+                    {path: 'outbound', loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
                 ]},
             // in-out
             {path: 'in-out', children: [

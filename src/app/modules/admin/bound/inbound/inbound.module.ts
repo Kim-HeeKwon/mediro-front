@@ -28,10 +28,8 @@ import {InboundNewComponent} from './inbound-new/inbound-new.component';
 import {InboundNewResolvers} from './inbound-new/inbound-new.resolvers';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
-import {InDetailComponent} from "../../in-out/in/in-detail/in-detail.component";
-import {InDetailResolver} from "../../in-out/in/in.resolvers";
-import {InboundDetailComponent} from "./inbound-detail/inbound-detail.component";
-import {InboundDetailResolvers} from "./inbound-detail/inbound-detail.resolvers";
+import {InboundDetailComponent} from './inbound-detail/inbound-detail.component';
+import {InboundDetailResolvers} from './inbound-detail/inbound-detail.resolvers';
 
 const inboundRoutes: Route[] = [
     {

@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {InboundService} from "../inbound.service";
-import {Common} from "../../../../../../@teamplat/providers/common/common";
-import {Observable} from "rxjs";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {InboundService} from '../inbound.service';
+import {Common} from '../../../../../../@teamplat/providers/common/common';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

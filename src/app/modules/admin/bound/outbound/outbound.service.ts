@@ -1,0 +1,286 @@
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {Common} from "../../../../../@teamplat/providers/common/common";
+import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {
+    OutBound,
+    OutBoundDetail,
+    OutBoundDetailPagenation,
+    OutBoundHeader,
+    OutBoundHeaderPagenation
+} from "./outbound.types";
+import {map, switchMap, take} from "rxjs/operators";
+import {InBoundHeader} from "../inbound/inbound.types";
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OutboundService{
+    private _outBoundHeader: BehaviorSubject<OutBoundHeader> = new BehaviorSubject(null);
+    private _outBoundHeaders: BehaviorSubject<OutBoundHeader[]> = new BehaviorSubject(null);
+    private _outBoundHeaderPagenation: BehaviorSubject<OutBoundHeaderPagenation | null> = new BehaviorSubject(null);
+    private _outBoundDetail: BehaviorSubject<OutBoundDetail> = new BehaviorSubject(null);
+    private _outBoundDetails: BehaviorSubject<OutBoundDetail[]> = new BehaviorSubject(null);
+    private _outBoundDetailPagenation: BehaviorSubject<OutBoundDetailPagenation | null> = new BehaviorSubject(null);
+    private _outBounds: BehaviorSubject<OutBound[]> = new BehaviorSubject(null);
+
+    private _showMobile: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+    /**
+     * Constructor
+     */
+    constructor(private _httpClient: HttpClient,
+                private _common: Common) {
+
+    }
+
+    /**
+     * Getter for header
+     */
+    get outBoundHeader$(): Observable<OutBoundHeader>
+    {
+        return this._outBoundHeader.asObservable();
+    }
+
+    /**
+     * Getter for headers
+     */
+    get outBoundHeaders$(): Observable<OutBoundHeader[]>
+    {
+        return this._outBoundHeaders.asObservable();
+    }
+
+    /**
+     * Getter for Header Pagenation
+     */
+    get outBoundHeaderPagenation$(): Observable<OutBoundHeaderPagenation>
+    {
+        return this._outBoundHeaderPagenation.asObservable();
+    }
+
+    /**
+     * Getter for detail
+     */
+    get outBoundDetail$(): Observable<OutBoundDetail>
+    {
+        return this._outBoundDetail.asObservable();
+    }
+
+
+    /**
+     * Getter for details
+     */
+    get outBoundDetails$(): Observable<OutBoundDetail[]>
+    {
+        return this._outBoundDetails.asObservable();
+    }
+
+    /**
+     * Getter for Detail Pagenation
+     */
+    get outBoundDetailPagenation$(): Observable<OutBoundDetailPagenation>
+    {
+        return this._outBoundDetailPagenation.asObservable();
+    }
+
+    /**
+     * Getter for showMobile
+     */
+    get showMobile$(): Observable<boolean>
+    {
+        return this._showMobile.asObservable();
+    }
+
+    /**
+     * Getter
+     */
+    get outBounds$(): Observable<OutBound[]>
+    {
+        return this._outBounds.asObservable();
+    }
+
+    /**
+     * set Mobile Page
+     */
+    setShowMobile(value: boolean): void{
+        this._showMobile.next(value);
+    }
+
+    /**
+     * Post getDetail
+     *
+     * @returns
+     */
+    getHeader(page: number = 0, size: number = 10, sort: string = 'obNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+        Observable<{ outBoundHeaderPagenation: OutBoundHeaderPagenation; outBoundHeader: OutBoundHeader[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/inOut/outBound/header-List')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._outBoundHeaders.next(response.data);
+                        this._outBoundHeaderPagenation.next(response.pageNation);
+                        resolve(this._outBoundHeaders);
+                    }
+                }, reject);
+        });
+    }
+
+    /**
+     * Post getDetail
+     *
+     * @returns
+     */
+    getDetail(page: number = 0, size: number = 10, sort: string = 'obLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Observable<{ outBoundDetailPagenation: OutBoundDetailPagenation; outBoundDetail: OutBoundDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/inOut/outBound/detail-List')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._outBoundHeader.next(search);
+                        this._outBoundDetails.next(response.data);
+                        this._outBoundDetailPagenation.next(response.pageNation);
+                        resolve(this._outBoundDetails);
+                    }
+                }, reject);
+        });
+    }
+
+    /**
+     * Post getNew
+     *
+     * @returns
+     */
+    getNew(page: number = 0, size: number = 10, sort: string = 'obLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Observable<{ outBoundDetailPagenation: OutBoundDetailPagenation; outBoundDetail: OutBoundDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._outBoundDetails.next([]);
+            // @ts-ignore
+            this._outBoundDetailPagenation.next([]);
+        });
+    }
+
+    /**
+     * Create
+     */
+    createOut(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+    updateOut(outBound: OutBound[]): Observable<{outBound: OutBound[] }> {
+
+        return this._common.listPut('v1/api/inOut/outBound', outBound).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+    deleteOut(outBound: OutBound[]): Observable<{outBound: OutBound[]}> {
+
+        return this._common.listDelete('v1/api/inOut/outBound', outBound).pipe(
+            switchMap((response: any) => of(response))
+        );
+        // @ts-ignore
+        // return new Promise((resolve, reject) => {
+        //     this._common.delete('v1/api/basicInfo/account', accountData)
+        //         .subscribe((response: any) => {
+        //             this.getAccount();
+        //         }, reject);
+        // });
+    }
+
+    /**
+     * Get product by id
+     */
+    getOutBoundsById(obNo: string): Observable<OutBoundHeader>
+    {
+        return this._outBoundHeaders.pipe(
+            take(1),
+            map((products) => {
+
+                // Find the product
+                // @ts-ignore
+                const product = products.find(outBound => outBound.obNo === obNo) || null;
+
+                // Update the product
+                this._outBoundHeader.next(product);
+
+                // Return the product
+                return product;
+            }),
+            switchMap((product) => {
+
+                if ( !product )
+                {
+                    return throwError('Could not found product with id of ' + obNo + '!');
+                }
+
+                return of(product);
+            })
+        );
+    }
+
+}
