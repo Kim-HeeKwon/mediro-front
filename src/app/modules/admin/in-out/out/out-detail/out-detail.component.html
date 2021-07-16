@@ -12,107 +12,6 @@
         <!-- Main -->
         <div class="flex flex-auto overflow-hidden">
             <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
-                <div class="flex pt-4 pl-4 pr-4">
-                    <!-- Selected product form -->
-                    <form
-                        class="flex flex-col w-full"
-                        [formGroup]="outHeaderForm">
-                        <div class="flex p-2">
-                            <div class="flex flex-auto">
-                                <div class="flex flex-col w-full pr-0">
-                                    <div class="flex">
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>출고 번호</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'obNo'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>유형</mat-label>
-                                            <mat-select [formControlName]="'type'">
-                                                <ng-container *ngFor="let type of type">
-                                                    <mat-option [value]="type.id">
-                                                        {{type.name}}
-                                                    </mat-option>
-                                                </ng-container>
-                                            </mat-select>
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>상태</mat-label>
-                                            <mat-select [formControlName]="'status'">
-                                                <ng-container *ngFor="let status of status">
-                                                    <mat-option [value]="status.id">
-                                                        {{status.name}}
-                                                    </mat-option>
-                                                </ng-container>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>거래처 코드</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'account'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>거래처 명</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'accountNm'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>거래처 주소</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'address'">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>배송일자</mat-label>
-                                            <input type="date"
-                                                   matInput
-                                                   [formControlName]="'dlvDate'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>배송처</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'dlvAccount'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>배송주소</mat-label>
-                                            <input
-                                                matInput
-                                                [formControlName]="'dlvAddress'">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="flex">
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>작성일</mat-label>
-                                            <input type="date"
-                                                   matInput
-                                                   [formControlName]="'obCreDate'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>출고일</mat-label>
-                                            <input type="date"
-                                                   matInput
-                                                   [formControlName]="'obDate'">
-                                        </mat-form-field>
-                                        <mat-form-field class="w-2/6 pr-2">
-                                            <mat-label>비고</mat-label>
-                                            <input type="text"
-                                                   matInput
-                                                   [formControlName]="'remarkHeader'">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
                 <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
                     <div class="flex-row text-1xl font-extrabold tracking-tight">
                         리스트
@@ -145,7 +44,6 @@
                 <!-- Table wrapper -->
                 <div class="flex flex-auto overflow-hidden">
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-
                         <div
                             class="overflow-x-auto sm:overflow-y-auto"
                             cdkScrollable>

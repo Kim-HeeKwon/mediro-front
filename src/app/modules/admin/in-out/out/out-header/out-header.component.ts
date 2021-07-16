@@ -15,10 +15,11 @@ import {OutService} from '../out.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutHeader, OutHeaderPagenation} from '../out.types';
 import {fuseAnimations} from '../../../../../../@teamplat/animations';
-import {FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {DeviceDetectorService} from 'ngx-device-detector';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
 
 @Component({
     selector     : 'out-header',
@@ -37,8 +38,8 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
     showMobile: boolean = false;
     isMobile: boolean = false;
 
-    sizeLeft: number = 60;
-    sizeRight: number = 40;
+    sizeLeft: number = 50;
+    sizeRight: number = 50;
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     isLoading: boolean = false;
@@ -52,6 +53,9 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
 
+    type: CommonCode[] = null;
+    status: CommonCode[] = null;
+    filterList: string[];
     // eslint-disable-next-line @typescript-eslint/member-ordering
     outHeadersTableStyle: TableStyle = new TableStyle();
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -59,14 +63,14 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '작성일' , dataField : 'obCreDate', display : false , disabled : true},
         {headerText : '출고일' , dataField : 'obDate', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '출고번호' , dataField : 'obNo', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '거래처' , dataField : 'account', width: 100, display : false, disabled : true, type: 'text'},
+        {headerText : '거래처' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '거래처 명' , dataField : 'accountNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '주소' , dataField : 'address', width: 80, display : false, disabled : true, type: 'text'},
-        {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '주소' , dataField : 'address', width: 150, display : true, disabled : true, type: 'text'},
+        {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '배송처' , dataField : 'dlvAccount', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '배송주소' , dataField : 'dlvAddress', width: 80, display : false, disabled : true, type: 'text'},
-        {headerText : '배송일' , dataField : 'dlvDate', width: 80, display : false, disabled : true, type: 'text'},
+        {headerText : '배송주소' , dataField : 'dlvAddress', width: 150, display : true, disabled : true, type: 'text'},
+        {headerText : '배송일' , dataField : 'dlvDate', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkHeader', width: 100, display : false, disabled : true, type: 'text'}
     ];
     outHeadersTableColumns: string[] = [
@@ -97,8 +101,13 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
+        private _codeStore: CodeStore,
         private _router: Router
-    ) {
+    )
+    {
+        this.filterList = ['ALL'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterList);
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -112,12 +121,12 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
 
         if(this.isMobile){
             // 모바일이면
-            this.sizeLeft = 60;
-            this.sizeRight = 40;
+            this.sizeLeft = 0;
+            this.sizeRight = 100;
         }else{
             // 모바일 아니면
-            this.sizeLeft = 60;
-            this.sizeRight = 40;
+            this.sizeLeft = 50;
+            this.sizeRight = 50;
         }
 
         this._outService.showMobile$
@@ -125,11 +134,11 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
             .subscribe((showMobile: any) => {
                 this.showMobile = showMobile;
                 if(showMobile){
-                    this.sizeLeft = 60;
-                    this.sizeRight = 40;
+                    this.sizeLeft = 50;
+                    this.sizeRight = 50;
                 }else{
-                    this.sizeLeft = 60;
-                    this.sizeRight = 40;
+                    this.sizeLeft = 50;
+                    this.sizeRight = 50;
                 }
             });
 
@@ -233,12 +242,12 @@ export class OutHeaderComponent implements OnInit, OnDestroy, AfterViewInit
             // eslint-disable-next-line no-cond-assign
             if(this.sizeLeft = 100){
                 // 모바일이면
-                this.sizeLeft = 60;
-                this.sizeRight = 40;
+                this.sizeLeft = 50;
+                this.sizeRight = 50;
             }else{
                 // 모바일 아니면
-                this.sizeLeft = 60;
-                this.sizeRight = 40;
+                this.sizeLeft = 50;
+                this.sizeRight = 50;
             }
         }
     }

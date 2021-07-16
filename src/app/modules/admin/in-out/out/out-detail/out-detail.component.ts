@@ -38,9 +38,10 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
     isLoading: boolean = false;
-    outHeaderForm: FormGroup;
+    outBound = {};
     flashMessage: 'success' | 'error' | null = null;
     outDetailsCount: number = 0;
+    outCheck: number = 0;
     outHeader = new Observable<OutHeader>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -112,8 +113,8 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     initialiseInvites() {
         // 이곳에 페이지가 리로드되면 바뀔 데이터들이나 로직을 정리한다.
-        //console.log('initialiseInvites');
         this._outService.setInitList();
+        this._changeDetectorRef.markForCheck();
         this.outDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((outDetails: any) => {
@@ -125,85 +126,19 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this.outHeader = this._outService.outHeader$;
             this._outService.outHeader$
                 .pipe(takeUntil(this._unsubscribeAll))
+                // eslint-disable-next-line @typescript-eslint/no-shadow
                 .subscribe((outHeader: any) => {
                     // Update the counts
                     if(outHeader !== null){
-                        this.outHeaderForm.patchValue(
-                            outHeader
-                        );
+                        this.outBound = outHeader;
+                        this.outCheck = 1;
                     }
 
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-
+            this._outService.getDetail(0,10,'obLineNo','asc', this.outBound);
         }
-        //this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
-
-        this.outDetails$ = this._outService.outDetails$;
-        this._outService.outDetails$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((outDetail: any) => {
-                // Update the counts
-                if(outDetail !== null){
-                    this.outDetailsCount = outDetail.length;
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
-        // Form 생성
-        this.outHeaderForm = this._formBuilder.group({
-            //mId: ['', [Validators.required]],     // 회원사
-            obNo: [{value:'',disabled:true}],   // 출고번호
-            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
-            accountNm: [{value:'',disabled:true}],   // 거래처 명
-            address: [{value:''}, [Validators.required]],   // 거래처 주소
-            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
-            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
-            dlvAccount: [{value:''}],   // 배송처
-            dlvAddress: [{value:''}, [Validators.required]],   // 배송처 주소
-            dlvDate: [{value:''}, [Validators.required]],//작성일
-            obCreDate: [{value:'',disabled:true}],//작성일
-            obDate: [{value:'',disabled:true}], //출고일
-            remarkHeader: [''], //비고
-            active: [false]  // cell상태
-        });
-        this.outDetails$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((outDetails: any) => {
-                console.log(outDetails);
-                this._changeDetectorRef.markForCheck();
-            });
-
-        if(this._outService.outHeader$ !== undefined){
-            this.outHeader = this._outService.outHeader$;
-            this._outService.outHeader$
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((outHeader: any) => {
-                    // Update the counts
-                    if(outHeader !== null){
-                        this.outHeaderForm.patchValue(
-                            outHeader
-                        );
-                    }
-
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
-        }
-        this._outService.getDetail(0,10,'obLineNo','asc',this.outHeaderForm.getRawValue());
 
         this.outDetails$ = this._outService.outDetails$;
         this._outService.outDetails$
@@ -228,6 +163,17 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
             });
     }
 
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * On init
+     */
+    ngOnInit(): void
+    {
+    }
+
     /**
      * After view init
      */
@@ -239,7 +185,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 switchMap(() => {
                     this.isLoading = true;
                     // eslint-disable-next-line max-len
-                    return this._outService.getDetail(this._outDetailPagenator.pageIndex, this._outDetailPagenator.pageSize, this._outDetailSort.active, this._outDetailSort.direction, this.outHeaderForm.getRawValue());
+                    return this._outService.getDetail(this._outDetailPagenator.pageIndex, this._outDetailPagenator.pageSize, this._outDetailSort.active, this._outDetailSort.direction, this.outBound);
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -320,15 +266,15 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.outHeaderForm.controls['account'].value;
-            sendData[i].address = this.outHeaderForm.controls['address'].value;
-            sendData[i].obNo = this.outHeaderForm.controls['obNo'].value;
-            sendData[i].type = this.outHeaderForm.controls['type'].value;
-            sendData[i].status = this.outHeaderForm.controls['status'].value;
-            sendData[i].dlvAccount = this.outHeaderForm.controls['dlvAccount'].value;
-            sendData[i].dlvAddress = this.outHeaderForm.controls['dlvAddress'].value;
-            sendData[i].dlvDate = this.outHeaderForm.controls['dlvDate'].value;
-            sendData[i].remarkHeader = this.outHeaderForm.controls['remarkHeader'].value;
+            sendData[i].account = this.outBound['account'];
+            sendData[i].address = this.outBound['address'];
+            sendData[i].obNo = this.outBound['obNo'];
+            sendData[i].type = this.outBound['type'];
+            sendData[i].status = this.outBound['status'];
+            sendData[i].dlvAccount = this.outBound['dlvAccount'];
+            sendData[i].dlvAddress = this.outBound['dlvAddress'];
+            sendData[i].dlvDate = this.outBound['dlvDate'];
+            sendData[i].remarkHeader = this.outBound['remarkHeader'];
         }
         return sendData;
     }
@@ -476,68 +422,56 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     saveOut() {
-        if(!this.outHeaderForm.invalid){
-            this.showAlert = false;
+        this.showAlert = false;
 
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+        const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+            data: {
+            }
+        });
+
+        saveConfirm.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                let createList;
+                let updateist;
+                let deleteList;
+                if (result.status) {
+                    createList = [];
+                    updateist = [];
+                    deleteList = [];
+                    this.outDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((outDetail) => {
+                            outDetail.forEach((sendData: any) => {
+                                if (sendData.flag) {
+                                    if (sendData.flag === 'C') {
+                                        createList.push(sendData);
+                                    } else if (sendData.flag === 'U') {
+                                        updateist.push(sendData);
+                                    } else if (sendData.flag === 'D') {
+                                        deleteList.push(sendData);
+                                    }
+                                }
+                            });
+                        });
+                    if (createList.length > 0) {
+                        this.createOut(createList);
+                        //this.totalAmt();
+                    }
+                    if (updateist.length > 0) {
+                        this.updateOut(updateist);
+                    }
+                    if (deleteList.length > 0) {
+                        this.deleteOut(deleteList);
+                    }
+                    this.backPage();
                 }
             });
 
-            saveConfirm.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    let createList;
-                    let updateist;
-                    let deleteList;
-                    if (result.status) {
-                        createList = [];
-                        updateist = [];
-                        deleteList = [];
-                        this.outDetails$
-                            .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe((outDetail) => {
-                                outDetail.forEach((sendData: any) => {
-                                    if (sendData.flag) {
-                                        if (sendData.flag === 'C') {
-                                            createList.push(sendData);
-                                        } else if (sendData.flag === 'U') {
-                                            updateist.push(sendData);
-                                        } else if (sendData.flag === 'D') {
-                                            deleteList.push(sendData);
-                                        }
-                                    }
-                                });
-                            });
-                        if (createList.length > 0) {
-                            this.createOut(createList);
-                            //this.totalAmt();
-                        }
-                        if (updateist.length > 0) {
-                            this.updateOut(updateist);
-                        }
-                        if (deleteList.length > 0) {
-                            this.deleteOut(deleteList);
-                        }
-                        this.backPage();
-                    }
-                });
+        this.alertMessage('');
 
-            this.alertMessage('');
-
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-
-        }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '필수값 들을 입력해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
-        }
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     backPage() {
@@ -550,7 +484,6 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
     createOut(sendData: OutBound[]): void{
         if(sendData){
             sendData = this.headerDataSet(sendData);
-
             this._outService.createOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {

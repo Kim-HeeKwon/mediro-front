@@ -88,6 +88,9 @@ export class OutComponent implements OnInit, OnDestroy {
     {
         this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         this._outService.getHeader(0,10,'obNo','desc',this.searchForm.getRawValue());
+
+        this._outService.setInitList();
+        this._router.navigate(['in-out/out']);
     }
 
     newOut(): void{

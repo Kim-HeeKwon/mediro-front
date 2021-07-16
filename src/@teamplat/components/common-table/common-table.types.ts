@@ -7,6 +7,7 @@ export class TableConfig{
     type?: string;
     placeholder?: string;
     style?: any;
+    combo?: boolean;
 
     constructor(display: boolean = true, disabled: boolean = false, type: string = 'text', placeholder: string = ''){
         this.display = display;
