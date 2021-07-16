@@ -19,6 +19,8 @@ import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 import { postcode } from 'assets/js/postCode.js';
 import { geodata } from 'assets/js/geoCode.js';
 import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 declare let daum: any;
 
@@ -31,6 +33,10 @@ declare let daum: any;
 })
 export class NewAccountComponent implements OnInit, OnDestroy
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
@@ -56,10 +62,13 @@ export class NewAccountComponent implements OnInit, OnDestroy
         private _codeStore: CodeStore,
         private _popupStore: PopupStore,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _utilService: FuseUtilsService
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver
     ) {
         this.filterList = ['ALL'];
         this.accountType = _utilService.commonValueFilter(_codeStore.getValue().data,'ACCOUNT_TYPE',this.filterList);
+        this.isMobile = this._deviceService.isMobile();
     }
 
     /**
@@ -152,50 +161,107 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountSearch(): void
     {
-        const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
-            data: {
-                headerText : '거래처 조회',
-                url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                searchList : ['companyName', 'taxNo', 'cobFlagCode'],
-                code: 'UDI_BCNC',
-                tail : false,
-                mediroUrl : 'bcnc/company-info',
-                tailKey : '',
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
-        popupUdi.afterClosed().subscribe((result) => {
-            if(result){
-                this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
-                this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
-                this.selectedAccountForm.patchValue({'descr': result.companyName});
-                this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
-                this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
-                this.selectedAccountForm.patchValue({'representName': result.bossName});
-                this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
+        if(!this.isMobile){
+            const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+                data: {
+                    headerText : '거래처 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail : false,
+                    mediroUrl : 'bcnc/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            popupUdi.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
+                    this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
+                    this.selectedAccountForm.patchValue({'descr': result.companyName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.bossName});
+                    this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
 
-                const taxNo = Number((result.taxNo).replace(/-/g,''));
-                const entpAddr = result.entpAddr.split(',');
+                    const taxNo = Number((result.taxNo).replace(/-/g,''));
+                    const entpAddr = result.entpAddr.split(',');
 
-                let address = '';
-                if(entpAddr[0] !== undefined){
-                    address = entpAddr[0];
-                }
-                let addressDetail = '';
-                if(entpAddr[1] !== undefined){
-                    for(let i=1; i<entpAddr.length; i++){
-                        addressDetail += entpAddr[i];
+                    let address = '';
+                    if(entpAddr[0] !== undefined){
+                        address = entpAddr[0];
                     }
-                }
+                    let addressDetail = '';
+                    if(entpAddr[1] !== undefined){
+                        for(let i=1; i<entpAddr.length; i++){
+                            addressDetail += entpAddr[i];
+                        }
+                    }
 
-                this.selectedAccountForm.patchValue({'address': address});
-                this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
-                this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
-                this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
-            }
-        });
+                    this.selectedAccountForm.patchValue({'address': address});
+                    this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
+                    this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
+                }
+            });
+        }else{
+            const d = this._matDialogPopup.open(CommonUdiComponent, {
+                data: {
+                    headerText : '거래처 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail : false,
+                    mediroUrl : 'bcnc/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
+                    this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
+                    this.selectedAccountForm.patchValue({'descr': result.companyName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.bossName});
+                    this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
+
+                    const taxNo = Number((result.taxNo).replace(/-/g,''));
+                    const entpAddr = result.entpAddr.split(',');
+
+                    let address = '';
+                    if(entpAddr[0] !== undefined){
+                        address = entpAddr[0];
+                    }
+                    let addressDetail = '';
+                    if(entpAddr[1] !== undefined){
+                        for(let i=1; i<entpAddr.length; i++){
+                            addressDetail += entpAddr[i];
+                        }
+                    }
+
+                    this.selectedAccountForm.patchValue({'address': address});
+                    this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
+                    this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     openDaumPopup(): void

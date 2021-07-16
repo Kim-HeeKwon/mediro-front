@@ -28,7 +28,7 @@
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
                         <!-- Name -->
                         <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <mat-select [formControlName]="'accountType'">
                                     <ng-container *ngFor="let accountType of accountType">
                                         <mat-option [value]="accountType.id">
@@ -39,7 +39,7 @@
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <mat-select [formControlName]="'searchCondition'">
                                     <ng-container *ngFor="let searchcondition of searchCondition">
                                         <mat-option [value]="searchcondition.id">
@@ -50,7 +50,7 @@
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
                                     [formControlName]="'searchText'"
