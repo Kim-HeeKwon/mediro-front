@@ -256,6 +256,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',
+                maxHeight: '80vh',
                 disableClose: true
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {

@@ -15,16 +15,17 @@ import {merge, Observable, Subject} from 'rxjs';
 import {AccountService} from './account.service';
 import {AccountData, AccountPagenation} from './account.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {fuseAnimations} from '../../../../../@teamplat/animations';
+import {fuseAnimations} from '@teamplat/animations';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {NewAccountComponent} from '../account/new-account/new-account.component';
+import {NewAccountComponent} from '../account/new-account/new-account.component';``
 import {MatDialog} from '@angular/material/dialog';
 import {postcode} from '../../../../../assets/js/postCode';
 import {geodata} from '../../../../../assets/js/geoCode';
-import {DeleteAlertComponent} from '../../../../../@teamplat/components/common-alert/delete-alert';
-import {CommonUdiComponent} from "../../../../../@teamplat/components/common-udi";
-import {DeviceDetectorService} from "ngx-device-detector";
+import {DeleteAlertComponent} from '@teamplat/components/common-alert/delete-alert';
+import {CommonUdiComponent} from '@teamplat/components/common-udi';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
     selector: 'app-account',
@@ -35,6 +36,9 @@ import {DeviceDetectorService} from "ngx-device-detector";
     animations     : fuseAnimations
 })
 export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
@@ -97,7 +101,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
-        private _deviceService: DeviceDetectorService,)
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
         this.isMobile = this._deviceService.isMobile();
@@ -286,38 +291,91 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     createAccount(): void
     {
-        this._matDialog.open(NewAccountComponent, {
-            autoFocus: false,
-            data     : {
-                note: {}
-            }
-        });
+        if(!this.isMobile){
+            this._matDialog.open(NewAccountComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(NewAccountComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
     /**
      * Add a new note
      */
     createUdiAccount(): void
     {
-        const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
-            data: {
-                headerText : '거래처 조회',
-                url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                searchList : ['companyName', 'taxNo', 'cobFlagCode'],
-                code: 'UDI_BCNC',
-                tail : false,
-                mediroUrl : 'bcnc/company-info',
-                tailKey : '',
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
+        if(!this.isMobile){
+            const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+                data: {
+                    headerText : '거래처 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail : false,
+                    mediroUrl : 'bcnc/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                maxHeight: '80vh',
+                disableClose: true
+            });
 
-        popupUdi.afterClosed().subscribe((result) => {
-            if(result){
-                console.log(result);
-            }
-        });
+            popupUdi.afterClosed().subscribe((result) => {
+                if(result){
+                    console.log(result);
+                }
+            });
+        }else{
+            const d = this._matDialog.open(CommonUdiComponent, {
+                data: {
+                    headerText : '거래처 조회',
+                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail : false,
+                    mediroUrl : 'bcnc/company-info',
+                    tailKey : '',
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                smallDialogSubscription.unsubscribe();
+                if(result){
+                    console.log(result);
+                }
+            });
+        }
     }
     /**
      * 업데이트
