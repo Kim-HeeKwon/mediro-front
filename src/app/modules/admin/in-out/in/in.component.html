@@ -27,18 +27,43 @@
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
                         <!-- Name -->
                         <div class="sm:col-span-4">
-                            name
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-44 mr-2">
+                                <input type="date"
+                                       matInput
+                                >
+                            </mat-form-field>
+                            -
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-44 mr-2 ml-2">
+                                <input type="date"
+                                       matInput
+                                >
+                            </mat-form-field>
                         </div>
                         <div class="sm:col-span-4">
-                            dd11
+                            <mat-select [formControlName]="'ibType'">
+                                <ng-container *ngFor="let type of ibType">
+                                    <mat-option [value]="type.id">
+                                        {{type.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-select [formControlName]="'ibStatus'">
+                                <ng-container *ngFor="let status of ibStatus">
+                                    <mat-option [value]="status.id">
+                                        {{status.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                 <input
                                     matInput
-                                    [formControlName]="'searchText'"
+                                    [formControlName]="'accountNm'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'검색조건을 선택해주세요.'">
+                                    [placeholder]="'거래처'">
                             </mat-form-field>
                         </div>
                     </div>
@@ -51,6 +76,7 @@
                             class="ml-3"
                             mat-raised-button
                             [color]="'primary'"
+                            (click)="selectHeader()"
                             [ngStyle]="{'width': '94%'}"
                         >
                             <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
@@ -62,6 +88,7 @@
                             class="ml-3"
                             mat-raised-button
                             [color]="'accent'"
+                            (click)="newIn()"
                             [ngStyle]="{'width': '94%'}"
                         >
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -82,7 +109,7 @@
                         <div class="flex items-center justify-between px-6 pt-4 pb-2">
                             <!-- Add product button -->
                             <div class="text-3xl font-extrabold tracking-tight">
-                                품목관리</div>
+                                입고 관리</div>
                             <button
                                 class="sm:hidden -ml-2"
                                 mat-icon-button
@@ -115,9 +142,9 @@
                                 <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-44 mr-2">
                                     <input
                                         matInput
-                                        [formControlName]="'accountName'"
+                                        [formControlName]="'accountNm'"
                                         [autocomplete]="'off'"
-                                        [placeholder]="'공급사'">
+                                        [placeholder]="'거래처'">
                                 </mat-form-field>
                                 <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
                                     <mat-select [formControlName]="'ibType'">
@@ -145,14 +172,16 @@
                             <button
                                 class="ml-2"
                                 mat-flat-button
-                                [color]="'primary'">
+                                [color]="'primary'"
+                                (click)="selectHeader()">
                                 <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                                 <span class="ml-2 mr-1">조회</span>
                             </button>
                             <button
                                 class="ml-2"
                                 mat-flat-button
-                                [color]="'accent'">
+                                [color]="'accent'"
+                                (click)="newIn()">
                                 <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                 <span class="ml-2 mr-1">신규등록</span>
                             </button>

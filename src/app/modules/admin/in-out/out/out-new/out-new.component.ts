@@ -98,6 +98,7 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
+        console.log('new');
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterList);
@@ -108,6 +109,7 @@ export class OutNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     ngOnInit(): void
     {
+        console.log('new');
         // Form 생성
         this.outHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사

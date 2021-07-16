@@ -137,7 +137,7 @@ export class OutDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            this._outService.getDetail(0,10,'obLineNo','asc', this.outBound);
+            //this._outService.getDetail(0,10,'obLineNo','asc', this.outBound);
         }
 
         this.outDetails$ = this._outService.outDetails$;

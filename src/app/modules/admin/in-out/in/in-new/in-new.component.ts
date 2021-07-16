@@ -1,48 +1,49 @@
 import {
     AfterViewInit,
-    ChangeDetectorRef,
-    Component, OnChanges,
+    ChangeDetectionStrategy, ChangeDetectorRef,
+    Component,
     OnDestroy,
     OnInit,
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable} from '@angular/material/table';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {merge, Observable, Subject} from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
-import {InBound, InDetail, InDetailPagenation, InHeader} from '../in.types';
+import {InBound, InDetail, InDetailPagenation} from '../in.types';
 import {InService} from '../in.service';
 
 @Component({
-    selector     : 'in-detail',
-    templateUrl  : './in-detail.component.html',
-    styleUrls    : ['./in-detail.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    selector       : 'in-new',
+    templateUrl    : './in-new.component.html',
+    styleUrls: ['./in-new.component.scss'],
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations
 })
-export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
+export class InNewComponent implements OnInit, OnDestroy, AfterViewInit
 {
     @ViewChild(MatPaginator) private _inDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _inDetailSort: MatSort;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
     isLoading: boolean = false;
-    inBound = {};
+    inHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     inDetailsCount: number = 0;
-    inCheck: number = 0;
-    inHeader = new Observable<InHeader>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
@@ -110,9 +111,8 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'lot10',
         'remarkDetail',
     ];
-    navigationSubscription: any;
-
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     /**
      * Constructor
      */
@@ -128,47 +128,32 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
-        this.navigationSubscription = this._router.events.subscribe((e: any) => {
-            // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
-            // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
-            if (e instanceof NavigationEnd) {
-                this.initialiseInvites();
-            }
-        });
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    initialiseInvites() {
-        // 이곳에 페이지가 리로드되면 바뀔 데이터들이나 로직을 정리한다.
-        this._inService.setInitList();
-        this._changeDetectorRef.markForCheck();
-        this.inDetails$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((inDetails: any) => {
-                console.log(inDetails);
-                this._changeDetectorRef.markForCheck();
-            });
-
-        if(this._inService.inHeader$ !== undefined){
-            this.inHeader = this._inService.inHeader$;
-            this._inService.inHeader$
-                .pipe(takeUntil(this._unsubscribeAll))
-                // eslint-disable-next-line @typescript-eslint/no-shadow
-                .subscribe((inHeader: any) => {
-                    // Update the counts
-                    if(inHeader !== null){
-                        this.inBound = inHeader;
-                        this.inCheck = 1;
-                    }
-
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
-            //this._inService.getDetail(0,10,'ibLineNo','asc', this.inBound);
-        }
+    /**
+     * On init
+     */
+    ngOnInit(): void
+    {
+        // Form 생성
+        this.inHeaderForm = this._formBuilder.group({
+            //mId: ['', [Validators.required]],     // 회원사
+            ibNo: [{value:'',disabled:true}],   // 입고번호
+            account: [{value:''},[Validators.required]], // 거래처 코드
+            accountNm: [{value:'',disabled:true}],   // 거래처 명
+            type: [{value:''}, [Validators.required]],   // 유형
+            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
+            supplier: [{value:''}],   // 공급사
+            supplierNm: [{value:'',disabled:true}],   // 공급사 명
+            ibCreDate: [{value:'',disabled:true}],//작성일
+            ibDate: [{value:'',disabled:true}], //입고일
+            remarkHeader: [''], //비고
+            active: [false]  // cell상태
+        });
+        this._inService.getNew(0,10,'','asc', {});
 
         this.inDetails$ = this._inService.inDetails$;
         this._inService.inDetails$
@@ -191,17 +176,13 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-    }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+        this.inHeaderForm.patchValue({'account': ''});
+        this.inHeaderForm.patchValue({'type': '1'});
+        this.inHeaderForm.patchValue({'status': 'N'});
+        this.inHeaderForm.patchValue({'supplier': ''});
+        this.inHeaderForm.patchValue({'remarkHeader': ''});
 
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
     }
 
     /**
@@ -209,19 +190,6 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     ngAfterViewInit(): void {
 
-        if(this._inDetailSort !== undefined){
-            // Get products if sort or page changes
-            merge(this._inDetailSort.sortChange, this._inDetailPagenator.page).pipe(
-                switchMap(() => {
-                    this.isLoading = true;
-                    // eslint-disable-next-line max-len
-                    return this._inService.getDetail(this._inDetailPagenator.pageIndex, this._inDetailPagenator.pageSize, this._inDetailSort.active, this._inDetailSort.direction, this.inBound);
-                }),
-                map(() => {
-                    this.isLoading = false;
-                })
-            ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
-        }
     }
 
     ngOnDestroy(): void {
@@ -249,10 +217,94 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    isBack(): void{
-        this._inService.setShowMobile(false);
+    /* 트랜잭션 전 data Set
+     * @param sendData
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    headerDataSet(sendData: InBound[]) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i=0; i<sendData.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            sendData[i].account = this.inHeaderForm.controls['account'].value;
+            sendData[i].ibNo = this.inHeaderForm.controls['ibNo'].value;
+            sendData[i].type = this.inHeaderForm.controls['type'].value;
+            sendData[i].status = this.inHeaderForm.controls['status'].value;
+            sendData[i].supplier = this.inHeaderForm.controls['supplier'].value;
+            sendData[i].remarkHeader = this.inHeaderForm.controls['remarkHeader'].value;
+        }
+        return sendData;
+    }
+    /* 저장
+     *
+     */
+    saveIn(): void{
+
+        if(!this.inHeaderForm.invalid){
+            this.showAlert = false;
+
+            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+                data: {
+                }
+            });
+
+            saveConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    let createList;
+                    if (result.status) {
+                        createList = [];
+                        this.inDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((inDetail) => {
+                                inDetail.forEach((sendData: any) => {
+                                    if (sendData.flag) {
+                                        if (sendData.flag === 'C') {
+                                            createList.push(sendData);
+                                        }
+                                    }
+                                });
+                            });
+                        if (createList.length > 0) {
+                            this.createIn(createList);
+                            //this.totalAmt();
+                        }
+                        this.backPage();
+                    }
+                });
+
+            this.alertMessage('');
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+        }else{
+            // Set the alert
+            this.alert = {
+                type   : 'error',
+                message: '(빨간색 표시)필수값 들을 입력해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+        }
+
     }
 
+    /* 추가
+     *
+     * @param sendData
+     */
+    createIn(sendData: InBound[]): void{
+        if(sendData){
+            sendData = this.headerDataSet(sendData);
+
+            this._inService.createIn(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                });
+        }
+
+    }
     /**
      * Track by function for ngFor loops
      *
@@ -288,22 +340,6 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         }
         this.tableClear();
-    }
-
-
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    headerDataSet(sendData: InBound[]) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i=0; i<sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.inBound['account'];
-            sendData[i].ibNo = this.inBound['ibNo'];
-            sendData[i].type = this.inBound['type'];
-            sendData[i].status = this.inBound['status'];
-            sendData[i].supplier = this.inBound['supplier'];
-            sendData[i].remarkHeader = this.inBound['remarkHeader'];
-        }
-        return sendData;
     }
 
     /* 그리드 추가
@@ -386,19 +422,6 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    /* 그리드 업데이트
-     * @param element
-     * @param column
-     * @param i
-     */
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    updateRowData(element, column: TableConfig, i) {
-
-        if(element.flag !== 'C' || !element.flag){
-            element.flag = 'U';
-        }
-    }
-
     /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle(): SelectionModel<any> {
         if (this.isAllSelected()) {
@@ -465,105 +488,30 @@ export class InDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    saveIn() {
-        this.showAlert = false;
-
-        const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+    openAccountSearch(): void
+    {
+        const popup =this._matDialogPopup.open(CommonPopupComponent, {
             data: {
-            }
+                popup : 'P$_ACCOUNT',
+                headerText : '거래처 조회'
+            },
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
         });
 
-        saveConfirm.afterClosed()
+        popup.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                let createList;
-                let updateist;
-                let deleteList;
-                if (result.status) {
-                    createList = [];
-                    updateist = [];
-                    deleteList = [];
-                    this.inDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((inDetail) => {
-                            inDetail.forEach((sendData: any) => {
-                                if (sendData.flag) {
-                                    if (sendData.flag === 'C') {
-                                        createList.push(sendData);
-                                    } else if (sendData.flag === 'U') {
-                                        updateist.push(sendData);
-                                    } else if (sendData.flag === 'D') {
-                                        deleteList.push(sendData);
-                                    }
-                                }
-                            });
-                        });
-                    if (createList.length > 0) {
-                        this.createIn(createList);
-                        //this.totalAmt();
-                    }
-                    if (updateist.length > 0) {
-                        this.updateIn(updateist);
-                    }
-                    if (deleteList.length > 0) {
-                        this.deleteIn(deleteList);
-                    }
-                    this.backPage();
+                if(result){
+                    this.inHeaderForm.patchValue({'account': result.accountCd});
+                    this.inHeaderForm.patchValue({'accountNm': result.accountNm});
                 }
             });
-
-        this.alertMessage('');
-
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
     }
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     backPage() {
         this._router.navigate(['in-out/in']);
-    }
-    /* 추가
-     *
-     * @param sendData
-     */
-    createIn(sendData: InBound[]): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData);
-            this._inService.createIn(sendData)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((inBound: any) => {
-                });
-        }
-    }
-    /* 수정
-     *
-     * @param sendData
-     */
-    updateIn(sendData: InBound[]): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData);
-
-            this._inService.updateIn(sendData)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((inBound: any) => {
-                });
-        }
-    }
-
-    /* 삭제
-     * @param sendData
-     */
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    deleteIn(sendData: InBound[]) {
-        if(sendData){
-            sendData = this.headerDataSet(sendData);
-
-            this._inService.deleteIn(sendData)
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe(
-                    (inBound: any) => {
-                    },(response) => {});
-        }
-
     }
 }

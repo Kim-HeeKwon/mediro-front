@@ -1,62 +1,90 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {InService} from '../in.service';
-import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit, ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
-import {ActivatedRoute, Router} from "@angular/router";
-import {TableConfig, TableStyle} from "@teamplat/components/common-table/common-table.types";
-import {DeviceDetectorService} from "ngx-device-detector";
-
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {ActivatedRoute, Router} from '@angular/router';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {InHeader, InHeaderPagenation} from '../in.types';
+import {InService} from '../in.service';
 
 @Component({
     selector     : 'in-header',
     templateUrl  : './in-header.component.html',
     styleUrls    : ['./in-header.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations
 })
-export class InHeaderComponent implements OnInit, OnDestroy
+export class InHeaderComponent implements OnInit, OnDestroy, AfterViewInit
 {
+    @ViewChild(MatPaginator) private _inHeaderPagenator: MatPaginator;
+    @ViewChild(MatSort) private _inHeaderSort: MatSort;
+
     showMobile$: Observable<boolean>;
     showMobile: boolean = false;
     isMobile: boolean = false;
 
-    sizeLeft: number = 60;
-    sizeRight: number = 40;
+    sizeLeft: number = 50;
+    sizeRight: number = 50;
 
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     isLoading: boolean = false;
-    searchInputControl: FormControl = new FormControl();
-    itemsCount: number = 1;
-    itemsTableColumns: string[] = ['select','name', 'sku', 'price'];
-    selectedItemsForm: FormGroup;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    inHeadersCount: number = 1;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    inHeaderPagenation: InHeaderPagenation | null = null;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    inHeaders$ = new Observable<InHeader[]>();
 
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
 
-    testData: any[] = [
-        {name: 'name1', sku: 'sku1', price:1},
-        {name: 'name2', sku: 'sku2', price:2},
-        {name: 'name3', sku: 'sku3', price:3},
-        {name: 'name4', sku: 'sku4', price:4},
-        {name: 'name5', sku: 'sku5', price:5},
-        {name: 'name6', sku: 'sku6', price:6},
-        {name: 'name7', sku: 'sku7', price:7},
-        {name: 'name8', sku: 'sku8', price:8},
-        {name: 'name9', sku: 'sku9', price:9},
+    type: CommonCode[] = null;
+    status: CommonCode[] = null;
+    filterList: string[];
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    inHeadersTableStyle: TableStyle = new TableStyle();
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    inHeadersTable: TableConfig[] = [
+        {headerText : '작성일' , dataField : 'ibCreDate', display : false , disabled : true},
+        {headerText : '입고일' , dataField : 'ibDate', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '입고번호' , dataField : 'ibNo', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '거래처' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '거래처 명' , dataField : 'accountNm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text',combo: true},
+        {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '공급사' , dataField : 'supplier', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '비고' , dataField : 'remarkHeader', width: 100, display : false, disabled : true, type: 'text'}
+    ];
+    inHeadersTableColumns: string[] = [
+        'select',
+        'no',
+        'ibCreDate',
+        'ibDate',
+        'ibNo',
+        'account',
+        'accountNm',
+        'type',
+        'status',
+        'supplier',
+        'remarkHeader',
     ];
 
-    inHeaderTableStyle: TableStyle = new TableStyle();
-    inHeaderTable: TableConfig[] = [
-        {headerText : '작성일' , dataField : 'createDate', display : false},
-        {headerText : '입고일' , dataField : 'ibDate', width: 80, display : true, type: 'text'},
-        {headerText : '입고번호' , dataField : 'ibNo', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '공급사' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '입고수량' , dataField : 'totalCnt', width: 50, display : true, type: 'number', style: this.inHeaderTableStyle.textAlign.center},
-        {headerText : '구매가' , dataField : 'totalPrice', width: 50, display : true, type: 'number', style: this.inHeaderTableStyle.textAlign.center},
-        {headerText : '입고명세서' , dataField : 'outPage', width: 100, display : true, type: 'text'},
-    ];
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
@@ -64,16 +92,18 @@ export class InHeaderComponent implements OnInit, OnDestroy
     constructor(
         private _inService: InService,
         private _route: ActivatedRoute,
-        private _router: Router,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
+        private _codeStore: CodeStore,
+        private _router: Router
     )
     {
+        this.filterList = ['ALL'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
         this.isMobile = this._deviceService.isMobile();
     }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
 
     /**
      * On init
@@ -85,26 +115,65 @@ export class InHeaderComponent implements OnInit, OnDestroy
 
         if(this.isMobile){
             // 모바일이면
-            this.sizeLeft = 60;
-            this.sizeRight = 40;
+            this.sizeLeft = 0;
+            this.sizeRight = 100;
         }else{
             // 모바일 아니면
-            this.sizeLeft = 60;
-            this.sizeRight = 40;
+            this.sizeLeft = 50;
+            this.sizeRight = 50;
         }
+
         this._inService.showMobile$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((showMobile: any) => {
                 this.showMobile = showMobile;
-                console.log(showMobile);
                 if(showMobile){
-                    this.sizeLeft = 100;
-                    this.sizeRight = 0;
+                    this.sizeLeft = 50;
+                    this.sizeRight = 50;
                 }else{
-                    this.sizeLeft = 60;
-                    this.sizeRight = 40;
+                    this.sizeLeft = 50;
+                    this.sizeRight = 50;
                 }
             });
+
+        this.inHeaders$ = this._inService.inHeaders$;
+        this._inService.inHeaders$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inHeader: any) => {
+                if(inHeader !== null){
+                    this.inHeadersCount = inHeader.length;
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        this._inService.inHeaderPagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inHeaderPagenation: InHeaderPagenation) => {
+                this.inHeaderPagenation = inHeaderPagenation;
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+    }
+
+    /**
+     * After view init
+     */
+    ngAfterViewInit(): void {
+        if(this._inHeaderSort !== undefined){
+            // Get products if sort or page changes
+            merge(this._inHeaderSort.sortChange, this._inHeaderPagenator.page).pipe(
+                switchMap(() => {
+                    this.isLoading = true;
+                    // eslint-disable-next-line max-len
+                    return this._inService.getHeader(this._inHeaderPagenator.pageIndex, this._inHeaderPagenator.pageSize, this._inHeaderSort.active, this._inHeaderSort.direction, {});
+                }),
+                map(() => {
+                    this.isLoading = false;
+                })
+            ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
+        }
     }
 
     /**
@@ -123,7 +192,7 @@ export class InHeaderComponent implements OnInit, OnDestroy
     /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected(): any {
         const numSelected = this.selection.selected.length;
-        const numRows = this.testData.length;
+        const numRows = this.inHeadersCount;
         return numSelected === numRows;
     }
 
@@ -134,7 +203,11 @@ export class InHeaderComponent implements OnInit, OnDestroy
             return;
         }
 
-        this.selection.select(...this.testData);
+        this.inHeaders$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inHeader) => {
+                this.selection.select(...inHeader);
+            });
     }
 
     /** The label for the checkbox on the passed row */
@@ -145,22 +218,30 @@ export class InHeaderComponent implements OnInit, OnDestroy
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
 
-    rowClick(row?: any): void {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    rowClick(row, i) {
+        this.selection.clear();
         this.selection.toggle(row);
         this._inService.setShowMobile(true);
-        this._router.navigate(['in-out/in/inbox/1', row.price]);
-        //this._router.snapshot.nav(['/product-list'], {  queryParams: {  page: pageNum } });
+        this._inService.setInitList();
+        this._router.navigate(['in-out/in/inbox/1' , row.no]
+            , {
+                queryParams: {
+                    row : JSON.stringify(row)
+                }
+            });
 
         //모바일 디테일
         if(this.isMobile){
+            // eslint-disable-next-line no-cond-assign
             if(this.sizeLeft = 100){
                 // 모바일이면
-                this.sizeLeft = 0;
-                this.sizeRight = 100;
+                this.sizeLeft = 50;
+                this.sizeRight = 50;
             }else{
                 // 모바일 아니면
-                this.sizeLeft = 100;
-                this.sizeRight = 0;
+                this.sizeLeft = 50;
+                this.sizeRight = 50;
             }
         }
     }

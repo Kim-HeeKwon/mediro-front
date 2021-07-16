@@ -1,0 +1,268 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+    <!-- Header -->
+    <div class="dark bg-card dark:border-b">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-5">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-12 overflow-hidden">
+                        <button
+                            class="mr-2"
+                            mat-icon-button
+                            (click)="backPage()">
+                            <mat-icon class="icon-size-9" [svgIcon]="'feather:arrow-left-circle'"></mat-icon>
+                        </button>
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-2">
+                        <div class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate">입고 등록</div>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="saveIn()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                        <span class="ml-2">저장</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
+            <mat-tab-group
+                class="flex flex-col flex-auto overflow-hidden"
+                [color]="'accent'"
+                [backgroundColor]="'accent'">
+                <mat-tab class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover" label="상세 정보">
+                    <div class="flex pt-4 pl-4 pr-4">
+                        <!-- Selected product form -->
+                        <form
+                            class="flex flex-col w-full"
+                            [formGroup]="inHeaderForm">
+                            <div class="flex p-2">
+                                <div class="flex flex-auto">
+                                    <div class="flex flex-col w-full pr-0">
+                                        <div class="flex">
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>입고 번호</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'ibNo'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>유형</mat-label>
+                                                <mat-select [formControlName]="'type'">
+                                                    <ng-container *ngFor="let type of type">
+                                                        <mat-option [value]="type.id">
+                                                            {{type.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>상태</mat-label>
+                                                <mat-select [formControlName]="'status'">
+                                                    <ng-container *ngFor="let status of status">
+                                                        <mat-option [value]="status.id">
+                                                            {{status.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>거래처 코드</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'account'"
+                                                    (click)="openAccountSearch()">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>거래처 명</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'accountNm'">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>공급사</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'supplier'">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="flex">
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>작성일</mat-label>
+                                                <input type="date"
+                                                       matInput
+                                                       [formControlName]="'ibCreDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>입고일</mat-label>
+                                                <input type="date"
+                                                       matInput
+                                                       [formControlName]="'ibDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>비고</mat-label>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'remarkHeader'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+                        <div class="flex-row text-1xl font-extrabold tracking-tight">
+                            리스트
+                        </div>
+                        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                            <!--                            <button mat-button-->
+                            <!--                                    class="mr-2"-->
+                            <!--                                    mat-flat-button-->
+                            <!--                                    (click)="transactionRow('ADD',selection)" mat-flat-button color="accent">+</button>-->
+                            <mat-icon
+                                class="icon-size-7 mr-3"
+                                [svgIcon]="'heroicons_outline:plus-circle'"
+                                (click)="transactionRow('ADD',selection)"
+                            ></mat-icon>
+                            <mat-icon
+                                class="icon-size-7"
+                                [svgIcon]="'heroicons_outline:minus-circle'"
+                                (click)="transactionRow('DELETE',selection)"
+                            ></mat-icon>
+                            <!--                            <button mat-button-->
+                            <!--                                    class="mr-2"-->
+                            <!--                                    mat-flat-button-->
+                            <!--                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>-->
+
+                        </div>
+                    </div>
+                    <!-- Table wrapper -->
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+
+                        <div
+                            class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
+                            cdkScrollable>
+
+                            <table
+                                class="w-full min-w-320 table-fixed bg-transparent"
+                                [ngClass]="{'pointer-events-none': isLoading}"
+                                mat-table
+                                matSort
+                                [matSortActive]="'ibLineNo'"
+                                [matSortDisableClear]="true"
+                                [matSortDirection]="'asc'"
+                                [multiTemplateDataRows]="true"
+                                [dataSource]="inDetails$"
+                                [trackBy]="trackByFn">
+
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell
+                                        class="mediro-th-header-checkbox"
+                                        *matHeaderCellDef>
+                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                      [checked]="selection.hasValue() && isAllSelected()"
+                                                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                      [aria-label]="checkboxLabel()">
+                                        </mat-checkbox>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                      (change)="$event ? selection.toggle(row) : null"
+                                                      [checked]="selection.isSelected(row)"
+                                                      [aria-label]="checkboxLabel(row)">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="no">
+                                    <th mat-header-cell
+                                        class="mediro-th-header-checkbox"
+                                        *matHeaderCellDef
+                                        [hidden]="true">
+                                        No.
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"
+                                        [hidden]="true">
+                                        {{row.no}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container *ngFor="let column of inDetailsTable; let i=dataIndex;"
+                                              [matColumnDef]="column.dataField">
+                                    <th
+                                        mat-header-cell
+                                        [hidden]="!column.display"
+                                        [width]="column.width"
+                                        *matHeaderCellDef>
+                                        <div
+                                            class="mediro-th mediro-th-display">
+                                            <span mat-sort-header>{{column.headerText}}</span>
+                                        </div>
+                                    </th>
+                                    <td class="mediro-td"
+                                        mat-cell
+                                        [hidden]="!column.display"
+                                        (click)="cellClick(element,column,i)"
+                                        *matCellDef="let element; let i = dataIndex;">
+                                        <input class="mat-table-input"
+                                               [disabled]="column.disabled"
+                                               [style]="column.style"
+                                               [type]="column.type"
+                                               [required]="true"
+                                               [(ngModel)]="element[column.dataField]"
+                                               [value]="element[column.dataField]">
+                                    </td>
+
+                                </ng-container>
+                                <!-- Row definitions -->
+                                <tr
+                                    class="mediro-tr-header"
+                                    mat-header-row
+                                    *matHeaderRowDef="inDetailsTableColumns; sticky: true"></tr>
+                                <tr
+                                    class="mediro-tr-row"
+                                    mat-row
+                                    *matRowDef="let row; columns: inDetailsTableColumns; let i = dataIndex;"></tr>
+
+                            </table>
+
+                            <mat-paginator
+                                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                [ngClass]="{'pointer-events-none': isLoading}"
+                                [length]="0"
+                                [pageIndex]="0"
+                                [pageSize]="0"
+                                [pageSizeOptions]="[10,100]"
+                                [showFirstLastButtons]="true"></mat-paginator>
+
+                        </div>
+
+                    </div>
+                </mat-tab>
+                <mat-tab label="입고 명세서">
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

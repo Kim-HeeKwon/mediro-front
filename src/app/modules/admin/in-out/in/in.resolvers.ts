@@ -26,7 +26,9 @@ export class InResolver implements Resolve<any> {
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
-            Promise.all([]).then(
+            Promise.all([
+                this._inService.getHeader()
+            ]).then(
                 () => {
                     // @ts-ignore
                     resolve();
@@ -59,9 +61,13 @@ export class InDetailResolver implements Resolve<any> {
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
-            console.log('parameterdetail');
-            console.log(route.paramMap.get('id'));
-            Promise.all([]).then(
+            let searchParam = {};
+            if(route.queryParams.row){
+                searchParam = JSON.parse(route.queryParams.row);
+            }
+            Promise.all([
+                this._inService.getDetail(0,10,'ibLineNo','asc',searchParam)
+            ]).then(
                 () => {
                     // @ts-ignore
                     resolve();

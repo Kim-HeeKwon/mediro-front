@@ -203,6 +203,7 @@ export class OutService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
+            this._outHeader.next(null);
             this._outDetails.next([]);
             // @ts-ignore
             this._outDetailPagenation.next([]);

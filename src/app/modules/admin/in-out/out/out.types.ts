@@ -10,8 +10,8 @@ export interface OutBound
     dlvAccount: string;         //배송처
     dlvAddress: string;         //배송처 주소
     dlvDate: string;            //일자
-    obCreDate: string;          //견적생성일자
-    obDate: string;             //견적일자
+    obCreDate: string;          //출고생성일자
+    obDate: string;             //출고일자
     remarkHeader: string;       //비고
     obLineNo: number;
     itemCd: string;
@@ -36,8 +36,8 @@ export interface OutHeader
     dlvAccount: string;         //배송처
     dlvAddress: string;         //배송처 주소
     dlvDate: string;            //일자
-    obCreDate: string;          //견적생성일자
-    obDate: string;             //견적일자
+    obCreDate: string;          //출고생성일자
+    obDate: string;             //출고일자
     remarkHeader: string;       //비고
     addDate?: string;
     addUser?: string;

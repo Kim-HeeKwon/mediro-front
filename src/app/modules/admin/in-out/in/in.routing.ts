@@ -4,6 +4,8 @@ import {InComponent} from './in.component';
 import {InHeaderComponent} from './in-header/in-header.component';
 import {InDetailComponent} from './in-detail/in-detail.component';
 import {InDetailResolver, InResolver} from './in.resolvers';
+import {InNewComponent} from './in-new/in-new.component';
+import {InNewResolvers} from './in-new/in-new.resolvers';
 
 /**
  * Mailbox custom route matcher
@@ -78,6 +80,13 @@ export const inboxRoutes: Route[] = [
         path      : '',
         redirectTo: 'inbox/1',
         pathMatch : 'full'
+    },
+    {
+        path     : 'new',
+        component: InNewComponent,
+        resolve  : {
+            data: InNewResolvers
+        }
     },
     {
         path     : '',

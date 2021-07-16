@@ -28,12 +28,15 @@ import {inboxRoutes} from './in.routing';
 import { FuseScrollbarModule } from '@teamplat/directives/scrollbar';
 import { FuseScrollResetModule } from '@teamplat/directives/scroll-reset';
 import { AngularSplitModule } from 'angular-split';
+import {MatTabsModule} from "@angular/material/tabs";
+import {InNewComponent} from "./in-new/in-new.component";
 
 @NgModule({
     declarations: [
         InComponent,
         InHeaderComponent,
         InDetailComponent,
+        InNewComponent
     ],
     imports: [
         CommonModule,
@@ -54,13 +57,13 @@ import { AngularSplitModule } from 'angular-split';
         MatSlideToggleModule,
         MatTableModule,
         MatTooltipModule,
-        MatDialogModule,
-        MatDividerModule,
+        SharedModule,
         MatSidenavModule,
         FuseScrollbarModule,
         FuseScrollResetModule,
         AngularSplitModule,
-        SharedModule
+        MatDialogModule,
+        MatTabsModule,
     ]
 })
 export class InModule {
