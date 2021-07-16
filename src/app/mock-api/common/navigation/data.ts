@@ -100,6 +100,29 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     },
     {
+        id      : 'bound',
+        title   : '입/출고',
+        subtitle: '의료기기 입고 및 출고 관리',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'bound.inbound',
+                title: '입고관리(변경)',
+                type : 'basic',
+                icon : 'heroicons_outline:folder-add',
+                link : '/bound/inbound'
+            },
+            {
+                id   : 'bound.outbound',
+                title: '출고관리(변경)',
+                type : 'basic',
+                icon : 'heroicons_outline:folder-add',
+                link : '/bound/outbound'
+            },
+        ]
+    },
+    {
         id      : 'in-out',
         title   : '입/출고',
         subtitle: '의료기기 입고 및 출고 관리',
