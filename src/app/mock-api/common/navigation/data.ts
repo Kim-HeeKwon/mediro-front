@@ -108,41 +108,17 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'bound.inbound',
-                title: '입고관리(변경)',
+                title: '입고관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-add',
                 link : '/bound/inbound'
             },
             {
                 id   : 'bound.outbound',
-                title: '출고관리(변경)',
+                title: '출고관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-add',
                 link : '/bound/outbound'
-            },
-        ]
-    },
-    {
-        id      : 'in-out',
-        title   : '입/출고',
-        subtitle: '의료기기 입고 및 출고 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'estimate-order.estimate',
-                title: '입고관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-add',
-                link : '/in-out/in'
-            },
-            {
-                id      : 'estimate-order.order',
-                title   : '출고관리',
-                subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:folder-remove',
-                link    : '/in-out/out'
             },
         ]
     },

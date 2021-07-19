@@ -100,20 +100,13 @@ export const appRoutes: Route[] = [
                     {path: 'salesorder', loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
                 ]
             },
+            // in-out
             {path: 'bound', children: [
                     // inbound
                     //{path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
                     {path: 'inbound', loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
                     // outbound
                     {path: 'outbound', loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
-                ]},
-            // in-out
-            {path: 'in-out', children: [
-                    // in
-                    //{path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
-                    {path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
-                    // out
-                    {path: 'out', loadChildren: () => import('app/modules/admin/in-out/out/out.module').then(m => m.OutModule)},
                 ]},
             // stock
             {path: 'stock', children: [
