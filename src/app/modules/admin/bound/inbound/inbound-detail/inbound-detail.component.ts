@@ -12,7 +12,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder} from '@angular/forms';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
-import {FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {MatTable} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {merge, Observable, Subject} from 'rxjs';
@@ -87,6 +87,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'lot10',
         'remarkDetail',
     ];
+    itemGrades: CommonCode[] = null;
     inBoundDetailPagenation: InBoundDetailPagenation | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -105,6 +106,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
         this.inBoundDetails$ = this._inboundService.inBoundDetails$;
         this._inboundService.inBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
