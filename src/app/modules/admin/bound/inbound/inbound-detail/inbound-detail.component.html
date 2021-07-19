@@ -104,7 +104,9 @@
                                    [required]="true"
                                    [(ngModel)]="element[column.dataField]"
                                    [value]="element[column.dataField]">
-                            <mat-select *ngIf="'품목등급' === column.headerText" placeholder="" >
+                            <mat-select *ngIf="'품목등급' === column.headerText"
+                                        [value]="element[column.dataField]"
+                                        placeholder="" >
                                 <ng-container *ngFor="let grade of itemGrades">
                                     <mat-option [value]="grade.id">
                                         {{grade.name}}
