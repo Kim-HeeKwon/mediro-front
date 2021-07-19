@@ -1,0 +1,37 @@
+<div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">스캔</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="flex flex-col sm:flex-row flex-0 justify-between pt-3 pb-2 px-6 border-b">
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div id="interactive" class="viewport">
+            <!-- QuaggaJS will populate this element -->
+        </div>
+<!--        <barcode-scanner-livestream-->
+<!--            type="code_128"-->
+<!--            (valueChanges)="onValueChanges($event)"-->
+<!--            (started)="(onStarted)"-->
+<!--        ></barcode-scanner-livestream>-->
+<!--        <div [hidden]="!barcodeValue">-->
+<!--            {{ barcodeValue }}-->
+<!--        </div>-->
+    </div>
+</div>

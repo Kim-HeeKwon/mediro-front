@@ -24,7 +24,43 @@
             </div>
             <!-- Panel links -->
             <div class="flex flex-col divide-y border-t border-b">
-
+                <!-- Actions -->
+                <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
+                    <!-- Add product button -->
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            >
+                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                            <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            >
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">신규등록</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="openScanPopup()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">UDI스캔</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </mat-drawer>
 
@@ -104,7 +140,8 @@
                                 <button
                                     class="ml-2"
                                     mat-stroked-button
-                                    [color]="'primary'">
+                                    [color]="'primary'"
+                                    (click)="openScanPopup()">
                                     <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">UDI스캔</span>
                                 </button>
