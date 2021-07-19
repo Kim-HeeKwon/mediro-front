@@ -161,11 +161,11 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 let createList;
-                let updateist;
+                let updateList;
                 let deleteList;
                 if (result.status) {
                     createList = [];
-                    updateist = [];
+                    updateList = [];
                     deleteList = [];
                     this.outBoundDetails$
                         .pipe(takeUntil(this._unsubscribeAll))
@@ -175,7 +175,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                                     if (sendData.flag === 'C') {
                                         createList.push(sendData);
                                     } else if (sendData.flag === 'U') {
-                                        updateist.push(sendData);
+                                        updateList.push(sendData);
                                     } else if (sendData.flag === 'D') {
                                         deleteList.push(sendData);
                                     }
@@ -201,8 +201,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     if (createList.length > 0) {
                         this.createOut(createList,outBoundHeader);
                     }
-                    if (updateist.length > 0) {
-                        this.updateOut(updateist,outBoundHeader);
+                    if (updateList.length > 0) {
+                        this.updateOut(updateList,outBoundHeader);
                     }
                     if (deleteList.length > 0) {
                         this.deleteOut(deleteList,outBoundHeader);

@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {StockComponent} from './stock.component';
+import {Route, RouterModule} from "@angular/router";
+import {ItemPriceResolvers} from "./item-price.resolvers";
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -19,32 +19,46 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {SharedModule} from "../../../../shared/shared.module";
-import {MatSidenavModule} from "@angular/material/sidenav";
 import {FuseFindByKeyPipeModule} from "../../../../../@teamplat/pipes/find-by-key";
 import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatCardModule} from "@angular/material/card";
+import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatDialogModule} from "@angular/material/dialog";
-import {ItemPriceResolvers} from "../../basic-info/item-price/item-price.resolvers";
-import {StockResolvers} from "./stock.resolvers";
+import {ItemPriceComponent} from "./item-price.component";
+import {ItemPriceNewComponent} from "./item-price-new/item-price-new.component";
+import {InboundDetailComponent} from "../../bound/inbound/inbound-detail/inbound-detail.component";
+import {InboundDetailResolvers} from "../../bound/inbound/inbound-detail/inbound-detail.resolvers";
+import {ItemPriceHistoryComponent} from "./item-price-history/item-price-history.component";
+import {ItemPriceHistoryResolvers} from "./item-price-history/item-price-history.resolvers";
 
-const stockRoutes: Route[] = [
+const itemPriceRoutes: Route[] = [
     {
         path: '',
-        component: StockComponent,
+        component: ItemPriceComponent,
         resolve: {
-            data: StockResolvers
+            data: ItemPriceResolvers
         },
+        children             : [
+            {
+                path     : '',
+                component: ItemPriceHistoryComponent,
+                resolve : {
+                    data: ItemPriceHistoryResolvers
+                }
+            }
+        ]
     }
 ];
-
 @NgModule({
     declarations: [
-        StockComponent
+        ItemPriceComponent,
+        ItemPriceNewComponent,
+        ItemPriceHistoryComponent
     ],
     imports: [
         CommonModule,
-        RouterModule.forChild(stockRoutes),
+        RouterModule.forChild(itemPriceRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -70,5 +84,4 @@ const stockRoutes: Route[] = [
         MatDialogModule
     ]
 })
-export class StockModule {
-}
+export class ItemPriceModule { }

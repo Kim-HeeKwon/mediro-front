@@ -55,7 +55,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/basic-info/items'
-            }
+            },
+            {
+                id      : 'item-price',
+                title   : '단가관리',
+                subtitle: '품목 단가관리',
+                type    : 'group',
+                icon    : 'heroicons_outline:home',
+                children: [
+                    {
+                        id      : 'basic-info.item-price',
+                        title   : '단가관리',
+                        subtitle: '',
+                        type    : 'basic',
+                        icon    : 'heroicons_outline:currency-dollar',
+                        link    : '/basic-info/item-price'
+                    }
+                ]
+            },
         ]
     },
     {
@@ -135,7 +152,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
-            }
+            },
         ]
     },
     // {

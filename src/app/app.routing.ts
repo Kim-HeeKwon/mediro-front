@@ -87,6 +87,10 @@ export const appRoutes: Route[] = [
                     // items
                     {path: 'items', loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
+            {path: 'basic-info', children: [
+                    // item-price
+                    {path: 'item-price', loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
+                    ]},
             // estimate-order
             {path: 'estimate-order', children: [
                     // estimate
