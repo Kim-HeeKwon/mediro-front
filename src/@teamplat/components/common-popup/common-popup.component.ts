@@ -49,6 +49,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     popupInfo: CommonPopup[] = null;
     asPopupCd: string;
     pagenation: PopupPagenation | null = null;
+    where: any;
 
     commonValues: Column[] = [];
     headerText: string = '공통팝업';
@@ -70,6 +71,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         if(data.headerText){
             this.headerText = data.headerText;
         }
+        this.where = data.where;
     }
 
     ngOnInit(): void {
@@ -189,19 +191,43 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         this._matDialogRef.close(row);
     }
     select(): void{
+
         let whereVal;
         const curVal = this.searchForm.controls['type'].value;
         const textCond = this.searchForm.controls['searchText'].value;
 
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
-            return param;
-        });
+        if(this.where !== undefined){
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
+                return param;
+            });
 
-        if(textCond === ''){
-            whereVal = 'K:LIKE_BOTH:';
+            if(textCond === ''){
+                whereVal = 'K:LIKE_BOTH:';
+            }else{
+                whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
+            }
+
+            const listWhere = this.where.split(',');
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < listWhere.length; i++) {
+                const tmpStr = listWhere[i];
+                const tmpArr = tmpStr.split(':');
+                if (tmpArr[2] === 'K' || tmpArr[2] === 'W') {continue;}
+
+                whereVal += '|' + tmpArr[0] + ':' + tmpArr[1] + ':' + tmpArr[2];
+            }
         }else{
-            whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
+                return param;
+            });
+
+            if(textCond === ''){
+                whereVal = 'K:LIKE_BOTH:';
+            }else{
+                whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
+            }
         }
 
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});

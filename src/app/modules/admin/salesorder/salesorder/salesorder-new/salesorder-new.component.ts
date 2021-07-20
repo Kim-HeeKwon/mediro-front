@@ -432,6 +432,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 data: {
                     popup : 'P$_ALL_ITEM',
                     headerText : '품목 조회',
+                    where : 'account:=:' + this.salesorderHeaderForm.controls['account'].value
                 },
                 autoFocus: false,
                 maxHeight: '90vh',

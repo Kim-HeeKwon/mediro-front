@@ -8,9 +8,9 @@ import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/co
 import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from '../outbound.types';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
-import {FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutboundService} from '../outbound.service';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
@@ -29,6 +29,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     isLoading: boolean = false;
     selection = new SelectionModel<any>(true, []);
     outboundDetailsCount: number = 0;
+    outBoundHeaderForm: FormGroup;
     outBoundDetails$ = new Observable<OutBoundDetail[]>();
     outBoundDetailsTableStyle: TableStyle = new TableStyle();
     outBoundDetailsTable: TableConfig[] = [
@@ -50,6 +51,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'remarkDetail',
     ];
     outBoundDetailPagenation: OutBoundDetailPagenation | null = null;
+    type: CommonCode[] = null;
+    status: CommonCode[] = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -67,6 +70,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
+        this.type = _utilService.commonValue(_codeStore.getValue().data,'OB_TYPE');
+        this.status = _utilService.commonValue(_codeStore.getValue().data,'OB_STATUS');
+
         this.outBoundDetails$ = this._outboundService.outBoundDetails$;
         this._outboundService.outBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -86,6 +92,35 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     ngOnInit(): void
     {
+        // Form 생성
+        this.outBoundHeaderForm = this._formBuilder.group({
+            //mId: ['', [Validators.required]],     // 회원사
+            obNo: [{value:'',disabled:true}],   // 출고번호
+            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
+            accountNm: [{value:'',disabled:true}],   // 거래처 명
+            address: [{value:'',disabled:true}, [Validators.required]],   // 거래처 주소
+            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
+            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
+            dlvAccount: [{value:'',disabled:true}],   // 배송처
+            dlvAddress: [{value:'',disabled:true}, [Validators.required]],   // 배송처 주소
+            dlvDate: [{value:'',disabled:true}, [Validators.required]],//작성일
+            obCreDate: [{value:'',disabled:true}],//작성일
+            obDate: [{value:'',disabled:true}], //출고일
+            remarkHeader: [''], //비고
+            active: [false]  // cell상태
+        });
+
+        this._outboundService.outBoundHeader$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outBound: any) => {
+                // Update the pagination
+                if(outBound !== null){
+                    this.outBoundHeaderForm.patchValue(outBound);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         this._outboundService.outBoundDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((outBoundDetailPagenation: OutBoundDetailPagenation) => {
@@ -218,7 +253,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = outBoundHeader['account'];
+            /*sendData[i].account = outBoundHeader['account'];
             sendData[i].address = outBoundHeader['address'];
             sendData[i].obNo = outBoundHeader['obNo'];
             sendData[i].type = outBoundHeader['type'];
@@ -226,7 +261,16 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i].dlvAccount = outBoundHeader['dlvAccount'];
             sendData[i].dlvAddress = outBoundHeader['dlvAddress'];
             sendData[i].dlvDate = outBoundHeader['dlvDate'];
-            sendData[i].remarkHeader = outBoundHeader['remarkHeader'];
+            sendData[i].remarkHeader = outBoundHeader['remarkHeader'];*/
+            sendData[i].account = this.outBoundHeaderForm.controls['account'].value;
+            sendData[i].address = this.outBoundHeaderForm.controls['address'].value;
+            sendData[i].obNo = this.outBoundHeaderForm.controls['obNo'].value;
+            sendData[i].type = this.outBoundHeaderForm.controls['type'].value;
+            sendData[i].status = this.outBoundHeaderForm.controls['status'].value;
+            sendData[i].dlvAccount = this.outBoundHeaderForm.controls['dlvAccount'].value;
+            sendData[i].dlvAddress = this.outBoundHeaderForm.controls['dlvAddress'].value;
+            sendData[i].dlvDate = this.outBoundHeaderForm.controls['dlvDate'].value;
+            sendData[i].remarkHeader = this.outBoundHeaderForm.controls['remarkHeader'].value;
 
         }
         return sendData;

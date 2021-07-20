@@ -10,7 +10,7 @@ import {
 import {InboundService} from '../inbound.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {MatTable} from '@angular/material/table';
@@ -37,13 +37,14 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     isLoading: boolean = false;
     selection = new SelectionModel<any>(true, []);
     inboundDetailsCount: number = 0;
+    inBoundHeaderForm: FormGroup;
     inBoundDetails$ = new Observable<InBoundDetail[]>();
     inBoundDetailsTableStyle: TableStyle = new TableStyle();
     inBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 60, display : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text'},
+        {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo : true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '요청수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
@@ -88,6 +89,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'remarkDetail',
     ];
     itemGrades: CommonCode[] = null;
+    type: CommonCode[] = null;
+    status: CommonCode[] = null;
+
     inBoundDetailPagenation: InBoundDetailPagenation | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -106,6 +110,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _utilService: FuseUtilsService
     )
     {
+        this.type = _utilService.commonValue(_codeStore.getValue().data,'IB_TYPE');
+        this.status = _utilService.commonValue(_codeStore.getValue().data,'IB_STATUS');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
         this.inBoundDetails$ = this._inboundService.inBoundDetails$;
         this._inboundService.inBoundDetails$
@@ -125,6 +131,32 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     ngOnInit(): void
     {
+        // Form 생성
+        this.inBoundHeaderForm = this._formBuilder.group({
+            //mId: ['', [Validators.required]],     // 회원사
+            ibNo: [{value:'',disabled:true}],   // 입고번호
+            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
+            accountNm: [{value:'',disabled:true}],   // 거래처 명
+            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
+            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
+            supplier: [{value:'',disabled:true}],   // 공급사
+            supplierNm: [{value:'',disabled:true}],   // 공급사 명
+            ibCreDate: [{value:'',disabled:true}],//작성일
+            ibDate: [{value:'',disabled:true}], //입고일
+            remarkHeader: [''], //비고
+            active: [false]  // cell상태
+        });
+        this._inboundService.inBoundHeader$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inBound: any) => {
+                // Update the pagination
+                if(inBound !== null){
+                    this.inBoundHeaderForm.patchValue(inBound);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         this._inboundService.inBoundDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((inBoundDetailPagenation: InBoundDetailPagenation) => {
@@ -257,12 +289,18 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = inBoundHeader['account'];
+            /*sendData[i].account = inBoundHeader['account'];
             sendData[i].ibNo = inBoundHeader['ibNo'];
             sendData[i].type = inBoundHeader['type'];
             sendData[i].status = inBoundHeader['status'];
             sendData[i].supplier = inBoundHeader['supplier'];
-            sendData[i].remarkHeader = inBoundHeader['remarkHeader'];
+            sendData[i].remarkHeader = inBoundHeader['remarkHeader'];*/
+            sendData[i].account = this.inBoundHeaderForm.controls['account'].value;
+            sendData[i].ibNo = this.inBoundHeaderForm.controls['ibNo'].value;
+            sendData[i].type = this.inBoundHeaderForm.controls['type'].value;
+            sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
+            sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;
+            sendData[i].remarkHeader = this.inBoundHeaderForm.controls['remarkHeader'].value;
         }
         return sendData;
     }
@@ -478,5 +516,14 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     tableClear(){
         this._table.renderRows();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    getComboData(column: TableConfig) {
+        let combo;
+        if(column.dataField === 'itemGrade'){
+            combo = this.itemGrades;
+        }
+        return combo;
     }
 }

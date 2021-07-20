@@ -102,7 +102,9 @@
                                    [value]="element[column.dataField]">
                             <mat-select *ngIf="column.combo"
                                         [value]="element[column.dataField]"
-                                        [disabled]="true"
+                                        [(ngModel)]="element[column.dataField]"
+                                        [disabled]="column.disabled"
+                                        [style]="column.style"
                                         placeholder="" >
                                 <ng-container *ngFor="let combo of getComboData(column)">
                                     <mat-option [value]="combo.id">
