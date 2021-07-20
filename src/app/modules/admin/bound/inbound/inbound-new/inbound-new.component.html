@@ -225,13 +225,26 @@
                                         [hidden]="!column.display"
                                         (click)="cellClick(element,column,i)"
                                         *matCellDef="let element; let i = dataIndex;">
-                                        <input class="mat-table-input"
+                                        <input *ngIf="!column.combo"
+                                               class="mat-table-input"
                                                [disabled]="column.disabled"
                                                [style]="column.style"
                                                [type]="column.type"
                                                [required]="true"
                                                [(ngModel)]="element[column.dataField]"
                                                [value]="element[column.dataField]">
+                                        <mat-select *ngIf="column.combo"
+                                                    [value]="element[column.dataField]"
+                                                    [(ngModel)]="element[column.dataField]"
+                                                    [disabled]="column.disabled"
+                                                    [style]="column.style"
+                                                    placeholder="" >
+                                            <ng-container *ngFor="let combo of getComboData(column)">
+                                                <mat-option [value]="combo.id">
+                                                    {{combo.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
                                     </td>
 
                                 </ng-container>

@@ -16,8 +16,7 @@ export class ErrorAlertComponent implements OnInit {
         public _matDialogRef: MatDialogRef<ErrorAlertComponent>,
         private _changeDetectorRef: ChangeDetectorRef,
         @Inject(MAT_DIALOG_DATA) public data: any,) {
-        console.log(data);
-        if(data.msg){
+        if(data.msg !== undefined){
             this.errorMsg = data.msg;
         }
     }

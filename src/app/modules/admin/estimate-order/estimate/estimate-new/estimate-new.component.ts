@@ -29,7 +29,7 @@ import {MatTable} from '@angular/material/table';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
-import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
+import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
 
 @Component({
     selector       : 'estimate-new',
@@ -183,19 +183,17 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: param.msg
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
+            this.backPage();
         }
     }
 
@@ -233,24 +231,22 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
                             this.createEstimate(createList);
                             //this.totalAmt();
                         }
-                        this.backPage();
                     }
                 });
-
-            this.alertMessage('');
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
         }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '거래처를 선택해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: '필수값을 입력해주세요.'
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }
 
     }
@@ -266,6 +262,9 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._estimateService.createEstimate(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this.alertMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
                 });
         }
 

@@ -47,7 +47,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo : true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '요청수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고예정수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '금액' , dataField : 'totalAmt', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},

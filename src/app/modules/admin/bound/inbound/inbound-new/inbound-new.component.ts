@@ -25,6 +25,7 @@ import {InboundService} from '../inbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {ErrorAlertComponent} from "../../../../../../@teamplat/components/common-alert/error-alert";
 
 @Component({
     selector       : 'inbound-new',
@@ -55,6 +56,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
+    itemGrades: CommonCode[] = null;
     filterList: string[];
 
     inBoundDetailPagenation: InBoundDetailPagenation | null = null;
@@ -67,10 +69,10 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 60, display : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text'},
+        {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo:true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '요청수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고예정수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '금액' , dataField : 'totalAmt', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
@@ -131,6 +133,8 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+
     }
     /**
      * On init
@@ -199,19 +203,17 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: param.msg
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
+            this.backPage();
         }
     }
 
@@ -266,24 +268,22 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                             this.createIn(createList);
                             //this.totalAmt();
                         }
-                        this.backPage();
                     }
                 });
-
-            this.alertMessage('');
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
         }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '(빨간색 표시)필수값 들을 입력해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: '필수값을 입력해주세요.'
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }
 
     }
@@ -299,6 +299,9 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._inboundService.createIn(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+                    this.alertMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
                 });
         }
 
@@ -512,5 +515,15 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     backPage() {
         this._router.navigate(['bound/inbound']);
+    }
+
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    getComboData(column: TableConfig) {
+        let combo;
+        if(column.dataField === 'itemGrade'){
+            combo = this.itemGrades;
+        }
+        return combo;
     }
 }

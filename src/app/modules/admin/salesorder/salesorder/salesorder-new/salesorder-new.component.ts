@@ -25,6 +25,7 @@ import {SalesorderService} from '../salesorder.service';
 import {takeUntil} from 'rxjs/operators';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
 
 @Component({
     selector       : 'salesorder-new',
@@ -176,19 +177,17 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: param.msg
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
+            this.backPage();
         }
     }
     /* 트랜잭션 전 data Set
@@ -242,24 +241,22 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             this.createSalesOrder(createList);
                             //this.totalAmt();
                         }
-                        this.backPage();
                     }
                 });
-
-            this.alertMessage('');
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
         }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '거래처를 선택해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: '필수값을 입력해주세요.'
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }
     }
     /* 추가
@@ -273,6 +270,9 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._salesorderService.createSalesOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesorder: any) => {
+                    this.alertMessage(salesorder);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
                 });
         }
     }

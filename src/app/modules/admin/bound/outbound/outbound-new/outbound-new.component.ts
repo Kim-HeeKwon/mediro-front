@@ -25,6 +25,7 @@ import {OutboundService} from '../outbound.service';
 import {takeUntil} from 'rxjs/operators';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {ErrorAlertComponent} from "../../../../../../@teamplat/components/common-alert/error-alert";
 
 @Component({
     selector       : 'outbound-new',
@@ -173,19 +174,17 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: param.msg
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
+            this.backPage();
         }
     }
 
@@ -243,24 +242,22 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                             this.createOut(createList);
                             //this.totalAmt();
                         }
-                        this.backPage();
                     }
                 });
-
-            this.alertMessage('');
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
         }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '(빨간색 표시)필수값 들을 입력해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
+            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
+                data: {
+                    msg: '필수값을 입력해주세요.'
+                }
+            });
+            errorAlert.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
         }
     }
 
@@ -275,6 +272,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._outboundService.createOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
+                    this.alertMessage(outBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
                 });
         }
 
