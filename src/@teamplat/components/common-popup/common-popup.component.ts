@@ -214,7 +214,9 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 const tmpStr = listWhere[i];
                 const tmpArr = tmpStr.split(':');
                 if (tmpArr[2] === 'K' || tmpArr[2] === 'W') {continue;}
-
+                if(tmpArr[2] === ('' && null && undefined)){
+                    continue;
+                }
                 whereVal += '|' + tmpArr[0] + ':' + tmpArr[1] + ':' + tmpArr[2];
             }
         }else{
