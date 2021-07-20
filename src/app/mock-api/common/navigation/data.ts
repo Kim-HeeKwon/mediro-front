@@ -181,7 +181,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     {
         id      : 'udi',
         title   : 'UDI',
-        subtitle: 'UDI 관리',
+        subtitle: '공급내역',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
@@ -191,7 +191,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
-            }
+            },
+            {
+                id   : 'udi.status',
+                title: '공급내역 현황',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/status'
+            },
         ]
     },
     {
