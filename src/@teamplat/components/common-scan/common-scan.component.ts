@@ -27,6 +27,7 @@ import Quagga from 'quagga';
 export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
     isLoading: boolean = false;
+    barcodeScan: boolean = true;
     errorMessage: string;
 
     barcodeValue;
@@ -78,17 +79,26 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             (err) => {
                 if (err) {
-                    this.errorMessage = `QuaggaJS could not be initialized, err: ${err}`;
+                    this.errorMessage = `스캔 에러 입니다. 관리자에게 문의해주세요., 에러 메세지: ${err}`;
                 } else {
                     Quagga.start();
                     Quagga.onDetected((res) => {
+                        this.vibration();
                         const result = confirm('스캔하시겠습니까?');
-                        if(result)
+                        if(result && this.barcodeScan)
                         {
+                            this.barcodeScan = false;
                             console.log(res.codeResult.code);
+                            setTimeout(() => {
+                                this.barcodeScan = true;
+                                //this.stopVibration();
+                            }, 10000);
                         }
+                        // setTimeout(() => {
+                        // }, 1000);
                         //this.onBarcodeScanned(res.codeResult.code);
                     });
+                    this.stopVibration();
                 }
             });
 
@@ -97,7 +107,6 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this._changeDetectorRef.markForCheck();
         }, 10000);
     }
-
 
     /**
      * On destroy
@@ -117,4 +126,14 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
     onStarted(started): void{
         console.log(started);
     }
+
+    vibration(): void{
+        if (navigator.vibrate) {
+            navigator.vibrate(10000); // 진동을 울리게 한다. 1000ms = 1초
+        }
+    }
+    stopVibration(): void{
+        navigator.vibrate(0);
+    }
+
 }
