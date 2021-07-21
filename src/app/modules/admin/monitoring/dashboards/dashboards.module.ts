@@ -7,6 +7,7 @@ import {DashboardsResolvers} from './dashboards.resolvers';
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 const dashboardsRoutes: Route[] = [
     {
@@ -28,7 +29,8 @@ const dashboardsRoutes: Route[] = [
         MatButtonToggleModule,
         MatTableModule,
         MatPaginatorModule,
-        MatIconModule
+        MatIconModule,
+        MatProgressBarModule
     ]
 })
 export class DashboardsModule { }

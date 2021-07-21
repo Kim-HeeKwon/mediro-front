@@ -1,7 +1,12 @@
 <div class="flex flex-col flex-auto min-w-0">
-
     <!-- Main -->
-    <div class="flex-auto p-6 sm:p-10">
+    <!-- Loader -->
+    <div
+        class="flex flex-col inset-x-0 bottom-0"
+        *ngIf="isLoading">
+        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
+    <div class="flex-auto p-3 sm:p-10">
 
         <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0">
             <!-- portal-->
@@ -33,111 +38,113 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <div *ngIf="taskSelector.value == 'recall-item'" class="flex flex-col flex-auto mt-2 overflow-x-auto">
-                    <table
-                        class="min-w-240 overflow-y-visible"
-                        mat-table
-                        [dataSource]="racallTaleData.rows">
-                        <ng-container matColumnDef="imgPath" sticky>
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                                width ="10%">
-                                이미지
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let img">
-                                <img
-                                    class="w-12"
-                                    *ngIf="img.imgPath"
-                                    [src]="img.imgPath">
-                                <span
-                                    class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
-                                    *ngIf="!img.imgPath">
+                <div *ngIf="taskSelector.value == 'recall-item'" class="flex flex-col flex-auto">
+                    <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                        <table
+                            class="min-w-240 overflow-y-visible"
+                            mat-table
+                            [dataSource]="racallTaleData.rows">
+                            <ng-container matColumnDef="imgPath" sticky>
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    width ="10%">
+                                    이미지
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let img">
+                                    <img
+                                        class="w-12"
+                                        *ngIf="img.imgPath"
+                                        [src]="img.imgPath">
+                                    <span
+                                        class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
+                                        *ngIf="!img.imgPath">
                                             No Image
                                         </span>
-                            </td>
-                        </ng-container>
+                                </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="itemName">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                                width ="20%">
-                                상품명
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let item">
+                            <ng-container matColumnDef="itemName">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    width ="20%">
+                                    상품명
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let item">
                                                 <span class="font-medium text-right">
                                                    {{item.itemName}}
                                                 </span>
-                            </td>
-                        </ng-container>
+                                </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="companyName">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                                width ="25%">
-                                회사
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let company">
+                            <ng-container matColumnDef="companyName">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    width ="25%">
+                                    회사
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let company">
                                                 <span class="font-medium text-right">
                                                   {{company.companyName}}
                                                 </span>
-                            </td>
-                        </ng-container>
+                                </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="recallReason">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                                width ="40%">
-                                회수이유
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let reason">
-<!--                                <div class="flex items-center w-full mt-1">-->
-<!--                                    <span class="leading-4 truncate">{{reason.recallReason}}</span>-->
-<!--                                </div>-->
-                                                <span class="font-medium text-right text-overflow">
-<!--                                                   {{reason.recallReason}}-->
+                            <ng-container matColumnDef="recallReason">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    width ="40%">
+                                    회수이유
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let reason">
+                                    <!--                                <div class="flex items-center w-full mt-1">-->
+                                    <!--                                    <span class="leading-4 truncate">{{reason.recallReason}}</span>-->
+                                    <!--                                </div>-->
+                                    <span class="font-medium text-right text-overflow">
+                                                   {{reason.recallReason}}
                                                 </span>
-                            </td>
-                        </ng-container>
+                                </td>
+                            </ng-container>
 
-                        <ng-container matColumnDef="path">
-                            <th
-                                mat-header-cell
-                                *matHeaderCellDef
-                                width ="5%">
-                                상세
-                            </th>
-                            <td
-                                mat-cell
-                                *matCellDef="let detail">
-                                <a
-                                    href={{detail.path}}
-                                    rel="noreferrer"
-                                    target="_blank">
-                                    <mat-icon
-                                        class="icon-size-5 text-secondary"
-                                        [svgIcon]="'mat_outline:airplay'"></mat-icon>
-                                </a>
-                            </td>
-                        </ng-container>
-                        <tr
-                            mat-header-row
-                            *matHeaderRowDef="racallTaleData.columns"></tr>
-                        <tr
-                            mat-row
-                            *matRowDef="let row; columns: racallTaleData.columns;"></tr>
-                    </table>
+                            <ng-container matColumnDef="path">
+                                <th
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    width ="5%">
+                                    상세
+                                </th>
+                                <td
+                                    mat-cell
+                                    *matCellDef="let detail">
+                                    <a
+                                        href={{detail.path}}
+                                        rel="noreferrer"
+                                        target="_blank">
+                                        <mat-icon
+                                            class="icon-size-5 text-secondary"
+                                            [svgIcon]="'mat_outline:airplay'"></mat-icon>
+                                    </a>
+                                </td>
+                            </ng-container>
+                            <tr
+                                mat-header-row
+                                *matHeaderRowDef="racallTaleData.columns"></tr>
+                            <tr
+                                mat-row
+                                *matRowDef="let row; columns: racallTaleData.columns;"></tr>
+                        </table>
+                    </div>
                     <mat-paginator
                         class="sm:relative sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 dark:bg-transparent"
                         [ngClass]="{'pointer-events-none': isLoading}"
