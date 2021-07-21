@@ -1,19 +1,24 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {takeUntil} from "rxjs/operators";
-import {Observable, Subject} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {map, switchMap, takeUntil} from "rxjs/operators";
+import {merge, Observable, Subject} from "rxjs";
 import {DashboardsPagination, RecallItem} from "./dashboards.types";
 import {DashboardsService} from "./dashboards.service";
 import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {BreakpointObserver} from "@angular/cdk/layout";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-dashboards',
   templateUrl: './dashboards.component.html',
   styleUrls: ['./dashboards.component.scss']
 })
-export class DashboardsComponent implements OnInit, OnDestroy {
+export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
+
+  @ViewChild(MatPaginator) private _paginator: MatPaginator;
+  @ViewChild(MatSort) private _sort: MatSort;
 
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination | null = null;
@@ -42,10 +47,8 @@ export class DashboardsComponent implements OnInit, OnDestroy {
       this._dashboardsService.reallItems$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((items: any) => {
-              console.log(items);
               // Update the counts
               this.racallTaleData = items;
-              console.log(items);
               this.reacllItemsCount = items.length;
 
               // Mark for check
@@ -62,6 +65,24 @@ export class DashboardsComponent implements OnInit, OnDestroy {
               this._changeDetectorRef.markForCheck();
           });
   }
+
+    /**
+     * After view init
+     */
+    ngAfterViewInit(): void {
+        // Get products if sort or page changes
+        merge(this._paginator.page).pipe(
+            switchMap(() => {
+
+                this.isLoading = true;
+                return this._dashboardsService.getRecallItem(this._paginator.pageIndex, this._paginator.pageSize, '', '','');
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).subscribe();
+
+    }
 
     /**
      * On destroy
