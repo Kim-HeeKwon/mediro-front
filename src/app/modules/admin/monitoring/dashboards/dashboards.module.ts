@@ -8,6 +8,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatButtonModule} from "@angular/material/button";
 
 const dashboardsRoutes: Route[] = [
     {
@@ -30,7 +31,8 @@ const dashboardsRoutes: Route[] = [
         MatTableModule,
         MatPaginatorModule,
         MatIconModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatButtonModule
     ]
 })
 export class DashboardsModule { }
