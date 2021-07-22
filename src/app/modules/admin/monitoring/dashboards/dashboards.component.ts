@@ -9,6 +9,7 @@ import {DeviceDetectorService} from "ngx-device-detector";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboards',
@@ -36,6 +37,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       private _codeStore: CodeStore,
       private _utilService: FuseUtilsService,
       private _deviceService: DeviceDetectorService,
+      private _router: Router,
       private readonly breakpointObserver: BreakpointObserver
   ) { }
 
@@ -48,8 +50,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((items: any) => {
               // Update the counts
-              this.racallTaleData = items;
-              this.reacllItemsCount = items.length;
+              console.log(items);
+              if(items == null || items == 'null'){
+                  this.racallTaleData = null;
+                  this.reacllItemsCount = 0;
+              }else{
+                  this.racallTaleData = items;
+                  this.reacllItemsCount = items.rows.length;
+              }
 
               // Mark for check
               this._changeDetectorRef.markForCheck();
@@ -91,6 +99,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    movePage(): void
+    {
+        this._router.navigate(['/pages/settings']);
     }
 
 }
