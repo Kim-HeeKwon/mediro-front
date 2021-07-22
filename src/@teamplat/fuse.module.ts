@@ -7,13 +7,15 @@ import { FuseUtilsModule } from '@teamplat/services/utils/utils.module';
 import { Api } from './providers/api/api';
 import { Common } from './providers/common/common';
 import { Crypto } from './providers/common/crypto';
+import {FunctionModule} from './services/function';
 
 @NgModule({
     imports  : [
         FuseMediaWatcherModule,
         FuseSplashScreenModule,
         FuseTailwindConfigModule,
-        FuseUtilsModule
+        FuseUtilsModule,
+        FunctionModule
     ],
     providers: [
         {

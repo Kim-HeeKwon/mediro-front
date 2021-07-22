@@ -23,6 +23,7 @@ import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'inbound-detail',
@@ -47,21 +48,22 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo : true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '입고예정수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고수량' , dataField : 'ibQty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '금액' , dataField : 'totalAmt', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '입고일자' , dataField : 'lot1', width: 60, display : false, disabled : true, type: 'date'},
-        {headerText : '유효기간' , dataField : 'lot2', width: 60, display : true, type: 'date'},
-        {headerText : '제조사 lot' , dataField : 'lot3', width: 60, display : true, type: 'text'},
-        {headerText : 'UDI No.' , dataField : 'lot4', width: 60, display : true, type: 'text'},
+        {headerText : '유효기간' , dataField : 'lot2', width: 100, display : true, type: 'date'},
+        {headerText : '제조사 lot' , dataField : 'lot3', width: 100, display : true, type: 'text'},
+        {headerText : 'UDI No.' , dataField : 'lot4', width: 100, display : true, type: 'text'},
         {headerText : 'lot5' , dataField : 'lot5', width: 100, display : false, type: 'text'},
         {headerText : 'lot6' , dataField : 'lot6', width: 100, display : false, type: 'text'},
         {headerText : 'lot7' , dataField : 'lot7', width: 100, display : false, type: 'text'},
         {headerText : 'lot8' , dataField : 'lot8', width: 100, display : false, type: 'text'},
         {headerText : 'lot9' , dataField : 'lot9', width: 100, display : false, type: 'text'},
         {headerText : 'lot10' , dataField : 'lot10', width: 100, display : false, type: 'text'},
-        {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
+        {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : false, type: 'text'},
     ];
     inBoundDetailsTableColumns: string[] = [
         'select',
@@ -74,6 +76,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'unit',
         'ibExpQty',
         'qty',
+        'ibQty',
         'unitPrice',
         'totalAmt',
         'lot1',
@@ -106,6 +109,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private _functionService: FunctionService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService
     )
@@ -156,6 +160,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+        this.tableEditingEvent();
 
         this._inboundService.inBoundDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -223,6 +228,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     saveIn() {
+
+        if(this.inBoundHeaderForm.controls['status'].value !== 'N'){
+            this._functionService.cfn_alert('신규 상태에서만 수정이 가능합니다.');
+            return;
+        }
 
         const saveConfirm =this._matDialog.open(SaveAlertComponent, {
             data: {
@@ -384,8 +394,15 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     updateRowData(element, column: TableConfig, i) {
+        console.log(element);
         if(element.flag !== 'C' || !element.flag){
             element.flag = 'U';
+        }
+
+        const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        console.log(ibStatus);
+        if(element.flag === 'U'){
+
         }
     }
 
@@ -525,5 +542,29 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             combo = this.itemGrades;
         }
         return combo;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    tableEditingEvent(){
+        this.inBoundDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inBoundDetail) => {
+                // @ts-ignore
+                if(inBoundDetail !== null){
+                    const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+                    if(ibStatus === 'N' || ibStatus === 'P'){
+                        inBoundDetail.forEach((detail: any) => {
+                            detail.qty = detail.ibExpQty - detail.ibQty;
+                        });
+
+                        this.inBoundDetailsTable.forEach((table: any) => {
+                            if(table.dataField === 'itemCd'){
+                                table.disabled = true;
+                            }
+                        });
+                    }
+                }
+                this._changeDetectorRef.markForCheck();
+            });
     }
 }

@@ -1,28 +1,21 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Inject,
-    OnInit,
-    Output,
-    ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation}
+    from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Alertmessage} from '../save-alert/save-alert.type';
+import {Alertmessage} from '../transaction-alert/transaction-alert.type';
 
 @Component({
-    selector: 'save-alert',
-    templateUrl: './save-alert.component.html',
-    styleUrls: ['./save-alert.component.scss'],
+    selector: 'transaction-alert',
+    templateUrl: './transaction-alert.component.html',
+    styleUrls: ['./transaction-alert.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SaveAlertComponent implements OnInit {
+export class TransactionAlertComponent implements OnInit {
 
-    message: string = '저장하시겠습니까?';
+    message: string = '확인하시겠습니까?';
     constructor(
-        public _matDialogRef: MatDialogRef<SaveAlertComponent>,
+        public _matDialogRef: MatDialogRef<TransactionAlertComponent>,
         private _changeDetectorRef: ChangeDetectorRef,
         @Inject(MAT_DIALOG_DATA) public data: any,)
     {
@@ -44,7 +37,7 @@ export class SaveAlertComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    onSave(): void {
+    onClick(): void {
         this._matDialogRef.close(this.alertOk);
     }
 

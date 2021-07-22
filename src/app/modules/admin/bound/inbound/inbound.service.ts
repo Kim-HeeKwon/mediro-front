@@ -189,6 +189,59 @@ export class InboundService {
             this._inBoundDetailPagenation.next([]);
         });
     }
+    /**
+     * Confirm
+     */
+    inBoundConfirm(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * Cancel
+     */
+    inBoundCancel(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * Close
+     */
+    inBoundClose(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/close').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 
     /**
      * Create

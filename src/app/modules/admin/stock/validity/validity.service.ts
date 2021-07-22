@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Stock, StockPagenation} from './stock.types';
+import {Validity, ValidityPagenation} from './validity.types';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 
 @Injectable({
     providedIn: 'root'
 })
-export class StockService{
-    private _stock: BehaviorSubject<Stock> = new BehaviorSubject(null);
-    private _stocks: BehaviorSubject<Stock[]> = new BehaviorSubject(null);
-    private _stockPagenation: BehaviorSubject<StockPagenation | null> = new BehaviorSubject(null);
+export class ValidityService{
+    private _validity: BehaviorSubject<Validity> = new BehaviorSubject(null);
+    private _validitys: BehaviorSubject<Validity[]> = new BehaviorSubject(null);
+    private _validityPagenation: BehaviorSubject<ValidityPagenation | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -23,34 +23,33 @@ export class StockService{
     /**
      * Getter for header
      */
-    get stock$(): Observable<Stock>
+    get validity$(): Observable<Validity>
     {
-        return this._stock.asObservable();
+        return this._validity.asObservable();
     }
 
     /**
      * Getter for headers
      */
-    get stocks$(): Observable<Stock[]>
+    get validitys$(): Observable<Validity[]>
     {
-        return this._stocks.asObservable();
+        return this._validitys.asObservable();
     }
 
     /**
      * Getter for Header Pagenation
      */
-    get stockPagenation$(): Observable<StockPagenation>
+    get validityPagenation$(): Observable<ValidityPagenation>
     {
-        return this._stockPagenation.asObservable();
+        return this._validityPagenation.asObservable();
     }
-
     /**
      * Post getHeader
      *
      * @returns
      */
     getHeader(page: number = 0, size: number = 10, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ stockPagenation: StockPagenation; stock: Stock[] }> {
+        Observable<{validityPagenation: ValidityPagenation; validity: Validity[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -71,12 +70,12 @@ export class StockService{
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/stock/stock-List')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/stock/validity/validity-List')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
-                        this._stocks.next(response.data);
-                        this._stockPagenation.next(response.pageNation);
-                        resolve(this._stocks);
+                        this._validitys.next(response.data);
+                        this._validityPagenation.next(response.pageNation);
+                        resolve(this._validitys);
                     }
                 }, reject);
         });

@@ -116,6 +116,8 @@ export const appRoutes: Route[] = [
             {path: 'stock', children: [
                     // stock
                     {path: 'stock', loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
+                    // validity
+                    {path: 'validity', loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
                 ]},
             // calculate
             {path: 'calculate', children: [

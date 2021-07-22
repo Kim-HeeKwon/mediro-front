@@ -25,7 +25,7 @@ import {InboundService} from '../inbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
-import {ErrorAlertComponent} from "../../../../../../@teamplat/components/common-alert/error-alert";
+import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
 
 @Component({
     selector       : 'inbound-new',
@@ -72,21 +72,21 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo:true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '입고예정수량' , dataField : 'ibExpQty', width: 60, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '금액' , dataField : 'totalAmt', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '입고일자' , dataField : 'lot1', width: 60, display : false, disabled : true, type: 'date'},
-        {headerText : '유효기간' , dataField : 'lot2', width: 60, display : true, type: 'date'},
-        {headerText : '제조사 lot' , dataField : 'lot3', width: 60, display : true, type: 'text'},
-        {headerText : 'UDI No.' , dataField : 'lot4', width: 60, display : true, type: 'text'},
+        {headerText : '유효기간' , dataField : 'lot2', width: 100, display : true, type: 'date'},
+        {headerText : '제조사 lot' , dataField : 'lot3', width: 100, display : true, type: 'text'},
+        {headerText : 'UDI No.' , dataField : 'lot4', width: 100, display : true, type: 'text'},
         {headerText : 'lot5' , dataField : 'lot5', width: 100, display : false, type: 'text'},
         {headerText : 'lot6' , dataField : 'lot6', width: 100, display : false, type: 'text'},
         {headerText : 'lot7' , dataField : 'lot7', width: 100, display : false, type: 'text'},
         {headerText : 'lot8' , dataField : 'lot8', width: 100, display : false, type: 'text'},
         {headerText : 'lot9' , dataField : 'lot9', width: 100, display : false, type: 'text'},
         {headerText : 'lot10' , dataField : 'lot10', width: 100, display : false, type: 'text'},
-        {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
+        {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : false, type: 'text'},
     ];
     inBoundDetailsTableColumns: string[] = [
         'select',

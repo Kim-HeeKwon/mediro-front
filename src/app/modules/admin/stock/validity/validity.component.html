@@ -26,7 +26,17 @@
                 <!-- 검색조건 -->
                 <form [formGroup]="searchForm">
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
-                        <!-- Name -->
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'validity'">
+                                    <ng-container *ngFor="let validity of validity">
+                                        <mat-option [value]="validity.id">
+                                            {{validity.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <mat-select [formControlName]="'searchCondition'">
@@ -79,7 +89,7 @@
                             <div class="flex items-center justify-between px-6 pt-4 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-3xl font-extrabold tracking-tight">
-                                    재고 관리</div>
+                                    유효기간 관리</div>
                                 <button
                                     class="sm:hidden -ml-2"
                                     mat-icon-button
@@ -104,6 +114,15 @@
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
                                 <form
                                     [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'validity'">
+                                            <ng-container *ngFor="let validity of validity">
+                                                <mat-option [value]="validity.id">
+                                                    {{validity.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
                                         <mat-select [formControlName]="'searchCondition'">
                                             <ng-container *ngFor="let searchCondition of searchCondition">
@@ -157,7 +176,7 @@
                         <div class="flex flex-auto overflow-hidden">
                             <!-- list -->
                             <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
-                                <ng-container *ngIf="stocksCount > 0; else noStocks">
+                                <ng-container *ngIf="validitysCount > 0; else noValiditys">
                                     <!-- Table wrapper -->
                                     <div
                                         class="overflow-x-auto sm:overflow-y-auto"
@@ -173,7 +192,7 @@
                                             [matSortDisableClear]="true"
                                             [matSortDirection]="'asc'"
                                             [multiTemplateDataRows]="true"
-                                            [dataSource]="stocks$"
+                                            [dataSource]="validitys$"
                                             [trackBy]="trackByFn">
 
                                             <ng-container matColumnDef="no">
@@ -206,36 +225,36 @@
                                                 <td
                                                     class="pr-8"
                                                     mat-cell
-                                                    *matCellDef="let stock">
+                                                    *matCellDef="let validity">
                                                     <button
                                                         class="min-w-10 min-h-7 h-7 px-2 leading-6"
                                                         mat-stroked-button
-                                                        (click)="toggleDetails(stock.itemCd)">
+                                                        (click)="toggleDetails(validity.itemCd)">
                                                         <mat-icon
                                                             class="icon-size-5"
-                                                            [svgIcon]="(selectedStockHeader?.itemCd === stock.itemCd) ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                                            [svgIcon]="(selectedValidityHeader?.itemCd === validity.itemCd) ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
                                                     </button>
                                                 </td>
                                             </ng-container>-->
 
                                             <!-- details row -->
-                                            <ng-container matColumnDef="stocks">
+                                            <ng-container matColumnDef="validitys">
                                                 <td
                                                     class="p-0 border-b-0"
                                                     mat-cell
-                                                    *matCellDef="let stock"
-                                                    [attr.colspan]="stocksTableColumns.length">
-                                                    <ng-container *ngIf="(selectedStockHeader?.itemCd === stock.itemCd)">
+                                                    *matCellDef="let validity"
+                                                    [attr.colspan]="validitysTableColumns.length">
+                                                    <ng-container *ngIf="(selectedValidityHeader?.itemCd === validity.itemCd)">
                                                         <ng-container
-                                                            *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: stock}"></ng-container>
+                                                            *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: validity}"></ng-container>
                                                     </ng-container>
                                                 </td>
                                                 <ng-template
                                                     #rowDetailsTemplate
-                                                    let-stock>
+                                                    let-validity>
                                                     <div
                                                         class="shadow-lg overflow-hidden"
-                                                        [@expandCollapse]="(selectedStockHeader?.itemCd === stock.itemCd) ? 'expanded' : 'collapsed'">
+                                                        [@expandCollapse]="(selectedValidityHeader?.itemCd === validity.itemCd) ? 'expanded' : 'collapsed'">
                                                         <div class="flex border-b">
                                                             <!-- Selected product form -->
                                                             <div class="flex p-0">
@@ -247,7 +266,7 @@
                                                 </ng-template>
 
                                             </ng-container>
-                                            <ng-container *ngFor="let column of stocksTable; let i=dataIndex;"
+                                            <ng-container *ngFor="let column of validitysTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">
                                                 <th
                                                     mat-header-cell
@@ -289,15 +308,15 @@
                                             <tr
                                                 class="shadow"
                                                 mat-header-row
-                                                *matHeaderRowDef="stocksTableColumns; sticky: true"></tr>
+                                                *matHeaderRowDef="validitysTableColumns; sticky: true"></tr>
                                             <tr
                                                 class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                *matRowDef="let stock; columns: stocksTableColumns;"></tr>
+                                                *matRowDef="let validity; columns: validitysTableColumns;"></tr>
                                             <tr
                                                 class="h-0"
                                                 mat-row
-                                                *matRowDef="let row; columns: ['stocks']"></tr>
+                                                *matRowDef="let row; columns: ['validitys']"></tr>
 
                                         </table>
 
@@ -305,13 +324,13 @@
                                     <mat-paginator
                                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                         [ngClass]="{'pointer-events-none': isLoading}"
-                                        [length]="stockPagenation.length"
-                                        [pageIndex]="stockPagenation.page"
-                                        [pageSize]="stockPagenation.size"
+                                        [length]="validityPagenation.length"
+                                        [pageIndex]="validityPagenation.page"
+                                        [pageSize]="validityPagenation.size"
                                         [pageSizeOptions]="[8, 10, 25, 100]"
                                         [showFirstLastButtons]="true"></mat-paginator>
                                 </ng-container>
-                                <ng-template #noStocks>
+                                <ng-template #noValiditys>
                                     <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
                                         <p>데이터가 없습니다.</p>
                                     </div>

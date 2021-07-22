@@ -95,6 +95,36 @@
                             <span class="ml-2 mr-1">신규</span>
                         </button>
                     </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'accent'"
+                            (click)="inBound()">
+                            <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                            <span class="ml-2 mr-1">입고</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'accent'"
+                            (click)="cancel()">
+                            <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                            <span class="ml-2 mr-1">취소</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'accent'"
+                            (click)="close()">
+                            <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                            <span class="ml-2 mr-1">마감</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </mat-drawer>
@@ -201,6 +231,30 @@
                                     (click)="newIn()">
                                     <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">신규</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="inBound()">
+                                    <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                                    <span class="ml-2 mr-1">입고</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="cancel()">
+                                    <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                                    <span class="ml-2 mr-1">취소</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="close()">
+                                    <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                                    <span class="ml-2 mr-1">마감</span>
                                 </button>
                             </div>
                             <!-- Loader -->

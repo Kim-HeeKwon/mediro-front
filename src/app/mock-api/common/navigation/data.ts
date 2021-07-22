@@ -153,6 +153,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
             },
+            {
+                id   : 'stock.validity',
+                title: '유효기간 관리',
+                type : 'basic',
+                icon : 'heroicons_outline:calendar',
+                link : '/stock/validity'
+            },
         ]
     },
     // {

@@ -12,7 +12,7 @@ import {merge, Observable, Subject} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {InBoundHeader, InBoundHeaderPagenation} from './inbound.types';
+import {InBound, InBoundHeader, InBoundHeaderPagenation} from './inbound.types';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {MatDialog} from '@angular/material/dialog';
@@ -23,6 +23,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TransactionAlertComponent} from '../../../../../@teamplat/components/common-alert/transaction-alert';
 
 @Component({
     selector: 'app-inbound',
@@ -106,6 +108,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver)
     {
@@ -229,6 +232,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     closeDetails(): void
     {
         this.selectedInboundHeader = null;
+        this.selection.clear();
     }
 
     selectHeader(): void
@@ -238,6 +242,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._inboundService.getHeader(0,10,'ibNo','desc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
     /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected(): any {
@@ -270,5 +275,164 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
 
     newIn(): void{
         this._router.navigate(['bound/inbound/inbound-new' , {}]);
+    }
+
+    inBound(): void{
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('입고 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            this.selection.selected.forEach((row: any) =>{
+               if(row.status !== 'N' &&
+                    row.status !== 'P'){
+                   this._functionService.cfn_alert('입고할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
+                   check = false;
+               }
+            });
+
+            if(check){
+                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
+                    data: {
+                        msg: '입고하시겠습니까?'
+                    }
+                });
+                transactionConfirm.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result.status){
+                            this.inBoundConfirm(this.selection.selected);
+                        }else{
+                            this.selectHeader();
+                        }
+                    });
+            }
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    cancel(){
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            this.selection.selected.forEach((row: any) =>{
+                if(row.status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
+                    check = false;
+                }
+            });
+
+            if(check){
+                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
+                    data: {
+                        msg: '취소하시겠습니까?'
+                    }
+                });
+                transactionConfirm.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result.status){
+                            this.inBoundCancel(this.selection.selected);
+                        }else{
+                            this.selectHeader();
+                        }
+                    });
+            }
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    close(){
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('마감 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            this.selection.selected.forEach((row: any) =>{
+                if(row.status === 'N' || row.status === 'C' || row.status === 'F'){
+                    this._functionService.cfn_alert('마감할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
+                    check = false;
+                }
+            });
+
+            if(check){
+                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
+                    data: {
+                        msg: '마감하시겠습니까?'
+                    }
+                });
+                transactionConfirm.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result.status){
+                            this.inBoundClose(this.selection.selected);
+                        }else{
+                            this.selectHeader();
+                        }
+                    });
+            }
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    /* 확정
+     *
+     * @param sendData
+     */
+    inBoundConfirm(sendData: InBound[]): void{
+        if(sendData){
+            this._inboundService.inBoundConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    /* 취소
+     *
+     * @param sendData
+     */
+    inBoundCancel(sendData: InBound[]): void{
+        if(sendData){
+            this._inboundService.inBoundCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    /* 마감
+     *
+     * @param sendData
+     */
+    inBoundClose(sendData: InBound[]): void{
+        if(sendData){
+            this._inboundService.inBoundClose(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
     }
 }

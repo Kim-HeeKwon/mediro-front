@@ -1,7 +1,6 @@
-import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {StockComponent} from './stock.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -19,31 +18,32 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {SharedModule} from '../../../../shared/shared.module';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseFindByKeyPipeModule} from '../../../../../@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
-import {StockResolvers} from './stock.resolvers';
+import {ValidityComponent} from './validity.component';
+import {ValidityResolvers} from './validity.resolvers';
 
-const stockRoutes: Route[] = [
+const validityRoutes: Route[] = [
     {
         path: '',
-        component: StockComponent,
+        component: ValidityComponent,
         resolve: {
-            data: StockResolvers
+            data: ValidityResolvers
         },
     }
 ];
 
 @NgModule({
     declarations: [
-        StockComponent
+        ValidityComponent
     ],
     imports: [
         CommonModule,
-        RouterModule.forChild(stockRoutes),
+        RouterModule.forChild(validityRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -69,5 +69,5 @@ const stockRoutes: Route[] = [
         MatDialogModule
     ]
 })
-export class StockModule {
+export class ValidityModule {
 }
