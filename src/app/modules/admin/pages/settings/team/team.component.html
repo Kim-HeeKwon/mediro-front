@@ -1,5 +1,16 @@
 <div class="w-full max-w-3xl">
 
+    <!-- Alert -->
+<!--    <fuse-alert-->
+<!--        class="mt-4 -mb-4 mr-12 ml-12"-->
+<!--        *ngIf="showAlert"-->
+<!--        [appearance]="'outline'"-->
+<!--        [showIcon]="false"-->
+<!--        [type]="alert.type"-->
+<!--        [@shake]="alert.type === 'error'">-->
+<!--        {{alert.message}}-->
+<!--    </fuse-alert>-->
+
     <!-- Add team member -->
     <div class="w-full">
         <mat-form-field
@@ -72,7 +83,8 @@
                         </mat-form-field>
                     </div>
                     <div class="order-1 sm:order-2 sm:ml-3">
-                        <button mat-icon-button>
+                        <button mat-icon-button
+                                (click)="memberDelete(member)">
                             <mat-icon
                                 class="text-hint"
                                 [svgIcon]="'heroicons_outline:trash'"></mat-icon>

@@ -6,6 +6,8 @@ import {SessionStore} from "../../../../../core/session/state/session.store";
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {Common} from "@teamplat/providers/common/common";
 import {User} from "../../../../../core/user/user.model";
+import {DeleteAlertComponent} from "../../../../../../@teamplat/components/common-alert/delete-alert";
+import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
 
 @Component({
     selector       : 'settings-team',
@@ -19,6 +21,13 @@ export class SettingsTeamComponent implements OnInit
     teamMembers: User[];
     roles: any[];
     teamEmail: string = '';
+
+    showAlert: boolean = false;
+
+    alert: { type: FuseAlertType; message: string } = {
+        type   : 'success',
+        message: ''
+    };
 
     /**
      * Constructor
@@ -129,10 +138,42 @@ export class SettingsTeamComponent implements OnInit
         });
     }
     memberList(): void{
-        this._common.sendData(this._sessionStore.getValue(),' /v1/api/auth/member-list')
+        this._common.sendData(this._sessionStore.getValue(),'/v1/api/auth/member-list')
             .subscribe((response: any) => {
                 this.teamMembers = response.data;
                 this._changeDetectorRef.markForCheck();
             });
+    }
+    memberDelete(user): void{
+        const deleteConfirm = this._matDialog.open(DeleteAlertComponent, {
+            data: {
+            }
+        });
+
+        deleteConfirm.afterClosed().subscribe((result) => {
+            if(result.status){
+                this._common.sendData(user,'/v1/api/auth/delete-team-member')
+                    .subscribe((response: any) => {
+                        this.memberList();
+                        //삭제 알러트
+                        if(response.status !== 'SUCCESS'){
+                            this.alert = {
+                                type   : 'error',
+                                message: response.msg
+                            };
+                            // Show the alert
+                            this.showAlert = true;
+                        }else{
+                            this.alert = {
+                                type   : 'success',
+                                message: response.msg
+                            };
+                            // Show the alert
+                            this.showAlert = true;
+                        }
+                    });
+            }
+        });
+
     }
 }
