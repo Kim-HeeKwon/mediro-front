@@ -36,8 +36,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '라인번호' , dataField : 'obLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '출고 예정 수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '출고수량' , dataField : 'obQty', width: 60, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     outBoundDetailsTableColumns: string[] = [
@@ -48,6 +49,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'itemNm',
         'obExpQty',
         'qty',
+        'obQty',
         'remarkDetail',
     ];
     outBoundDetailPagenation: OutBoundDetailPagenation | null = null;
@@ -120,6 +122,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+        this.tableEditingEvent();
 
         this._outboundService.outBoundDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -466,5 +469,29 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     tableClear(){
         this._table.renderRows();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    tableEditingEvent(){
+        this.outBoundDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((oubBoundDetail) => {
+                // @ts-ignore
+                if(oubBoundDetail !== null){
+                    const obStatus = this.outBoundHeaderForm.controls['status'].value;
+                    if(obStatus === 'N' || obStatus === 'P'){
+                        oubBoundDetail.forEach((detail: any) => {
+                            detail.qty = detail.obExpQty - detail.obQty;
+                        });
+
+                        this.outBoundDetailsTable.forEach((table: any) => {
+                            if(table.dataField === 'itemCd'){
+                                table.disabled = true;
+                            }
+                        });
+                    }
+                }
+                this._changeDetectorRef.markForCheck();
+            });
     }
 }

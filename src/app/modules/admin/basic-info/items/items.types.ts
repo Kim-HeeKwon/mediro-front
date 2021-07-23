@@ -5,6 +5,7 @@ export interface InventoryItem
     itemNm: string;      //품목명
     grade: number;       //품목명
     itemGrade?: number;  //품목등급
+    udiYn?:string;       //UDI신고대상유무
     category?: string;   //카테고리
     unit: string;        //단위
     standard: string;    //규격

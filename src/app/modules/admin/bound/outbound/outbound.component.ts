@@ -13,7 +13,7 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/lay
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {SelectionModel} from '@angular/cdk/collections';
-import {OutBoundHeader, OutBoundHeaderPagenation} from './outbound.types';
+import {OutBound, OutBoundHeader, OutBoundHeaderPagenation} from './outbound.types';
 import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
@@ -23,6 +23,8 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {OutboundService} from './outbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TransactionAlertComponent} from '../../../../../@teamplat/components/common-alert/transaction-alert';
 
 @Component({
     selector: 'app-outbound',
@@ -107,6 +109,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
         private _activatedRoute: ActivatedRoute,
+        private _functionService: FunctionService,
         private _router: Router,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
@@ -242,6 +245,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._outboundService.getHeader(0,10,'obNo','desc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
@@ -277,4 +281,73 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['bound/outbound/outbound-new' , {}]);
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    outBound() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('출고 대상을 선택해주세요.');
+            return;
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    cancel() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 출고번호 : ' + this.selection.selected[i].obNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
+                    data: {
+                        msg: '취소하시겠습니까?'
+                    }
+                });
+                transactionConfirm.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result.status){
+                            this.outBoundCancel(this.selection.selected);
+                        }else{
+                            this.closeDetails();
+                            this.selectClear();
+                        }
+                    });
+            }
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    /* 취소
+     *
+     * @param sendData
+     */
+    outBoundCancel(sendData: OutBound[]): void{
+        if(sendData){
+            this._outboundService.outBoundCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(outBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
+    }
 }

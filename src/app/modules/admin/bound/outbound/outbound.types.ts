@@ -18,6 +18,7 @@ export interface OutBound
     itemNm: string;
     obExpQty: number;
     qty: number;
+    obQty: number;
     remarkDetail: string;
     addDate?: string;
     addUser?: string;
@@ -55,6 +56,7 @@ export interface OutBoundDetail
     status: string;
     obExpQty: number;
     qty: number;
+    obQty: number;
     remarkDetail: string;
     addDate?: string;
     addUser?: string;

@@ -232,7 +232,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     closeDetails(): void
     {
         this.selectedInboundHeader = null;
-        this.selection.clear();
     }
 
     selectHeader(): void
@@ -277,19 +276,21 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['bound/inbound/inbound-new' , {}]);
     }
 
-    inBound(): void{
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    inBound(){
         if(this.selection.selected.length < 1){
             this._functionService.cfn_alert('입고 대상을 선택해주세요.');
             return;
         }else{
             let check = true;
-            this.selection.selected.forEach((row: any) =>{
-               if(row.status !== 'N' &&
-                    row.status !== 'P'){
-                   this._functionService.cfn_alert('입고할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
-                   check = false;
-               }
-            });
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N' && this.selection.selected[i].status !== 'P'){
+                    this._functionService.cfn_alert('입고할 수 없는 상태입니다. 입고번호 : ' + this.selection.selected[i].ibNo);
+                    check = false;
+                    return false;
+                }
+            }
 
             if(check){
                 const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
@@ -303,7 +304,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                         if(result.status){
                             this.inBoundConfirm(this.selection.selected);
                         }else{
-                            this.selectHeader();
+                            this.closeDetails();
+                            this.selectClear();
                         }
                     });
             }
@@ -320,12 +322,14 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }else{
             let check = true;
-            this.selection.selected.forEach((row: any) =>{
-                if(row.status !== 'N'){
-                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 입고번호 : ' + this.selection.selected[i].ibNo);
                     check = false;
+                    return false;
                 }
-            });
+            }
 
             if(check){
                 const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
@@ -339,7 +343,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                         if(result.status){
                             this.inBoundCancel(this.selection.selected);
                         }else{
-                            this.selectHeader();
+                            this.closeDetails();
+                            this.selectClear();
                         }
                     });
             }
@@ -356,12 +361,14 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }else{
             let check = true;
-            this.selection.selected.forEach((row: any) =>{
-                if(row.status === 'N' || row.status === 'C' || row.status === 'F'){
-                    this._functionService.cfn_alert('마감할 수 없는 상태입니다. 입고번호 : ' + row.ibNo);
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status === 'N' || this.selection.selected[i].status === 'C' || this.selection.selected[i].status === 'F'){
+                    this._functionService.cfn_alert('마감할 수 없는 상태입니다. 입고번호 : ' + this.selection.selected[i].ibNo);
                     check = false;
+                    return false;
                 }
-            });
+            }
 
             if(check){
                 const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
@@ -375,17 +382,17 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                         if(result.status){
                             this.inBoundClose(this.selection.selected);
                         }else{
-                            this.selectHeader();
+                            this.closeDetails();
+                            this.selectClear();
                         }
                     });
             }
-
             // Mark for check
             this._changeDetectorRef.markForCheck();
         }
     }
 
-    /* 확정
+    /* 입고
      *
      * @param sendData
      */
@@ -434,5 +441,11 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectHeader();
                 });
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
     }
 }

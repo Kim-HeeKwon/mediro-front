@@ -282,4 +282,22 @@ export class OutboundService{
         );
     }
 
+    /**
+     * Cancel
+     */
+    outBoundCancel(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
 }

@@ -18,7 +18,8 @@ export interface InBound
     standard: string;           //규격
     unit: string;               //단위
     ibExpQty: number;           //입고예정수량
-    qty: number;                //입고수량
+    qty: number;                //수량
+    ibQty: number;              //입고수량
     unitPrice: number;          //단가
     totalAmt: number;           //금액
     lot1: string;               //입고일자
@@ -67,7 +68,8 @@ export interface InBoundDetail
     standard: string;           //규격
     unit: string;               //단위
     ibExpQty: number;           //입고예정수량
-    qty: number;                //입고수량
+    qty: number;                //수량
+    ibQty: number;              //입고수량
     unitPrice: number;          //단가
     totalAmt: number;           //금액
     lot1: string;               //입고일자

@@ -134,7 +134,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'bound.outbound',
                 title: '출고관리',
                 type : 'basic',
-                icon : 'heroicons_outline:folder-add',
+                icon : 'heroicons_outline:folder-remove',
                 link : '/bound/outbound'
             },
         ]

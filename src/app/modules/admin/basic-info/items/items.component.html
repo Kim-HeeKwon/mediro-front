@@ -283,7 +283,7 @@
                                                                                         [formControlName]="'itemCd'">
                                                                                 </mat-form-field>
 
-                                                                                <mat-form-field class="w-2/4 pl-2">
+                                                                                <mat-form-field class="w-1/4 pl-2">
                                                                                     <mat-label>품목명</mat-label>
                                                                                     <input
                                                                                         matInput
@@ -295,6 +295,16 @@
                                                                                         <ng-container *ngFor="let itemgrade of itemGrades">
                                                                                             <mat-option [value]="itemgrade.id">
                                                                                                 {{itemgrade.name}}
+                                                                                            </mat-option>
+                                                                                        </ng-container>
+                                                                                    </mat-select>
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-1/4 pl-2">
+                                                                                    <mat-label>UDI 대상 유무</mat-label>
+                                                                                    <mat-select [formControlName]="'udiYn'">
+                                                                                        <ng-container *ngFor="let udiYn of udiYn">
+                                                                                            <mat-option [value]="udiYn.id">
+                                                                                                {{udiYn.name}}
                                                                                             </mat-option>
                                                                                         </ng-container>
                                                                                     </mat-select>
@@ -427,6 +437,22 @@
                                                     mat-cell
                                                     *matCellDef="let product">
                                                     {{(product.itemGrade | fuseFindByKey:'id':itemGrades).name}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="udiYn">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    UDI 대상 유무
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{(product.udiYn | fuseFindByKey:'id':udiYn).name}}
                                                 </td>
                                             </ng-container>
                                             <!-- category -->

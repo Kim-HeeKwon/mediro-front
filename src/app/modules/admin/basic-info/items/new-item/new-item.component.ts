@@ -59,6 +59,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     is_edit:boolean = false;
     itemUnit: CommonCode[] = [];
     itemStandard: CommonCode[] = [];
+    udiYn: CommonCode[] = [];
 
     constructor(
         public matDialogRef: MatDialogRef<NewItemComponent>,
@@ -73,6 +74,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     ) {
         this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemStandard = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
+        this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -85,6 +87,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
             itemGrade: [3], // 등급
+            udiYn: [''], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: ['PKG'], // 단위
             standard: ['PKG'], // 규격

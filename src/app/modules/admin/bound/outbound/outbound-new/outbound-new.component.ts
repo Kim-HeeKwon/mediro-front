@@ -68,8 +68,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '라인번호' , dataField : 'obLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '출고 예정 수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
-        {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '수량' , dataField : 'qty', width: 50, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     outBoundDetailsTableColumns: string[] = [

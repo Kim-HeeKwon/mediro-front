@@ -27,7 +27,7 @@
             [formGroup]="selectedItemForm">
             <div class="p-4 sm:p-4">
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
-                    <div class="sm:col-span-3">
+                    <div class="sm:col-span-2">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>품목코드</mat-label>
@@ -46,6 +46,19 @@
                                 <ng-container *ngFor="let itemgrade of itemGrades">
                                     <mat-option [value]="itemgrade.id">
                                         {{itemgrade.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <!-- Name -->
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>UDI 대상 유무</mat-label>
+                            <mat-select [formControlName]="'udiYn'" [attr.disabled]="is_edit?'':false">
+                                <ng-container *ngFor="let udiYn of udiYn">
+                                    <mat-option [value]="udiYn.id">
+                                        {{udiYn.name}}
                                     </mat-option>
                                 </ng-container>
                             </mat-select>

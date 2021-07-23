@@ -24,6 +24,7 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {TransactionAlertComponent} from "../../../../../../@teamplat/components/common-alert/transaction-alert";
 
 @Component({
     selector       : 'inbound-detail',
@@ -394,13 +395,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     updateRowData(element, column: TableConfig, i) {
-        console.log(element);
         if(element.flag !== 'C' || !element.flag){
             element.flag = 'U';
         }
 
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
-        console.log(ibStatus);
         if(element.flag === 'U'){
 
         }
@@ -566,5 +565,59 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 }
                 this._changeDetectorRef.markForCheck();
             });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    inBound() {
+        const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        if(ibStatus !== 'N' && ibStatus !== 'P'){
+            this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
+            return false;
+        }
+        let inBoundData;
+        this.inBoundDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((inBoundDetail) => {
+                inBoundData = inBoundDetail.filter((detail: any) => detail.qty > 0)
+                    .map((param: any) => {
+                        return param;
+                });
+            });
+
+        if(inBoundData.length < 1) {
+            this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
+            return false;
+        }else{
+            const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
+                data: {
+                    msg: '입고하시겠습니까?'
+                }
+            });
+            transactionConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result.status){
+                        this.inBoundDetailConfirm(inBoundData);
+                    }
+                });
+        }
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+    /* 입고 (상세)
+     *
+     * @param sendData
+     */
+    inBoundDetailConfirm(sendData: InBound[]): void{
+        if(sendData){
+            this._inboundService.inBoundDetailConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
 }

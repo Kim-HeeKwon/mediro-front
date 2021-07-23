@@ -45,8 +45,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         {headerText : '품목등급' , dataField : 'itemGrade', width: 100, display : true, disabled : true, type: 'text',combo : true},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '현재고' , dataField : 'qty', width: 100, display : true, disabled : true, type: 'number',style: this.stocksTableStyle.textAlign.right},
-        {headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number',style: this.stocksTableStyle.textAlign.right},
+        {headerText : '현재고' , dataField : 'qty', width: 100, display : true, disabled : true, type: 'number'},
+        {headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number'},
     ];
 
     stocksTableColumns: string[] = [

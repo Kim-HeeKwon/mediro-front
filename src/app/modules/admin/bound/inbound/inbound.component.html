@@ -87,9 +87,10 @@
                     </div>
                     <div class="col-span-12">
                         <button
-                            class="ml-2"
-                            mat-flat-button
+                            class="ml-3"
+                            mat-raised-button
                             [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="newIn()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">신규</span>
@@ -97,9 +98,10 @@
                     </div>
                     <div class="col-span-12">
                         <button
-                            class="ml-2"
-                            mat-flat-button
+                            class="ml-3"
+                            mat-raised-button
                             [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="inBound()">
                             <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
                             <span class="ml-2 mr-1">입고</span>
@@ -107,9 +109,10 @@
                     </div>
                     <div class="col-span-12">
                         <button
-                            class="ml-2"
-                            mat-flat-button
+                            class="ml-3"
+                            mat-raised-button
                             [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="cancel()">
                             <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
                             <span class="ml-2 mr-1">취소</span>
@@ -117,9 +120,10 @@
                     </div>
                     <div class="col-span-12">
                         <button
-                            class="ml-2"
-                            mat-flat-button
+                            class="ml-3"
+                            mat-raised-button
                             [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="close()">
                             <!--<mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
                             <span class="ml-2 mr-1">마감</span>
@@ -289,7 +293,7 @@
                                             [trackBy]="trackByFn">
 
                                             <!-- Checkbox Column -->
-                                            <ng-container matColumnDef="select">
+                                            <ng-container matColumnDef="select" sticky>
                                                 <th class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     style="width:7%"
                                                     mat-header-cell
@@ -330,7 +334,7 @@
                                             </ng-container>
 
                                             <!-- Details -->
-                                            <ng-container matColumnDef="details">
+                                            <ng-container matColumnDef="details" sticky>
                                                 <th
                                                     class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     mat-header-cell

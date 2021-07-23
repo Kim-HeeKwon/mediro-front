@@ -190,13 +190,31 @@ export class InboundService {
         });
     }
     /**
-     * Confirm
+     * inbound
      */
     inBoundConfirm(inBounds: InBound[]): Observable<InBound>
     {
         return this.inBounds$.pipe(
             take(1),
             switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * inbound (상세)
+     */
+    inBoundDetailConfirm(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/confirm-detail').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

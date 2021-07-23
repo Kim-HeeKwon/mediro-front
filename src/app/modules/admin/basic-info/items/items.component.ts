@@ -55,13 +55,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 0;
-    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','unit','standard','supplier','buyPrice','salesPrice'];
+    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','udiYn','unit','standard','supplier','buyPrice','salesPrice'];
     selectedItemForm: FormGroup;
     searchForm: FormGroup;
     selectedItem: InventoryItem | null = null;
     flashMessage: 'success' | 'error' | null = null;
 
     itemGrades: CommonCode[] = [];
+    udiYn: CommonCode[] = [];
 
     searchCondition: CommonCode[] = [
         {
@@ -91,6 +92,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -110,6 +112,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
             itemGrade: [''], // 등급
+            udiYn: [''], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
