@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Common} from '../../../../../../@teamplat/providers/common/common';
 import {SessionStore} from '../../../../../core/session/state/session.store';
 import {Crypto} from '../../../../../../@teamplat/providers/common/crypto';
+import {TeamPlatConfirmationService} from "@teamplat/services/confirmation";
 
 @Component({
     selector       : 'settings-security',
@@ -13,6 +14,7 @@ import {Crypto} from '../../../../../../@teamplat/providers/common/crypto';
 export class SettingsSecurityComponent implements OnInit
 {
     securityForm: FormGroup;
+    configForm: FormGroup;
 
     /**
      * Constructor
@@ -22,6 +24,7 @@ export class SettingsSecurityComponent implements OnInit
         private _common: Common,
         private _sessionStore: SessionStore,
         private _cryptoJson: Crypto,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService
     )
     {
     }
@@ -86,7 +89,22 @@ export class SettingsSecurityComponent implements OnInit
                     //패스워드 Same check!!
                     if(this.securityForm.getRawValue().currentPassword === this.securityForm.getRawValue().newPassword)
                     {
-                        alert('다른 패스워드를 입력해 주세요.');
+                        //alert('다른 패스워드를 입력해 주세요.');
+
+                        // Open the confirmation dialog
+                        const confirmation = this._teamPlatConfirmationService.open({
+                            title  : '동일 패스워드',
+                            message: '다른 패스워드를 입력해 주세요.',
+                            actions: {
+                                confirm: {
+                                    label: '확인'
+                                },
+                                cancel: {
+                                    show: false
+                                }
+                            }
+                        });
+
                         return;
                     }
                     // 새로운 패스워드 적용

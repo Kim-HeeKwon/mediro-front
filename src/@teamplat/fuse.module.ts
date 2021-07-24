@@ -8,9 +8,11 @@ import { Api } from './providers/api/api';
 import { Common } from './providers/common/common';
 import { Crypto } from './providers/common/crypto';
 import {FunctionModule} from './services/function';
+import {TeamPlatConfirmationModule} from './services/confirmation';
 
 @NgModule({
     imports  : [
+        TeamPlatConfirmationModule,
         FuseMediaWatcherModule,
         FuseSplashScreenModule,
         FuseTailwindConfigModule,

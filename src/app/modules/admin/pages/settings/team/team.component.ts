@@ -8,6 +8,8 @@ import {Common} from "@teamplat/providers/common/common";
 import {User} from "../../../../../core/user/user.model";
 import {DeleteAlertComponent} from "../../../../../../@teamplat/components/common-alert/delete-alert";
 import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
+import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
     selector       : 'settings-team',
@@ -24,6 +26,7 @@ export class SettingsTeamComponent implements OnInit
 
     showAlert: boolean = false;
 
+    configForm: FormGroup;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
@@ -32,9 +35,11 @@ export class SettingsTeamComponent implements OnInit
     /**
      * Constructor
      */
-    constructor( private _matDialog: MatDialog,
+    constructor( private _formBuilder: FormBuilder,
+                 private _matDialog: MatDialog,
                  private _sessionStore: SessionStore,
                  private _codeStore: CodeStore,
+                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
                  private _changeDetectorRef: ChangeDetectorRef,
                  private _common: Common)
     {
@@ -109,6 +114,29 @@ export class SettingsTeamComponent implements OnInit
                 description: '멤버를 추가,삭제 할수 없으며, UDI 정보를 셋팅할 수 없습니다.'
             }
         ];
+
+        // Setup config form
+        this.configForm = this._formBuilder.group({
+            title      : '유저삭제',
+            message    : '유저를 작세하시겠습니까?',
+            icon       : this._formBuilder.group({
+                show : true,
+                name : 'heroicons_outline:exclamation',
+                color: 'warn'
+            }),
+            actions    : this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show : true,
+                    label: '삭제',
+                    color: 'warn'
+                }),
+                cancel : this._formBuilder.group({
+                    show : true,
+                    label: '취소'
+                })
+            }),
+            dismissible: true
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -145,35 +173,77 @@ export class SettingsTeamComponent implements OnInit
             });
     }
     memberDelete(user): void{
-        const deleteConfirm = this._matDialog.open(DeleteAlertComponent, {
-            data: {
+        // Open the confirmation dialog
+        // const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
+        // Open the confirmation dialog
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '유저삭제',
+            message: '유저를 삭제하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '삭제'
+                },
+                cancel: {
+                    label: '닫기'
+                }
             }
         });
 
-        deleteConfirm.afterClosed().subscribe((result) => {
-            if(result.status){
-                this._common.sendData(user,'/v1/api/auth/delete-team-member')
-                    .subscribe((response: any) => {
-                        this.memberList();
-                        //삭제 알러트
-                        if(response.status !== 'SUCCESS'){
-                            this.alert = {
-                                type   : 'error',
-                                message: response.msg
-                            };
-                            // Show the alert
-                            this.showAlert = true;
-                        }else{
-                            this.alert = {
-                                type   : 'success',
-                                message: response.msg
-                            };
-                            // Show the alert
-                            this.showAlert = true;
-                        }
-                    });
-            }
+        confirmation.afterClosed().subscribe((result) => {
+            console.log(result);
+                if(result){
+                    this._common.sendData(user,'/v1/api/auth/delete-team-member')
+                        .subscribe((response: any) => {
+                            this.memberList();
+                            //삭제 알러트
+                            if(response.status !== 'SUCCESS'){
+                                this.alert = {
+                                    type   : 'error',
+                                    message: response.msg
+                                };
+                                // Show the alert
+                                this.showAlert = true;
+                            }else{
+                                this.alert = {
+                                    type   : 'success',
+                                    message: response.msg
+                                };
+                                // Show the alert
+                                this.showAlert = true;
+                            }
+                        });
+                }
         });
+
+        // const deleteConfirm = this._matDialog.open(DeleteAlertComponent, {
+        //     data: {
+        //     }
+        // });
+        //
+        // deleteConfirm.afterClosed().subscribe((result) => {
+        //     if(result.status){
+        //         this._common.sendData(user,'/v1/api/auth/delete-team-member')
+        //             .subscribe((response: any) => {
+        //                 this.memberList();
+        //                 //삭제 알러트
+        //                 if(response.status !== 'SUCCESS'){
+        //                     this.alert = {
+        //                         type   : 'error',
+        //                         message: response.msg
+        //                     };
+        //                     // Show the alert
+        //                     this.showAlert = true;
+        //                 }else{
+        //                     this.alert = {
+        //                         type   : 'success',
+        //                         message: response.msg
+        //                     };
+        //                     // Show the alert
+        //                     this.showAlert = true;
+        //                 }
+        //             });
+        //     }
+        // });
 
     }
 }
