@@ -24,7 +24,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {OutboundService} from './outbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
-import {TransactionAlertComponent} from '../../../../../@teamplat/components/common-alert/transaction-alert';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-outbound',
@@ -113,6 +113,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         private _router: Router,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private readonly breakpointObserver: BreakpointObserver)
     {
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
@@ -306,15 +307,31 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             if(check){
-                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
-                    data: {
-                        msg: '취소하시겠습니까?'
-                    }
-                });
-                transactionConfirm.afterClosed()
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '취소하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+                confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        if(result.status){
+                        if (result) {
                             this.outBoundCancel(this.selection.selected);
                         }else{
                             this.closeDetails();

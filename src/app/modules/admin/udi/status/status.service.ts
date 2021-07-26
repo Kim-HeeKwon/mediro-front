@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {SupplyStatus, SupplyStatusPagenation} from './status.types';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {filter, map, switchMap, take, tap} from 'rxjs/operators';
-import {Manages, ManagesPagenation} from './manages.types';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ManagesService {
+export class StatusService {
 
-    private _manages: BehaviorSubject<Manages[]> = new BehaviorSubject(null);
-    private _managesPagenation: BehaviorSubject<ManagesPagenation | null> = new BehaviorSubject(null);
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private _supplyStatus: BehaviorSubject<SupplyStatus[]> = new BehaviorSubject(null);
+    private _suppleyStatusPagenation: BehaviorSubject<SupplyStatusPagenation | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -23,16 +23,16 @@ export class ManagesService {
     /**
      * Getter for headers
      */
-    get manages$(): Observable<Manages[]>
+    get supplyStatus$(): Observable<SupplyStatus[]>
     {
-        return this._manages.asObservable();
+        return this._supplyStatus.asObservable();
     }
     /**
      * Getter for Header Pagenation
      */
-    get managesPagenation$(): Observable<ManagesPagenation>
+    get suppleyStatusPagenation$(): Observable<SupplyStatusPagenation>
     {
-        return this._managesPagenation.asObservable();
+        return this._suppleyStatusPagenation.asObservable();
     }
 
     /**
@@ -41,7 +41,7 @@ export class ManagesService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 10, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{managesPagenation: ManagesPagenation; manages: Manages[] }> {
+        Observable<{supplyStatusPagenation: SupplyStatusPagenation; supplyStatus: SupplyStatus[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -54,13 +54,6 @@ export class ManagesService {
                 searchParam[k] = search[k];
             }
         }
-        if(searchParam['offset'] === undefined){
-            searchParam['offset'] = '1';
-        }
-
-        if(searchParam['limit'] === undefined){
-            searchParam['limit'] = '100';
-        }
 
         const pageParam = {
             page: page,
@@ -69,12 +62,12 @@ export class ManagesService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/udi/supply-info/manages')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/udi/supply-info/status')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
-                        this._manages.next(response.data);
-                        this._managesPagenation.next(response.pageNation);
-                        resolve(this._manages);
+                        this._supplyStatus.next(response.data);
+                        this._suppleyStatusPagenation.next(response.pageNation);
+                        resolve(this._supplyStatus);
                     }
                 }, reject);
         });

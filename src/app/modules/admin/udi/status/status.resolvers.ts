@@ -1,22 +1,21 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Common} from '@teamplat/providers/common/common';
+import {Common} from '../../../../../@teamplat/providers/common/common';
+import {StatusService} from './status.service';
 import {Observable} from 'rxjs';
-import {ManagesService} from './manages.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ManagesResolvers implements Resolve<any> {
+export class StatusResolvers implements Resolve<any> {
     coinChartWidget: any[];
 
     /**
      * Constructor
      */
-    constructor(private _managesService: ManagesService,
+    constructor(private _statusService: StatusService,
                 private _common: Common) {
     }
-
 
     /**
      * Resolver
@@ -28,7 +27,7 @@ export class ManagesResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._managesService.getHeader()
+                this._statusService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

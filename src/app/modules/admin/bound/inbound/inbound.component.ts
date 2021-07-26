@@ -24,7 +24,7 @@ import {TableConfig, TableStyle} from '../../../../../@teamplat/components/commo
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {FunctionService} from '../../../../../@teamplat/services/function';
-import {TransactionAlertComponent} from '../../../../../@teamplat/components/common-alert/transaction-alert';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-inbound',
@@ -106,6 +106,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
         private _activatedRoute: ActivatedRoute,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _router: Router,
         private _utilService: FuseUtilsService,
         private _functionService: FunctionService,
@@ -293,15 +294,24 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             if(check){
-                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
-                    data: {
-                        msg: '입고하시겠습니까?'
+
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '입고',
+                    message: '입고하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '입고'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
                     }
                 });
-                transactionConfirm.afterClosed()
+
+                confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        if(result.status){
+                        if(result){
                             this.inBoundConfirm(this.selection.selected);
                         }else{
                             this.closeDetails();
@@ -309,6 +319,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     });
             }
+
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
@@ -332,15 +343,33 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             if(check){
-                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
-                    data: {
-                        msg: '취소하시겠습니까?'
-                    }
-                });
-                transactionConfirm.afterClosed()
+
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '취소하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        if(result.status){
+                        if (result) {
                             this.inBoundCancel(this.selection.selected);
                         }else{
                             this.closeDetails();
@@ -371,15 +400,32 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             if(check){
-                const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
-                    data: {
-                        msg: '마감하시겠습니까?'
-                    }
-                });
-                transactionConfirm.afterClosed()
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '마감하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warning'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '마감',
+                            color: 'primary'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        if(result.status){
+                        if (result) {
                             this.inBoundClose(this.selection.selected);
                         }else{
                             this.closeDetails();

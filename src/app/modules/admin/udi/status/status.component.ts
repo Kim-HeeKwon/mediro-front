@@ -1,28 +1,26 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {DeviceDetectorService} from 'ngx-device-detector';
-import {CommonScanComponent} from '@teamplat/components/common-scan';
 import {merge, Observable, Subject} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {MatDialog} from '@angular/material/dialog';
-import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
-import {Manages, ManagesPagenation} from './manages.types';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {SelectionModel} from '@angular/cdk/collections';
+import {SupplyStatus, SupplyStatusPagenation} from './status.types';
 import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
-import {ManagesService} from './manages.service';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {FunctionService} from '../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {StatusService} from './status.service';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
-    selector: 'app-manages',
-    templateUrl: './manages.component.html',
-    styleUrls: ['./manages.component.scss']
+    selector: 'app-supply-status',
+    templateUrl: './status.component.html',
+    styleUrls: ['./status.component.scss']
 })
-export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
-
+export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -32,106 +30,91 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
     selection = new SelectionModel<any>(true, []);
-    manages$: Observable<Manages[]>;
-    managesPagenation: ManagesPagenation | null = null;
+    supplyStatus$: Observable<SupplyStatus[]>;
+    supplyStatusPagenation: SupplyStatusPagenation | null = null;
 
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
-    pageEvent: PageEvent;
-
     isLoading: boolean = false;
-    managesCount: number = 0;
-    managesTableStyle: TableStyle = new TableStyle();
-    managesTable: TableConfig[] = [
+    supplyStatusCount: number = 0;
+    suplyFlagCode: CommonCode[] = null;
+
+    supplyStatusTableStyle: TableStyle = new TableStyle();
+    supplyStatusTable: TableConfig[] = [
+        {headerText : 'serialkey' , dataField : 'serialkey', width: 80, display : false, disabled : true, type: 'text'},
         {headerText : '공급구분' , dataField : 'suplyFlagCode', width: 80, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '품목일련번호' , dataField : 'meddevItemSeq', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '표준코드' , dataField : 'stdCode', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '로트번호' , dataField : 'lotNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '제조연월' , dataField : 'manufYm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급받은자 코드' , dataField : 'bcncCode', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '공급받은자' , dataField : 'bcncEntpName', width: 100, display : true, disabled : true, type: 'text'},
+        /*{headerText : '공급받은자' , dataField : 'bcncEntpName', width: 100, display : true, disabled : true, type: 'text'},*/
         {headerText : '공급일자' , dataField : 'suplyDate', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급수량' , dataField : 'suplyQty', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '공급단가' , dataField : 'suplyUntpc', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '공급금액' , dataField : 'suplyAmt', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '상태' , dataField : 'udiFlag', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '메세지' , dataField : 'message', width: 80, display : true, disabled : true, type: 'text'},
     ];
-    managesTableColumns: string[] = [
+    supplyStatusTableColumns: string[] = [
         /*'no',*/
+        /*'serialkey',*/
         'suplyFlagCode',
         'meddevItemSeq',
         'stdCode',
         'lotNo',
         'manufYm',
         'bcncCode',
-        'bcncEntpName',
+        /*'bcncEntpName',*/
         'suplyDate',
         'suplyQty',
         'suplyUntpc',
         'suplyAmt',
+        'udiFlag',
+        'message',
     ];
-    month: CommonCode[] = null;
-    year: CommonCode[] = null;
-    suplyFlagCode: CommonCode[] = null;
     searchForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _matDialog: MatDialog,
         private _codeStore: CodeStore,
-        private _managesService: ManagesService,
+        private _statusService: StatusService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
         private _functionService: FunctionService,
         private readonly breakpointObserver: BreakpointObserver,
         private _deviceService: DeviceDetectorService,
-    ) {
+    ){
         this.isMobile = this._deviceService.isMobile();
-        this.month = _utilService.commonValue(_codeStore.getValue().data,'MONTH');
-        this.year = _utilService.commonValue(_codeStore.getValue().data,'YEAR');
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
     }
 
     ngOnInit(): void {
         // 검색 Form 생성
-        const today = new Date();
-        const YYYY = today.getFullYear();
-        const mm = today.getMonth()+1; //January is 0!
-        let MM;
-        if(mm<10) {
-            MM = String('0'+mm);
-        }else{
-            MM = String(mm);
-        }
         this.searchForm = this._formBuilder.group({
-            year: [YYYY + ''],
-            month: [MM + ''],
             searchText: [''],
-            suplyContStdmt: [''],
-            offset: [1],
-            limit: [100],
         });
-
-        this.manages$ = this._managesService.manages$;
-        this._managesService.manages$
+        this.supplyStatus$ = this._statusService.supplyStatus$;
+        this._statusService.supplyStatus$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((manages: any) => {
-                if(manages !== null){
-                    this.managesCount = manages.length;
+            .subscribe((status: any) => {
+                if(status !== null){
+                    this.supplyStatusCount = status.length;
                 }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
-        this._managesService.managesPagenation$
+        this._statusService.suppleyStatusPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((managesPagenation: ManagesPagenation) => {
-                this.managesPagenation = managesPagenation;
+            .subscribe((statusPagenation: SupplyStatusPagenation) => {
+                this.supplyStatusPagenation = statusPagenation;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
     }
-
     /**
      * On destroy
      */
@@ -151,7 +134,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 switchMap(() => {
                     this.isLoading = true;
                     // eslint-disable-next-line max-len
-                    return this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+                    return this._statusService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
                 }),
                 map(() => {
                     this.isLoading = false;
@@ -159,7 +142,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             ).subscribe();
         }
     }
-
     /**
      * Track by function for ngFor loops
      *
@@ -170,35 +152,16 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         return validity.id || index;
     }
 
-    openScanPopup(): void {
-        if(!this.isMobile){
-            this._matDialog.open(CommonScanComponent, {
-                autoFocus: false,
-                disableClose: true,
-                data     : {
-                    note: {}
-                },
+    select(): void{
+
+        this._statusService.getHeader(0,10,'','asc',this.searchForm.getRawValue());
+
+        this._statusService.supplyStatus$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((status: any) => {
             });
-        }else{
-            const d = this._matDialog.open(CommonScanComponent, {
-                autoFocus: false,
-                width: 'calc(100% - 50px)',
-                maxWidth: '100vw',
-                maxHeight: '80vh',
-                disableClose: true
-            });
-            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
-                }
-            });
-            d.afterClosed().subscribe(() => {
-                smallDialogSubscription.unsubscribe();
-            });
-        }
     }
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     getComboData(column: TableConfig) {
         let combo;
@@ -206,27 +169,5 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             combo = this.suplyFlagCode;
         }
         return combo;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    pageChange($event: PageEvent) {
-        this.searchForm.patchValue({'offset': this._paginator.pageIndex + 1});
-        this.searchForm.patchValue({'limit': this._paginator.pageSize});
-
-        const day = this.searchForm.getRawValue().year + this.searchForm.getRawValue().month;
-        this.searchForm.patchValue({'suplyContStdmt': day});
-        this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
-    }
-
-    select(): void{
-
-        const day = this.searchForm.getRawValue().year + this.searchForm.getRawValue().month;
-        this.searchForm.patchValue({'suplyContStdmt': day});
-        this._managesService.getHeader(0,100,'','asc',this.searchForm.getRawValue());
-
-        this._managesService.manages$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((manages: any) => {
-            });
     }
 }

@@ -19,12 +19,11 @@ import {merge, Observable, Subject} from 'rxjs';
 import {InBound, InBoundDetail, InBoundDetailPagenation} from '../inbound.types';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
-import {TransactionAlertComponent} from "../../../../../../@teamplat/components/common-alert/transaction-alert";
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector       : 'inbound-detail',
@@ -112,6 +111,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _codeStore: CodeStore,
         private _functionService: FunctionService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _utilService: FuseUtilsService
     )
     {
@@ -235,61 +235,69 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return;
         }
 
-        const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-            data: {
+        const confirmation = this._teamPlatConfirmationService.open({
+            title : '',
+            message: '저장하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
             }
         });
-        saveConfirm.afterClosed()
+        confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 let createList;
                 let updateList;
                 let deleteList;
-                if (result.status) {
-                    createList = [];
-                    updateList = [];
-                    deleteList = [];
-                    this.inBoundDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((inBoundDetail) => {
-                            inBoundDetail.forEach((sendData: any) => {
-                                if (sendData.flag) {
-                                    if (sendData.flag === 'C') {
-                                        createList.push(sendData);
-                                    } else if (sendData.flag === 'U') {
-                                        updateList.push(sendData);
-                                    } else if (sendData.flag === 'D') {
-                                        deleteList.push(sendData);
-                                    }
-                                }
-                            });
-                        });
-                    let inBoundHeader = null;
+               if(result){
+                   createList = [];
+                   updateList = [];
+                   deleteList = [];
+                   this.inBoundDetails$
+                       .pipe(takeUntil(this._unsubscribeAll))
+                       .subscribe((inBoundDetail) => {
+                           inBoundDetail.forEach((sendData: any) => {
+                               if (sendData.flag) {
+                                   if (sendData.flag === 'C') {
+                                       createList.push(sendData);
+                                   } else if (sendData.flag === 'U') {
+                                       updateList.push(sendData);
+                                   } else if (sendData.flag === 'D') {
+                                       deleteList.push(sendData);
+                                   }
+                               }
+                           });
+                       });
+                   let inBoundHeader = null;
 
-                    this._inboundService.inBoundHeader$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((inBound: any) => {
-                            // Update the pagination
-                            if(inBound !== null){
-                                inBoundHeader = inBound;
-                            }
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+                   this._inboundService.inBoundHeader$
+                       .pipe(takeUntil(this._unsubscribeAll))
+                       .subscribe((inBound: any) => {
+                           // Update the pagination
+                           if(inBound !== null){
+                               inBoundHeader = inBound;
+                           }
+                           // Mark for check
+                           this._changeDetectorRef.markForCheck();
+                       });
 
-                    if(inBoundHeader === null){
-                        inBoundHeader = {};
-                    }
-                    if (createList.length > 0) {
-                        this.createIn(createList,inBoundHeader);
-                    }
-                    if (updateList.length > 0) {
-                        this.updateIn(updateList,inBoundHeader);
-                    }
-                    if (deleteList.length > 0) {
-                        this.deleteIn(deleteList,inBoundHeader);
-                    }
-                }
+                   if(inBoundHeader === null){
+                       inBoundHeader = {};
+                   }
+                   if (createList.length > 0) {
+                       this.createIn(createList,inBoundHeader);
+                   }
+                   if (updateList.length > 0) {
+                       this.updateIn(updateList,inBoundHeader);
+                   }
+                   if (deleteList.length > 0) {
+                       this.deleteIn(deleteList,inBoundHeader);
+                   }
+               };
             });
         // Mark for check
         this._changeDetectorRef.markForCheck();
@@ -588,15 +596,22 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
             return false;
         }else{
-            const transactionConfirm =this._matDialog.open(TransactionAlertComponent, {
-                data: {
-                    msg: '입고하시겠습니까?'
+            const confirmation = this._teamPlatConfirmationService.open({
+                title  : '입고',
+                message: '입고하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '입고'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
-            transactionConfirm.afterClosed()
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result.status){
+                    if(result){
                         this.inBoundDetailConfirm(inBoundData);
                     }
                 });

@@ -27,26 +27,10 @@
                 <form [formGroup]="searchForm">
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
                         <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'year'">
-                                    <ng-container *ngFor="let year of year">
-                                        <mat-option [value]="year.id">
-                                            {{year.name}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                            </mat-form-field>
+
                         </div>
                         <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'month'">
-                                    <ng-container *ngFor="let month of month">
-                                        <mat-option [value]="month.id">
-                                            {{month.name}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                            </mat-form-field>
+
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
@@ -106,7 +90,7 @@
                             <div class="flex items-center justify-between px-6 pt-4 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-3xl font-extrabold tracking-tight">
-                                    공급내역 보고</div>
+                                    공급내역 현황</div>
                                 <button
                                     class="sm:hidden -ml-2"
                                     mat-icon-button
@@ -125,24 +109,6 @@
                                 <!-- Search -->
                                 <form
                                     [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'year'">
-                                            <ng-container *ngFor="let year of year">
-                                                <mat-option [value]="year.id">
-                                                    {{year.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'month'">
-                                            <ng-container *ngFor="let month of month">
-                                                <mat-option [value]="month.id">
-                                                    {{month.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
                                         <input
                                             matInput
@@ -174,8 +140,8 @@
                         <!-- Main -->
                         <div class="flex flex-auto overflow-hidden">
                             <!-- Item list -->
-                            <div class="flex flex-col flex-auto overflow-hidden">
-                                <ng-container *ngIf="managesCount > 0; else noProducts">
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <ng-container *ngIf="supplyStatusCount > 0; else noProducts">
                                     <!-- Table wrapper -->
                                     <div
                                         class="overflow-x-auto sm:overflow-y-auto"
@@ -187,11 +153,11 @@
                                             [ngClass]="{'pointer-events-none': isLoading}"
                                             mat-table
                                             matSort
-                                            [matSortActive]="'suplyDateAsc'"
+                                            [matSortActive]="'serialkey'"
                                             [matSortDisableClear]="true"
                                             [matSortDirection]="'asc'"
                                             [multiTemplateDataRows]="true"
-                                            [dataSource]="manages$"
+                                            [dataSource]="supplyStatus$"
                                             [trackBy]="trackByFn">
 
                                             <ng-container matColumnDef="no">
@@ -212,7 +178,7 @@
                                                     {{row.no}}
                                                 </td>
                                             </ng-container>
-                                            <ng-container *ngFor="let column of managesTable; let i=dataIndex;"
+                                            <ng-container *ngFor="let column of supplyStatusTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">
                                                 <th
                                                     mat-header-cell
@@ -254,11 +220,11 @@
                                             <tr
                                                 class="shadow"
                                                 mat-header-row
-                                                *matHeaderRowDef="managesTableColumns; sticky: true"></tr>
+                                                *matHeaderRowDef="supplyStatusTableColumns; sticky: true"></tr>
                                             <tr
                                                 class="h-18 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                *matRowDef="let validity; columns: managesTableColumns;"></tr>
+                                                *matRowDef="let validity; columns: supplyStatusTableColumns;"></tr>
 
                                         </table>
 
@@ -266,12 +232,11 @@
                                     <mat-paginator
                                         class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                         [ngClass]="{'pointer-events-none': isLoading}"
-                                        [length]="managesPagenation === null ? 0 : managesPagenation.length"
-                                        [pageIndex]="managesPagenation === null ? 0 : managesPagenation.page"
-                                        [pageSize]="managesPagenation === null ? 0 : managesPagenation.size"
+                                        [length]="supplyStatusPagenation === null ? 0 : supplyStatusPagenation.length"
+                                        [pageIndex]="supplyStatusPagenation === null ? 0 : supplyStatusPagenation.page"
+                                        [pageSize]="supplyStatusPagenation === null ? 0 : supplyStatusPagenation.size"
                                         [pageSizeOptions]="[100]"
-                                        [showFirstLastButtons]="true"
-                                        (page)="pageChange($event)"></mat-paginator>
+                                        [showFirstLastButtons]="true"></mat-paginator>
 
                                 </ng-container>
                                 <ng-template #noProducts>

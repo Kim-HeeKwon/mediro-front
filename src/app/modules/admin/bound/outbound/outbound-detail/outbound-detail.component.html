@@ -127,6 +127,18 @@
                     <span class="ml-2">저장</span>
                 </button>
             </div>
+            <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                <button
+                    class="fuse-mat-button-rounded"
+                    mat-raised-button
+                    [color]="'primary'"
+                    (click)="outBound()">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:truck'"></mat-icon>
+                    <span class="ml-2">출고</span>
+                </button>
+            </div>
         </div>
     </div>
     <div class="flex flex-auto overflow-hidden">

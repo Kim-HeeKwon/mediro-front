@@ -1,7 +1,8 @@
-import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
+import {StatusComponent} from './status.component';
+import {StatusResolvers} from './status.resolvers';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ManagesComponent} from './manages.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -18,28 +19,26 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {SharedModule} from '../../../../shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
-import {ManagesResolvers} from './manages.resolvers';
+import {SharedModule} from '../../../../shared/shared.module';
 
-const managesRoutes: Route[] = [
+const supplyStatusRoutes: Route[] = [
     {
         path: '',
-        component: ManagesComponent,
+        component: StatusComponent,
         resolve  : {
-            data: ManagesResolvers
+            data: StatusResolvers
         },
     }
 ];
-
 @NgModule({
     declarations: [
-        ManagesComponent
+        StatusComponent
     ],
     imports: [
         CommonModule,
-        RouterModule.forChild(managesRoutes),
+        RouterModule.forChild(supplyStatusRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -61,5 +60,5 @@ const managesRoutes: Route[] = [
         SharedModule
     ]
 })
-export class ManagesModule {
+export class StatusModule{
 }

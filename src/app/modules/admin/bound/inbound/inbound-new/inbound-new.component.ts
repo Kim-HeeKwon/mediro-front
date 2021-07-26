@@ -12,7 +12,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable} from '@angular/material/table';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {merge, Observable, Subject} from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -23,9 +22,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {InboundService} from '../inbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
-import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'inbound-new',
@@ -46,11 +45,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     flashMessage: 'success' | 'error' | null = null;
     inBoundDetailsCount: number = 0;
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
-    };
     // eslint-disable-next-line @typescript-eslint/member-ordering
     showAlert: boolean = false;
 
@@ -126,8 +120,10 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _utilService: FuseUtilsService
+        private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
     )
     {
         this.filterList = ['ALL'];
@@ -200,22 +196,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
-    alertMessage(param: any): void
-    {
-        if(param.status !== 'SUCCESS'){
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: param.msg
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
-        }else{
-            this.backPage();
-        }
-    }
 
     /* 트랜잭션 전 data Set
      * @param sendData
@@ -241,17 +221,25 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     saveIn(): void{
 
         if(!this.inBoundHeaderForm.invalid){
-            this.showAlert = false;
 
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
-            saveConfirm.afterClosed()
+
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    if (result.status) {
+                    if(result){
                         createList = [];
                         this.inBoundDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -275,17 +263,8 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._changeDetectorRef.markForCheck();
 
         }else{
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: '필수값을 입력해주세요.'
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
-
     }
 
     /* 추가
@@ -304,7 +283,15 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                     this._changeDetectorRef.markForCheck();
                 });
         }
+    }
 
+    alertMessage(param: any): void
+    {
+        if(param.status !== 'SUCCESS'){
+            this._functionService.cfn_alert(param.msg);
+        }else{
+            this.backPage();
+        }
     }
 
     /**

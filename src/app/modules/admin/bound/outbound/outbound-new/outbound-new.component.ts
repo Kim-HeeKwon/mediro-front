@@ -12,7 +12,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTable} from '@angular/material/table';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {Observable, Subject} from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -23,9 +22,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {OutboundService} from '../outbound.service';
 import {takeUntil} from 'rxjs/operators';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
-import {ErrorAlertComponent} from "../../../../../../@teamplat/components/common-alert/error-alert";
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector       : 'outbound-new',
@@ -46,11 +45,6 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     flashMessage: 'success' | 'error' | null = null;
     outBoundDetailsCount: number = 0;
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
-    };
     // eslint-disable-next-line @typescript-eslint/member-ordering
     showAlert: boolean = false;
 
@@ -95,8 +89,10 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _utilService: FuseUtilsService
+        private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
     )
     {
         this.filterList = ['ALL'];
@@ -174,15 +170,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: param.msg
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
         }
@@ -214,18 +202,24 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveOut(): void{
         if(!this.outBoundHeaderForm.invalid){
-            this.showAlert = false;
-
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
 
-            saveConfirm.afterClosed()
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    if (result.status) {
+                    if (result) {
                         createList = [];
                         this.outBoundDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -249,15 +243,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._changeDetectorRef.markForCheck();
 
         }else{
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: '필수값을 입력해주세요.'
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
 

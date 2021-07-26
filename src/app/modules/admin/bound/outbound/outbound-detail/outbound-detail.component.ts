@@ -15,6 +15,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutboundService} from '../outbound.service';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'outbound-detail',
@@ -69,7 +70,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _utilService: FuseUtilsService
+        private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
     )
     {
         this.type = _utilService.commonValue(_codeStore.getValue().data,'OB_TYPE');
@@ -493,5 +495,31 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 }
                 this._changeDetectorRef.markForCheck();
             });
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    outBound() {
+        const obStatus = this.outBoundHeaderForm.controls['status'].value;
+        if(obStatus !== 'N' && obStatus !== 'P'){
+            this._functionService.cfn_alert('출고할 수 없는 상태입니다.');
+            return false;
+        }
+
+        let outBoundData;
+        this.outBoundDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((outBoundDetail) => {
+                outBoundData = outBoundDetail.filter((detail: any) => detail.qty > 0)
+                    .map((param: any) => {
+                        return param;
+                    });
+            });
+
+        if(outBoundData.length < 1) {
+            this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
+            return false;
+        }
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
     }
 }

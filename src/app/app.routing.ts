@@ -130,6 +130,8 @@ export const appRoutes: Route[] = [
             {path: 'udi', children: [
                     // manages
                     {path: 'manages', loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    // status
+                    {path: 'status', loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
                 ]},
             // Monitoring
             {path: 'monitoring', children: [
