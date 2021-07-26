@@ -287,6 +287,44 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         if(this.selection.selected.length < 1){
             this._functionService.cfn_alert('출고 대상을 선택해주세요.');
             return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N' && this.selection.selected[i].status !== 'P'){
+                    this._functionService.cfn_alert('출고할 수 없는 상태입니다. 출고번호 : ' + this.selection.selected[i].obNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '출고',
+                    message: '출고하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '출고'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.outBoundConfirm(this.selection.selected);
+                        }else{
+                            this.closeDetails();
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
         }
     }
 
@@ -366,5 +404,21 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectClear() {
         this.selection.clear();
         this._changeDetectorRef.markForCheck();
+    }
+    /* 출고
+     *
+     * @param sendData
+     */
+    outBoundConfirm(sendData: OutBound[]): void{
+        if(sendData){
+            this._outboundService.outBoundConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
     }
 }

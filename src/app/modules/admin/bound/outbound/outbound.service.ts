@@ -300,4 +300,40 @@ export class OutboundService{
         );
     }
 
+    /**
+     * outBound
+     */
+    outBoundConfirm(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * outBound (상세)
+     */
+    outBoundDetailConfirm(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/confirm-detail').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
 }

@@ -15,7 +15,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutboundService} from '../outbound.service';
 import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
-import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector       : 'outbound-detail',
@@ -68,6 +69,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
@@ -517,9 +519,46 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if(outBoundData.length < 1) {
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
             return false;
+        }else{
+            const confirmation = this._teamPlatConfirmationService.open({
+                title  : '출고',
+                message: '출고하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '출고'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.outBoundDetailConfirm(outBoundData);
+                    }
+                });
         }
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    /* 출고 (상세)
+     *
+     * @param sendData
+     */
+    outBoundDetailConfirm(sendData: OutBound[]): void{
+        if(sendData){
+            this._outboundService.outBoundDetailConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(outBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
 }
