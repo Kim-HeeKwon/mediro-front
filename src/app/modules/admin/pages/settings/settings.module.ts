@@ -21,6 +21,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
     declarations: [
@@ -32,7 +33,7 @@ import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
         SettingsTeamComponent,
         NewTeamComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(settingsRoutes),
         MatButtonModule,
         MatFormFieldModule,
@@ -46,7 +47,8 @@ import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
         MatTooltipModule,
         MatDialogModule,
         FuseAlertModule,
-        SharedModule
+        SharedModule,
+        MatProgressSpinnerModule
     ]
 })
 export class SettingsModule

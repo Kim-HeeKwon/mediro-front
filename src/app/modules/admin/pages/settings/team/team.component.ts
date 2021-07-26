@@ -174,20 +174,21 @@ export class SettingsTeamComponent implements OnInit
     }
     memberDelete(user): void{
         // Open the confirmation dialog
-        // const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
+        const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
         // Open the confirmation dialog
-        const confirmation = this._teamPlatConfirmationService.open({
-            title  : '유저삭제',
-            message: '유저를 삭제하시겠습니까?',
-            actions: {
-                confirm: {
-                    label: '삭제'
-                },
-                cancel: {
-                    label: '닫기'
-                }
-            }
-        });
+        // const confirmation = this._teamPlatConfirmationService.open(this.configForm);
+        // const confirmation = this._teamPlatConfirmationService.open({
+        //     title  : '유저삭제',
+        //     message: '유저를 삭제하시겠습니까?',
+        //     actions: {
+        //         confirm: {
+        //             label: '삭제'
+        //         },
+        //         cancel: {
+        //             label: '닫기'
+        //         }
+        //     }
+        // });
 
         confirmation.afterClosed().subscribe((result) => {
             console.log(result);
