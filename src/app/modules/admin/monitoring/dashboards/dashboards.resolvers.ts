@@ -28,7 +28,7 @@ export class DashboardsResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._dashboardsService.getRecallItem()
+                //this._dashboardsService.getRecallItem()
             ]).then(
                 () => {
                     // @ts-ignore

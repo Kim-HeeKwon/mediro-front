@@ -22,7 +22,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   @ViewChild(MatSort) private _sort: MatSort;
 
   recallItems$: Observable<RecallItem[]>;
-  pagination: DashboardsPagination | null = null;
+  pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
   isLoading: boolean = false;
 
   racallTaleData: any = null;
@@ -51,7 +51,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .subscribe((items: any) => {
               // Update the counts
               console.log(items);
-              if(items == null || items == 'null'){
+              if(items === null || items === 'null'){
                   this.racallTaleData = null;
                   this.reacllItemsCount = 0;
               }else{
@@ -68,10 +68,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((pagination: DashboardsPagination) => {
               // Update the pagination
-              this.pagination = pagination;
+              //this.pagination = pagination;
+              if(pagination !== null){
+                  this.pagination = pagination;
+              }
               // Mark for check
               this._changeDetectorRef.markForCheck();
           });
+
+      this._dashboardsService.getRecallItem();
   }
 
     /**
