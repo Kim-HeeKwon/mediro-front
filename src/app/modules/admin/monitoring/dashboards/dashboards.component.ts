@@ -1,15 +1,15 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {merge, Observable, Subject} from "rxjs";
-import {DashboardsPagination, RecallItem} from "./dashboards.types";
-import {DashboardsService} from "./dashboards.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {BreakpointObserver} from "@angular/cdk/layout";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {Router} from "@angular/router";
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {merge, Observable, Subject} from 'rxjs';
+import {DashboardsPagination, RecallItem} from './dashboards.types';
+import {DashboardsService} from './dashboards.service';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboards',
@@ -50,7 +50,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((items: any) => {
               // Update the counts
-              console.log(items);
               if(items === null || items === 'null'){
                   this.racallTaleData = null;
                   this.reacllItemsCount = 0;
