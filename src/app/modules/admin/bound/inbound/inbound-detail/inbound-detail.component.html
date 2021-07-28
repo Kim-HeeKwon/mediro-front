@@ -144,7 +144,9 @@
                     <ng-container matColumnDef="select">
                         <th mat-header-cell
                             class="mediro-th-header-checkbox"
-                            *matHeaderCellDef>
+                            *matHeaderCellDef="let i"
+                            [resizeColumn]="true"
+                            [index]="i">
                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                           [checked]="selection.hasValue() && isAllSelected()"
                                           [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -179,7 +181,9 @@
                             mat-header-cell
                             [hidden]="!column.display"
                             [width]="column.width"
-                            *matHeaderCellDef>
+                            *matHeaderCellDef
+                            [resizeColumn]="true"
+                            [index]="i">
                             <div
                                 class="mediro-th mediro-th-display">
                                 <span mat-sort-header>{{column.headerText}}</span>

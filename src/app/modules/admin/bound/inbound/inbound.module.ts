@@ -30,6 +30,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
 import {InboundDetailComponent} from './inbound-detail/inbound-detail.component';
 import {InboundDetailResolvers} from './inbound-detail/inbound-detail.resolvers';
+import {FuseColumnResizeModule} from '../../../../../@teamplat/directives/table/column-resize';
 
 const inboundRoutes: Route[] = [
     {
@@ -87,7 +88,8 @@ const inboundRoutes: Route[] = [
         MatTabsModule,
         MatCardModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        FuseColumnResizeModule
     ]
 })
 export class InboundModule { }

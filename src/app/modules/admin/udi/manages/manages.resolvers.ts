@@ -28,7 +28,7 @@ export class ManagesResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._managesService.getHeader()
+                //this._managesService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

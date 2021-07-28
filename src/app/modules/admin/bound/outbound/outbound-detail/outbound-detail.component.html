@@ -148,7 +148,7 @@
                 cdkScrollable>
 
                 <table
-                    class="w-full min-w-320 table-fixed bg-transparent"
+                    class="w-full min-w-320 table-fixed bg-transparent mat-elevation-z8"
                     [ngClass]="{'pointer-events-none': isLoading}"
                     mat-table
                     matSort
@@ -162,7 +162,9 @@
                     <ng-container matColumnDef="select">
                         <th mat-header-cell
                             class="mediro-th-header-checkbox"
-                            *matHeaderCellDef>
+                            *matHeaderCellDef="let i"
+                            [resizeColumn]="true"
+                            [index]="i">
                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                           [checked]="selection.hasValue() && isAllSelected()"
                                           [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -193,7 +195,7 @@
 
                     <ng-container *ngFor="let column of outBoundDetailsTable; let i=dataIndex;"
                                   [matColumnDef]="column.dataField">
-                        <th
+                        <!--<th
                             mat-header-cell
                             [hidden]="!column.display"
                             [width]="column.width"
@@ -202,6 +204,16 @@
                                 class="mediro-th mediro-th-display">
                                 <span mat-sort-header>{{column.headerText}}</span>
                             </div>
+                        </th>-->
+
+                        <th
+                            mat-header-cell
+                            [hidden]="!column.display"
+                            [width]="column.width"
+                            *matHeaderCellDef
+                            [resizeColumn]="true"
+                            [index]="i">
+                            <span mat-sort-header>{{column.headerText}} </span>
                         </th>
                         <td class="mediro-td"
                             mat-cell

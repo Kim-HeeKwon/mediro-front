@@ -33,7 +33,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     isMobile: boolean = false;
     selection = new SelectionModel<any>(true, []);
     manages$: Observable<Manages[]>;
-    managesPagenation: ManagesPagenation | null = null;
+    managesPagenation: ManagesPagenation = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
 
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -116,7 +116,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this._managesService.manages$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((manages: any) => {
-                if(manages !== null){
+                if(manages !== null || manages === 'null'){
                     this.managesCount = manages.length;
                 }
                 // Mark for check
@@ -126,10 +126,14 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this._managesService.managesPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((managesPagenation: ManagesPagenation) => {
-                this.managesPagenation = managesPagenation;
+                if(managesPagenation !== null){
+                    this.managesPagenation = managesPagenation;
+                }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this._managesService.getHeader();
     }
 
     /**
