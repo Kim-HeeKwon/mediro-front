@@ -11,7 +11,8 @@
         [ngClass]="{'fuse-vertical-navigation-item-active-forced': item.active}"
         [routerLink]="[item.link]"
         [routerLinkActive]="'fuse-vertical-navigation-item-active'"
-        [routerLinkActiveOptions]="isActiveMatchOptions">
+        [routerLinkActiveOptions]="isActiveMatchOptions"
+        (click)="createShortcut(item)">
         <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
     </a>
 

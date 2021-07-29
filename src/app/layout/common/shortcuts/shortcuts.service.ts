@@ -60,8 +60,17 @@ export class ShortcutsService
             switchMap(shortcuts => this._httpClient.post<Shortcut>('api/common/shortcuts', {shortcut}).pipe(
                 map((newShortcut) => {
 
-                    // Update the shortcuts with the new shortcut
-                    this._shortcuts.next([...shortcuts, newShortcut]);
+                    //기존에 있는지 확인
+                    // Find the index of the updated shortcut
+                    this._shortcuts.subscribe((items: any)=>{
+                        //console.log(items);
+                        const index = items.findIndex(item => item.link === shortcut.link);
+
+                        if(index === -1){
+                            // Update the shortcut
+                            this._shortcuts.next([...shortcuts, newShortcut]);
+                        }
+                    });
 
                     // Return the new shortcut from observable
                     return newShortcut;

@@ -21,70 +21,70 @@
                         [svgIcon]="'heroicons_solid:x'"></mat-icon>
                 </button>
             </div>
-            <div class="text-lg font-medium leading-10">Shortcuts</div>
-            <div class="ml-auto">
+            <div class="text-lg font-medium leading-10">최근메뉴</div>
+<!--            <div class="ml-auto">-->
 
-                <!-- View mode -->
-                <ng-container *ngIf="mode === 'view'">
-                    <!-- Enter 'modify' mode -->
-                    <button
-                        mat-icon-button
-                        (click)="changeMode('modify')"
-                        [matTooltip]="'Enter edit mode'">
-                        <mat-icon
-                            class="icon-size-5 text-current"
-                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                    </button>
-                    <!-- Enter 'add' mode -->
-                    <button
-                        mat-icon-button
-                        (click)="newShortcut()"
-                        [matTooltip]="'Add shortcut'">
-                        <mat-icon
-                            class="icon-size-5 text-current"
-                            [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
-                    </button>
-                </ng-container>
+<!--                &lt;!&ndash; View mode &ndash;&gt;-->
+<!--                <ng-container *ngIf="mode === 'view'">-->
+<!--                    &lt;!&ndash; Enter 'modify' mode &ndash;&gt;-->
+<!--                    <button-->
+<!--                        mat-icon-button-->
+<!--                        (click)="changeMode('modify')"-->
+<!--                        [matTooltip]="'Enter edit mode'">-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5 text-current"-->
+<!--                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>-->
+<!--                    </button>-->
+<!--                    &lt;!&ndash; Enter 'add' mode &ndash;&gt;-->
+<!--                    <button-->
+<!--                        mat-icon-button-->
+<!--                        (click)="newShortcut()"-->
+<!--                        [matTooltip]="'Add shortcut'">-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5 text-current"-->
+<!--                            [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>-->
+<!--                    </button>-->
+<!--                </ng-container>-->
 
-                <!-- Modify mode -->
-                <ng-container *ngIf="mode === 'modify'">
-                    <!-- Enter 'view' mode -->
-                    <button
-                        mat-icon-button
-                        (click)="changeMode('view')"
-                        [matTooltip]="'Exit edit mode'">
-                        <mat-icon
-                            class="icon-size-5 text-current"
-                            [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>
-                    </button>
-                </ng-container>
+<!--                &lt;!&ndash; Modify mode &ndash;&gt;-->
+<!--                <ng-container *ngIf="mode === 'modify'">-->
+<!--                    &lt;!&ndash; Enter 'view' mode &ndash;&gt;-->
+<!--                    <button-->
+<!--                        mat-icon-button-->
+<!--                        (click)="changeMode('view')"-->
+<!--                        [matTooltip]="'Exit edit mode'">-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5 text-current"-->
+<!--                            [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>-->
+<!--                    </button>-->
+<!--                </ng-container>-->
 
-                <!-- Add mode -->
-                <ng-container *ngIf="mode === 'add'">
-                    <!-- Enter 'view' mode -->
-                    <button
-                        mat-icon-button
-                        (click)="changeMode('view')"
-                        [matTooltip]="'Cancel'">
-                        <mat-icon
-                            class="icon-size-5 text-current"
-                            [svgIcon]="'heroicons_solid:x-circle'"></mat-icon>
-                    </button>
-                </ng-container>
+<!--                &lt;!&ndash; Add mode &ndash;&gt;-->
+<!--                <ng-container *ngIf="mode === 'add'">-->
+<!--                    &lt;!&ndash; Enter 'view' mode &ndash;&gt;-->
+<!--                    <button-->
+<!--                        mat-icon-button-->
+<!--                        (click)="changeMode('view')"-->
+<!--                        [matTooltip]="'Cancel'">-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5 text-current"-->
+<!--                            [svgIcon]="'heroicons_solid:x-circle'"></mat-icon>-->
+<!--                    </button>-->
+<!--                </ng-container>-->
 
-                <!-- Edit mode -->
-                <ng-container *ngIf="mode === 'edit'">
-                    <!-- Enter 'modify' mode -->
-                    <button
-                        mat-icon-button
-                        (click)="changeMode('modify')"
-                        [matTooltip]="'Cancel'">
-                        <mat-icon
-                            class="icon-size-5 text-current"
-                            [svgIcon]="'heroicons_solid:x-circle'"></mat-icon>
-                    </button>
-                </ng-container>
-            </div>
+<!--                &lt;!&ndash; Edit mode &ndash;&gt;-->
+<!--                <ng-container *ngIf="mode === 'edit'">-->
+<!--                    &lt;!&ndash; Enter 'modify' mode &ndash;&gt;-->
+<!--                    <button-->
+<!--                        mat-icon-button-->
+<!--                        (click)="changeMode('modify')"-->
+<!--                        [matTooltip]="'Cancel'">-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5 text-current"-->
+<!--                            [svgIcon]="'heroicons_solid:x-circle'"></mat-icon>-->
+<!--                    </button>-->
+<!--                </ng-container>-->
+<!--            </div>-->
         </div>
         <div class="relative flex flex-col flex-auto sm:max-h-120 -mb-px overflow-y-auto bg-card">
 
@@ -145,8 +145,8 @@
                                 class="text-primary-500-700"
                                 [svgIcon]="'heroicons_outline:bookmark'"></mat-icon>
                         </div>
-                        <div class="mt-5 text-2xl font-semibold tracking-tight">No shortcuts</div>
-                        <div class="w-full max-w-60 mt-1 text-md text-center text-secondary">When you have shortcuts, they will appear here.</div>
+                        <div class="mt-5 text-2xl font-semibold tracking-tight">최근메뉴가 없습니다.</div>
+                        <div class="w-full max-w-60 mt-1 text-md text-center text-secondary">최근 메뉴로 이동할 수 있습니다.</div>
                     </div>
                 </ng-container>
             </ng-container>

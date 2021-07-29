@@ -6,6 +6,10 @@ import { FuseVerticalNavigationComponent } from '@teamplat/components/navigation
 import { FuseNavigationService } from '@teamplat/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@teamplat/components/navigation/navigation.types';
 import { FuseUtilsService } from '@teamplat/services/utils/utils.service';
+import { CookieService } from "ngx-cookie-service";
+import { Shortcut } from "../../../../../../app/layout/common/shortcuts/shortcuts.types";
+import {ShortcutsService} from "../../../../../../app/layout/common/shortcuts/shortcuts.service";
+
 
 @Component({
     selector       : 'fuse-vertical-navigation-basic-item',
@@ -17,6 +21,7 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
 {
     @Input() item: FuseNavigationItem;
     @Input() name: string;
+    shortCut: Shortcut = null;
 
     isActiveMatchOptions: IsActiveMatchOptions;
     private _fuseVerticalNavigationComponent: FuseVerticalNavigationComponent;
@@ -28,7 +33,9 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-        private _fuseUtilsService: FuseUtilsService
+        private _fuseUtilsService: FuseUtilsService,
+        private _cookieService: CookieService,
+        private _shortcutService: ShortcutsService
     )
     {
         // Set the equivalent of {exact: false} as default for active match options.
@@ -79,5 +86,27 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    createShortcut(item): void{
+        this.shortCut = {
+            id: item.id,
+            label: item.title,
+            icon: item.icon,
+            link: item.link,
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
+    }
+
+    testAlert(item): void{
+        this.shortCut = {
+            id: item.id,
+            label: item.title,
+            icon: item.icon,
+            link: item.link,
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
     }
 }
