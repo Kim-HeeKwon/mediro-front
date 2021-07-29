@@ -20,6 +20,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonUdiService} from './common-udi.service';
 import {DisplayedColumn, Column, UdiPagenation} from './common-udi.types';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
+import {FunctionService} from '../../services/function';
 
 @Component({
     selector: 'app-common-udi',
@@ -51,6 +52,9 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     searchType: CommonCode[] = [];
     searchList: string[];
     searchTypeColumn: string;
+    merge: boolean = false;
+    mergeData: string = '';
+
 
     private _dataSet: BehaviorSubject<any> = new BehaviorSubject(null);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -63,15 +67,20 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _functionService: FunctionService,
         private _popupStore: PopupStore) {
         this.url = data.url;
         this.mediroUrl = data.mediroUrl;
         this.columnList = _utilService.commonValue(_codeStore.getValue().data,data.code);
-
+        this.merge = false;
         this.searchList = data.searchList;
         this.searchType = _utilService.commonValueSearchFilter(_codeStore.getValue().data,data.code, this.searchList);
         if(data.headerText){
             this.headerText = data.headerText;
+        }
+        if(data.merge){
+            this.merge = data.merge;
+            this.mergeData = data.mergeData;
         }
     }
 
@@ -194,6 +203,35 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                     });*/
             }
         });
+    }
+    mergeUdiData(): void{
+
+        if(this.merge){
+            let rowData;
+            this._udiService.getList$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((getList: any) => {
+                    // Update the counts
+                    if(getList !== null){
+                        rowData = getList;
+                    }
+
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(this.mergeData === 'account'){
+                if(rowData === undefined){
+                    this._functionService.cfn_alert('데이터가 없습니다. 먼저 조회하세요.');
+                }else{
+                    //console.log(rowData);
+                }
+            }else{
+                this._functionService.cfn_alert('설정 정보가 존재하지 않습니다.');
+            }
+        }else{
+            this._functionService.cfn_alert('설정 정보가 존재하지 않습니다.');
+        }
+
     }
 
     getProperty(element, id: string): string{

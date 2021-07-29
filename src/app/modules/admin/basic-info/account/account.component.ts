@@ -18,14 +18,14 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '@teamplat/animations';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {NewAccountComponent} from '../account/new-account/new-account.component';``
+import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {MatDialog} from '@angular/material/dialog';
 import {postcode} from '../../../../../assets/js/postCode';
 import {geodata} from '../../../../../assets/js/geoCode';
-import {DeleteAlertComponent} from '@teamplat/components/common-alert/delete-alert';
 import {CommonUdiComponent} from '@teamplat/components/common-udi';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-account',
@@ -99,6 +99,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         private _renderer: Renderer2,
         private _accountService: AccountService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
@@ -334,6 +335,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                     tail : false,
                     mediroUrl : 'bcnc/company-info',
                     tailKey : '',
+                    merge : true,
+                    mergeData : 'account'
                 },
                 autoFocus: false,
                 maxHeight: '80vh',
@@ -468,26 +471,45 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         accountData.accountType = this.selectedAccount.accountType;
         accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
 
-        const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
-            data: {
-            }
-        });
+        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+            title      : '',
+            message    : '삭제하시겠습니까?',
+            icon       : this._formBuilder.group({
+                show : true,
+                name : 'heroicons_outline:exclamation',
+                color: 'warn'
+            }),
+            actions    : this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show : true,
+                    label: '삭제',
+                    color: 'warn'
+                }),
+                cancel : this._formBuilder.group({
+                    show : true,
+                    label: '닫기'
+                })
+            }),
+            dismissible: true
+        }).value);
 
-        deleteConfirm.afterClosed().subscribe((result) => {
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._accountService.deleteAccount(accountData)
+                        .subscribe(
+                            (param: any) => {
+                                if(param.status === 'SUCCESS'){
+                                    this._accountService.getAccount();
+                                    this.closeDetails();
+                                }
 
-            if(result.status){
-                this._accountService.deleteAccount(accountData)
-                    .subscribe(
-                        (param: any) => {
-                            if(param.status === 'SUCCESS'){
-                                this._accountService.getAccount();
-                                this.closeDetails();
-                            }
-
-                        },(response) => {
-                        });
-            }
-        });
+                            },(response) => {
+                            });
+                }else{
+                }
+            });
     }
 
     accountSearch(): void{

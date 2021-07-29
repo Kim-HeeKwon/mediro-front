@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../providers/common/common';
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -41,5 +42,20 @@ export class CommonScanService{
 
     setInitList(): void{
         this._getList.next(null);
+    }
+
+    scanData(data: any): Observable<any>
+    {
+        return this.getList$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(data, 'v1/api/udi/supply-info').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

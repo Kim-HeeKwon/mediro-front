@@ -41,8 +41,16 @@
                             [placeholder]="'검색조건을 선택해주세요.'">
                     </mat-form-field>
                 </div>
-                <div class="col-span-1 sm:col-span-4" [ngStyle]="{'margin':'-10px'}" >
-                    &nbsp;
+                <div class="col-span-1 sm:col-span-2" [ngStyle]="{'margin':'-10px'}" >
+                </div>
+                <div class="sm:col-span-2">
+                    <button
+                        class="w-full"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="mergeUdiData()">
+                        <span class="ml-2 mr-1">업데이트</span>
+                    </button>
                 </div>
                 <div class="sm:col-span-2">
                     <button

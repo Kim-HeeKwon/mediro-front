@@ -73,15 +73,30 @@ export class FunctionService implements OnInit, OnDestroy{
     cfn_alertCheckMessage(param: any, redirectUrl?: string): void
     {
         if(param.status !== 'SUCCESS'){
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: param.msg
-                }
+
+            const icon = 'information-circle';
+            // Setup config form
+            this.configForm = this._formBuilder.group({
+                title      : '',
+                message    : param.msg,
+                icon       : this._formBuilder.group({
+                    show : true,
+                    name : 'heroicons_outline:' + icon,
+                    color: 'accent'
+                }),
+                actions    : this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show : false,
+                        label: '',
+                    }),
+                    cancel : this._formBuilder.group({
+                        show : true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
             });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
         }else{
             this.cfn_alert('정상적으로 처리되었습니다.','check-circle');
         }

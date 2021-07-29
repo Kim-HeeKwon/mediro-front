@@ -1,0 +1,226 @@
+<div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">{{headerText}}</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="flex flex-row flex-0 justify-between pt-1 pb-2 px-6 border-b">
+        <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
+            <div class="sm:col-span-2">
+
+            </div>
+            <div class="sm:col-span-4">
+
+            </div>
+            <div class="col-span-1 sm:col-span-4" [ngStyle]="{'margin':'-10px'}" >
+                &nbsp;
+            </div>
+            <div class="sm:col-span-2">
+                <button
+                    class="w-full"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="outBound()">
+                    <mat-icon [svgIcon]="'heroicons_outline:truck'"></mat-icon>
+                    <span class="ml-2 mr-1">출고</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--    <div class="relative flex flex-row sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">-->
+    <!--        &lt;!&ndash; 검색조건 &ndash;&gt;-->
+    <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
+    <!--            <form-->
+    <!--                [formGroup]="searchForm">-->
+    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">-->
+    <!--                    <mat-select [formControlName]="'type'">-->
+    <!--                        <ng-container *ngFor="let type of type">-->
+    <!--                            <mat-option [value]="type.id">-->
+    <!--                                {{type.name}}-->
+    <!--                            </mat-option>-->
+    <!--                        </ng-container>-->
+    <!--                    </mat-select>-->
+    <!--                </mat-form-field>-->
+    <!--                &lt;!&ndash;<mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">-->
+    <!--                    <mat-select [formControlName]="'accountType'">-->
+    <!--                        <ng-container *ngFor="let accountType of accountType">-->
+    <!--                            <mat-option [value]="accountType.id">-->
+    <!--                                {{accountType.name}}-->
+    <!--                            </mat-option>-->
+    <!--                        </ng-container>-->
+    <!--                    </mat-select>-->
+    <!--                </mat-form-field>-->
+    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">-->
+    <!--                    <mat-select [formControlName]="'searchCondition'">-->
+    <!--                        <ng-container *ngFor="let searchcondition of searchCondition">-->
+    <!--                            <mat-option [value]="searchcondition.id">-->
+    <!--                                {{searchcondition.name}}-->
+    <!--                            </mat-option>-->
+    <!--                        </ng-container>-->
+    <!--                    </mat-select>-->
+    <!--                </mat-form-field>&ndash;&gt;-->
+    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">-->
+    <!--                    <input-->
+    <!--                        matInput-->
+    <!--                        [formControlName]="'searchText'"-->
+    <!--                        [autocomplete]="'off'"-->
+    <!--                        [placeholder]="'검색조건을 선택해주세요.'">-->
+    <!--                </mat-form-field>-->
+    <!--                &lt;!&ndash; Search &ndash;&gt;-->
+    <!--                &lt;!&ndash;                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    <mat-icon&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        matPrefix&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        [svgIcon]="'heroicons_outline:search'"></mat-icon>&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    <input&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        matInput&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        [formControlName]="'searchText'"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        [autocomplete]="'off'"&ndash;&gt;-->
+    <!--                &lt;!&ndash;                        [placeholder]="'상품검색'">&ndash;&gt;-->
+    <!--                &lt;!&ndash;                </mat-form-field>&ndash;&gt;-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <!--        &lt;!&ndash; Actions &ndash;&gt;-->
+    <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">-->
+    <!--            &lt;!&ndash; Add product button &ndash;&gt;-->
+    <!--            <button-->
+    <!--                class="ml-2"-->
+    <!--                mat-flat-button-->
+    <!--                [color]="'primary'"-->
+    <!--                (click)="select()">-->
+    <!--                <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>-->
+    <!--                <span class="ml-2 mr-1">조회</span>-->
+    <!--            </button>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto overflow-hidden">
+            <!-- Table wrapper -->
+            <div
+                class="overflow-x-auto sm:overflow-y-auto"
+                cdkScrollable>
+                <!-- Table -->
+                <table
+                    class="w-full min-w-320 table-fixed bg-transparent"
+                    [ngClass]="{'pointer-events-none': isLoading}"
+                    mat-table
+                    matSort
+                    [matSortActive]="'obLineNo'"
+                    [matSortDisableClear]="true"
+                    [matSortDirection]="'asc'"
+                    [multiTemplateDataRows]="true"
+                    [dataSource]="outBoundDetails$"
+                    [trackBy]="trackByFn">
+
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell
+                            class="mediro-th-header-checkbox"
+                            *matHeaderCellDef="let i"
+                            [resizeColumn]="true"
+                            [index]="i">
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                          [checked]="selection.hasValue() && isAllSelected()"
+                                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                          [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                          (change)="$event ? selection.toggle(row) : null"
+                                          [checked]="selection.isSelected(row)"
+                                          [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell
+                            class="mediro-th-header-checkbox"
+                            *matHeaderCellDef
+                            [hidden]="true">
+                            No.
+                        </th>
+                        <td mat-cell *matCellDef="let row"
+                            [hidden]="true">
+                            {{row.no}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container *ngFor="let column of outBoundDetailsTable; let i=dataIndex;"
+                                  [matColumnDef]="column.dataField">
+                        <!--<th
+                            mat-header-cell
+                            [hidden]="!column.display"
+                            [width]="column.width"
+                            *matHeaderCellDef>
+                            <div
+                                class="mediro-th mediro-th-display">
+                                <span mat-sort-header>{{column.headerText}}</span>
+                            </div>
+                        </th>-->
+
+                        <th
+                            mat-header-cell
+                            [hidden]="!column.display"
+                            [width]="column.width"
+                            *matHeaderCellDef
+                            [resizeColumn]="true"
+                            [index]="i">
+                            <span mat-sort-header>{{column.headerText}} </span>
+                        </th>
+                        <td class="mediro-td"
+                            mat-cell
+                            [hidden]="!column.display"
+                            (dblclick)="cellClick(element,column,i)"
+                            (change)="updateRowData(element, column, i)"
+                            *matCellDef="let element; let i = dataIndex;">
+                            <input class="mat-table-input"
+                                   [disabled]="column.disabled"
+                                   [style]="column.style"
+                                   [type]="column.type"
+                                   [required]="true"
+                                   [(ngModel)]="element[column.dataField]"
+                                   [value]="element[column.dataField]">
+                        </td>
+
+                    </ng-container>
+                    <!-- Row definitions -->
+                    <tr
+                        class="mediro-tr-header"
+                        mat-header-row
+                        *matHeaderRowDef="outBoundDetailsTableColumns; sticky: true"></tr>
+                    <tr
+                        class="mediro-tr-row"
+                        mat-row
+                        *matRowDef="let row; columns: outBoundDetailsTableColumns; let i = dataIndex;"></tr>
+
+                </table>
+            </div>
+            <mat-paginator
+                class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                [ngClass]="{'pointer-events-none': isLoading}"
+                [length]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.length"
+                [pageIndex]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.page"
+                [pageSize]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.size"
+                [pageSizeOptions]="[10,100]"
+                [showFirstLastButtons]="true"></mat-paginator>
+
+        </div>
+
+    </div>
+</div>
+

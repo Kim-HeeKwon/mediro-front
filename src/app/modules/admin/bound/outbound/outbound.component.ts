@@ -25,6 +25,7 @@ import {OutboundService} from './outbound.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {CommonScanComponent} from '../../../../../@teamplat/components/common-scan';
 
 @Component({
     selector: 'app-outbound',
@@ -419,6 +420,39 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
                 });
+        }
+    }
+
+    openScanPopup(): void {
+        if(!this.isMobile){
+            this._matDialog.open(CommonScanComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(CommonScanComponent, {
+                data: {
+                    confirmText : '출고',
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 }

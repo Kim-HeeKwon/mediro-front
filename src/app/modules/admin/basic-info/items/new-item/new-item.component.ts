@@ -98,6 +98,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             typeName: [], // 모델명
             itemNoFullname: [], // 품목허가번호
             medDevSeq: [], // modelSeq
+            udiDiCode: [], // udiDiCode
             active: [false]  // cell상태
         });
     }
@@ -179,6 +180,7 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
+                    console.log(result);
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
@@ -186,6 +188,9 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'typeName': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udiDiCode});
+                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;
                 }
             });
@@ -213,6 +218,9 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'typeName': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udiDiCode});
+                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;
                 }
                 smallDialogSubscription.unsubscribe();

@@ -20,6 +20,8 @@ export interface OutBound
     qty: number;
     obQty: number;
     remarkDetail: string;
+    udiYn: string;
+    udiCode?: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -57,6 +59,7 @@ export interface OutBoundDetail
     obExpQty: number;
     qty: number;
     obQty: number;
+    udiYn: string;
     remarkDetail: string;
     addDate?: string;
     addUser?: string;

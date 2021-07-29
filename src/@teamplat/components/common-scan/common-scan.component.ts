@@ -15,6 +15,7 @@ import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import {Subject} from 'rxjs';
 import Quagga from 'quagga';
+import {CommonScanService} from './common-scan.service';
 
 @Component({
     selector: 'app-common-scan',
@@ -32,6 +33,8 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
     barcodeValue;
 
+    confirmText: string = '스캔';
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -40,10 +43,13 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
         private _utilService: FuseUtilsService,
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
+        public _commonScanService: CommonScanService,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _popupStore: PopupStore) {
-
+        if(data.confirmText){
+            this.confirmText = data.confirmText;
+        }
     }
 
     ngOnInit(): void {
@@ -63,7 +69,11 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
         Quagga.init({
                 inputStream: {
+                    name : 'Live',
+                    type: 'LiveStream',
                     constraints: {
+                        /*width: 640,
+                        height: 480,*/
                         facingMode: 'environment'
                     },
                     area: { // defines rectangle of the detection/localization area
@@ -73,9 +83,61 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         bottom: '40%'  // bottom offset
                     },
                 },
+                /*locator: {
+                    patchSize: 'medium',
+                    halfSample: true
+                },*/
                 decoder: {
-                    readers: ['ean_reader']
+                    /*readers: ['ean_reader']*/
+                    /*readers: ['code_128_reader'],*/
+                    readers : ['code_128_reader',
+                        'ean_reader',
+                        'ean_8_reader',
+                        'code_39_reader',
+                        'code_39_vin_reader',
+                        'codabar_reader',
+                        'upc_reader',
+                        'upc_e_reader',
+                        'i2of5_reader'
+                        /*{
+                            format: 'ean_8_reader',
+                            config: {}
+                        },*/
+                    /*    {
+                        format: 'ean_reader',
+                        config: {
+                        }
+                    }, {
+                        format: 'code_39_reader',
+                        config: {}
+                    }, {
+                        format: 'code_93_reader',
+                        config: {}
+                    }, {
+                        format: 'ean_8_reader',
+                        config: {}
+                    }*/
+                    ],
+                    debug: {
+                    showCanvas: true,
+                    showPatches: true,
+                    showFoundPatches: true,
+                    showSkeleton: true,
+                    showLabels: true,
+                    showPatchLabels: true,
+                    showRemainingPatchLabels: true,
+                    boxFromPatches: {
+                        showTransformed: true,
+                        showTransformedBox: true,
+                        showBB: true
+                    }
+                }
                 },
+                /*locator: {
+                    patchSize: 'medium',
+                    halfSample: true
+                },*/
+                multiple: true,
             },
             (err) => {
                 if (err) {
@@ -84,16 +146,37 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     Quagga.start();
                     Quagga.onDetected((res) => {
                         this.vibration();
-                        const result = confirm('스캔하시겠습니까?');
-                        if(result && this.barcodeScan)
-                        {
-                            this.barcodeScan = false;
-                            console.log(res.codeResult.code);
-                            setTimeout(() => {
-                                this.barcodeScan = true;
-                                //this.stopVibration();
-                            }, 10000);
+                        if(this.barcodeScan){
+                            const result = confirm(this.confirmText + '하시겠습니까?');
+                            if(result)
+                            {
+                                /*console.log(res.codeResult.format);
+                                console.log(res.codeResult.code);*/
+                                this.barcodeScan = false;
+                                const data = [{
+                                    res: res,
+                                    rescodeResult : res.codeResult,
+                                    udiDiCode : res.codeResult.code
+                                }];
+                                /*this._commonScanService.scanData(data)
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((scan: any) => {
+
+                                        this.barcodeScan = false;
+                                        this._matDialogRef.close();
+                                        this._changeDetectorRef.markForCheck();
+                                        Quagga.stop();
+                                    });*/
+
+
+                                this.barcodeScan = false;
+                                this._matDialogRef.close(data);
+                                this._changeDetectorRef.markForCheck();
+                                Quagga.stop();
+
+                            }
                         }
+
                         // setTimeout(() => {
                         // }, 1000);
                         //this.onBarcodeScanned(res.codeResult.code);
@@ -102,10 +185,6 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
 
-        setTimeout(() => {
-            //this.updateService.checkForUpdates();
-            this._changeDetectorRef.markForCheck();
-        }, 10000);
     }
 
     /**

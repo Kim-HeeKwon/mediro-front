@@ -17,6 +17,7 @@ import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
 
 @Component({
     selector       : 'outbound-detail',
@@ -485,7 +486,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     const obStatus = this.outBoundHeaderForm.controls['status'].value;
                     if(obStatus === 'N' || obStatus === 'P'){
                         oubBoundDetail.forEach((detail: any) => {
-                            detail.qty = detail.obExpQty - detail.obQty;
+                            /*detail.qty = detail.obExpQty - detail.obQty;*/
                         });
 
                         this.outBoundDetailsTable.forEach((table: any) => {
@@ -507,43 +508,93 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
 
         let outBoundData;
+        let outBoundDataFilter;
+        let udiCheckData;
         this.outBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((outBoundDetail) => {
-                outBoundData = outBoundDetail.filter((detail: any) => detail.qty > 0)
+                outBoundData = outBoundDetail.filter((detail: any) => (detail.qty > 0 && detail.qty !== '0'))
+                    .map((param: any) => {
+                        return param;
+                    });
+
+                outBoundDataFilter = outBoundData.filter((detail: any) => detail.udiYn !== 'Y')
+                    .map((param: any) => {
+                        return param;
+                    });
+
+                udiCheckData = outBoundData.filter((detail: any) => detail.udiYn === 'Y')
                     .map((param: any) => {
                         return param;
                     });
             });
-
         if(outBoundData.length < 1) {
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
             return false;
         }else{
-            const confirmation = this._teamPlatConfirmationService.open({
-                title  : '출고',
-                message: '출고하시겠습니까?',
-                actions: {
-                    confirm: {
-                        label: '출고'
-                    },
-                    cancel: {
-                        label: '닫기'
-                    }
-                }
-            });
 
-            confirmation.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
+            if(udiCheckData.length > 0){
+                //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                /*console.log(outBoundData);
+                console.log(udiCheckData);*/
+
+                //입력 수량 그대로 가져오기
+                //UDI 정보 INPUT 후 값 셋팅
+
+                const popup =this._matDialogPopup.open(CommonUdiScanComponent, {
+                    data: {
+                        outBoundDetail : udiCheckData
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
+
+                popup.afterClosed().subscribe((result) => {
                     if(result){
-                        this.outBoundDetailConfirm(outBoundData);
+
+                        if(result !== undefined){
+
+                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                            for(let i=0; i<result.length; i++){
+                                outBoundDataFilter.push(result[i]);
+                            }
+                            this.outBoundCall(outBoundDataFilter);
+                        }
                     }
                 });
+
+            }else{
+                this.outBoundCall(outBoundData);
+            }
         }
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    outBoundCall(outBoundData: OutBound[]){
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '출고',
+            message: '출고하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '출고'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result){
+                    this.outBoundDetailConfirm(outBoundData);
+                }
+            });
     }
 
     /* 출고 (상세)
