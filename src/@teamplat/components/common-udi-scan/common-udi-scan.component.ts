@@ -48,12 +48,14 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
     outBoundDetailsTableStyle: TableStyle = new TableStyle();
     outBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'obLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : false, disabled : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '출고수량' , dataField : 'obQty', width: 60, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : true, type: 'month',max: '9999-12-31'},
         {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text'},
+        {headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     outBoundDetailsTableColumns: string[] = [
@@ -65,7 +67,9 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         'obExpQty',
         'qty',
         'obQty',
+        'suplyContStdmt',
         'udiCode',
+        'udiDiSeq',
         'remarkDetail',
     ];
     headerText: string = 'UDI 스캔';
@@ -278,6 +282,11 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         for(let i=0; i<outBoundData.length; i++){
             if(outBoundData[i].udiCode === undefined){
                 this._functionService.cfn_alert('UDI Code는 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
+                return;
+            }
+
+            if(outBoundData[i].suplyContStdmt === undefined){
+                this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
                 return;
             }
 

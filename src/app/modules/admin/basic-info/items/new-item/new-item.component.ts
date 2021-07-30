@@ -188,7 +188,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'typeName': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
-                    this.selectedItemForm.patchValue({'udiDiCode': result.udiDiCode});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'supplier': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;
@@ -218,7 +218,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'typeName': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
-                    this.selectedItemForm.patchValue({'udiDiCode': result.udiDiCode});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'supplier': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;

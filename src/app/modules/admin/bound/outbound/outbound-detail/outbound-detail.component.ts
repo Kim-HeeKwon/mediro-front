@@ -535,9 +535,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             if(udiCheckData.length > 0){
                 //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
-                /*console.log(outBoundData);
-                console.log(udiCheckData);*/
-
                 //입력 수량 그대로 가져오기
                 //UDI 정보 INPUT 후 값 셋팅
 
@@ -559,6 +556,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             for(let i=0; i<result.length; i++){
                                 outBoundDataFilter.push(result[i]);
                             }
+                            console.log(outBoundDataFilter);
                             this.outBoundCall(outBoundDataFilter);
                         }
                     }

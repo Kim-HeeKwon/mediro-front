@@ -10,6 +10,9 @@ export interface OutBoundDetails
     qty: number;
     obQty: number;
     udiYn: string;
+    udiCode: string;
+    suplyContStdmt?: string;
+    udiDiSeq?: string;
     remarkDetail: string;
     addDate?: string;
     addUser?: string;
