@@ -1,4 +1,4 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden dark:bg-transparent">
     <!-- Header -->
     <div class="dark bg-card dark:border-b">
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
@@ -34,14 +34,14 @@
         </div>
     </div>
     <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
+    <div class="flex flex-auto overflow-hidden" >
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
             <mat-tab-group
                            [animationDuration]="'0'"
                            [color]="'accent'"
                            [backgroundColor]="'accent'">
                 <mat-tab class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover" label="상세 정보">
-                    <div class="flex pt-4 pl-4 pr-4">
+                    <div class="flex pt-4 pl-4 pr-4 bg-card">
                         <!-- Selected product form -->
                         <form
                             class="flex flex-col w-full"
@@ -130,7 +130,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
                         <div class="flex-row text-1xl font-extrabold tracking-tight">
                             리스트
                         </div>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     <!-- Table wrapper -->
-                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden bg-card">
 
                         <div
                             class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
@@ -260,9 +260,385 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="최근 견적서">
+                    <div class="overflow-x-auto sm:overflow-y-auto mediro-height-full"
+                         cdkScrollable>
+                        <!-- 최근견적서 header -->
+                        <div class="flex pt-4 pr-4">
+                            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center px-6 pt-2">
+                                <!-- Title -->
+                                <div class="flex-row text-2xl font-extrabold tracking-tight">1. 최근견적서 선택</div>
+                                <mat-icon
+                                    class="ml-1.5 icon-size-5 text-hint"
+                                    [svgIcon]="'heroicons_outline:information-circle'"
+                                    [matTooltip]="'최근 사용하신 견적 내역을 선택하여 간편하게 견적을 생성할 수 있습니다.'"></mat-icon>
+                            </div>
+                        </div>
+                        <!-- 최근견적서 body  mt-6 mr-3 mb-6 ml-6 mt-6 mr-6 mb-6 ml-3 mt-6 mr-3 mb-6 ml-3-->
+                        <div class="flex">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full min-w-0 m-3">
+                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
+<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
+<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 견적서작성 header -->
+                        <div class="flex">
+                            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center px-6 pt-2 min-w-6/12">
+                                <!-- Title -->
+                                <div class="flex-row text-2xl font-extrabold tracking-tight">2. 견적서 작성</div>
+                                <mat-icon
+                                    class="ml-1.5 icon-size-5 text-hint"
+                                    [svgIcon]="'heroicons_outline:information-circle'"
+                                    [matTooltip]="'최근견적서를 수정하여 견적서를 작성합니다.'"></mat-icon>
+                            </div>
+                            <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3 mediro-flex-right">
+                                <button
+                                    class="fuse-mat-button-rounded"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="saveEstimate()">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                    <span class="ml-2">견적이력</span>
+                                </button>
+                                <button
+                                    class="fuse-mat-button-rounded"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="saveEstimate()">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                    <span class="ml-2">거래처발송</span>
+                                </button>
+                                <button
+                                    class="fuse-mat-button-rounded"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="saveEstimate()">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                    <span class="ml-2">저장</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 견적서작성 body -->
+                        <div class="flex">
+                            <div class="flex flex-col sm:col-span-1 flex-auto m-6 p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex pt-2 pl-4 pr-4 bg-card">
+                                    <!-- Selected product form -->
+                                    <form
+                                        class="flex flex-col w-full"
+                                        [formGroup]="estimateHeaderForm">
+                                        <div class="flex p-2">
+                                            <div class="flex flex-auto">
+                                                <div class="flex flex-col w-full pr-0">
+                                                    <div class="flex">
+                                                        <mat-form-field class="w-2/6 pr-2">
+                                                            <mat-label>견적 번호</mat-label>
+                                                            <input
+                                                                matInput
+                                                                [formControlName]="'qtNo'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-2/6 pr-2">
+                                                            <mat-label>거래처 코드</mat-label>
+                                                            <input
+                                                                matInput
+                                                                [formControlName]="'account'"
+                                                                (click)="openAccountSearch()">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-2/6 pr-2">
+                                                            <mat-label>거래처 명</mat-label>
+                                                            <input
+                                                                matInput
+                                                                [formControlName]="'accountNm'">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <mat-form-field class="w-1/6 pr-2">
+                                                            <mat-label>유형</mat-label>
+                                                            <mat-select [formControlName]="'type'">
+                                                                <ng-container *ngFor="let type of type">
+                                                                    <mat-option [value]="type.id">
+                                                                        {{type.name}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-1/6 pr-2">
+                                                            <mat-label>상태</mat-label>
+                                                            <mat-select [formControlName]="'status'">
+                                                                <ng-container *ngFor="let status of status">
+                                                                    <mat-option [value]="status.id">
+                                                                        {{status.name}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-2/6 pr-2">
+                                                            <mat-label>견적 금액</mat-label>
+                                                            <input class="text-right"
+                                                                   type="number"
+                                                                   matInput
+                                                                   [formControlName]="'qtAmt'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-2/6 pr-2">
+                                                            <mat-label>주문 번호</mat-label>
+                                                            <input type="text"
+                                                                   matInput
+                                                                   [formControlName]="'soNo'">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="flex">
+                                                        <mat-form-field class="w-1/6 pr-2">
+                                                            <mat-label>견적 생성일자</mat-label>
+                                                            <input type="date"
+                                                                   matInput
+                                                                   [formControlName]="'qtCreDate'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-1/6 pr-2">
+                                                            <mat-label>견적일자</mat-label>
+                                                            <input type="date"
+                                                                   matInput
+                                                                   [formControlName]="'qtDate'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-4/6 pr-2">
+                                                            <mat-label>비고</mat-label>
+                                                            <input type="text"
+                                                                   matInput
+                                                                   [formControlName]="'remarkHeader'">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
+                                    <div class="flex-row text-1xl font-extrabold tracking-tight">
+                                        리스트
+                                    </div>
+                                    <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                        <!--                            <button mat-button-->
+                                        <!--                                    class="mr-2"-->
+                                        <!--                                    mat-flat-button-->
+                                        <!--                                    (click)="transactionRow('ADD',selection)" mat-flat-button color="accent">+</button>-->
+                                        <mat-icon
+                                            class="icon-size-7 mr-3"
+                                            [svgIcon]="'heroicons_outline:plus-circle'"
+                                            (click)="transactionRow('ADD',selection)"
+                                        ></mat-icon>
+                                        <mat-icon
+                                            class="icon-size-7"
+                                            [svgIcon]="'heroicons_outline:minus-circle'"
+                                            (click)="transactionRow('DELETE',selection)"
+                                        ></mat-icon>
+                                        <!--                            <button mat-button-->
+                                        <!--                                    class="mr-2"-->
+                                        <!--                                    mat-flat-button-->
+                                        <!--                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>-->
+
+                                    </div>
+                                </div>
+                                <!-- Table wrapper -->
+                                <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden bg-card">
+
+                                    <div
+                                        class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
+                                        cdkScrollable>
+
+                                        <table
+                                            class="w-full min-w-320 table-fixed bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            mat-table
+                                            matSort
+                                            [matSortActive]="'qtLineNo'"
+                                            [matSortDisableClear]="true"
+                                            [matSortDirection]="'asc'"
+                                            [multiTemplateDataRows]="true"
+                                            [dataSource]="estimateDetails$"
+                                            [trackBy]="trackByFn">
+
+                                            <ng-container matColumnDef="select">
+                                                <th mat-header-cell
+                                                    class="mediro-th-header-checkbox"
+                                                    *matHeaderCellDef>
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                  [checked]="selection.hasValue() && isAllSelected()"
+                                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                                  [aria-label]="checkboxLabel()">
+                                                    </mat-checkbox>
+                                                </th>
+                                                <td mat-cell *matCellDef="let row">
+                                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                                  (change)="$event ? selection.toggle(row) : null"
+                                                                  [checked]="selection.isSelected(row)"
+                                                                  [aria-label]="checkboxLabel(row)">
+                                                    </mat-checkbox>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="no">
+                                                <th mat-header-cell
+                                                    class="mediro-th-header-checkbox"
+                                                    *matHeaderCellDef
+                                                    [hidden]="true">
+                                                    No.
+                                                </th>
+                                                <td mat-cell *matCellDef="let row"
+                                                    [hidden]="true">
+                                                    {{row.no}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container *ngFor="let column of estimateDetailsTable; let i=dataIndex;"
+                                                          [matColumnDef]="column.dataField">
+                                                <th
+                                                    mat-header-cell
+                                                    [hidden]="!column.display"
+                                                    [width]="column.width"
+                                                    *matHeaderCellDef>
+                                                    <div
+                                                        class="mediro-th mediro-th-display">
+                                                        <span mat-sort-header>{{column.headerText}}</span>
+                                                    </div>
+                                                </th>
+                                                <td class="mediro-td"
+                                                    mat-cell
+                                                    [hidden]="!column.display"
+                                                    (click)="cellClick(element,column,i)"
+                                                    *matCellDef="let element; let i = dataIndex;">
+                                                    <input class="mat-table-input"
+                                                           [disabled]="column.disabled"
+                                                           [style]="column.style"
+                                                           [type]="column.type"
+                                                           [required]="true"
+                                                           [(ngModel)]="element[column.dataField]"
+                                                           [value]="element[column.dataField]">
+                                                </td>
+
+                                            </ng-container>
+                                            <!-- Row definitions -->
+                                            <tr
+                                                class="mediro-tr-header"
+                                                mat-header-row
+                                                *matHeaderRowDef="estimateDetailsTableColumns; sticky: true"></tr>
+                                            <tr
+                                                class="mediro-tr-row"
+                                                mat-row
+                                                *matRowDef="let row; columns: estimateDetailsTableColumns; let i = dataIndex;"></tr>
+
+                                        </table>
+
+                                        <mat-paginator
+                                            class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            [length]="0"
+                                            [pageIndex]="0"
+                                            [pageSize]="0"
+                                            [pageSizeOptions]="[10,100]"
+                                            [showFirstLastButtons]="true"></mat-paginator>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 견적서작성 Footer -->
+<!--                        <div class="flex">-->
+<!--                            <div class="flex flex-col sm:col-span-1 flex-auto m-6 p-6 bg-card shadow rounded-2xl overflow-hidden">-->
+<!--                                <div class="flex items-start justify-between">-->
+<!--                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">견적서 작성</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
                 </mat-tab>
-                <mat-tab label="자주 쓰는 거래처">
-                </mat-tab>
+<!--                <mat-tab label="자주 쓰는 거래처">-->
+<!--                </mat-tab>-->
             </mat-tab-group>
         </div>
     </div>
