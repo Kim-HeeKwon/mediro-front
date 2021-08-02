@@ -26,7 +26,7 @@
     #userActions="matMenu">
     <button mat-menu-item>
         <span class="flex flex-col leading-none">
-            <span>Signed in as</span>
+            <span>환영합니다. {{user.name}}님!</span>
             <span class="mt-1.5 text-md font-medium">{{user.email}}</span>
         </span>
     </button>
@@ -39,18 +39,18 @@
         <mat-icon [svgIcon]="'heroicons_outline:cog'"></mat-icon>
         <span>마이페이지</span>
     </button>
-    <button
-        mat-menu-item
-        [matMenuTriggerFor]="userStatus">
-        <mat-icon [svgIcon]="'heroicons_outline:dots-circle-horizontal'"></mat-icon>
-        <span>Status</span>
-    </button>
+<!--    <button-->
+<!--        mat-menu-item-->
+<!--        [matMenuTriggerFor]="userStatus">-->
+<!--        <mat-icon [svgIcon]="'heroicons_outline:dots-circle-horizontal'"></mat-icon>-->
+<!--        <span>Status</span>-->
+<!--    </button>-->
     <mat-divider class="my-2"></mat-divider>
     <button
         mat-menu-item
         (click)="signOut()">
         <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
-        <span>Sign out</span>
+        <span>로그아웃</span>
     </button>
 </mat-menu>
 
