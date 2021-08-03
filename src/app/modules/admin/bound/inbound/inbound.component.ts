@@ -243,6 +243,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this._inboundService.getHeader(0,10,'ibNo','desc',this.searchForm.getRawValue());
         this.closeDetails();
+        this.selectClear();
     }
     /** Whether the number of selected elements matches the total number of rows. */
     isAllSelected(): any {

@@ -1,21 +1,20 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {MatTable} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {SelectionModel} from "@angular/cdk/collections";
-import {merge, Observable, Subject} from "rxjs";
-import {InBoundDetail, InBoundDetailPagenation} from "../../../bound/inbound/inbound.types";
-import {TableConfig, TableStyle} from "../../../../../../@teamplat/components/common-table/common-table.types";
-import {ItemPriceHistory, ItemPriceHistoryPagenation} from "../item-price.types";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {InboundService} from "../../../bound/inbound/inbound.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {ItemPriceService} from "../item-price.service";
-import {SaveAlertComponent} from "../../../../../../@teamplat/components/common-alert/save-alert";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatTable} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {SelectionModel} from '@angular/cdk/collections';
+import {merge, Observable, Subject} from 'rxjs';
+import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {ItemPriceHistory, ItemPriceHistoryPagenation} from '../item-price.types';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {ItemPriceService} from '../item-price.service';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'item-price-history',
@@ -45,8 +44,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         {headerText : '유형' , dataField : 'type', width: 60, display : true, disabled : true, type: 'text', combo: true},
     ];
     itemPriceHistorysTableColumns: string[] = [
-        'no',
-        'seq',
+        /*'no',*/
+        /*'seq',*/
         'addDate',
         'reason',
         'unitPrice',
@@ -73,6 +72,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService
     )
     {
@@ -102,11 +103,16 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this.itemPriceHistoryForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             itemCd: [{value:''},[Validators.required]], // 품목코드
+            itemNm: [{value:''},[Validators.required]], // 품목명
             account: [{value:''},[Validators.required]], // 거래처 코드
+            accountNm: [{value:''},[Validators.required]], // 거래처 명
             type: [{value:''}, [Validators.required]],   // 유형
             unitPrice: [0],   // 단가
             active: [false]  // cell상태
         });
+
+        this.itemPriceHistoryForm.controls['itemCd'].disable();
+        this.itemPriceHistoryForm.controls['itemNm'].disable();
 
         this._itemPriceService.itemPrice$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -196,21 +202,31 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
         itemPriceArray.push(itemPrice);
 
-        const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-            data: {
+        const confirmation = this._teamPlatConfirmationService.open({
+            title : '',
+            message: '저장하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
             }
         });
 
-        saveConfirm.afterClosed()
+        confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                console.log(itemPriceArray);
-
-                this._itemPriceService.updateItemPrice(itemPriceArray)
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((itemPriceHistory: any) => {
-                    });
+                if(result){
+                    this._itemPriceService.updateItemPrice(itemPriceArray)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((itemPriceHistory: any) => {
+                        });
+                }
             });
+
+        // Mark for check
         this._changeDetectorRef.markForCheck();
     }
 

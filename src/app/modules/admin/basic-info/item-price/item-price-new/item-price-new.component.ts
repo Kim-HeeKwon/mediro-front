@@ -5,20 +5,19 @@ import {
     OnDestroy,
     OnInit,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ItemsService} from "../../items/items.service";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {ItemPriceService} from "../item-price.service";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
-import {takeUntil} from "rxjs/operators";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {ItemPriceService} from '../item-price.service';
+import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector       : 'item-price-new',

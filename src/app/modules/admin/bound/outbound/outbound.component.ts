@@ -248,6 +248,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this._outboundService.getHeader(0,10,'obNo','desc',this.searchForm.getRawValue());
         this.closeDetails();
+        this.selectClear();
     }
 
     /** Whether the number of selected elements matches the total number of rows. */

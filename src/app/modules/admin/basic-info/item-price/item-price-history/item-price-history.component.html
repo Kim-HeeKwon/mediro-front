@@ -9,6 +9,22 @@
                     <div class="flex flex-col w-full pr-0">
                         <div class="flex">
                             <mat-form-field class="w-2/6 pr-2">
+                                <mat-label>품목 코드</mat-label>
+                                <input
+                                    class="text-left"
+                                    type="text"
+                                    matInput
+                                    [formControlName]="'itemCd'">
+                            </mat-form-field>
+                            <mat-form-field class="w-2/6 pr-2">
+                                <mat-label>품목 명</mat-label>
+                                <input
+                                    class="text-left"
+                                    type="text"
+                                    matInput
+                                    [formControlName]="'itemNm'">
+                            </mat-form-field>
+                            <mat-form-field class="w-2/6 pr-2">
                                 <mat-label>단가</mat-label>
                                 <input
                                     class="text-right"

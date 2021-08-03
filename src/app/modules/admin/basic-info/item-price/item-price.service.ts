@@ -1,11 +1,9 @@
-import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
-import {ItemPrice, ItemPriceHistory, ItemPriceHistoryPagenation, ItemPricePagenation} from "./item-price.types";
-import {HttpClient} from "@angular/common/http";
-import {Common} from "../../../../../@teamplat/providers/common/common";
-import {InventoryItem} from "../items/items.types";
-import {map, switchMap, take} from "rxjs/operators";
-import {InBound, InBoundDetail, InBoundDetailPagenation, InBoundHeader} from "../../bound/inbound/inbound.types";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {ItemPrice, ItemPriceHistory, ItemPriceHistoryPagenation, ItemPricePagenation} from './item-price.types';
+import {HttpClient} from '@angular/common/http';
+import {Common} from '../../../../../@teamplat/providers/common/common';
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

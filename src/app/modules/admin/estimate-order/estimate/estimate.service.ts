@@ -227,4 +227,58 @@ export class EstimateService {
             switchMap((response: any) => of(response))
         );
     }
+
+    /**
+     * 발송
+     */
+    estimateSend(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/send').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * 확정
+     */
+    estimateConfirm(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+    /**
+     * 취소
+     */
+    inBoundCancel(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
 }

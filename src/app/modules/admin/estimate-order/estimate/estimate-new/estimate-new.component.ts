@@ -23,13 +23,13 @@ import {EstimateService} from '../estimate.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatTable} from '@angular/material/table';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
-import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'estimate-new',
@@ -100,6 +100,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _functionService: FunctionService,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _estimateService: EstimateService,
@@ -126,6 +128,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             soNo: [{value:'',disabled:true}],   // 주문번호
             qtCreDate: [{value:'',disabled:true}],//견적 생성일자
             qtDate: [{value:'',disabled:true}], //견적일자
+            email : [], //이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -183,15 +186,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: param.msg
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
         }
@@ -205,16 +200,24 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
         if(!this.estimateHeaderForm.invalid){
             this.showAlert = false;
 
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
 
-            saveConfirm.afterClosed()
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    if (result.status) {
+                    if(result){
                         createList = [];
                         this.estimateDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -238,15 +241,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._changeDetectorRef.markForCheck();
 
         }else{
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: '필수값을 입력해주세요.'
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
 
     }
@@ -292,6 +287,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i].type = this.estimateHeaderForm.controls['type'].value;
             sendData[i].status = this.estimateHeaderForm.controls['status'].value;
             sendData[i].soNo = '';
+            sendData[i].email = this.estimateHeaderForm.controls['email'].value;
             sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
         }
         return sendData;
@@ -485,6 +481,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
                 if(result){
                     this.estimateHeaderForm.patchValue({'account': result.accountCd});
                     this.estimateHeaderForm.patchValue({'accountNm': result.accountNm});
+                    this.estimateHeaderForm.patchValue({'email': result.email});
                 }
         });
     }

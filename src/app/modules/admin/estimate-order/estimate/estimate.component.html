@@ -66,7 +66,7 @@
                     <div class="col-span-12">
                         <button
                             class="ml-3"
-                            mat-raised-button
+                            mat-flat-button
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="selectHeader()">
@@ -77,8 +77,8 @@
                     <div class="col-span-12">
                         <button
                             class="ml-3"
-                            mat-raised-button
-                            [color]="'accent'"
+                            mat-stroked-button
+                            [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="newEstimate()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
@@ -88,11 +88,31 @@
                     <div class="col-span-12">
                         <button
                             class="ml-3"
-                            mat-raised-button
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="estimateSend()">
+                            <span class="ml-2 mr-1">발송</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="estimateConfirm()">
                             <span class="ml-2 mr-1">확정</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="estimateCancel()">
+                            <span class="ml-2 mr-1">취소</span>
                         </button>
                     </div>
                 </div>
@@ -171,18 +191,32 @@
                                 </button>
                                 <button
                                     class="ml-2"
-                                    mat-flat-button
-                                    [color]="'accent'"
+                                    mat-stroked-button
+                                    [color]="'primary'"
                                     (click)="newEstimate()">
                                     <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">작성</span>
                                 </button>
                                 <button
                                     class="ml-2"
-                                    mat-flat-button
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="estimateSend()">
+                                    <span class="ml-2 mr-1">발송</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateConfirm()">
                                     <span class="ml-2 mr-1">확정</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="estimateCancel()">
+                                    <span class="ml-2 mr-1">취소</span>
                                 </button>
                             </div>
                         </div>

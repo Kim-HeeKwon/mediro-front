@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {merge, Observable, Subject} from 'rxjs';
-import {EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
+import {Estimate, EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
 import {EstimateService} from './estimate.service';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
@@ -10,7 +10,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {ActivatedRoute, NavigationExtras, Router, RouterModule} from '@angular/router';
 import {SelectionModel} from '@angular/cdk/collections';
-import {DeviceDetectorService} from "ngx-device-detector";
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-estimate',
@@ -66,6 +68,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _estimateService: EstimateService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _functionService: FunctionService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,)
@@ -160,6 +164,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._estimateService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this.selectClear();
     }
 
     selectDoubleClickRow(row: any): void {
@@ -201,8 +206,197 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.no + 1}`;
     }
 
+    // 발송
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateSend() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('발송 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status === 'CF' || this.selection.selected[i].status === 'C'){
+                    this._functionService.cfn_alert('발송할 수 없는 상태입니다. 견적번호 : ' + this.selection.selected[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '발송하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:mail',
+                        color: 'primary'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '발송',
+                            color: 'accent'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.estimateSendCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+        }
+    }
+    estimateSendCall(sendData: Estimate[]): void{
+        if(sendData){
+            this._estimateService.estimateSend(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // 확정
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     estimateConfirm() {
-        console.log(this.selection.selected);
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('확정 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status === 'CF' || this.selection.selected[i].status === 'N' || this.selection.selected[i].status === 'C'){
+                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 견적번호 : ' + this.selection.selected[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '확정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.estimateConfirmCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+        }
     }
+    estimateConfirmCall(sendData: Estimate[]): void{
+        if(sendData){
+            this._estimateService.estimateConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+    // 취소
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateCancel() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 견적번호 : ' + this.selection.selected[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '취소하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.estimateCancelCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    estimateCancelCall(sendData: Estimate[]): void {
+        if(sendData){
+            this._estimateService.inBoundCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
+    }
+
 }

@@ -55,7 +55,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         {headerText : '출고수량' , dataField : 'obQty', width: 60, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : true, type: 'month',max: '9999-12-31'},
         {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text'},
-        {headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
+        //{headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     outBoundDetailsTableColumns: string[] = [
@@ -69,7 +69,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         'obQty',
         'suplyContStdmt',
         'udiCode',
-        'udiDiSeq',
+        //'udiDiSeq',
         'remarkDetail',
     ];
     headerText: string = 'UDI 스캔';

@@ -6,28 +6,25 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../@teamplat/animations";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {InBoundHeader, InBoundHeaderPagenation} from "../../bound/inbound/inbound.types";
-import {ItemPrice, ItemPricePagenation} from "./item-price.types";
-import {SelectionModel} from "@angular/cdk/collections";
-import {TableConfig, TableStyle} from "../../../../../@teamplat/components/common-table/common-table.types";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {MatDialog} from "@angular/material/dialog";
-import {InboundService} from "../../bound/inbound/inbound.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {ItemPriceService} from "./item-price.service";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {NewItemComponent} from "../items/new-item/new-item.component";
-import {ItemPriceNewComponent} from "./item-price-new/item-price-new.component";
-import {DeleteAlertComponent} from "../../../../../@teamplat/components/common-alert/delete-alert";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../@teamplat/animations';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {ItemPrice, ItemPricePagenation} from './item-price.types';
+import {SelectionModel} from '@angular/cdk/collections';
+import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {MatDialog} from '@angular/material/dialog';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {ItemPriceService} from './item-price.service';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {ItemPriceNewComponent} from './item-price-new/item-price-new.component';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-item-price',
@@ -93,6 +90,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _itemPriceService: ItemPriceService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _codeStore: CodeStore,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
@@ -222,6 +220,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._itemPriceService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
 
     /** Whether the number of selected elements matches the total number of rows. */
@@ -288,29 +287,56 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if(this.selection.selected.length > 0){
 
-            const deleteConfirm =this._matDialog.open(DeleteAlertComponent, {
-                data: {
-                }
-            });
+            const deleteConfirm = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title      : '',
+                message    : '삭제하시겠습니까?',
+                icon       : this._formBuilder.group({
+                    show : true,
+                    name : 'heroicons_outline:exclamation',
+                    color: 'warn'
+                }),
+                actions    : this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show : true,
+                        label: '삭제',
+                        color: 'warn'
+                    }),
+                    cancel : this._formBuilder.group({
+                        show : true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
 
-            deleteConfirm.afterClosed().subscribe((result) => {
+            deleteConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this._itemPriceService.deleteItemPrice(this.selection.selected)
+                            .subscribe(
+                                (param: any) => {
+                                    if(param.status === 'SUCCESS'){
+                                        this._itemPriceService.getHeader();
+                                        this.closeDetails();
+                                    }else{
+                                        this.closeDetails();
+                                        this.selectClear();
+                                    }
 
-                if(result.status){
-                    this._itemPriceService.deleteItemPrice(this.selection.selected)
-                        .subscribe(
-                            (param: any) => {
-                                if(param.status === 'SUCCESS'){
-                                    this._itemPriceService.getHeader();
-                                    this.closeDetails();
-                                }
-
-                            },(response) => {
-                            });
-                }
-            });
+                                },(response) => {
+                                });
+                    }else{
+                        this.closeDetails();
+                        this.selectClear();
+                    }
+                });
 
         }
-
-
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
     }
 }

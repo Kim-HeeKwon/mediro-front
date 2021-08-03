@@ -15,8 +15,8 @@ import {ItemsService} from '../items.service';
 import {ItemSearchComponent} from '@teamplat/components/item-search';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
-import {DeviceDetectorService} from "ngx-device-detector";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
     selector       : 'new-item',
