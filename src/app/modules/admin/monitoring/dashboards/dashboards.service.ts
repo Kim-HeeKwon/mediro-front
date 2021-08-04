@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
-import {Common} from "@teamplat/providers/common/common";
-import {DashboardsPagination, RecallItem} from "./dashboards.types";
+import {Common} from '@teamplat/providers/common/common';
+import {DashboardInfo1, DashboardsPagination, RecallItem} from './dashboards.types';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +13,13 @@ export class DashboardsService {
     private _recallItem: BehaviorSubject<RecallItem> = new BehaviorSubject(null);
     private _recallItems: BehaviorSubject<RecallItem[]> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<DashboardsPagination | null> = new BehaviorSubject(null);
+
+    //DashbaordInfo1
+    private _ibInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
+    private _obInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
+    private _poInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
+    private _qtInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
+    private _soInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -35,6 +42,35 @@ export class DashboardsService {
     {
         return this._pagination.asObservable();
     }
+
+    /**
+     * Getter for DashboardInfo
+     */
+    get ibInfo$(): Observable<DashboardInfo1>
+    {
+        return this._ibInfo.asObservable();
+    }
+
+    get obInfo$(): Observable<DashboardInfo1>
+    {
+        return this._obInfo.asObservable();
+    }
+
+    get poInfo$(): Observable<DashboardInfo1>
+    {
+        return this._poInfo.asObservable();
+    }
+
+    get qtInfo$(): Observable<DashboardInfo1>
+    {
+        return this._qtInfo.asObservable();
+    }
+
+    get soInfo$(): Observable<DashboardInfo1>
+    {
+        return this._soInfo.asObservable();
+    }
+
 
     /**
      * Post RecallItem
@@ -68,6 +104,29 @@ export class DashboardsService {
                     this._recallItems.next(response.data);
                     this._pagination.next(response.pageNation);
                     resolve(this._recallItems);
+                }, reject);
+        });
+    }
+
+    /**
+     * Post DashboardInfo1
+     *
+     * @returns
+     */
+    getDashboardInfo1(): Observable<{order: any[]}> {
+
+        const param = {'name':'dashboardInfo1'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-info1')
+                .subscribe((response: any) => {
+                    this._ibInfo.next(response.data.filter(option => option.type === 'IB'));
+                    this._obInfo.next(response.data.filter(option => option.type === 'OB'));
+                    this._poInfo.next(response.data.filter(option => option.type === 'PO'));
+                    this._qtInfo.next(response.data.filter(option => option.type === 'QT'));
+                    this._soInfo.next(response.data.filter(option => option.type === 'SO'));
+                    resolve(response);
                 }, reject);
         });
     }

@@ -1,15 +1,15 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {NewItemComponent} from "../../../basic-info/items/new-item/new-item.component";
-import {MatDialog} from "@angular/material/dialog";
-import {NewTeamComponent} from "./new-team/new-team/new-team.component";
-import {SessionStore} from "../../../../../core/session/state/session.store";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {Common} from "@teamplat/providers/common/common";
-import {User} from "../../../../../core/user/user.model";
-import {DeleteAlertComponent} from "../../../../../../@teamplat/components/common-alert/delete-alert";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {NewItemComponent} from '../../../basic-info/items/new-item/new-item.component';
+import {MatDialog} from '@angular/material/dialog';
+import {NewTeamComponent} from './new-team/new-team/new-team.component';
+import {SessionStore} from '../../../../../core/session/state/session.store';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {Common} from '@teamplat/providers/common/common';
+import {User} from '../../../../../core/user/user.model';
+import {DeleteAlertComponent} from '../../../../../../@teamplat/components/common-alert/delete-alert';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector       : 'settings-team',

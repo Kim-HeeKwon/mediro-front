@@ -1,7 +1,16 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {merge, Observable, Subject} from 'rxjs';
-import {DashboardsPagination, RecallItem} from './dashboards.types';
+import {
+    DashboardInfo1,
+    DashboardsPagination,
+    IbInfo,
+    ObInfo,
+    PoInfo,
+    QtInfo,
+    RecallItem,
+    SoInfo
+} from './dashboards.types';
 import {DashboardsService} from './dashboards.service';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FuseUtilsService} from '../../../../../@teamplat/services/utils';
@@ -21,6 +30,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
+  ibInfo$: Observable<DashboardInfo1>;
+  obInfo$: Observable<DashboardInfo1>;
+  qtInfo$: Observable<DashboardInfo1>;
+  poInfo$: Observable<DashboardInfo1>;
+  soInfo$: Observable<DashboardInfo1>;
+  ibInfo: IbInfo = {sCnt:0,pCnt:0,cCnt:0,fCnt:0,nCnt:0};
+  obInfo: ObInfo = {sCnt:0, cCnt:0, pCnt:0, nCnt:0, dCnt:0};
+  qtInfo: QtInfo = {sCnt:0, cCnt:0, nCnt:0, cfCnt:0, rCnt:0};
+  poInfo: PoInfo = {psCnt:0, nCnt:0, pCnt:0, sCnt:0};
+  soInfo: SoInfo = {sCnt:0, cCnt:0, nCnt:0};
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
   isLoading: boolean = false;
@@ -42,6 +61,61 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+      this.ibInfo$ = this._dashboardsService.ibInfo$;
+      this.obInfo$ = this._dashboardsService.obInfo$;
+      this.qtInfo$ = this._dashboardsService.qtInfo$;
+      this.poInfo$ = this._dashboardsService.poInfo$;
+      this.soInfo$ = this._dashboardsService.soInfo$;
+
+      //입고
+      this.ibInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.ibInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'P').map((result: any) => {this.ibInfo.pCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'N').map((result: any) => {this.ibInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'F').map((result: any) => {this.ibInfo.fCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.ibInfo.cCnt= result.totalCnt;});
+          });
+      //견적
+      this.qtInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.qtInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.qtInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'N').map((result: any) => {this.qtInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'CF').map((result: any) => {this.qtInfo.cfCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'R').map((result: any) => {this.qtInfo.rCnt= result.totalCnt;});
+          });
+      //출고
+      this.obInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'PS').map((result: any) => {this.obInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.obInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'N').map((result: any) => {this.obInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'P').map((result: any) => {this.obInfo.pCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'D').map((result: any) => {this.obInfo.dCnt= result.totalCnt;});
+          });
+      //발주
+      this.poInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.poInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'PS').map((result: any) => {this.poInfo.psCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'N').map((result: any) => {this.poInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'P').map((result: any) => {this.poInfo.pCnt= result.totalCnt;});
+          });
+      //주문
+      this.soInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.soInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'N').map((result: any) => {this.soInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.soInfo.cCnt= result.totalCnt;});
+          });
+
 
       // getItems
       this.recallItems$ = this._dashboardsService.reallItems$;
@@ -108,6 +182,21 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
     movePage(): void
     {
         this._router.navigate(['/pages/settings']);
+    }
+
+    goPage(gbn): void
+    {
+        if(gbn === 'QT'){
+            this._router.navigate(['/estimate-order/estimate']);
+        }else if(gbn === 'IB'){
+            this._router.navigate(['/bound/inbound']);
+        }else if(gbn === 'OB'){
+            this._router.navigate(['/bound/outbound']);
+        }else if(gbn === 'SO'){
+            this._router.navigate(['/salesorder/salesorder']);
+        }else if(gbn === 'PO'){
+            this._router.navigate(['/estimate-order/order']);
+        }
     }
 
 }

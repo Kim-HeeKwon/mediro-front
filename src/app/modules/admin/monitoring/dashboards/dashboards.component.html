@@ -46,72 +46,188 @@
     <!-- Main -->
     <div class="flex-auto mt-4 mx-4 sm:mt-6 sm:mx-6">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
-            <!-- 견적/발주 -->
-            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 w-full min-w-0">
+            <!-- 견적 -->
+            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden" (click)="goPage('QT')">
                 <div class="flex items-start justify-between">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">견적/발주</div>
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate">견적</div>
                 </div>
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">21</div>
-                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">견절/발주 건</div>
-                    <div class="flex items-center justify-center w-full mt-5 text-secondary">
-                        <div class="text-md font-medium truncate">완료 건:</div>
-                        <div class="ml-1.5 text-lg font-semibold">13</div>
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-300">
+                        <div>{{qtInfo.nCnt}}</div>
+                    </div>
+                    <div class="text-lg font-medium text-blue-300 dark:text-blue-500">작성</div>
+                    <div class="grid grid-cols-4 border-t divide-x -m-6 mt-6 bg-gray-50 dark:bg-transparent" [ngStyle]="{'width':'130%'}" >
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{qtInfo.rCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">회신</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{qtInfo.cfCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">확정</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{qtInfo.sCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">발송</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{qtInfo.cCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">취소</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 발주 -->
+            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden" (click)="goPage('PO')">
+                <div class="flex items-start justify-between">
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate">발주</div>
+                </div>
+                <div class="flex flex-col items-center mt-2">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
+                        {{poInfo.nCnt}}
+                    </div>
+                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">발주</div>
+                    <div class="grid grid-cols-3 border-t divide-x -m-6 mt-6 bg-gray-50 dark:bg-transparent" [ngStyle]="{'width':'130%'}" >
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{poInfo.pCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">발주진행</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{poInfo.psCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">부분발주</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{poInfo.sCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">발주완료</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- 주문 -->
-            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden" (click)="goPage('SO')">
                 <div class="flex items-start justify-between">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate">주문</div>
                 </div>
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">17</div>
-                    <div class="text-lg font-medium text-red-600 dark:text-red-500">주문 건</div>
-                    <div class="flex items-center justify-center w-full mt-5 text-secondary">
-                        <div class="text-md font-medium truncate">주문완료 건:</div>
-                        <div class="ml-1.5 text-lg font-semibold">9</div>
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                        {{soInfo.nCnt}}
+                    </div>
+                    <div class="text-lg font-medium text-red-600 dark:text-red-500">주문</div>
+                    <div class="grid grid-cols-2 border-t divide-x -m-6 mt-6 bg-gray-50 dark:bg-transparent" [ngStyle]="{'width':'130%'}" >
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{soInfo.sCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">주문확정</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{soInfo.cCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">주문취소</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- 입고 -->
-            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden" (click)="goPage('IB')">
                 <div class="flex items-start justify-between">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate">입고</div>
                 </div>
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">24</div>
-                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">입고 건</div>
-                    <div class="flex items-center justify-center w-full mt-5 text-secondary">
-                        <div class="text-md font-medium truncate">입고완료 건:</div>
-                        <div class="ml-1.5 text-lg font-semibold">19</div>
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
+                        {{ibInfo.nCnt}}
+                    </div>
+                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">신규</div>
+                    <div class="grid grid-cols-4 border-t divide-x -m-6 mt-6 bg-gray-50 dark:bg-transparent" [ngStyle]="{'width':'130%'}" >
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{ibInfo.pCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">부분입고</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{ibInfo.sCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">입고</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{ibInfo.fCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">마감</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{ibInfo.cCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">취소</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- 출고 -->
-            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex flex-col sm:col-span-1 flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden" (click)="goPage('OB')">
                 <div class="flex items-start justify-between">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate">출고</div>
                 </div>
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">38</div>
-                    <div class="text-lg font-medium text-green-600 dark:text-green-500">출고 건</div>
-                    <div class="flex items-center justify-center w-full mt-5 text-secondary">
-                        <div class="text-md font-medium truncate">출고완료 건:</div>
-                        <div class="ml-1.5 text-lg font-semibold">16</div>
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
+                        {{obInfo.nCnt}}
+                    </div>
+                    <div class="text-lg font-medium text-green-600 dark:text-green-500">신규</div>
+                    <div class="grid grid-cols-4 border-t divide-x -m-6 mt-6 bg-gray-50 dark:bg-transparent" [ngStyle]="{'width':'130%'}" >
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{obInfo.pCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">부분출고</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{obInfo.sCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">출고</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{obInfo.dCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">명세서</div>
+                        </div>
+                        <div class="flex flex-col col-span-1 items-center justify-center p-1">
+                            <div class="text-xl font-semibold leading-none tracking-tighter">
+                                {{obInfo.cCnt}}
+                            </div>
+                            <div class="text-sm mt-1 text-center text-secondary">취소</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="sm:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+            <div class="sm:col-span-5 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                 <div class="flex flex-col sm:flex-row items-start justify-between">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate"></div>
                     <div class="mt-3 sm:mt-0 sm:ml-2">
                         <mat-button-toggle-group
                             value="recall-item"
                             #taskSelector="matButtonToggleGroup">
-                            <mat-button-toggle value="news">의료기기 News</mat-button-toggle>
+                            <!-- <mat-button-toggle value="news">의료기기 News</mat-button-toggle> -->
                             <mat-button-toggle value="recall-item">회수대상 의료기기</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
@@ -244,6 +360,7 @@
                     뉴스정보
                 </div>
             </div>
+            <br>
         </div>
 
     </div>
