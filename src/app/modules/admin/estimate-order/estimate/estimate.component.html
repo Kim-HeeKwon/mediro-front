@@ -359,22 +359,6 @@
                                                     {{estimateHeader.accountNm}}
                                                 </td>
                                             </ng-container>
-                                            <ng-container matColumnDef="accountType">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    거래처 유형
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let estimateHeader">
-                                                    {{(estimateHeader.accountType | fuseFindByKey:'id':accountType).name}}
-                                                </td>
-                                            </ng-container>
 
                                             <ng-container matColumnDef="type">
                                                 <th

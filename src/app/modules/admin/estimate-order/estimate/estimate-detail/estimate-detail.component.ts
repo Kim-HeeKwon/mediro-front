@@ -263,7 +263,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         }
                         if(createList.length > 0 || updateist.length > 0 ||
                             deleteList.length > 0){
-                            this.totalAmt();
+                            //this.totalAmt();
                         }
                         this.backPage();
                     }
@@ -272,9 +272,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._changeDetectorRef.markForCheck();
 
         }else{
-
             this._functionService.cfn_alert('필수값을 입력해주세요.');
-
         }
 
     }

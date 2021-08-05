@@ -23,8 +23,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {OrderService} from '../order.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'order-detail',
@@ -99,6 +100,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _orderService: OrderService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService)
     {
         this.filterList = ['ALL'];
@@ -189,19 +192,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
+            this._functionService.cfn_alert(param.msg);
         }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
+            this.backPage();
         }
     }
 
@@ -213,18 +206,25 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if(!this.orderHeaderForm.invalid){
             this.showAlert = false;
 
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
-
-            saveConfirm.afterClosed()
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
                     let updateist;
                     let deleteList;
-                    if (result.status) {
+                    if (result) {
                         createList = [];
                         updateist = [];
                         deleteList = [];
@@ -254,25 +254,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         }
                         if(createList.length > 0 || updateist.length > 0 ||
                             deleteList.length > 0){
-                            this.totalAmt();
+                            //this.totalAmt();
                         }
                         this.backPage();
                     }
                 });
-
-            this.alertMessage('');
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
         }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '거래처를 선택해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
 
     }

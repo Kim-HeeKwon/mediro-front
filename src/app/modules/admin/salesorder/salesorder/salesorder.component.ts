@@ -3,14 +3,16 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, Subject} from 'rxjs';
-import {SalesOrderHeader, SalesOrderHeaderPagenation} from './salesorder.types';
+import {SalesOrder, SalesOrderHeader, SalesOrderHeaderPagenation} from './salesorder.types';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {SalesorderService} from './salesorder.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {DeviceDetectorService} from "ngx-device-detector";
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
   selector: 'app-salesorder',
@@ -38,7 +40,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         'soNo',
         'account',
         'accountNm',
-        'accountType',
         'type',
         'status',
         'email',
@@ -67,6 +68,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _formBuilder: FormBuilder,
                 private _salesorderService: SalesorderService,
                 private _changeDetectorRef: ChangeDetectorRef,
+                private _functionService: FunctionService,
+                private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _codeStore: CodeStore,
                 private _utilService: FuseUtilsService,
                 private _deviceService: DeviceDetectorService,)
@@ -158,6 +161,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._salesorderService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this.selectClear();
     }
     selectDoubleClickRow(row: any): void {
         this._router.navigate(['salesorder/salesorder/salesorder-detail' , row]);
@@ -200,6 +204,134 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     salesorderConfirm() {
-        console.log(this.selection.selected);
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('확정 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status === 'S' || this.selection.selected[i].status === 'C'){
+                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 주문번호 : ' + this.selection.selected[i].soNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '확정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.salesorderConfirmCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    salesorderConfirmCall(sendData: SalesOrder[]) {
+        if(sendData){
+            this._salesorderService.salesorderConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((salesOrder: any) => {
+                    this._functionService.cfn_alertCheckMessage(salesOrder);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // 취소
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    salesorderCancel() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 주문번호 : ' + this.selection.selected[i].soNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '취소하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.salesorderCancelCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            }
+        }
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    salesorderCancelCall(sendData: SalesOrder[]) {
+        if(sendData){
+            this._salesorderService.salesorderCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((salesOrder: any) => {
+                    this._functionService.cfn_alertCheckMessage(salesOrder);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
     }
 }

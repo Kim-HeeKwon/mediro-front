@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {OrderService} from './order.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {DeviceDetectorService} from "ngx-device-detector";
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector: 'app-order',
@@ -158,6 +158,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
         this._orderService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this.selectClear();
     }
     selectDoubleClickRow(row: any): void {
         this._router.navigate(['estimate-order/order/order-detail' , row]);
@@ -202,5 +203,10 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     orderConfirm() {
         console.log(this.selection.selected);
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
     }
 }

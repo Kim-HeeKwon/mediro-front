@@ -23,9 +23,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {SalesorderService} from '../salesorder.service';
 import {takeUntil} from 'rxjs/operators';
-import {SaveAlertComponent} from '../../../../../../@teamplat/components/common-alert/save-alert';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
-import {ErrorAlertComponent} from '../../../../../../@teamplat/components/common-alert/error-alert';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'salesorder-new',
@@ -100,6 +100,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _salesorderService: SalesorderService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService)
     {
         this.filterList = ['ALL'];
@@ -177,15 +179,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: param.msg
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
         }
@@ -215,16 +209,24 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         if(!this.salesorderHeaderForm.invalid){
             this.showAlert = false;
 
-            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-                data: {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
 
-            saveConfirm.afterClosed()
+            confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    if (result.status) {
+                    if (result) {
                         createList = [];
                         this.salesorderDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -248,15 +250,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._changeDetectorRef.markForCheck();
 
         }else{
-            const errorAlert =this._matDialog.open(ErrorAlertComponent, {
-                data: {
-                    msg: '필수값을 입력해주세요.'
-                }
-            });
-            errorAlert.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                });
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
     /* 추가

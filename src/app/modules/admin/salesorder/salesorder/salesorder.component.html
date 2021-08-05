@@ -81,6 +81,7 @@
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="newSalesOrder()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">작성</span>
                         </button>
                     </div>
@@ -91,8 +92,17 @@
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="salesorderConfirm()">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">확정</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="salesorderCancel()">
+                            <span class="ml-2 mr-1">취소</span>
                         </button>
                     </div>
                 </div>
@@ -183,6 +193,13 @@
                                     [color]="'accent'"
                                     (click)="salesorderConfirm()">
                                     <span class="ml-2 mr-1">확정</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="salesorderCancel()">
+                                    <span class="ml-2 mr-1">취소</span>
                                 </button>
                             </div>
                         </div>
@@ -323,22 +340,6 @@
                                                     mat-cell
                                                     *matCellDef="let salesorderHeader">
                                                     {{salesorderHeader.accountNm}}
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="accountType">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    거래처 유형
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let salesorderHeader">
-                                                    {{(salesorderHeader.accountType | fuseFindByKey:'id':accountType).name}}
                                                 </td>
                                             </ng-container>
 

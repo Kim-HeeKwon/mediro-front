@@ -225,4 +225,38 @@ export class SalesorderService {
         // });
     }
 
+    /**
+     * 확정
+     */
+    salesorderConfirm(salesOrders: SalesOrder[]): Observable<SalesOrder>
+    {
+        return this.salesorders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(salesOrders, 'v1/api/salesorder/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+    /**
+     * 취소
+     */
+    salesorderCancel(salesOrders: SalesOrder[]): Observable<SalesOrder>
+    {
+        return this.salesorders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(salesOrders, 'v1/api/salesorder/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

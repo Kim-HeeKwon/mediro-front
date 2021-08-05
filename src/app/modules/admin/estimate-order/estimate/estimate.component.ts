@@ -39,7 +39,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         'qtNo',
         'account',
         'accountNm',
-        'accountType',
         'type',
         'status',
         'email',
@@ -256,6 +255,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     });
             }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
         }
     }
     estimateSendCall(sendData: Estimate[]): void{
@@ -312,6 +313,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     });
             }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
         }
     }
     estimateConfirmCall(sendData: Estimate[]): void{
@@ -382,7 +385,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     estimateCancelCall(sendData: Estimate[]): void {
         if(sendData){
-            this._estimateService.inBoundCancel(sendData)
+            this._estimateService.estimateCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
                     this._functionService.cfn_alertCheckMessage(estimate);

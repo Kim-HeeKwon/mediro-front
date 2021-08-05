@@ -266,7 +266,7 @@ export class EstimateService {
     /**
      * 취소
      */
-    inBoundCancel(estimates: Estimate[]): Observable<Estimate>
+    estimateCancel(estimates: Estimate[]): Observable<Estimate>
     {
         return this.estimates$.pipe(
             take(1),
