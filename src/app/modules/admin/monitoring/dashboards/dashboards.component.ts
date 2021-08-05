@@ -19,6 +19,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
+import {SessionStore} from "../../../../core/session/state/session.store";
 
 @Component({
   selector: 'app-dashboards',
@@ -29,7 +30,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
-
+  userName: string;
   ibInfo$: Observable<DashboardInfo1>;
   obInfo$: Observable<DashboardInfo1>;
   qtInfo$: Observable<DashboardInfo1>;
@@ -53,12 +54,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   constructor(
       private _dashboardsService: DashboardsService,
       private _changeDetectorRef: ChangeDetectorRef,
+      private _sessionStore: SessionStore,
       private _codeStore: CodeStore,
       private _utilService: FuseUtilsService,
       private _deviceService: DeviceDetectorService,
       private _router: Router,
       private readonly breakpointObserver: BreakpointObserver
-  ) { }
+  ) {
+      this.userName = _sessionStore.getValue().name;
+  }
 
   ngOnInit(): void {
 
