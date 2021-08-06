@@ -20,6 +20,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from "../../../../core/session/state/session.store";
+import {ApexOptions} from "ng-apexcharts";
 
 @Component({
   selector: 'app-dashboards',
@@ -36,6 +37,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   qtInfo$: Observable<DashboardInfo1>;
   poInfo$: Observable<DashboardInfo1>;
   soInfo$: Observable<DashboardInfo1>;
+  udiInfo$: Observable<any>;
+  udiInfos: any;
   ibInfo: IbInfo = {sCnt:0,pCnt:0,cCnt:0,fCnt:0,nCnt:0};
   obInfo: ObInfo = {sCnt:0, cCnt:0, pCnt:0, nCnt:0, dCnt:0};
   qtInfo: QtInfo = {sCnt:0, cCnt:0, nCnt:0, cfCnt:0, rCnt:0};
@@ -44,6 +47,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
   isLoading: boolean = false;
+
+  chartUdiInfo: ApexOptions = {};
 
   racallTaleData: any = null;
 
@@ -71,6 +76,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       this.qtInfo$ = this._dashboardsService.qtInfo$;
       this.poInfo$ = this._dashboardsService.poInfo$;
       this.soInfo$ = this._dashboardsService.soInfo$;
+      this.udiInfo$ = this._dashboardsService.udiInfo$;
+      //udi정보
+      this.udiInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+                this.udiInfos = data;
+                console.log(this.udiInfos);
+                this._prepareChartData();
+      });
 
       //입고
       this.ibInfo$
@@ -155,6 +169,89 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
       this._dashboardsService.getRecallItem();
   }
+
+    /**
+     * Prepare the chart data from the data
+     *
+     * @private
+     */
+    private _prepareChartData(): void {
+        // UDI 공급내역
+        this.chartUdiInfo = {
+            chart: {
+                fontFamily: 'inherit',
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            colors: ['#64748B', '#94A3B8'],
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [0],
+                background: {
+                    borderWidth: 0
+                }
+            },
+            grid: {
+                borderColor: 'var(--fuse-border)'
+            },
+            labels: this.udiInfos.labels,
+            legend: {
+                show: false
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            series: this.udiInfos.series,
+            states: {
+                hover: {
+                    filter: {
+                        type: 'darken',
+                        value: 0.75
+                    }
+                }
+            },
+            stroke: {
+                width: [3, 0]
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark'
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    color: 'var(--fuse-border)'
+                },
+                labels: {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -16,
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                }
+            }
+        };
+    }
 
     /**
      * After view init

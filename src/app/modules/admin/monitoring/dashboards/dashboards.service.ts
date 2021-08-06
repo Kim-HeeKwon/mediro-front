@@ -21,6 +21,8 @@ export class DashboardsService {
     private _qtInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
     private _soInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
 
+    private _udiInfo: BehaviorSubject<any> = new BehaviorSubject(null);
+
     /**
      * Constructor
      */
@@ -69,6 +71,11 @@ export class DashboardsService {
     get soInfo$(): Observable<DashboardInfo1>
     {
         return this._soInfo.asObservable();
+    }
+
+    get udiInfo$(): Observable<any>
+    {
+        return this._udiInfo.asObservable();
     }
 
 
@@ -130,4 +137,25 @@ export class DashboardsService {
                 }, reject);
         });
     }
+
+    /**
+     * Post DashboardInfo2
+     *
+     * @returns
+     */
+    getDashboardInfo2(): Observable<{order: any[]}> {
+
+        const param = {'name':'dashboardInfo2'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-info2')
+                .subscribe((response: any) => {
+                    //console.log(response);
+                    this._udiInfo.next(response.data[0]);
+                    resolve(response[0]);
+                }, reject);
+        });
+    }
+
 }

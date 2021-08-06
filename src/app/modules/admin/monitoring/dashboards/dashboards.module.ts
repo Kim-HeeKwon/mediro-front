@@ -9,6 +9,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatButtonModule} from "@angular/material/button";
+import {NgApexchartsModule} from "ng-apexcharts";
 
 const dashboardsRoutes: Route[] = [
     {
@@ -32,7 +33,8 @@ const dashboardsRoutes: Route[] = [
         MatPaginatorModule,
         MatIconModule,
         MatProgressBarModule,
-        MatButtonModule
+        MatButtonModule,
+        NgApexchartsModule
     ]
 })
 export class DashboardsModule { }
