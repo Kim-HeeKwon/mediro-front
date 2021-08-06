@@ -10,6 +10,7 @@ export interface Order
     unit: string;
     reqQty: number;
     qty: number;
+    poQty: number;
     unitPrice: number;
     type: string;               //유형
     status: string;             //상태
@@ -19,7 +20,6 @@ export interface Order
     poAmt: number;              //발주금액
     remarkHeader: string;       //비고
     remarkDetail: string;
-    ibNo: string;               //입고번호
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -38,16 +38,14 @@ export class OrderHeader
     poDate: string;             //발주일자
     poAmt: number;              //발주금액
     remarkHeader: string;       //비고
-    ibNo: string;               //입고번호
     addDate?: string;
     addUser?: string;
     updDate?: string;
     updUser?: string;
 
 
-    constructor(email: string = '',ibNo: string = '',remarkHeader: string = ''){
+    constructor(email: string = '',remarkHeader: string = ''){
         this.email = email;
-        this.ibNo = ibNo;
         this.remarkHeader = remarkHeader;
     }
 }
@@ -62,6 +60,7 @@ export interface OrderDetail
     unit: string;
     reqQty: number;
     qty: number;
+    poQty: number;
     unitPrice: number;
     poAmt: number;
     remarkDetail: string;

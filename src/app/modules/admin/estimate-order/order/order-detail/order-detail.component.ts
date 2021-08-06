@@ -70,7 +70,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
-        {headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
+        {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
+        {headerText : '발주수량' , dataField : 'poQty', width: 60, display : true, disabled : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '발주금액' , dataField : 'poAmt', width: 50, display : true, disabled : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
@@ -85,6 +86,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         'unit',
         'reqQty',
         'qty',
+        'poQty',
         'unitPrice',
         'poAmt',
         'remarkDetail',
@@ -122,9 +124,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             type: [{value:'',disabled:true}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             poAmt: [{value:'',disabled:true}],   // 발주금액
-            ibNo: [{value:'',disabled:true}],   // 입고번호
             poCreDate: [{value:'',disabled:true}],//발주 생성일자
             poDate: [{value:'',disabled:true}], //발주일자
+            email:[],//이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -149,6 +151,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+        this.tableEditingEvent();
 
         this._orderService.orderDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -290,6 +293,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i].poNo = this.orderHeaderForm.controls['poNo'].value;
             sendData[i].type = this.orderHeaderForm.controls['type'].value;
             sendData[i].status = this.orderHeaderForm.controls['status'].value;
+            sendData[i].email = this.orderHeaderForm.controls['email'].value;
             sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
         }
         return sendData;
@@ -522,5 +526,28 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     }
                 });
         }
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    tableEditingEvent(){
+        this.orderDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((orderDetail) => {
+                // @ts-ignore
+                if(orderDetail !== null){
+                    const poStatus = this.orderHeaderForm.controls['status'].value;
+                    if(poStatus === 'N' || poStatus === 'P'){
+                        orderDetail.forEach((detail: any) => {
+                            detail.qty = detail.reqQty - detail.poQty;
+                        });
+
+                        this.orderDetailsTable.forEach((table: any) => {
+                            if(table.dataField === 'itemCd'){
+                                table.disabled = true;
+                            }
+                        });
+                    }
+                }
+                this._changeDetectorRef.markForCheck();
+            });
     }
 }

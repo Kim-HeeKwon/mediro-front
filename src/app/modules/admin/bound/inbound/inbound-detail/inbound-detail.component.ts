@@ -171,6 +171,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             ibCreDate: [{value:'',disabled:true}],//작성일
             ibDate: [{value:'',disabled:true}], //입고일
             remarkHeader: [''], //비고
+            poNo: [{value:'',disabled:true}],   // 발주번호
             active: [false]  // cell상태
         });
         this._inboundService.inBoundHeader$

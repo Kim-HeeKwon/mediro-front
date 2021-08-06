@@ -66,7 +66,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급사' , dataField : 'supplier', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '비고' , dataField : 'remarkHeader', width: 100, display : false, disabled : true, type: 'text'}
+        {headerText : '비고' , dataField : 'remarkHeader', width: 100, display : false, disabled : true, type: 'text'},
+        {headerText : '발주번호' , dataField : 'poNo', width: 100, display : false, disabled : true, type: 'text'}
     ];
     inboundHeadersTableColumns: string[] = [
         'select',
@@ -81,6 +82,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         'status',
         'supplier',
         'remarkHeader',
+        'poNo',
     ];
     searchForm: FormGroup;
     selectedInboundHeader: InBoundHeader | null = null;

@@ -559,6 +559,22 @@
                                                     {{inBoundHeader.remarkHeader}}
                                                 </td>
                                             </ng-container>
+                                            <ng-container matColumnDef="poNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    발주번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let estimateHeader">
+                                                    {{estimateHeader.poNo}}
+                                                </td>
+                                            </ng-container>
 
                                             <!--<ng-container *ngFor="let column of inBoundHeadersTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">

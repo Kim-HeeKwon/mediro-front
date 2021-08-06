@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, Subject} from 'rxjs';
-import {OrderHeader, OrderHeaderPagenation} from './order.types';
+import {Order, OrderHeader, OrderHeaderPagenation} from './order.types';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,6 +11,8 @@ import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {OrderService} from './order.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {DeviceDetectorService} from 'ngx-device-detector';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-order',
@@ -38,13 +40,11 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         'poNo',
         'account',
         'accountNm',
-        'accountType',
         'type',
         'status',
         'email',
         'poAmt',
         'remarkHeader',
-        'ibNo',
     ];
     selectedOrderHeader: OrderHeader = new OrderHeader();
     searchForm: FormGroup;
@@ -67,6 +67,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _orderService: OrderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _codeStore: CodeStore,
+                private _functionService: FunctionService,
+                private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _utilService: FuseUtilsService,
                 private _deviceService: DeviceDetectorService,)
     {
@@ -199,14 +201,199 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.no + 1}`;
     }
-
+    // 발주
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     orderConfirm() {
-        console.log(this.selection.selected);
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('발주 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'S' && this.selection.selected[i].status !== 'P'){
+                    this._functionService.cfn_alert('발주할 수 없는 상태입니다. 견적번호 : ' + this.selection.selected[i].poNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '발주하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.orderConfirmCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    orderConfirmCall(sendData: Order[]): void{
+        if(sendData){
+            this._orderService.orderConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+    // 발송
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    orderSend() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('발송 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status === 'CF' || this.selection.selected[i].status === 'P' || this.selection.selected[i].status === 'C'){
+                    this._functionService.cfn_alert('발송할 수 없는 상태입니다. 발주번호 : ' + this.selection.selected[i].poNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '발송하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:mail',
+                        color: 'primary'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '발송',
+                            color: 'accent'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.orderSendCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    orderSendCall(sendData: Order[]): void{
+        if(sendData){
+            this._orderService.orderSend(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((order: any) => {
+                    this._functionService.cfn_alertCheckMessage(order);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+    // 취소
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    orderCancel() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else{
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<this.selection.selected.length; i++){
+                if(this.selection.selected[i].status !== 'N'){
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 발주번호 : ' + this.selection.selected[i].poNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if(check){
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title      : '',
+                    message    : '취소하시겠습니까?',
+                    icon       : this._formBuilder.group({
+                        show : true,
+                        name : 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions    : this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show : true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel : this._formBuilder.group({
+                            show : true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.orderCancelCall(this.selection.selected);
+                        }else{
+                            this.selectClear();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    orderCancelCall(sendData: Order[]): void{
+        if(sendData){
+            this._orderService.orderCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((order: any) => {
+                    this._functionService.cfn_alertCheckMessage(order);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     selectClear() {
         this.selection.clear();
         this._changeDetectorRef.markForCheck();
     }
+
 }

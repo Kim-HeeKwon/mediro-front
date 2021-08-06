@@ -91,8 +91,28 @@
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="orderCancel()">
+                            <span class="ml-2 mr-1">발송</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="orderConfirm()">
                             <span class="ml-2 mr-1">발주</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="orderCancel()">
+                            <span class="ml-2 mr-1">취소</span>
                         </button>
                     </div>
                 </div>
@@ -192,8 +212,22 @@
                                     class="ml-2"
                                     mat-stroked-button
                                     [color]="'accent'"
+                                    (click)="orderSend()">
+                                    <span class="ml-2 mr-1">발송</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    [color]="'accent'"
                                     (click)="orderConfirm()">
                                     <span class="ml-2 mr-1">발주</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="orderCancel()">
+                                    <span class="ml-2 mr-1">취소</span>
                                 </button>
                             </div>
                         </div>
@@ -336,22 +370,6 @@
                                                     {{orderHeader.accountNm}}
                                                 </td>
                                             </ng-container>
-                                            <ng-container matColumnDef="accountType">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    거래처 유형
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let orderHeader">
-                                                    {{(orderHeader.accountType | fuseFindByKey:'id':accountType).name}}
-                                                </td>
-                                            </ng-container>
 
                                             <ng-container matColumnDef="type">
                                                 <th
@@ -432,22 +450,6 @@
                                                     mat-cell
                                                     *matCellDef="let orderHeader">
                                                     {{orderHeader.remarkHeader}}
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="ibNo">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    입고번호
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let orderHeader">
-                                                    {{orderHeader.ibNo}}
                                                 </td>
                                             </ng-container>
                                             <tr

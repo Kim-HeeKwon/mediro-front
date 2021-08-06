@@ -69,7 +69,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
-        {headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
+        /*{headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},*/
         {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '발주금액' , dataField : 'poAmt', width: 50, display : true, disabled : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
@@ -83,7 +83,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         'standard',
         'unit',
         'reqQty',
-        'qty',
+        /*'qty',*/
         'unitPrice',
         'poAmt',
         'remarkDetail',
@@ -121,9 +121,9 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             type: [{value:''}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             poAmt: [{value:'',disabled:true}],   // 발주금액
-            ibNo: [{value:'',disabled:true}],   // 입고번호
             poCreDate: [{value:'',disabled:true}],//발주 생성일자
             poDate: [{value:'',disabled:true}], //발주일자
+            email : [], //이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -154,7 +154,6 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.orderHeaderForm.patchValue({'account': ''});
         this.orderHeaderForm.patchValue({'type': '1'});
         this.orderHeaderForm.patchValue({'status': 'N'});
-        this.orderHeaderForm.patchValue({'ibNo': ''});
         this.orderHeaderForm.patchValue({'remarkHeader': ''});
     }
     /**
@@ -248,7 +247,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             sendData[i].poNo = this.orderHeaderForm.controls['poNo'].value;
             sendData[i].type = this.orderHeaderForm.controls['type'].value;
             sendData[i].status = this.orderHeaderForm.controls['status'].value;
-            sendData[i].ibNo = '';
+            sendData[i].email = this.orderHeaderForm.controls['email'].value;
             sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
         }
         return sendData;
@@ -468,6 +467,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 if(result){
                     this.orderHeaderForm.patchValue({'account': result.accountCd});
                     this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
+                    this.orderHeaderForm.patchValue({'email': result.email});
                 }
             });
     }

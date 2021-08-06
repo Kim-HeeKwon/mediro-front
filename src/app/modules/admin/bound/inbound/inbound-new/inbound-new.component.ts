@@ -150,6 +150,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             ibCreDate: [{value:'',disabled:true}],//작성일
             ibDate: [{value:'',disabled:true}], //입고일
             remarkHeader: [''], //비고
+            poNo: [{value:'',disabled:true}],   // 발주번호
             active: [false]  // cell상태
         });
         this._inboundService.getNew(0,10,'','asc', {});
@@ -181,6 +182,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.inBoundHeaderForm.patchValue({'status': 'N'});
         this.inBoundHeaderForm.patchValue({'supplier': ''});
         this.inBoundHeaderForm.patchValue({'remarkHeader': ''});
+        this.inBoundHeaderForm.patchValue({'poNo': ''});
 
     }
 
@@ -206,7 +208,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.inBoundHeaderForm.controls['account'].value;
-            sendData[i].ibNo = this.inBoundHeaderForm.controls['ibNo'].value;
+            sendData[i].poNo = '';
             sendData[i].type = this.inBoundHeaderForm.controls['type'].value;
             sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
             sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;

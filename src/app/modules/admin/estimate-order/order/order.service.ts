@@ -221,4 +221,49 @@ export class OrderService {
             this._orderDetailPagenation.next([]);
         });
     }
+
+    orderConfirm(orders: Order[]): Observable<Order>
+    {
+        return this.orders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/confirm').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    orderSend(orders: Order[]): Observable<Order>
+    {
+        return this.orders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/send').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    orderCancel(orders: Order[]): Observable<Order>
+    {
+        return this.orders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

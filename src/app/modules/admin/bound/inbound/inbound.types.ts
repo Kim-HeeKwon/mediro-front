@@ -33,6 +33,8 @@ export interface InBound
     lot9: string;
     lot10: string;
     remarkDetail: string;
+    poNo: string;
+    poLineNo: number;
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -51,6 +53,7 @@ export interface InBoundHeader
     ibCreDate: string;          //입고생성일자
     ibDate: string;             //입고일자
     remarkHeader: string;       //비고
+    poNo: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -83,6 +86,8 @@ export interface InBoundDetail
     lot9: string;
     lot10: string;
     remarkDetail: string;
+    poNo: string;
+    poLineNo: number;
     addDate?: string;
     addUser?: string;
     updDate?: string;
