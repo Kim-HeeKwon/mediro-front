@@ -297,6 +297,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             this._router.navigate(['/salesorder/salesorder']);
         }else if(gbn === 'PO'){
             this._router.navigate(['/estimate-order/order']);
+        }else if(gbn === 'UDI'){
+            this._router.navigate(['/udi/status']);
         }
     }
 
