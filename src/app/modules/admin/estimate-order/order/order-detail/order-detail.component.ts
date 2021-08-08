@@ -550,4 +550,71 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             });
     }
+    // 발주
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    orderConfirm() {
+        const poStatus = this.orderHeaderForm.controls['status'].value;
+        if(poStatus !== 'S' && poStatus !== 'P'){
+            this._functionService.cfn_alert('발주할 수 없는 상태입니다.');
+            return false;
+        }
+        let orderData;
+        this.orderDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((orderDetail) => {
+                orderData = orderDetail.filter((detail: any) => detail.qty > 0)
+                    .map((param: any) => {
+                        return param;
+                    });
+            });
+
+        if(orderData.length < 1) {
+            this._functionService.cfn_alert('발주 수량이 존재하지 않습니다.');
+            return false;
+        }else{
+            const confirmation = this._teamPlatConfirmationService.open({
+                title  : '',
+                message: '발주하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '발주'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.orderDetailConfirm(orderData);
+                    }
+                });
+        }
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+    /* 발주 (상세)
+     *
+     * @param sendData
+     */
+    orderDetailConfirm(sendData: Order[]): void{
+        if(sendData){
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i=0; i<sendData.length; i++) {
+                sendData[i].type = this.orderHeaderForm.controls['type'].value;
+            }
+
+            this._orderService.orderDetailConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((order: any) => {
+                    this._functionService.cfn_alertCheckMessage(order);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
+    }
 }

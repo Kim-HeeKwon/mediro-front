@@ -20,7 +20,7 @@
                         </button>
                     </div>
                     <div class="flex flex-col min-w-0 ml-2">
-                        <div class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate">발주서 작성</div>
+                        <div class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate">발주서</div>
                     </div>
                 </div>
                 <!-- Actions -->
@@ -34,6 +34,18 @@
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:save'"></mat-icon>
                         <span class="ml-2">저장</span>
+                    </button>
+                </div>
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded"
+                        mat-raised-button
+                        [color]="'primary'"
+                        (click)="orderConfirm()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:inbox-in'"></mat-icon>
+                        <span class="ml-2">발주</span>
                     </button>
                 </div>
             </div>
