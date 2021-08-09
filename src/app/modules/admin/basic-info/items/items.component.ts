@@ -289,6 +289,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
 
     /**

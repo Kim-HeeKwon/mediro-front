@@ -65,6 +65,15 @@ export class AuthService
         return localStorage.getItem('mId') ?? '';
     }
 
+    set userId(id: string){
+        localStorage.setItem('id', id);
+    }
+
+    get userId(): string
+    {
+        return localStorage.getItem('id') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -128,6 +137,7 @@ export class AuthService
                 this.accessToken = response.resultD.accessToken;
                 this.userEmail = response.resultD.email;
                 this.userMid = response.resultD.mid;
+                this.userId = response.resultD.id;
 
                 response.resultD.mId = response.resultD.mid;
 
@@ -159,7 +169,8 @@ export class AuthService
         const vData = {
             'accessToken': this.accessToken,
             'email' : this.userEmail,
-            'mId'   : this.userMid
+            'mId'   : this.userMid,
+            'id'   : this.userId
         };
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
@@ -172,6 +183,7 @@ export class AuthService
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('email');
                     localStorage.removeItem('mId');
+                    localStorage.removeItem('id');
 
                     return of(false);
                 }
@@ -200,6 +212,7 @@ export class AuthService
         localStorage.removeItem('access_token');
         localStorage.removeItem('email');
         localStorage.removeItem('mId');
+        localStorage.removeItem('id');
 
         // Set the authenticated flag to false
         this._authenticated = false;

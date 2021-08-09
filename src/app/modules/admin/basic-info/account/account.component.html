@@ -264,10 +264,11 @@
                                                     <button
                                                         class="min-w-10 min-h-7 h-7 px-2 leading-6"
                                                         mat-stroked-button
-                                                        (click)="toggleDetails(account.account)">
+                                                        (click)="toggleDetails(account.account, account.accountType)">
                                                         <mat-icon
                                                             class="icon-size-5"
-                                                            [svgIcon]="selectedAccount?.account === account.account ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                                            [svgIcon]="(selectedAccount?.account === account.account)
+                                                                            && (selectedAccount.accountType === account.accountType) ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
                                                     </button>
                                                 </td>
                                             </ng-container>
@@ -279,7 +280,8 @@
                                                     mat-cell
                                                     *matCellDef="let account"
                                                     [attr.colspan]="accountsTableColumns.length">
-                                                    <ng-container *ngIf="selectedAccount?.account === account.account">
+                                                    <ng-container *ngIf="(selectedAccount?.account === account.account)
+                                                                            && (selectedAccount.accountType === account.accountType)">
                                                         <ng-container
                                                             *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: account}"></ng-container>
                                                     </ng-container>
@@ -289,7 +291,8 @@
                                                     let-account>
                                                     <div
                                                         class="shadow-lg overflow-hidden"
-                                                        [@expandCollapse]="selectedAccount?.account === account.account ? 'expanded' : 'collapsed'">
+                                                        [@expandCollapse]="(selectedAccount?.account === account.account)
+                                                                            && (selectedAccount.accountType === account.accountType) ? 'expanded' : 'collapsed'">
                                                         <div class="flex border-b">
                                                             <!-- Selected product form -->
                                                             <form

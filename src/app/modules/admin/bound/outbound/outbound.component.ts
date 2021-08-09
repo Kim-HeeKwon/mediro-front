@@ -76,15 +76,15 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         'obCreDate',
         'obDate',
         'obNo',
-        'account',
-        'accountNm',
-        'address',
         'type',
         'status',
-        'dlvAccount',
+        /*'account',*/
+        'accountNm',
+        'address',
+        /*'dlvAccount',
         'dlvAddress',
         'dlvDate',
-        'remarkHeader',
+        'remarkHeader',*/
     ];
     searchForm: FormGroup;
     selectedOutboundHeader: OutBoundHeader | null = null;

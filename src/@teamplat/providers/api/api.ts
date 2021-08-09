@@ -46,6 +46,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -75,6 +76,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -104,6 +106,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -144,6 +147,7 @@ export class Api {
             'sessionSupplier': 'Nomadrian',
             'sessionOwnrgCd': 'Nomadrian', // NMDN FW
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -173,6 +177,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -197,6 +202,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -221,6 +227,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 
@@ -248,6 +255,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
 

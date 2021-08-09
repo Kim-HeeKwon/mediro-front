@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../providers/common/common';
 import {UdiPagenation} from './common-udi.types';
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -84,6 +85,24 @@ export class CommonUdiService{
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * merge (거래처)
+     */
+    mergeAccount(data: any): Observable<any>
+    {
+        return this.getList$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(data, 'v1/api/basicInfo/account/merge').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 
     setInitList(): void{

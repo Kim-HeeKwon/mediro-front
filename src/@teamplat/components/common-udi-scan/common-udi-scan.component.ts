@@ -11,7 +11,7 @@ import {fuseAnimations} from '../../animations';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {FuseUtilsService} from '../../services/utils';
+import {CommonCode, FuseUtilsService} from '../../services/utils';
 import {FormBuilder, Validators} from '@angular/forms';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
@@ -54,6 +54,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '출고수량' , dataField : 'obQty', width: 60, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : true, type: 'month',max: '9999-12-31'},
+        {headerText : '공급 형태' , dataField : 'suplyTypeCode', width: 100, display : true, type: 'text',combo: true},
         {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text'},
         //{headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
@@ -68,6 +69,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         'qty',
         'obQty',
         'suplyContStdmt',
+        'suplyTypeCode',
         'udiCode',
         //'udiDiSeq',
         'remarkDetail',
@@ -75,6 +77,9 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
     headerText: string = 'UDI 스캔';
     outBoundData: any;
     isMobile: boolean = false;
+    suplyTypeCode: CommonCode[] = null;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    filterList: string[];
     outBoundDetailPagenation: OutBoundDetailPagenations | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -93,9 +98,10 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         private readonly breakpointObserver: BreakpointObserver
         //private commonAlertDialog: CommonAlertService
     ) {
+        this.filterList = ['ALL'];
         this.outBoundData = data.outBoundDetail;
+        this.suplyTypeCode = _utilService.commonValueFilter(_codeStore.getValue().data,'SUPLYTYPECODE',this.filterList);
         this._commonScanService.setData(this.outBoundData);
-
     }
     ngOnInit(): void {
 
@@ -289,6 +295,18 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
                 this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
                 return;
             }
+            if(outBoundData[i].suplyContStdmt === null){
+                this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
+                return;
+            }
+            if(outBoundData[i].suplyTypeCode === undefined){
+                this._functionService.cfn_alert('공급형태는 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
+                return;
+            }
+            if(outBoundData[i].suplyTypeCode === null){
+                this._functionService.cfn_alert('공급형태는 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
+                return;
+            }
 
             if(outBoundData[i].obExpQty < (Number(outBoundData[i].qty) + outBoundData[i].obQty)){
                 this._functionService.cfn_alert('수량이 초과되었습니다. 품목코드 : ' + outBoundData[i].itemCd);
@@ -297,5 +315,14 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         }
 
         this._matDialogRef.close(outBoundData);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    getComboData(column: TableConfig) {
+        let combo;
+        if(column.dataField === 'suplyTypeCode'){
+            combo = this.suplyTypeCode;
+        }
+        return combo;
     }
 }

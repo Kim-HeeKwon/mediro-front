@@ -269,10 +269,12 @@
                                             <ng-container *ngFor="let column of validitysTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">
                                                 <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     mat-header-cell
+                                                    *matHeaderCellDef
+                                                    disableClear
                                                     [hidden]="!column.display"
-                                                    [width]="column.width"
-                                                    *matHeaderCellDef>
+                                                    [width]="column.width">
                                                     <div
                                                         class="mediro-th mediro-th-display">
                                                         <span mat-sort-header>{{column.headerText}}</span>

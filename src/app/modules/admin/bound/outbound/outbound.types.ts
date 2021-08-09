@@ -62,6 +62,7 @@ export interface OutBoundDetail
     udiYn: string;
     udiCode?: string;
     suplyContStdmt?: string;
+    suplyTypeCode?: string;
     udiDiSeq?: string;
     remarkDetail: string;
     addDate?: string;
