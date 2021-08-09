@@ -261,8 +261,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     // 발송
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     orderSend() {
-        console.log(this.selection.selected);
-        return;
         if(this.selection.selected.length < 1){
             this._functionService.cfn_alert('발송 대상을 선택해주세요.');
             return;
