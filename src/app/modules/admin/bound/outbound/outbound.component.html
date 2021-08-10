@@ -303,7 +303,7 @@
                                                                   [aria-label]="checkboxLabel()">
                                                     </mat-checkbox>
                                                 </th>
-                                                <td mat-cell *matCellDef="let row"
+                                                <td class="bg-white" mat-cell *matCellDef="let row"
                                                     style="width:7%">
                                                     <mat-checkbox (click)="$event.stopPropagation()"
                                                                   (change)="$event ? selection.toggle(row) : null"
@@ -342,7 +342,7 @@
                                                     상세
                                                 </th>
                                                 <td
-                                                    class="pr-8"
+                                                    class="pr-8 bg-white"
                                                     mat-cell
                                                     *matCellDef="let outbound">
                                                     <button
