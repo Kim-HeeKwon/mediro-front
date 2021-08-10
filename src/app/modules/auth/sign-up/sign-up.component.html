@@ -150,11 +150,13 @@
                         <span>회원가입시</span>
                         <a
                             class="ml-1 text-primary-500 hover:underline"
+                            (click)="checkTermOfService()"
                             [routerLink]="['./']">이용약관
                         </a>
                         <span>,</span>
                         <a
                             class="ml-1 text-primary-500 hover:underline"
+                            (click)="checkPrivacy()"
                             [routerLink]="['./']">개인정보처리 방침
                         </a>
                         <span>에 동의합니다.</span>

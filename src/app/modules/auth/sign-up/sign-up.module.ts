@@ -11,10 +11,14 @@ import { FuseAlertModule } from '@teamplat/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 import { AuthSignUpComponent } from 'app/modules/auth/sign-up/sign-up.component';
 import { authSignupRoutes } from 'app/modules/auth/sign-up/sign-up.routing';
+import {TermOfServiceComponent} from './term-of-service/term-of-service.component';
+import {PrivacyComponent} from './privacy/privacy.component';
 
 @NgModule({
     declarations: [
-        AuthSignUpComponent
+        AuthSignUpComponent,
+        TermOfServiceComponent,
+        PrivacyComponent
     ],
     imports     : [
         RouterModule.forChild(authSignupRoutes),

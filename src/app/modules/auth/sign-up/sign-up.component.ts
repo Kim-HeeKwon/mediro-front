@@ -4,6 +4,12 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {PrivacyComponent} from './privacy/privacy.component';
+import {Observable} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {TermOfServiceComponent} from "./term-of-service/term-of-service.component";
 
 @Component({
     selector     : 'auth-sign-up',
@@ -13,6 +19,9 @@ import { AuthService } from 'app/core/auth/auth.service';
 })
 export class AuthSignUpComponent implements OnInit
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
@@ -24,15 +33,21 @@ export class AuthSignUpComponent implements OnInit
     showStep1: boolean = true;
     showStep2: boolean = false;
 
+    isMobile: boolean = false;
+
     /**
      * Constructor
      */
     constructor(
+        private _matDialog: MatDialog,
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver
     )
     {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -236,6 +251,75 @@ export class AuthSignUpComponent implements OnInit
                     this.showAlert = true;
                 }
             );
+    }
+
+
+    /**
+     * 개인정보보호 확인
+     */
+    checkPrivacy(): void
+    {
+        if(!this.isMobile){
+            this._matDialog.open(PrivacyComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(PrivacyComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
+    /**
+     * 이용약관 확인
+     */
+    checkTermOfService(): void
+    {
+        if(!this.isMobile){
+            this._matDialog.open(TermOfServiceComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(TermOfServiceComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     // /**
