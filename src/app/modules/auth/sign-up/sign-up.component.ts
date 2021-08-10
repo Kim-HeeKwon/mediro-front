@@ -263,6 +263,7 @@ export class AuthSignUpComponent implements OnInit
             this._matDialog.open(PrivacyComponent, {
                 autoFocus: false,
                 disableClose: true,
+                maxHeight: '80vh',
                 data     : {
                     note: {}
                 },
@@ -297,6 +298,7 @@ export class AuthSignUpComponent implements OnInit
             this._matDialog.open(TermOfServiceComponent, {
                 autoFocus: false,
                 disableClose: true,
+                maxHeight: '80vh',
                 data     : {
                     note: {}
                 },
