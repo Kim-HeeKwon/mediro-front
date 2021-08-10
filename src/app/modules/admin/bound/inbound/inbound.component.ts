@@ -76,12 +76,12 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         'ibCreDate',
         'ibDate',
         'ibNo',
-        'account',
-        'accountNm',
         'type',
         'status',
+        /*'account',*/
+        'accountNm',
         'supplier',
-        'remarkHeader',
+        /*'remarkHeader',*/
         'poNo',
     ];
     searchForm: FormGroup;

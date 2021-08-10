@@ -419,7 +419,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
-                                                    [width]="150"
+                                                    [width]="120"
                                                     disableClear>
                                                     작성일
                                                 </th>
@@ -436,6 +436,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    [width]="120"
                                                     disableClear>
                                                     입고일
                                                 </th>
@@ -452,7 +453,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
-                                                    [width]="250"
+                                                    [width]="150"
                                                     disableClear>
                                                     입고번호
                                                 </th>
@@ -463,44 +464,13 @@
                                                     {{inBoundHeader.ibNo}}
                                                 </td>
                                             </ng-container>
-                                            <ng-container matColumnDef="account">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    거래처
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let inBoundHeader">
-                                                    {{inBoundHeader.account}}
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="accountNm">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear>
-                                                    거래처 명
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let inBoundHeader">
-                                                    {{inBoundHeader.accountNm}}
-                                                </td>
-                                            </ng-container>
                                             <ng-container matColumnDef="type">
                                                 <th
                                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    [width]="120"
                                                     disableClear>
                                                     유형
                                                 </th>
@@ -517,6 +487,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    [width]="150"
                                                     disableClear>
                                                     상태
                                                 </th>
@@ -525,6 +496,40 @@
                                                     mat-cell
                                                     *matCellDef="let inBoundHeader">
                                                     {{(inBoundHeader.status | fuseFindByKey:'id':ibStatus).name}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="account">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    hidden="true"
+                                                    disableClear>
+                                                    거래처
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let inBoundHeader">
+                                                    {{inBoundHeader.account}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="accountNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="200"
+                                                    disableClear>
+                                                    거래처 명
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let inBoundHeader">
+                                                    {{inBoundHeader.accountNm}}
                                                 </td>
                                             </ng-container>
                                             <ng-container matColumnDef="supplier">
@@ -549,6 +554,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    hidden="true"
                                                     disableClear>
                                                     비고
                                                 </th>
@@ -565,6 +571,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    [width]="150"
                                                     disableClear>
                                                     발주번호
                                                 </th>

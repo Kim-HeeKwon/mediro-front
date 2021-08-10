@@ -1,4 +1,4 @@
-import {
+ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -234,10 +234,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      *
      * @param account
      */
-    toggleDetails(account: string): void
+    toggleDetails(account: string, accountType: string): void
     {
         // If the Account is already selected...
-        if ( this.selectedAccount && this.selectedAccount.account === account )
+        if ( this.selectedAccount && this.selectedAccount.account === account &&
+                    this.selectedAccount.accountType === accountType)
         {
             // Close the details
             this.closeDetails();
@@ -249,11 +250,10 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedAccountForm.controls['custBusinessNumber'].disable();
 
         // Get the product by account
-        this._accountService.getAccountsById(account)
+        this._accountService.getAccountsById(account, accountType)
             .subscribe((accountData) => {
                 // Set the selected Account
                 this.selectedAccount = accountData;
-
                 // Fill the form
                 // @ts-ignore
                 this.selectedAccountForm.patchValue(accountData);
@@ -286,6 +286,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this._accountService.getAccount(0,10,'account','asc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
     /**
      * Add a new note
@@ -344,9 +345,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
 
             popupUdi.afterClosed().subscribe((result) => {
-                if(result){
-                    console.log(result);
-                }
+                this.selectAccount();
             });
         }else{
             const d = this._matDialog.open(CommonUdiComponent, {
@@ -374,9 +373,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             d.afterClosed().subscribe((result) => {
                 smallDialogSubscription.unsubscribe();
-                if(result){
-                    console.log(result);
-                }
+                this.selectAccount();
             });
         }
     }

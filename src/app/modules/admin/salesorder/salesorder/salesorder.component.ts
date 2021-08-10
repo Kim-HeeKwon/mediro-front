@@ -38,13 +38,13 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         'soCreDate',
         'soDate',
         'soNo',
-        'account',
-        'accountNm',
         'type',
         'status',
+        /*'account',*/
+        'accountNm',
         'email',
-        'soAmt',
-        'remarkHeader',
+        /*'soAmt',
+        'remarkHeader',*/
         'obNo',
     ];
     selectedSalesOrderHeader: SalesOrderHeader = new SalesOrderHeader();

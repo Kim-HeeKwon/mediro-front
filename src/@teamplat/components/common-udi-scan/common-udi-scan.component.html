@@ -160,9 +160,9 @@
                         </td>
                     </ng-container>
 
-                    <ng-container *ngFor="let column of outBoundDetailsTable; let i=dataIndex;"
+                    <!--<ng-container *ngFor="let column of outBoundDetailsTable; let i=dataIndex;"
                                   [matColumnDef]="column.dataField">
-                        <!--<th
+                        &lt;!&ndash;<th
                             mat-header-cell
                             [hidden]="!column.display"
                             [width]="column.width"
@@ -171,7 +171,7 @@
                                 class="mediro-th mediro-th-display">
                                 <span mat-sort-header>{{column.headerText}}</span>
                             </div>
-                        </th>-->
+                        </th>&ndash;&gt;
 
                         <th
                             mat-header-cell
@@ -195,6 +195,49 @@
                                    [required]="true"
                                    [(ngModel)]="element[column.dataField]"
                                    [value]="element[column.dataField]">
+                        </td>
+
+                    </ng-container>-->
+                    <ng-container *ngFor="let column of outBoundDetailsTable; let i=dataIndex;"
+                                  [matColumnDef]="column.dataField">
+                        <th
+                            mat-header-cell
+                            [hidden]="!column.display"
+                            [width]="column.width"
+                            *matHeaderCellDef
+                            [resizeColumn]="true"
+                            [index]="i">
+                            <div
+                                class="mediro-th mediro-th-display">
+                                <span mat-sort-header>{{column.headerText}}</span>
+                            </div>
+                        </th>
+                        <td class="mediro-td"
+                            mat-cell
+                            [hidden]="!column.display"
+                            (dblclick)="cellClick(element,column,i)"
+                            (change)="updateRowData(element, column, i)"
+                            *matCellDef="let element; let i = dataIndex;">
+                            <input *ngIf="!column.combo"
+                                   class="mat-table-input"
+                                   [disabled]="column.disabled"
+                                   [style]="column.style"
+                                   [type]="column.type"
+                                   [required]="true"
+                                   [(ngModel)]="element[column.dataField]"
+                                   [value]="element[column.dataField]">
+                            <mat-select *ngIf="column.combo"
+                                        [value]="element[column.dataField]"
+                                        [(ngModel)]="element[column.dataField]"
+                                        [disabled]="column.disabled"
+                                        [style]="column.style"
+                                        placeholder="" >
+                                <ng-container *ngFor="let combo of getComboData(column)">
+                                    <mat-option [value]="combo.id">
+                                        {{combo.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
                         </td>
 
                     </ng-container>

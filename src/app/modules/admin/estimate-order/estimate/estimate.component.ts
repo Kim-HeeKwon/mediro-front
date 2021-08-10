@@ -37,13 +37,13 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         'qtCreDate',
         'qtDate',
         'qtNo',
-        'account',
-        'accountNm',
         'type',
         'status',
+        /*'account',*/
+        'accountNm',
         'email',
-        'qtAmt',
-        'remarkHeader',
+        /*'qtAmt',
+        'remarkHeader',*/
         'soNo',
     ];
     selectedEstimateHeader: EstimateHeader = new EstimateHeader();

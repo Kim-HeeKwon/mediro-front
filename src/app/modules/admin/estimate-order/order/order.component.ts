@@ -38,13 +38,13 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         'poCreDate',
         'poDate',
         'poNo',
-        'account',
-        'accountNm',
         'type',
         'status',
+        /*'account',*/
+        'accountNm',
         'email',
-        'poAmt',
-        'remarkHeader',
+        /*'poAmt',
+        'remarkHeader',*/
     ];
     selectedOrderHeader: OrderHeader = new OrderHeader();
     searchForm: FormGroup;

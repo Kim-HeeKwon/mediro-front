@@ -1,4 +1,3 @@
-
 <div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
     <mat-drawer-container class="flex-auto sm:h-full">
 
@@ -181,10 +180,12 @@
                                             <ng-container *ngFor="let column of supplyStatusTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">
                                                 <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     mat-header-cell
+                                                    *matHeaderCellDef
+                                                    disableClear
                                                     [hidden]="!column.display"
-                                                    [width]="column.width"
-                                                    *matHeaderCellDef>
+                                                    [width]="column.width">
                                                     <div
                                                         class="mediro-th mediro-th-display">
                                                         <span mat-sort-header>{{column.headerText}}</span>
@@ -230,7 +231,7 @@
 
                                     </div>
                                     <mat-paginator
-                                        class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                         [ngClass]="{'pointer-events-none': isLoading}"
                                         [length]="supplyStatusPagenation === null ? 0 : supplyStatusPagenation.length"
                                         [pageIndex]="supplyStatusPagenation === null ? 0 : supplyStatusPagenation.page"

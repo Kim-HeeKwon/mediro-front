@@ -223,7 +223,14 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                 if(rowData === undefined){
                     this._functionService.cfn_alert('데이터가 없습니다. 먼저 조회하세요.');
                 }else{
-                    //console.log(rowData);
+                    this._udiService.mergeAccount(rowData)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((salesOrder: any) => {
+                            this._functionService.cfn_alertCheckMessage(salesOrder);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                            this._matDialogRef.close();
+                        });
                 }
             }else{
                 this._functionService.cfn_alert('설정 정보가 존재하지 않습니다.');

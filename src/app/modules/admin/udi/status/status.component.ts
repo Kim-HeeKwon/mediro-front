@@ -38,11 +38,14 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     supplyStatusCount: number = 0;
     suplyFlagCode: CommonCode[] = null;
+    udiFlag: CommonCode[] = null;
+    suplyTypeCode: CommonCode[] = null;
 
     supplyStatusTableStyle: TableStyle = new TableStyle();
     supplyStatusTable: TableConfig[] = [
         {headerText : 'serialkey' , dataField : 'serialkey', width: 80, display : false, disabled : true, type: 'text'},
         {headerText : '공급구분' , dataField : 'suplyFlagCode', width: 80, display : true, disabled : true, type: 'text',combo: true},
+        {headerText : '공급형태' , dataField : 'suplyTypeCode', width: 120, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '품목일련번호' , dataField : 'meddevItemSeq', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '표준코드' , dataField : 'stdCode', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '로트번호' , dataField : 'lotNo', width: 100, display : true, disabled : true, type: 'text'},
@@ -51,15 +54,16 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         /*{headerText : '공급받은자' , dataField : 'bcncEntpName', width: 100, display : true, disabled : true, type: 'text'},*/
         {headerText : '공급일자' , dataField : 'suplyDate', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급수량' , dataField : 'suplyQty', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '공급단가' , dataField : 'suplyUntpc', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '공급금액' , dataField : 'suplyAmt', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '상태' , dataField : 'udiFlag', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '메세지' , dataField : 'message', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '공급단가' , dataField : 'suplyUntpc', width: 80, display : false, disabled : true, type: 'text'},
+        {headerText : '공급금액' , dataField : 'suplyAmt', width: 80, display : false, disabled : true, type: 'text'},
+        {headerText : '상태' , dataField : 'udiFlag', width: 80, display : true, disabled : true, type: 'text',combo: true},
+        {headerText : '메세지' , dataField : 'message', width: 80, display : false, disabled : true, type: 'text'},
     ];
     supplyStatusTableColumns: string[] = [
         /*'no',*/
         /*'serialkey',*/
         'suplyFlagCode',
+        'suplyTypeCode',
         'meddevItemSeq',
         'stdCode',
         'lotNo',
@@ -68,10 +72,10 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         /*'bcncEntpName',*/
         'suplyDate',
         'suplyQty',
-        'suplyUntpc',
-        'suplyAmt',
+        /*'suplyUntpc',
+        'suplyAmt',*/
         'udiFlag',
-        'message',
+        /*'message',*/
     ];
     searchForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -89,6 +93,8 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     ){
         this.isMobile = this._deviceService.isMobile();
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
+        this.udiFlag = _utilService.commonValue(_codeStore.getValue().data,'UDI_FLAG');
+        this.suplyTypeCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYTYPECODE');
     }
 
     ngOnInit(): void {
@@ -167,6 +173,10 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         let combo;
         if(column.dataField === 'suplyFlagCode'){
             combo = this.suplyFlagCode;
+        }else if(column.dataField === 'udiFlag'){
+            combo = this.udiFlag;
+        }else if(column.dataField === 'suplyTypeCode'){
+            combo = this.suplyTypeCode;
         }
         return combo;
     }

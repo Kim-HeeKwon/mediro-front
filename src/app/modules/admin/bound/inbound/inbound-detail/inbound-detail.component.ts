@@ -653,9 +653,15 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_alertCheckMessage(inBound);
+                    this.reloadDetail();
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    reloadDetail() {
+
     }
 }

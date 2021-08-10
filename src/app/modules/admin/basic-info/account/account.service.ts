@@ -135,7 +135,7 @@ export class AccountService {
     /**
      * Get product by id
      */
-    getAccountsById(account: string): Observable<AccountData>
+    getAccountsById(account: string, accountType: string): Observable<AccountData>
     {
         return this._accounts.pipe(
             take(1),
@@ -143,7 +143,8 @@ export class AccountService {
 
                 // Find the product
                 // @ts-ignore
-                const product = products.find(accountData => accountData.account === account) || null;
+                const product = products.find(accountData => (accountData.account === account &&
+                                                                accountData.accountType === accountType)) || null;
 
                 // Update the product
                 this._account.next(product);

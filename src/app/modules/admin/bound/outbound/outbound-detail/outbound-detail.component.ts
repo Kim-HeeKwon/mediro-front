@@ -556,7 +556,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             for(let i=0; i<result.length; i++){
                                 outBoundDataFilter.push(result[i]);
                             }
-                            console.log(outBoundDataFilter);
                             this.outBoundCall(outBoundDataFilter);
                         }
                     }
