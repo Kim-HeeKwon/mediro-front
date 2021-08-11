@@ -94,10 +94,19 @@ export class AuthSignUpComponent implements OnInit
      */
     signUp(): void
     {
-        console.log(this.signUpForm.value);
         // Do nothing if the form is invalid
         if ( this.signUpForm.invalid )
         {
+            console.log(this.signUpForm);
+            if(this.signUpForm.controls.agreements.status === 'INVALID'){
+                this.alert = {
+                    type   : 'error',
+                    message: '이용약관 및 정보처리방침에 동의해주세요.'
+                };
+
+                // Show the alert
+                this.showAlert = true;
+            }
             return;
         }
 
@@ -129,7 +138,6 @@ export class AuthSignUpComponent implements OnInit
                             .subscribe(
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (response) => {
-                                    console.log(response);
                                     if(response.status === 'SUCCESS'){
                                         this.showStep1 = false;
                                         this.showStep2 = true;
@@ -139,22 +147,20 @@ export class AuthSignUpComponent implements OnInit
                                     // this._router.navigateByUrl('/confirmation-required');
                                 },
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                                (response) => {
+                                (err) => {
+                                    // Set the alert
+                                    this.alert = {
+                                        type   : 'error',
+                                        message: '이미 가입한 사업자번호 입니다. 관리자에게 문의하여주세요.'
+                                    };
 
+                                    // Show the alert
+                                    this.showAlert = true;
                                     // Re-enable the form
                                     this.signUpForm.enable();
 
                                     // Reset the form
                                     this.signUpNgForm.resetForm();
-
-                                    // Set the alert
-                                    this.alert = {
-                                        type   : 'error',
-                                        message: 'Something went wrong, please try again.'
-                                    };
-
-                                    // Show the alert
-                                    this.showAlert = true;
                                 }
                             );
                     }

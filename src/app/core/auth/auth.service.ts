@@ -83,8 +83,13 @@ export class AuthService
      *
      * @param email
      */
-    forgotPassword(email: string): Observable<any>
+    forgotPassword(email: string, phone?: number): Observable<any>
     {
+        const param = {
+            email : email,
+            phone : phone
+        };
+
         return this._httpClient.post('api/auth/forgot-password', email);
     }
 

@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import {Router} from "@angular/router";
 
 @Component({
     selector     : 'auth-forgot-password',
@@ -20,12 +21,16 @@ export class AuthForgotPasswordComponent implements OnInit
         message: ''
     };
     forgotPasswordForm: FormGroup;
+    userForm: FormGroup;
     showAlert: boolean = false;
+    showStep1: boolean = true;
+    showStep2: boolean = false;
 
     /**
      * Constructor
      */
     constructor(
+        private _router: Router,
         private _authService: AuthService,
         private _formBuilder: FormBuilder
     )
@@ -43,7 +48,15 @@ export class AuthForgotPasswordComponent implements OnInit
     {
         // Create the form
         this.forgotPasswordForm = this._formBuilder.group({
-            email: ['', [Validators.required, Validators.email]]
+            email: ['', [Validators.required, Validators.email]],
+            phone: ['', Validators.required],
+        });
+
+        // Create the userForm
+        this.userForm = this._formBuilder.group({
+            email: ['', [Validators.required, Validators.email]],
+            phone     : ['', Validators.required],
+            randomNumber : ['']
         });
     }
 
@@ -56,6 +69,10 @@ export class AuthForgotPasswordComponent implements OnInit
      */
     sendResetLink(): void
     {
+        //test
+        this.showStep1 = false;
+        this.showStep2 = true;
+
         // Return if the form is invalid
         if ( this.forgotPasswordForm.invalid )
         {
@@ -89,7 +106,7 @@ export class AuthForgotPasswordComponent implements OnInit
                     // Set the alert
                     this.alert = {
                         type   : 'success',
-                        message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
+                        message: '해당 이메일로 비밀번호 변경 링크를 발송하였습니다. 이메일 링크를 확인해주세요.'
                     };
                 },
                 (response) => {
@@ -97,9 +114,18 @@ export class AuthForgotPasswordComponent implements OnInit
                     // Set the alert
                     this.alert = {
                         type   : 'error',
-                        message: 'Email does not found! Are you sure you are already a member?'
+                        message: '가입하신 이메일 정보를 찾을 수 없습니다. 다시 확인해 주세요.'
                     };
                 }
             );
     }
+
+    sendRandomValue(): void {
+        this._router.navigate(['reset-password']);
+    }
+
+    sendSms(): void {
+
+    }
+
 }
