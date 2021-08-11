@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../providers/common/common';
 import {UdiPagenation} from './common-udi.types';
-import {map, switchMap, take} from 'rxjs/operators';
+import {map, mergeMap, retry, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -73,6 +73,7 @@ export class CommonUdiService{
         // @ts-ignore
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/udi/' + search.mediroUrl)
+                .pipe(retry(2))
                 .subscribe((response: any) => {
                     if(response.status === 'SUCCESS'){
                         this._status.next(response.status);
@@ -84,6 +85,7 @@ export class CommonUdiService{
                         this._msg.next(response.msg);
                     }
                 }, reject);
+
         });
     }
 

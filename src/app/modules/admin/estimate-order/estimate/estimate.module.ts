@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import { EstimateComponent } from './estimate.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -61,6 +61,7 @@ const estimateRoutes: Route[] = [
     EstimateDetailComponent,
     EstimateNewComponent
   ],
+    providers :[CurrencyPipe],
     imports: [
         CommonModule,
         RouterModule.forChild(estimateRoutes),

@@ -25,7 +25,11 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatTable} from '@angular/material/table';
-import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
+import {
+    DataPipe,
+    TableConfig,
+    TableStyle
+} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
@@ -70,12 +74,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateDetailsTableStyle: TableStyle = new TableStyle();
     estimateDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'qtLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
-        {headerText : '단가' , dataField : 'qtPrice', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
+        {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right, validators: true},
+        {headerText : '단가' , dataField : 'qtPrice', width: 50, display : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right, validators: true},
         {headerText : '견적금액' , dataField : 'qtAmt', width: 50, display : true, disabled : true, type: 'number', style: this.estimateDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
@@ -211,6 +215,21 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
      *
      */
     saveEstimate(): void{
+        const status = this.estimateHeaderForm.controls['status'].value;
+
+        //확정은 불가능
+        if(status === 'CF'){
+            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            return;
+        }
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.estimateDetails$,
+            this.estimateDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         if(!this.estimateHeaderForm.invalid){
             this.showAlert = false;
@@ -380,6 +399,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     transactionRow(action,row) {
+
+        const status = this.estimateHeaderForm.controls['status'].value;
+
+        //확정은 불가능
+        if(status === 'CF'){
+            this._functionService.cfn_alert('추가나 삭제가 불가능합니다.');
+            return false;
+        }
         if(action === 'ADD'){
 
             this.addRowData(row);
@@ -510,32 +537,58 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
-        if(column.dataField === 'itemCd'){
 
-            const popup =this._matDialogPopup.open(CommonPopupComponent, {
-                data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
-                },
-                autoFocus: false,
-                maxHeight: '90vh',
-                disableClose: true
-            });
+        const disableList = [
+            'itemCd',
+            'itemNm',
+            'standard',
+            'unit',
+            'qty',
+            'qtPrice',
+            'qtAmt',
+            'remarkDetail',
+        ];
+        const enableList = [
+            'qty',
+            'qtPrice',
+        ];
+        const status = this.estimateHeaderForm.controls['status'].value;
+        this._functionService.cfn_cellDisable(column,disableList);
 
-            popup.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        element.standard = result.standard;
-                        element.unit = result.unit;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
-                    }
+        //확정은 불가능
+        if(status !== 'CF'){
+            this._functionService.cfn_cellEnable(column,enableList);
+        }
+
+        if(element.flag !== undefined && element.flag === 'C'){
+            if(column.dataField === 'itemCd'){
+
+                const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup : 'P$_ALL_ITEM',
+                        headerText : '품목 조회',
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
                 });
+
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
         }
     }
+
 }

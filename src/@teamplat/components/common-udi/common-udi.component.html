@@ -44,7 +44,7 @@
                 <div class="col-span-1 sm:col-span-2" [ngStyle]="{'margin':'-10px'}" >
                 </div>
                 <div class="sm:col-span-2">
-                    <button
+                    <button *ngIf="merge"
                         class="w-full"
                         mat-flat-button
                         [color]="'primary'"
