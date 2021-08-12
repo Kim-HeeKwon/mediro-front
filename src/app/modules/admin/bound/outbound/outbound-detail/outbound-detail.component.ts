@@ -37,9 +37,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     outBoundDetailsTableStyle: TableStyle = new TableStyle();
     outBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'obLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '출고수량' , dataField : 'obQty', width: 60, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
@@ -109,8 +109,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             type: [{value:'',disabled:true}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             dlvAccount: [{value:'',disabled:true}],   // 배송처
-            dlvAddress: [{value:'',disabled:true}, [Validators.required]],   // 배송처 주소
-            dlvDate: [{value:'',disabled:true}, [Validators.required]],//작성일
+            dlvAddress: [{value:'',disabled:true}],   // 배송처 주소
+            dlvDate: [{value:'',disabled:true}, [Validators.required]],//배송일
             obCreDate: [{value:'',disabled:true}],//작성일
             obDate: [{value:'',disabled:true}], //출고일
             remarkHeader: [''], //비고
@@ -195,6 +195,22 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     saveOut() {
+
+        const status = this.outBoundHeaderForm.controls['status'].value;
+
+        //신규가 아니면 불가능
+        if(status !== 'N'){
+            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            return;
+        }
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.outBoundDetails$,
+            this.outBoundDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         const saveConfirm =this._matDialog.open(SaveAlertComponent, {
             data: {
@@ -331,30 +347,59 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
-        if(column.dataField === 'itemCd'){
+        const disableList = [
+            'itemCd',
+            'itemNm',
+            'obExpQty',
+            'qty',
+            'obQty',
+            'remarkDetail',
+        ];
+        const enableList = [
+            'obExpQty',
+        ];
 
-            const popup =this._matDialogPopup.open(CommonPopupComponent, {
-                data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
-                },
-                autoFocus: false,
-                maxHeight: '90vh',
-                disableClose: true
-            });
+        const enableListOutBound = [
+            'qty',
+        ];
+        const status = this.outBoundHeaderForm.controls['status'].value;
+        this._functionService.cfn_cellDisable(column,disableList);
 
-            popup.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
-                    }
+        //신규만 가능
+        if(status === 'N'){
+            this._functionService.cfn_cellEnable(column,enableList);
+        }
+
+        //신규, 부분출고 가능
+        if(status === 'N' || status === 'P'){
+            this._functionService.cfn_cellEnable(column,enableListOutBound);
+        }
+        if(element.flag !== undefined && element.flag === 'C') {
+            if(column.dataField === 'itemCd'){
+
+                const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup : 'P$_ALL_ITEM',
+                        headerText : '품목 조회',
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
                 });
+
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
         }
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -365,6 +410,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     transactionRow(action, row) {
+        const status = this.outBoundHeaderForm.controls['status'].value;
+
+        //신규가 아니면 불가능
+        if(status !== 'N'){
+            this._functionService.cfn_alert('추가나 삭제가 불가능합니다.');
+            return false;
+        }
         if(action === 'ADD'){
 
             this.addRowData(row);

@@ -60,9 +60,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     outBoundDetailsTableStyle: TableStyle = new TableStyle();
     outBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'obLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
+        {headerText : '출고대상수량' , dataField : 'obExpQty', width: 50, display : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, disabled : true, type: 'number', style: this.outBoundDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
@@ -114,8 +114,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             type: [{value:''}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             dlvAccount: [{value:''}],   // 배송처
-            dlvAddress: [{value:''}, [Validators.required]],   // 배송처 주소
-            dlvDate: [{value:''}, [Validators.required]],//작성일
+            dlvAddress: [{value:''}],   // 배송처 주소
+            dlvDate: [{value:''}, [Validators.required]],//배송일
             obCreDate: [{value:'',disabled:true}],//작성일
             obDate: [{value:'',disabled:true}], //출고일
             remarkHeader: [''], //비고
@@ -201,6 +201,14 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      *
      */
     saveOut(): void{
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.outBoundDetails$,
+            this.outBoundDetailsTable);
+
+        if(validCheck){
+            return;
+        }
         if(!this.outBoundHeaderForm.invalid){
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',

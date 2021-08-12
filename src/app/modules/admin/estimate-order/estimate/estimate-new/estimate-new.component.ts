@@ -197,6 +197,14 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveEstimate(): void{
 
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.estimateDetails$,
+            this.estimateDetailsTable);
+
+        if(validCheck){
+            return;
+        }
+
         if(!this.estimateHeaderForm.invalid){
             this.showAlert = false;
 

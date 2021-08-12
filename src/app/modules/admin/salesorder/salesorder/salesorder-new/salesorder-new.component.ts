@@ -64,13 +64,13 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     salesorderDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'soLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
-        {headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
-        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
+        {headerText : '요청수량' , dataField : 'reqQty', width: 70, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
+        /*{headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},*/
+        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '주문금액' , dataField : 'soAmt', width: 50, display : true, disabled : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
@@ -84,7 +84,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         'standard',
         'unit',
         'reqQty',
-        'qty',
+        /*'qty',*/
         'unitPrice',
         'soAmt',
         'remarkDetail',
@@ -205,6 +205,14 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
      *
      */
     saveSalesOrder(): void{
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.salesorderDetails$,
+            this.salesorderDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         if(!this.salesorderHeaderForm.invalid){
             this.showAlert = false;
@@ -420,6 +428,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
+
         if(column.dataField === 'itemCd'){
 
             const popup =this._matDialogPopup.open(CommonPopupComponent, {

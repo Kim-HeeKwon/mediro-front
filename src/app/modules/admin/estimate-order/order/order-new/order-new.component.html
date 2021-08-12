@@ -84,14 +84,14 @@
                                                     [formControlName]="'poNo'">
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>거래처 코드</mat-label>
+                                                <mat-label>거래처 코드<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <input
                                                     matInput
                                                     [formControlName]="'account'"
                                                     (click)="openAccountSearch()">
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>거래처 명</mat-label>
+                                                <mat-label>거래처 명<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <input
                                                     matInput
                                                     [formControlName]="'accountNm'">
@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="flex">
                                             <mat-form-field class="w-1/6 pr-2">
-                                                <mat-label>유형</mat-label>
+                                                <mat-label>유형<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <mat-select [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
                                                         <mat-option [value]="type.id">
@@ -109,7 +109,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="w-1/6 pr-2">
-                                                <mat-label>상태</mat-label>
+                                                <mat-label>상태<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <mat-select [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
@@ -140,7 +140,7 @@
                                                        [formControlName]="'poDate'">
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>이메일</mat-label>
+                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'email'">
@@ -232,9 +232,18 @@
                                         [hidden]="!column.display"
                                         [width]="column.width"
                                         *matHeaderCellDef>
-                                        <div
-                                            class="mediro-th mediro-th-display">
-                                            <span mat-sort-header>{{column.headerText}}</span>
+                                        <div *ngIf="column.validators"
+                                             class="mediro-th mediro-th-display">
+                                            <span mat-sort-header>
+                                                {{column.headerText}}
+                                                <mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="!column.validators"
+                                             class="mediro-th mediro-th-display">
+                                            <span mat-sort-header>
+                                                {{column.headerText}}
+                                            </span>
                                         </div>
                                     </th>
                                     <td class="mediro-td"

@@ -61,12 +61,12 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundDetailsTableStyle: TableStyle = new TableStyle();
     inBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 60, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 60, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '품목등급' , dataField : 'itemGrade', width: 60, display : true, disabled : true, type: 'text',combo:true},
         {headerText : '규격' , dataField : 'standard', width: 60, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 60, display : true, disabled : true, type: 'text'},
-        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '수량' , dataField : 'qty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '금액' , dataField : 'totalAmt', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
@@ -221,6 +221,14 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      *
      */
     saveIn(): void{
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.inBoundDetails$,
+            this.inBoundDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         if(!this.inBoundHeaderForm.invalid){
 

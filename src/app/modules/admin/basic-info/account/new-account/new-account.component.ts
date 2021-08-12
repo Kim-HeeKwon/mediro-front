@@ -83,7 +83,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             udiHptlSymbl: [''],
             descr: ['', [Validators.required]],   // 거래처 명
             accountType: ['', [Validators.required]],   // 유형
-            custBusinessNumber : [[Validators.required]],
+            custBusinessNumber : ['',[Validators.required]],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],

@@ -64,13 +64,13 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     orderDetailsTableStyle: TableStyle = new TableStyle();
     orderDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'poLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
+        {headerText : '요청수량' , dataField : 'reqQty', width: 70, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right,validators: true},
         /*{headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},*/
-        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
+        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '발주금액' , dataField : 'poAmt', width: 50, display : true, disabled : true, type: 'number', style: this.orderDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
@@ -186,6 +186,14 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
      *
      */
     saveOrder(): void{
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.orderDetails$,
+            this.orderDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         if(!this.orderHeaderForm.invalid){
             this.showAlert = false;

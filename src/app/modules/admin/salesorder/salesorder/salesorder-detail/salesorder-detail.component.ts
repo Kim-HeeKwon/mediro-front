@@ -64,13 +64,13 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     salesorderDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'soLineNo', display : false},
-        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text'},
+        {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : true, type: 'text',validators: true},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
+        {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
-        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
+        {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '주문금액' , dataField : 'soAmt', width: 50, display : true, disabled : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
@@ -197,6 +197,22 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
      *
      */
     saveSalesOrder(): void{
+
+        const status = this.salesorderHeaderForm.controls['status'].value;
+
+        //신규가 아니면 불가능
+        if(status !== 'N'){
+            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            return;
+        }
+
+        const validCheck = this._functionService.cfn_validator('상세정보',
+            this.salesorderDetails$,
+            this.salesorderDetailsTable);
+
+        if(validCheck){
+            return;
+        }
 
         if(!this.salesorderHeaderForm.invalid){
             this.showAlert = false;
@@ -358,6 +374,14 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     transactionRow(action,row) {
+        const status = this.salesorderHeaderForm.controls['status'].value;
+
+        //신규가 아니면 불가능
+        if(status !== 'N'){
+            this._functionService.cfn_alert('추가나 삭제가 불가능합니다.');
+            return false;
+        }
+
         if(action === 'ADD'){
 
             this.addRowData(row);
@@ -484,32 +508,65 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
-        if(column.dataField === 'itemCd'){
+        const disableList = [
+            'itemCd',
+            'itemNm',
+            'standard',
+            'unit',
+            'reqQty',
+            'qty',
+            'unitPrice',
+            'soAmt',
+            'remarkDetail',
+        ];
+        const enableList = [
+            'reqQty',
+            'unitPrice',
+        ];
+        const enableListSalesOrder = [
+            'qty',
+        ];
+        const status = this.salesorderHeaderForm.controls['status'].value;
+        this._functionService.cfn_cellDisable(column,disableList);
 
-            const popup =this._matDialogPopup.open(CommonPopupComponent, {
-                data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
-                },
-                autoFocus: false,
-                maxHeight: '90vh',
-                disableClose: true
-            });
-
-            popup.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        element.standard = result.standard;
-                        element.unit = result.unit;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
-                    }
-                });
+        //신규만 가능
+        if(status === 'N'){
+            this._functionService.cfn_cellEnable(column,enableList);
         }
+
+        if(status !== 'N'){
+            this._functionService.cfn_cellEnable(column,enableListSalesOrder);
+        }
+
+        if(element.flag !== undefined && element.flag === 'C'){
+            if(column.dataField === 'itemCd'){
+
+                const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup : 'P$_ALL_ITEM',
+                        headerText : '품목 조회',
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
+
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
+        }
+
     }
 }
