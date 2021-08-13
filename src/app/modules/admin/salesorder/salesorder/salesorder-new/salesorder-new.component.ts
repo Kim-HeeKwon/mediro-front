@@ -56,6 +56,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     filterList: string[];
+    estimateHeader: any;
+    estimateDetail: any;
 
     salesorderDetailPagenation: SalesOrderDetailPagenation | null = null;
     salesorderDetails$ = new Observable<SalesOrderDetail[]>();
@@ -107,6 +109,22 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'SO_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'SO_STATUS', this.filterList);
+
+        if(this._router.getCurrentNavigation() !== (null && undefined)){
+
+            if(this._router.getCurrentNavigation().extras.state !== undefined){
+                if(this._router.getCurrentNavigation().extras.state.header !== undefined
+                    && this._router.getCurrentNavigation().extras.state.detail !== undefined){
+                    //console.log(this._router.getCurrentNavigation().extras.state.header);
+                    const header = this._router.getCurrentNavigation().extras.state.header;
+                    const detail = this._router.getCurrentNavigation().extras.state.detail;
+                    this.estimateHeader = header;
+                    this.estimateDetail = detail;
+                }
+            }
+
+            this._changeDetectorRef.markForCheck();
+        }
     }
     /**
      * On init
@@ -130,7 +148,6 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         this._salesorderService.getNew(0,10,'','asc', {});
         this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
-
         this._salesorderService.salesorderDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((salesorderDetail: any) => {
@@ -151,11 +168,44 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             });
 
-        this.salesorderHeaderForm.patchValue({'account': ''});
-        this.salesorderHeaderForm.patchValue({'type': '1'});
-        this.salesorderHeaderForm.patchValue({'status': 'N'});
-        this.salesorderHeaderForm.patchValue({'obNo': ''});
-        this.salesorderHeaderForm.patchValue({'remarkHeader': ''});
+        if(this.estimateHeader !== undefined){
+            this.salesorderHeaderForm.patchValue({'account': this.estimateHeader.account});
+            this.salesorderHeaderForm.patchValue({'accountNm': this.estimateHeader.accountNm});
+            this.salesorderHeaderForm.patchValue({'type': '1'});
+            this.salesorderHeaderForm.patchValue({'status': 'N'});
+            this.salesorderHeaderForm.patchValue({'obNo': ''});
+            this.salesorderHeaderForm.patchValue({'remarkHeader': this.estimateHeader.remarkHeader});
+        }else{
+            this.salesorderHeaderForm.patchValue({'account': ''});
+            this.salesorderHeaderForm.patchValue({'type': '1'});
+            this.salesorderHeaderForm.patchValue({'status': 'N'});
+            this.salesorderHeaderForm.patchValue({'obNo': ''});
+            this.salesorderHeaderForm.patchValue({'remarkHeader': ''});
+        }
+
+        if(this.estimateDetail !== undefined){
+            this.salesorderDetails$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((salesorderDetail) => {
+                    this.estimateDetail.forEach((estimateDetail: any) => {
+                        salesorderDetail.push({
+                            no: estimateDetail.length + 1,
+                            flag: 'C',
+                            itemCd: estimateDetail.itemCd,
+                            itemNm: estimateDetail.itemNm,
+                            standard: estimateDetail.standard,
+                            unit: estimateDetail.unit,
+                            soLineNo: estimateDetail.qtLineNo,
+                            unitPrice: estimateDetail.qtPrice,
+                            reqQty: estimateDetail.qty,
+                            qty: 0,
+                            soAmt:estimateDetail.qtAmt,
+                            remarkDetail: estimateDetail.remarkDetail,
+                        });
+                    });
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
 
     /**

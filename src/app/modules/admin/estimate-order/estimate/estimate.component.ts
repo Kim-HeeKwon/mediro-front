@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {merge, Observable, Subject} from 'rxjs';
-import {Estimate, EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
+import {Estimate, EstimateDetail, EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
 import {EstimateService} from './estimate.service';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
@@ -29,6 +29,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     estimateHeaders$: Observable<EstimateHeader[]>;
+    estimateDetails$ = new Observable<EstimateDetail[]>();
     estimateHeaderPagenation: EstimateHeaderPagenation | null = null;
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
@@ -43,10 +44,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         'status',
         /*'account',*/
         'accountNm',
-        'email',
+        /*'email',*/
         /*'qtAmt',
         'remarkHeader',*/
-        'soNo',
+        /*'soNo',*/
+        'poCreate',
+        'soCreate',
     ];
     selectedEstimateHeader: EstimateHeader = new EstimateHeader();
     searchForm: FormGroup;
@@ -415,6 +418,98 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     selectClear() {
         this.selection.clear();
         this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    order(estimateHeader) {
+        const status = estimateHeader.status;
+
+        if(status !== 'CF'){
+            this._functionService.cfn_alert('확정만 가능합니다. 다시 조회하세요.');
+            return;
+        }
+
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '',
+            message: '발주를 생성하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._estimateService.getDetail(0,10,'qtLineNo','asc',estimateHeader);
+
+                    this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    this._estimateService.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((estimateDetail: any) => {
+                            if(estimateDetail != null){
+                                const row = {header : estimateHeader , detail : estimateDetail};
+                                this._router.navigate(['estimate-order/order/order-new'],{state : {'header' :estimateHeader , 'detail' : estimateDetail}});
+                            }
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }else{
+                    this.selectHeader();
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    salesorder(estimateHeader) {
+        const status = estimateHeader.status;
+
+        if(status !== 'CF'){
+            this._functionService.cfn_alert('확정만 가능합니다. 다시 조회하세요.');
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '',
+            message: '주문을 생성하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._estimateService.getDetail(0,10,'qtLineNo','asc',estimateHeader);
+
+                    this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    this._estimateService.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((estimateDetail: any) => {
+                            if(estimateDetail != null){
+                                const row = {header : estimateHeader , detail : estimateDetail};
+                                this._router.navigate(['salesorder/salesorder/salesorder-new'],{state : {'header' :estimateHeader , 'detail' : estimateDetail}});
+                            }
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }else{
+                    this.selectHeader();
+                }
+            });
     }
 
 }

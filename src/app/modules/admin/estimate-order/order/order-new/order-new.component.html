@@ -1,6 +1,12 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden dark:bg-transparent">
     <!-- Header -->
     <div class="dark bg-card dark:border-b">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
             <div class="flex flex-row sm:flex-row flex-auto sm:items-center min-w-0 my-5 sm:my-5">
                 <!-- Avatar and name -->
@@ -274,8 +280,7 @@
                             </table>
 
                             <mat-paginator
-                                style="position: sticky;"
-                                class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                 [ngClass]="{'pointer-events-none': isLoading}"
                                 [length]="0"
                                 [pageIndex]="0"

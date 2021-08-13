@@ -79,4 +79,18 @@ export class ManagesService {
                 }, reject);
         });
     }
+
+    updateSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
+
+        return this._common.listPut('v1/api/udi/supply-info', manages).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+
+    deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
+
+        return this._common.listDelete('v1/api/udi/supply-info', manages).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
 }

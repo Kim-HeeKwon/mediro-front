@@ -51,11 +51,18 @@
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pl-4 pr-4">
-                                <input
+                                <!--<input
                                     matInput
                                     [formControlName]="'searchText'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'검색조건을 선택해주세요.'">
+                                    [placeholder]="'검색조건을 선택해주세요.'">-->
+                                <ng-container *ngFor="let searchCondition of searchCondition">
+                                    <input
+                                        matInput
+                                        [formControlName]="'searchText'"
+                                        [autocomplete]="'off'"
+                                        [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
+                                </ng-container>
                             </mat-form-field>
                         </div>
                     </div>
@@ -160,11 +167,18 @@
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                                        <input
+                                        <!--<input
                                             matInput
                                             [formControlName]="'searchText'"
                                             [autocomplete]="'off'"
-                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                            [placeholder]="'검색조건을 선택해주세요.'">-->
+                                        <ng-container *ngFor="let searchCondition of searchCondition">
+                                            <input
+                                                matInput
+                                                [formControlName]="'searchText'"
+                                                [autocomplete]="'off'"
+                                                [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
+                                        </ng-container>
                                     </mat-form-field>
                                 </form>
                             </div>
@@ -455,7 +469,7 @@
                                             <tr
                                                 class="h-14 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                (click)="selectClickRow(orderHeader)"
+                                                (dblclick)="selectClickRow(orderHeader)"
                                                 *matRowDef="let orderHeader; columns: salesorderHeadersTableColumns;"></tr>
                                             <!--(dblclick)="selectDoubleClickRow(orderHeader)"-->
 

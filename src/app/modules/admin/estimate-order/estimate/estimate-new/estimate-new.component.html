@@ -1,6 +1,12 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden dark:bg-transparent">
     <!-- Header -->
     <div class="dark bg-card dark:border-b">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
             <div class="flex flex-row sm:flex-row flex-auto sm:items-center min-w-0 my-5 sm:my-5">
                 <!-- Avatar and name -->
@@ -34,13 +40,13 @@
         </div>
     </div>
     <!-- Main -->
-    <div class="flex flex-auto overflow-hidden" >
+    <div class="flex flex-auto overflow-hidden">
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
-            <mat-tab-group
-                           [animationDuration]="'0'"
+            <mat-tab-group class="flex flex-col flex-auto overflow-hidden"
                            [color]="'accent'"
-                           [backgroundColor]="'accent'">
-                <mat-tab class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover" label="상세 정보">
+                           [backgroundColor]="'accent'"
+                           [animationDuration]="'0'">
+                <mat-tab label="상세 정보">
                     <div class="flex pt-4 pl-4 pr-4 bg-card">
                         <!-- Selected product form -->
                         <form
@@ -98,12 +104,12 @@
                                                        matInput
                                                        [formControlName]="'qtAmt'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
+                                            <!--<mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>주문 번호</mat-label>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'soNo'">
-                                            </mat-form-field>
+                                            </mat-form-field>-->
                                         </div>
                                         <div class="flex">
                                             <mat-form-field class="w-1/6 pr-2">
@@ -141,10 +147,6 @@
                             리스트
                         </div>
                         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-<!--                            <button mat-button-->
-<!--                                    class="mr-2"-->
-<!--                                    mat-flat-button-->
-<!--                                    (click)="transactionRow('ADD',selection)" mat-flat-button color="accent">+</button>-->
                             <mat-icon
                                 class="icon-size-7 mr-3"
                                 [svgIcon]="'heroicons_outline:plus-circle'"

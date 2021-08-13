@@ -44,9 +44,11 @@
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
             <mat-tab-group class="flex flex-col flex-auto overflow-hidden"
                            [color]="'accent'"
-                           [backgroundColor]="'accent'">
-                <mat-tab label="상세 정보">
-                    <div class="flex pt-4 pl-4 pr-4">
+                           [backgroundColor]="'accent'"
+                           [animationDuration]="'0'">
+                <mat-tab class="px-4 py-2 rounded-tl-xl overflow-hidden bg-hover"
+                         label="상세 정보">
+                    <div class="flex pt-4 pl-4 pr-4 bg-card">
                         <!-- Selected product form -->
                         <form
                             class="flex flex-col w-full"
@@ -135,7 +137,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
                         <div class="flex-row text-1xl font-extrabold tracking-tight">
                             리스트
                         </div>
@@ -153,7 +155,7 @@
                         </div>
                     </div>
                     <!-- Table wrapper -->
-                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden bg-card">
 
                         <div
                             class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
@@ -252,8 +254,7 @@
                             </table>
 
                             <mat-paginator
-                                style="position: sticky;"
-                                class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                 [ngClass]="{'pointer-events-none': isLoading}"
                                 [length]="0"
                                 [pageIndex]="0"

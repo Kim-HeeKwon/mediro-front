@@ -56,6 +56,8 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     filterList: string[];
+    estimateHeader: any;
+    estimateDetail: any;
 
     orderDetailPagenation: OrderDetailPagenation | null = null;
     orderDetails$ = new Observable<OrderDetail[]>();
@@ -106,6 +108,22 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_STATUS', this.filterList);
+        if(this._router.getCurrentNavigation() !== (null && undefined)){
+
+            if(this._router.getCurrentNavigation().extras.state !== undefined){
+                if(this._router.getCurrentNavigation().extras.state.header !== undefined
+                    && this._router.getCurrentNavigation().extras.state.detail !== undefined){
+                    //console.log(this._router.getCurrentNavigation().extras.state.header);
+                    const header = this._router.getCurrentNavigation().extras.state.header;
+                    const detail = this._router.getCurrentNavigation().extras.state.detail;
+                    this.estimateHeader = header;
+                    this.estimateDetail = detail;
+                }
+            }
+
+            this._changeDetectorRef.markForCheck();
+        }
+
     }
 
     /**
@@ -151,10 +169,47 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             });
 
-        this.orderHeaderForm.patchValue({'account': ''});
-        this.orderHeaderForm.patchValue({'type': '1'});
-        this.orderHeaderForm.patchValue({'status': 'N'});
-        this.orderHeaderForm.patchValue({'remarkHeader': ''});
+        if(this.estimateHeader !== undefined){
+
+            this.orderHeaderForm.patchValue({'account': this.estimateHeader.account});
+            this.orderHeaderForm.patchValue({'accountNm': this.estimateHeader.accountNm});
+            this.orderHeaderForm.patchValue({'email': this.estimateHeader.email});
+            this.orderHeaderForm.patchValue({'type': '1'});
+            this.orderHeaderForm.patchValue({'status': 'N'});
+            this.orderHeaderForm.patchValue({'remarkHeader': this.estimateHeader.remarkHeader});
+
+        }else{
+
+            this.orderHeaderForm.patchValue({'account': ''});
+            this.orderHeaderForm.patchValue({'type': '1'});
+            this.orderHeaderForm.patchValue({'status': 'N'});
+            this.orderHeaderForm.patchValue({'remarkHeader': ''});
+        }
+
+        if(this.estimateDetail !== undefined){
+            this.orderDetails$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((orderDetail) => {
+                    this.estimateDetail.forEach((estimateDetail: any) => {
+                        orderDetail.push({
+                            no: estimateDetail.length + 1,
+                            flag: 'C',
+                            itemCd: estimateDetail.itemCd,
+                            itemNm: estimateDetail.itemNm,
+                            standard: estimateDetail.standard,
+                            unit: estimateDetail.unit,
+                            poLineNo: estimateDetail.qtLineNo,
+                            unitPrice: estimateDetail.qtPrice,
+                            reqQty: estimateDetail.qty,
+                            qty: 0,
+                            poQty: 0,
+                            poAmt:estimateDetail.qtAmt,
+                            remarkDetail: estimateDetail.remarkDetail,
+                        });
+                    });
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
     /**
      * After view init

@@ -84,3 +84,12 @@ input[type="number"]::-webkit-inner-spin-button {
     text-align: right;
 }
 
+
+.mediro-height-full{
+    height: calc(100% - 160px) !important;
+}
+
+.mediro-flex-right{
+    margin-left: auto !important;
+    padding-right: 20px;
+}

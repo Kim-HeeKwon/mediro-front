@@ -15,6 +15,7 @@ import {TableConfig, TableStyle} from '../../../../../@teamplat/components/commo
 import {ManagesService} from './manages.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 
 @Component({
     selector: 'app-manages',
@@ -44,6 +45,8 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     managesTableStyle: TableStyle = new TableStyle();
     managesTable: TableConfig[] = [
         {headerText : '공급구분' , dataField : 'suplyFlagCode', width: 80, display : true, disabled : true, type: 'text',combo: true},
+        {headerText : '공급형태' , dataField : 'suplyTypeCode', width: 120, display : true, disabled : true, type: 'text',combo: true},
+        {headerText : '보고자료 일련번호' , dataField : 'suplyContSeq', width: 100, display : false, disabled : true, type: 'text'},
         {headerText : '품목일련번호' , dataField : 'meddevItemSeq', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '표준코드' , dataField : 'stdCode', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '로트번호' , dataField : 'lotNo', width: 100, display : true, disabled : true, type: 'text'},
@@ -56,8 +59,11 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '공급금액' , dataField : 'suplyAmt', width: 80, display : true, disabled : true, type: 'text'},
     ];
     managesTableColumns: string[] = [
+        'select',
         /*'no',*/
         'suplyFlagCode',
+        'suplyTypeCode',
+        /*'suplyContSeq',*/
         'meddevItemSeq',
         'stdCode',
         'lotNo',
@@ -71,6 +77,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
     month: CommonCode[] = null;
     year: CommonCode[] = null;
+    suplyTypeCode: CommonCode[] = null;
     suplyFlagCode: CommonCode[] = null;
     searchForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -83,12 +90,14 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
         private _functionService: FunctionService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private readonly breakpointObserver: BreakpointObserver,
         private _deviceService: DeviceDetectorService,
     ) {
         this.isMobile = this._deviceService.isMobile();
         this.month = _utilService.commonValue(_codeStore.getValue().data,'MONTH');
         this.year = _utilService.commonValue(_codeStore.getValue().data,'YEAR');
+        this.suplyTypeCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYTYPECODE');
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
     }
 
@@ -208,6 +217,8 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         let combo;
         if(column.dataField === 'suplyFlagCode'){
             combo = this.suplyFlagCode;
+        }else if(column.dataField === 'suplyTypeCode'){
+            combo = this.suplyTypeCode;
         }
         return combo;
     }
@@ -227,10 +238,129 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         const day = this.searchForm.getRawValue().year + this.searchForm.getRawValue().month;
         this.searchForm.patchValue({'suplyContStdmt': day});
         this._managesService.getHeader(0,100,'','asc',this.searchForm.getRawValue());
+        this.selectClear();
+    }
 
-        this._managesService.manages$
+
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    masterToggle(): SelectionModel<any> {
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            return;
+        }
+        this.manages$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((manages: any) => {
+            .subscribe((manages) =>{
+                this.selection.select(...manages);
             });
+    }
+
+    /** Whether the number of selected elements matches the total number of rows. */
+    isAllSelected(): any {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.managesCount;
+        return numSelected === numRows;
+    }
+
+    /** The label for the checkbox on the passed row */
+    checkboxLabel(row?: any): string {
+        if (!row) {
+            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.suplyContSeq + 1}`;
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    suplyReport() {
+
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    suplyUpdate() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('수정 대상을 선택해주세요.');
+            return;
+        }else{
+            const confirmation = this._teamPlatConfirmationService.open({
+                title  : '',
+                message: '수정하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this._managesService.updateSupplyInfo(this.selection.selected)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((manage: any) => {
+                                this._functionService.cfn_alertCheckMessage(manage);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                this.select();
+                            });
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    suplyDelete() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
+            return;
+        }else{
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title      : '',
+                message    : '삭제하시겠습니까?',
+                icon       : this._formBuilder.group({
+                    show : true,
+                    name : 'heroicons_outline:exclamation',
+                    color: 'warn'
+                }),
+                actions    : this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show : true,
+                        label: '삭제',
+                        color: 'warn'
+                    }),
+                    cancel : this._formBuilder.group({
+                        show : true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this._managesService.deleteSupplyInfo(this.selection.selected)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((manage: any) => {
+                                this._functionService.cfn_alertCheckMessage(manage);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                this.select();
+                            });
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+        }
     }
 }

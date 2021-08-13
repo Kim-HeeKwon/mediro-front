@@ -5,6 +5,7 @@ export interface Manages
     suplyContSeq?: string; 	//공급내역 보고자료 일련번호
     suplyEntpName?: string; 	//공급한 자 업체명
     cobTypeName?: string; 	//공급한 자 업체 영업형태
+    suplyTypeCode?: string; 	//공급 형태 코드
     suplyFlagCode?: string; 	//공급 구분 코드 (1:출고, 2:반품, 3:폐기)
     rtngudFlagCode?: string; 	//반품 코드 (1:일반 반품, 2:회수 반품, 3: 임대 만 료)
     meddevItemSeq?: string; 	//의료기기 품목 일련번호

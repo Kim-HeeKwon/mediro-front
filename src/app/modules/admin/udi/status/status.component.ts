@@ -38,11 +38,13 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     supplyStatusCount: number = 0;
     suplyFlagCode: CommonCode[] = null;
+    mFlag: CommonCode[] = null;
     udiFlag: CommonCode[] = null;
     suplyTypeCode: CommonCode[] = null;
 
     supplyStatusTableStyle: TableStyle = new TableStyle();
     supplyStatusTable: TableConfig[] = [
+        {headerText : '생성여부' , dataField : 'mflag', width: 100, display : true, disabled : true, type: 'text',combo: true},
         {headerText : 'serialkey' , dataField : 'serialkey', width: 80, display : false, disabled : true, type: 'text'},
         {headerText : '공급구분' , dataField : 'suplyFlagCode', width: 80, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '공급형태' , dataField : 'suplyTypeCode', width: 120, display : true, disabled : true, type: 'text',combo: true},
@@ -61,6 +63,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
     supplyStatusTableColumns: string[] = [
         /*'no',*/
+        'mflag',
         /*'serialkey',*/
         'suplyFlagCode',
         'suplyTypeCode',
@@ -94,6 +97,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isMobile = this._deviceService.isMobile();
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
         this.udiFlag = _utilService.commonValue(_codeStore.getValue().data,'UDI_FLAG');
+        this.mFlag = _utilService.commonValue(_codeStore.getValue().data,'M_FLAG');
         this.suplyTypeCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYTYPECODE');
     }
 
@@ -177,7 +181,14 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
             combo = this.udiFlag;
         }else if(column.dataField === 'suplyTypeCode'){
             combo = this.suplyTypeCode;
+        }else if(column.dataField === 'mflag'){
+            combo = this.mFlag;
         }
         return combo;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    suplyResend() {
+
     }
 }

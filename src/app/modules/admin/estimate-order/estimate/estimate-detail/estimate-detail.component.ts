@@ -132,7 +132,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             soNo: [{value:'',disabled:true}],   // 주문번호
             qtCreDate: [{value:'',disabled:true}],//견적 생성일자
             qtDate: [{value:'',disabled:true}], //견적일자
-            email:[],//이메일
+            email:[''],//이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
