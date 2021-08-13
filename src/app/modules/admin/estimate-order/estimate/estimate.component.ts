@@ -13,6 +13,8 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {ShortcutsService} from "../../../../layout/common/shortcuts/shortcuts.service";
+import {Shortcut} from "../../../../layout/common/shortcuts/shortcuts.types";
 
 @Component({
     selector: 'app-estimate',
@@ -57,6 +59,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             id: '100',
             name: '거래처 명'
         }];
+    shortCut: Shortcut = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
@@ -69,6 +72,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _functionService: FunctionService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _shortcutService: ShortcutsService,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,)
@@ -175,6 +179,17 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     newEstimate(): void{
+        //숏컷 생성
+        this.shortCut = {
+            id: '견적생성',
+            label: '견적생성',
+            icon: 'heroicons_outline:pencil-alt',
+            link: 'estimate-order/estimate/estimate-new',
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
+
+        //
         this._router.navigate(['estimate-order/estimate/estimate-new' , {}]);
     }
     /** Selects all rows if they are not all selected; otherwise clear selection. */

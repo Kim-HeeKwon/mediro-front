@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
+import {ExtraOptions, PreloadAllModules, RouteReuseStrategy, RouterModule} from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { FuseModule } from '@teamplat';
 import { FuseConfigModule } from '@teamplat/services/config';
@@ -14,6 +14,7 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { environment } from '../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+import {TeamPlatReuseStrategy} from '../@teamplat/services/router-util/TeamPlatReuseStrategy';
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -47,7 +48,10 @@ const routerConfig: ExtraOptions = {
     bootstrap   : [
         AppComponent
     ],
-    providers: [ CookieService ],
+    providers: [
+        CookieService,
+        // {provide: RouteReuseStrategy, useClass: TeamPlatReuseStrategy}
+    ],
 })
 export class AppModule
 {

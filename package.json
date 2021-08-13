@@ -1,6 +1,6 @@
 {
-    "name": "@teamplat/demo",
-    "version": "13.0.3",
+    "name": "@teamplat/mediro",
+    "version": "1.0.1",
     "license": "https://themeforest.net/licenses/standard",
     "private": true,
     "scripts": {

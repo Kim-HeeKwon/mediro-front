@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+import {Route, RouteReuseStrategy, RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AccountComponent } from './account.component';
 import { AccountResolver } from './account.resolvers';
@@ -24,8 +24,7 @@ import {FuseFindByKeyPipeModule} from '../../../../../@teamplat/pipes/find-by-ke
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatDialogModule} from '@angular/material/dialog';
-import {MatSidenavModule} from "@angular/material/sidenav";
-
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 const accountRoutes: Route[] = [
     {

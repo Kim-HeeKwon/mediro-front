@@ -13,6 +13,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {ShortcutsService} from "../../../../layout/common/shortcuts/shortcuts.service";
+import {Shortcut} from "../../../../layout/common/shortcuts/shortcuts.types";
 
 @Component({
     selector: 'app-order',
@@ -57,6 +59,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             id: '100',
             name: '거래처 명'
         }];
+    shortCut: Shortcut = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
@@ -70,6 +73,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _functionService: FunctionService,
                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _utilService: FuseUtilsService,
+                private _shortcutService: ShortcutsService,
                 private _deviceService: DeviceDetectorService,)
     {
         this.status = _utilService.commonValue(_codeStore.getValue().data,'PO_STATUS');
@@ -167,6 +171,17 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectClickRow(row: any): void{
+        //숏컷 생성
+
+        console.log(JSON.stringify(row));
+        this.shortCut = {
+            id: '발주디테일',
+            label: '발주디테일',
+            icon: 'heroicons_outline:pencil-alt',
+            link: 'estimate-order/order/order-detail',
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
         this._router.navigate(['estimate-order/order/order-detail' , row]);
     }
 
