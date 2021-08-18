@@ -22,6 +22,7 @@ import {SharedModule} from '../../../../shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ManagesResolvers} from './manages.resolvers';
+import {ManagesReportComponent} from "./manages-report/manages-report.component";
 
 const managesRoutes: Route[] = [
     {
@@ -35,7 +36,8 @@ const managesRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        ManagesComponent
+        ManagesComponent,
+        ManagesReportComponent
     ],
     imports: [
         CommonModule,

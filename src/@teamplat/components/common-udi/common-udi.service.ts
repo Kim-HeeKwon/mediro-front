@@ -76,12 +76,13 @@ export class CommonUdiService{
                 .pipe(retry(2))
                 .subscribe((response: any) => {
                     if(response.status === 'SUCCESS'){
-                        this._status.next(response.status);
+                        this._status.next(response);
+                        this._msg.next('');
                         this._getList.next(response.data);
                         this._pagenation.next(response.pageNation);
                         resolve(this._getList);
                     }else{
-                        this._status.next(response.status);
+                        this._status.next(response);
                         this._msg.next(response.msg);
                     }
                 }, reject);

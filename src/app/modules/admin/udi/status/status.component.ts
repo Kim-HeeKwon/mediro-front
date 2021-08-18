@@ -14,6 +14,7 @@ import {FunctionService} from '../../../../../@teamplat/services/function';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {StatusService} from './status.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'app-supply-status',
@@ -62,7 +63,8 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '메세지' , dataField : 'message', width: 80, display : false, disabled : true, type: 'text'},
     ];
     supplyStatusTableColumns: string[] = [
-        /*'no',*/
+        'select',
+        'no',
         'mflag',
         /*'serialkey',*/
         'suplyFlagCode',
@@ -91,6 +93,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
         private _functionService: FunctionService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private readonly breakpointObserver: BreakpointObserver,
         private _deviceService: DeviceDetectorService,
     ){
@@ -164,12 +167,8 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
 
     select(): void{
 
-        this._statusService.getHeader(0,10,'','asc',this.searchForm.getRawValue());
-
-        this._statusService.supplyStatus$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((status: any) => {
-            });
+        this._statusService.getHeader(0,10,'serialkey','asc',this.searchForm.getRawValue());
+        this.selectClear();
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -189,6 +188,73 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyResend() {
+        if(this.selection.selected.length < 1){
+            this._functionService.cfn_alert('재전송 대상을 선택해주세요.');
+            return;
+        }else{
+            const confirmation = this._teamPlatConfirmationService.open({
+                title  : '',
+                message: '재전송 하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
 
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        const sendData = this.selection.selected;
+                        this._statusService.suplyResend(sendData)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((status: any) => {
+                                this._functionService.cfn_alertCheckMessage(status);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                this.select();
+                            });
+                    }else{
+                        this.selectClear();
+                    }
+                });
+        }
+    }
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    masterToggle(): SelectionModel<any> {
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            return;
+        }
+        this.supplyStatus$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((manages) =>{
+                this.selection.select(...manages);
+            });
+    }
+
+    /** Whether the number of selected elements matches the total number of rows. */
+    isAllSelected(): any {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.supplyStatusCount;
+        return numSelected === numRows;
+    }
+
+    /** The label for the checkbox on the passed row */
+    checkboxLabel(row?: any): string {
+        if (!row) {
+            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+        }
+        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.suplyContSeq + 1}`;
+    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    selectClear() {
+        this.selection.clear();
+        this._changeDetectorRef.markForCheck();
     }
 }

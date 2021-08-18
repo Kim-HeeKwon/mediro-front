@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {SupplyStatus, SupplyStatusPagenation} from './status.types';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../../../../@teamplat/providers/common/common';
+import {map, switchMap, take} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -40,7 +41,7 @@ export class StatusService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 10, sort: string = 'serialkey', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{supplyStatusPagenation: SupplyStatusPagenation; supplyStatus: SupplyStatus[] }> {
 
         const searchParam = {};
@@ -71,5 +72,23 @@ export class StatusService {
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * resend
+     */
+    suplyResend(supplyStatuses: SupplyStatus[]): Observable<SupplyStatus>
+    {
+        return this.supplyStatus$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(supplyStatuses, 'v1/api/udi/supply-info/resend').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

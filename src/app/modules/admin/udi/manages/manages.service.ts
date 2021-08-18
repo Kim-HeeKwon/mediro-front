@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
-import {Manages, ManagesPagenation} from './manages.types';
+import {Manages, ManagesPagenation, SuplyReport, SuplyReportPagenation} from './manages.types';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 
 @Injectable({
@@ -12,6 +12,9 @@ export class ManagesService {
 
     private _manages: BehaviorSubject<Manages[]> = new BehaviorSubject(null);
     private _managesPagenation: BehaviorSubject<ManagesPagenation | null> = new BehaviorSubject(null);
+
+    private _suplyReports: BehaviorSubject<SuplyReport[]> = new BehaviorSubject(null);
+    private _suplyReportsPagenation: BehaviorSubject<SuplyReportPagenation | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -33,6 +36,21 @@ export class ManagesService {
     get managesPagenation$(): Observable<ManagesPagenation>
     {
         return this._managesPagenation.asObservable();
+    }
+
+    /**
+     * Getter for headers
+     */
+    get suplyReports$(): Observable<SuplyReport[]>
+    {
+        return this._suplyReports.asObservable();
+    }
+    /**
+     * Getter for Header Pagenation
+     */
+    get suplyReportsPagenation$(): Observable<SuplyReportPagenation>
+    {
+        return this._suplyReportsPagenation.asObservable();
     }
 
     /**
@@ -92,5 +110,47 @@ export class ManagesService {
         return this._common.listDelete('v1/api/udi/supply-info', manages).pipe(
             switchMap((response: any) => of(response))
         );
+    }
+
+    /**
+     * Post getSuplyReport
+     *
+     * @returns
+     */
+    getSuplyReport(page: number = 0, size: number = 12, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+        Observable<{managesPagenation: SuplyReportPagenation; manages: SuplyReport[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/udi/supply-info/report-summary')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._suplyReports.next(response.data);
+                        this._suplyReportsPagenation.next(response.pageNation);
+                        resolve(this._suplyReports);
+                    }
+                }, reject);
+        });
+    }
+
+    setInitList(): void{
+        this._suplyReports.next(null);
     }
 }

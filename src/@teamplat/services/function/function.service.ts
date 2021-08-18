@@ -107,6 +107,37 @@ export class FunctionService implements OnInit, OnDestroy{
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    cfn_alertSelectMessage(param: any, redirectUrl?: string): void
+    {
+        if(param.status !== 'SUCCESS'){
+
+            const icon = 'information-circle';
+            // Setup config form
+            this.configForm = this._formBuilder.group({
+                title      : '',
+                message    : param.msg,
+                icon       : this._formBuilder.group({
+                    show : true,
+                    name : 'heroicons_outline:' + icon,
+                    color: 'accent'
+                }),
+                actions    : this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show : false,
+                        label: '',
+                    }),
+                    cancel : this._formBuilder.group({
+                        show : true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            });
+            const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
+        }
+    }
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     cfn_cellDisable(column: TableConfig, dataFiled: string[], form?: FormGroup){
 

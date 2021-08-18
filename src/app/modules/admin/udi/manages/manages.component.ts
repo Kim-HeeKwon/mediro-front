@@ -15,7 +15,8 @@ import {TableConfig, TableStyle} from '../../../../../@teamplat/components/commo
 import {ManagesService} from './manages.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {ManagesReportComponent} from './manages-report/manages-report.component';
 
 @Component({
     selector: 'app-manages',
@@ -60,7 +61,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
     managesTableColumns: string[] = [
         'select',
-        /*'no',*/
+        'no',
         'suplyFlagCode',
         'suplyTypeCode',
         /*'suplyContSeq',*/
@@ -277,6 +278,20 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyReport() {
+        const d = this._matDialog.open(ManagesReportComponent, {
+            data: {
+                headerText : '',
+                url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                code: 'UDI_BCNC',
+                tail : false,
+                mediroUrl : 'bcnc/company-info',
+                tailKey : '',
+            },
+            autoFocus: false,
+            maxHeight: '80vh',
+            disableClose: true
+        });
 
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

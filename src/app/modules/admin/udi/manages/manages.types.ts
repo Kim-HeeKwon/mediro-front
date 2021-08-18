@@ -53,3 +53,24 @@ export interface ManagesPagenation
     startIndex: number;
     endIndex: number;
 }
+
+export interface SuplyReport
+{
+    mid: number;
+    suplyContStdmt: string;
+    reportStatus: string;
+    lastReportTime: string;
+    suplyCnt: string;
+    reportCnt: string;
+    lastReportDateLimit: string;
+}
+
+export interface SuplyReportPagenation
+{
+    length: number;
+    size: number;
+    page: number;
+    lastPage: number;
+    startIndex: number;
+    endIndex: number;
+}

@@ -92,7 +92,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
             url: [''],
             mediroUrl: [''],
             tail: [''],
-            accessToken: ['774900bc-75af-4893-afe6-c81f71581821'],
+            accessToken: [''],
             //c5b5ddaf-70cf-4460-8697-f9d4b84ed77b
             offset: [1],
             limit: [100],
@@ -187,21 +187,11 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
         this._udiService.getStatus$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status: any) => {
-            if(status !== 'SUCCESS'){
-                /*this._udiService.getMsg$
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((msg: any) => {
-                        const error =this._matDialogPopup.open(ErrorAlertComponent, {
-                            data: {
-                                msg : msg,
-                            },
-                            autoFocus: false,
-                            maxHeight: '90vh',
-                            disableClose: true
-                        });
-                        return;
-                    });*/
-            }
+                if(status !== null){
+                    //this._functionService.cfn_alertSelectMessage(status);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                }
         });
     }
     mergeUdiData(): void{
