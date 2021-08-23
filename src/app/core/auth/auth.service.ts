@@ -152,7 +152,7 @@ export class AuthService
                 this._userService.user = response.resultD;
 
                 console.log('user Check!!');
-                console.log(response.resultD);
+                //console.log(response.resultD);
 
                 // Store the akita store
                 this._sessionStore.update(response.resultD);
@@ -180,10 +180,9 @@ export class AuthService
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
             switchMap((response: any) => {
-
                 //
                 const status = response.status;
-                if(status === '99'){
+                if(status === '99' || status === null || status === 'fail' || status === undefined){
 
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('email');

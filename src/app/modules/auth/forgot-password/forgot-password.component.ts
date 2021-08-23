@@ -4,7 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
     selector     : 'auth-forgot-password',
