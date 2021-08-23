@@ -22,6 +22,7 @@ export interface InBound
     ibQty: number;              //입고수량
     unitPrice: number;          //단가
     totalAmt: number;           //금액
+    udiYn: string;
     lot1: string;               //입고일자
     lot2: string;               //유효기간
     lot3: string;               //제조사 lot
@@ -75,6 +76,11 @@ export interface InBoundDetail
     ibQty: number;              //입고수량
     unitPrice: number;          //단가
     totalAmt: number;           //금액
+    udiYn: string;
+    udiCode?: string;
+    suplyContStdmt?: string;
+    suplyTypeCode?: string;
+    udiDiSeq?: string;
     lot1: string;               //입고일자
     lot2: string;               //유효기간
     lot3: string;               //제조사 lot

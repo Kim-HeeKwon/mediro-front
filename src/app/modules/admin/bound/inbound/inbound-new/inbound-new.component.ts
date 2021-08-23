@@ -58,6 +58,8 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundDetail: InBoundDetail = null;
     selection = new SelectionModel<any>(true, []);
 
+    inBoundHeaders: any;
+    inBoundDetails: any;
     inBoundDetailsTableStyle: TableStyle = new TableStyle();
     inBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
@@ -131,6 +133,21 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
 
+        if(this._router.getCurrentNavigation() !== (null && undefined)){
+
+            if(this._router.getCurrentNavigation().extras.state !== undefined){
+                if(this._router.getCurrentNavigation().extras.state.header !== undefined
+                    && this._router.getCurrentNavigation().extras.state.detail !== undefined){
+                    //console.log(this._router.getCurrentNavigation().extras.state.header);
+                    const header = this._router.getCurrentNavigation().extras.state.header;
+                    const detail = this._router.getCurrentNavigation().extras.state.detail;
+                    this.inBoundHeaders = header;
+                    this.inBoundDetails = detail;
+                }
+            }
+
+            this._changeDetectorRef.markForCheck();
+        }
     }
     /**
      * On init
@@ -177,12 +194,61 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             });
 
-        this.inBoundHeaderForm.patchValue({'account': ''});
-        this.inBoundHeaderForm.patchValue({'type': '1'});
-        this.inBoundHeaderForm.patchValue({'status': 'N'});
-        this.inBoundHeaderForm.patchValue({'supplier': ''});
-        this.inBoundHeaderForm.patchValue({'remarkHeader': ''});
-        this.inBoundHeaderForm.patchValue({'poNo': ''});
+        if(this.inBoundHeaders !== undefined){
+            this.inBoundHeaderForm.controls.type.disable();
+            this.inBoundHeaderForm.patchValue({'account': this.inBoundHeaders.account});
+            this.inBoundHeaderForm.patchValue({'accountNm': this.inBoundHeaders.accountNm});
+            this.inBoundHeaderForm.patchValue({'type': '2'});
+            this.inBoundHeaderForm.patchValue({'status': 'N'});
+            this.inBoundHeaderForm.patchValue({'supplier': ''});
+            this.inBoundHeaderForm.patchValue({'poNo': ''});
+            this.inBoundHeaderForm.patchValue({'remarkHeader': this.inBoundHeaders.remarkHeader});
+
+        }else{
+
+            this.inBoundHeaderForm.patchValue({'account': ''});
+            this.inBoundHeaderForm.patchValue({'type': '1'});
+            this.inBoundHeaderForm.patchValue({'status': 'N'});
+            this.inBoundHeaderForm.patchValue({'supplier': ''});
+            this.inBoundHeaderForm.patchValue({'remarkHeader': ''});
+            this.inBoundHeaderForm.patchValue({'poNo': ''});
+        }
+
+        if(this.inBoundDetails !== undefined){
+            this.inBoundDetails$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBoundDetail) => {
+                    this.inBoundDetails.forEach((salesorderDetail: any) => {
+                        inBoundDetail.push({
+                            no: inBoundDetail.length + 1,
+                            flag: 'C',
+                            ibLineNo: 0,
+                            itemCd: salesorderDetail.itemCd,
+                            itemNm: salesorderDetail.itemNm,
+                            itemGrade: salesorderDetail.itemGrade,
+                            standard: salesorderDetail.standard,
+                            unit: salesorderDetail.unit,
+                            ibExpQty: salesorderDetail.qty,
+                            qty: 0,
+                            unitPrice: salesorderDetail.unitPrice,
+                            totalAmt: salesorderDetail.soAmt,
+                            lot1: '',
+                            lot2: '',
+                            lot3: '',
+                            lot4: '',
+                            lot5: '',
+                            lot6: '',
+                            lot7: '',
+                            lot8: '',
+                            lot9: '',
+                            lot10: '',
+                            remarkDetail: salesorderDetail.remarkDetail, ibQty: 0, poLineNo: 0, poNo: '', udiYn: ''
+                        });
+                        console.log(salesorderDetail);
+                    });
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
 
     }
 

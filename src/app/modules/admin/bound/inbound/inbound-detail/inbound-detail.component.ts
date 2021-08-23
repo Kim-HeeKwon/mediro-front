@@ -24,6 +24,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {CommonUdiRtnScanComponent} from '../../../../../../@teamplat/components/common-udi-rtn-scan';
 
 @Component({
     selector       : 'inbound-detail',
@@ -668,11 +669,14 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     inBound() {
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        const ibType = this.inBoundHeaderForm.controls['type'].value;
         if(ibStatus !== 'N' && ibStatus !== 'P'){
             this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
             return false;
         }
         let inBoundData;
+        let inBoundDataFilter;
+        let udiCheckData;
         this.inBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((inBoundDetail) => {
@@ -680,31 +684,94 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     .map((param: any) => {
                         return param;
                 });
+
+                inBoundDataFilter = inBoundData.filter((detail: any) => detail.udiYn !== 'Y')
+                    .map((param: any) => {
+                        return param;
+                    });
+
+                udiCheckData = inBoundData.filter((detail: any) => detail.udiYn === 'Y')
+                    .map((param: any) => {
+                        return param;
+                    });
             });
 
         if(inBoundData.length < 1) {
             this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
             return false;
         }else{
-            const confirmation = this._teamPlatConfirmationService.open({
-                title  : '입고',
-                message: '입고하시겠습니까?',
-                actions: {
-                    confirm: {
-                        label: '입고'
-                    },
-                    cancel: {
-                        label: '닫기'
-                    }
+
+            //반품일 경우
+            if(ibType === '2'){
+                if(udiCheckData.length > 0){
+                    //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                    //입력 수량 그대로 가져오기
+                    //UDI 정보 INPUT 후 값 셋팅
+                    const popup =this._matDialogPopup.open(CommonUdiRtnScanComponent, {
+                        data: {
+                            detail : udiCheckData
+                        },
+                        autoFocus: false,
+                        maxHeight: '90vh',
+                        disableClose: true
+                    });
+
+                    popup.afterClosed().subscribe((result) => {
+                        if(result){
+                            if(result !== undefined){
+                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                for(let i=0; i<result.length; i++){
+                                    inBoundDataFilter.push(result[i]);
+                                }
+
+                                const conf = this._teamPlatConfirmationService.open({
+                                    title  : '입고',
+                                    message: '입고하시겠습니까?',
+                                    actions: {
+                                        confirm: {
+                                            label: '입고'
+                                        },
+                                        cancel: {
+                                            label: '닫기'
+                                        }
+                                    }
+                                });
+                                //lot 셋팅
+                                inBoundDataFilter.forEach((inBound: any) => {
+                                    inBound.lot4 = inBound.udiCode;
+                                });
+                                conf.afterClosed()
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((rtn) => {
+                                        if(rtn){
+                                            this.inBoundDetailConfirm(inBoundDataFilter);
+                                        }
+                                    });
+                            }
+                        }
+                    });
                 }
-            });
-            confirmation.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-                        this.inBoundDetailConfirm(inBoundData);
+            }else{
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '입고',
+                    message: '입고하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '입고'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
                     }
                 });
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.inBoundDetailConfirm(inBoundData);
+                        }
+                    });
+            }
         }
 
         // Mark for check

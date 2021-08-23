@@ -592,7 +592,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
                 const popup =this._matDialogPopup.open(CommonUdiScanComponent, {
                     data: {
-                        outBoundDetail : udiCheckData
+                        detail : udiCheckData
                     },
                     autoFocus: false,
                     maxHeight: '90vh',

@@ -29,6 +29,16 @@
                         class="fuse-mat-button-rounded"
                         mat-flat-button
                         [color]="'primary'"
+                        (click)="inBound()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:cube'"></mat-icon>
+                        <span class="ml-2">반품</span>
+                    </button>
+                    <button
+                        class="fuse-mat-button-rounded"
+                        mat-flat-button
+                        [color]="'primary'"
                         (click)="saveSalesOrder()">
                         <mat-icon
                             class="icon-size-5"

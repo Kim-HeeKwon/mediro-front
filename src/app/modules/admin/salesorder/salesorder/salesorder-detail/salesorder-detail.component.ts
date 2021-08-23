@@ -535,7 +535,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         }
 
         if(status !== 'N'){
-            this._functionService.cfn_cellEnable(column,enableListSalesOrder);
+            //this._functionService.cfn_cellEnable(column,enableListSalesOrder);
         }
 
         if(element.flag !== undefined && element.flag === 'C'){
@@ -568,5 +568,50 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             }
         }
 
+    }
+
+    inBound() {
+        const status = this.salesorderHeaderForm.controls['status'].value;
+
+        if(status !== 'S'){
+            this._functionService.cfn_alert('확정건에서만 가능합니다. 반품(입고) 할 수 없습니다.');
+            return;
+        }
+
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '',
+            message: '반품(입고)를 생성하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._salesorderService.getDetail(0,10,'soLineNo','asc',this.salesorderHeaderForm.getRawValue());
+
+                    this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
+                    this._salesorderService.salesorderDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((salesorderDetail: any) => {
+                            if(salesorderDetail != null){
+                                const row = {header : this.salesorderHeaderForm.getRawValue() , detail : salesorderDetail};
+                                // eslint-disable-next-line max-len
+                                this._router.navigate(['bound/inbound/inbound-new'],{state : {'header' :this.salesorderHeaderForm.getRawValue() , 'detail' : salesorderDetail}});
+                            }
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }else{
+
+                }
+            });
     }
 }
