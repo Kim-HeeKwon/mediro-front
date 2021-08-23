@@ -381,23 +381,23 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
             hasBackdrop     : true,
             scrollStrategy  : this._overlay.scrollStrategies.reposition(),
             positionStrategy: this._overlay.position()
-                                  .flexibleConnectedTo(this._pickerPanelOrigin)
-                                  .withPositions([
-                                      {
-                                          originX : 'start',
-                                          originY : 'bottom',
-                                          overlayX: 'start',
-                                          overlayY: 'top',
-                                          offsetY : 8
-                                      },
-                                      {
-                                          originX : 'start',
-                                          originY : 'top',
-                                          overlayX: 'start',
-                                          overlayY: 'bottom',
-                                          offsetY : -8
-                                      }
-                                  ])
+                .flexibleConnectedTo(this._pickerPanelOrigin)
+                .withPositions([
+                    {
+                        originX : 'start',
+                        originY : 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                        offsetY : 8
+                    },
+                    {
+                        originX : 'start',
+                        originY : 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                        offsetY : -8
+                    }
+                ])
         });
 
         // Create a portal from the template
@@ -435,10 +435,9 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     {
         if ( month === 1 )
         {
-            return this.activeDates.month1.clone().format('MMMM Y');
+            return this.activeDates.month1.clone().format('Y년 MM월');
         }
-
-        return this.activeDates.month2.clone().format('MMMM Y');
+        return this.activeDates.month2.clone().format('Y년 MM월');
     }
 
     /**
@@ -628,6 +627,32 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         };
     }
 
+    //mediro date button settings
+    clickDate(dateGbn: string): void
+    {
+        if(dateGbn === 'week'){
+            this.range = {
+                end: moment().startOf('day').toISOString(),
+                start  : moment().add(-7, 'day').endOf('day').toISOString()
+            };
+        }else if(dateGbn === '1mon'){
+            this.range = {
+                end: moment().startOf('day').toISOString(),
+                start  : moment().add(-1, 'month').endOf('month').toISOString()
+            };
+        }else if(dateGbn === '3mon'){
+            this.range = {
+                end: moment().startOf('day').toISOString(),
+                start  : moment().add(-3, 'month').endOf('month').toISOString()
+            };
+        }else if(dateGbn === '6mon'){
+            this.range = {
+                end: moment().startOf('day').toISOString(),
+                start  : moment().add(-6, 'month').endOf('month').toISOString()
+            };
+        }
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
     // -----------------------------------------------------------------------------------------------------
@@ -643,11 +668,11 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         this.startTimeFormControl = new FormControl('', [Validators.pattern(this._timeRegExp)]);
         this.endTimeFormControl = new FormControl('', [Validators.pattern(this._timeRegExp)]);
 
-        // Set the default range
+        // Set the default range  //디폴트 시간 설정 start를 일주일로 end를 현재 날짜로
         this._programmaticChange = true;
         this.range = {
-            start: moment().startOf('day').toISOString(),
-            end  : moment().add(1, 'day').endOf('day').toISOString()
+            start: moment().add(-7, 'day').endOf('day').toISOString(),
+            end  : moment().startOf('day').toISOString()
         };
 
         // Set the default time range

@@ -26,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '@teamplat/components/alert';
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
 
 const itemsRoutes: Route[] = [
     {
@@ -66,6 +67,7 @@ const itemsRoutes: Route[] = [
         SharedModule,
         FuseFindByKeyPipeModule,
         FuseAlertModule,
+        FuseDateRangeModule,
     ]
 })
 export class ItemsModule { }

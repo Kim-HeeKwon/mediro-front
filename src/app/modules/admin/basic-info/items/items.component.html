@@ -56,7 +56,7 @@
                                     matInput
                                     [formControlName]="'searchText'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'검색조건을 선택해주세요.'">
+                                    [placeholder]="'검색조건을 선택해주세요..'">
                             </mat-form-field>
                         </div>
                     </div>
@@ -111,6 +111,14 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 px-6">
+                            <div class="flex flex-row flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <fuse-date-range
+                                    [dateFormat]="'ll'"
+                                    [timeRange]="false"
+                                    [timeFormat]="'12'"></fuse-date-range>
                             </div>
                         </div>
                         <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">

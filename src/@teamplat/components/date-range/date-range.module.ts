@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FuseDateRangeComponent } from '@teamplat/components/date-range/date-range.component';
 import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 export const MY_FORMATS = {
     display: {
@@ -21,7 +22,7 @@ export const MY_FORMATS = {
     declarations: [
         FuseDateRangeComponent
     ],
-    imports     : [
+    imports: [
         CommonModule,
         ReactiveFormsModule,
         MatButtonModule,
@@ -29,7 +30,8 @@ export const MY_FORMATS = {
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        MatButtonToggleModule
     ],
     exports     : [
         FuseDateRangeComponent

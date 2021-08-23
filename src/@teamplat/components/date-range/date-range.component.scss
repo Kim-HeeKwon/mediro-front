@@ -290,3 +290,34 @@ fuse-date-range {
         }
     }
 }
+
+.mediro-group-btn{
+    margin-top: 3px;
+    margin-left: 7px;
+}
+
+.mat-button-toggle-group .mat-button-toggle {
+    border-radius: 6px !important;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+fuse-date-range .range {
+    display: flex;
+    align-items: center;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    cursor: pointer;
+}
+
+.fuse-mat-rounded .mat-button-toggle-group .mat-button-toggle {
+    overflow: hidden;
+    border: solid 1px #4f45e4 !important;
+    /* border: none !important; */
+    font-weight: 500;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 35px !important;
+}
