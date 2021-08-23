@@ -105,6 +105,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             itemCd: [''],
             searchCondition: ['100'],
             searchText: [''],
+            range: [{}]
         });
 
         // 아이템(품목) Form 생성
@@ -145,7 +146,20 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        //this._paginator._intl.itemsPerPageLabel = 'test';
+        // Subscribe to 'range' field value changes
+        this.searchForm.get('range').valueChanges.subscribe((value) => {
+            console.log(value);
+            if ( !value )
+            {
+                return;
+            }
+
+            // Set the 'start' field value from the range
+            this.searchForm.get('start').setValue(value.start, {emitEvent: false});
+
+            // Set the end field
+            this.searchForm.get('end').setValue(value.end, {emitEvent: false});
+        });
     }
 
     /**
@@ -280,6 +294,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     searchItem(): void
     {
+        console.log(this.searchForm.getRawValue());
         if(this.searchForm.getRawValue().searchCondition === '100') {
                 this.searchForm.patchValue({'itemCd': this.searchForm.getRawValue().searchText});
                 this.searchForm.patchValue({'itemNm': ''});
