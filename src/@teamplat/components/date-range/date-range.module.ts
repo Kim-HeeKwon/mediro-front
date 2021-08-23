@@ -8,7 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FuseDateRangeComponent } from '@teamplat/components/date-range/date-range.component';
-import {MAT_DATE_LOCALE} from "@angular/material/core";
+import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
+export const MY_FORMATS = {
+    display: {
+        dateInput: 'YYYY/MM/DD',
+        monthYearLabel: 'MMM YYYY',
+    }
+}
 
 @NgModule({
     declarations: [
@@ -27,7 +34,9 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
     exports     : [
         FuseDateRangeComponent
     ],
-    providers: [ {provide:MAT_DATE_LOCALE, useValue:'ko-KR'}],
+    providers: [ {provide:MAT_DATE_LOCALE, useValue:'ko-KR'},
+                 {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
+    ],
 })
 export class FuseDateRangeModule
 {

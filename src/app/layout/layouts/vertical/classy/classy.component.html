@@ -57,31 +57,71 @@
 <!--            <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>-->
 <!--        </button>-->
 
-        <button
-            class="top-width"
-            mat-icon-button
-            (click)="toggleNavigation('mainNavigation')">
-            <mat-icon [svgIcon]="'heroicons_outline:puzzle'"></mat-icon>
-            모니터링
-        </button>
+            <!-- Horizontal navigation -->
+            <fuse-horizontal-navigation
+            class="mr-2 bg-card"
+            [name]="'mainNavigation'"
+            [navigation]="data.navigation.horizontal"></fuse-horizontal-navigation>
 
-        <button
-            class="top-width"
-            mat-icon-button
-            [ngStyle]="{'width': '130px !important'}"
-            (click)="toggleNavigation('mainNavigation')">
-            <mat-icon [svgIcon]="'heroicons_outline:folder'"></mat-icon>
-            거래처 관리
-        </button>
 
-        <button
-            class="top-width"
-            mat-icon-button
-            [ngStyle]="{'width': '130px !important'}"
-            (click)="toggleNavigation('mainNavigation')">
-            <mat-icon [svgIcon]="'heroicons_outline:folder'"></mat-icon>
-            유효기간 관리
-        </button>
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            견적-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            [ngStyle]="{'width': '130px !important'}"-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            발주-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            [ngStyle]="{'width': '130px !important'}"-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:folder-add'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            입고-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            [ngStyle]="{'width': '130px !important'}"-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:folder-remove'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            출고-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            [ngStyle]="{'width': '130px !important'}"-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            주문-->
+<!--        </button>-->
+
+<!--        <button-->
+<!--            class="top-width"-->
+<!--            mat-icon-button-->
+<!--            [ngStyle]="{'width': '130px !important'}"-->
+<!--            (click)="toggleNavigation('mainNavigation')">-->
+<!--            <mat-icon [svgIcon]="'heroicons_outline:cube'"></mat-icon>-->
+<!--            &nbsp;&nbsp;-->
+<!--            재고-->
+<!--        </button>-->
 
         <!-- Components -->
         <div class="flex items-center pl-2 ml-auto space-x-2">

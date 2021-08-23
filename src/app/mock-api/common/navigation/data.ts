@@ -4,14 +4,14 @@ import { FuseNavigationItem } from '@teamplat/components/navigation';
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id      : 'monitoring',
-        title   : '모니터링',
-        subtitle: '모니터링',
+        title   : '대쉬보드',
+        subtitle: '대쉬보드',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
                 id   : 'monitoring.dashboards',
-                title: '대쉬보드',
+                title: '모니터링',
                 type : 'basic',
                 icon : 'heroicons_outline:presentation-chart-bar',
                 link : '/monitoring/dashboards'
@@ -25,13 +25,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
-            // {
-            //     id   : 'basic-info.stock',
-            //     title: '재고등록',
-            //     type : 'basic',
-            //     icon : 'heroicons_outline:cube',
-            //     link : '/basic-info/stock'
-            // },
             {
                 id      : 'basic-info.account',
                 title   : '거래처관리',
@@ -40,14 +33,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:library',
                 link    : '/basic-info/account'
             },
-            /*{
-                id      : 'basic-info.supplier',
-                title   : '공급사관리',
-                subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:office-building',
-                link    : '/basic-info/supplier'
-            },*/
             {
                 id      : 'basic-info.items',
                 title   : '품목관리',
@@ -57,111 +42,119 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/basic-info/items'
             },
             {
-                id      : 'item-price',
+                id      : 'basic-info.item-price',
                 title   : '단가관리',
-                subtitle: '품목 단가관리',
-                type    : 'group',
-                icon    : 'heroicons_outline:home',
-                children: [
-                    {
-                        id      : 'basic-info.item-price',
-                        title   : '단가관리',
-                        subtitle: '',
-                        type    : 'basic',
-                        icon    : 'heroicons_outline:currency-dollar',
-                        link    : '/basic-info/item-price'
-                    }
-                ]
-            },
-        ]
-    },
-    {
-        id      : 'estimate-order',
-        title   : '견적/발주',
-        subtitle: '의료기기 견적 및 발주 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'estimate-order.estimate',
-                title: '견적관리',
-                type : 'basic',
-                icon : 'heroicons_outline:pencil-alt',
-                link : '/estimate-order/estimate'
-            },
-            {
-                id      : 'estimate-order.order',
-                title   : '발주관리',
                 subtitle: '',
                 type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/estimate-order/order'
+                icon    : 'heroicons_outline:currency-dollar',
+                link    : '/basic-info/item-price'
             },
+            // {
+            //     id      : 'item-price',
+            //     title   : '단가관리',
+            //     subtitle: '품목 단가관리',
+            //     type    : 'group',
+            //     icon    : 'heroicons_outline:home',
+            //     children: [
+            //         {
+            //             id      : 'basic-info.item-price',
+            //             title   : '단가관리',
+            //             subtitle: '',
+            //             type    : 'basic',
+            //             icon    : 'heroicons_outline:currency-dollar',
+            //             link    : '/basic-info/item-price'
+            //         }
+            //     ]
+            // },
         ]
     },
-    {
-        id: 'salesorder',
-        title: '주문',
-        subtitle: '의료기기 주문관리',
-        type: 'group',
-        icon: 'heroicons_outline:home',
-        children: [
-            {
-                id      : 'salesorder.salesorder',
-                title   : '주문관리',
-                subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/salesorder/salesorder'
-            },
-        ]
-    },
-    {
-        id      : 'bound',
-        title   : '입/출고',
-        subtitle: '의료기기 입고 및 출고 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'bound.inbound',
-                title: '입고관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-add',
-                link : '/bound/inbound'
-            },
-            {
-                id   : 'bound.outbound',
-                title: '출고관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-remove',
-                link : '/bound/outbound'
-            },
-        ]
-    },
-    {
-        id      : 'stock',
-        title   : '재고관리',
-        subtitle: '의료기기 재고관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'stock.stock',
-                title: '재고관리',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/stock'
-            },
-            {
-                id   : 'stock.validity',
-                title: '유효기간 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:calendar',
-                link : '/stock/validity'
-            },
-        ]
-    },
+    // {
+    //     id      : 'estimate-order',
+    //     title   : '견적/발주',
+    //     subtitle: '의료기기 견적 및 발주 관리',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'estimate-order.estimate',
+    //             title: '견적관리',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:pencil-alt',
+    //             link : '/estimate-order/estimate'
+    //         },
+    //         {
+    //             id      : 'estimate-order.order',
+    //             title   : '발주관리',
+    //             subtitle: '',
+    //             type    : 'basic',
+    //             icon    : 'heroicons_outline:pencil',
+    //             link    : '/estimate-order/order'
+    //         },
+    //     ]
+    // },
+    // {
+    //     id: 'salesorder',
+    //     title: '주문',
+    //     subtitle: '의료기기 주문관리',
+    //     type: 'group',
+    //     icon: 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id      : 'salesorder.salesorder',
+    //             title   : '주문관리',
+    //             subtitle: '',
+    //             type    : 'basic',
+    //             icon    : 'heroicons_outline:pencil',
+    //             link    : '/salesorder/salesorder'
+    //         },
+    //     ]
+    // },
+    // {
+    //     id      : 'bound',
+    //     title   : '입/출고',
+    //     subtitle: '의료기기 입고 및 출고 관리',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'bound.inbound',
+    //             title: '입고관리',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:folder-add',
+    //             link : '/bound/inbound'
+    //         },
+    //         {
+    //             id   : 'bound.outbound',
+    //             title: '출고관리',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:folder-remove',
+    //             link : '/bound/outbound'
+    //         },
+    //     ]
+    // },
+    // {
+    //     id      : 'stock',
+    //     title   : '재고관리',
+    //     subtitle: '의료기기 재고관리',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'stock.stock',
+    //             title: '재고관리',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:cube',
+    //             link : '/stock/stock'
+    //         },
+    //         {
+    //             id   : 'stock.validity',
+    //             title: '유효기간 관리',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:calendar',
+    //             link : '/stock/validity'
+    //         },
+    //     ]
+    // },
     // {
     //     id      : 'calculate',
     //     title   : '정산관리',
@@ -348,10 +341,54 @@ export const futuristicNavigation: FuseNavigationItem[] = [
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'estimate-order.estimate',
+        title: '견적',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
-    }
+        icon : 'heroicons_outline:pencil-alt',
+        link : '/estimate-order/estimate'
+    },
+    {
+        id      : 'estimate-order.order',
+        title   : '발주',
+        subtitle: '',
+        type    : 'basic',
+        icon    : 'heroicons_outline:pencil',
+        link    : '/estimate-order/order'
+    },
+    {
+        id   : 'bound.inbound',
+        title: '입고',
+        type : 'basic',
+        icon : 'heroicons_outline:folder-add',
+        link : '/bound/inbound'
+    },
+    {
+        id   : 'bound.outbound',
+        title: '출고',
+        type : 'basic',
+        icon : 'heroicons_outline:folder-remove',
+        link : '/bound/outbound'
+    },
+    {
+        id      : 'salesorder.salesorder',
+        title   : '주문',
+        subtitle: '',
+        type    : 'basic',
+        icon    : 'heroicons_outline:pencil',
+        link    : '/salesorder/salesorder'
+    },
+    {
+        id   : 'stock.stock',
+        title: '재고',
+        type : 'basic',
+        icon : 'heroicons_outline:cube',
+        link : '/stock/stock'
+    },
+    {
+        id   : 'stock.validity',
+        title: '유효기간',
+        type : 'basic',
+        icon : 'heroicons_outline:calendar',
+        link : '/stock/validity'
+    },
 ];
