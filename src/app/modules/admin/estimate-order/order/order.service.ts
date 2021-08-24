@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {map, switchMap, take} from 'rxjs/operators';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import {Order, OrderDetail, OrderDetailPagenation, OrderHeader, OrderHeaderPagenation} from './order.types';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -85,6 +86,12 @@ export class OrderService {
             // eslint-disable-next-line guard-for-in
             for (const k in search) {
                 searchParam[k] = search[k];
+            }
+        }
+        if(searchParam['start'] === undefined){
+            if(searchParam['end'] === undefined){
+                searchParam['start'] = moment().add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().startOf('day').toISOString();
             }
         }
 

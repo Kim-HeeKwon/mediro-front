@@ -10,6 +10,7 @@ import {
     OutBoundHeaderPagenation
 } from './outbound.types';
 import {map, switchMap, take} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -122,6 +123,13 @@ export class OutboundService{
             // eslint-disable-next-line guard-for-in
             for (const k in search) {
                 searchParam[k] = search[k];
+            }
+        }
+
+        if(searchParam['start'] === undefined){
+            if(searchParam['end'] === undefined){
+                searchParam['start'] = moment().add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().startOf('day').toISOString();
             }
         }
 

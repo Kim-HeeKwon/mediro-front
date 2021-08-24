@@ -26,6 +26,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 import {CommonScanComponent} from '../../../../../@teamplat/components/common-scan';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-outbound',
@@ -138,6 +139,12 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             searchCondition: ['100'],
             searchText: [''],
+            range: [{
+                start: moment().add(-7, 'day').endOf('day').toISOString(),
+                end  : moment().startOf('day').toISOString()
+            }],
+            start : [],
+            end : []
         });
         this.outBoundHeaders$ = this._outboundService.outBoundHeaders$;
 
@@ -246,6 +253,8 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'account': ''});
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
+        this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
+        this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
         this._outboundService.getHeader(0,10,'obNo','desc',this.searchForm.getRawValue());
         this.closeDetails();
         this.selectClear();

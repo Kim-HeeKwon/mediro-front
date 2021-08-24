@@ -13,6 +13,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-salesorder',
@@ -89,6 +90,12 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             searchCondition: ['100'],
             searchText: [''],
+            range: [{
+                start: moment().add(-7, 'day').endOf('day').toISOString(),
+                end  : moment().startOf('day').toISOString()
+            }],
+            start : [],
+            end : []
         });
 
         this._salesorderService.getHeader();
@@ -160,6 +167,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'account': ''});
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
+        this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
+        this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
         this._salesorderService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
         this.selectClear();
     }

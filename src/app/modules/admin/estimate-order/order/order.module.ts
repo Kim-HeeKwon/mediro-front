@@ -29,7 +29,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {OrderResolvers} from './order.resolvers';
-import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 
 const orderRoutes: Route[] = [
     {
@@ -86,7 +87,8 @@ const orderRoutes: Route[] = [
         MatTabsModule,
         MatCardModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        FuseDateRangeModule,
     ]
 })
 export class OrderModule {

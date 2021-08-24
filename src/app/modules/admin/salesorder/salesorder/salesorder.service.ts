@@ -10,6 +10,7 @@ import {
 } from './salesorder.types';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import {map, switchMap, take} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -94,6 +95,12 @@ export class SalesorderService {
             }
         }
 
+        if(searchParam['start'] === undefined){
+            if(searchParam['end'] === undefined){
+                searchParam['start'] = moment().add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().startOf('day').toISOString();
+            }
+        }
         const pageParam = {
             page: page,
             size: size,

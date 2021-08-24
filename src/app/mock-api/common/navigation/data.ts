@@ -391,4 +391,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:calendar',
         link : '/stock/validity'
     },
+    {
+        id   : 'calculate.bill',
+        title: '청구',
+        type : 'basic',
+        icon : 'heroicons_outline:currency-dollar',
+        link : '/calculate/bill'
+    },
 ];
