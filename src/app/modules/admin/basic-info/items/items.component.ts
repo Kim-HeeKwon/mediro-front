@@ -20,6 +20,8 @@ import {NewItemComponent} from './new-item/new-item.component';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 
+import * as XLSX from 'xlsx';
+
 import {
     BreakpointObserver,
     Breakpoints,
@@ -27,6 +29,7 @@ import {
 } from '@angular/cdk/layout';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
+import {Common} from "../../../../../@teamplat/providers/common/common";
 
 @Component({
     selector: 'app-items',
@@ -79,7 +82,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     formFieldHelpers: string[] = [''];
 
+    excelData:any;
+    file:File;
+    arrayBuffer:any;
+    excelFileName: string;
+    excelFileNameYn: boolean;
+
     constructor(
+        private _common:Common,
         private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _itemService: ItemsService,
@@ -343,5 +353,59 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 },(response) => {
                 });
+    }
+
+    incomingfile(event) {
+        this.file= event.target.files[0];
+
+        if(this.file.size > 1000){
+            this.excelFileName = this.file.name;
+            this.excelFileNameYn = true;
+        }
+    }
+
+    upLoad(): void
+    {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            this.arrayBuffer = fileReader.result;
+            let data = new Uint8Array(this.arrayBuffer);
+            let arr = new Array();
+            for(let i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+            let bstr = arr.join("");
+            let workbook = XLSX.read(bstr, {type:"binary"});
+            let first_sheet_name = workbook.SheetNames[0];
+            let worksheet = workbook.Sheets[first_sheet_name];
+
+            this.excelData = XLSX.utils.sheet_to_json(worksheet,{raw:true});
+            this.uploadToServe(this.excelData);
+        }
+        fileReader.readAsArrayBuffer(this.file);
+    }
+
+    uploadToServe(fileData): void{
+        let dataSets = [];
+        let indexCnt = 0;
+
+        fileData.filter(data => data)
+            .forEach(
+                data => {
+                    dataSets[indexCnt] = data;
+                    indexCnt = indexCnt +1 ;
+                }
+            );
+
+        // 상품 업로드
+        let arrCondition = {
+            "excelData": dataSets
+        }
+
+        console.log(arrCondition);
+
+        this._common.sendData(arrCondition, '/v1/api/common/excel/upload').subscribe((result: any) => {
+           console.log(result);
+        });
+        console.log(arrCondition);
+
     }
 }

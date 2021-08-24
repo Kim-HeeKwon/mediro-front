@@ -206,6 +206,15 @@
                                     <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">신규등록</span>
                                 </button>
+
+                                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                                    <!-- <mat-button-toggle value="bold" (click)="Upload()">Excel 등록</mat-button-toggle> -->
+                                    <mat-button-toggle (click)="upLoad()" value="bold" >상품 업로드</mat-button-toggle>
+                                    <mat-button-toggle value="italic" (click)="fileInput.click()">
+                                        <input hidden type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx" #fileInput/>
+                                        파일등록
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
                             </div>
                             <!-- Loader -->
                             <div

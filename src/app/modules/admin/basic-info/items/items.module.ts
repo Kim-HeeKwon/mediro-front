@@ -27,6 +27,7 @@ import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '@teamplat/components/alert';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 const itemsRoutes: Route[] = [
     {
@@ -68,6 +69,7 @@ const itemsRoutes: Route[] = [
         FuseFindByKeyPipeModule,
         FuseAlertModule,
         FuseDateRangeModule,
+        MatButtonToggleModule,
     ]
 })
 export class ItemsModule { }
