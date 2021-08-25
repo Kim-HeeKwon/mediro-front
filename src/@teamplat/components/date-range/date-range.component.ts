@@ -650,6 +650,11 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
                 end: moment().startOf('day').toISOString(),
                 start  : moment().add(-6, 'month').endOf('month').toISOString()
             };
+        }else if(dateGbn === '1year'){
+            this.range = {
+                end: moment().startOf('day').toISOString(),
+                start  : moment().add(-1, 'year').endOf('year').toISOString()
+            };
         }
     }
 

@@ -51,6 +51,49 @@
         <!-- kakao Address Api -->
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8bfbf44e041d3971b5e1c8a94ca77f3d&libraries=services"></script>
 
+        <!-- Channel Plugin Scripts -->
+        <script>
+            (function() {
+                var w = window;
+                if (w.ChannelIO) {
+                    return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
+                }
+                var ch = function() {
+                    ch.c(arguments);
+                };
+                ch.q = [];
+                ch.c = function(args) {
+                    ch.q.push(args);
+                };
+                w.ChannelIO = ch;
+                function l() {
+                    if (w.ChannelIOInitialized) {
+                        return;
+                    }
+                    w.ChannelIOInitialized = true;
+                    var s = document.createElement('script');
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+                    s.charset = 'UTF-8';
+                    var x = document.getElementsByTagName('script')[0];
+                    x.parentNode.insertBefore(s, x);
+                }
+                if (document.readyState === 'complete') {
+                    l();
+                } else if (window.attachEvent) {
+                    window.attachEvent('onload', l);
+                } else {
+                    window.addEventListener('DOMContentLoaded', l, false);
+                    window.addEventListener('load', l, false);
+                }
+            })();
+            ChannelIO('boot', {
+                "pluginKey": "19d86ea4-cad8-4b9b-b285-6ef0753aed4e"
+            });
+        </script>
+        <!-- End Channel Plugin -->
+
     </head>
 
     <!-- Apply the rounded design throughout the Angular Material library -->
