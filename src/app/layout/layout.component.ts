@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { combineLatest, Subject } from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { FuseConfigService } from '@teamplat/services/config';
 import { FuseMediaWatcherService } from '@teamplat/services/media-watcher';
@@ -9,6 +9,8 @@ import { FuseTailwindService } from '@teamplat/services/tailwind/tailwind.servic
 import { FUSE_VERSION, TEAMPLAT_VERSION } from '@teamplat/version';
 import { Layout } from 'app/layout/layout.types';
 import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector     : 'layout',
@@ -18,6 +20,10 @@ import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 })
 export class LayoutComponent implements OnInit, OnDestroy
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
     config: AppConfig;
     layout: Layout;
     scheme: 'dark' | 'light';
@@ -35,9 +41,12 @@ export class LayoutComponent implements OnInit, OnDestroy
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseTailwindConfigService: FuseTailwindService
+        private _fuseTailwindConfigService: FuseTailwindService,
+        private readonly breakpointObserver: BreakpointObserver,
+        private _deviceService: DeviceDetectorService,
     )
     {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     // -----------------------------------------------------------------------------------------------------

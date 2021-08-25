@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,6 +15,8 @@ import { User } from '../../../../core/user/user.model';
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy
 {
+    @Input() isMobile: boolean;
+
     user: User;
     data: InitialData;
     isScreenSmall: boolean;

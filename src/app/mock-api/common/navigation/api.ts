@@ -2,23 +2,41 @@ import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash-es';
 import { FuseNavigationItem } from '@teamplat/components/navigation';
 import { FuseMockApiService } from '@teamplat/lib/mock-api';
-import { compactNavigation, defaultNavigation, futuristicNavigation, horizontalNavigation } from 'app/mock-api/common/navigation/data';
+import {
+    compactNavigation,
+    defaultNavigation,
+    defaultNavigationM,
+    futuristicNavigation,
+    horizontalNavigation
+} from 'app/mock-api/common/navigation/data';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class NavigationMockApi
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
+
     private readonly _compactNavigation: FuseNavigationItem[] = compactNavigation;
     private readonly _defaultNavigation: FuseNavigationItem[] = defaultNavigation;
+    private readonly _defaultNavigationM: FuseNavigationItem[] = defaultNavigationM;
     private readonly _futuristicNavigation: FuseNavigationItem[] = futuristicNavigation;
     private readonly _horizontalNavigation: FuseNavigationItem[] = horizontalNavigation;
 
     /**
      * Constructor
      */
-    constructor(private _fuseMockApiService: FuseMockApiService)
+    constructor(private _fuseMockApiService: FuseMockApiService,
+                private readonly breakpointObserver: BreakpointObserver,
+                private _deviceService: DeviceDetectorService,)
     {
+        this.isMobile = this._deviceService.isMobile();
         // Register Mock API handlers
         this.registerHandlers();
     }
@@ -33,7 +51,7 @@ export class NavigationMockApi
     registerHandlers(): void
     {
         // -----------------------------------------------------------------------------------------------------
-        // @ Navigation - GET
+        // @ Navigation - GET  // 모바일 PC 분기
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
             .onGet('api/common/navigation')
@@ -69,16 +87,40 @@ export class NavigationMockApi
                     });
                 });
 
+                if(this.isMobile){
+                    // Return the response
+                    return [
+                        200,
+                        {
+                            compact   : cloneDeep(this._compactNavigation),
+                            default   : cloneDeep(this._defaultNavigationM),
+                            futuristic: cloneDeep(this._futuristicNavigation),
+                            horizontal: cloneDeep(this._horizontalNavigation)
+                        }
+                    ];
+                }else{
+                    // Return the response
+                    return [
+                        200,
+                        {
+                            compact   : cloneDeep(this._compactNavigation),
+                            default   : cloneDeep(this._defaultNavigation),
+                            futuristic: cloneDeep(this._futuristicNavigation),
+                            horizontal: cloneDeep(this._horizontalNavigation)
+                        }
+                    ];
+                }
+
                 // Return the response
-                return [
-                    200,
-                    {
-                        compact   : cloneDeep(this._compactNavigation),
-                        default   : cloneDeep(this._defaultNavigation),
-                        futuristic: cloneDeep(this._futuristicNavigation),
-                        horizontal: cloneDeep(this._horizontalNavigation)
-                    }
-                ];
+                // return [
+                //     200,
+                //     {
+                //         compact   : cloneDeep(this._compactNavigation),
+                //         default   : cloneDeep(this._defaultNavigation),
+                //         futuristic: cloneDeep(this._futuristicNavigation),
+                //         horizontal: cloneDeep(this._horizontalNavigation)
+                //     }
+                // ];
             });
     }
 }
