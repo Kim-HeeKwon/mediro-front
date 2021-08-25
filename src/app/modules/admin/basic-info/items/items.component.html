@@ -113,18 +113,18 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 px-6">
-                            <div class="flex flex-row flex-shrink-0 items-center mt-6 sm:mt-0">
-                                <form
-                                    [formGroup]="searchForm">
-                                    <fuse-date-range
-                                        [formControlName]="'range'"
-                                        [dateFormat]="'ll'"
-                                        [timeRange]="false"
-                                        [timeFormat]="'12'"></fuse-date-range>
-                                </form>
-                            </div>
-                        </div>
+<!--                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 px-6">-->
+<!--                            <div class="flex flex-row flex-shrink-0 items-center mt-6 sm:mt-0">-->
+<!--                                <form-->
+<!--                                    [formGroup]="searchForm">-->
+<!--                                    <fuse-date-range-->
+<!--                                        [formControlName]="'range'"-->
+<!--                                        [dateFormat]="'ll'"-->
+<!--                                        [timeRange]="false"-->
+<!--                                        [timeFormat]="'12'"></fuse-date-range>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
                             <!-- 검새조건 -->
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
@@ -207,14 +207,14 @@
                                     <span class="ml-2 mr-1">신규등록</span>
                                 </button>
 
-                                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-                                    <!-- <mat-button-toggle value="bold" (click)="Upload()">Excel 등록</mat-button-toggle> -->
-                                    <mat-button-toggle (click)="upLoad()" value="bold" >상품 업로드</mat-button-toggle>
-                                    <mat-button-toggle value="italic" (click)="fileInput.click()">
-                                        <input hidden type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx" #fileInput/>
-                                        파일등록
-                                    </mat-button-toggle>
-                                </mat-button-toggle-group>
+<!--                                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">-->
+<!--                                    &lt;!&ndash; <mat-button-toggle value="bold" (click)="Upload()">Excel 등록</mat-button-toggle> &ndash;&gt;-->
+<!--                                    <mat-button-toggle (click)="upLoad()" value="bold" >상품 업로드</mat-button-toggle>-->
+<!--                                    <mat-button-toggle value="italic" (click)="fileInput.click()">-->
+<!--                                        <input hidden type="file" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx" #fileInput/>-->
+<!--                                        파일등록-->
+<!--                                    </mat-button-toggle>-->
+<!--                                </mat-button-toggle-group>-->
                             </div>
                             <!-- Loader -->
                             <div
