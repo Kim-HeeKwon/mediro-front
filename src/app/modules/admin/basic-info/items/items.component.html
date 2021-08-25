@@ -340,28 +340,44 @@
                                                                                         [formControlName]="'supplier'">
                                                                                 </mat-form-field>
                                                                                 <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>단위</mat-label>
+                                                                                    <mat-select [formControlName]="'unit'">
+                                                                                        <ng-container *ngFor="let unit of itemUnit">
+                                                                                            <mat-option [value]="unit.id">
+                                                                                                {{unit.name}}
+                                                                                            </mat-option>
+                                                                                        </ng-container>
+                                                                                    </mat-select>
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-3/5 pr-2">
+                                                                                    <mat-label>규격</mat-label>
+                                                                                    <input
+                                                                                        matInput
+                                                                                        [formControlName]="'standard'">
+                                                                                </mat-form-field>
+                                                                            </div>
+                                                                            <div class="flex">
+                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                    <mat-label>거래유형</mat-label>
+                                                                                    <mat-select [formControlName]="'taxGbn'">
+                                                                                        <ng-container *ngFor="let taxGbn of taxGbn">
+                                                                                            <mat-option [value]="taxGbn.id">
+                                                                                                {{taxGbn.name}}
+                                                                                            </mat-option>
+                                                                                        </ng-container>
+                                                                                    </mat-select>
+                                                                                </mat-form-field>
+                                                                                <mat-form-field class="w-2/5 pr-2">
                                                                                     <mat-label>구매단가</mat-label>
                                                                                     <input
                                                                                         matInput
                                                                                         [formControlName]="'buyPrice'">
                                                                                 </mat-form-field>
-                                                                                <mat-form-field class="w-1/5 pr-2">
+                                                                                <mat-form-field class="w-2/5 pr-2">
                                                                                     <mat-label>판매단가</mat-label>
                                                                                     <input
                                                                                         matInput
                                                                                         [formControlName]="'salesPrice'">
-                                                                                </mat-form-field>
-                                                                                <mat-form-field class="w-1/5 pr-2">
-                                                                                    <mat-label>단위</mat-label>
-                                                                                    <input
-                                                                                        matInput
-                                                                                        [formControlName]="'unit'">
-                                                                                </mat-form-field>
-                                                                                <mat-form-field class="w-1/5 pr-2">
-                                                                                    <mat-label>규격</mat-label>
-                                                                                    <input
-                                                                                        matInput
-                                                                                        [formControlName]="'standard'">
                                                                                 </mat-form-field>
                                                                             </div>
                                                                         </div>
@@ -542,6 +558,24 @@
                                                     mat-cell
                                                     *matCellDef="let product">
                                                     {{product.supplier}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="taxGbn">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    거래유형
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    <!--{{product.taxGbn}}-->
+                                                    {{(product.taxGbn | fuseFindByKey:'id':taxGbn).name}}
+                                                    <!--{{(taxGbn.taxGbn | fuseFindByKey:'id':taxGbn).name}}-->
                                                 </td>
                                             </ng-container>
                                             <!-- buyPrice -->

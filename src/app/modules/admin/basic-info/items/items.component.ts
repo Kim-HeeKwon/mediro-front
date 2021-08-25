@@ -58,7 +58,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 0;
-    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','udiYn','unit','standard','supplier','buyPrice','salesPrice'];
+    itemsTableColumns: string[] = ['details', 'itemCd', 'itemNm', 'itemGrade','udiYn','unit','standard','supplier','taxGbn','buyPrice','salesPrice'];
     selectedItemForm: FormGroup;
     searchForm: FormGroup;
     selectedItem: InventoryItem | null = null;
@@ -66,6 +66,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     itemGrades: CommonCode[] = [];
     udiYn: CommonCode[] = [];
+    itemUnit: CommonCode[] = [];
+    taxGbn: CommonCode[] = [];
 
     searchCondition: CommonCode[] = [
         {
@@ -101,6 +103,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
         // console.log('hello CodeStore');
         // console.log(_codeStore.getValue());
+        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data,'TAX_GBN');
+        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
         this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
         this.isMobile = this._deviceService.isMobile();
@@ -127,7 +131,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
-            supplier: [''], // 공급단가
+            supplier: [''], // 공급사
+            taxGbn: [''], // 거래유형
             buyPrice: [''], // 구매단가
             salesPrice: [''], // 판매단가
             active: [false]  // cell상태

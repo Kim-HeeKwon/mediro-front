@@ -180,21 +180,21 @@ export const defaultNavigation: FuseNavigationItem[] = [
     // },
     {
         id      : 'udi',
-        title   : 'UDI',
-        subtitle: '공급내역',
+        title   : '공급내역 보고',
+        subtitle: '의료기기 공급내역 보고',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
                 id   : 'udi.manages',
-                title: '공급내역 보고',
+                title: '공급내역 보고현황',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
             },
             {
                 id   : 'udi.status',
-                title: '공급내역 현황',
+                title: '식약청 보고목록',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
@@ -475,46 +475,46 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
         ]
     },
-    // {
-    //     id      : 'calculate',
-    //     title   : '정산관리',
-    //     subtitle: '의료기기 정산관리',
-    //     type    : 'group',
-    //     icon    : 'heroicons_outline:home',
-    //     children: [
-    //         {
-    //             id   : 'calculate.bill',
-    //             title: '청구서',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:archive',
-    //             link : '/calculate/bill'
-    //         },
-    //         {
-    //             id   : 'calculate.tax',
-    //             title: '세금계산서',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:calculator',
-    //             link : '/calculate/tax'
-    //         }
-    //     ]
-    // },
+    {
+         id      : 'calculate',
+         title   : '정산관리',
+         subtitle: '의료기기 정산관리',
+         type    : 'group',
+         icon    : 'heroicons_outline:home',
+         children: [
+             {
+                 id   : 'calculate.bill',
+                 title: '청구',
+                 type : 'basic',
+                 icon : 'heroicons_outline:archive',
+                 link : '/calculate/bill'
+             },
+             /*{
+                 id   : 'calculate.tax',
+                 title: '세금계산서',
+                 type : 'basic',
+                 icon : 'heroicons_outline:calculator',
+                 link : '/calculate/tax'
+             }*/
+         ]
+    },
     {
         id      : 'udi',
-        title   : 'UDI',
-        subtitle: '공급내역',
+        title   : '공급내역 보고',
+        subtitle: '의료기기 공급내역 보고',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
                 id   : 'udi.manages',
-                title: '공급내역 보고',
+                title: '공급내역 보고현황',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
             },
             {
                 id   : 'udi.status',
-                title: '공급내역 현황',
+                title: '식약청 보고목록',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
@@ -715,7 +715,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         id   : 'calculate.bill',
         title: '청구',
         type : 'basic',
-        icon : 'heroicons_outline:currency-dollar',
+        icon : 'heroicons_outline:archive',
         link : '/calculate/bill'
     },
 ];

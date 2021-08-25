@@ -95,7 +95,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             buyPrice: [], // 구매단가
             salesPrice: [], // 판매단가
             entpName: [], // 업체명
-            typeName: [], // 모델명
+            fomlInfo: [], // 모델명
             itemNoFullname: [], // 품목허가번호
             medDevSeq: [], // modelSeq
             udiDiCode: [], // udiDiCode
@@ -185,7 +185,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
                     this.selectedItemForm.patchValue({'entpName': result.entpName});
-                    this.selectedItemForm.patchValue({'typeName': result.typeName});
+                    this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
@@ -215,7 +215,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
                     this.selectedItemForm.patchValue({'entpName': result.entpName});
-                    this.selectedItemForm.patchValue({'typeName': result.typeName});
+                    this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});

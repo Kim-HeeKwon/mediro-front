@@ -128,13 +128,16 @@
                     <div class="col-span-2 sm:col-span-1">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>규격</mat-label>
-                            <mat-select [formControlName]="'standard'">
+                            <!--<mat-select [formControlName]="'standard'">
                                 <ng-container *ngFor="let standard of itemStandard">
                                     <mat-option [value]="standard.id">
                                         {{standard.name}}
                                     </mat-option>
                                 </ng-container>
-                            </mat-select>
+                            </mat-select>-->
+                            <input
+                                matInput
+                                [formControlName]="'standard'">
                         </mat-form-field>
                     </div>
                 </div>

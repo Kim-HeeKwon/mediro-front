@@ -501,6 +501,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                         element.itemNm = result.itemNm;
                         element.standard = result.standard;
                         element.unit = result.unit;
+                        element.unitPrice = result.salesPrice;
                         this.tableClear();
                         this.isLoading = false;
                         this._changeDetectorRef.markForCheck();

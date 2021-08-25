@@ -564,6 +564,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     data: {
                         popup : 'P$_ALL_ITEM',
                         headerText : '품목 조회',
+                        where : 'account:=:' + this.orderHeaderForm.controls['account'].value
                     },
                     autoFocus: false,
                     maxHeight: '90vh',
@@ -579,6 +580,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             element.itemNm = result.itemNm;
                             element.standard = result.standard;
                             element.unit = result.unit;
+                            element.unitPrice = result.buyPrice;
                             this.tableClear();
                             this.isLoading = false;
                             this._changeDetectorRef.markForCheck();

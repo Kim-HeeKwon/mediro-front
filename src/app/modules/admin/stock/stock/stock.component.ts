@@ -42,11 +42,18 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
     stocksTable: TableConfig[] = [
         {headerText : '품목코드' , dataField : 'itemCd', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '품목등급' , dataField : 'itemGrade', width: 100, display : true, disabled : true, type: 'text',combo : true},
-        {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '현재고' , dataField : 'qty', width: 100, display : true, disabled : true, type: 'number'},
-        {headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number'},
+        {headerText : '규격' , dataField : 'standard', width: 100, display : false, disabled : true, type: 'text'},
+        {headerText : '단위' , dataField : 'unit', width: 100, display : false, disabled : true, type: 'text'},
+        {headerText : '품목등급' , dataField : 'itemGrade', width: 80, display : true, disabled : true, type: 'text',combo : true},
+        {headerText : '발주' , dataField : 'poQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText : '보유' , dataField : 'availQty', width: 80, display : true, disabled : true, type: 'number'},
+        /*{headerText : '현재고' , dataField : 'qty', width: 100, display : true, disabled : true, type: 'number'},*/
+        {headerText : '가납' , dataField : 'acceptableQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText : '불용' , dataField : 'unusedQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText : '안전재고' , dataField : 'safetyQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText : '장기재고' , dataField : 'longtermQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText : '기간' , dataField : 'longterm', width: 100, display : true, disabled : true, type: 'text'},
+        /*{headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number'},*/
     ];
 
     stocksTableColumns: string[] = [
@@ -54,11 +61,17 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         /*'details',*/
         'itemCd',
         'itemNm',
-        'standard',
-        'unit',
+        /*'standard',
+        'unit',*/
         'itemGrade',
-        'qty',
+        'poQty',
         'availQty',
+        /*'qty',*/
+        'acceptableQty',
+        'unusedQty',
+        'safetyQty',
+        'longtermQty',
+        'longterm',
     ];
 
     searchForm: FormGroup;
