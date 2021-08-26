@@ -94,7 +94,7 @@
                         <span class="ml-2 mr-1">보고 / 재보고</span>
                     </button>
                 </div>
-                <div class="col-span-12">
+                <!--<div class="col-span-12">
                     <button
                         class="ml-3"
                         mat-stroked-button
@@ -103,7 +103,7 @@
                         (click)="suplyUpdate()">
                         <span class="ml-2 mr-1">수정</span>
                     </button>
-                </div>
+                </div>-->
                 <div class="col-span-12">
                     <button
                         class="ml-3"
@@ -195,13 +195,13 @@
                                     (click)="suplyReport()">
                                     <span class="ml-2 mr-1">보고 / 재보고</span>
                                 </button>
-                                <button
+                                <!--<button
                                     class="ml-2"
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="suplyUpdate()">
                                     <span class="ml-2 mr-1">수정</span>
-                                </button>
+                                </button>-->
                                 <button
                                     class="ml-2"
                                     mat-stroked-button
@@ -330,7 +330,7 @@
                                             <tr
                                                 class="h-14 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                (dblclick)="selectDoubleClickRow(manages)"
+                                                (click)="selectDoubleClickRow(manages)"
                                                 *matRowDef="let manages; columns: managesTableColumns;"></tr>
 
                                         </table>

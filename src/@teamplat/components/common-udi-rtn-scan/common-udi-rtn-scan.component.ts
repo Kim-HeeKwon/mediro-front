@@ -55,7 +55,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '입고수량' , dataField : 'ibQty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : true, type: 'month',max: '9999-12-31'},
-        {headerText : '공급 형태' , dataField : 'suplyTypeCode', width: 100, display : true, type: 'text',combo: true},
+        {headerText : '공급 형태' , dataField : 'suplyTypeCode', width: 100, display : false, type: 'text',combo: true},
         {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text'},
         //{headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
@@ -299,14 +299,14 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
                 this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
                 return;
             }
-            if(inBoundData[i].suplyTypeCode === undefined){
+            /*if(inBoundData[i].suplyTypeCode === undefined){
                 this._functionService.cfn_alert('공급형태는 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
                 return;
-            }
-            if(inBoundData[i].suplyTypeCode === null){
+            }*/
+            /*if(inBoundData[i].suplyTypeCode === null){
                 this._functionService.cfn_alert('공급형태는 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
                 return;
-            }
+            }*/
 
             if(inBoundData[i].obExpQty < (Number(inBoundData[i].qty) + inBoundData[i].obQty)){
                 this._functionService.cfn_alert('수량이 초과되었습니다. 품목코드 : ' + inBoundData[i].itemCd);

@@ -17,6 +17,10 @@ export class Common {
         return this.api.postList(url, accountInfo).pipe(share()); // seq;
     }
 
+    sendListDataObject(info: any, pageParam: any, url: string): Observable<any> {
+        return this.api.postObjectList(url, info, pageParam).pipe(share()); // seq;
+    }
+
     sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
     }

@@ -54,6 +54,37 @@ export interface ManagesPagenation
     endIndex: number;
 }
 
+export interface Product
+{
+
+    no?: string; 	//순번
+    mId: number;
+    meddevItemSeq?: string;
+    seq?: string;
+    udiDiSeq?: string;
+    udiDiCode?: string;
+    entpName?: string;
+    itemName?: string;
+    meaClassNo?: string;
+    permitNo?: string;
+    packQuantity?: string;
+    typeName?: string;
+    useLotNo?: string;
+    useItemSeq?: string;
+    useManufYm?: string;
+    useTimeLimit?: string;
+    cobTypeName?: string;
+    grade?: string;
+    brandName?: string;
+    userSterilizationYn?: string;
+    kitYn?: string;
+}
+export interface ProductStatus
+{
+
+    status?: string;
+    message?: string;
+}
 export interface SuplyReport
 {
     mid: number;

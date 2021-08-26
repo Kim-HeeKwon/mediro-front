@@ -23,6 +23,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ManagesResolvers} from './manages.resolvers';
 import {ManagesReportComponent} from "./manages-report/manages-report.component";
+import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
+import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
 
 const managesRoutes: Route[] = [
     {
@@ -37,7 +39,8 @@ const managesRoutes: Route[] = [
 @NgModule({
     declarations: [
         ManagesComponent,
-        ManagesReportComponent
+        ManagesReportComponent,
+        ManagesDetailComponent
     ],
     imports: [
         CommonModule,
@@ -60,7 +63,8 @@ const managesRoutes: Route[] = [
         MatTooltipModule,
         MatSidenavModule,
         MatDialogModule,
-        SharedModule
+        SharedModule,
+        FuseAlertModule
     ]
 })
 export class ManagesModule {

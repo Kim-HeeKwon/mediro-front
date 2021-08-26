@@ -17,6 +17,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 import {ManagesReportComponent} from './manages-report/manages-report.component';
+import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
 
 @Component({
     selector: 'app-manages',
@@ -380,16 +381,31 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectDoubleClickRow(row: any): void{
-        console.log(row);
-        //console.log(JSON.stringify(row));
-        /*this.shortCut = {
-            id: '발주디테일',
-            label: '발주디테일',
-            icon: 'heroicons_outline:pencil-alt',
-            link: 'estimate-order/order/order-detail',
-            useRouter:true
-        };
-        this._shortcutService.create(this.shortCut).subscribe();
-        this._router.navigate(['estimate-order/order/order-detail' , row]);*/
+        if(!this.isMobile){
+            this._matDialog.open(ManagesDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : row,
+            });
+        }else{
+            const d = this._matDialog.open(ManagesDetailComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+                data : row
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }
