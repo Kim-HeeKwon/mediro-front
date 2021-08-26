@@ -330,7 +330,8 @@
                                             <tr
                                                 class="h-14 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                *matRowDef="let validity; columns: managesTableColumns;"></tr>
+                                                (dblclick)="selectDoubleClickRow(manages)"
+                                                *matRowDef="let manages; columns: managesTableColumns;"></tr>
 
                                         </table>
 

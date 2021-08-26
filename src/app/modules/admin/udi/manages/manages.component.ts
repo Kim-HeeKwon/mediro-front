@@ -378,4 +378,18 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
         }
     }
+
+    selectDoubleClickRow(row: any): void{
+        console.log(row);
+        //console.log(JSON.stringify(row));
+        /*this.shortCut = {
+            id: '발주디테일',
+            label: '발주디테일',
+            icon: 'heroicons_outline:pencil-alt',
+            link: 'estimate-order/order/order-detail',
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
+        this._router.navigate(['estimate-order/order/order-detail' , row]);*/
+    }
 }

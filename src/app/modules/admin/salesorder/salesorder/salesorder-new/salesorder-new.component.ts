@@ -70,6 +70,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '발주' , dataField : 'poReqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
+        {headerText : '보유' , dataField : 'invQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
         {headerText : '요청수량' , dataField : 'reqQty', width: 70, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         /*{headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},*/
         {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
@@ -85,6 +87,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         'itemNm',
         'standard',
         'unit',
+        'poReqQty',
+        'invQty',
         'reqQty',
         /*'qty',*/
         'unitPrice',
@@ -502,6 +506,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                         element.standard = result.standard;
                         element.unit = result.unit;
                         element.unitPrice = result.salesPrice;
+                        element.poReqQty = result.poQty;
+                        element.invQty = result.availQty;
                         this.tableClear();
                         this.isLoading = false;
                         this._changeDetectorRef.markForCheck();
