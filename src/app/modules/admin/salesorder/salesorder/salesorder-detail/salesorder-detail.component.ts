@@ -70,7 +70,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         {headerText : '단위' , dataField : 'unit', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '발주' , dataField : 'poReqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
         {headerText : '보유' , dataField : 'invQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
-        {headerText : '요청수량' , dataField : 'reqQty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
+        {headerText : '요청수량' , dataField : 'reqQty', width: 70, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '확정수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
         {headerText : '단가' , dataField : 'unitPrice', width: 50, display : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right,validators: true},
         {headerText : '주문금액' , dataField : 'soAmt', width: 50, display : true, disabled : true, type: 'number', style: this.salesorderDetailsTableStyle.textAlign.right},
@@ -238,11 +238,11 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    let updateist;
+                    let updateList;
                     let deleteList;
                     if (result) {
                         createList = [];
-                        updateist = [];
+                        updateList = [];
                         deleteList = [];
                         this.salesorderDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -252,7 +252,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                                         if (sendData.flag === 'C') {
                                             createList.push(sendData);
                                         } else if (sendData.flag === 'U') {
-                                            updateist.push(sendData);
+                                            updateList.push(sendData);
                                         } else if (sendData.flag === 'D') {
                                             deleteList.push(sendData);
                                         }
@@ -262,15 +262,19 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         if (createList.length > 0) {
                             this.createSalesOrder(createList);
                         }
-                        if (updateist.length > 0) {
-                            this.updateSalesOrder(updateist);
+                        if(!this.salesorderHeaderForm.untouched){
+                            if (updateList.length > 0) {
+                                this.updateSalesOrder(updateList);
+                            }else{
+                                this.updateSalesOrder([], this.salesorderHeaderForm);
+                            }
+                        }else{
+                            if (updateList.length > 0) {
+                                this.updateSalesOrder(updateList);
+                            }
                         }
                         if (deleteList.length > 0) {
                             this.deleteSalesOrder(deleteList);
-                        }
-                        if(createList.length > 0 || updateist.length > 0 ||
-                            deleteList.length > 0){
-                            //this.totalAmt();
                         }
                         this.backPage();
                     }
@@ -328,15 +332,28 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
      *
      * @param sendData
      */
-    updateSalesOrder(sendData: SalesOrder[]): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData);
+    updateSalesOrder(sendData: SalesOrder[], headerForm?: FormGroup): void{
+
+        if(headerForm !== undefined){
+
+            sendData.push(headerForm.getRawValue());
 
             this._salesorderService.updateSalesOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesorder: any) => {
                 });
+
+        }else{
+            if(sendData){
+                sendData = this.headerDataSet(sendData);
+
+                this._salesorderService.updateSalesOrder(sendData)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((salesorder: any) => {
+                    });
+            }
         }
+
 
     }
 

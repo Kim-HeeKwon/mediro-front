@@ -713,6 +713,14 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         link    : '/estimate-order/order'
     },
     {
+        id      : 'salesorder.salesorder',
+        title   : '주문',
+        subtitle: '',
+        type    : 'basic',
+        icon    : 'heroicons_outline:pencil',
+        link    : '/salesorder/salesorder'
+    },
+    {
         id   : 'bound.inbound',
         title: '입고',
         type : 'basic',
@@ -725,14 +733,6 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:folder-remove',
         link : '/bound/outbound'
-    },
-    {
-        id      : 'salesorder.salesorder',
-        title   : '주문',
-        subtitle: '',
-        type    : 'basic',
-        icon    : 'heroicons_outline:pencil',
-        link    : '/salesorder/salesorder'
     },
     {
         id   : 'stock.stock',

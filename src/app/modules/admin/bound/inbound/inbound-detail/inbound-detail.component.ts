@@ -261,89 +261,114 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return;
         }
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.inBoundDetails$,
-            this.inBoundDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(this.inBoundHeaderForm.controls['status'].value !== 'N'){
             this._functionService.cfn_alert('신규 상태에서만 수정이 가능합니다.');
             return;
         }
 
-        const confirmation = this._teamPlatConfirmationService.open({
-            title : '',
-            message: '저장하시겠습니까?',
-            actions: {
-                confirm: {
-                    label: '확인'
-                },
-                cancel: {
-                    label: '닫기'
-                }
+        if(!this.inBoundHeaderForm.invalid){
+
+            let detailCheck = false;
+            this.inBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
             }
-        });
-        confirmation.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                let createList;
-                let updateList;
-                let deleteList;
-               if(result){
-                   createList = [];
-                   updateList = [];
-                   deleteList = [];
-                   this.inBoundDetails$
-                       .pipe(takeUntil(this._unsubscribeAll))
-                       .subscribe((inBoundDetail) => {
-                           inBoundDetail.forEach((sendData: any) => {
-                               if (sendData.flag) {
-                                   if (sendData.flag === 'C') {
-                                       createList.push(sendData);
-                                   } else if (sendData.flag === 'U') {
-                                       updateList.push(sendData);
-                                   } else if (sendData.flag === 'D') {
-                                       deleteList.push(sendData);
-                                   }
-                               }
-                           });
-                       });
-                   let inBoundHeader = null;
 
-                   this._inboundService.inBoundHeader$
-                       .pipe(takeUntil(this._unsubscribeAll))
-                       .subscribe((inBound: any) => {
-                           // Update the pagination
-                           if(inBound !== null){
-                               inBoundHeader = inBound;
-                           }
-                           // Mark for check
-                           this._changeDetectorRef.markForCheck();
-                       });
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.inBoundDetails$,
+                this.inBoundDetailsTable);
 
-                   if(inBoundHeader === null){
-                       inBoundHeader = {};
-                   }
-                   if (createList.length > 0) {
-                       this.createIn(createList,inBoundHeader);
-                   }
-                   if (updateList.length > 0) {
-                       this.updateIn(updateList,inBoundHeader);
-                   }
-                   if (deleteList.length > 0) {
-                       this.deleteIn(deleteList,inBoundHeader);
-                   }
-               };
+            if(validCheck){
+                return;
+            }
+
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
             });
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    let createList;
+                    let updateList;
+                    let deleteList;
+                    if(result){
+                        createList = [];
+                        updateList = [];
+                        deleteList = [];
+                        this.inBoundDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((inBoundDetail) => {
+                                inBoundDetail.forEach((sendData: any) => {
+                                    if (sendData.flag) {
+                                        if (sendData.flag === 'C') {
+                                            createList.push(sendData);
+                                        } else if (sendData.flag === 'U') {
+                                            updateList.push(sendData);
+                                        } else if (sendData.flag === 'D') {
+                                            deleteList.push(sendData);
+                                        }
+                                    }
+                                });
+                            });
+                        let inBoundHeader = null;
+
+                        this._inboundService.inBoundHeader$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((inBound: any) => {
+                                // Update the pagination
+                                if(inBound !== null){
+                                    inBoundHeader = inBound;
+                                }
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+
+                        if(inBoundHeader === null){
+                            inBoundHeader = {};
+                        }
+                        if (createList.length > 0) {
+                            this.createIn(createList,inBoundHeader);
+                        }
+                        if(!this.inBoundHeaderForm.untouched){
+                            if (updateList.length > 0) {
+                                this.updateIn(updateList);
+                            }else{
+                                this.updateIn([],this.inBoundHeaderForm);
+                            }
+                        }else{
+                            if (updateList.length > 0) {
+                                this.updateIn(updateList);
+                            }
+                        }
+                        if (deleteList.length > 0) {
+                            this.deleteIn(deleteList,inBoundHeader);
+                        }
+                    };
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    headerDataSet(sendData: InBound[],inBoundHeader: any) {
+    headerDataSet(sendData: InBound[],inBoundHeader?: any) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -380,15 +405,27 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      *
      * @param sendData
      */
-    updateIn(sendData: InBound[],inBoundHeader: any): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData,inBoundHeader);
+    updateIn(sendData: InBound[], headerForm?: FormGroup): void{
+        if(headerForm !== undefined){
+
+            sendData.push(headerForm.getRawValue());
 
             this._inboundService.updateIn(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                 });
+
+        }else{
+            if(sendData){
+                sendData = this.headerDataSet(sendData);
+
+                this._inboundService.updateIn(sendData)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((inBound: any) => {
+                    });
+            }
         }
+
     }
 
     /* 삭제

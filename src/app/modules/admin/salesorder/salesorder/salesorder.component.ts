@@ -36,14 +36,14 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     salesorderHeadersTableColumns: string[] = [
         'select',
         'no',
+        'soNo',
         'soCreDate',
         'soDate',
-        'soNo',
         'type',
         'status',
         /*'account',*/
         'accountNm',
-        'email',
+        /*'email',*/
         /*'soAmt',
         'remarkHeader',*/
         'obNo',
@@ -169,7 +169,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
-        this._salesorderService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this._salesorderService.getHeader(0,10,'soNo','desc',this.searchForm.getRawValue());
         this.selectClear();
     }
     selectDoubleClickRow(row: any): void {

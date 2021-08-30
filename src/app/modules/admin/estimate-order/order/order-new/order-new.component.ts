@@ -55,7 +55,8 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
-    filterList: string[];
+    filterTypeList: string[];
+    filterStatusList: string[];
     estimateHeader: any;
     estimateDetail: any;
 
@@ -109,9 +110,10 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
         private _utilService: FuseUtilsService)
     {
-        this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_TYPE', this.filterList);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_STATUS', this.filterList);
+        this.filterTypeList = ['ALL', '2'];
+        this.filterStatusList = ['ALL'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_TYPE', this.filterTypeList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_STATUS', this.filterStatusList);
         if(this._router.getCurrentNavigation() !== (null && undefined)){
 
             if(this._router.getCurrentNavigation().extras.state !== undefined){
@@ -204,6 +206,8 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             unit: estimateDetail.unit,
                             poLineNo: estimateDetail.qtLineNo,
                             unitPrice: estimateDetail.qtPrice,
+                            poReqQty: estimateDetail.poReqQty,
+                            invQty: estimateDetail.invQty,
                             reqQty: estimateDetail.qty,
                             qty: 0,
                             poQty: 0,
@@ -246,16 +250,29 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveOrder(): void{
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.orderDetails$,
-            this.orderDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(!this.orderHeaderForm.invalid){
             this.showAlert = false;
+
+            let detailCheck = false;
+            this.orderDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.orderDetails$,
+                this.orderDetailsTable);
+
+            if(validCheck){
+                return;
+            }
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',

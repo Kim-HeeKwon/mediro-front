@@ -89,7 +89,7 @@ export class FuseUtilsService {
      */
     commonValueFilter(commonCode: any[], value: string, filterList: string[]): any  // CommonCode[]
     {
-        const commonValues: CommonCode[] = [];
+        let commonValues: CommonCode[] = [];
 
         const childValues = commonCode.filter((item: any) => item.mainCd === value).map((param: any) => {
             return param.child;
@@ -104,18 +104,12 @@ export class FuseUtilsService {
 
         // @ts-ignore
         const finalValue: [] = [];
-        filterList.forEach((filter: string) => {
-            const v = commonValues.filter((item: any) => item.id !== filter).map((param: any) => {
+        for(let f=0; f<filterList.length; f++){
+            commonValues = commonValues.filter((item: any) => item.id !== filterList[f]).map((param: any) => {
                 return param;
             });
-
-            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let a=0; a<v.length; a++){
-                // @ts-ignore
-                finalValue.push(v[a]);
-            }
-        });
-        return finalValue;
+        }
+        return commonValues;
     }
 
     /**
@@ -125,7 +119,7 @@ export class FuseUtilsService {
      */
     commonValueSearchFilter(commonCode: any[], value: string, filterList: string[]): any  // CommonCode[]
     {
-        const commonValues: CommonCode[] = [];
+        let commonValues: CommonCode[] = [];
 
         const childValues = commonCode.filter((item: any) => item.mainCd === value).map((param: any) => {
             return param.child;
@@ -140,18 +134,12 @@ export class FuseUtilsService {
 
         // @ts-ignore
         const finalValue: [] = [];
-        filterList.forEach((filter: string) => {
-            const v = commonValues.filter((item: any) => item.id === filter).map((param: any) => {
+        for(let f=0; f<filterList.length; f++){
+            commonValues = commonValues.filter((item: any) => item.id !== filterList[f]).map((param: any) => {
                 return param;
             });
-
-            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let a=0; a<v.length; a++){
-                // @ts-ignore
-                finalValue.push(v[a]);
-            }
-        });
-        return finalValue;
+        }
+        return commonValues;
     }
 
     /**

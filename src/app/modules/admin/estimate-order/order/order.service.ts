@@ -74,7 +74,7 @@ export class OrderService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getHeader(page: number = 0, size: number = 10, sort: string = 'poNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{ orderHeaderPagenation: OrderHeaderPagenation; orderHeader: OrderHeader[] }> {
 
         const searchParam = {};

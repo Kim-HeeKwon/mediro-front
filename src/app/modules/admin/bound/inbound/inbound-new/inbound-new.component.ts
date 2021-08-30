@@ -51,7 +51,8 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
-    filterList: string[];
+    filterTypeList: string[];
+    filterStatusList: string[];
 
     inBoundDetailPagenation: InBoundDetailPagenation | null = null;
     inBoundDetails$ = new Observable<InBoundDetail[]>();
@@ -128,9 +129,10 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
     )
     {
-        this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterList);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
+        this.filterTypeList = ['ALL','2'];
+        this.filterStatusList = ['ALL'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterTypeList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterStatusList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
 
         if(this._router.getCurrentNavigation() !== (null && undefined)){
@@ -196,6 +198,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         if(this.inBoundHeaders !== undefined){
             this.inBoundHeaderForm.controls.type.disable();
+            this.inBoundHeaderForm.controls.account.disable();
             this.inBoundHeaderForm.patchValue({'account': this.inBoundHeaders.account});
             this.inBoundHeaderForm.patchValue({'accountNm': this.inBoundHeaders.accountNm});
             this.inBoundHeaderForm.patchValue({'type': '2'});
@@ -244,7 +247,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                             lot10: '',
                             remarkDetail: salesorderDetail.remarkDetail, ibQty: 0, poLineNo: 0, poNo: '', udiYn: ''
                         });
-                        console.log(salesorderDetail);
                     });
                     this._changeDetectorRef.markForCheck();
                 });
@@ -288,15 +290,29 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveIn(): void{
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.inBoundDetails$,
-            this.inBoundDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(!this.inBoundHeaderForm.invalid){
+
+            let detailCheck = false;
+            this.inBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.inBoundDetails$,
+                this.inBoundDetailsTable);
+
+            if(validCheck){
+                return;
+            }
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',

@@ -80,7 +80,7 @@ export class EstimateService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getHeader(page: number = 0, size: number = 10, sort: string = 'qtNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{ estimateHeaderPagenation: EstimateHeaderPagenation; estimateHeader: EstimateHeader[] }> {
 
         const searchParam = {};

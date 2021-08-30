@@ -203,6 +203,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             unitPrice: estimateDetail.qtPrice,
                             reqQty: estimateDetail.qty,
                             qty: 0,
+                            poReqQty: estimateDetail.poReqQty,
+                            invQty: estimateDetail.invQty,
                             soAmt:estimateDetail.qtAmt,
                             remarkDetail: estimateDetail.remarkDetail,
                         });
@@ -260,16 +262,29 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveSalesOrder(): void{
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.salesorderDetails$,
-            this.salesorderDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(!this.salesorderHeaderForm.invalid){
             this.showAlert = false;
+
+            let detailCheck = false;
+            this.salesorderDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.salesorderDetails$,
+                this.salesorderDetailsTable);
+
+            if(validCheck){
+                return;
+            }
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',

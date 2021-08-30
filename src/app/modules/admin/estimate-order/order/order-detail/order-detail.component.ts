@@ -218,16 +218,30 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return;
         }
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.orderDetails$,
-            this.orderDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(!this.orderHeaderForm.invalid){
             this.showAlert = false;
+
+            let detailCheck = false;
+            this.orderDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.orderDetails$,
+                this.orderDetailsTable);
+
+            if(validCheck){
+                return;
+            }
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',
@@ -245,11 +259,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     let createList;
-                    let updateist;
+                    let updateList;
                     let deleteList;
                     if (result) {
                         createList = [];
-                        updateist = [];
+                        updateList = [];
                         deleteList = [];
                         this.orderDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -259,7 +273,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                                         if (sendData.flag === 'C') {
                                             createList.push(sendData);
                                         } else if (sendData.flag === 'U') {
-                                            updateist.push(sendData);
+                                            updateList.push(sendData);
                                         } else if (sendData.flag === 'D') {
                                             deleteList.push(sendData);
                                         }
@@ -269,15 +283,19 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         if (createList.length > 0) {
                             this.createOrder(createList);
                         }
-                        if (updateist.length > 0) {
-                            this.updateOrder(updateist);
+                        if(!this.orderHeaderForm.untouched){
+                            if (updateList.length > 0) {
+                                this.updateOrder(updateList);
+                            }else{
+                                this.updateOrder([], this.orderHeaderForm);
+                            }
+                        }else{
+                            if (updateList.length > 0) {
+                                this.updateOrder(updateList);
+                            }
                         }
                         if (deleteList.length > 0) {
                             this.deleteOrder(deleteList);
-                        }
-                        if(createList.length > 0 || updateist.length > 0 ||
-                            deleteList.length > 0){
-                            //this.totalAmt();
                         }
                         this.backPage();
                     }
@@ -339,16 +357,27 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
      *
      * @param sendData
      */
-    updateOrder(sendData: Order[]): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData);
+    updateOrder(sendData?: Order[], headerForm?: FormGroup): void{
+
+        if(headerForm !== undefined){
+
+            sendData.push(headerForm.getRawValue());
 
             this._orderService.updateOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
                 });
-        }
 
+        }else{
+            if(sendData){
+                sendData = this.headerDataSet(sendData);
+
+                this._orderService.updateOrder(sendData)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((order: any) => {
+                    });
+            }
+        }
     }
 
     /* 삭제

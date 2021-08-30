@@ -299,7 +299,7 @@
                                             matSort
                                             [matSortActive]="'ibNo'"
                                             [matSortDisableClear]="true"
-                                            [matSortDirection]="'asc'"
+                                            [matSortDirection]="'desc'"
                                             [multiTemplateDataRows]="true"
                                             [dataSource]="inBoundHeaders$"
                                             [trackBy]="trackByFn">
@@ -424,7 +424,23 @@
 
                                             </ng-container>
 
-
+                                            <ng-container matColumnDef="ibNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="120"
+                                                    disableClear>
+                                                    입고번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let inBoundHeader">
+                                                    {{inBoundHeader.ibNo}}
+                                                </td>
+                                            </ng-container>
                                             <ng-container matColumnDef="ibCreDate">
                                                 <th
                                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -448,6 +464,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
+                                                    hidden="true"
                                                     [width]="120"
                                                     disableClear>
                                                     입고일
@@ -457,23 +474,6 @@
                                                     mat-cell
                                                     *matCellDef="let inBoundHeader">
                                                     {{inBoundHeader.ibDate}}
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="ibNo">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    [width]="150"
-                                                    disableClear>
-                                                    입고번호
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let inBoundHeader">
-                                                    {{inBoundHeader.ibNo}}
                                                 </td>
                                             </ng-container>
                                             <ng-container matColumnDef="type">
@@ -499,7 +499,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
-                                                    [width]="150"
+                                                    [width]="120"
                                                     disableClear>
                                                     상태
                                                 </th>
@@ -583,7 +583,7 @@
                                                     mat-header-cell
                                                     *matHeaderCellDef
                                                     mat-sort-header
-                                                    [width]="150"
+                                                    [width]="120"
                                                     disableClear>
                                                     발주번호
                                                 </th>

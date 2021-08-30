@@ -296,7 +296,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    suplyUpdate() {
+    정() {
         if(this.selection.selected.length < 1){
             this._functionService.cfn_alert('수정 대상을 선택해주세요.');
             return;

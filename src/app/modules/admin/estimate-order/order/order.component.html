@@ -263,9 +263,9 @@
                                             [ngClass]="{'pointer-events-none': isLoading}"
                                             mat-table
                                             matSort
-                                            [matSortActive]="'accountNm'"
+                                            [matSortActive]="'poNo'"
                                             [matSortDisableClear]="true"
-                                            [matSortDirection]="'asc'"
+                                            [matSortDirection]="'desc'"
                                             [multiTemplateDataRows]="true"
                                             [dataSource]="orderHeaders$"
                                             [trackBy]="trackByFn">
@@ -303,7 +303,24 @@
                                                     {{orderHeader.no}}
                                                 </td>
                                             </ng-container>
-
+                                            <ng-container matColumnDef="poNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="120"
+                                                    disableClear>
+                                                    발주 번호
+                                                </th>
+                                                <td
+                                                    (click)="selectClickRow(orderHeader)"
+                                                    class="pr-8 truncate mediro-td-link-cell"
+                                                    mat-cell
+                                                    *matCellDef="let orderHeader">
+                                                    {{orderHeader.poNo}}
+                                                </td>
+                                            </ng-container>
                                             <ng-container matColumnDef="poCreDate">
                                                 <th
                                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -312,7 +329,7 @@
                                                     [width]="120"
                                                     mat-sort-header
                                                     disableClear>
-                                                    발주생성일자
+                                                    생성일자
                                                 </th>
                                                 <td
                                                     class="pr-8 truncate"
@@ -336,23 +353,6 @@
                                                     mat-cell
                                                     *matCellDef="let orderHeader">
                                                     {{orderHeader.poDate}}
-                                                </td>
-                                            </ng-container>
-                                            <ng-container matColumnDef="poNo">
-                                                <th
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    mat-header-cell
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    [width]="150"
-                                                    disableClear>
-                                                    발주 번호
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    *matCellDef="let orderHeader">
-                                                    {{orderHeader.poNo}}
                                                 </td>
                                             </ng-container>
                                             <ng-container matColumnDef="type">
@@ -482,7 +482,6 @@
                                             <tr
                                                 class="h-14 hover:bg-gray-100 dark:hover:bg-hover"
                                                 mat-row
-                                                (dblclick)="selectClickRow(orderHeader)"
                                                 *matRowDef="let orderHeader; columns: orderHeadersTableColumns;"></tr>
                                             <!--(dblclick)="selectDoubleClickRow(orderHeader)"-->
 

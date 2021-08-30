@@ -50,7 +50,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
-    filterList: string[];
+    filterTypeList: string[];
+    filterStatusList: string[];
 
     outBoundDetailPagenation: OutBoundDetailPagenation | null = null;
     outBoundDetails$ = new Observable<OutBoundDetail[]>();
@@ -95,9 +96,10 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
     )
     {
-        this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterList);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterList);
+        this.filterTypeList = ['ALL'];
+        this.filterStatusList = ['ALL'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterTypeList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterStatusList);
     }
     /**
      * On init
@@ -202,14 +204,30 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveOut(): void{
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.outBoundDetails$,
-            this.outBoundDetailsTable);
-
-        if(validCheck){
-            return;
-        }
         if(!this.outBoundHeaderForm.invalid){
+
+            let detailCheck = false;
+            this.outBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.outBoundDetails$,
+                this.outBoundDetailsTable);
+
+            if(validCheck){
+                return;
+            }
+
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',
                 message: '저장하시겠습니까?',

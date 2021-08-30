@@ -58,9 +58,9 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     outBoundHeadersTableStyle: TableStyle = new TableStyle();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     outBoundHeadersTable: TableConfig[] = [
+        {headerText : '출고번호' , dataField : 'obNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '작성일' , dataField : 'obCreDate', display : false , disabled : true},
         {headerText : '출고일' , dataField : 'obDate', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '출고번호' , dataField : 'obNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '거래처' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '거래처 명' , dataField : 'accountNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '주소' , dataField : 'address', width: 150, display : true, disabled : true, type: 'text'},
@@ -74,9 +74,9 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     outBoundHeadersTableColumns: string[] = [
         'select',
         'details',
+        'obNo',
         'obCreDate',
         'obDate',
-        'obNo',
         'type',
         'status',
         /*'account',*/

@@ -204,76 +204,101 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return;
         }
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.outBoundDetails$,
-            this.outBoundDetailsTable);
+        if(!this.outBoundHeaderForm.invalid){
 
-        if(validCheck){
-            return;
-        }
+            let detailCheck = false;
+            this.outBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
 
-        const saveConfirm =this._matDialog.open(SaveAlertComponent, {
-            data: {
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
             }
-        });
-        saveConfirm.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                let createList;
-                let updateList;
-                let deleteList;
-                if (result.status) {
-                    createList = [];
-                    updateList = [];
-                    deleteList = [];
-                    this.outBoundDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((outBoundDetail) => {
-                            outBoundDetail.forEach((sendData: any) => {
-                                if (sendData.flag) {
-                                    if (sendData.flag === 'C') {
-                                        createList.push(sendData);
-                                    } else if (sendData.flag === 'U') {
-                                        updateList.push(sendData);
-                                    } else if (sendData.flag === 'D') {
-                                        deleteList.push(sendData);
-                                    }
-                                }
-                            });
-                        });
-                    let outBoundHeader = null;
 
-                    this._outboundService.outBoundHeader$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((outBound: any) => {
-                            // Update the pagination
-                            if(outBound !== null){
-                                outBoundHeader = outBound;
-                            }
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.outBoundDetails$,
+                this.outBoundDetailsTable);
 
-                    if(outBoundHeader === null){
-                        outBoundHeader = {};
-                    }
-                    if (createList.length > 0) {
-                        this.createOut(createList,outBoundHeader);
-                    }
-                    if (updateList.length > 0) {
-                        this.updateOut(updateList,outBoundHeader);
-                    }
-                    if (deleteList.length > 0) {
-                        this.deleteOut(deleteList,outBoundHeader);
-                    }
+            if(validCheck){
+                return;
+            }
+
+            const saveConfirm =this._matDialog.open(SaveAlertComponent, {
+                data: {
                 }
             });
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
+            saveConfirm.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    let createList;
+                    let updateList;
+                    let deleteList;
+                    if (result.status) {
+                        createList = [];
+                        updateList = [];
+                        deleteList = [];
+                        this.outBoundDetails$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((outBoundDetail) => {
+                                outBoundDetail.forEach((sendData: any) => {
+                                    if (sendData.flag) {
+                                        if (sendData.flag === 'C') {
+                                            createList.push(sendData);
+                                        } else if (sendData.flag === 'U') {
+                                            updateList.push(sendData);
+                                        } else if (sendData.flag === 'D') {
+                                            deleteList.push(sendData);
+                                        }
+                                    }
+                                });
+                            });
+                        let outBoundHeader = null;
+
+                        this._outboundService.outBoundHeader$
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((outBound: any) => {
+                                // Update the pagination
+                                if(outBound !== null){
+                                    outBoundHeader = outBound;
+                                }
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+
+                        if(outBoundHeader === null){
+                            outBoundHeader = {};
+                        }
+                        if (createList.length > 0) {
+                            this.createOut(createList,outBoundHeader);
+                        }
+                        if(!this.outBoundHeaderForm.untouched){
+                            if (updateList.length > 0) {
+                                this.updateOut(updateList);
+                            }else{
+                                this.updateOut([],this.outBoundHeaderForm);
+                            }
+                        }else{
+                            if (updateList.length > 0) {
+                                this.updateOut(updateList);
+                            }
+                        }
+                        if (deleteList.length > 0) {
+                            this.deleteOut(deleteList,outBoundHeader);
+                        }
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    headerDataSet(sendData: OutBound[],outBoundHeader: any) {
+    headerDataSet(sendData: OutBound[],outBoundHeader?: any) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -317,15 +342,27 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      *
      * @param sendData
      */
-    updateOut(sendData: OutBound[],outBoundHeader: any): void{
-        if(sendData){
-            sendData = this.headerDataSet(sendData,outBoundHeader);
+    updateOut(sendData: OutBound[], headerForm?: FormGroup): void{
+        if(headerForm !== undefined){
+
+            sendData.push(headerForm.getRawValue());
 
             this._outboundService.updateOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
                 });
+
+        }else{
+            if(sendData){
+                sendData = this.headerDataSet(sendData);
+
+                this._outboundService.updateOut(sendData)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((outBound: any) => {
+                    });
+            }
         }
+
     }
 
     /* 삭제
@@ -357,6 +394,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         ];
         const enableList = [
             'obExpQty',
+            'remarkDetail',
         ];
 
         const enableListOutBound = [
