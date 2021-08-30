@@ -361,8 +361,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
 export const defaultNavigationM: FuseNavigationItem[] = [
     {
         id      : 'monitoring',
-        title   : '대쉬보드',
-        subtitle: '대쉬보드',
+        title   : '대시보드',
+        subtitle: '대시보드',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
