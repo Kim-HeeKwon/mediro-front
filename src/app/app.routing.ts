@@ -149,6 +149,11 @@ export const appRoutes: Route[] = [
             {path: 'pages', children: [
                     // Settings
                     {path: 'settings', loadChildren: () => import('app/modules/admin/pages/settings/settings.module').then(m => m.SettingsModule)},
+                    // Error
+                    {path: 'error', children: [
+                            {path: '404', loadChildren: () => import('app/modules/admin/pages/error/error-404/error-404.module').then(m => m.Error404Module)},
+                            {path: '500', loadChildren: () => import('app/modules/admin/pages/error/error-500/error-500.module').then(m => m.Error500Module)}
+                        ]},
                 ]},
             // User interface
             {path: 'ui', children: [

@@ -4,8 +4,8 @@ import { FuseNavigationItem } from '@teamplat/components/navigation';
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id      : 'monitoring',
-        title   : '대쉬보드',
-        subtitle: '대쉬보드',
+        title   : '대시보드',
+        subtitle: '대시보드',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
@@ -15,6 +15,66 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:presentation-chart-bar',
                 link : '/monitoring/dashboards'
+            },
+            {
+                id   : 'analytics.dashboards',
+                title: '애널리틱',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/pages/error/500'
+            }
+        ]
+    },
+    {
+        id      : 'udi',
+        title   : '공급내역 보고',
+        subtitle: '의료기기 공급내역 보고',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'udi.manages',
+                title: '공급내역 보고현황',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/manages'
+            },
+            {
+                id   : 'udi.status',
+                title: '식약청 보고목록',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/status'
+            },
+        ]
+    },
+    {
+        id      : 'smart-plus',
+        title   : '스마트플러스',
+        subtitle: '의료기기 공급내역 자동화',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'smart-plus.manages',
+                title: '자동발주',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/pages/error/500'
+            },
+            {
+                id   : 'smart-plus.status',
+                title: '정기주문',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/pages/error/500'
+            },
+            {
+                id   : 'smart-plus.status',
+                title: '유통재고',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/pages/error/500'
             }
         ]
     },
@@ -178,29 +238,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //         }
     //     ]
     // },
-    {
-        id      : 'udi',
-        title   : '공급내역 보고',
-        subtitle: '의료기기 공급내역 보고',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
-        children: [
-            {
-                id   : 'udi.manages',
-                title: '공급내역 보고현황',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/manages'
-            },
-            {
-                id   : 'udi.status',
-                title: '식약청 보고목록',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/status'
-            },
-        ]
-    },
     {
         id      : 'my-pages',
         title   : '마이페이지',
@@ -717,5 +754,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:archive',
         link : '/calculate/bill'
+    },
+    {
+        id   : 'calculate.bill2',
+        title: '반입/반출',
+        type : 'basic',
+        icon : 'heroicons_outline:desktop-computer',
+        link : '/pages/error/500'
     },
 ];
