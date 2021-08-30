@@ -167,7 +167,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
 
     select(): void{
 
-        this._statusService.getHeader(0,10,'serialkey','asc',this.searchForm.getRawValue());
+        this._statusService.getHeader(0,10,'serialkey','desc',this.searchForm.getRawValue());
         this.selectClear();
     }
 

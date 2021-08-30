@@ -139,6 +139,7 @@
     },
     "defaultProject": "teamplat",
     "cli": {
+      "analytics": "2348a62e-4afa-421f-bea9-2704a2aa60ce",
         "defaultCollection": "@angular-eslint/schematics"
     }
 }

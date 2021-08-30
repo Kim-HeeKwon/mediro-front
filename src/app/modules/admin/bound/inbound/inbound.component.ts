@@ -59,9 +59,9 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     inBoundHeadersTableStyle: TableStyle = new TableStyle();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     inBoundHeadersTable: TableConfig[] = [
+        {headerText : '입고번호' , dataField : 'ibNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '작성일' , dataField : 'ibCreDate', display : false , disabled : true},
         {headerText : '입고일' , dataField : 'ibDate', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '입고번호' , dataField : 'ibNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '거래처' , dataField : 'account', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '거래처 명' , dataField : 'accountNm', width: 150, display : true, disabled : true, type: 'text'},
         {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text',combo: true},
@@ -74,9 +74,9 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         'select',
         /*'no',*/
         'details',
-        'ibCreDate',
-        'ibDate',
         'ibNo',
+        'ibCreDate',
+        /*'ibDate',*/
         'type',
         'status',
         /*'account',*/

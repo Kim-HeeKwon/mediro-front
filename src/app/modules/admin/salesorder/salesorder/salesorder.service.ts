@@ -80,7 +80,7 @@ export class SalesorderService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getHeader(page: number = 0, size: number = 10, sort: string = 'soNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{ salesorderHeaderPagenation: SalesOrderHeaderPagenation; salesorderHeader: SalesOrderHeader[] }> {
 
         const searchParam = {};

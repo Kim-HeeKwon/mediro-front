@@ -10,6 +10,8 @@ export interface SalesOrder
     unit: string;
     reqQty: number;
     qty: number;
+    poReqQty?: number;
+    invQty?: number;
     unitPrice: number;
     type: string;               //유형
     status: string;             //상태
@@ -62,6 +64,8 @@ export interface SalesOrderDetail
     unit: string;
     reqQty: number;
     qty: number;
+    poReqQty?: number;
+    invQty?: number;
     unitPrice: number;
     soAmt: number;
     remarkDetail: string;

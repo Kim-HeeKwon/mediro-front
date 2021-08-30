@@ -38,9 +38,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     orderHeadersTableColumns: string[] = [
         'select',
         'no',
+        'poNo',
         'poCreDate',
         'poDate',
-        'poNo',
         'type',
         'status',
         /*'account',*/
@@ -172,7 +172,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
-        this._orderService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this._orderService.getHeader(0,10,'poNo','desc',this.searchForm.getRawValue());
         this.selectClear();
     }
     selectDoubleClickRow(row: any): void {
@@ -182,7 +182,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     selectClickRow(row: any): void{
         //숏컷 생성
 
-        console.log(JSON.stringify(row));
         this.shortCut = {
             id: '발주디테일',
             label: '발주디테일',

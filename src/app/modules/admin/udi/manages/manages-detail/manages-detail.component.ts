@@ -20,6 +20,7 @@ import {ManagesService} from "../manages.service";
 import {takeUntil} from "rxjs/operators";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import moment from "moment";
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'manages-detail',
@@ -53,6 +54,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
         private _managesService: ManagesService,
         private _formBuilder: FormBuilder,
         private _codeStore: CodeStore,
+        private _functionService: FunctionService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _utilService: FuseUtilsService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -244,7 +246,12 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                     if(result){
 
                         this.matDialogRef.close();
-                        /*this._managesService.updateSupplyInfo(this.selectedForm.getRawValue())
+                        return;
+
+                        const sendData = [];
+                        sendData.push(this.selectedForm.getRawValue());
+                        console.log(sendData);
+                        /*this._managesService.updateSupplyInfo(sendData)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((manage: any) => {
                                 this._functionService.cfn_alertCheckMessage(manage);

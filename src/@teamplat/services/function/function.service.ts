@@ -165,6 +165,7 @@ export class FunctionService implements OnInit, OnDestroy{
         list$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
+
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let f=0; f<data.length; f++){
                     // eslint-disable-next-line @typescript-eslint/prefer-for-of

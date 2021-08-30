@@ -38,9 +38,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     estimateHeadersTableColumns: string[] = [
         'select',
         'no',
+        'qtNo',
         'qtCreDate',
         'qtDate',
-        'qtNo',
         'type',
         'status',
         /*'account',*/
@@ -178,7 +178,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
-        this._estimateService.getHeader(0,10,'accountNm','asc',this.searchForm.getRawValue());
+        this._estimateService.getHeader(0,10,'qtNo','desc',this.searchForm.getRawValue());
         this.selectClear();
     }
 

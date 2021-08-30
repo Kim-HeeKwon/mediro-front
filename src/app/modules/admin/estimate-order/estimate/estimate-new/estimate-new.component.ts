@@ -122,7 +122,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             qtNo: [{value:'',disabled:true}],   // 견적번호
             account: [{value:''},[Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
-            type: [{value:''}, [Validators.required]],   // 유형
+            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
             qtAmt: [{value:'',disabled:true}],   // 견적금액
             soNo: [{value:'',disabled:true}],   // 주문번호
@@ -197,16 +197,30 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     saveEstimate(): void{
 
-        const validCheck = this._functionService.cfn_validator('상세정보',
-            this.estimateDetails$,
-            this.estimateDetailsTable);
-
-        if(validCheck){
-            return;
-        }
-
         if(!this.estimateHeaderForm.invalid){
             this.showAlert = false;
+
+            let detailCheck = false;
+            this.estimateDetails$.pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((data) => {
+
+                    if(data.length === 0){
+                        this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        detailCheck = true;
+                    }
+                });
+
+            if(detailCheck){
+                return;
+            }
+
+            const validCheck = this._functionService.cfn_validator('상세정보',
+                this.estimateDetails$,
+                this.estimateDetailsTable);
+
+            if(validCheck){
+                return;
+            }
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title : '',

@@ -9,6 +9,8 @@ export interface Estimate
     standard: string;
     unit: string;
     qty: number;
+    poReqQty?: number;
+    invQty?: number;
     qtPrice: number;
     type: string;               //유형
     status: string;             //상태
@@ -61,6 +63,8 @@ export interface EstimateDetail
     standard: string;
     unit: string;
     qty: number;
+    poReqQty?: number;
+    invQty?: number;
     qtPrice: number;
     qtAmt: number;
     remarkDetail: string;
