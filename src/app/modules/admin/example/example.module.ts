@@ -19,6 +19,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {SharedModule} from "../../../shared/shared.module";
+import {NgxPrintModule} from "ngx-print";
 
 const exampleRoutes: Route[] = [
     {
@@ -51,6 +52,7 @@ const exampleRoutes: Route[] = [
         MatSelectModule,
         MatSlideToggleModule,
         MatTooltipModule,
+        NgxPrintModule,
         SharedModule,
         RouterModule.forChild(exampleRoutes)
     ]

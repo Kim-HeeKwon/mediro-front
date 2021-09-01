@@ -45,6 +45,7 @@
         "ngx-cookie-service": "^12.0.3",
         "ngx-device-detector": "^2.1.1",
         "ngx-markdown": "12.0.1",
+        "ngx-print": "^1.2.1",
         "ngx-quill": "14.0.0",
         "perfect-scrollbar": "1.5.1",
         "quagga": "^0.12.1",
