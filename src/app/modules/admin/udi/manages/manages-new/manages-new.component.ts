@@ -1,35 +1,37 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component, Inject,
+    Component,
+    Inject,
     OnDestroy,
     OnInit,
     ViewEncapsulation
 } from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
 import {Observable, Subject} from "rxjs";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ItemsService} from "../../../basic-info/items/items.service";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {DeviceDetectorService} from "ngx-device-detector";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ManagesService} from "../manages.service";
-import {takeUntil} from "rxjs/operators";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import moment from "moment";
+import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {takeUntil} from "rxjs/operators";
+import {fuseAnimations} from "../../../../../../@teamplat/animations";
+import {ManagesNewService} from "./manages-new.service";
+import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
+import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
 
 @Component({
-    selector       : 'manages-detail',
-    templateUrl    : './manages-detail.component.html',
+    selector       : 'manages-new',
+    templateUrl    : './manages-new.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations   : fuseAnimations
 })
-export class ManagesDetailComponent implements OnInit, OnDestroy
+export class ManagesNewComponent implements OnInit, OnDestroy
 {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -41,16 +43,26 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
         type   : 'success',
         message: ''
     };
+    month: CommonCode[] = null;
+    year: CommonCode[] = null;
     suplyTypeCode: CommonCode[] = null;
     suplyFlagCode: CommonCode[] = null;
-    showAlert: boolean = false;
     is_edit: boolean = false;
+    validators: boolean = true;
+
+    changeText: string = '';
+    changeAccountText: string = '거래처';
+    changeAccountHidden: boolean = true;
+    hidden: boolean = false;
+
+    showAlert: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public matDialogRef: MatDialogRef<ManagesDetailComponent>,
+        public matDialogRef: MatDialogRef<ManagesNewComponent>,
         public _matDialogPopup: MatDialog,
+        private _managesNewService: ManagesNewService,
         private _managesService: ManagesService,
         private _formBuilder: FormBuilder,
         private _codeStore: CodeStore,
@@ -64,6 +76,8 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
         this.suplyTypeCode = _utilService.commonValueFilter(_codeStore.getValue().data,'SUPLYTYPECODE',['ALL']);
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
         this.isMobile = this._deviceService.isMobile();
+        this.month = _utilService.commonValue(_codeStore.getValue().data,'MONTH');
+        this.year = _utilService.commonValue(_codeStore.getValue().data,'YEAR');
     }
 
     /**
@@ -72,10 +86,13 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.selectedForm = this._formBuilder.group({
-            suplyFlagCode: [{value: '',disabled:true}, [Validators.required]], // 공급구분
-            suplyTypeCode: ['', [Validators.required]], // 공급형태
+            year: [{value: ''}, [Validators.required]],
+            month: [{value: ''}, [Validators.required]],
+            suplyContStdmt: [{value: ''}],
+            suplyFlagCode: [{value: ''}, [Validators.required]], // 공급구분
+            suplyTypeCode: [{value: ''}, [Validators.required]], // 공급형태
             stdCode : [{value: '',disabled:true}, [Validators.required]],
-            udiDiCode : [{value: '',disabled:true}, [Validators.required]],
+            udiDiCode : [{value: ''}, [Validators.required]],
             udiPiCode : [{value: ''}, [Validators.required]],
             entpName : [{value: '',disabled:true}],
             itemName : [{value: '',disabled:true}],
@@ -87,17 +104,17 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             manufYm : [{value: '',disabled:true}],
             useTmlmt : [{value: '',disabled:true}],
             suplyDate : [''],
-            suplyQty : [{value: '',disabled:true}],
+            suplyQty : [''],
             suplyUntpc : [''],
-            suplyAmt : [{value: '',disabled:true}],
+            suplyAmt : [''],
             remark : [''],
             bcncCobTypeName : [''],
-            bcncCode : [''],
-            bcncEntpAddr : [''],
-            bcncEntpName : [''],
+            bcncCode : [{value: ''}, [Validators.required]],
+            bcncEntpAddr : [{value: '',disabled:true}],
+            bcncEntpName : [{value: '',disabled:true}],
             bcncHptlCode : [''],
-            bcncTaxNo : [''],
-            cobTypeName : [''],
+            bcncTaxNo : [{value: '',disabled:true}],
+            cobTypeName : [{value: '',disabled:true}],
             dvyfgCobTypeName : [''],
             dvyfgEntpAddr : [''],
             dvyfgEntpName : [''],
@@ -111,7 +128,6 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             rtngudFlagCode : [''],
             seq : [''],
             suplyContSeq : [''],
-            suplyContStdmt : [''],
             totalCnt : [''],
             udiDiSeq : [''],
             grade : [{value: '',disabled:true}],
@@ -119,7 +135,13 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
         });
 
 
-        if(this.data !== (null || undefined)){
+        this.selectedForm.patchValue({'udiDiCode': ''});
+        this.selectedForm.patchValue({'udiPiCode': ''});
+        this.changeAccountHidden = true;
+        this.validators = true;
+
+
+        /*if(this.data !== (null || undefined)){
             this.selectedForm.patchValue(
                 this.data
             );
@@ -128,7 +150,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             this.selectedForm.patchValue({'suplyDate': stringvalue});
 
             this.is_edit = true;
-        }
+        }*/
     }
 
     /**
@@ -182,6 +204,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                 type   : 'error',
                 message: param.msg
             };
+            this.validators = true;
             // Show the alert
             this.showAlert = true;
         }else{
@@ -200,6 +223,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             this.selectedForm.patchValue({'packQuantity': param.data[0].packQuantity});
             this.selectedForm.patchValue({'brandName': param.data[0].brandName});
             this.selectedForm.patchValue({'grade': param.data[0].grade});
+            this.validators = false;
             // Show the alert
             this.showAlert = true;
         }
@@ -210,7 +234,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     udiDiCodeChain(): void{
         //console.log(this.selectedForm.getRawValue().udiDiCode);
 
-        this._managesService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
+        this._managesNewService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((manages: any) => {
                 //console.log(manages);
@@ -225,43 +249,54 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    suplyUpdate() {
+    suplyCreate() {
         if(!this.selectedForm.invalid){
-            const confirmation = this._teamPlatConfirmationService.open({
-                title  : '',
-                message: '수정하시겠습니까?',
-                actions: {
-                    confirm: {
-                        label: '확인'
-                    },
-                    cancel: {
-                        label: '닫기'
-                    }
-                }
-            });
-
-            confirmation.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-
-                        //console.log(this.selectedForm.getRawValue());
-                        //this.matDialogRef.close();
-                        //return;
-
-                        const sendData = [];
-                        sendData.push(this.selectedForm.getRawValue());
-                        this._managesService.updateSupplyInfo(sendData)
-                            .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe((manage: any) => {
-                                this._functionService.cfn_alertCheckMessage(manage);
-                                // Mark for check
-                                this._changeDetectorRef.markForCheck();
-                            });
+            if(!this.validators){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '추가하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
                     }
                 });
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            const suplyContStdmt = this.selectedForm.controls['year'].value + this.selectedForm.controls['month'].value;
+                            this.selectedForm.patchValue({'suplyContStdmt': suplyContStdmt});
+                            //console.log(this.selectedForm.getRawValue());
+                            //this.matDialogRef.close();
+                            //return;
+                            const sendData = [];
+                            sendData.push(this.selectedForm.getRawValue());
+                            this._managesNewService.createSupplyInfo(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((manage: any) => {
+                                    this._functionService.cfn_alertCheckMessage(manage);
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            }else{
+                // Set the alert
+                this.alert = {
+                    type   : 'error',
+                    message: '고유식별자(UDI-DI) 품목정보가 존재하지 않습니다.'
+                };
+
+                // Show the alert
+                this.showAlert = true;
+            }
         }else{
             // Set the alert
             this.alert = {
@@ -344,6 +379,86 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    changeSuplyFlagCode(): void{
+        //거래처, 공급형태 필수
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        const suplyFlagCode = this.selectedForm.getRawValue().suplyFlagCode;
+        if(suplyFlagCode === '1'){
+            this.changeText = '출고';
+            this.changeAccountText = '공급받는자 (거래처)';
+            this.changeAccountHidden = false;
+            this.hidden = false;
+        }else if(suplyFlagCode === '2'){
+            this.changeText = '반품';
+            this.changeAccountText = '반품한 자 (거래처)';
+            this.changeAccountHidden = false;
+            this.hidden = true;
+        }else if(suplyFlagCode === '3'){
+            this.changeText = '폐기';
+            this.changeAccountHidden = true;
+            this.hidden = true;
+        }else{
+            this.changeText = '';
+            this.changeAccountHidden = true;
+            this.hidden = false;
+        }
+    }
+
+    accountSearch(): void {
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '거래처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.selectedForm.patchValue({'bcncCode': result.udiAccount});
+                        this.selectedForm.patchValue({'bcncEntpAddr': result.address});
+                        this.selectedForm.patchValue({'bcncEntpName': result.custBusinessName});
+                        this.selectedForm.patchValue({'bcncTaxNo': result.custBusinessNumber});
+                        this.selectedForm.patchValue({'cobTypeName': result.businessCondition});
+                    }
+                });
+        }else{
+            const d = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '거래처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedForm.patchValue({'bcncCode': result.udiAccount});
+                    this.selectedForm.patchValue({'bcncEntpAddr': result.address});
+                    this.selectedForm.patchValue({'bcncEntpName': result.custBusinessName});
+                    this.selectedForm.patchValue({'bcncTaxNo': result.custBusinessNumber});
+                    this.selectedForm.patchValue({'cobTypeName': result.businessCondition});
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     changePrice(): void{

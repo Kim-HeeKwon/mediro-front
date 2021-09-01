@@ -128,8 +128,8 @@ export class OutboundService{
 
         if(searchParam['start'] === undefined){
             if(searchParam['end'] === undefined){
-                searchParam['start'] = moment().add(-7, 'day').endOf('day').toISOString();
-                searchParam['end'] =  moment().startOf('day').toISOString();
+                searchParam['start'] = moment().utc(false).add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().utc(false).startOf('day').toISOString();
             }
         }
 

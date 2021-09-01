@@ -18,6 +18,8 @@ import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 import {ManagesReportComponent} from './manages-report/manages-report.component';
 import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
+import {CommonPopupComponent} from "../../../../../@teamplat/components/common-popup";
+import {ManagesNewComponent} from "./manages-new";
 
 @Component({
     selector: 'app-manages',
@@ -296,7 +298,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    정() {
+    suplyUpdate() {
         if(this.selection.selected.length < 1){
             this._functionService.cfn_alert('수정 대상을 선택해주세요.');
             return;
@@ -384,6 +386,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         if(!this.isMobile){
             this._matDialog.open(ManagesDetailComponent, {
                 autoFocus: false,
+                maxHeight: '90vh',
                 disableClose: true,
                 data     : row,
             });
@@ -407,5 +410,20 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 smallDialogSubscription.unsubscribe();
             });
         }
+    }
+
+    suplyCreate(): void{
+        const popup =this._matDialog.open(ManagesNewComponent, {
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
+        });
+
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result){
+                }
+            });
     }
 }

@@ -138,8 +138,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             searchCondition: ['100'],
             searchText: [''],
             range: [{
-                start: moment().add(-7, 'day').endOf('day').toISOString(),
-                end  : moment().startOf('day').toISOString()
+                start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
+                end  : moment().utc(false).startOf('day').toISOString()
             }],
             start : [],
             end : []

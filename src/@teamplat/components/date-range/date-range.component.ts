@@ -291,7 +291,6 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         // Clone the range start and end
         const start = this._range.start.clone();
         const end = this._range.end.clone();
-
         // Build and return the range object
         return {
             startDate: start.clone().format(this.dateFormat),
@@ -632,28 +631,28 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     {
         if(dateGbn === 'week'){
             this.range = {
-                end: moment().startOf('day').toISOString(),
-                start  : moment().add(-7, 'day').endOf('day').toISOString()
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-7, 'day').endOf('day').toISOString()
             };
         }else if(dateGbn === '1mon'){
             this.range = {
-                end: moment().startOf('day').toISOString(),
-                start  : moment().add(-1, 'month').endOf('month').toISOString()
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-1, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '3mon'){
             this.range = {
-                end: moment().startOf('day').toISOString(),
-                start  : moment().add(-3, 'month').endOf('month').toISOString()
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-3, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '6mon'){
             this.range = {
-                end: moment().startOf('day').toISOString(),
-                start  : moment().add(-6, 'month').endOf('month').toISOString()
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-6, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '1year'){
             this.range = {
-                end: moment().startOf('day').toISOString(),
-                start  : moment().add(-1, 'year').endOf('year').toISOString()
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-1, 'year').endOf('year').toISOString()
             };
         }
     }

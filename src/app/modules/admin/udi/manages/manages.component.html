@@ -110,6 +110,16 @@
                         mat-stroked-button
                         [color]="'accent'"
                         [ngStyle]="{'width': '94%'}"
+                        (click)="suplyCreate()">
+                        <span class="ml-2 mr-1">추가</span>
+                    </button>
+                </div>
+                <div class="col-span-12">
+                    <button
+                        class="ml-3"
+                        mat-stroked-button
+                        [color]="'accent'"
+                        [ngStyle]="{'width': '94%'}"
                         (click)="suplyDelete()">
                         <span class="ml-2 mr-1">삭제</span>
                     </button>
@@ -202,6 +212,13 @@
                                     (click)="suplyUpdate()">
                                     <span class="ml-2 mr-1">수정</span>
                                 </button>-->
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="suplyCreate()">
+                                    <span class="ml-2 mr-1">추가</span>
+                                </button>
                                 <button
                                     class="ml-2"
                                     mat-stroked-button
