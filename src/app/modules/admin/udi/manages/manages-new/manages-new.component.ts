@@ -53,6 +53,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
     changeText: string = '';
     changeAccountText: string = '거래처';
     changeAccountHidden: boolean = true;
+    suplyTypeCodeHidden: boolean = false;
     hidden: boolean = false;
 
     showAlert: boolean = false;
@@ -90,7 +91,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             month: [{value: ''}, [Validators.required]],
             suplyContStdmt: [{value: ''}],
             suplyFlagCode: [{value: ''}, [Validators.required]], // 공급구분
-            suplyTypeCode: [{value: ''}, [Validators.required]], // 공급형태
+            suplyTypeCode: [{value: ''}], // 공급형태
             stdCode : [{value: '',disabled:true}, [Validators.required]],
             udiDiCode : [{value: ''}, [Validators.required]],
             udiPiCode : [{value: ''}, [Validators.required]],
@@ -105,11 +106,12 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             useTmlmt : [{value: '',disabled:true}],
             suplyDate : [''],
             suplyQty : [''],
+            indvdlzSuplyQty : [''],
             suplyUntpc : [''],
             suplyAmt : [''],
             remark : [''],
             bcncCobTypeName : [''],
-            bcncCode : [{value: ''}, [Validators.required]],
+            bcncCode : [{value: ''}],
             bcncEntpAddr : [{value: '',disabled:true}],
             bcncEntpName : [{value: '',disabled:true}],
             bcncHptlCode : [''],
@@ -135,6 +137,10 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         });
 
 
+        this.selectedForm.patchValue({'year': ''});
+        this.selectedForm.patchValue({'month': ''});
+        this.selectedForm.patchValue({'suplyTypeCode': ''});
+        this.selectedForm.patchValue({'bcncCode': ''});
         this.selectedForm.patchValue({'udiDiCode': ''});
         this.selectedForm.patchValue({'udiPiCode': ''});
         this.changeAccountHidden = true;
@@ -387,21 +393,37 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         const suplyFlagCode = this.selectedForm.getRawValue().suplyFlagCode;
         if(suplyFlagCode === '1'){
             this.changeText = '출고';
-            this.changeAccountText = '공급받는자 (거래처)';
+            this.changeAccountText = '공급받은 자(거래처)';
             this.changeAccountHidden = false;
+            this.suplyTypeCodeHidden = false;
             this.hidden = false;
         }else if(suplyFlagCode === '2'){
             this.changeText = '반품';
-            this.changeAccountText = '반품한 자 (거래처)';
+            this.changeAccountText = '반품한 자(거래처)';
             this.changeAccountHidden = false;
+            this.suplyTypeCodeHidden = true;
             this.hidden = true;
         }else if(suplyFlagCode === '3'){
             this.changeText = '폐기';
             this.changeAccountHidden = true;
+            this.suplyTypeCodeHidden = true;
+            this.hidden = true;
+        }else if(suplyFlagCode === '4'){
+            this.changeText = '임대';
+            this.changeAccountText = '임대한 자(거래처)';
+            this.changeAccountHidden = false;
+            this.suplyTypeCodeHidden = false;
+            this.hidden = true;
+        }else if(suplyFlagCode === '5'){
+            this.changeText = '회수';
+            this.changeAccountText = '회수한 자(거래처)';
+            this.changeAccountHidden = false;
+            this.suplyTypeCodeHidden = true;
             this.hidden = true;
         }else{
             this.changeText = '';
             this.changeAccountHidden = true;
+            this.suplyTypeCodeHidden = false;
             this.hidden = false;
         }
     }

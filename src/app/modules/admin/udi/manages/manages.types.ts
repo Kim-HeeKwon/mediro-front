@@ -39,6 +39,7 @@ export interface Manages
     dvyfgHptlCode?: string; 	//납품장소 업체 요양기관 기호
     suplyDate?: string; 	//출고ᆞ반품ᆞ폐기 일자
     suplyQty?: string; 	//출고ᆞ반품ᆞ폐기 수량
+    indvdlzSuplyQty?: string; //포장내수량중 낱개 회수수량
     suplyUntpc?: string; 	//공급단가(VAT포함, 원)
     suplyAmt?: string; 	//공급금액(VAT포함, 원)
     remark?: string; 	//비고
