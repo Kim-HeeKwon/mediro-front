@@ -8,97 +8,212 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="flex-row text-4xl font-extrabold tracking-tight">테스트 페이지</div>
+        <div class="flex-row text-4xl font-extrabold tracking-tight">양식 테스트</div>
     </div>
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-        <!-- Date -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
-                <input
-                    matInput
-                    [matDatepicker]="picker1">
-                <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <div class=""> - </div>
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">
-                <input
-                    matInput
-                    [matDatepicker]="picker2">
-                <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
+<!--        &lt;!&ndash; Date &ndash;&gt;-->
+<!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
+<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+<!--                <input-->
+<!--                    matInput-->
+<!--                    [matDatepicker]="picker1">-->
+<!--                <mat-datepicker-toggle-->
+<!--                    matSuffix-->
+<!--                    [for]="picker1"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #picker1></mat-datepicker>-->
+<!--            </mat-form-field>-->
+<!--            <div class=""> - </div>-->
+<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+<!--                <input-->
+<!--                    matInput-->
+<!--                    [matDatepicker]="picker2">-->
+<!--                <mat-datepicker-toggle-->
+<!--                    matSuffix-->
+<!--                    [for]="picker2"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #picker2></mat-datepicker>-->
+<!--            </mat-form-field>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Actions &ndash;&gt;-->
+<!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">-->
+<!--            &lt;!&ndash; Search &ndash;&gt;-->
+<!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+<!--                <mat-icon-->
+<!--                    matPrefix-->
+<!--                    [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+<!--                <input-->
+<!--                    matInput-->
+<!--                    [formControl]="searchInputControl"-->
+<!--                    [autocomplete]="'off'"-->
+<!--                    [placeholder]="'상품검색'">-->
+<!--            </mat-form-field>-->
+<!--            &lt;!&ndash; Add product button &ndash;&gt;-->
+<!--            <button-->
+<!--                class="ml-4"-->
+<!--                mat-flat-button-->
+<!--                [color]="'primary'">-->
+<!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+<!--                <span class="ml-2 mr-1">조회</span>-->
+<!--            </button>-->
+<!--            <button-->
+<!--                class="ml-4"-->
+<!--                mat-flat-button-->
+<!--                [color]="'accent'">-->
+<!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+<!--                <span class="ml-2 mr-1">신규등록</span>-->
+<!--            </button>-->
+<!--        </div>-->
+    </div>
+
+    <div style="padding: 2em">
+        <div style="width:1100px; text-align: center;">
+            <div style="font-size: 32px; text-decoration: underline; font-weight: bold;">견 적 서</div>
+            <div style="font-size: 14px; text-align: left;">견적번호 : <span></span></div>
         </div>
-        <!-- Actions -->
-        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <!-- Search -->
-            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">
-                <mat-icon
-                    matPrefix
-                    [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                <input
-                    matInput
-                    [formControl]="searchInputControl"
-                    [autocomplete]="'off'"
-                    [placeholder]="'상품검색'">
-            </mat-form-field>
-            <!-- Add product button -->
-            <button
-                class="ml-4"
-                mat-flat-button
-                [color]="'primary'">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">조회</span>
-            </button>
-            <button
-                class="ml-4"
-                mat-flat-button
-                [color]="'accent'">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                <span class="ml-2 mr-1">신규등록</span>
-            </button>
-        </div>
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black;">
+            <tbody>
+            <tr>
+                <td style="border: solid 1px; width: 43%;" colspan="4" rowspan="5">
+                    <div style="text-align:right; font-size: large; padding-right: 2em;">케어캠프 귀하</div>
+                    <div style="text-align:left; padding-left: 2em;">견적일자 :  </div>
+                    <br><br><br>
+                    <div style="text-align:left; padding-left: 2em;">견적요청에 감사드리며 아래와 같이 견적합니다.</div>
+                </td>
+                <td style="border: solid 1px; background-color: lightgray;" colspan="1" rowspan="5">
+                    <div style="text-align:center;font-weight: bold;">공</div>
+
+                    <div style="text-align:center;font-weight: bold;">급</div>
+
+                    <div style="text-align:center;font-weight: bold;">자</div>
+                </td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">등록번호</td>
+                <td style="border: solid 1px" colspan="9"></td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">상 &nbsp;&nbsp;&nbsp;&nbsp; 호</td>
+                <td style="border: solid 1px" colspan="2">메디로</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">성 &nbsp;&nbsp;&nbsp;&nbsp; 명</td>
+                <td style="border: solid 1px">김환진</td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">주 &nbsp;&nbsp;&nbsp;&nbsp; 소</td>
+                <td style="border: solid 1px" colspan="9"></td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">업 &nbsp;&nbsp;&nbsp;&nbsp; 태</td>
+                <td style="border: solid 1px" colspan="2">메디로</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">종 &nbsp;&nbsp;&nbsp;&nbsp; 목</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">전화번호</td>
+                <td style="border: solid 1px" colspan="2">메디로</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">팩스번호</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr>
+                <td style="border: solid 1px; padding:5px;" colspan="10">합계금액 :</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black; margin-top: 5px;">
+            <tbody>
+                <tr style="background-color: lightgray; text-align: center; font-weight: bold;">
+                    <td style="border: solid 1px">순번</td>
+                    <td style="border: solid 1px">품목</td>
+                    <td style="border: solid 1px">규격</td>
+                    <td style="border: solid 1px">수량</td>
+                    <td style="border: solid 1px">단가</td>
+                    <td style="border: solid 1px">공급가액</td>
+                    <td style="border: solid 1px">세액</td>
+                    <td style="border: solid 1px">비고</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="border: solid 1px">1</td>
+                    <td style="border: solid 1px">밴드</td>
+                    <td style="border: solid 1px">PKG</td>
+                    <td style="border: solid 1px">2</td>
+                    <td style="border: solid 1px">1,000</td>
+                    <td style="border: solid 1px">2,000</td>
+                    <td style="border: solid 1px">200</td>
+                    <td style="border: solid 1px"></td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="border: solid 1px">2</td>
+                    <td style="border: solid 1px">카테터</td>
+                    <td style="border: solid 1px">PKG</td>
+                    <td style="border: solid 1px">2</td>
+                    <td style="border: solid 1px">2,000</td>
+                    <td style="border: solid 1px">3,000</td>
+                    <td style="border: solid 1px">200</td>
+                    <td style="border: solid 1px"></td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="border: solid 1px; background-color: lightgray; font-weight: bold;" colspan="4">합 &nbsp;&nbsp;&nbsp;&nbsp; 계</td>
+                    <td style="border: solid 1px"></td>
+                    <td style="border: solid 1px">5,000</td>
+                    <td style="border: solid 1px">400</td>
+                    <td style="border: solid 1px"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black; margin-top: 5px;">
+            <tbody>
+                <tr style="text-align: center; padding:5px;">
+                    <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납기일자</td>
+                    <td style="border: solid 1px; padding:5px;" colspan="3">카테터</td>
+                    <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납품장소</td>
+                    <td style="border: solid 1px; padding:5px;" colspan="3">2</td>
+                </tr>
+                <tr style="text-align: center; padding:5px;">
+                    <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">유효일자</td>
+                    <td style="border: solid 1px" colspan="3">카테터</td>
+                    <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">결제조건</td>
+                    <td style="border: solid 1px" colspan="3">2</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">비고</td>
+                    <td style="border: solid 1px" colspan="7">비고란 </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Main -->
-    <ngx-datatable
-        class="bootstrap bg-transparent"
-        [rows]="items"
-        [columnMode]="ColumnMode.force"
-        [headerHeight]="60"
-        [limit]="10"
-        [rowHeight]="62"
-        [scrollbarV]="true"
-        [scrollbarH]="true"
-        [selected]="selected"
-        [selectionType]="SelectionType.checkbox"
-        [displayCheck]="displayCheck"
-        (select)="onSelect($event)"
-        (activate)="onActivate($event)"
-        [footerHeight]="50">
-        <ngx-datatable-column
-            [width]="30"
-            [sortable]="false"
-            [canAutoResize]="false"
-            [draggable]="false"
-            [resizeable]="false"
-            [headerCheckboxable]="true"
-            [checkboxable]="true"
-        >
-        </ngx-datatable-column>
-        <ngx-datatable-column prop="name" name="이름" [width]="120">
-            <ng-template let-value="value" ngx-datatable-cell-template>
-                <strong (click)="tblClick(value)">{{ value }}</strong>
-            </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column prop="sku" name="주문자" [width]="100">
-        </ngx-datatable-column>
-        <ngx-datatable-column prop="price" name="상품명" [width]="340"></ngx-datatable-column>
-    </ngx-datatable>
+<!--    <ngx-datatable-->
+<!--        class="bootstrap bg-transparent"-->
+<!--        [rows]="items"-->
+<!--        [columnMode]="ColumnMode.force"-->
+<!--        [headerHeight]="60"-->
+<!--        [limit]="10"-->
+<!--        [rowHeight]="62"-->
+<!--        [scrollbarV]="true"-->
+<!--        [scrollbarH]="true"-->
+<!--        [selected]="selected"-->
+<!--        [selectionType]="SelectionType.checkbox"-->
+<!--        [displayCheck]="displayCheck"-->
+<!--        (select)="onSelect($event)"-->
+<!--        (activate)="onActivate($event)"-->
+<!--        [footerHeight]="50">-->
+<!--        <ngx-datatable-column-->
+<!--            [width]="30"-->
+<!--            [sortable]="false"-->
+<!--            [canAutoResize]="false"-->
+<!--            [draggable]="false"-->
+<!--            [resizeable]="false"-->
+<!--            [headerCheckboxable]="true"-->
+<!--            [checkboxable]="true"-->
+<!--        >-->
+<!--        </ngx-datatable-column>-->
+<!--        <ngx-datatable-column prop="name" name="이름" [width]="120">-->
+<!--            <ng-template let-value="value" ngx-datatable-cell-template>-->
+<!--                <strong (click)="tblClick(value)">{{ value }}</strong>-->
+<!--            </ng-template>-->
+<!--        </ngx-datatable-column>-->
+<!--        <ngx-datatable-column prop="sku" name="주문자" [width]="100">-->
+<!--        </ngx-datatable-column>-->
+<!--        <ngx-datatable-column prop="price" name="상품명" [width]="340"></ngx-datatable-column>-->
+<!--    </ngx-datatable>-->
 
 <!--        <ngx-datatable-->
 <!--            class="bootstrap"-->
