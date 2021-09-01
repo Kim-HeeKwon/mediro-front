@@ -9,6 +9,14 @@
         </div>
         <!-- Title -->
         <div class="flex-row text-4xl font-extrabold tracking-tight">양식 테스트</div>
+
+        <button
+            class="previous-button"
+            mat-icon-button
+            (click)="print('printPage')"
+            tabindex="1">
+            프린트
+        </button>
     </div>
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
 <!--        &lt;!&ndash; Date &ndash;&gt;-->
@@ -64,12 +72,12 @@
 <!--        </div>-->
     </div>
 
-    <div style="padding: 2em">
-        <div style="width:1100px; text-align: center;">
+    <div style="padding: 2em" id="printPage">
+        <div style="width:1000px; text-align: center;">
             <div style="font-size: 32px; text-decoration: underline; font-weight: bold;">견 적 서</div>
             <div style="font-size: 14px; text-align: left;">견적번호 : <span></span></div>
         </div>
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black;">
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
             <tbody>
             <tr>
                 <td style="border: solid 1px; width: 43%;" colspan="4" rowspan="5">
@@ -116,7 +124,7 @@
             </tbody>
         </table>
 
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black; margin-top: 5px;">
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
             <tbody>
                 <tr style="background-color: lightgray; text-align: center; font-weight: bold;">
                     <td style="border: solid 1px">순번</td>
@@ -157,7 +165,7 @@
                 </tr>
             </tbody>
         </table>
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1100px; border: 2px solid black; margin-top: 5px;">
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
             <tbody>
                 <tr style="text-align: center; padding:5px;">
                     <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납기일자</td>

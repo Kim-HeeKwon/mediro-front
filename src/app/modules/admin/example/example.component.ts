@@ -117,4 +117,15 @@ export class ExampleComponent implements OnInit, AfterViewInit, OnDestroy
     tblClick(param): void {
         console.log('tblClick');
     }
+
+    print(param): void{
+        const printContents = document.getElementById(param).innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
 }
