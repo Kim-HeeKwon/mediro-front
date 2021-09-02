@@ -14,7 +14,7 @@ import {MatTable} from '@angular/material/table';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
-import {merge, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, merge, Observable, Subject} from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {Order, OrderDetail, OrderDetailPagenation} from '../order.types';
@@ -26,6 +26,10 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
+import {
+    ReportHeaderData
+} from '../../../../../../@teamplat/components/common-report/common-report.types';
 
 @Component({
     selector       : 'order-detail',
@@ -43,6 +47,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
     isLoading: boolean = false;
     orderHeaderForm: FormGroup;
+    reportHeaderData: ReportHeaderData = new ReportHeaderData();
     flashMessage: 'success' | 'error' | null = null;
     orderDetailsCount: number = 0;
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -132,6 +137,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             poDate: [{value:'',disabled:true}], //발주일자
             email:[],//이메일
             remarkHeader: [''], //비고
+            toAccountNm: [''],
+            deliveryDate: [''],
+            custBusinessNumber: [''],// 사업자 등록번호
+            custBusinessName: [''],//상호
+            representName: [''],//성명
+            address: [''],//주소
+            businessCondition: [''],// 업태
+            businessCategory: [''],// 종목
+            phoneNumber: [''],// 전화번호
+            fax: [''],// 팩스번호
             active: [false]  // cell상태
         });
 
@@ -715,5 +730,56 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     this._changeDetectorRef.markForCheck();
                 });
         }
+    }
+
+    reportOrder(): void {
+        const orderDetailData = [];
+        this.orderDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((orderDetail) => {
+                if(orderDetail != null){
+                    orderDetail.forEach((data: any) => {
+                        orderDetailData.push({
+                            no : data.no,
+                            itemNm : data.itemNm,
+                            standard : data.standard,
+                            qty : data.reqQty,
+                            unitPrice : data.unitPrice,
+                            totalAmt : data.poAmt,
+                            taxAmt : 0,
+                            remark : data.remarkDetail,
+                        });
+                    });
+                }
+            });
+        //console.log(this.orderHeaderForm.getRawValue());
+        //console.log(orderDetailData);
+        this.reportHeaderData.no = this.orderHeaderForm.getRawValue().poNo;
+        this.reportHeaderData.date = this.orderHeaderForm.getRawValue().poCreDate;
+        this.reportHeaderData.remark = this.orderHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.custBusinessNumber = this.orderHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.orderHeaderForm.getRawValue().custBusinessName;//상호
+        this.reportHeaderData.representName = this.orderHeaderForm.getRawValue().representName;//성명
+        this.reportHeaderData.address = this.orderHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.businessCondition = this.orderHeaderForm.getRawValue().businessCondition;// 업태
+        this.reportHeaderData.businessCategory = this.orderHeaderForm.getRawValue().businessCategory;// 종목
+        this.reportHeaderData.phoneNumber = this.orderHeaderForm.getRawValue().phoneNumber;// 전화번호
+        this.reportHeaderData.fax = this.orderHeaderForm.getRawValue().fax;// 팩스번호
+        this.reportHeaderData.toAccountNm = this.orderHeaderForm.getRawValue().toAccountNm;
+        this.reportHeaderData.deliveryDate = this.orderHeaderForm.getRawValue().deliveryDate;
+        this.reportHeaderData.deliveryAddress = '납품 주소란';
+
+        const popup =this._matDialogPopup.open(CommonReportComponent, {
+            data: {
+                divisionText : '발주',
+                division : 'ORDER',
+                header : this.reportHeaderData,
+                body : orderDetailData,
+                tail : ''
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
     }
 }
