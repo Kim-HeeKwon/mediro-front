@@ -129,7 +129,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
     )
     {
-        this.filterTypeList = ['ALL','2'];
+        this.filterTypeList = ['ALL'];
         this.filterStatusList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterTypeList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterStatusList);

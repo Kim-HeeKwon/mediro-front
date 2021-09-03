@@ -54,7 +54,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '수량' , dataField : 'billingQty', width: 60, display : true, disabled : true, type: 'number'},
         {headerText : '공급가액' , dataField : 'billingAmt', width: 60, display : true, disabled : true, type: 'number'},
         {headerText : '세액' , dataField : 'taxAmt', width: 60, display : true, disabled : true, type: 'number'},
-        {headerText : '총 금액' , dataField : 'billingTotalAmt', width: 60, display : true, disabled : true, type: 'number'},
+        {headerText : '총 금액' , dataField : 'billingTotalAmt', width: 70, display : true, disabled : true, type: 'number'},
     ];
 
     billsTableColumns: string[] = [

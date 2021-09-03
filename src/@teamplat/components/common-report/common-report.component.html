@@ -13,7 +13,7 @@
 
         <button
             class="previous-button"
-            printTitle="견적서"
+            printTitle="{{headerText}}"
             printSectionId="printPage"
             ngxPrint
             mat-icon-button
@@ -97,7 +97,7 @@
                     <br><br><br>
                     <div style="text-align:left; padding-left: 2em;">아래와 같이 {{divisionText}}합니다.</div>
                 </td>
-                <td style="border: solid 1px; background-color: lightgray;" colspan="1" rowspan="5">
+                <td width="25" style="border: solid 1px; background-color: lightgray;" colspan="1" rowspan="5">
                     <div style="text-align:center;font-weight: bold;">공</div>
 
                     <div style="text-align:center;font-weight: bold;">급</div>
@@ -105,32 +105,32 @@
                     <div style="text-align:center;font-weight: bold;">자</div>
                 </td>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">등록번호</td>
-                <td style="border: solid 1px" colspan="9">{{reportHeaderData.custBusinessNumber}}</td>
+                <td style="border: solid 1px;text-align: center;" colspan="9">{{this.bizNoFormatter(reportHeaderData.custBusinessNumber, 0)}}</td>
             </tr>
             <tr>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">상 &nbsp;&nbsp;&nbsp;&nbsp; 호</td>
-                <td style="border: solid 1px" colspan="2">{{reportHeaderData.custBusinessName}}</td>
-                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">성 &nbsp;&nbsp;&nbsp;&nbsp; 명</td>
-                <td style="border: solid 1px">{{reportHeaderData.representName}}</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">{{reportHeaderData.custBusinessName}}</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">대표자명</td>
+                <td style="border: solid 1px;text-align: center;">{{reportHeaderData.representName}}</td>
             </tr>
             <tr>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">주 &nbsp;&nbsp;&nbsp;&nbsp; 소</td>
-                <td style="border: solid 1px" colspan="9">{{reportHeaderData.address}}</td>
+                <td style="border: solid 1px;text-align: center;" colspan="9">{{reportHeaderData.address}}</td>
             </tr>
             <tr>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">업 &nbsp;&nbsp;&nbsp;&nbsp; 태</td>
-                <td style="border: solid 1px" colspan="2">{{reportHeaderData.businessCondition}}</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">{{reportHeaderData.businessCondition}}</td>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">종 &nbsp;&nbsp;&nbsp;&nbsp; 목</td>
-                <td style="border: solid 1px">{{reportHeaderData.businessCategory}}</td>
+                <td style="border: solid 1px;text-align: center;">{{reportHeaderData.businessCategory}}</td>
             </tr>
             <tr>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">전화번호</td>
-                <td style="border: solid 1px" colspan="2">{{reportHeaderData.phoneNumber}}</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">{{this.phoneFomatter(reportHeaderData.phoneNumber, 0)}}</td>
                 <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">팩스번호</td>
-                <td style="border: solid 1px">{{reportHeaderData.fax}}</td>
+                <td style="border: solid 1px;text-align: center;">{{this.phoneFomatter(reportHeaderData.fax)}}</td>
             </tr>
             <tr>
-                <td style="border: solid 1px; padding:5px;" colspan="10">합계금액 :</td>
+                <td style="border: solid 1px; padding:5px;text-align: center;font-weight: bold;" colspan="10">합&nbsp;&nbsp;계&nbsp;&nbsp;금&nbsp;&nbsp;액&nbsp;&nbsp;:&nbsp;&nbsp;원&nbsp;&nbsp;정&nbsp;&nbsp;(&nbsp;&nbsp;&#8361;&nbsp;&nbsp;{{this.priceToString(totalAmt)}}&nbsp;&nbsp;)</td>
             </tr>
             </tbody>
         </table>
@@ -140,30 +140,33 @@
                 <td style="border: solid 1px">순번</td>
                 <td style="border: solid 1px">품목</td>
                 <td style="border: solid 1px">규격</td>
+                <td style="border: solid 1px">단위</td>
                 <td style="border: solid 1px">수량</td>
                 <td style="border: solid 1px">단가</td>
                 <td style="border: solid 1px">공급가액</td>
-                <td style="border: solid 1px">세액</td>
+                <!--<td style="border: solid 1px">세액</td>-->
                 <td style="border: solid 1px">비고</td>
             </tr>
             <tbody *ngFor="let row of detail; let i=dataIndex;">
 
                 <tr style="text-align: center;">
                     <td style="border: solid 1px">{{row.no}}</td>
-                    <td style="border: solid 1px;text-align: left;">{{row.itemNm}}</td>
-                    <td style="border: solid 1px;text-align: left;">{{row.standard}}</td>
-                    <td style="border: solid 1px">{{row.qty}}</td>
-                    <td style="border: solid 1px">{{row.unitPrice}}</td>
-                    <td style="border: solid 1px">{{row.totalAmt}}</td>
-                    <td style="border: solid 1px">{{row.taxAmt}}</td>
-                    <td style="border: solid 1px;text-align: left;">{{row.remark}}</td>
+                    <td style="border: solid 1px;">{{row.itemNm}}</td>
+                    <td style="border: solid 1px;">{{row.standard}}</td>
+                    <td style="border: solid 1px;">{{row.unit}}</td>
+                    <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.qty)}}</td>
+                    <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.unitPrice)}}</td>
+                    <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.totalAmt)}}</td>
+                    <!--<td style="border: solid 1px;text-align: right;padding-right: 5px;">{{this.priceToString(row.taxAmt)}}</td>-->
+                    <td style="border: solid 1px;text-align: left;padding-left: 2px;">{{row.remark}}</td>
                 </tr>
             </tbody>
             <tr style="text-align: center;">
                 <td style="border: solid 1px; background-color: lightgray; font-weight: bold;" colspan="4">합 &nbsp;&nbsp;&nbsp;&nbsp; 계</td>
-                <td style="border: solid 1px">{{unitPrice}}</td>
-                <td style="border: solid 1px">{{totalAmt}}</td>
-                <td style="border: solid 1px">{{taxAmt}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(qty)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(unitPrice)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(totalAmt)}}</td>
+                <!--<td style="border: solid 1px;text-align: right;padding-right: 5px;">{{this.priceToString(taxAmt)}}</td>-->
                 <td style="border: solid 1px"></td>
             </tr>
 

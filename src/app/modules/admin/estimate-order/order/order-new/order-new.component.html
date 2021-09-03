@@ -125,7 +125,21 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:mail'"
+                                                    matPrefix></mat-icon>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'email'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>발주 금액</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:currency-dollar'"
+                                                    matPrefix></mat-icon>
                                                 <input class="text-right"
                                                        type="number"
                                                        matInput
@@ -145,14 +159,12 @@
                                                        matInput
                                                        [formControlName]="'poDate'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                                <input type="text"
-                                                       matInput
-                                                       [formControlName]="'email'">
-                                            </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
+                                            <mat-form-field class="w-4/6 pr-2">
                                                 <mat-label>비고</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:document-text'"
+                                                    matPrefix></mat-icon>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'remarkHeader'">

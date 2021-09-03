@@ -70,6 +70,10 @@
                             </mat-form-field>
                             <mat-form-field class="w-2/6 pr-2">
                                 <mat-label>배송주소</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_solid:location-marker'"
+                                    matPrefix></mat-icon>
                                 <input
                                     matInput
                                     [formControlName]="'dlvAddress'">
@@ -90,6 +94,10 @@
                             </mat-form-field>
                             <mat-form-field class="w-2/6 pr-2">
                                 <mat-label>비고</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_solid:document-text'"
+                                    matPrefix></mat-icon>
                                 <input type="text"
                                        matInput
                                        [formControlName]="'remarkHeader'">

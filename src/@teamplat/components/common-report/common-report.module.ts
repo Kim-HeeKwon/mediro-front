@@ -16,12 +16,15 @@ import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {SharedModule} from '../../../app/shared/shared.module';
 import {CommonReportComponent} from './common-report.component';
+import {NgxDatatableModule} from "@swimlane/ngx-datatable";
+import {NgxPrintModule} from "ngx-print";
 
 @NgModule({
     declarations: [
         CommonReportComponent
     ],
     imports     : [
+        NgxDatatableModule,
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -36,6 +39,7 @@ import {CommonReportComponent} from './common-report.component';
         MatSelectModule,
         MatSlideToggleModule,
         MatTableModule,
+        NgxPrintModule,
         MatDialogModule,
         SharedModule,
     ],

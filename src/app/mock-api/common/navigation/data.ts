@@ -34,14 +34,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: '공급내역 보고현황',
+                title: '식약청 공급내역 보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
             },
             {
                 id   : 'udi.status',
-                title: '식약청 보고목록',
+                title: '통합시스템 전송내역',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
@@ -254,6 +254,65 @@ export const defaultNavigation: FuseNavigationItem[] = [
             }
         ]
     },
+    /* {
+         id      : 'user-interface',
+         title   : 'User Interface',
+         subtitle: '개발자 참고',
+         type    : 'group',
+         icon    : 'heroicons_outline:collection',
+         children: [
+             {
+                          id      : 'user-interface.icons',
+                          title   : 'Icons',
+                          type    : 'collapsable',
+                          icon    : 'heroicons_outline:lightning-bolt',
+                          children: [
+                              {
+                                  id   : 'user-interface.icons.heroicons-outline',
+                                  title: 'Heroicons Outline',
+                                  type : 'basic',
+                                  link : '/ui/icons/heroicons-outline'
+                              },
+                              {
+                                  id   : 'user-interface.icons.heroicons-solid',
+                                  title: 'Heroicons Solid',
+                                  type : 'basic',
+                                  link : '/ui/icons/heroicons-solid'
+                              },
+             {
+                                  id   : 'user-interface.icons.material-twotone',
+                                  title: 'Material Twotone',
+                                  type : 'basic',
+                                  link : '/ui/icons/material-twotone'
+                              },
+                              {
+                                  id   : 'user-interface.icons.material-outline',
+                                  title: 'Material Outline',
+                                  type : 'basic',
+                                  link : '/ui/icons/material-outline'
+                              },
+                              {
+                                  id   : 'user-interface.icons.material-solid',
+                                  title: 'Material Solid',
+                                  type : 'basic',
+                                  link : '/ui/icons/material-solid'
+                              },
+                              {
+                                  id   : 'user-interface.icons.iconsmind',
+                                  title: 'Iconsmind',
+                                  type : 'basic',
+                                  link : '/ui/icons/iconsmind'
+                              },
+                              {
+                                  id   : 'user-interface.icons.feather',
+                                  title: 'Feather',
+                                  type : 'basic',
+                                 link : '/ui/icons/feather'
+                              }
+                          ]
+                      },
+        ]
+     },*/
     // {
     //     id      : 'user-interface',
     //     title   : 'User Interface',
@@ -544,14 +603,14 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: '공급내역 보고현황',
+                title: '식약청 공급내역 보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
             },
             {
                 id   : 'udi.status',
-                title: '식약청 보고목록',
+                title: '통합시스템 전송내역',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'

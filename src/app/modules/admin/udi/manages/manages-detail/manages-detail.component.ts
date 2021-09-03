@@ -45,6 +45,8 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     suplyFlagCode: CommonCode[] = null;
     showAlert: boolean = false;
     is_edit: boolean = false;
+    minDate: string;
+    maxDate: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -128,6 +130,14 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             this.selectedForm.patchValue({'suplyDate': stringvalue});
 
             this.is_edit = true;
+
+            const yearVariable = moment(this.selectedForm.getRawValue().suplyContStdmt, 'YYYY');
+            const year = yearVariable.format('YYYY');
+            const monthVariable = moment(this.selectedForm.getRawValue().suplyContStdmt, 'YYYYMM');
+            const month = monthVariable.format('MM');
+
+            this.minDate = year + '-' + month + '-' + '01';
+            this.maxDate = year + '-' + month + '-' + new Date(Number(year), Number(month), 0).getDate();
         }
     }
 

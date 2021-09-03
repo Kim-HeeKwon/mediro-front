@@ -31,7 +31,8 @@
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>연도<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <mat-select [formControlName]="'year'">
+                            <mat-select [formControlName]="'year'"
+                                        (ngModelChange)="changeDate()">
                                 <ng-container *ngFor="let year of year">
                                     <mat-option [value]="year.id">
                                         {{year.name}}
@@ -44,7 +45,8 @@
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>월<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <mat-select [formControlName]="'month'">
+                            <mat-select [formControlName]="'month'"
+                                        (ngModelChange)="changeDate()">
                                 <ng-container *ngFor="let month of month">
                                     <mat-option [value]="month.id">
                                         {{month.name}}
@@ -281,6 +283,8 @@
                             <input
                                 matInput
                                 type="date"
+                                min="{{minDate}}"
+                                max="{{maxDate}}"
                                 [formControlName]="'suplyDate'">
                         </mat-form-field>
                     </div>

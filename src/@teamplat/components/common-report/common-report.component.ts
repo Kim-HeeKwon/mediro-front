@@ -79,4 +79,59 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+    priceToString(price): number {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    phoneFomatter(num,type?): string{
+        let formatNum = '';
+        if(num.length === 11){
+            if(type===0){
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+            }else{
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
+        }else if(num.length===8){
+            formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
+        }else{
+            if(num.indexOf('02') === 0){
+                if(type === 0){
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+                }else{
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+                }
+            }else{
+                if(type === 0){
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+                }else{
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+            }
+        }
+        return formatNum;
+    }
+    bizNoFormatter(num, type?): string {
+        let formatNum = '';
+        try{
+            if (num.length === 10) {
+                if (type === 0) {
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+                } else {
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+                }
+            }
+        } catch(e) {
+            formatNum = num;
+        }
+        return formatNum;
+    }
+    print(elementId): void{
+        const printContents = document.getElementById(elementId).innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+
+
 }

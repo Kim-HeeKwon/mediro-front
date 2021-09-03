@@ -99,17 +99,21 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>주문 금액</mat-label>
-                                                <input class="text-right"
-                                                       type="number"
-                                                       matInput
-                                                       [formControlName]="'soAmt'">
-                                            </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>출고 번호</mat-label>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'obNo'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>주문 금액</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:currency-dollar'"
+                                                    matPrefix></mat-icon>
+                                                <input class="text-right"
+                                                       type="number"
+                                                       matInput
+                                                       [formControlName]="'soAmt'">
                                             </mat-form-field>
                                         </div>
                                         <div class="flex">
@@ -127,6 +131,10 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-4/6 pr-2">
                                                 <mat-label>비고</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:document-text'"
+                                                    matPrefix></mat-icon>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'remarkHeader'">

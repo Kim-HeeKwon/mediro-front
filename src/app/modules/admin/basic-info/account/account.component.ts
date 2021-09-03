@@ -144,6 +144,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             active: [false]  // cell상태
         });
 
+        this._changeDetectorRef.markForCheck();
+
         //const account = this.selectedAccountForm.get('account');
         //const accountType = this.selectedAccountForm.get('accountType');
         //account.disable();
@@ -258,6 +260,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 // @ts-ignore
                 this.selectedAccountForm.patchValue(accountData);
 
+                this.selectedAccountForm.patchValue({'phoneNumber': '0' + this.selectedAccountForm.getRawValue().phoneNumber});
+                this.selectedAccountForm.patchValue({'fax': '0' + this.selectedAccountForm.getRawValue().fax});
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });

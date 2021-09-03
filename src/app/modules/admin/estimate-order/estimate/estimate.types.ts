@@ -45,6 +45,17 @@ export class EstimateHeader
     updDate?: string;
     updUser?: string;
 
+    toAccountNm?: string;
+    deliveryDate?: string;
+    custBusinessNumber?: string;// 사업자 등록번호
+    custBusinessName?: string;//상호
+    representName?: string;//성명
+    address?: string;//주소
+    businessCondition?: string;// 업태
+    businessCategory?: string;// 종목
+    phoneNumber?: string;// 전화번호
+    fax?: string;// 팩스번호
+
     constructor(email: string = '',soNo: string = '',remarkHeader: string = ''){
         this.email = email;
         this.soNo = soNo;

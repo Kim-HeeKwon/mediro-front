@@ -734,15 +734,18 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     reportOrder(): void {
         const orderDetailData = [];
+        let index = 0;
         this.orderDetails$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((orderDetail) => {
                 if(orderDetail != null){
                     orderDetail.forEach((data: any) => {
+                        index++;
                         orderDetailData.push({
-                            no : data.no,
+                            no : index,
                             itemNm : data.itemNm,
                             standard : data.standard,
+                            unit : data.unit,
                             qty : data.reqQty,
                             unitPrice : data.unitPrice,
                             totalAmt : data.poAmt,
@@ -752,8 +755,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     });
                 }
             });
-        //console.log(this.orderHeaderForm.getRawValue());
-        //console.log(orderDetailData);
         this.reportHeaderData.no = this.orderHeaderForm.getRawValue().poNo;
         this.reportHeaderData.date = this.orderHeaderForm.getRawValue().poCreDate;
         this.reportHeaderData.remark = this.orderHeaderForm.getRawValue().remarkHeader;
@@ -763,8 +764,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.reportHeaderData.address = this.orderHeaderForm.getRawValue().address;//주소
         this.reportHeaderData.businessCondition = this.orderHeaderForm.getRawValue().businessCondition;// 업태
         this.reportHeaderData.businessCategory = this.orderHeaderForm.getRawValue().businessCategory;// 종목
-        this.reportHeaderData.phoneNumber = this.orderHeaderForm.getRawValue().phoneNumber;// 전화번호
-        this.reportHeaderData.fax = this.orderHeaderForm.getRawValue().fax;// 팩스번호
+        this.reportHeaderData.phoneNumber = '0' + this.orderHeaderForm.getRawValue().phoneNumber;// 전화번호
+        this.reportHeaderData.fax = '0' + this.orderHeaderForm.getRawValue().fax;// 팩스번호
         this.reportHeaderData.toAccountNm = this.orderHeaderForm.getRawValue().toAccountNm;
         this.reportHeaderData.deliveryDate = this.orderHeaderForm.getRawValue().deliveryDate;
         this.reportHeaderData.deliveryAddress = '납품 주소란';

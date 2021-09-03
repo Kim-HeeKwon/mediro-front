@@ -48,6 +48,8 @@ export class ManagesNewComponent implements OnInit, OnDestroy
     suplyTypeCode: CommonCode[] = null;
     suplyFlagCode: CommonCode[] = null;
     is_edit: boolean = false;
+    minDate: string;
+    maxDate: string;
     validators: boolean = true;
 
     changeText: string = '';
@@ -78,7 +80,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         this.suplyFlagCode = _utilService.commonValue(_codeStore.getValue().data,'SUPLYFLAGCODE');
         this.isMobile = this._deviceService.isMobile();
         this.month = _utilService.commonValue(_codeStore.getValue().data,'MONTH');
-        this.year = _utilService.commonValue(_codeStore.getValue().data,'YEAR');
+        this.year = _utilService.commonValueFilter(_codeStore.getValue().data,'YEAR',['2019','2020']);
     }
 
     /**
@@ -493,5 +495,13 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         }else{
             this.selectedForm.patchValue({'suplyAmt': 0});
         }
+    }
+
+    changeDate(): void{
+        const year = this.selectedForm.getRawValue().year;
+        const month = this.selectedForm.getRawValue().month;
+
+        this.minDate = year + '-' + month + '-' + '01';
+        this.maxDate = year + '-' + month + '-' + new Date(year, month, 0).getDate();
     }
 }

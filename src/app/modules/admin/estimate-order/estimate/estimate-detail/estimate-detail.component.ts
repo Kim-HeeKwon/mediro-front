@@ -34,6 +34,8 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {ReportHeaderData} from "../../../../../../@teamplat/components/common-report/common-report.types";
+import {CommonReportComponent} from "../../../../../../@teamplat/components/common-report";
 
 @Component({
     selector       : 'estimate-detail',
@@ -53,6 +55,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     estimateDetailsCount: number = 0;
+    reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
@@ -134,6 +137,16 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             qtDate: [{value:'',disabled:true}], //견적일자
             email:[''],//이메일
             remarkHeader: [''], //비고
+            toAccountNm: [''],
+            deliveryDate: [''],
+            custBusinessNumber: [''],// 사업자 등록번호
+            custBusinessName: [''],//상호
+            representName: [''],//성명
+            address: [''],//주소
+            businessCondition: [''],// 업태
+            businessCategory: [''],// 종목
+            phoneNumber: [''],// 전화번호
+            fax: [''],// 팩스번호
             active: [false]  // cell상태
         });
 
@@ -621,5 +634,57 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     });
             }
         }
+    }
+
+    reportEstimate(): void{
+        const estimateDetailData = [];
+        let index = 0;
+        this.estimateDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((estimateDetail) => {
+                if(estimateDetail != null){
+                    estimateDetail.forEach((data: any) => {
+                        index++;
+                        estimateDetailData.push({
+                            no : index,
+                            itemNm : data.itemNm,
+                            standard : data.standard,
+                            unit : data.unit,
+                            qty : data.qty,
+                            unitPrice : data.qtPrice,
+                            totalAmt : data.qtAmt,
+                            taxAmt : 0,
+                            remark : data.remarkDetail,
+                        });
+                    });
+                }
+            });
+        this.reportHeaderData.no = this.estimateHeaderForm.getRawValue().qtNo;
+        this.reportHeaderData.date = this.estimateHeaderForm.getRawValue().qtCreDate;
+        this.reportHeaderData.remark = this.estimateHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.custBusinessNumber = this.estimateHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.estimateHeaderForm.getRawValue().custBusinessName;//상호
+        this.reportHeaderData.representName = this.estimateHeaderForm.getRawValue().representName;//성명
+        this.reportHeaderData.address = this.estimateHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.businessCondition = this.estimateHeaderForm.getRawValue().businessCondition;// 업태
+        this.reportHeaderData.businessCategory = this.estimateHeaderForm.getRawValue().businessCategory;// 종목
+        this.reportHeaderData.phoneNumber = '0' + this.estimateHeaderForm.getRawValue().phoneNumber;// 전화번호
+        this.reportHeaderData.fax = '0' + this.estimateHeaderForm.getRawValue().fax;// 팩스번호
+        this.reportHeaderData.toAccountNm = this.estimateHeaderForm.getRawValue().toAccountNm;
+        this.reportHeaderData.deliveryDate = this.estimateHeaderForm.getRawValue().deliveryDate;
+        this.reportHeaderData.deliveryAddress = '';
+
+        const popup =this._matDialogPopup.open(CommonReportComponent, {
+            data: {
+                divisionText : '견적',
+                division : 'ESTIMATE',
+                header : this.reportHeaderData,
+                body : estimateDetailData,
+                tail : ''
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
     }
 }

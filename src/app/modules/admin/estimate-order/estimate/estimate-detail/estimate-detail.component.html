@@ -29,6 +29,18 @@
                         class="fuse-mat-button-rounded"
                         mat-flat-button
                         [color]="'primary'"
+                        (click)="reportEstimate()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:table'"></mat-icon>
+                        <span class="ml-2">미리보기</span>
+                    </button>
+                </div>
+                <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded"
+                        mat-flat-button
+                        [color]="'primary'"
                         (click)="saveEstimate()">
                         <mat-icon
                             class="icon-size-5"
@@ -96,7 +108,21 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:mail'"
+                                                    matPrefix></mat-icon>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'email'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-2/6 pr-2">
                                                 <mat-label>견적 금액</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:currency-dollar'"
+                                                    matPrefix></mat-icon>
                                                 <input
                                                     class="text-right"
                                                     type="number"
@@ -123,14 +149,12 @@
                                                     matInput
                                                     [formControlName]="'qtDate'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
-                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                                <input type="text"
-                                                       matInput
-                                                       [formControlName]="'email'">
-                                            </mat-form-field>
-                                            <mat-form-field class="w-2/6 pr-2">
+                                            <mat-form-field class="w-4/6 pr-2">
                                                 <mat-label>비고</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:document-text'"
+                                                    matPrefix></mat-icon>
                                                 <input type="text"
                                                        matInput
                                                        [formControlName]="'remarkHeader'">

@@ -333,7 +333,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 (param: any) => {
                     if(param.status === 'SUCCESS'){
-                        //this._accountService.getAccount();
+                        this._itemService.getItems();
                         this.closeDetails();
                     }
 
@@ -352,7 +352,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 (param: any) => {
                     if(param.status === 'SUCCESS'){
-                        //this._accountService.getAccount();
+                        this._itemService.getItems();
                         this.closeDetails();
                     }
 
