@@ -185,7 +185,6 @@ export class FuseUserHelpComponent implements ControlValueAccessor, OnInit, OnDe
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response: any) => {
                 let url = '';
-                console.log(response);
                 if(response.data !== null){
                     if(response.data[0].url !== ''){
                         url = response.data[0].url;
@@ -193,7 +192,6 @@ export class FuseUserHelpComponent implements ControlValueAccessor, OnInit, OnDe
                 }
 
                 if(url !== ''){
-                    console.log(url);
                     window.open(url, this._helpCd,'top=100,left=400,width=700,height=600');
                 }
 
