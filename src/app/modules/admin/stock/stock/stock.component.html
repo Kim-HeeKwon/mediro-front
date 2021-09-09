@@ -176,27 +176,7 @@
                                             [dataSource]="stocks$"
                                             [trackBy]="trackByFn">
 
-                                            <ng-container matColumnDef="no">
-                                                <th mat-header-cell
-                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
-                                                    *matHeaderCellDef
-                                                    mat-sort-header
-                                                    disableClear
-                                                    [hidden]="true"
-                                                    [width]="50">
-                                                    No.
-                                                </th>
-                                                <td
-                                                    class="pr-8 truncate"
-                                                    mat-cell
-                                                    [hidden]="true"
-                                                    *matCellDef="let row">
-                                                    {{row.no}}
-                                                </td>
-                                            </ng-container>
-
-                                            <!-- Details -->
-                                            <!--<ng-container matColumnDef="details">
+                                            <ng-container matColumnDef="details">
                                                 <th
                                                     class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
                                                     mat-header-cell
@@ -213,19 +193,20 @@
                                                         (click)="toggleDetails(stock.itemCd)">
                                                         <mat-icon
                                                             class="icon-size-5"
-                                                            [svgIcon]="(selectedStockHeader?.itemCd === stock.itemCd) ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                                            [svgIcon]="selectedStock?.itemCd === stock.itemCd ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
                                                     </button>
                                                 </td>
-                                            </ng-container>-->
+                                            </ng-container>
+
 
                                             <!-- details row -->
-                                            <ng-container matColumnDef="stocks">
+                                            <ng-container matColumnDef="stockDetails">
                                                 <td
                                                     class="p-0 border-b-0"
                                                     mat-cell
                                                     *matCellDef="let stock"
                                                     [attr.colspan]="stocksTableColumns.length">
-                                                    <ng-container *ngIf="(selectedStockHeader?.itemCd === stock.itemCd)">
+                                                    <ng-container *ngIf="(selectedStock?.itemCd === stock.itemCd)">
                                                         <ng-container
                                                             *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: stock}"></ng-container>
                                                     </ng-container>
@@ -235,19 +216,233 @@
                                                     let-stock>
                                                     <div
                                                         class="shadow-lg overflow-hidden"
-                                                        [@expandCollapse]="(selectedStockHeader?.itemCd === stock.itemCd) ? 'expanded' : 'collapsed'">
+                                                        [@expandCollapse]="selectedStock?.itemCd === stock.itemCd ? 'expanded' : 'collapsed'">
                                                         <div class="flex border-b">
-                                                            <!-- Selected product form -->
-                                                            <div class="flex p-0">
+                                                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
+                                                                <div class="flex pt-4 pl-8 pr-8">
+                                                                    <div class="flex p-2">
+                                                                        <div class="flex flex-auto">
+                                                                            <div class="flex flex-col w-full pr-0">
+                                                                                <div class="flex">
+                                                                                    품목명 : {{stock.itemNm}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <router-outlet></router-outlet>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                 </ng-template>
-
                                             </ng-container>
-                                            <ng-container *ngFor="let column of stocksTable; let i=dataIndex;"
+
+                                            <ng-container matColumnDef="itemCd">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    품목코드
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.itemCd}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="itemNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="150"
+                                                    disableClear>
+                                                    품목명
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.itemNm}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="standard">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    규격
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.standard}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="unit">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    단위
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.unit}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="itemGrade">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    품목등급
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{(stock.itemGrade | fuseFindByKey:'id':itemGrades).name}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="poQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    발주
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.poQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="availQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    보유
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.availQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="acceptableQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    가납
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.acceptableQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="unusedQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    불용
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.unusedQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="safetyQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    안전재고
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.safetyQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="longtermQty">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="80"
+                                                    disableClear>
+                                                    장기재고
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.longtermQty}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="longterm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="150"
+                                                    disableClear>
+                                                    기간
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let stock">
+                                                    {{stock.longterm}}
+                                                </td>
+                                            </ng-container>
+                                            <!--<ng-container *ngFor="let column of stocksTable; let i=dataIndex;"
                                                           [matColumnDef]="column.dataField">
                                                 <th
                                                     class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
@@ -287,7 +482,7 @@
                                                     </mat-select>
                                                 </td>
 
-                                            </ng-container>
+                                            </ng-container>-->
                                             <tr
                                                 class="shadow"
                                                 mat-header-row
@@ -299,7 +494,7 @@
                                             <tr
                                                 class="h-0"
                                                 mat-row
-                                                *matRowDef="let row; columns: ['stocks']"></tr>
+                                                *matRowDef="let row; columns: ['stockDetails']"></tr>
 
                                         </table>
 

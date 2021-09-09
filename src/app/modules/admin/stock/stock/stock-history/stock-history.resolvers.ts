@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {StockService} from './stock.service';
+import {Common} from '../../../../../../@teamplat/providers/common/common';
 import {Observable} from 'rxjs';
-import {Common} from '../../../../../@teamplat/providers/common/common';
+import {StockService} from '../stock.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class StockResolvers implements Resolve<any> {
-    /*coinChartWidget: any[];*/
-
+export class StockHistoryResolvers implements Resolve<any> {
     /**
      * Constructor
      */
@@ -27,7 +25,6 @@ export class StockResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._stockService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

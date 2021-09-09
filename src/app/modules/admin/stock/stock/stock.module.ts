@@ -18,7 +18,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {SharedModule} from '../../../../shared/shared.module';
+import {SharedModule} from 'app/shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseFindByKeyPipeModule} from '../../../../../@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
@@ -26,6 +26,11 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from '@angular/material/dialog';
 import {StockResolvers} from './stock.resolvers';
+import {FuseColumnResizeModule} from '../../../../../@teamplat/directives/table/column-resize';
+import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {StockHistoryResolvers} from './stock-history/stock-history.resolvers';
+import {StockHistoryComponent} from './stock-history/stock-history.component';
 
 const stockRoutes: Route[] = [
     {
@@ -34,12 +39,22 @@ const stockRoutes: Route[] = [
         resolve: {
             data: StockResolvers
         },
+        children             : [
+            {
+                path     : '',
+                component: StockHistoryComponent,
+                resolve : {
+                    data: StockHistoryResolvers
+                }
+            }
+        ]
     }
 ];
 
 @NgModule({
     declarations: [
-        StockComponent
+        StockComponent,
+        StockHistoryComponent
     ],
     imports: [
         CommonModule,
@@ -66,7 +81,10 @@ const stockRoutes: Route[] = [
         MatTabsModule,
         MatCardModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        FuseColumnResizeModule,
+        FuseDateRangeModule,
+        MatButtonToggleModule
     ]
 })
 export class StockModule {

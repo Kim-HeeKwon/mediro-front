@@ -29,6 +29,7 @@ import {ItemPriceComponent} from './item-price.component';
 import {ItemPriceNewComponent} from './item-price-new/item-price-new.component';
 import {ItemPriceHistoryComponent} from './item-price-history/item-price-history.component';
 import {ItemPriceHistoryResolvers} from './item-price-history/item-price-history.resolvers';
+import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 
 const itemPriceRoutes: Route[] = [
     {
@@ -79,7 +80,8 @@ const itemPriceRoutes: Route[] = [
         MatTabsModule,
         MatCardModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        FuseUserHelpModule
     ]
 })
 export class ItemPriceModule { }

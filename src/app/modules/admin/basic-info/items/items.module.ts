@@ -25,9 +25,10 @@ import { NewItemComponent } from './new-item/new-item.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FuseFindByKeyPipeModule } from '@teamplat/pipes/find-by-key';
 import {FuseAlertModule} from '@teamplat/components/alert';
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
-import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const itemsRoutes: Route[] = [
     {
@@ -70,6 +71,7 @@ const itemsRoutes: Route[] = [
         FuseAlertModule,
         FuseDateRangeModule,
         MatButtonToggleModule,
+        FuseUserHelpModule,
     ]
 })
 export class ItemsModule { }

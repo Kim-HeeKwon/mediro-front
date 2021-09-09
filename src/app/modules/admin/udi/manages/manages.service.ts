@@ -4,7 +4,6 @@ import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {Manages, ManagesPagenation, Product, ProductStatus, SuplyReport, SuplyReportPagenation} from './manages.types';
 import {Common} from '../../../../../@teamplat/providers/common/common';
-import {Estimate} from "../../estimate-order/estimate/estimate.types";
 
 @Injectable({
     providedIn: 'root'
