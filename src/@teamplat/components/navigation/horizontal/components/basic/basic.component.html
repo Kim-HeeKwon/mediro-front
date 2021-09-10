@@ -4,14 +4,15 @@
     [class.fuse-horizontal-navigation-item-has-subtitle]="!!item.subtitle"
     [ngClass]="item.classes?.wrapper">
 
-    <!-- Item with an internal link -->
+    <!-- Item with an internal link Steve Here -->
     <div
         class="fuse-horizontal-navigation-item"
         *ngIf="item.link && !item.externalLink && !item.function && !item.disabled"
         [ngClass]="{'fuse-horizontal-navigation-item-active-forced': item.active}"
         [routerLink]="[item.link]"
         [routerLinkActive]="'fuse-horizontal-navigation-item-active'"
-        [routerLinkActiveOptions]="isActiveMatchOptions">
+        [routerLinkActiveOptions]="isActiveMatchOptions"
+        (click)="createShortcut(item)">
         <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
     </div>
 

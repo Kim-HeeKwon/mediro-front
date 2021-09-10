@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import {filter, map, switchMap, take} from 'rxjs/operators';
 import { Shortcut } from 'app/layout/common/shortcuts/shortcuts.types';
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,8 @@ export class ShortcutsService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient,
+                private _route: Router,)
     {
     }
 
@@ -63,10 +65,21 @@ export class ShortcutsService
                     //기존에 있는지 확인
                     // Find the index of the updated shortcut
                     this._shortcuts.subscribe((items: any)=>{
-                        //console.log(items);
                         const index = items.findIndex(item => item.link === shortcut.link);
 
                         if(index === -1){
+                            console.log(newShortcut.link);
+
+                            // this._route.events
+                            //     .pipe(filter(event => event instanceof NavigationEnd))
+                            //     .subscribe((event: NavigationEnd) => {
+                            //         console.log('prev:', event.url);
+                            //         newShortcut.link = event.url;
+                            //
+                            //         // Update the shortcut
+                            //         this._shortcuts.next([...shortcuts, newShortcut]);
+                            //     });
+
                             // Update the shortcut
                             this._shortcuts.next([...shortcuts, newShortcut]);
                         }

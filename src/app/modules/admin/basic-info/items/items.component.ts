@@ -30,6 +30,7 @@ import {
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {Common} from "../../../../../@teamplat/providers/common/common";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'app-items',
@@ -91,7 +92,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     excelFileNameYn: boolean;
 
     constructor(
-        private _common:Common,
+        private _route: ActivatedRoute,
+        private _common: Common,
         private _matDialog: MatDialog,
         private _formBuilder: FormBuilder,
         private _itemService: ItemsService,
@@ -112,6 +114,11 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     ngOnInit(): void {
+
+        this._route.params.subscribe((params) => {
+            console.log(params);
+        });
+
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             itemGrade: ['ALL'],
