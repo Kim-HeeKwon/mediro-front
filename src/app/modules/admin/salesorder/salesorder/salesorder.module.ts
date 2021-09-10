@@ -31,6 +31,7 @@ import {SalesorderDetailResolvers} from './salesorder-detail/salesorder-detail.r
 import {SalesorderDetailComponent} from './salesorder-detail/salesorder-detail.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 
 const salesorderRoutes: Route[] = [
@@ -90,6 +91,7 @@ const salesorderRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         FuseDateRangeModule,
+        FuseUserHelpModule,
     ]
 })
 export class SalesorderModule { }

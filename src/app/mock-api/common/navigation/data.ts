@@ -581,7 +581,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
          children: [
              {
                  id   : 'calculate.bill',
-                 title: '청구',
+                 title: '청구 관리',
                  type : 'basic',
                  icon : 'heroicons_outline:archive',
                  link : '/calculate/bill'

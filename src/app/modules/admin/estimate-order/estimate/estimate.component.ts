@@ -276,6 +276,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if(result){
+                            this.isLoading = true;
                             this.estimateSendCall(this.selection.selected);
                         }else{
                             this.selectClear();
@@ -288,10 +289,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     estimateSendCall(sendData: Estimate[]): void{
         if(sendData){
+
             this._estimateService.estimateSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
                     this._functionService.cfn_alertCheckMessage(estimate);
+                    this.isLoading = false;
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();

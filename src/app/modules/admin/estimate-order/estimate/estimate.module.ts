@@ -31,6 +31,7 @@ import {EstimateNewComponent} from './estimate-new/estimate-new.component';
 import {EstimateNewResolvers} from './estimate-new/estimate-new.resolvers';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const estimateRoutes: Route[] = [
     {
@@ -90,6 +91,7 @@ const estimateRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         FuseDateRangeModule,
+        FuseUserHelpModule,
     ]
 })
 export class EstimateModule { }

@@ -22,9 +22,10 @@ import {SharedModule} from '../../../../shared/shared.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ManagesResolvers} from './manages.resolvers';
-import {ManagesReportComponent} from "./manages-report/manages-report.component";
-import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
-import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
+import {ManagesReportComponent} from './manages-report/manages-report.component';
+import {ManagesDetailComponent} from './manages-detail/manages-detail.component';
+import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const managesRoutes: Route[] = [
     {
@@ -64,7 +65,8 @@ const managesRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         SharedModule,
-        FuseAlertModule
+        FuseAlertModule,
+        FuseUserHelpModule
     ]
 })
 export class ManagesModule {

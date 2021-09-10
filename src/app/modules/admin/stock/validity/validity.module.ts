@@ -26,6 +26,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ValidityComponent} from './validity.component';
 import {ValidityResolvers} from './validity.resolvers';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const validityRoutes: Route[] = [
     {
@@ -66,7 +67,8 @@ const validityRoutes: Route[] = [
         MatTabsModule,
         MatCardModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        FuseUserHelpModule
     ]
 })
 export class ValidityModule {

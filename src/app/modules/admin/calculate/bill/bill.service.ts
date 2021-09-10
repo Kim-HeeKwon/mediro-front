@@ -83,7 +83,6 @@ export class BillService {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/calculate/bill/bill-List')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
-                        console.log(response);
                         this._bills.next(response.data);
                         this._billPagenation.next(response.pageNation);
                         resolve(this._bills);

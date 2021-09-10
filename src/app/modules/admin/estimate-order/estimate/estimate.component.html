@@ -133,7 +133,11 @@
                             <div class="flex items-center justify-between px-6 pt-4 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-3xl font-extrabold tracking-tight">
-                                    견적 관리</div>
+                                    견적 관리
+                                    <fuse-user-help
+                                        [helpCd]="'ESTIMATE'"
+                                        [display]="true"></fuse-user-help>
+                                </div>
                                 <button
                                     class="sm:hidden -ml-2"
                                     mat-icon-button
@@ -196,6 +200,7 @@
                             </div>
                             <!-- Actions -->
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <!--<a href="mailto:"> 전송 </a>-->
                                 <!-- Search -->
                                 <button
                                     class="ml-2"

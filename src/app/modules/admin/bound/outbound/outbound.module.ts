@@ -32,6 +32,7 @@ import {OutboundDetailComponent} from './outbound-detail/outbound-detail.compone
 import {OutboundDetailResolvers} from './outbound-detail/outbound-detail.resolvers';
 import {FuseColumnResizeModule} from '../../../../../@teamplat/directives/table/column-resize';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const outboundRoutes: Route[] = [
     {
@@ -92,6 +93,7 @@ const outboundRoutes: Route[] = [
         MatDialogModule,
         FuseColumnResizeModule,
         FuseDateRangeModule,
+        FuseUserHelpModule,
     ]
 })
 export class OutboundModule { }

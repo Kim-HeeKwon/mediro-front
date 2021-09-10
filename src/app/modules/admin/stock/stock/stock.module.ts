@@ -31,6 +31,7 @@ import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-rang
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {StockHistoryResolvers} from './stock-history/stock-history.resolvers';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const stockRoutes: Route[] = [
     {
@@ -84,7 +85,8 @@ const stockRoutes: Route[] = [
         MatDialogModule,
         FuseColumnResizeModule,
         FuseDateRangeModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        FuseUserHelpModule
     ]
 })
 export class StockModule {

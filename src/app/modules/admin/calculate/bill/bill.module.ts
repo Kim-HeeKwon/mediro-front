@@ -28,6 +28,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const billRoutes: Route[] = [
     {
@@ -69,6 +70,7 @@ const billRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         FuseDateRangeModule,
+        FuseUserHelpModule,
     ]
 })
 export class BillModule {

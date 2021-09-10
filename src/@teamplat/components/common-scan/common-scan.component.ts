@@ -153,6 +153,7 @@ export class CommonScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                 /*console.log(res.codeResult.format);
                                 console.log(res.codeResult.code);*/
                                 this.barcodeScan = false;
+                                console.log(res);
                                 const data = [{
                                     res: res,
                                     rescodeResult : res.codeResult,

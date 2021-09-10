@@ -28,6 +28,7 @@ export class FuseUserHelpComponent implements ControlValueAccessor, OnInit, OnDe
     private _helpCd: string;
     private _descr: string;
     private _display: boolean;
+    private windowPopup: any =  null;
     /**
      * Constructor
      */
@@ -181,18 +182,19 @@ export class FuseUserHelpComponent implements ControlValueAccessor, OnInit, OnDe
     // eslint-disable-next-line @typescript-eslint/member-ordering
     userHelp(): void {
         const sendData = {helpCd : this._helpCd};
+
         this._userHelpService.getUserHelp(sendData)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response: any) => {
                 let url = '';
-                if(response.data !== null){
+                if(response.data[0] !== null){
                     if(response.data[0].url !== ''){
                         url = response.data[0].url;
                     }
                 }
 
                 if(url !== ''){
-                    window.open(url, this._helpCd,'top=100,left=400,width=700,height=600');
+                    window.open(url, this._helpCd,'top=50,left=200,width=1100,height=700');
                 }
 
                 // Mark for check
