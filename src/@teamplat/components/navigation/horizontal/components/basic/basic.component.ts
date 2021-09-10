@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IsActiveMatchOptions } from '@angular/router';
+import {IsActiveMatchOptions, NavigationEnd, Router} from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import { FuseHorizontalNavigationComponent } from '@teamplat/components/navigation/horizontal/horizontal.component';
 import { FuseNavigationService } from '@teamplat/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@teamplat/components/navigation/navigation.types';
 import { FuseUtilsService } from '@teamplat/services/utils/utils.service';
+import {ShortcutsService} from "../../../../../../app/layout/common/shortcuts/shortcuts.service";
+import {Shortcut} from "../../../../../../app/layout/common/shortcuts/shortcuts.types";
 
 @Component({
     selector       : 'fuse-horizontal-navigation-basic-item',
@@ -18,6 +20,8 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
     @Input() item: FuseNavigationItem;
     @Input() name: string;
 
+    shortCut: Shortcut = null;
+
     isActiveMatchOptions: IsActiveMatchOptions;
     private _fuseHorizontalNavigationComponent: FuseHorizontalNavigationComponent;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -28,7 +32,9 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-        private _fuseUtilsService: FuseUtilsService
+        private _fuseUtilsService: FuseUtilsService,
+        private _shortcutService: ShortcutsService,
+        private _route: Router,
     )
     {
         // Set the equivalent of {exact: false} as default for active match options.
@@ -79,5 +85,30 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    createShortcut(item): void{
+        this._route.events
+            .pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.shortCut = {
+                    id: item.id,
+                    label: item.title,
+                    icon: item.icon,
+                    link: event.url,
+                    useRouter:true
+                };
+
+                console.log(this.shortCut);
+                this._shortcutService.create(this.shortCut).subscribe();
+            });
+        // this.shortCut = {
+        //     id: item.id,
+        //     label: item.title,
+        //     icon: item.icon,
+        //     link: item.link,
+        //     useRouter:true
+        // };
+        // this._shortcutService.create(this.shortCut).subscribe();
     }
 }

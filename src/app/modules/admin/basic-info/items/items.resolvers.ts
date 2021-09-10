@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import {ItemsService} from './items.service';
 import {Observable} from 'rxjs';
@@ -14,7 +14,14 @@ export class ItemsResolver implements Resolve<any> {
      * Constructor
      */
     constructor(private _itemsService: ItemsService,
-                private _common: Common) {
+                private _common: Common,
+                private _route: ActivatedRoute,) {
+
+        this._route.params.subscribe((params) => {
+            console.log(params);
+            const id = params['itemCd'];
+            console.log('id Check!! :: ' + id);
+        });
     }
 
 
