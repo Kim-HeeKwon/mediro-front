@@ -1,24 +1,36 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {
+    AfterViewInit, ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DeviceDetectorService} from 'ngx-device-detector';
-import {merge, Observable, Subject} from 'rxjs';
+import {merge, Observable, range, Subject} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {SelectionModel} from '@angular/cdk/collections';
 import {TableConfig, TableStyle} from '../../../../../@teamplat/components/common-table/common-table.types';
-import {Stock, StockPagenation} from './stock.types';
+import {Stock, StockHistory, StockPagenation} from './stock.types';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {MatDialog} from '@angular/material/dialog';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {StockService} from './stock.service';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {fuseAnimations} from '../../../../../@teamplat/animations';
 
 @Component({
     selector: 'app-stock',
     templateUrl: './stock.component.html',
-    styleUrls: ['./stock.component.scss']
+    styleUrls: ['./stock.component.scss'],
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations     : fuseAnimations
 })
 export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
 
@@ -34,6 +46,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     stocks$: Observable<Stock[]>;
+    stockHistorys$: Observable<StockHistory[]>;
     stockPagenation: StockPagenation | null = null;
     isLoading: boolean = false;
     stocksCount: number = 0;
@@ -41,7 +54,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     stocksTable: TableConfig[] = [
         {headerText : '품목코드' , dataField : 'itemCd', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '품목명' , dataField : 'itemNm', width: 120, display : true, disabled : true, type: 'text'},
         {headerText : '규격' , dataField : 'standard', width: 100, display : false, disabled : true, type: 'text'},
         {headerText : '단위' , dataField : 'unit', width: 100, display : false, disabled : true, type: 'text'},
         {headerText : '품목등급' , dataField : 'itemGrade', width: 80, display : true, disabled : true, type: 'text',combo : true},
@@ -52,13 +65,13 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         {headerText : '불용' , dataField : 'unusedQty', width: 80, display : true, disabled : true, type: 'number'},
         {headerText : '안전재고' , dataField : 'safetyQty', width: 80, display : true, disabled : true, type: 'number'},
         {headerText : '장기재고' , dataField : 'longtermQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '기간' , dataField : 'longterm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '기간' , dataField : 'longterm', width: 150, display : true, disabled : true, type: 'text'},
         /*{headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number'},*/
     ];
 
     stocksTableColumns: string[] = [
+        'details',
         /*'no',*/
-        /*'details',*/
         'itemCd',
         'itemNm',
         /*'standard',
@@ -75,7 +88,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
     ];
 
     searchForm: FormGroup;
-    selectedStockHeader: Stock | null = null;
+    selectedStock: Stock | null = null;
     filterList: string[];
     flashMessage: 'success' | 'error' | null = null;
     navigationSubscription: any;
@@ -186,23 +199,45 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
      */
     toggleDetails(itemCd: string): void
     {
-        //console.log(itemCd);
+        if ( this.selectedStock && this.selectedStock.itemCd === itemCd)
+        {
+            // Close the details
+            this.closeDetails();
+            return;
+        }
+
+        this._stockService.getStockHistoryById(itemCd)
+            .subscribe((stock) => {
+                this.selectedStock = stock;
+                this._stockService.getStockHistory(0,10,'seq','desc', this.selectedStock);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
     /**
      * Close the details
      */
     closeDetails(): void
     {
-        this.selectedStockHeader = null;
+        this.selectedStock = null;
     }
 
     selectHeader(): void
     {
+        // range(1,100)
+        //     .pipe(
+        //         filter(n => n % 2 === 0)
+        //     )
+        //     .subscribe((a: any) => {
+        //         console.log(a);
+        //     });
         if(this.searchForm.getRawValue().searchCondition === '100') {
             this.searchForm.patchValue({'itemCd': ''});
             this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
         }
         this._stockService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+        this.closeDetails();
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

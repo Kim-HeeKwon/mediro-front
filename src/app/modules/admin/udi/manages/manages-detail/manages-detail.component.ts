@@ -5,22 +5,21 @@ import {
     OnDestroy,
     OnInit,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ItemsService} from "../../../basic-info/items/items.service";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {ManagesService} from "../manages.service";
-import {takeUntil} from "rxjs/operators";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import moment from "moment";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {ManagesService} from '../manages.service';
+import {takeUntil} from 'rxjs/operators';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import moment from 'moment';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'manages-detail',
@@ -43,8 +42,9 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     };
     suplyTypeCode: CommonCode[] = null;
     suplyFlagCode: CommonCode[] = null;
-    showAlert: boolean = false;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     is_edit: boolean = false;
+    showAlert: boolean = false;
     minDate: string;
     maxDate: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -116,6 +116,8 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             suplyContStdmt : [''],
             totalCnt : [''],
             udiDiSeq : [''],
+            offset: [1],
+            limit: [100],
             grade : [{value: '',disabled:true}],
             active: [false]  // cell상태
         });
@@ -167,7 +169,6 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
-            this._managesService.getHeader(0,100,'','asc',{});
         }
     }
 
@@ -265,6 +266,8 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((manage: any) => {
                                 this._functionService.cfn_alertCheckMessage(manage);
+
+                                this._managesService.getHeader(0,100,'','asc',this.selectedForm.getRawValue());
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
                             });

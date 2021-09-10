@@ -109,6 +109,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon    : 'heroicons_outline:currency-dollar',
                 link    : '/basic-info/item-price'
             },
+            {
+                id      : '',
+                title   : '안전재고',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:cube',
+                /*link    : '/basic-info/safety-stock'*/
+                link    : '/pages/error/500',
+            },
             // {
             //     id      : 'item-price',
             //     title   : '단가관리',
@@ -466,22 +475,14 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 link    : '/basic-info/item-price'
             },
             {
-                id      : 'item-price',
-                title   : '단가관리',
-                subtitle: '품목 단가관리',
-                type    : 'group',
-                icon    : 'heroicons_outline:home',
-                children: [
-                    {
-                        id      : 'basic-info.item-price',
-                        title   : '단가관리',
-                        subtitle: '',
-                        type    : 'basic',
-                        icon    : 'heroicons_outline:currency-dollar',
-                        link    : '/basic-info/item-price'
-                    }
-                ]
-            },
+                id      : '',
+                title   : '안전재고',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:cube',
+                /*link    : '/basic-info/safety-stock'*/
+                link    : '/pages/error/500',
+            }
         ]
     },
     {

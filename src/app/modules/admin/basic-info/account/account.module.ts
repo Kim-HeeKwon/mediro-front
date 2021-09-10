@@ -25,6 +25,7 @@ import {NewAccountComponent} from '../account/new-account/new-account.component'
 import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
 const accountRoutes: Route[] = [
     {
@@ -64,7 +65,8 @@ const accountRoutes: Route[] = [
         MatSidenavModule,
         SharedModule,
         FuseFindByKeyPipeModule,
-        FuseAlertModule
+        FuseAlertModule,
+        FuseUserHelpModule
     ]
 })
 export class AccountModule { }
