@@ -178,9 +178,16 @@ export class ManagesService {
         );
     }
 
-    deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
+    /*deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
 
         return this._common.listDelete('v1/api/udi/supply-info', manages).pipe(
+            switchMap((response: any) => of(response))
+        );
+    }*/
+
+    deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
+
+        return this._common.sendListData(manages, 'v1/api/udi/supply-info/delete').pipe(
             switchMap((response: any) => of(response))
         );
     }

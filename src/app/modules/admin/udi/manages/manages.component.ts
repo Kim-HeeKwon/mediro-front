@@ -339,49 +339,50 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         }else{
-            if(this.selection.selected.length > 3){
-                this._functionService.cfn_alert('삭제는 3건까지 가능합니다.');
-                return;
-            }else{
-                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
-                    title      : '',
-                    message    : '삭제하시겠습니까?',
-                    icon       : this._formBuilder.group({
+            // if(this.selection.selected.length > 3){
+            //     this._functionService.cfn_alert('삭제는 3건까지 가능합니다.');
+            //     return;
+            // }else{
+            //
+            // }
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title      : '',
+                message    : '삭제하시겠습니까?',
+                icon       : this._formBuilder.group({
+                    show : true,
+                    name : 'heroicons_outline:exclamation',
+                    color: 'warn'
+                }),
+                actions    : this._formBuilder.group({
+                    confirm: this._formBuilder.group({
                         show : true,
-                        name : 'heroicons_outline:exclamation',
+                        label: '삭제',
                         color: 'warn'
                     }),
-                    actions    : this._formBuilder.group({
-                        confirm: this._formBuilder.group({
-                            show : true,
-                            label: '삭제',
-                            color: 'warn'
-                        }),
-                        cancel : this._formBuilder.group({
-                            show : true,
-                            label: '닫기'
-                        })
-                    }),
-                    dismissible: true
-                }).value);
+                    cancel : this._formBuilder.group({
+                        show : true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
 
-                confirmation.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if(result){
-                            this._managesService.deleteSupplyInfo(this.selection.selected)
-                                .pipe(takeUntil(this._unsubscribeAll))
-                                .subscribe((manage: any) => {
-                                    this._functionService.cfn_alertCheckMessage(manage);
-                                    // Mark for check
-                                    this._changeDetectorRef.markForCheck();
-                                    this.select();
-                                });
-                        }
-                    });
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this._managesService.deleteSupplyInfo(this.selection.selected)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((manage: any) => {
+                                this._functionService.cfn_alertCheckMessage(manage);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                this.select();
+                            });
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
         }
     }
 
