@@ -1,4 +1,4 @@
-<div class="flex flex-auto overflow-hidden" style="margin: 35px;">
+<div class="flex flex-auto overflow-hidden">
     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
         <div
             class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
@@ -79,7 +79,6 @@
             <mat-paginator
 
                 class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                style="margin: 35px;"
                 [ngClass]="{'pointer-events-none': isLoading}"
                 [length]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.length"
                 [pageIndex]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.page"
