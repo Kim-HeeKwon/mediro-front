@@ -199,22 +199,19 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         //         this.closeDetails();
         //     });
 
-        // Get products if sort or page changes
-        merge(this._sort.sortChange, this._paginator.page).pipe(
-            switchMap(() => {
-                // console.log('change paginator!!');
-                // console.log(this._paginator.pageIndex);
-                // console.log(this._paginator.pageSize);
-                // console.log(this._sort.active);
-                // console.log(this._sort);
-                // this.closeDetails();
-                this.isLoading = true;
-                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
-            }),
-            map(() => {
-                this.isLoading = false;
-            })
-        ).subscribe();
+        if(this._sort !== undefined){
+            // Get products if sort or page changes
+            merge(this._sort.sortChange, this._paginator.page).pipe(
+                switchMap(() => {
+                    this.isLoading = true;
+                    return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+                }),
+                map(() => {
+                    this.isLoading = false;
+                })
+            ).subscribe();
+        }
+
 
     }
 
