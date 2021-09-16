@@ -133,7 +133,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '품목코드와 품목명을 입력해주세요.'
+                message: '품목코드, 품목등급, UDI 대상유무, 품목명, (구매,판매) 단가를 입력해주세요.'
             };
 
             // Show the alert

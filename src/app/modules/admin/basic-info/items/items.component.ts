@@ -134,9 +134,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // 아이템(품목) Form 생성
         this.selectedItemForm = this._formBuilder.group({
             itemCd: [{value:'',disabled:true}], // 품목코드
-            itemNm: [{value:'',disabled:true}], // 품목명
-            itemGrade: ['', [Validators.required]], // 등급
-            udiYn: ['',  [Validators.required]], // UDI 신고 대상 유무
+            itemNm: ['', Validators.required], // 품목명
+            itemGrade:[{value:'',disabled:true}], // 등급
+            udiYn: [{value:'',disabled:true}], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
