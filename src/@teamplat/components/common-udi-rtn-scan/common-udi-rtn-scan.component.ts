@@ -18,13 +18,14 @@ import {TableConfig, TableStyle} from '../common-table/common-table.types';
 import {InBoundDetailPagenations, InBoundDetails} from './common-udi-rtn-scan.types';
 import {CommonCode, FuseUtilsService} from '../../services/utils';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {FunctionService} from '../../services/function';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import {takeUntil} from 'rxjs/operators';
 import {CommonScanComponent} from '../common-scan';
 import {CommonUdiRtnScanService} from './common-udi-rtn-scan.service';
+import {Column} from "../common-popup";
 
 @Component({
     selector: 'app-common-udi-rtn-scan',
@@ -44,6 +45,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
     );
     selection = new SelectionModel<any>(true, []);
     isLoading: boolean = false;
+    searchForm: FormGroup;
     inboundDetailsCount: number = 0;
     inBoundDetails$ = new Observable<InBoundDetails[]>();
     inBoundDetailsTableStyle: TableStyle = new TableStyle();
@@ -51,36 +53,38 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 80, display : false, disabled : true, type: 'text'},
         {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text', scan: true},
         {headerText : '수량' , dataField : 'qty', width: 50, display : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
+        {headerText : '입고대상수량' , dataField : 'ibExpQty', width: 100, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
         {headerText : '입고수량' , dataField : 'ibQty', width: 60, display : true, disabled : true, type: 'number', style: this.inBoundDetailsTableStyle.textAlign.right},
-        {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : true, type: 'month',max: '9999-12-31'},
+        {headerText : '보고 기준월' , dataField : 'suplyContStdmt', width: 100, display : false, type: 'month',max: '9999-12-31'},
         {headerText : '공급 형태' , dataField : 'suplyTypeCode', width: 100, display : false, type: 'text',combo: true},
-        {headerText : 'UDI Code' , dataField : 'udiCode', width: 100, display : true, type: 'text'},
         //{headerText : 'UDI-DI 일련번호' , dataField : 'udiDiSeq', width: 100, display : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkDetail', width: 100, display : true, type: 'text'},
     ];
     inBoundDetailsTableColumns: string[] = [
         'select',
-        'no',
+        //'no',
         'ibLineNo',
         'itemCd',
         'itemNm',
-        'ibExpQty',
-        'qty',
-        'ibQty',
-        'suplyContStdmt',
-        'suplyTypeCode',
         'udiCode',
+        'qty',
+        'ibExpQty',
+        'ibQty',
+        // 'suplyContStdmt',
+        'suplyTypeCode',
         //'udiDiSeq',
-        'remarkDetail',
+         'remarkDetail',
     ];
-    headerText: string = 'UDI 스캔';
+    headerText: string = '공급내역 보고자료';
     inBoundData: any;
     isMobile: boolean = false;
     suplyTypeCode: CommonCode[] = null;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     filterList: string[];
+    month: CommonCode[] = null;
+    year: CommonCode[] = null;
     inBoundDetailPagenation: InBoundDetailPagenations | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -100,12 +104,41 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         //private commonAlertDialog: CommonAlertService
     ) {
         this.filterList = ['ALL'];
-        this.inBoundData = data.detail;
+        this.month = _utilService.commonValue(_codeStore.getValue().data,'MONTH');
+        this.year = _utilService.commonValue(_codeStore.getValue().data,'YEAR');
         this.suplyTypeCode = _utilService.commonValueFilter(_codeStore.getValue().data,'SUPLYTYPECODE',this.filterList);
+        data.detail.forEach((detail: any) => {
+            detail.udiCode = '';
+        });
+        this.inBoundData = data.detail;
         this._commonScanService.setData(this.inBoundData);
     }
 
     ngOnInit(): void {
+
+        // 검색 Form 생성
+        const today = new Date();
+        const YYYY = today.getFullYear();
+        const mm = today.getMonth()+1; //January is 0!
+        let MM;
+        if(mm<10) {
+            MM = String('0'+mm);
+        }else{
+            MM = String(mm);
+        }
+        this.searchForm = this._formBuilder.group({
+            year: [YYYY + ''],
+            month: [''],
+            suplyContStdmt: [''],
+        });
+
+        this.searchForm.controls['year'].disable();
+        this.searchForm.controls['month'].disable();
+
+        this.searchForm.patchValue({'year': YYYY + ''});
+        this.searchForm.patchValue({'month': MM + ''});
+        this.searchForm.patchValue({'suplyContStdmt': this.searchForm.getRawValue().year + this.searchForm.getRawValue().month + ''});
+
         this.inBoundDetails$ = this._commonScanService.inBoundDetails$;
         this._commonScanService.inBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -144,6 +177,8 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
                 // Update the counts
                 if(inBoundDetail !== null){
                     this.inboundDetailsCount = inBoundDetail.length;
+                    document.getElementById('udiCode' + '_' + 0).focus();
+                    this._changeDetectorRef.markForCheck();
                 }else{
                     inBoundDetail = this.inBoundData;
                 }
@@ -291,14 +326,15 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
                 return;
             }
 
-            if(inBoundData[i].suplyContStdmt === undefined){
-                this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
-                return;
-            }
-            if(inBoundData[i].suplyContStdmt === null){
-                this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
-                return;
-            }
+            inBoundData[i].suplyContStdmt = this.searchForm.getRawValue().suplyContStdmt;
+            // if(inBoundData[i].suplyContStdmt === undefined){
+            //     this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
+            //     return;
+            // }
+            // if(inBoundData[i].suplyContStdmt === null){
+            //     this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
+            //     return;
+            // }
             /*if(inBoundData[i].suplyTypeCode === undefined){
                 this._functionService.cfn_alert('공급형태는 필수값 입니다. 품목코드 : ' + inBoundData[i].itemCd);
                 return;
@@ -325,4 +361,13 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         }
         return combo;
     }
+
+    udiScan(elementElement, column: TableConfig, i, $event: KeyboardEvent): void {
+        let nextIndex = 0;
+        nextIndex = i + 1;
+        if(nextIndex < this.inboundDetailsCount){
+            document.getElementById(column.dataField + '_' + (nextIndex)).focus();
+        }
+    }
+
 }
