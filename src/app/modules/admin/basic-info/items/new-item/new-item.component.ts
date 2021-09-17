@@ -91,7 +91,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             itemGrade: ['', [Validators.required]], // 등급
             udiYn: ['', [Validators.required]], // UDI 신고 대상 유무
             category: [''], // 카테고리
-            unit: ['PKG'], // 단위
+            unit: [], // 단위
             standard: ['PKG'], // 규격
             supplier: [''], // 공급사
             buyPrice: [, [Validators.required]], // 구매단가
