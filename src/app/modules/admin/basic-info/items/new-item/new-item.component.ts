@@ -39,23 +39,24 @@ export class NewItemComponent implements OnInit, OnDestroy
         message: ''
     };
     showAlert: boolean = false;
-    itemGrades: any[] = [
-        {
-            id: '1',
-            name: '1 등급'
-        },
-        {
-            id: '2',
-            name: '2 등급'
-        },
-        {
-            id: '3',
-            name: '3 등급'
-        },
-        {
-            id: '4',
-            name: '4 등급'
-        }];
+    // itemGrades: any[] = [
+    //     {
+    //         id: '1',
+    //         name: '1 등급'
+    //     },
+    //     {
+    //         id: '2',
+    //         name: '2 등급'
+    //     },
+    //     {
+    //         id: '3',
+    //         name: '3 등급'
+    //     },
+    //     {
+    //         id: '4',
+    //         name: '4 등급'
+    //     }];
+    itemGrades: CommonCode[] = [];
     is_edit:boolean = false;
     itemUnit: CommonCode[] = [];
     itemStandard: CommonCode[] = [];
@@ -72,6 +73,7 @@ export class NewItemComponent implements OnInit, OnDestroy
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver,
     ) {
+        this.itemGrades = _utilService.commonValueFilter(_codeStore.getValue().data,'ITEM_GRADE', ['ALL']);
         this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemStandard = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
