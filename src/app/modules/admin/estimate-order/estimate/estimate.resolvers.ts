@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Common} from '@teamplat/providers/common/common';
 import {Observable} from 'rxjs';
 import {EstimateService} from './estimate.service';
@@ -14,7 +14,8 @@ export class EstimateResolvers implements Resolve<any> {
      * Constructor
      */
     constructor(private _estimateService: EstimateService,
-                private _common: Common) {
+                private _common: Common
+                ) {
     }
 
 

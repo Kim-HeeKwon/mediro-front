@@ -1,54 +1,62 @@
 import {ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy} from '@angular/router';
+import {isNull} from "lodash-es";
 
-export class TeamPlatReuseStrategy implements RouteReuseStrategy {
+const getPath = s => s.url.map(seg => seg.path).join('/');
+const log = (msg, s) => console.log(`${msg}${getPath(s)}`);
 
-    handlers: {[key: string]: DetachedRouteHandle} = {};
+export class TeamPlatReuseStrategy extends RouteReuseStrategy {
+    private cache = new Map<string, DetachedRouteHandle>();
 
-    //route 를 재사용할것인가. 어디서 어디로 옮길것인지 스냅샷이 넘어온다. 주소를 따져봐서, 같으면 재사용하고, 다르면 재사용하지 않는다.
-    shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-        return this.getURL(curr) === this.getURL(future)
-    }
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    shouldDetach(route: ActivatedRouteSnapshot) {
 
-    //Detach 될때 상태를 저장할건지 아닌지 리턴해준다. detach 되는 Route를 저장해 두려면 true, 저장하지 않으려면 false
-    shouldDetach(route: ActivatedRouteSnapshot): boolean {
-        //나는 URL이 루트인것만  저장해 둘것이기 때문에 루트인것만 true를 준다.
-        if(this.getURL(route) === '/'){
+        if (getPath(route).startsWith('salesorder') || (getPath(route).startsWith('calculate')) ) {
             return true;
-        }else{
-            return false;
         }
+
+        return true;
     }
 
-//위에서 저장하기로 한 스냅샷을 저장해둔다.
-
-    store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-        let key = this.getURL(route);
-        this.handlers[key] = handle;
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    store(route: ActivatedRouteSnapshot, detachedTree: DetachedRouteHandle) {
+        this.cache.set(getPath(route), detachedTree);
     }
 
-    //저장해둔 Snapshot에 Attach 할 때의 델리게이트.
-    shouldAttach(route: ActivatedRouteSnapshot): boolean {
-        return !!route.routeConfig && !!this.handlers[this.getURL(route)];
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    shouldAttach(route: ActivatedRouteSnapshot) {
+        const path = getPath(route);
+
+        if ((path.startsWith('salesorder') && this.cache.has(path))||(path.startsWith('calculate') && this.cache.has(path))) {
+            console.log('click');
+            return true;
+        }
+
+        return false;
     }
 
-    retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-        if (!route.routeConfig) return null;
-        let key = this.getURL(route);
-        return this.handlers[key];
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    retrieve(route: ActivatedRouteSnapshot) {
+        return this.cache.get(getPath(route));
     }
 
-
-    //routeSnapShot 에서 URL 을 계산해서 리턴해준다.
-    getURL(route: ActivatedRouteSnapshot) {
-        let next = route;
-        let url = '';
-        while(next) {
-            if (next.url) {
-                url = next.url.join('/');
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    shouldReuseRoute(
+        future: ActivatedRouteSnapshot,
+        curr: ActivatedRouteSnapshot
+    ) {
+        // console.log(future.routeConfig);
+        if(!isNull(future.routeConfig)){
+            //console.log(future.routeConfig);
+            if(future.routeConfig.path === 'salesorder'){
+                console.log('click!!!!');
+                return true;
             }
-            next = next.firstChild;
+
+            if(future.routeConfig.path === 'calculate'){
+                console.log('click!!!!');
+                return true;
+            }
         }
-        url = '/' + url;
-        return url;
+        return future.routeConfig === curr.routeConfig;
     }
 }

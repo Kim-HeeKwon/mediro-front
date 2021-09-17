@@ -4,6 +4,8 @@ export interface Shortcut
     label: string;
     description?: string;
     icon: string;
-    link: string;
+    link: any;
+    param?: any;
+    data?: any;
     useRouter: boolean;
 }

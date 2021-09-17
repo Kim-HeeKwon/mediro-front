@@ -95,20 +95,21 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
                     id: item.id,
                     label: item.title,
                     icon: item.icon,
-                    link: event.url,
+                    link: item.link,
+                    param: event.url,
                     useRouter:true
                 };
 
-                console.log(this.shortCut);
-                this._shortcutService.create(this.shortCut).subscribe();
+                // console.log(this.shortCut);
+                //this._shortcutService.create(this.shortCut).subscribe();
             });
-        // this.shortCut = {
-        //     id: item.id,
-        //     label: item.title,
-        //     icon: item.icon,
-        //     link: item.link,
-        //     useRouter:true
-        // };
-        // this._shortcutService.create(this.shortCut).subscribe();
+        this.shortCut = {
+            id: item.id,
+            label: item.title,
+            icon: item.icon,
+            link: item.link,
+            useRouter:true
+        };
+        this._shortcutService.create(this.shortCut).subscribe();
     }
 }

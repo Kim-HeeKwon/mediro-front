@@ -49,7 +49,7 @@ export class Common {
     // tslint:disable-next-line:typedef
     gfn_isNull(val) {
         // tslint:disable-next-line:triple-equals
-        if (val == null || val == '' || val == undefined || val == 'undefined' || val == 'null') {
+        if (val == null || val == '' || val == undefined || val == 'undefined' || val == 'null' || val == {} || val == '{}') {
 
             if (val == 'null' || val == null) {
                 return true;

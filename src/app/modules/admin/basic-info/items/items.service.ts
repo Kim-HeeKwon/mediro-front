@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {Common} from '@teamplat/providers/common/common';
+import {ActivatedRoute} from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,8 @@ export class ItemsService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient, private _common: Common) {
+    constructor(private _httpClient: HttpClient, private _common: Common,
+                private _route: ActivatedRoute,) {
     }
 
     /**
@@ -57,7 +59,6 @@ export class ItemsService {
      */
     getProducts(page: number = 0, size: number = 10, sort: string = 'name', order: 'asc' | 'desc' | '' = 'asc', search: string = ''):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }> {
-        console.log('click!!');
         return this._httpClient.get<{ pagination: InventoryPagination; products: InventoryItem[] }>('api/apps/ecommerce/inventory/products', {
             params: {
                 page: '' + page,
@@ -84,21 +85,32 @@ export class ItemsService {
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
         const searchParam = {};
-        searchParam['order'] = order;
-        searchParam['sort'] = sort;
-
-        // 검색조건 Null Check
-        if((Object.keys(search).length === 0) === false){
-            // eslint-disable-next-line guard-for-in
-            for (const k in search) {
-                searchParam[k] = search[k];
-            }
-        }
 
         const pageParam = {
             page: page,
             size: size,
         };
+
+        // 파마미터 설정
+        this._route.queryParams.subscribe((params) => {
+            if(Object.keys(params).length > 0){
+                for (const kk in params) {
+                    searchParam[kk] = params[kk];
+                }
+                console.log(searchParam);
+            }else{
+                searchParam['order'] = order;
+                searchParam['sort'] = sort;
+
+                // 검색조건 Null Check
+                if((Object.keys(search).length === 0) === false){
+                    // eslint-disable-next-line guard-for-in
+                    for (const k in search) {
+                        searchParam[k] = search[k];
+                    }
+                }
+            }
+        });
 
         // @ts-ignore
         return new Promise((resolve, reject) => {

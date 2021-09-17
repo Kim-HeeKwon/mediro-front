@@ -16,12 +16,6 @@ export class ItemsResolver implements Resolve<any> {
     constructor(private _itemsService: ItemsService,
                 private _common: Common,
                 private _route: ActivatedRoute,) {
-
-        this._route.params.subscribe((params) => {
-            console.log(params);
-            const id = params['itemCd'];
-            console.log('id Check!! :: ' + id);
-        });
     }
 
 
