@@ -775,7 +775,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                                 });
                                 //lot 셋팅
                                 inBoundDataFilter.forEach((inBound: any) => {
+                                    inBound.qty = inBound.qty;
                                     inBound.lot4 = inBound.udiCode;
+                                });
+                                inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.qty > 0 ).map((param: any) => {
+                                    return param;
                                 });
                                 conf.afterClosed()
                                     .pipe(takeUntil(this._unsubscribeAll))

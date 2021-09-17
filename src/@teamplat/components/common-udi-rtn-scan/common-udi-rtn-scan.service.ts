@@ -28,4 +28,8 @@ export class CommonUdiRtnScanService{
     setData(inBoundData) {
         this._inBoundDetails.next(inBoundData);
     }
+
+    setInitList(): void{
+        this._inBoundDetails.next(null);
+    }
 }

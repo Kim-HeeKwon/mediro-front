@@ -12,6 +12,7 @@ export class TableConfig{
     combo?: boolean;
     comboObject?: any;
     max?: any;
+    scan?: boolean;
 
     constructor(display: boolean = true, disabled: boolean = false, type: string = 'text', placeholder: string = ''){
         this.display = display;

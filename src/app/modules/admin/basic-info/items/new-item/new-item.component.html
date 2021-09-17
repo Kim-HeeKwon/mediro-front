@@ -41,7 +41,7 @@
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목 등급</mat-label>
+                            <mat-label>품목 등급 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <mat-select [formControlName]="'itemGrade'" [attr.disabled]="is_edit?'':false">
                                 <ng-container *ngFor="let itemgrade of itemGrades">
                                     <mat-option [value]="itemgrade.id">
@@ -54,7 +54,7 @@
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>UDI 대상 유무</mat-label>
+                            <mat-label>UDI 대상 유무 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <mat-select [formControlName]="'udiYn'" [attr.disabled]="is_edit?'':false">
                                 <ng-container *ngFor="let udiYn of udiYn">
                                     <mat-option [value]="udiYn.id">

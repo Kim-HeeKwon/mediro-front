@@ -30,4 +30,8 @@ export class CommonUdiScanService{
     setData(outBoundData) {
         this._outBoundDetails.next(outBoundData);
     }
+
+    setInitList(): void{
+        this._outBoundDetails.next(null);
+    }
 }

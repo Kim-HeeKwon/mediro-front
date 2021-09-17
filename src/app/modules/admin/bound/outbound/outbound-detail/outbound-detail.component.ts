@@ -675,6 +675,14 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
         });
 
+        outBoundData.forEach((outBound: any) => {
+            outBound.qty = outBound.qty;
+            outBound.lot4 = outBound.udiCode;
+        });
+        outBoundData = outBoundData.filter((outBound: any) => outBound.qty > 0 ).map((param: any) => {
+            return param;
+        });
+
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {

@@ -86,14 +86,14 @@ export class NewItemComponent implements OnInit, OnDestroy
         this.selectedItemForm = this._formBuilder.group({
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
-            itemGrade: [3], // 등급
-            udiYn: [''], // UDI 신고 대상 유무
+            itemGrade: ['', [Validators.required]], // 등급
+            udiYn: ['', [Validators.required]], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: ['PKG'], // 단위
             standard: ['PKG'], // 규격
             supplier: [''], // 공급사
-            buyPrice: [], // 구매단가
-            salesPrice: [], // 판매단가
+            buyPrice: [, [Validators.required]], // 구매단가
+            salesPrice: [, [Validators.required]], // 판매단가
             entpName: [], // 업체명
             fomlInfo: [], // 모델명
             itemNoFullname: [], // 품목허가번호
@@ -133,7 +133,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '품목코드와 품목명을 입력해주세요.'
+                message: '품목코드, 품목등급, UDI 대상유무, 품목명, (구매,판매) 단가를 입력해주세요.'
             };
 
             // Show the alert
