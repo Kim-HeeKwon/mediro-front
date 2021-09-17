@@ -28,16 +28,7 @@ export class TeamPlatReuseStrategy extends RouteReuseStrategy {
     }
 
     shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-        //return future.routeConfig === curr.routeConfig;
-        if (future.outlet !== 'primary') {
-            // do the switcheroo
-            [future, curr] = [curr, future];
-        }
-        if (curr.routeConfig && curr.routeConfig.data && curr.routeConfig.data.useOnce) {
-            return false;
-        } else {
-            return future.routeConfig === curr.routeConfig;
-        }
+        return future.routeConfig === curr.routeConfig;
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
