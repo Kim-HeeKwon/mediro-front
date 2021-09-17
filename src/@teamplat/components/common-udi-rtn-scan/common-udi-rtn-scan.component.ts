@@ -77,7 +77,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         //'udiDiSeq',
          'remarkDetail',
     ];
-    headerText: string = '공급내역 보고자료';
+    headerText: string = '공급내역 보고';
     inBoundData: any;
     isMobile: boolean = false;
     suplyTypeCode: CommonCode[] = null;
