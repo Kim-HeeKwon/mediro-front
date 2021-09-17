@@ -68,7 +68,7 @@ export class ShortcutsService
                         const index = items.findIndex(item => item.link === shortcut.link);
 
                         if(index === -1){
-                            console.log(newShortcut.link);
+                            //console.log(newShortcut.link);
 
                             // this._route.events
                             //     .pipe(filter(event => event instanceof NavigationEnd))

@@ -1,62 +1,47 @@
 import {ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy} from '@angular/router';
-import {isNull} from "lodash-es";
 
-const getPath = s => s.url.map(seg => seg.path).join('/');
-const log = (msg, s) => console.log(`${msg}${getPath(s)}`);
-
+interface RouteStorageObject {
+    snapshot: ActivatedRouteSnapshot;
+    handle: DetachedRouteHandle;
+}
 export class TeamPlatReuseStrategy extends RouteReuseStrategy {
-    private cache = new Map<string, DetachedRouteHandle>();
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    shouldDetach(route: ActivatedRouteSnapshot) {
+    private handlers: {[key: string]: DetachedRouteHandle} = {};
 
-        if (getPath(route).startsWith('salesorder') || (getPath(route).startsWith('calculate')) ) {
-            return true;
+    shouldDetach(route: ActivatedRouteSnapshot): boolean {
+        if (!route.routeConfig || route.routeConfig.loadChildren) {
+            return false;
         }
-
         return true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    store(route: ActivatedRouteSnapshot, detachedTree: DetachedRouteHandle) {
-        this.cache.set(getPath(route), detachedTree);
+    store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+        this.handlers[this.calcPath(route)] = handle;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    shouldAttach(route: ActivatedRouteSnapshot) {
-        const path = getPath(route);
+    shouldAttach(route: ActivatedRouteSnapshot): boolean {
+        return !!this.handlers[this.calcPath(route)];
+    }
 
-        if ((path.startsWith('salesorder') && this.cache.has(path))||(path.startsWith('calculate') && this.cache.has(path))) {
-            console.log('click');
-            return true;
+    retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+        return this.handlers[this.calcPath(route)];
+    }
+
+    shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+        //return future.routeConfig === curr.routeConfig;
+        if (future.outlet !== 'primary') {
+            // do the switcheroo
+            [future, curr] = [curr, future];
         }
-
-        return false;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    retrieve(route: ActivatedRouteSnapshot) {
-        return this.cache.get(getPath(route));
-    }
-
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    shouldReuseRoute(
-        future: ActivatedRouteSnapshot,
-        curr: ActivatedRouteSnapshot
-    ) {
-        // console.log(future.routeConfig);
-        if(!isNull(future.routeConfig)){
-            //console.log(future.routeConfig);
-            if(future.routeConfig.path === 'salesorder'){
-                console.log('click!!!!');
-                return true;
-            }
-
-            if(future.routeConfig.path === 'calculate'){
-                console.log('click!!!!');
-                return true;
-            }
+        if (curr.routeConfig && curr.routeConfig.data && curr.routeConfig.data.useOnce) {
+            return false;
+        } else {
+            return future.routeConfig === curr.routeConfig;
         }
-        return future.routeConfig === curr.routeConfig;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    private calcPath(route: ActivatedRouteSnapshot) {
+        return (route as any)._routerState.url;
     }
 }

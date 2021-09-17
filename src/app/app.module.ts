@@ -50,7 +50,7 @@ const routerConfig: ExtraOptions = {
     ],
     providers: [
         CookieService,
-        // {provide: RouteReuseStrategy, useClass: TeamPlatReuseStrategy}
+        {provide: RouteReuseStrategy, useClass: TeamPlatReuseStrategy}
     ],
 })
 export class AppModule
