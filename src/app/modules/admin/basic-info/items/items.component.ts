@@ -29,8 +29,8 @@ import {
 } from '@angular/cdk/layout';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
-import {Common} from "../../../../../@teamplat/providers/common/common";
-import {ActivatedRoute} from "@angular/router";
+import {Common} from '@teamplat/providers/common/common';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-items',
@@ -92,6 +92,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     excelFileNameYn: boolean;
 
     constructor(
+        private _router: Router,
         private _route: ActivatedRoute,
         private _common: Common,
         private _matDialog: MatDialog,
@@ -327,6 +328,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
         this.closeDetails();
+
+        this._router.navigate(['.'], { relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
     }
 
     /**
