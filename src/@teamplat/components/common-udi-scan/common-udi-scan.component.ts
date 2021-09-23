@@ -334,7 +334,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
             //     this._functionService.cfn_alert('보고 기준월은 필수값 입니다. 품목코드 : ' + outBoundData[i].itemCd);
             //     return;
             // }
-            console.log(this.searchForm.getRawValue().suplyTypeCode);
+            //console.log(this.searchForm.getRawValue().suplyTypeCode);
             if(this.searchForm.getRawValue().suplyTypeCode === ''){
                 this._functionService.cfn_alert('공급형태는 필수값 입니다.');
                 return;
