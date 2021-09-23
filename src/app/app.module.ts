@@ -15,6 +15,7 @@ import { appRoutes } from 'app/app.routing';
 import { environment } from '../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import {TeamPlatReuseStrategy} from '../@teamplat/services/router-util/TeamPlatReuseStrategy';
+import {CustomReuseStrategy} from "../@teamplat/services/router-util/CustomReuseStrategy";
 
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
@@ -51,6 +52,7 @@ const routerConfig: ExtraOptions = {
     providers: [
         CookieService,
         //{provide: RouteReuseStrategy, useClass: TeamPlatReuseStrategy}
+        //{provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
     ],
 })
 export class AppModule
