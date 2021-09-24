@@ -361,6 +361,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                     tail : false,
                     mediroUrl : 'bcnc/company-info',
                     tailKey : '',
+                    merge : true,
+                    mergeData : 'account'
                 },
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
