@@ -57,19 +57,27 @@
                         </div>
                         <div class="flex">
                             <mat-form-field class="w-2/6 pr-2">
-                                <mat-label>배송일자<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                <mat-label>납품일자<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                 <input type="date"
                                        matInput
                                        [formControlName]="'dlvDate'">
                             </mat-form-field>
-                            <mat-form-field class="w-2/6 pr-2">
-                                <mat-label>배송처</mat-label>
+                            <mat-form-field
+                                style="display: none"
+                                class="w-2/6 pr-2">
+                                <mat-label>납품처</mat-label>
                                 <input
                                     matInput
                                     [formControlName]="'dlvAccount'">
                             </mat-form-field>
                             <mat-form-field class="w-2/6 pr-2">
-                                <mat-label>배송주소</mat-label>
+                                <mat-label>납품처</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'dlvAccountNm'">
+                            </mat-form-field>
+                            <mat-form-field class="w-2/6 pr-2">
+                                <mat-label>납품주소</mat-label>
                                 <mat-icon
                                     class="icon-size-5"
                                     [svgIcon]="'heroicons_solid:location-marker'"

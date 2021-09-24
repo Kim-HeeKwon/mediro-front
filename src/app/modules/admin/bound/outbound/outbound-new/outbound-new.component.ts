@@ -115,9 +115,10 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             address: [{value:''}, [Validators.required]],   // 거래처 주소
             type: [{value:''}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
-            dlvAccount: [{value:''}],   // 배송처
-            dlvAddress: [{value:''}],   // 배송처 주소
-            dlvDate: [{value:''}, [Validators.required]],//배송일
+            dlvAccount: [{value:''}],   // 납품처
+            dlvAccountNm: [{value:''}],   // 납품처
+            dlvAddress: [{value:''}],   // 납품처 주소
+            dlvDate: [{value:''}, [Validators.required]],//납품일자
             obCreDate: [{value:'',disabled:true}],//작성일
             obDate: [{value:'',disabled:true}], //출고일
             remarkHeader: [''], //비고
@@ -152,6 +153,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.outBoundHeaderForm.patchValue({'type': '1'});
         this.outBoundHeaderForm.patchValue({'status': 'N'});
         this.outBoundHeaderForm.patchValue({'dlvAccount': ''});
+        this.outBoundHeaderForm.patchValue({'dlvAccountNm': ''});
         this.outBoundHeaderForm.patchValue({'dlvAddress': ''});
         this.outBoundHeaderForm.patchValue({'dlvDate': ''});
         this.outBoundHeaderForm.patchValue({'remarkHeader': ''});
@@ -475,6 +477,29 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                     this.outBoundHeaderForm.patchValue({'account': result.accountCd});
                     this.outBoundHeaderForm.patchValue({'accountNm': result.accountNm});
                     this.outBoundHeaderForm.patchValue({'address': result.address});
+                }
+            });
+    }
+
+    openDlvAccountSearch(): void
+    {
+        const popup =this._matDialogPopup.open(CommonPopupComponent, {
+            data: {
+                popup : 'P$_ACCOUNT',
+                headerText : '납품처 조회'
+            },
+            autoFocus: false,
+            maxHeight: '90vh',
+            disableClose: true
+        });
+
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result){
+                    this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                    this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                    this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
                 }
             });
     }

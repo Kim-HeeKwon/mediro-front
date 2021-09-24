@@ -8,6 +8,7 @@ export interface OutBound
     status: string;             //상태
     address: string;            //주소
     dlvAccount: string;         //배송처
+    dlvAccountNm: string;         //배송처
     dlvAddress: string;         //배송처 주소
     dlvDate: string;            //일자
     obCreDate: string;          //출고생성일자
@@ -37,6 +38,7 @@ export interface OutBoundHeader
     status: string;             //상태
     address: string;            //주소
     dlvAccount: string;         //배송처
+    dlvAccountNm: string;         //배송처
     dlvAddress: string;         //배송처 주소
     dlvDate: string;            //일자
     obCreDate: string;          //출고생성일자

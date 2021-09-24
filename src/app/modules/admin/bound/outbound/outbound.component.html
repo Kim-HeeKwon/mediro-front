@@ -576,13 +576,30 @@
                                                     mat-sort-header
                                                     hidden="true"
                                                     disableClear>
-                                                    배송처
+                                                    납품처
                                                 </th>
                                                 <td
                                                     class="pr-8 truncate"
                                                     mat-cell
                                                     *matCellDef="let outBoundHeader">
                                                     {{outBoundHeader.dlvAccount}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="dlvAccountNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    hidden="true"
+                                                    disableClear>
+                                                    납품처
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let outBoundHeader">
+                                                    {{outBoundHeader.dlvAccountNm}}
                                                 </td>
                                             </ng-container>
                                             <ng-container matColumnDef="dlvAddress">
@@ -593,7 +610,7 @@
                                                     mat-sort-header
                                                     hidden="true"
                                                     disableClear>
-                                                    배송주소
+                                                    납품주소
                                                 </th>
                                                 <td
                                                     class="pr-8 truncate"
@@ -610,7 +627,7 @@
                                                     mat-sort-header
                                                     hidden="true"
                                                     disableClear>
-                                                    배송일
+                                                    납품일자
                                                 </th>
                                                 <td
                                                     class="pr-8 truncate"

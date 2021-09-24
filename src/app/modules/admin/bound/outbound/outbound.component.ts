@@ -66,9 +66,10 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '주소' , dataField : 'address', width: 150, display : true, disabled : true, type: 'text'},
         {headerText : '유형' , dataField : 'type', width: 100, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '상태' , dataField : 'status', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '배송처' , dataField : 'dlvAccount', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '배송주소' , dataField : 'dlvAddress', width: 150, display : true, disabled : true, type: 'text'},
-        {headerText : '배송일' , dataField : 'dlvDate', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '납품처' , dataField : 'dlvAccount', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '납품처' , dataField : 'dlvAccountNm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '납품주소' , dataField : 'dlvAddress', width: 150, display : true, disabled : true, type: 'text'},
+        {headerText : '납품일자' , dataField : 'dlvDate', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '비고' , dataField : 'remarkHeader', width: 100, display : false, disabled : true, type: 'text'}
     ];
     outBoundHeadersTableColumns: string[] = [

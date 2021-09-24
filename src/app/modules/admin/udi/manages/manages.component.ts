@@ -56,10 +56,11 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '제조연월' , dataField : 'manufYm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급받은자 코드' , dataField : 'bcncCode', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급받은자' , dataField : 'bcncEntpName', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '납품장소 업체' , dataField : 'dvyfgEntpName', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급일자' , dataField : 'suplyDate', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '공급수량' , dataField : 'suplyQty', width: 80, display : true, disabled : true, type: 'text'},
         {headerText : '공급단가' , dataField : 'suplyUntpc', width: 80, display : true, disabled : true, type: 'text'},
-        {headerText : '공급금액' , dataField : 'suplyAmt', width: 80, display : true, disabled : true, type: 'text'},
+        {headerText : '공급금액' , dataField : 'suplyAmt', width: 90, display : true, disabled : true, type: 'text'},
     ];
     managesTableColumns: string[] = [
         'select',
@@ -73,6 +74,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         'manufYm',
         'bcncCode',
         'bcncEntpName',
+        'dvyfgEntpName',
         'suplyDate',
         'suplyQty',
         'suplyUntpc',
