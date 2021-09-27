@@ -187,6 +187,7 @@ export interface CommonCode
     name: string;       //NAME
 }
 
+
 export interface CommonPopup
 {
     extPopupNo: string;              //팝업번호

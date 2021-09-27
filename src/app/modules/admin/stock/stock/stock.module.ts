@@ -32,6 +32,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {StockHistoryResolvers} from './stock-history/stock-history.resolvers';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {StockDetailComponent} from "./stock-detail/stock-detail.component";
 
 const stockRoutes: Route[] = [
     {
@@ -55,7 +56,8 @@ const stockRoutes: Route[] = [
 @NgModule({
     declarations: [
         StockComponent,
-        StockHistoryComponent
+        StockHistoryComponent,
+        StockDetailComponent
     ],
     imports: [
         CommonModule,

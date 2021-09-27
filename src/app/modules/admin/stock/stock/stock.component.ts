@@ -23,6 +23,10 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {StockService} from './stock.service';
 import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
 import {fuseAnimations} from '../../../../../@teamplat/animations';
+import {StockDetailComponent} from "./stock-detail/stock-detail.component";
+
+
+
 
 @Component({
     selector: 'app-stock',
@@ -32,7 +36,7 @@ import {fuseAnimations} from '../../../../../@teamplat/animations';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations     : fuseAnimations
 })
-export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
 
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -53,19 +57,27 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
     stocksTableStyle: TableStyle = new TableStyle();
 
     stocksTable: TableConfig[] = [
-        {headerText : '품목코드' , dataField : 'itemCd', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '품목명' , dataField : 'itemNm', width: 120, display : true, disabled : true, type: 'text'},
-        {headerText : '규격' , dataField : 'standard', width: 100, display : false, disabled : true, type: 'text'},
-        {headerText : '단위' , dataField : 'unit', width: 100, display : false, disabled : true, type: 'text'},
-        {headerText : '품목등급' , dataField : 'itemGrade', width: 80, display : true, disabled : true, type: 'text',combo : true},
-        {headerText : '발주' , dataField : 'poQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '보유' , dataField : 'availQty', width: 80, display : true, disabled : true, type: 'number'},
+        {headerText: '품목코드', dataField: 'itemCd', width: 100, display: true, disabled: true, type: 'text'},
+        {headerText: '품목명', dataField: 'itemNm', width: 120, display: true, disabled: true, type: 'text'},
+        {headerText: '규격', dataField: 'standard', width: 100, display: false, disabled: true, type: 'text'},
+        {headerText: '단위', dataField: 'unit', width: 100, display: false, disabled: true, type: 'text'},
+        {
+            headerText: '품목등급',
+            dataField: 'itemGrade',
+            width: 80,
+            display: true,
+            disabled: true,
+            type: 'text',
+            combo: true
+        },
+        {headerText: '발주', dataField: 'poQty', width: 80, display: true, disabled: true, type: 'number'},
+        {headerText: '보유', dataField: 'availQty', width: 80, display: true, disabled: true, type: 'number'},
         /*{headerText : '현재고' , dataField : 'qty', width: 100, display : true, disabled : true, type: 'number'},*/
-        {headerText : '가납' , dataField : 'acceptableQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '불용' , dataField : 'unusedQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '안전재고' , dataField : 'safetyQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '장기재고' , dataField : 'longtermQty', width: 80, display : true, disabled : true, type: 'number'},
-        {headerText : '기간' , dataField : 'longterm', width: 150, display : true, disabled : true, type: 'text'},
+        {headerText: '가납', dataField: 'acceptableQty', width: 80, display: true, disabled: true, type: 'number'},
+        {headerText: '불용', dataField: 'unusedQty', width: 80, display: true, disabled: true, type: 'number'},
+        {headerText: '안전재고', dataField: 'safetyQty', width: 80, display: true, disabled: true, type: 'number'},
+        {headerText: '장기재고', dataField: 'longtermQty', width: 80, display: true, disabled: true, type: 'number'},
+        {headerText: '기간', dataField: 'longterm', width: 150, display: true, disabled: true, type: 'text'},
         /*{headerText : '가용재고' , dataField : 'availQty', width: 100, display : true, disabled : true, type: 'number'},*/
     ];
 
@@ -114,9 +126,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         private _router: Router,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
             // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
@@ -139,7 +150,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         this._stockService.stocks$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stock: any) => {
-                if(stock !== null){
+                if (stock !== null) {
                     this.stocksCount = stock.length;
                 }
                 // Mark for check
@@ -154,11 +165,12 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
                 this._changeDetectorRef.markForCheck();
             });
     }
+
     /**
      * After view init
      */
     ngAfterViewInit(): void {
-        if(this._sort !== undefined){
+        if (this._sort !== undefined) {
             // Get products if sort or page changes
             merge(this._sort.sortChange, this._paginator.page).pipe(
                 switchMap(() => {
@@ -197,10 +209,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
      *
      * @param account
      */
-    toggleDetails(itemCd: string): void
-    {
-        if ( this.selectedStock && this.selectedStock.itemCd === itemCd)
-        {
+    toggleDetails(itemCd: string): void {
+        if (this.selectedStock && this.selectedStock.itemCd === itemCd) {
             // Close the details
             this.closeDetails();
             return;
@@ -209,22 +219,21 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         this._stockService.getStockHistoryById(itemCd)
             .subscribe((stock) => {
                 this.selectedStock = stock;
-                this._stockService.getStockHistory(0,10,'seq','desc', this.selectedStock);
+                this._stockService.getStockHistory(0, 10, 'seq', 'desc', this.selectedStock);
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
     }
+
     /**
      * Close the details
      */
-    closeDetails(): void
-    {
+    closeDetails(): void {
         this.selectedStock = null;
     }
 
-    selectHeader(): void
-    {
+    selectHeader(): void {
         // range(1,100)
         //     .pipe(
         //         filter(n => n % 2 === 0)
@@ -232,20 +241,52 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit  {
         //     .subscribe((a: any) => {
         //         console.log(a);
         //     });
-        if(this.searchForm.getRawValue().searchCondition === '100') {
+        if (this.searchForm.getRawValue().searchCondition === '100') {
             this.searchForm.patchValue({'itemCd': ''});
             this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
         }
-        this._stockService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+        this._stockService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
         this.closeDetails();
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     getComboData(column: TableConfig) {
         let combo;
-        if(column.dataField === 'itemGrade'){
+        if (column.dataField === 'itemGrade') {
             combo = this.itemGrades;
         }
         return combo;
     }
+
+    selectClickRow(row: any): void
+    {
+        if(!this.isMobile){
+            this._matDialog.open(StockDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    detail: row
+                },
+            });
+        }else{
+            const d = this._matDialog.open(StockDetailComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
 }

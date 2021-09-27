@@ -139,7 +139,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
-            supplier: [''], // 공급사
+            supplier: [{value:'',disabled:true}], // 공급사
             taxGbn: [''], // 거래유형
             buyPrice: [''], // 구매단가
             salesPrice: [''], // 판매단가
