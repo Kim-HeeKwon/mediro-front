@@ -511,16 +511,17 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
                         // d.updateSize('calc(100% - 50px)', '');
                     }
                 });
-                popup.afterClosed().subscribe((result) => {
-                    smallDialogSubscription.unsubscribe();
-                    this.isLoading = true;
-                    element.itemCd = result.itemCd;
-                    element.itemNm = result.itemNm;
-                    element.standard = result.standard;
-                    element.unit = result.unit;
-                    this.tableClear();
-                    this.isLoading = false;
-                    this._changeDetectorRef.markForCheck();
+                popup.afterClosed()
+                    .subscribe((result) => {
+                        smallDialogSubscription.unsubscribe();
+                        this.isLoading = true;
+                        element.itemCd = result.itemCd;
+                        element.itemNm = result.itemNm;
+                        element.standard = result.standard;
+                        element.unit = result.unit;
+                        this.tableClear();
+                        this.isLoading = false;
+                        this._changeDetectorRef.markForCheck();
                 });
             }
 

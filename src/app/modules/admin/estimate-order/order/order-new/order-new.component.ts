@@ -26,6 +26,8 @@ import {takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector       : 'order-new',
@@ -45,6 +47,10 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     orderHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     orderDetailsCount: number = 0;
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -108,7 +114,9 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _orderService: OrderService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _functionService: FunctionService,
-        private _utilService: FuseUtilsService)
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver)
     {
         this.filterTypeList = ['ALL', '2'];
         this.filterStatusList = ['ALL'];
@@ -129,6 +137,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
             this._changeDetectorRef.markForCheck();
         }
+        this.isMobile = this._deviceService.isMobile();
 
     }
 
@@ -506,11 +515,84 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     cellClick(element, column: TableConfig, i) {
         if(column.dataField === 'itemCd'){
 
+            if(!this.isMobile){
+                const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup : 'P$_ALL_ITEM',
+                        headerText : '품목 조회',
+                        where : 'account:=:' + this.orderHeaderForm.controls['account'].value
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
+
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            element.unitPrice = result.buyPrice;
+                            element.poReqQty = result.poQty;
+                            element.invQty = result.availQty;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }else{
+                const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup : 'P$_ALL_ITEM',
+                        headerText : '품목 조회',
+                        where : 'account:=:' + this.orderHeaderForm.controls['account'].value
+                    },
+                    autoFocus: false,
+                    width: 'calc(100% - 50px)',
+                    maxWidth: '100vw',
+                    maxHeight: '80vh',
+                    disableClose: true
+                });
+                const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                    if (size.matches) {
+                        popup.updateSize('calc(100vw - 10px)','');
+                    } else {
+                        // d.updateSize('calc(100% - 50px)', '');
+                    }
+                });
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            smallDialogSubscription.unsubscribe();
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            element.unitPrice = result.buyPrice;
+                            element.poReqQty = result.poQty;
+                            element.invQty = result.availQty;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
+        }
+    }
+
+    openAccountSearch(): void
+    {
+        if(!this.isMobile){
             const popup =this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
-                    where : 'account:=:' + this.orderHeaderForm.controls['account'].value
+                    popup : 'P$_ACCOUNT',
+                    headerText : '거래처 조회'
                 },
                 autoFocus: false,
                 maxHeight: '90vh',
@@ -521,42 +603,42 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        element.standard = result.standard;
-                        element.unit = result.unit;
-                        element.unitPrice = result.buyPrice;
-                        element.poReqQty = result.poQty;
-                        element.invQty = result.availQty;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
+                        this.orderHeaderForm.patchValue({'account': result.accountCd});
+                        this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.orderHeaderForm.patchValue({'email': result.email});
+                    }
+                });
+        }else{
+            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_ACCOUNT',
+                    headerText : '거래처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        smallDialogSubscription.unsubscribe();
+                        this.orderHeaderForm.patchValue({'account': result.accountCd});
+                        this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.orderHeaderForm.patchValue({'email': result.email});
                     }
                 });
         }
-    }
 
-    openAccountSearch(): void
-    {
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
-            data: {
-                popup : 'P$_ACCOUNT',
-                headerText : '거래처 조회'
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
-
-        popup.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result){
-                    this.orderHeaderForm.patchValue({'account': result.accountCd});
-                    this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
-                    this.orderHeaderForm.patchValue({'email': result.email});
-                }
-            });
     }
 }

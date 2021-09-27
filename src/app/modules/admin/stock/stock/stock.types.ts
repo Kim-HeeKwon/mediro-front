@@ -48,5 +48,15 @@ export interface StockHistoryPagenation
     endIndex: number;
 }
 
+export interface StockAdj
+{
+    no?: number;
+    mId: string;                //회원사
+    itemCd: string;             //품목코드
+    itemNm: string;             //품목명
+    qty: number;
+    adjType: string;
+}
+
 
 

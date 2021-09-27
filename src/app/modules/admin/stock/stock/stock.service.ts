@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {Stock, StockHistory, StockHistoryPagenation, StockPagenation} from './stock.types';
+import {Stock, StockAdj, StockHistory, StockHistoryPagenation, StockPagenation} from './stock.types';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import {filter, map, switchMap, take} from 'rxjs/operators';
@@ -10,6 +10,7 @@ import {filter, map, switchMap, take} from 'rxjs/operators';
 })
 export class StockService{
     private _stock: BehaviorSubject<Stock> = new BehaviorSubject(null);
+    private _stockAdjs: BehaviorSubject<StockAdj[]> = new BehaviorSubject(null);
     private _stocks: BehaviorSubject<Stock[]> = new BehaviorSubject(null);
     private _stockPagenation: BehaviorSubject<StockPagenation | null> = new BehaviorSubject(null);
     private _stockHistory: BehaviorSubject<StockHistory> = new BehaviorSubject(null);
@@ -30,6 +31,14 @@ export class StockService{
     get stock$(): Observable<Stock>
     {
         return this._stock.asObservable();
+    }
+
+    /**
+     * Getter for header
+     */
+    get stockAdjs$(): Observable<StockAdj[]>
+    {
+        return this._stockAdjs.asObservable();
     }
 
     /**
@@ -176,5 +185,28 @@ export class StockService{
                     }
                 }, reject);
         });
+    }
+
+    /**
+     *
+     * @param manages
+     */
+    stockAdjustment(stockAdj: StockAdj): Observable<StockAdj>
+    {
+
+        const pageParam = {
+            page: 0,
+            size: 100,
+        };
+
+        return this.stockAdjs$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataObject(stockAdj, pageParam, 'v1/api/basicInfo/stock/stock-adj').pipe(
+                map((result) => {
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }
