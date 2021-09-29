@@ -20,6 +20,7 @@ import {takeUntil} from 'rxjs/operators';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import moment from 'moment';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
 
 @Component({
     selector       : 'manages-detail',
@@ -47,6 +48,13 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     showAlert: boolean = false;
     minDate: string;
     maxDate: string;
+    changeText: string = '';
+    changeAccountText: string = '거래처';
+    changeAccountHidden: boolean = true;
+    changeIsDiffDvyfgHidden: boolean = true;
+    changeDlvAccountHidden: boolean = true;
+    suplyTypeCodeHidden: boolean = false;
+    hidden: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -94,19 +102,19 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             suplyAmt : [{value: '',disabled:true}],
             remark : [''],
             bcncCobTypeName : [''],
-            bcncCode : [''],
-            bcncEntpAddr : [''],
-            bcncEntpName : [''],
+            bcncCode : [{value: ''}],
+            bcncEntpAddr : [{value: '',disabled:true}],
+            bcncEntpName : [{value: '',disabled:true}],
             bcncHptlCode : [''],
-            bcncTaxNo : [''],
-            cobTypeName : [''],
-            dvyfgCobTypeName : [''],
-            dvyfgEntpAddr : [''],
-            dvyfgEntpName : [''],
+            bcncTaxNo : [{value: '',disabled:true}],
+            cobTypeName : [{value: '',disabled:true}],
+            dvyfgCobTypeName : [{value: '',disabled:true}],
+            dvyfgEntpAddr : [{value: '',disabled:true}],
+            dvyfgEntpName : [{value: '',disabled:true}],
             dvyfgHptlCode : [''],
-            dvyfgPlaceBcncCode : [''],
-            dvyfgTaxNo : [''],
-            isDiffDvyfg : [''],
+            dvyfgPlaceBcncCode : [{value: '',disabled:true}],
+            dvyfgTaxNo : [{value: '',disabled:true}],
+            isDiffDvyfg : [false],
             meddevItemSeq : [''],
             no : [''],
             packQuantity : [{value: '',disabled:true}],
@@ -131,6 +139,13 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             const stringvalue = momentVariable.format('YYYY-MM-DD');
             this.selectedForm.patchValue({'suplyDate': stringvalue});
 
+
+            if(this.data.isDiffDvyfg === 'false'){
+                this.selectedForm.patchValue({'isDiffDvyfg': false});
+            }else{
+                this.selectedForm.patchValue({'isDiffDvyfg': true});
+            }
+
             this.is_edit = true;
 
             const yearVariable = moment(this.selectedForm.getRawValue().suplyContStdmt, 'YYYY');
@@ -140,6 +155,54 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
 
             this.minDate = year + '-' + month + '-' + '01';
             this.maxDate = year + '-' + month + '-' + new Date(Number(year), Number(month), 0).getDate();
+
+
+            //거래처, 공급형태 필수
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            const suplyFlagCode = this.selectedForm.getRawValue().suplyFlagCode;
+            if(suplyFlagCode === '1'){
+                this.changeIsDiffDvyfgHidden = false;
+            }else{
+                this.selectedForm.patchValue({'isDiffDvyfg': false});
+                this.changeIsDiffDvyfgHidden = true;
+                this.changeDlvAccountHidden = true;
+            }
+            if(suplyFlagCode === '1'){
+                this.changeText = '출고';
+                this.changeAccountText = '공급받은 자(거래처)';
+                this.changeAccountHidden = false;
+                this.suplyTypeCodeHidden = false;
+                this.hidden = false;
+                this.updateIsDiffDvyfg();
+            }else if(suplyFlagCode === '2'){
+                this.changeText = '반품';
+                this.changeAccountText = '반품한 자(거래처)';
+                this.changeAccountHidden = false;
+                this.suplyTypeCodeHidden = true;
+                this.hidden = true;
+            }else if(suplyFlagCode === '3'){
+                this.changeText = '폐기';
+                this.changeAccountHidden = true;
+                this.suplyTypeCodeHidden = true;
+                this.hidden = true;
+            }else if(suplyFlagCode === '4'){
+                this.changeText = '임대';
+                this.changeAccountText = '임대한 자(거래처)';
+                this.changeAccountHidden = false;
+                this.suplyTypeCodeHidden = false;
+                this.hidden = true;
+            }else if(suplyFlagCode === '5'){
+                this.changeText = '회수';
+                this.changeAccountText = '회수한 자(거래처)';
+                this.changeAccountHidden = false;
+                this.suplyTypeCodeHidden = true;
+                this.hidden = true;
+            }else{
+                this.changeText = '';
+                this.changeAccountHidden = true;
+                this.suplyTypeCodeHidden = false;
+                this.hidden = false;
+            }
         }
     }
 
@@ -368,6 +431,72 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             this.selectedForm.patchValue({'suplyAmt': suplyAmt});
         }else{
             this.selectedForm.patchValue({'suplyAmt': 0});
+        }
+    }
+
+    updateIsDiffDvyfg(): void {
+
+        const isDiffDvyfg = this.selectedForm.getRawValue().isDiffDvyfg;
+
+        if(isDiffDvyfg){
+            this.changeDlvAccountHidden = false;
+        }else{
+            this.changeDlvAccountHidden = true;
+        }
+    }
+
+    dlvAccountSearch(): void {
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '납품장소 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.selectedForm.patchValue({'dvyfgPlaceBcncCode': result.udiAccount});
+                        this.selectedForm.patchValue({'dvyfgEntpAddr': result.address});
+                        this.selectedForm.patchValue({'dvyfgEntpName': result.custBusinessName});
+                        this.selectedForm.patchValue({'dvyfgTaxNo': result.custBusinessNumber});
+                        this.selectedForm.patchValue({'dvyfgCobTypeName': result.businessCondition});
+                    }
+                });
+        }else{
+            const d = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '납품장소 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedForm.patchValue({'dvyfgPlaceBcncCode': result.udiAccount});
+                    this.selectedForm.patchValue({'dvyfgEntpAddr': result.address});
+                    this.selectedForm.patchValue({'dvyfgEntpName': result.custBusinessName});
+                    this.selectedForm.patchValue({'dvyfgTaxNo': result.custBusinessNumber});
+                    this.selectedForm.patchValue({'dvyfgCobTypeName': result.businessCondition});
+                }
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 }
