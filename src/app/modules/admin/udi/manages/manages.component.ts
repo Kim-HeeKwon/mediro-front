@@ -50,7 +50,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         {headerText : '공급구분' , dataField : 'suplyFlagCode', width: 80, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '공급형태' , dataField : 'suplyTypeCode', width: 120, display : true, disabled : true, type: 'text',combo: true},
         {headerText : '보고자료 일련번호' , dataField : 'suplyContSeq', width: 100, display : false, disabled : true, type: 'text'},
-        {headerText : '품목일련번호' , dataField : 'meddevItemSeq', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '품목일련번호' , dataField : 'meddevItemSeq', width: 100, display : false, disabled : true, type: 'text'},
         {headerText : '표준코드' , dataField : 'stdCode', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '로트번호' , dataField : 'lotNo', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '제조연월' , dataField : 'manufYm', width: 100, display : true, disabled : true, type: 'text'},
@@ -68,7 +68,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         'suplyFlagCode',
         'suplyTypeCode',
         /*'suplyContSeq',*/
-        'meddevItemSeq',
+        //'meddevItemSeq',
         'stdCode',
         'lotNo',
         'manufYm',

@@ -87,14 +87,14 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 id: param.extColId,              //컬럼ID;
                 name: param.extColNm,            //컬럼명;
             };
-            if(param.extColCondGbnVal !== ''){
+            if(param.extColCondGbnVal !== '' && param.extColCondGbnVal !== null){
                 this.type.push({
                     id : param.extColId,
                     name : param.extColNm,
                 });
             }
 
-            if(param.extColCondGbnVal === 'K'){
+            if(param.extColCondGbnVal === 'W'){
                 this.searchForm.patchValue({'type' : param.extColId});
             }
 

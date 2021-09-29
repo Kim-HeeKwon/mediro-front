@@ -55,6 +55,8 @@ export class ManagesNewComponent implements OnInit, OnDestroy
     changeText: string = '';
     changeAccountText: string = '거래처';
     changeAccountHidden: boolean = true;
+    changeIsDiffDvyfgHidden: boolean = true;
+    changeDlvAccountHidden: boolean = true;
     suplyTypeCodeHidden: boolean = false;
     hidden: boolean = false;
 
@@ -115,17 +117,17 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             bcncCobTypeName : [''],
             bcncCode : [{value: ''}],
             bcncEntpAddr : [{value: '',disabled:true}],
-            bcncEntpName : [{value: '',disabled:true}],
+            bcncEntpName : [{value: '',disabled:false}],
             bcncHptlCode : [''],
             bcncTaxNo : [{value: '',disabled:true}],
             cobTypeName : [{value: '',disabled:true}],
-            dvyfgCobTypeName : [''],
-            dvyfgEntpAddr : [''],
+            dvyfgCobTypeName : [{value: '',disabled:true}],
+            dvyfgEntpAddr : [{value: '',disabled:true}],
             dvyfgEntpName : [''],
             dvyfgHptlCode : [''],
-            dvyfgPlaceBcncCode : [''],
-            dvyfgTaxNo : [''],
-            isDiffDvyfg : [''],
+            dvyfgPlaceBcncCode : [{value: '',disabled:true}],
+            dvyfgTaxNo : [{value: '',disabled:true}],
+            isDiffDvyfg : [false],
             meddevItemSeq : [''],
             no : [''],
             packQuantity : [{value: '',disabled:true}],
@@ -394,6 +396,13 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         const suplyFlagCode = this.selectedForm.getRawValue().suplyFlagCode;
         if(suplyFlagCode === '1'){
+            this.changeIsDiffDvyfgHidden = false;
+        }else{
+            this.selectedForm.patchValue({'isDiffDvyfg': false});
+            this.changeIsDiffDvyfgHidden = true;
+            this.changeDlvAccountHidden = true;
+        }
+        if(suplyFlagCode === '1'){
             this.changeText = '출고';
             this.changeAccountText = '공급받은 자(거래처)';
             this.changeAccountHidden = false;
@@ -485,6 +494,61 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         }
     }
 
+    dlvAccountSearch(): void {
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '납품장소 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        this.selectedForm.patchValue({'dvyfgPlaceBcncCode': result.udiAccount});
+                        this.selectedForm.patchValue({'dvyfgEntpAddr': result.address});
+                        this.selectedForm.patchValue({'dvyfgEntpName': result.custBusinessName});
+                        this.selectedForm.patchValue({'dvyfgTaxNo': result.custBusinessNumber});
+                        this.selectedForm.patchValue({'dvyfgCobTypeName': result.businessCondition});
+                    }
+                });
+        }else{
+            const d = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup : 'P$_UDI_ACCOUNT',
+                    headerText : '납품장소 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedForm.patchValue({'dvyfgPlaceBcncCode': result.udiAccount});
+                    this.selectedForm.patchValue({'dvyfgEntpAddr': result.address});
+                    this.selectedForm.patchValue({'dvyfgEntpName': result.custBusinessName});
+                    this.selectedForm.patchValue({'dvyfgTaxNo': result.custBusinessNumber});
+                    this.selectedForm.patchValue({'dvyfgCobTypeName': result.businessCondition});
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
     changePrice(): void{
 
         const suplyQty = this.selectedForm.getRawValue().suplyQty;
@@ -503,5 +567,16 @@ export class ManagesNewComponent implements OnInit, OnDestroy
 
         this.minDate = year + '-' + month + '-' + '01';
         this.maxDate = year + '-' + month + '-' + new Date(year, month, 0).getDate();
+    }
+
+    updateIsDiffDvyfg(): void {
+
+        const isDiffDvyfg = this.selectedForm.getRawValue().isDiffDvyfg;
+
+        if(isDiffDvyfg){
+            this.changeDlvAccountHidden = false;
+        }else{
+            this.changeDlvAccountHidden = true;
+        }
     }
 }
