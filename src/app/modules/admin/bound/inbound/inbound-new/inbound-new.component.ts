@@ -25,6 +25,9 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {ItemSearchComponent} from "../../../../../../@teamplat/components/item-search";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector       : 'inbound-new',
@@ -36,6 +39,9 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 })
 export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild(MatPaginator) private _inBoundDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _inBoundDetailSort: MatSort;
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -44,6 +50,9 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     inBoundDetailsCount: number = 0;
+    isMobile: boolean = false;
+    selectedItemForm: FormGroup;
+    is_edit:boolean = false;
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     showAlert: boolean = false;
@@ -123,6 +132,8 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private readonly breakpointObserver: BreakpointObserver,
+        private _deviceService: DeviceDetectorService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
@@ -134,6 +145,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterTypeList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterStatusList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        this.isMobile = this._deviceService.isMobile();
 
         if(this._router.getCurrentNavigation() !== (null && undefined)){
 
@@ -539,12 +551,77 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
-        if(column.dataField === 'itemCd'){
+        if (column.dataField === 'itemCd') {
+            if (!this.isMobile) {
+                const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup: 'P$_ALL_ITEM',
+                        headerText: '품목 조회',
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
 
-            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.itemGrade = result.itemGrade;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            } else {
+                const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup: 'P$_ALL_ITEM',
+                        headerText: '품목 조회',
+                    },
+                    autoFocus: false,
+                    width: 'calc(100% - 50px)',
+                    maxWidth: '100vw',
+                    maxHeight: '80vh',
+                    disableClose: true
+                });
+                const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                    if (size.matches) {
+                        popup.updateSize('calc(100vw - 10px)','');
+                    } else {
+                        // d.updateSize('calc(100% - 50px)', '');
+                    }
+                });
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            smallDialogSubscription.unsubscribe();
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            element.itemGrade = result.itemGrade;
+                            element.standard = result.standard;
+                            element.unit = result.unit;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
+        }
+    }
+    openAccountSearch(): void
+    {
+        if(!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
+                    popup: 'P$_ACCOUNT',
                 },
                 autoFocus: false,
                 maxHeight: '90vh',
@@ -554,41 +631,41 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             popup.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        element.itemGrade = result.itemGrade;
-                        element.standard = result.standard;
-                        element.unit = result.unit;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
+                    if (result) {
+                        this.inBoundHeaderForm.patchValue({'account': result.accountCd});
+                        this.inBoundHeaderForm.patchValue({'accountNm': result.accountNm});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText : '거래처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.inBoundHeaderForm.patchValue({'account': result.accountCd});
+                        this.inBoundHeaderForm.patchValue({'accountNm': result.accountNm});
                     }
                 });
         }
-    }
-
-    openAccountSearch(): void
-    {
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
-            data: {
-                popup : 'P$_ACCOUNT',
-                headerText : '거래처 조회'
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
-
-        popup.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result){
-                    this.inBoundHeaderForm.patchValue({'account': result.accountCd});
-                    this.inBoundHeaderForm.patchValue({'accountNm': result.accountNm});
-                }
-            });
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -604,5 +681,67 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             combo = this.itemGrades;
         }
         return combo;
+    }
+    openItemSearch(): void
+    {
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(ItemSearchComponent, {
+                data: {
+                    popup : 'P$_ACCOUNT',
+                    headerText : '거래처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed().subscribe((result) => {
+                if(result){
+                    console.log(result);
+                    this.selectedItemForm.patchValue({'itemCd': result.modelId});
+                    this.selectedItemForm.patchValue({'itemNm': result.itemName});
+                    this.selectedItemForm.patchValue({'itemGrade': result.grade});
+                    this.selectedItemForm.patchValue({'entpName': result.entpName});
+                    this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
+                    this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
+                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                    this.is_edit = true;
+                }
+            });
+        }else{
+            const d = this._matDialogPopup.open(ItemSearchComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.selectedItemForm.patchValue({'itemCd': result.modelId});
+                    this.selectedItemForm.patchValue({'itemNm': result.itemName});
+                    this.selectedItemForm.patchValue({'itemGrade': result.grade});
+                    this.selectedItemForm.patchValue({'entpName': result.entpName});
+                    this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
+                    this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
+                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                    this.is_edit = true;
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

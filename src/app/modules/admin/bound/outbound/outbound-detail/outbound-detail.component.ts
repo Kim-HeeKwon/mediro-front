@@ -18,6 +18,8 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector       : 'outbound-detail',
@@ -30,6 +32,10 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatPaginator) private _outBoundDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _outBoundDetailSort: MatSort;
     isLoading: boolean = false;
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
     selection = new SelectionModel<any>(true, []);
     outboundDetailsCount: number = 0;
     outBoundHeaderForm: FormGroup;
@@ -74,12 +80,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
         private _functionService: FunctionService,
-    )
+        private readonly breakpointObserver: BreakpointObserver)
     {
         this.type = _utilService.commonValue(_codeStore.getValue().data,'OB_TYPE');
         this.status = _utilService.commonValue(_codeStore.getValue().data,'OB_STATUS');
-
+        this.isMobile = this._deviceService.isMobile();
         this.outBoundDetails$ = this._outboundService.outBoundDetails$;
         this._outboundService.outBoundDetails$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -414,30 +421,63 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_cellEnable(column,enableListOutBound);
         }
         if(element.flag !== undefined && element.flag === 'C') {
-            if(column.dataField === 'itemCd'){
+            if(column.dataField === 'itemCd') {
+                if (!this.isMobile) {
+                    const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                        data: {
+                            popup: 'P$_ALL_ITEM',
+                            headerText: '품목 조회',
+                        },
+                        autoFocus: false,
+                        maxHeight: '90vh',
+                        disableClose: true
+                    });
 
-                const popup =this._matDialogPopup.open(CommonPopupComponent, {
-                    data: {
-                        popup : 'P$_ALL_ITEM',
-                        headerText : '품목 조회',
-                    },
-                    autoFocus: false,
-                    maxHeight: '90vh',
-                    disableClose: true
-                });
-
-                popup.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if(result){
-                            this.isLoading = true;
-                            element.itemCd = result.itemCd;
-                            element.itemNm = result.itemNm;
-                            this.tableClear();
-                            this.isLoading = false;
-                            this._changeDetectorRef.markForCheck();
+                    popup.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                this.isLoading = true;
+                                element.itemCd = result.itemCd;
+                                element.itemNm = result.itemNm;
+                                this.tableClear();
+                                this.isLoading = false;
+                                this._changeDetectorRef.markForCheck();
+                            }
+                        });
+                } else{
+                    const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                        data: {
+                            popup: 'P$_ALL_ITEM',
+                            headerText: '품목 조회',
+                        },
+                        autoFocus: false,
+                        width: 'calc(100% - 50px)',
+                        maxWidth: '100vw',
+                        maxHeight: '80vh',
+                        disableClose: true
+                    });
+                    const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                        if (size.matches) {
+                            popup.updateSize('calc(100vw - 10px)','');
+                        } else {
+                            // d.updateSize('calc(100% - 50px)', '');
                         }
                     });
+                    popup.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                smallDialogSubscription.unsubscribe();
+                                this.isLoading = true;
+                                element.itemCd = result.itemCd;
+                                element.itemNm = result.itemNm;
+                                this.tableClear();
+                                this.isLoading = false;
+                                this._changeDetectorRef.markForCheck();
+                            }
+                        });
+                }
             }
         }
     }

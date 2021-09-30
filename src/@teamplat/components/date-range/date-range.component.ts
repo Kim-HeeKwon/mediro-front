@@ -6,6 +6,7 @@ import { MatCalendarCellCssClasses, MatMonthView } from '@angular/material/datep
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { Moment } from 'moment';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector     : 'fuse-date-range',
@@ -47,8 +48,10 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     };
     private _timeFormat: string;
     private _timeRange: boolean;
+    private _rangeHidden: boolean;
     private readonly _timeRegExp: RegExp = new RegExp('^(0[0-9]|1[0-9]|2[0-4]|[0-9]):([0-5][0-9])(A|(?:AM)|P|(?:PM))?$', 'i');
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
 
     /**
      * Constructor
@@ -58,7 +61,8 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         private _elementRef: ElementRef,
         private _overlay: Overlay,
         private _renderer2: Renderer2,
-        private _viewContainerRef: ViewContainerRef
+        private _viewContainerRef: ViewContainerRef,
+         private _deviceService: DeviceDetectorService
     )
     {
         this._onChange = (): void => {
@@ -71,6 +75,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         // Initialize the component
         this._init();
     }
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -152,6 +157,28 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     get timeRange(): boolean
     {
         return this._timeRange;
+    }
+
+    /**
+     * Setter & getter for timeRange input
+     *
+     * @param value
+     */
+    @Input()
+    set rangeHidden(value: boolean)
+    {
+        // Return if the values are the same
+        if (value)
+        {
+            this._rangeHidden = true;
+        }else{
+            this._rangeHidden = false;
+        }
+    }
+
+    get rangeHidden(): boolean
+    {
+        return this._rangeHidden;
     }
 
     /**
@@ -708,4 +735,5 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         // If meridiem doesn't exist, create a moment using 24-hours format and return in
         return moment(value, 'HH:mm').seconds(0);
     }
+
 }

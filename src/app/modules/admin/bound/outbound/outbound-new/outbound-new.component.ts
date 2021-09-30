@@ -25,6 +25,8 @@ import {takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector       : 'outbound-new',
@@ -36,11 +38,15 @@ import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/
 })
 export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild(MatPaginator) private _outBoundDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _outBoundDetailSort: MatSort;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
     isLoading: boolean = false;
+    isMobile: boolean = false;
     outBoundHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     outBoundDetailsCount: number = 0;
@@ -90,6 +96,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
@@ -100,6 +108,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.filterStatusList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', this.filterTypeList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', this.filterStatusList);
+        this.isMobile = this._deviceService.isMobile();
     }
     /**
      * On init
@@ -431,12 +440,73 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
      */
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
-        if(column.dataField === 'itemCd'){
+        if(column.dataField === 'itemCd') {
+            if (!this.isMobile) {
+                const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup: 'P$_ALL_ITEM',
+                        headerText: '품목 조회',
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
 
-            const popup =this._matDialogPopup.open(CommonPopupComponent, {
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            } else {
+                const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                    data: {
+                        popup: 'P$_ALL_ITEM',
+                        headerText: '품목 조회',
+                    },
+                    autoFocus: false,
+                    width: 'calc(100% - 50px)',
+                    maxWidth: '100vw',
+                    maxHeight: '80vh',
+                    disableClose: true
+                });
+                const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                    if (size.matches) {
+                        popup.updateSize('calc(100vw - 10px)','');
+                    } else {
+                        // d.updateSize('calc(100% - 50px)', '');
+                    }
+                });
+                popup.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            smallDialogSubscription.unsubscribe();
+                            this.isLoading = true;
+                            element.itemCd = result.itemCd;
+                            element.itemNm = result.itemNm;
+                            this.tableClear();
+                            this.isLoading = false;
+                            this._changeDetectorRef.markForCheck();
+                        }
+                    });
+            }
+        }
+    }
+
+    openAccountSearch(): void
+    {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
-                    popup : 'P$_ALL_ITEM',
-                    headerText : '품목 조회',
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회'
                 },
                 autoFocus: false,
                 maxHeight: '90vh',
@@ -446,62 +516,95 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             popup.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
-                        this.isLoading = true;
-                        element.itemCd = result.itemCd;
-                        element.itemNm = result.itemNm;
-                        this.tableClear();
-                        this.isLoading = false;
-                        this._changeDetectorRef.markForCheck();
+                    if (result) {
+                        this.outBoundHeaderForm.patchValue({'account': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'address': result.address});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.outBoundHeaderForm.patchValue({'account': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'address': result.address});
                     }
                 });
         }
     }
 
-    openAccountSearch(): void
-    {
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
-            data: {
-                popup : 'P$_ACCOUNT',
-                headerText : '거래처 조회'
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
+    openDlvAccountSearch(): void {
+        if(!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
 
-        popup.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result){
-                    this.outBoundHeaderForm.patchValue({'account': result.accountCd});
-                    this.outBoundHeaderForm.patchValue({'accountNm': result.accountNm});
-                    this.outBoundHeaderForm.patchValue({'address': result.address});
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
                 }
             });
-    }
-
-    openDlvAccountSearch(): void
-    {
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
-            data: {
-                popup : 'P$_ACCOUNT',
-                headerText : '납품처 조회'
-            },
-            autoFocus: false,
-            maxHeight: '90vh',
-            disableClose: true
-        });
-
-        popup.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if(result){
-                    this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
-                    this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
-                    this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
-                }
-            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        }
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     backPage() {

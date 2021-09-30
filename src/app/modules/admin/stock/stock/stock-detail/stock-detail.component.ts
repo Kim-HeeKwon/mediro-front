@@ -11,14 +11,15 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {fuseAnimations} from '../../../../../../@teamplat/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
-import {takeUntil} from "rxjs/operators";
-import {StockService} from "../stock.service";
-import {Subject} from "rxjs";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
+import {takeUntil} from 'rxjs/operators';
+import {StockService} from '../stock.service';
+import {Subject} from 'rxjs';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {Router} from '@angular/router';
 
 
 
@@ -45,6 +46,7 @@ export class StockDetailComponent implements OnInit, OnDestroy {
     constructor(
         public matDialogRef: MatDialogRef<StockDetailComponent>,
         public _matDialogPopup: MatDialog,
+        private _router: Router,
         private _deviceService: DeviceDetectorService,
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -75,6 +77,7 @@ export class StockDetailComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
     }
 
+
     itemAdjustmentCreate(): void {
         if(!this.selectedItemForm.invalid) {
             this.showAlert = false;
@@ -101,7 +104,9 @@ export class StockDetailComponent implements OnInit, OnDestroy {
                             .subscribe((stock: any) => {
                                 this._functionService.cfn_alertCheckMessage(stock);
                                 //팝업 닫고
+                                this.matDialogRef.close();
                                 //헤더 다시 조회
+                                this._stockService.getHeader();
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
                             });

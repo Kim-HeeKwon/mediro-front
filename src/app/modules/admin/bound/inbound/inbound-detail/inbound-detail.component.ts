@@ -25,6 +25,8 @@ import {MatSort} from '@angular/material/sort';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {CommonUdiRtnScanComponent} from '../../../../../../@teamplat/components/common-udi-rtn-scan';
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector       : 'inbound-detail',
@@ -42,6 +44,10 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundHeaderForm: FormGroup;
     inBoundDetails$ = new Observable<InBoundDetail[]>();
     inBoundDetailsTableStyle: TableStyle = new TableStyle();
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    isMobile: boolean = false;
     inBoundDetailsTable: TableConfig[] = [
         {headerText : '라인번호' , dataField : 'ibLineNo', display : false},
         {headerText : '품목코드' , dataField : 'itemCd', width: 70, display : true, type: 'text',validators: true},
@@ -121,6 +127,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundDetailPagenation: InBoundDetailPagenation | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+    // @ts-ignore
     /**
      * Constructor
      */
@@ -135,9 +142,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
-        private _utilService: FuseUtilsService
-    )
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver)
     {
+        this.isMobile = this._deviceService.isMobile();
         this.type = _utilService.commonValue(_codeStore.getValue().data,'IB_TYPE');
         this.status = _utilService.commonValue(_codeStore.getValue().data,'IB_STATUS');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
@@ -491,33 +500,69 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
 
         if(element.flag !== undefined && element.flag === 'C'){
-            if(column.dataField === 'itemCd'){
+            if(column.dataField === 'itemCd') {
+                if(!this.isMobile) {
+                    const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                        data: {
+                            popup: 'P$_ALL_ITEM',
+                            headerText: '품목 조회',
+                        },
+                        autoFocus: false,
+                        maxHeight: '90vh',
+                        disableClose: true
+                    });
 
-                const popup =this._matDialogPopup.open(CommonPopupComponent, {
-                    data: {
-                        popup : 'P$_ALL_ITEM',
-                        headerText : '품목 조회',
-                    },
-                    autoFocus: false,
-                    maxHeight: '90vh',
-                    disableClose: true
-                });
-
-                popup.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if(result){
-                            this.isLoading = true;
-                            element.itemCd = result.itemCd;
-                            element.itemNm = result.itemNm;
-                            element.itemGrade = result.itemGrade;
-                            element.standard = result.standard;
-                            element.unit = result.unit;
-                            this.tableClear();
-                            this.isLoading = false;
-                            this._changeDetectorRef.markForCheck();
+                    popup.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                this.isLoading = true;
+                                element.itemCd = result.itemCd;
+                                element.itemNm = result.itemNm;
+                                element.itemGrade = result.itemGrade;
+                                element.standard = result.standard;
+                                element.unit = result.unit;
+                                this.tableClear();
+                                this.isLoading = false;
+                                this._changeDetectorRef.markForCheck();
+                            }
+                        });
+                } else {
+                    const popup = this._matDialogPopup.open(CommonPopupComponent, {
+                        data: {
+                            popup: 'P$_ALL_ITEM',
+                            headerText: '품목 조회',
+                        },
+                        autoFocus: false,
+                        width: 'calc(100% - 50px)',
+                        maxWidth: '100vw',
+                        maxHeight: '80vh',
+                        disableClose: true
+                    });
+                    const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                        if (size.matches) {
+                            popup.updateSize('calc(100vw - 10px)','');
+                        } else {
+                            // d.updateSize('calc(100% - 50px)', '');
                         }
                     });
+                    popup.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                smallDialogSubscription.unsubscribe();
+                                this.isLoading = true;
+                                element.itemCd = result.itemCd;
+                                element.itemNm = result.itemNm;
+                                element.itemGrade = result.itemGrade;
+                                element.standard = result.standard;
+                                element.unit = result.unit;
+                                this.tableClear();
+                                this.isLoading = false;
+                                this._changeDetectorRef.markForCheck();
+                            }
+                        });
+                }
             }
         }
     }

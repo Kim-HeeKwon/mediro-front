@@ -26,6 +26,24 @@
                 <!-- 검색조건 -->
                 <form [formGroup]="searchForm">
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate [formControlName]="'start'">
+                                    <input matEndDate [formControlName]="'end'">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+<!--                        <div class="sm:col-span-4">-->
+<!--                            <fuse-date-range class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4"-->
+<!--                                             [formControlName]="'range'"-->
+<!--                                             [dateFormat]="'ll'"-->
+<!--                                             [timeRange]="false"-->
+<!--                                             [rangeHidden]="true"-->
+<!--                                             [timeFormat]="'12'"></fuse-date-range>-->
+<!--                        </div>-->
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">

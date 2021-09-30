@@ -26,6 +26,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 import * as moment from 'moment';
+import {NewAccountComponent} from "../../basic-info/account/new-account/new-account.component";
 
 @Component({
     selector: 'app-inbound',
@@ -340,59 +341,59 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cancel(){
-        if(this.selection.selected.length < 1){
-            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
-            return;
-        }else{
-            let check = true;
-            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let i=0; i<this.selection.selected.length; i++){
-                if(this.selection.selected[i].status !== 'N'){
-                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 입고번호 : ' + this.selection.selected[i].ibNo);
-                    check = false;
-                    return false;
+            if(this.selection.selected.length < 1){
+                this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+                return;
+            }else{
+                let check = true;
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for(let i=0; i<this.selection.selected.length; i++){
+                    if(this.selection.selected[i].status !== 'N'){
+                        this._functionService.cfn_alert('취소할 수 없는 상태입니다. 입고번호 : ' + this.selection.selected[i].ibNo);
+                        check = false;
+                        return false;
+                    }
                 }
-            }
 
-            if(check){
+                if(check){
 
-                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
-                    title      : '',
-                    message    : '취소하시겠습니까?',
-                    icon       : this._formBuilder.group({
-                        show : true,
-                        name : 'heroicons_outline:exclamation',
-                        color: 'warn'
-                    }),
-                    actions    : this._formBuilder.group({
-                        confirm: this._formBuilder.group({
+                    const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                        title      : '',
+                        message    : '취소하시겠습니까?',
+                        icon       : this._formBuilder.group({
                             show : true,
-                            label: '취소',
+                            name : 'heroicons_outline:exclamation',
                             color: 'warn'
                         }),
-                        cancel : this._formBuilder.group({
-                            show : true,
-                            label: '닫기'
-                        })
-                    }),
-                    dismissible: true
-                }).value);
+                        actions    : this._formBuilder.group({
+                            confirm: this._formBuilder.group({
+                                show : true,
+                                label: '취소',
+                                color: 'warn'
+                            }),
+                            cancel : this._formBuilder.group({
+                                show : true,
+                                label: '닫기'
+                            })
+                        }),
+                        dismissible: true
+                    }).value);
 
-                confirmation.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if (result) {
-                            this.inBoundCancel(this.selection.selected);
-                        }else{
-                            this.closeDetails();
-                            this.selectClear();
-                        }
-                    });
+                    confirmation.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                this.inBoundCancel(this.selection.selected);
+                            }else{
+                                this.closeDetails();
+                                this.selectClear();
+                            }
+                        });
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
             }
-
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -505,5 +506,36 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectClear() {
         this.selection.clear();
         this._changeDetectorRef.markForCheck();
+    }
+
+    createAccount(): void
+    {
+        if(!this.isMobile){
+            this._matDialog.open(NewAccountComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
+        }else{
+            const d = this._matDialog.open(NewAccountComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

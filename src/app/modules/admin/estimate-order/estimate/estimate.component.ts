@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {merge, Observable, Subject} from 'rxjs';
 import {Estimate, EstimateDetail, EstimateHeader, EstimateHeaderPagenation} from './estimate.types';
@@ -26,7 +26,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _estimateHeaderPagenator: MatPaginator;
     @ViewChild(MatSort) private _estimateHeaderSort: MatSort;
     isMobile: boolean = false;
-
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     estimateHeaders$: Observable<EstimateHeader[]>;
@@ -79,7 +78,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         private _shortcutService: ShortcutsService,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
-        private _deviceService: DeviceDetectorService,)
+        private _deviceService: DeviceDetectorService,
+        )
     {
         this.status = _utilService.commonValue(_codeStore.getValue().data,'QT_STATUS');
         this.type = _utilService.commonValue(_codeStore.getValue().data,'QT_TYPE');
@@ -101,8 +101,10 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end  : moment().utc(false).startOf('day').toISOString()
             }],
-            start : [],
-            end : []
+            start: [],
+            end  : [],
+            // startDate: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
+            // endDate  : moment().utc(false).startOf('day').toISOString()
         });
 
         this._estimateService.getHeader();
@@ -176,6 +178,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'account': ''});
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
+
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
         this._estimateService.getHeader(0,10,'qtNo','desc',this.searchForm.getRawValue());
@@ -523,5 +526,4 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
     }
-
 }

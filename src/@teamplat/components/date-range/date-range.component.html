@@ -3,7 +3,7 @@
     (click)="openPickerPanel()"
     #pickerPanelOrigin>
 
-    <div class="start">
+        <div class="start">
         <div class="date">{{range.startDate | date:'YYYY.MM.d' }}</div>
         <div
             class="time"
@@ -19,7 +19,7 @@
             *ngIf="range.endTime">{{range.endTime}}</div>
     </div>
 </div>
-<div>
+<div [hidden]="rangeHidden">
     <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group">
         <mat-button-toggle (click)="clickDate('week')" >1주</mat-button-toggle>
         <mat-button-toggle (click)="clickDate('1mon')">1개월</mat-button-toggle>

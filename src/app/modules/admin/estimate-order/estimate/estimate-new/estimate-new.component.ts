@@ -530,7 +530,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     openAccountSearch(): void
     {
-
         if(!this.isMobile){
             const popup =this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
