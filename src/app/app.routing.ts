@@ -81,43 +81,43 @@ export const appRoutes: Route[] = [
                     // stock
                     {path: 'stock', loadChildren: () => import('app/modules/admin/basic-info/stock/stock.module').then(m => m.StockModule)},
                     // account
-                    {path: 'account', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
+                    {path: 'account', data: {key: 'account'}, loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
                     // supplier
                     //{path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
                     // items
-                    {path: 'items', loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
+                    {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
             {path: 'basic-info', children: [
                     // item-price
-                    {path: 'item-price', loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
+                    {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
                     ]},
             // estimate-order
             {path: 'estimate-order', children: [
                     // estimate
-                    {path: 'estimate', loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
+                    {path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
                     // order
-                    {path: 'order', loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
+                    {path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
                 ]},
             // salesorder
             {path: 'salesorder', children: [
                     // estimate
-                    {path: 'salesorder', loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
+                    {path: 'salesorder', data: {key: 'salesorder'}, loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
                 ]
             },
             // in-out
             {path: 'bound', children: [
                     // inbound
                     //{path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
-                    {path: 'inbound', loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
+                    {path: 'inbound', data: {key: 'inbound'}, loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
                     // outbound
-                    {path: 'outbound', loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
+                    {path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
                 ]},
             // stock
             {path: 'stock', children: [
                     // stock
-                    {path: 'stock', loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
+                    {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
                     // validity
-                    {path: 'validity', loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
+                    {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
                 ]},
             /*{path: 'bill', children: [
                     // bill
@@ -126,21 +126,21 @@ export const appRoutes: Route[] = [
             // calculate
             {path: 'calculate', children: [
                     // bill
-                    {path: 'bill', loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
+                    {path: 'bill', data: {key: 'bill'}, loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
                     // tax
                     {path: 'tax', loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
                 ]},
             // udi
             {path: 'udi', children: [
                     // manages
-                    {path: 'manages', loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
                     // status
-                    {path: 'status', loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
+                    {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
                 ]},
             // Monitoring
             {path: 'monitoring', children: [
                     // dashboards
-                    {path: 'dashboards', loadChildren: () => import('app/modules/admin/monitoring/dashboards/dashboards.module').then(m => m.DashboardsModule)},
+                    {path: 'dashboards', data: {key: 'dashboards'}, loadChildren: () => import('app/modules/admin/monitoring/dashboards/dashboards.module').then(m => m.DashboardsModule)},
                 ]},
 
             // example
