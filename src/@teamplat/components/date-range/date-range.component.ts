@@ -30,7 +30,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     @ViewChild('pickerPanelOrigin', {read: ElementRef}) private _pickerPanelOrigin: ElementRef;
     @ViewChild('pickerPanel') private _pickerPanel: TemplateRef<any>;
     @HostBinding('class.fuse-date-range') private _defaultClassNames = true;
-
+    isMobile: boolean = false;
     activeDates: { month1: Moment | null; month2: Moment | null } = {
         month1: null,
         month2: null
@@ -65,6 +65,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
          private _deviceService: DeviceDetectorService
     )
     {
+        this.isMobile = this._deviceService.isMobile();
         this._onChange = (): void => {
         };
         this._onTouched = (): void => {
@@ -400,6 +401,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
      */
     openPickerPanel(): void
     {
+
         // Create the overlay
         const overlayRef = this._overlay.create({
             panelClass      : 'fuse-date-range-panel',

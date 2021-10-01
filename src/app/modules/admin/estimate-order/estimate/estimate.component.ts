@@ -103,10 +103,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             }],
             start: [],
             end  : [],
-            // startDate: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
-            // endDate  : moment().utc(false).startOf('day').toISOString()
-        });
 
+        });
         this._estimateService.getHeader();
 
         // getHeader
@@ -178,7 +176,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'account': ''});
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
-
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
         this._estimateService.getHeader(0,10,'qtNo','desc',this.searchForm.getRawValue());
