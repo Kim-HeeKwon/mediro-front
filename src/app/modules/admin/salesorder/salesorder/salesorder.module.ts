@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {SalesorderComponent} from './salesorder.component';
-import {Route, RouterModule} from '@angular/router';
+import {Route, RouteReuseStrategy, RouterModule} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -33,7 +33,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 
-
 const salesorderRoutes: Route[] = [
     {
         path     : '',
@@ -44,6 +43,7 @@ const salesorderRoutes: Route[] = [
     },
     {
         path     : 'salesorder-detail',
+        data: {key: 'salesorder/salesorder-detail',shouldDetach: true},
         component: SalesorderDetailComponent,
         resolve  : {
             data: SalesorderDetailResolvers
@@ -51,6 +51,7 @@ const salesorderRoutes: Route[] = [
     },
     {
         path     : 'salesorder-new',
+        data: {key: 'salesorder/salesorder-new',shouldDetach: true},
         component: SalesorderNewComponent,
         resolve  : {
             data: SalesorderNewResolvers
@@ -92,6 +93,6 @@ const salesorderRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
-    ]
+    ],
 })
 export class SalesorderModule { }

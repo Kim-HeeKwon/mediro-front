@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+import {ComponentRef, NgModule} from '@angular/core';
+import {Route, RouteReuseStrategy, RouterModule} from '@angular/router';
 import {CommonModule, CurrencyPipe} from '@angular/common';
 import { EstimateComponent } from './estimate.component';
 import {MatButtonModule} from '@angular/material/button';
@@ -43,6 +43,7 @@ const estimateRoutes: Route[] = [
     },
     {
         path     : 'estimate-detail',
+        data: {key: 'estimate/estimate-detail',shouldDetach: true},
         component: EstimateDetailComponent,
         resolve  : {
             data: EstimateDetailResolvers
@@ -50,6 +51,7 @@ const estimateRoutes: Route[] = [
     },
     {
         path     : 'estimate-new',
+        data: {key: 'estimate/estimate-new', shouldDetach: true},
         component: EstimateNewComponent,
         resolve  : {
             data: EstimateNewResolvers
@@ -92,6 +94,6 @@ const estimateRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
-    ]
+    ],
 })
 export class EstimateModule { }

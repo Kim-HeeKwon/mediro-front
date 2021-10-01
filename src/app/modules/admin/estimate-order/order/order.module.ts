@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
+import {Route, RouteReuseStrategy, RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {OrderComponent} from './order.component';
 import {MatButtonModule} from '@angular/material/button';
@@ -43,6 +43,7 @@ const orderRoutes: Route[] = [
     },
     {
         path     : 'order-detail',
+        data: {key: 'order/order-detail',shouldDetach: true},
         component: OrderDetailComponent,
         resolve  : {
             data: OrderDetailResolvers
@@ -50,6 +51,7 @@ const orderRoutes: Route[] = [
     },
     {
         path     : 'order-new',
+        data: {key: 'order/order-new',shouldDetach: true},
         component: OrderNewComponent,
         resolve  : {
             data: OrderNewResolvers
@@ -91,7 +93,7 @@ const orderRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
-    ]
+    ],
 })
 export class OrderModule {
 }

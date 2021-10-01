@@ -1,55 +1,59 @@
 import {ActivatedRouteSnapshot, RouteReuseStrategy, DetachedRouteHandle} from "@angular/router";
 
-interface RouteStorageObject {
-    snapshot: ActivatedRouteSnapshot;
-    handle: DetachedRouteHandle;
-}
 export class CustomReuseStrategy implements RouteReuseStrategy {
-    public static handlers: { [key: string]: DetachedRouteHandle } = {};
 
-    public static waitDelete: string;
-    public shouldDetach(route: ActivatedRouteSnapshot): boolean {
-        if (route.routeConfig.loadChildren) return false;
-        return true;
+    routesToCache: string[] = [
+        'dashboards',
+        'account',
+        'items',
+        'item-price',
+        'estimate',
+        'estimate/estimate-new',
+        'estimate/estimate-detail',
+        'order' ,
+        'order/order-new',
+        'order/order-detail',
+        'salesorder',
+        'salesorder/salesorder-new',
+        'salesorder/salesorder-detail',
+        // 'inbound',
+        // 'inbound-new',
+        // 'inbound-detail',
+        // 'outbound',
+        // 'outbound-new',
+        // 'outbound-detail',
+        // 'stock',
+        // 'validity',
+        // 'bill',
+        // 'manages',
+        // 'status',
+    ];
+    storedRouteHandles = new Map<string, DetachedRouteHandle>();
+
+    // Decides if the route should be stored
+    shouldDetach(route: ActivatedRouteSnapshot): boolean {
+
+        return this.routesToCache.indexOf(route.data['key']) > -1;
+        //return route.data['shouldDetach'] === true || this.routesToCache.indexOf(route.data['key']) > -1;
     }
 
-    public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-        if (route.routeConfig.loadChildren) return null;
-        if (CustomReuseStrategy.waitDelete && CustomReuseStrategy.waitDelete === this.getRouteUrl(route)) {
-            CustomReuseStrategy.waitDelete = null;
-            return;
-        }
-        CustomReuseStrategy.handlers[this.getRouteUrl(route)] = handle
+    //Store the information for the route we're destructing
+    store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
+        this.storedRouteHandles.set(route.data['key'], handle);
     }
 
-    public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-        if (route.routeConfig.loadChildren) return null;
-        return !!route.routeConfig && !!CustomReuseStrategy.handlers[this.getRouteUrl(route)]
+    //Return true if we have a stored route object for the next route
+    shouldAttach(route: ActivatedRouteSnapshot): boolean {
+        return this.storedRouteHandles.has(route.data['key']);
     }
 
-    public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
-        if (!route.routeConfig) return null;
-        if (route.routeConfig.loadChildren) return null;
-
-        return CustomReuseStrategy.handlers[this.getRouteUrl(route)];
+    //If we returned true in shouldAttach(), now return the actual route data for restoration
+    retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
+        return this.storedRouteHandles.get(route.data['key']);
     }
 
-    public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-
-        return future.routeConfig === curr.routeConfig &&
-            JSON.stringify(future.params) === JSON.stringify(curr.params);
-    }
-
-    // private getRouteUrl(route: ActivatedRouteSnapshot) {
-    //     if (route.routeConfig.loadChildren) return null;
-    //     return route['_routerState'].url.replace(/\//g, '_');
-    // }
-    private getRouteUrl(route: ActivatedRouteSnapshot) {
-        if (route.routeConfig.loadChildren) return null;
-        //console.log(route.routeConfig.loadChildren);
-        //console.log(route['_routerState'].url.replace(/\//g, '_'));
-        return route['_routerState'].url.replace(/\//g, '_');
-        // return route['_routerState'].url.replace(/\//g, '_')
-        //     + '_' + (route.routeConfig.loadChildren || route.routeConfig.component.toString().split('(')[0].split(' ')[1] );
+    //Reuse the route if we're going to and from the same route
+    shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+        return future.routeConfig === curr.routeConfig;
     }
 }

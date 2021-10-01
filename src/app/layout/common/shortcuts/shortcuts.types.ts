@@ -7,5 +7,6 @@ export interface Shortcut
     link: any;
     param?: any;
     data?: any;
+    level?: any;
     useRouter: boolean;
 }

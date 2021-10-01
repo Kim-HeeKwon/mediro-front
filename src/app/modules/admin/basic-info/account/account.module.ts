@@ -30,6 +30,7 @@ import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help'
 const accountRoutes: Route[] = [
     {
         path     : '',
+        data: {key: 'account'},
         component: AccountComponent,
         resolve  : {
             data: AccountResolver
