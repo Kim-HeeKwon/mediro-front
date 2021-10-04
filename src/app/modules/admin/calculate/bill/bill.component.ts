@@ -47,7 +47,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         /*{headerText : '거래처' , dataField : 'toAccount', width: 100, display : false, disabled : true, type: 'text'},*/
         {headerText : '공급받는자' , dataField : 'toAccountNm', width: 100, display : true, disabled : true, type: 'text'},
         {headerText : '품목코드' , dataField : 'itemCd', width: 100, display : true, disabled : true, type: 'text'},
-        {headerText : '품목명' , dataField : 'itemNm', width: 100, display : true, disabled : true, type: 'text'},
+        {headerText : '품목명' , dataField : 'itemNm', width: 150, display : true, disabled : true, type: 'text'},
         {headerText : '유형' , dataField : 'type', width: 60, display : true, disabled : true, type: 'text',combo : true},
         /*{headerText : '상태' , dataField : 'status', width: 100, display : false, disabled : true, type: 'text'},*/
         {headerText : '거래유형' , dataField : 'taxGbn', width: 100, display : true, disabled : true, type: 'text',combo : true},

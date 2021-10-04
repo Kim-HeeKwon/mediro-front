@@ -128,7 +128,7 @@ export const appRoutes: Route[] = [
                     // bill
                     {path: 'bill', data: {key: 'bill'}, loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
                     // tax
-                    {path: 'tax', loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
+                    {path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
                 ]},
             // udi
             {path: 'udi', children: [

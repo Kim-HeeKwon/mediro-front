@@ -586,13 +586,13 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                  icon : 'heroicons_outline:archive',
                  link : '/calculate/bill'
              },
-             /*{
+             {
                  id   : 'calculate.tax',
                  title: '세금계산서',
                  type : 'basic',
                  icon : 'heroicons_outline:calculator',
                  link : '/calculate/tax'
-             }*/
+             }
          ]
     },
     {
@@ -814,6 +814,13 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:archive',
         link : '/calculate/bill'
+    },
+    {
+        id   : 'calculate.tax',
+        title: '세금계산서',
+        type : 'basic',
+        icon : 'heroicons_outline:archive',
+        link : '/calculate/tax'
     },
     {
         id   : 'calculate.bill2',
