@@ -1,0 +1,14 @@
+<ng-container class="tool" *ngFor="let toolInfoChg of toolInfoChg; let i=dataIndex;">
+    <div class="container">
+        <ul class="progressbar">
+            <ng-container *ngIf="toolInfoChg.num === 1">
+                <li *ngIf="toolInfoChg.name.length < 5" class="active">{{toolInfoChg.name}}</li>
+                <li *ngIf="toolInfoChg.name.length > 5" class="active" style="line-height: 20px;">{{toolInfoChg.name}}</li>
+            </ng-container>
+            <ng-container *ngIf="toolInfoChg.num !== 1">
+                <li *ngIf="toolInfoChg.name.length < 5" class="active2">{{toolInfoChg.name}}</li>
+                <li *ngIf="toolInfoChg.name.length > 5" class="active2" style="line-height: 20px;">{{toolInfoChg.name}}</li>
+            </ng-container>
+        </ul>
+    </div>
+</ng-container>

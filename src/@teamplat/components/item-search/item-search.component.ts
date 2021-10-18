@@ -94,10 +94,10 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            itemName: ['',Validators.required],
-            entpName: ['', Validators.required],
+            itemName: ['',],
+            entpName: ['',Validators.required],
             udidiCode: [''],
-            typeName: [''],
+            typeName: ['', Validators.required],
             brandName: [''],
             itemNoFullname: [''],
             grade: ['ALL'],

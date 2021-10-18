@@ -32,6 +32,8 @@ import {EstimateNewResolvers} from './estimate-new/estimate-new.resolvers';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {SatPopoverModule} from "@ncstate/sat-popover";
+import {CommonTooltipModule} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.module";
 
 const estimateRoutes: Route[] = [
     {
@@ -94,6 +96,8 @@ const estimateRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
+        SatPopoverModule,
+        CommonTooltipModule,
     ],
 })
 export class EstimateModule { }

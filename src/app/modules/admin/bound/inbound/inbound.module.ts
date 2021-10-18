@@ -33,6 +33,8 @@ import {InboundDetailResolvers} from './inbound-detail/inbound-detail.resolvers'
 import {FuseColumnResizeModule} from '../../../../../@teamplat/directives/table/column-resize';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {SatPopoverModule} from "@ncstate/sat-popover";
+import {CommonTooltipModule} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.module";
 
 const inboundRoutes: Route[] = [
     {
@@ -94,6 +96,8 @@ const inboundRoutes: Route[] = [
         FuseColumnResizeModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
+        SatPopoverModule,
+        CommonTooltipModule,
     ]
 })
 export class InboundModule { }

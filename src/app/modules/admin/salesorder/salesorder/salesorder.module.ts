@@ -32,6 +32,8 @@ import {SalesorderDetailComponent} from './salesorder-detail/salesorder-detail.c
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {SatPopoverModule} from "@ncstate/sat-popover";
+import {CommonTooltipModule} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.module";
 
 const salesorderRoutes: Route[] = [
     {
@@ -93,6 +95,8 @@ const salesorderRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
+        SatPopoverModule,
+        CommonTooltipModule,
     ],
 })
 export class SalesorderModule { }

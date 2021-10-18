@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@angular/animations": "12.0.2",
-        "@angular/cdk": "12.0.2",
+        "@angular/cdk": "^12.0.2",
         "@angular/common": "12.0.2",
         "@angular/compiler": "12.0.2",
         "@angular/core": "12.0.2",
@@ -33,6 +33,7 @@
         "@fullcalendar/moment": "4.4.2",
         "@fullcalendar/rrule": "4.4.2",
         "@fullcalendar/timegrid": "4.4.2",
+        "@ncstate/sat-popover": "^8.0.1",
         "@ngneat/transloco": "2.21.0",
         "@swimlane/ngx-datatable": "^19.0.0",
         "angular-split": "^5.0.0",

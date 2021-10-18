@@ -395,8 +395,17 @@
                                                 <td
                                                     class="pr-8 truncate"
                                                     mat-cell
-                                                    *matCellDef="let orderHeader">
+                                                    *matCellDef="let orderHeader"
+                                                    [satPopoverAnchor]="tooltip"
+                                                    (mouseenter)="tooltip.open()"
+                                                    (mouseleave)="tooltip.close()">
                                                     {{(orderHeader.status | fuseFindByKey:'id':status).name}}
+                                                    <sat-popover #tooltip verticalAlign="below">
+                                                        <app-tooltip
+                                                            [dataTooltip]="'PO_STATUS'"
+                                                            [dataValue]="(orderHeader.status | fuseFindByKey:'id':status).name">
+                                                        </app-tooltip>
+                                                    </sat-popover>
                                                 </td>
                                             </ng-container>
                                             <ng-container matColumnDef="account">

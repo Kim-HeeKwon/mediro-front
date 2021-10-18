@@ -1,0 +1,41 @@
+.container {
+    width: 400px;
+}
+
+.progressbar li {
+    background: white;
+    width: 50px;
+    height: 40px;
+    float: left;
+    line-height: 40px;
+    text-align: center;
+    border: 2px solid gray;
+    display: block;
+    margin-right: 12px;
+    //position: absolute;
+    border-radius: 10%;
+}
+
+//.progressbar li:after {
+//    content: '';
+//    position: absolute;
+//    width: 30px;
+//    height: 3px;
+//    background: #979797;
+//    top: 20px;
+//    //left: -50%;
+//    z-index: -1;
+//}
+
+.progressbar li.active {
+    background-color: #4f46e5;
+    text-align: center;
+    color: white;
+    font-size: 5px;
+}
+
+.progressbar li.active2 {
+    text-align: center;
+    color: black;
+    font-size: 5px;
+}

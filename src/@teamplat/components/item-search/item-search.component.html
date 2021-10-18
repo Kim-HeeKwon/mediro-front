@@ -27,17 +27,6 @@
                         <div class="sm:col-span-2">
                             <!-- Name -->
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                <mat-label>UDI 코드</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'udidiCode'"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'UDI 코드를 입력하여 주세요.'">
-                            </mat-form-field>
-                        </div>
-                        <div class="sm:col-span-2">
-                            <!-- Name -->
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                 <mat-label>업체명 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                 <input
                                     matInput
@@ -50,8 +39,32 @@
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-2">
+                            <!-- Name -->
+                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                    <mat-label>모델명 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                    <input
+                                        matInput
+                                        [formControlName]="'typeName'"
+                                        [autocomplete]="'off'"
+                                        [placeholder]="'모델명을 입력해주세요.'">
+                                </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                <mat-label>품목명 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                <mat-label>품목허가번호</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'itemNoFullname'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'품목허가번호를 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                        <div class="sm:col-span-2">
+                            <!-- Name -->
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>품목명 </mat-label>
                                 <input
                                     matInput
                                     [formControlName]="'itemName'"
@@ -60,19 +73,6 @@
                                 <mat-error *ngIf="searchForm.get('itemName').hasError('required')">
                                     품목명을 입력해주세요.
                                 </mat-error>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-                        <div class="sm:col-span-2">
-                            <!-- Name -->
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                <mat-label>모델명</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'typeName'"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'모델명을 입력해주세요.'">
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-2">
@@ -89,19 +89,6 @@
                         <div class="sm:col-span-2">
                             <!-- Name -->
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                <mat-label>품목허가번호</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'itemNoFullname'"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'품목허가번호를 입력해주세요.'">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
-                        <div class="sm:col-span-2">
-                            <!-- Name -->
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                 <mat-label>등급</mat-label>
                                 <mat-select [formControlName]="'grade'">
                                     <ng-container *ngFor="let itemgrade of itemGrades">
@@ -110,6 +97,19 @@
                                         </mat-option>
                                     </ng-container>
                                 </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                        <div class="sm:col-span-2">
+                            <!-- Name -->
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>UDI 코드</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'udidiCode'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'UDI 코드를 입력하여 주세요.'">
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-2">

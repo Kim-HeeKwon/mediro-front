@@ -26,16 +26,6 @@
                 <!-- 검색조건 -->
                 <form [formGroup]="searchForm">
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
-<!--                        <div class="sm:col-span-4">-->
-<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
-<!--                                <mat-date-range-input [rangePicker]="pickerPanelOrigin">-->
-<!--                                    <input matStartDate [formControlName]="'startDate'">-->
-<!--                                    <input matEndDate [formControlName]="'endDate'">-->
-<!--                                </mat-date-range-input>-->
-<!--                                <mat-datepicker-toggle matSuffix [for]="pickerPanelOrigin"></mat-datepicker-toggle>-->
-<!--                                <mat-date-range-picker  #pickerPanelOrigin></mat-date-range-picker>-->
-<!--                            </mat-form-field>-->
-<!--                        </div>-->
                         <div class="sm:col-span-4">
                             <fuse-date-range class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4"
                                              [formControlName]="'range'"
@@ -396,8 +386,17 @@
                                             <td
                                                 class="pr-8 truncate"
                                                 mat-cell
-                                                *matCellDef="let estimateHeader">
+                                                *matCellDef="let estimateHeader"
+                                                [satPopoverAnchor]="tooltip"
+                                                (mouseenter)="tooltip.open()"
+                                                (mouseleave)="tooltip.close()">
                                                 {{(estimateHeader.status | fuseFindByKey:'id':status).name}}
+                                                <sat-popover #tooltip verticalAlign="below">
+                                                    <app-tooltip
+                                                    [dataTooltip]="'QT_STATUS'"
+                                                    [dataValue]="(estimateHeader.status | fuseFindByKey:'id':status).name">
+                                                    </app-tooltip>
+                                                </sat-popover>
                                             </td>
                                         </ng-container>
                                         <ng-container matColumnDef="account">
