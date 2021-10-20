@@ -16,6 +16,7 @@ import { SettingsSecurityComponent } from 'app/modules/admin/pages/settings/secu
 import { SettingsPlanBillingComponent } from 'app/modules/admin/pages/settings/plan-billing/plan-billing.component';
 import { SettingsNotificationsComponent } from 'app/modules/admin/pages/settings/notifications/notifications.component';
 import { SettingsTeamComponent } from 'app/modules/admin/pages/settings/team/team.component';
+import {SettingsTaxComponent} from "app/modules/admin/pages/settings/tax/tax.component";
 import { settingsRoutes } from 'app/modules/admin/pages/settings/settings.routing';
 import {MatTableModule} from "@angular/material/table";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -31,6 +32,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
         SettingsPlanBillingComponent,
         SettingsNotificationsComponent,
         SettingsTeamComponent,
+        SettingsTaxComponent,
         NewTeamComponent
     ],
     imports: [

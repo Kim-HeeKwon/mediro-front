@@ -4,6 +4,9 @@ import {Bill, BillPagenation} from './bill.types';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../../../../@teamplat/providers/common/common';
 import * as moment from 'moment';
+import {InBound} from "../../bound/inbound/inbound.types";
+import {map, switchMap, take} from "rxjs/operators";
+import {environment} from "../../../../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -89,5 +92,23 @@ export class BillService {
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * 세금계산서
+     */
+    invoice(bills: Bill[]): Observable<Bill>
+    {
+        return this.bill$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

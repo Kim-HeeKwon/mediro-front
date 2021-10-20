@@ -558,7 +558,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         if(!this.isMobile) {
             const popup = this._matDialogPopup.open(CommonPopupComponent, {
                 data: {
-                    popup: 'P$_ACCOUNT',
+                    popup: 'P$_DLVACCOUNT',
                     headerText: '납품처 조회'
                 },
                 autoFocus: false,

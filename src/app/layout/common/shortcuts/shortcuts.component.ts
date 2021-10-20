@@ -271,4 +271,9 @@ export class ShortcutsComponent implements OnChanges, OnInit, OnDestroy
             this._overlayRef.detach();
         });
     }
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    routeCall(shortcut: any): void {
+        console.log(shortcut);
+    }
 }

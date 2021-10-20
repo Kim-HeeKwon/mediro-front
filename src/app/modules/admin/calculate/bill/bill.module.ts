@@ -29,6 +29,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDialogModule} from '@angular/material/dialog';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {BillTaxComponent} from "./bill-tax/bill-tax.component";
 
 const billRoutes: Route[] = [
     {
@@ -41,7 +42,8 @@ const billRoutes: Route[] = [
 ];
 @NgModule({
     declarations: [
-        BillComponent
+        BillComponent,
+        BillTaxComponent
     ],
     imports: [
         CommonModule,

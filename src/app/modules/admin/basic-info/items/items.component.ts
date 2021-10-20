@@ -338,7 +338,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     deleteItem(): void
     {
-        const itemData = this.selectedItemForm.value;
+        const itemData = this.selectedItemForm.getRawValue();
 
         this._itemService.deleteItem(itemData)
             .subscribe(
@@ -357,7 +357,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     updateItem(): void
     {
-        const itemData = this.selectedItemForm.value;
+        const itemData = this.selectedItemForm.getRawValue();
 
         this._itemService.updateItem(itemData)
             .subscribe(

@@ -465,7 +465,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             'ibExpQty',
             'qty',
             'ibQty',
-            'unitPrice',
+            // 'unitPrice',
             'totalAmt',
             'lot1',
             'lot2',
@@ -484,7 +484,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         ];
 
         const enableListInBound = [
-            'qty',
+            'qty','unitPrice'
         ];
         const status = this.inBoundHeaderForm.controls['status'].value;
         this._functionService.cfn_cellDisable(column,disableList);
@@ -836,6 +836,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             }
                         }
                     });
+                }else{
+                    this.inBoundDetailConfirm(inBoundData);
                 }
             }else{
                 const confirmation = this._teamPlatConfirmationService.open({

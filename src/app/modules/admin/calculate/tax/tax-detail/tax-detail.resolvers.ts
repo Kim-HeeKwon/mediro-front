@@ -1,16 +1,15 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {BillService} from "../bill/bill.service";
-import {Common} from "../../../../../@teamplat/providers/common/common";
+import {StockService} from "../../../stock/stock/stock.service";
+import {Common} from "../../../../../../@teamplat/providers/common/common";
+import {TaxService} from "../tax.service";
 import {Observable} from "rxjs";
-import {TaxService} from "./tax.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class TaxResolvers implements Resolve<any> {
+export class TaxDetailResolvers implements Resolve<any> {
 
-    coinChartWidget: any[];
     /**
      * Constructor
      */
@@ -28,7 +27,6 @@ export class TaxResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._taxService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

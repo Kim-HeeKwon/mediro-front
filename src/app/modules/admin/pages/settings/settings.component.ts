@@ -74,6 +74,12 @@ export class SettingsComponent implements OnInit, OnDestroy
                 icon       : 'heroicons_outline:user-group',
                 title      : '멤버',
                 description: '팀 권한 및 멤버 정보 관리'
+            },
+            {
+                id         : 'tax',
+                icon       : 'heroicons_outline:currency-dollar',
+                title      : '세금계산서',
+                description: '세금계산서 정보 관리 및 인증서 관리'
             }
         ];
 

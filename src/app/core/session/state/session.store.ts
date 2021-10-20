@@ -20,7 +20,8 @@ export function createInitialState(): User {
         password: null,
         phone: null,
         userType: null,
-        imgPath: null
+        imgPath: null,
+        popBillId: null
     };
 }
 

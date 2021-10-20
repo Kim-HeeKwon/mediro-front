@@ -1,1 +1,677 @@
-<p>개발중...</p>
+<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <mat-drawer-container class="flex-auto sm:h-full">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #drawer>
+            <!-- Header -->
+            <div class="flex items-center justify-between m-4 mr-4 sm:my-4">
+                <!-- Title -->
+                <div class="text-3xl font-extrabold tracking-tight leading-none">검색조건</div>
+                <!-- Close button -->
+                <div class="lg:hidden">
+                    <button
+                        mat-icon-button
+                        (click)="drawer.close()">
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- Panel links -->
+            <div class="flex flex-col divide-y border-t border-b">
+                <!-- 검색조건 -->
+                <form [formGroup]="searchForm">
+                    <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+                        <!-- Name -->
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'searchCondition'">
+                                    <ng-container *ngFor="let searchcondition of searchCondition">
+                                        <mat-option [value]="searchcondition.id">
+                                            {{searchcondition.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'searchText'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'검색조건을 선택해주세요.'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <!-- Actions -->
+                <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
+                    <!-- Add product button -->
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="selectHeader()">
+                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                            <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="invoice()">
+                            <span class="ml-2 mr-1">발행</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="invoiceCancel()">
+                            <span class="ml-2 mr-1">발행취소</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="invoiceDelete()">
+                            <span class="ml-2 mr-1">삭제</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+                <!-- Load settings panel -->
+                <div class="mt-8">
+                    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between">
+                            <div class="flex items-center justify-between px-6 pt-4 pb-2">
+                                <!-- Add product button -->
+                                <div class="text-3xl font-extrabold tracking-tight">
+                                    계산서 발행
+<!--                                    <fuse-user-help-->
+<!--                                        [helpCd]="'STOCK'"-->
+<!--                                        [display]="true"></fuse-user-help>-->
+                                </div>
+                                <button
+                                    class="sm:hidden -ml-2"
+                                    mat-icon-button
+                                    (click)="drawer.toggle()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+                            <!-- 검색조건 -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <form
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition'">
+                                            <ng-container *ngFor="let searchCondition of searchCondition">
+                                                <mat-option [value]="searchCondition.id">
+                                                    {{searchCondition.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                    <!-- Search -->
+                                    <!--                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+                                    <!--                    <mat-icon-->
+                                    <!--                        matPrefix-->
+                                    <!--                        [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+                                    <!--                    <input-->
+                                    <!--                        matInput-->
+                                    <!--                        [formControlName]="'searchText'"-->
+                                    <!--                        [autocomplete]="'off'"-->
+                                    <!--                        [placeholder]="'상품검색'">-->
+                                    <!--                </mat-form-field>-->
+                                </form>
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <!-- Add product button -->
+                                <button
+                                    class="ml-2"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectHeader()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                                    <span class="ml-2 mr-1">조회</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    (click)="invoice()">
+                                    <span class="ml-2 mr-1">발행</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    (click)="invoiceCancel()">
+                                    <span class="ml-2 mr-1">발행취소</span>
+                                </button>
+                                <button
+                                    class="ml-2"
+                                    mat-stroked-button
+                                    (click)="invoiceDelete()">
+                                    <span class="ml-2 mr-1">삭제</span>
+                                </button>
+                            </div>
+                            <!-- Loader -->
+                            <div
+                                class="absolute inset-x-0 bottom-0"
+                                *ngIf="isLoading">
+                                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                            </div>
+                        </div>
+
+                        <!-- Main -->
+                        <div class="flex flex-auto overflow-hidden">
+                            <!-- list -->
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <ng-container *ngIf="invoiceHeadersCount > 0; else noInvoices">
+                                    <!-- Table wrapper -->
+                                    <div
+                                        class="overflow-x-auto sm:overflow-y-auto"
+                                        cdkScrollable>
+                                        <!-- Table -->
+
+                                        <table
+                                            class="w-full min-w-320 table-fixed bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            mat-table
+                                            matSort
+                                            [matSortActive]="'invoice'"
+                                            [matSortDisableClear]="true"
+                                            [matSortDirection]="'desc'"
+                                            [multiTemplateDataRows]="true"
+                                            [dataSource]="invoiceHeaders$"
+                                            [trackBy]="trackByFn">
+
+                                            <ng-container matColumnDef="select">
+                                                <th
+                                                    class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    style="width:15%"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef>
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                  [checked]="selection.hasValue() && isAllSelected()"
+                                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                                  [aria-label]="checkboxLabel()">
+                                                    </mat-checkbox>
+                                                </th>
+                                                <td mat-cell *matCellDef="let row"
+                                                    style="width:15%">
+                                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                                  (change)="$event ? selection.toggle(row) : null"
+                                                                  [checked]="selection.isSelected(row)"
+                                                                  [aria-label]="checkboxLabel(row)">
+                                                    </mat-checkbox>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="no">
+                                                <th mat-header-cell
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear
+                                                    [hidden]="true"
+                                                    [width]="50">
+                                                    No.
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    [hidden]="true"
+                                                    *matCellDef="let row">
+                                                    {{row.no}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="details">
+                                                <th
+                                                    class="w-24 pr-8 bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef>
+                                                    상세
+                                                </th>
+                                                <td
+                                                    class="pr-8"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    <button
+                                                        class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                                        mat-stroked-button
+                                                        (click)="toggleDetails(invoiceHeader.invoice)">
+                                                        <mat-icon
+                                                            class="icon-size-5"
+                                                            [svgIcon]="selectedinvoiceHeader?.invoice === invoiceHeader.invoice ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+
+                                            <!-- details row -->
+                                            <ng-container matColumnDef="invoiceDetails">
+                                                <td
+                                                    class="p-0 border-b-0"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader"
+                                                    [attr.colspan]="invoiceHeadersTableColumns.length">
+                                                    <ng-container *ngIf="(selectedinvoiceHeader?.invoice === invoiceHeader.invoice)">
+                                                        <ng-container
+                                                            *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: invoiceHeader}"></ng-container>
+                                                    </ng-container>
+                                                </td>
+                                                <ng-template
+                                                    #rowDetailsTemplate
+                                                    let-invoiceHeader>
+                                                    <div
+                                                        class="shadow-lg overflow-hidden"
+                                                        [@expandCollapse]="selectedinvoiceHeader?.invoice === invoiceHeader.invoice ? 'expanded' : 'collapsed'">
+                                                        <div class="flex border-b">
+                                                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden" style="margin-bottom: 0rem !important;">
+                                                                <router-outlet></router-outlet>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </ng-template>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="invoice">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="150"
+                                                    disableClear>
+                                                    문서번호
+                                                </th>
+                                                <td
+                                                    (click)="selectClickRow(invoiceHeader)"
+                                                    class="pr-8 truncate mediro-td-link-cell"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    <a>{{invoiceHeader.invoice}}</a>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="taxBillNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="300"
+                                                    disableClear>
+                                                    국세청 전송번호
+                                                </th>
+                                                <td
+                                                    (click)="selectClickRow(invoiceHeader)"
+                                                    class="pr-8 truncate mediro-td-link-cell"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    <a>{{invoiceHeader.taxBillNo}}</a>
+                                                </td>
+                                            </ng-container>
+
+<!--                                            <ng-container matColumnDef="writeDate">-->
+<!--                                                <th-->
+<!--                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"-->
+<!--                                                    mat-header-cell-->
+<!--                                                    *matHeaderCellDef-->
+<!--                                                    mat-sort-header-->
+<!--                                                    [width]="100"-->
+<!--                                                    disableClear>-->
+<!--                                                    작성일자-->
+<!--                                                </th>-->
+<!--                                                <td-->
+<!--                                                    class="pr-8 truncate"-->
+<!--                                                    mat-cell-->
+<!--                                                    *matCellDef="let invoiceHeader">-->
+<!--                                                    {{invoiceHeader.writeDate}}-->
+<!--                                                </td>-->
+<!--                                            </ng-container>-->
+
+                                            <ng-container matColumnDef="invoiceDate">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    발행일자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.invoiceDate}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="bisNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="130"
+                                                    disableClear>
+                                                    공급자 사업자번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.bisNo}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="accountNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="150"
+                                                    disableClear>
+                                                    공급자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.accountNm}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="toBisNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="130"
+                                                    disableClear>
+                                                    공급받는 자 사업자번호
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.toBisNo}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="toAccountNm">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="150"
+                                                    disableClear>
+                                                    공급받는 자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.toAccountNm}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="type">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    유형
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.type | fuseFindByKey:'id':type).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="status">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    상태
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.status | fuseFindByKey:'id':status).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="issueType">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    발행형태
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.issueType | fuseFindByKey:'id':issueType).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="taxType">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    과세형태
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.taxType | fuseFindByKey:'id':taxType).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="chargeDirection">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    과금방향
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.chargeDirection | fuseFindByKey:'id':chargeDirection).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="purposeType">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    영수/청구
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{(invoiceHeader.purposeType | fuseFindByKey:'id':purposeType).name}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="supplyAmt">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    총 공급가액
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.supplyAmt}}
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="taxAmt">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    총 세액
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.taxAmt}}
+                                                </td>
+                                            </ng-container>
+
+
+
+                                            <ng-container matColumnDef="totalAmt">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    [width]="100"
+                                                    disableClear>
+                                                    총 금액
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let invoiceHeader">
+                                                    {{invoiceHeader.totalAmt}}
+                                                </td>
+                                            </ng-container>
+
+<!--                                            <ng-container matColumnDef="remark">-->
+<!--                                                <th-->
+<!--                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"-->
+<!--                                                    mat-header-cell-->
+<!--                                                    *matHeaderCellDef-->
+<!--                                                    mat-sort-header-->
+<!--                                                    [width]="100"-->
+<!--                                                    disableClear>-->
+<!--                                                    비고-->
+<!--                                                </th>-->
+<!--                                                <td-->
+<!--                                                    class="pr-8 truncate"-->
+<!--                                                    mat-cell-->
+<!--                                                    *matCellDef="let invoiceHeader">-->
+<!--                                                    {{invoiceHeader.remark}}-->
+<!--                                                </td>-->
+<!--                                            </ng-container>-->
+
+                                            <tr
+                                                class="shadow"
+                                                mat-header-row
+                                                *matHeaderRowDef="invoiceHeadersTableColumns; sticky: true"></tr>
+                                            <tr
+                                                class="h-14 hover:bg-gray-100 dark:hover:bg-hover"
+                                                mat-row
+                                                *matRowDef="let stock; columns: invoiceHeadersTableColumns;"></tr>
+                                            <tr
+                                                class="h-0"
+                                                mat-row
+                                                *matRowDef="let row; columns: ['invoiceDetails']"></tr>
+
+                                        </table>
+
+                                    </div>
+                                    <mat-paginator
+                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                        [ngClass]="{'pointer-events-none': isLoading}"
+                                        [length]="invoiceHeaderPagenation.length"
+                                        [pageIndex]="invoiceHeaderPagenation.page"
+                                        [pageSize]="invoiceHeaderPagenation.size"
+                                        [pageSizeOptions]="[8, 10, 25, 100]"
+                                        [showFirstLastButtons]="true"></mat-paginator>
+                                </ng-container>
+                                <ng-template #noInvoices>
+                                    <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                                        <p>데이터가 없습니다.</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+</div>

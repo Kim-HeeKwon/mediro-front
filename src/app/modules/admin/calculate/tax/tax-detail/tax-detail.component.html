@@ -1,0 +1,92 @@
+<div class="flex flex-auto overflow-hidden">
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+        <div
+            class="overflow-x-auto sm:overflow-y-auto mediro-height-Full"
+            cdkScrollable>
+
+            <table
+                class="w-full min-w-320 table-fixed bg-transparent"
+                [ngClass]="{'pointer-events-none': isLoading}"
+                mat-table
+                matSort
+                [matSortActive]="'lineNo'"
+                [matSortDisableClear]="true"
+                [matSortDirection]="'asc'"
+                [multiTemplateDataRows]="true"
+                [dataSource]="invoiceDetails$"
+                [trackBy]="trackByFn">
+
+                <ng-container *ngFor="let column of invoiceDetailsTable; let i=dataIndex;"
+                              [matColumnDef]="column.dataField">
+                    <th
+                        mat-header-cell
+                        [hidden]="!column.display"
+                        [width]="column.width"
+                        *matHeaderCellDef>
+                        <div *ngIf="column.validators"
+                             class="mediro-th mediro-th-display">
+                                            <span mat-sort-header>
+                                                {{column.headerText}}
+                                                <mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                            </span>
+                        </div>
+                        <div *ngIf="!column.validators"
+                             class="mediro-th mediro-th-display">
+                                            <span mat-sort-header>
+                                                {{column.headerText}}
+                                            </span>
+                        </div>
+                    </th>
+                    <td class="mediro-td"
+                        mat-cell
+                        [hidden]="!column.display"
+                        *matCellDef="let element; let i = dataIndex;">
+                        <input *ngIf="!column.combo"
+                               class="mat-table-input"
+                               [disabled]="column.disabled"
+                               [style]="column.style"
+                               [type]="column.type"
+                               [required]="true"
+                               [(ngModel)]="element[column.dataField]"
+                               [value]="element[column.dataField]">
+                        <mat-select *ngIf="column.combo"
+                                    [value]="element[column.dataField]"
+                                    [(ngModel)]="element[column.dataField]"
+                                    [disabled]="column.disabled"
+                                    [style]="column.style"
+                                    placeholder="" >
+                            <ng-container *ngFor="let combo of getComboData(column)">
+                                <mat-option [value]="combo.id">
+                                    {{combo.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </td>
+
+                </ng-container>
+                <!-- Row definitions -->
+                <tr
+                    class="mediro-tr-header"
+                    mat-header-row
+                    *matHeaderRowDef="stockHistorysTableColumns; sticky: true"></tr>
+                <tr
+                    class="mediro-tr-row"
+                    mat-row
+                    *matRowDef="let row; columns: stockHistorysTableColumns; let i = dataIndex;"></tr>
+
+            </table>
+
+            <mat-paginator
+
+                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                [ngClass]="{'pointer-events-none': isLoading}"
+                [length]="invoiceDetailPagenation === null ? 0 : invoiceDetailPagenation.length"
+                [pageIndex]="invoiceDetailPagenation === null ? 0 : invoiceDetailPagenation.page"
+                [pageSize]="invoiceDetailPagenation === null ? 0 : invoiceDetailPagenation.size"
+                [pageSizeOptions]="[10,100]"
+                [showFirstLastButtons]="true"></mat-paginator>
+
+        </div>
+
+    </div>
+</div>

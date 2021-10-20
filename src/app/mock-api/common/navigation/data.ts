@@ -574,21 +574,21 @@ export const defaultNavigationM: FuseNavigationItem[] = [
     },
     {
          id      : 'calculate',
-         title   : '정산관리',
+         title   : '정산 및 마감',
          subtitle: '의료기기 정산관리',
          type    : 'group',
          icon    : 'heroicons_outline:home',
          children: [
              {
                  id   : 'calculate.bill',
-                 title: '청구 관리',
+                 title: '정산 및 마감',
                  type : 'basic',
                  icon : 'heroicons_outline:archive',
                  link : '/calculate/bill'
              },
              {
                  id   : 'calculate.tax',
-                 title: '세금계산서',
+                 title: '계산서 발행',
                  type : 'basic',
                  icon : 'heroicons_outline:calculator',
                  link : '/calculate/tax'
@@ -810,14 +810,14 @@ export const horizontalNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'calculate.bill',
-        title: '청구',
+        title: '정산 및 마감',
         type : 'basic',
         icon : 'heroicons_outline:archive',
         link : '/calculate/bill'
     },
     {
         id   : 'calculate.tax',
-        title: '세금계산서',
+        title: '계산서 발행',
         type : 'basic',
         icon : 'heroicons_outline:archive',
         link : '/calculate/tax'

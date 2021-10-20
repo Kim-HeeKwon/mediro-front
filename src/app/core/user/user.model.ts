@@ -22,4 +22,5 @@ export interface User
     udiClientId?: string;
     initYn?: string;
     udiInfoYn?: string;
+    popBillId?: string;
 }

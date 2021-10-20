@@ -446,7 +446,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     updateAccount(): void
     {
-        const accountData = this.selectedAccountForm.value;
+        const accountData = this.selectedAccountForm.getRawValue();
 
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
@@ -468,7 +468,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     deleteAccount(): void
     {
-        const accountData = this.selectedAccountForm.value;
+        const accountData = this.selectedAccountForm.getRawValue();
 
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;

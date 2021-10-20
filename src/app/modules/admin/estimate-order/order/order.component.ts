@@ -234,7 +234,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for(let i=0; i<this.selection.selected.length; i++){
                 if(this.selection.selected[i].status !== 'S' && this.selection.selected[i].status !== 'P'){
-                    this._functionService.cfn_alert('발주할 수 없는 상태입니다. 견적번호 : ' + this.selection.selected[i].poNo);
+                    this._functionService.cfn_alert('발주할 수 없는 상태입니다. 발주번호 : ' + this.selection.selected[i].poNo);
                     check = false;
                     return false;
                 }

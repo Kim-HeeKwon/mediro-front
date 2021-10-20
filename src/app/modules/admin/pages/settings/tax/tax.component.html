@@ -1,0 +1,222 @@
+<div class="w-full max-w-3xl">
+
+    <!-- Form -->
+    <form [formGroup]="taxForm">
+
+        <div class="w-full">
+            <div class="text-xl"></div>
+            <div class="text-secondary">회사 정보</div>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <!-- Username -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full">
+                    <mat-label>사업자</mat-label>
+                    <div
+                        class="text-secondary"
+                        matPrefix>
+                        등록번호
+                    </div>
+                    <input
+                        [formControlName]="'corpNum'"
+                        disabled
+                        matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>대표자명</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user-circle'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'ceoname'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>상호</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:office-building'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'corpName'"
+                        matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full">
+                    <mat-label>주소</mat-label>
+                    <input
+                        [formControlName]="'addr'"
+                        (click)="openDaumPopup()"
+                        disabled
+                        matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>업태</mat-label>
+                    <input
+                        [formControlName]="'bizType'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>종목</mat-label>
+                    <input
+                        [formControlName]="'bizClass'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>아이디</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'id'"
+                        [attr.disabled]="isEdit?'':false"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>비밀번호</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'password'"
+                        type="password"
+                        matInput>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <div class="w-full">
+            <div class="text-xl"></div>
+            <div class="text-secondary">담당자 정보</div>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>담당자명</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user-circle'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'name'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>이메일</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:mail'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'email'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <!-- Company -->
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>휴대폰</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:phone'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'hp'"
+                        type = number
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>팩스</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:printer'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'fax'"
+                        type = number
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>연락처</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:phone'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'tel'"
+                        type = number
+                        matInput>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end" *ngIf="isAdmin" >
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="joinMember()"
+                [color]="'primary'">가입
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="updateCorpInfo()"
+                [color]="'primary'">회사정보 변경
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="updateContact()"
+                [color]="'primary'">담당자정보 변경
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="getTaxCertURL()"
+                [color]="'primary'">인증서 등록
+            </button>
+        </div>
+    </form>
+    <div #daum_popup style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+        <img (click)="closeDaumPopup()" src="//t1.daumcdn.net/postcode/resource/images/close.png" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1;width: 6%;" />
+    </div>
+</div>

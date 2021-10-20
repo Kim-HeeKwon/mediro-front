@@ -21,6 +21,11 @@ export interface Bill
     billingDate: string;
     remark: string;
     delFlag: string;
+    issueType?: string;
+    chargeDirection?: string;
+    taxType?: string;
+    purposeType?: string;
+    check?: string;
 }
 
 

@@ -105,15 +105,15 @@
                             <!-- Normal links -->
                             <a
                                 class="flex flex-col items-center justify-center w-full h-full py-6 no-underline"
-                                *ngIf="!shortcut.useRouter"
+                                *ngIf="shortcut.level === 2"
                                 [ngClass]="{'pointer-events-none': mode === 'modify'}"
-                                [href]="shortcut.link">
+                                [routerLink]="shortcut.link">
                                 <ng-container *ngTemplateOutlet="linkContent"></ng-container>
                             </a>
                             <!-- Router links -->
                             <a
                                 class="flex flex-col items-center justify-center w-full h-full py-6 no-underline"
-                                *ngIf="shortcut.useRouter"
+                                *ngIf="shortcut.useRouter && shortcut.level !== 2"
                                 [ngClass]="{'pointer-events-none': mode === 'modify'}"
                                 [routerLink]="shortcut.link">
                                 <ng-container *ngTemplateOutlet="linkContent"></ng-container>

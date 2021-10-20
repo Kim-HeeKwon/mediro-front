@@ -11,6 +11,8 @@ export const environment = {
     userLogtest: 'Y',
     defaultUserId: 'mediroDefault',
     serverUrl: '',
+    //serverTaxUrl: '',
+    serverTaxUrl: 'http://localhost:8097/teamPlatFw/',
     test: true
 };
 
