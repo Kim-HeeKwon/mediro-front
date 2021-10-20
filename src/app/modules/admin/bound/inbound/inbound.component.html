@@ -524,6 +524,7 @@
                                                     <sat-popover #tooltip verticalAlign="below">
                                                         <app-tooltip
                                                             [dataTooltip]="'IB_STATUS'"
+                                                            [dataFilter]="'C'"
                                                             [dataValue]="(inBoundHeader.status | fuseFindByKey:'id':ibStatus).name"
                                                         ></app-tooltip>
                                                     </sat-popover>

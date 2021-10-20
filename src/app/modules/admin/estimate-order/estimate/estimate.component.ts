@@ -17,8 +17,7 @@ import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/con
 import {ShortcutsService} from '../../../../layout/common/shortcuts/shortcuts.service';
 import {Shortcut} from '../../../../layout/common/shortcuts/shortcuts.types';
 import * as moment from 'moment';
-import {CommonTooltipComponent} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
     selector: 'app-estimate',
@@ -35,6 +34,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     estimateDetails$ = new Observable<EstimateDetail[]>();
     estimateHeaderPagenation: EstimateHeaderPagenation | null = null;
     isLoading: boolean = false;
+    isProgressSpinner: boolean = false;
     searchInputControl: FormControl = new FormControl();
     estimateHeadersCount: number = 0;
     estimateHeadersTableColumns: string[] = [
@@ -68,6 +68,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
+    private load: void;
     constructor(
         private _activatedRoute: ActivatedRoute,
         public _matDialogPopup: MatDialog,
@@ -108,7 +109,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this._estimateService.getHeader();
         // getHeader
         this.estimateHeaders$ = this._estimateService.estimateHeaders$;
-
         this._estimateService.estimateHeaders$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((estimateHeaders: any) => {
@@ -116,7 +116,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (estimateHeaders !== null) {
                     this.estimateHeadersCount = estimateHeaders.length;
                 }
-
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -136,7 +135,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
      * After view init
      */
     ngAfterViewInit(): void {
-
         if (this._estimateHeaderSort !== undefined) {
             // Get products if sort or page changes
             merge(this._estimateHeaderSort.sortChange, this._estimateHeaderPagenator.page).pipe(
@@ -280,6 +278,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
+                            this.isProgressSpinner = true;
                             this.isLoading = true;
                             this.estimateSendCall(this.selection.selected);
                         } else {
@@ -294,10 +293,10 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     estimateSendCall(sendData: Estimate[]): void {
         if (sendData) {
-
             this._estimateService.estimateSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(estimate);
                     this.isLoading = false;
                     // Mark for check

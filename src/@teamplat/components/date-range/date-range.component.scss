@@ -5,6 +5,15 @@ fuse-date-range {
     display: flex;
 
     .range {
+        @screen sm {
+            display: flex;
+            align-items: center;
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+            cursor: pointer;
+        }
+
         display: flex;
         align-items: center;
         height: 48px;
@@ -17,7 +26,7 @@ fuse-date-range {
             display: flex;
             align-items: center;
             height: 100%;
-            padding: 0 16px;
+            padding: 0 23px;
             border-radius: 6px;
             border-width: 1px;
             line-height: 1;
@@ -37,10 +46,10 @@ fuse-date-range {
         }
 
         .separator {
-            margin: 0 2px;
+            margin: 0 5px;
 
             @screen sm {
-                margin: 0 12px;
+                margin: 0 7px;
             }
         }
     }

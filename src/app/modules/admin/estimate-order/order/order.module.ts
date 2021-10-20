@@ -34,6 +34,7 @@ import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-rang
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 import {SatPopoverModule} from "@ncstate/sat-popover";
 import {CommonTooltipModule} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.module";
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const orderRoutes: Route[] = [
     {
@@ -97,6 +98,7 @@ const orderRoutes: Route[] = [
         FuseUserHelpModule,
         SatPopoverModule,
         CommonTooltipModule,
+        CommonLoadingBarModule,
     ],
 })
 export class OrderModule {

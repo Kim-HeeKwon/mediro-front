@@ -244,7 +244,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/send').pipe(
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/send',).pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -254,7 +254,6 @@ export class EstimateService {
             ))
         );
     }
-
     /**
      * 확정
      */

@@ -33,8 +33,8 @@ import {OutboundDetailResolvers} from './outbound-detail/outbound-detail.resolve
 import {FuseColumnResizeModule} from '../../../../../@teamplat/directives/table/column-resize';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
-import {SatPopoverModule} from "@ncstate/sat-popover";
-import {CommonTooltipModule} from "../../../../../@teamplat/components/common-tooltip/common-tooltip.module";
+import {SatPopoverModule} from '@ncstate/sat-popover';
+import {CommonTooltipModule} from '../../../../../@teamplat/components/common-tooltip/common-tooltip.module';
 
 const outboundRoutes: Route[] = [
     {

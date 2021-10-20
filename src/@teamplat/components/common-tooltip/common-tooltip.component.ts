@@ -15,6 +15,8 @@ export class CommonTooltipComponent implements OnInit{
     toolInfoChg: any;
     private _dataTooltip: string;
     private _dataValue: string;
+    private _filterValue: string;
+    private _datashow: boolean = true;
 
     constructor(
         private _utilService: FuseUtilsService,
@@ -22,23 +24,51 @@ export class CommonTooltipComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        if (this._dataTooltip !== undefined) {
-            this.toolInfo = this._utilService.commonValueFilter(this._codeStore.getValue().data, this._dataTooltip, ['ALL']);
-            this.toolInfoChg = this.toolInfo;
-            // @ts-ignore
-            let a: boolean = true;
-            for (let i = 0; i < this.toolInfoChg.length; i++) {
-                this.toolInfoChg[i].num = 1;
-                if(this.toolInfoChg[i].name === this._dataValue) {
-                    a = false;
-                    break;
-                }
-                if(a) {
-                    this.toolInfoChg.num = 0;
-                }
-            }
-            // 변수를 불린형으로 선언해서 트루일때는 1로 퍼스일떄는 0으로 선언
+        if (this._dataValue === '취소') {
+            this._datashow = false;
         }
+        if(this._datashow) {
+            if (this._dataTooltip !== undefined) {
+                this.toolInfo = this._utilService.commonValueSearchFilter(this._codeStore.getValue().data, this._dataTooltip, ['ALL', this._filterValue]);
+                this.toolInfoChg = this.toolInfo;
+                // @ts-ignore
+                let a: boolean = true;
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for (let i = 0; i < this.toolInfoChg.length; i++) {
+                    if (a) {
+                        this.toolInfoChg[i].num = 1;
+                    }
+                    if (this.toolInfoChg[i].name === this._dataValue) {
+                        a = false;
+                        break;
+                    }
+                }
+                console.log(this.toolInfoChg);
+            }
+        }
+    }
+
+    @Input()
+    set dataFilter(value: string)
+    {
+        // Return if the values are the same
+        if ( this._filterValue === value )
+        {
+            return;
+        }
+
+        // Store the value
+        this._filterValue = value;
+
+        // If the time range turned off...
+        if ( !value )
+        {
+        }
+    }
+
+    get dataFilter(): string
+    {
+        return this.dataFilter;
     }
 
     @Input()

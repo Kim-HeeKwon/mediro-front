@@ -27,7 +27,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _orderHeaderPagenator: MatPaginator;
     @ViewChild(MatSort) private _orderHeaderSort: MatSort;
     isMobile: boolean = false;
-
+    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     orderHeaders$: Observable<OrderHeader[]>;
@@ -51,7 +51,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
     selectedOrderHeader: OrderHeader = new OrderHeader();
     searchForm: FormGroup;
-
     status: CommonCode[] = null;
     type: CommonCode[] = null;
     accountType: CommonCode[] = null;
@@ -325,6 +324,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if(result){
+                            this.isProgressSpinner = true;
                             this.orderSendCall(this.selection.selected);
                         }else{
                             this.selectClear();
@@ -340,6 +340,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

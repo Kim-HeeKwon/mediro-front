@@ -6,7 +6,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {merge, Observable, Subject} from 'rxjs';
 import {TableConfig, TableStyle} from '../../../../../../@teamplat/components/common-table/common-table.types';
 import {OutBound, OutBoundDetail, OutBoundDetailPagenation} from '../outbound.types';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
@@ -18,8 +18,8 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {DeviceDetectorService} from "ngx-device-detector";
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector       : 'outbound-detail',
@@ -645,19 +645,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((outBoundDetail) => {
                 outBoundData = outBoundDetail.filter((detail: any) => (detail.qty > 0 && detail.qty !== '0'))
-                    .map((param: any) => {
-                        return param;
-                    });
+                    .map((param: any) => param);
 
                 outBoundDataFilter = outBoundData.filter((detail: any) => detail.udiYn !== 'Y')
-                    .map((param: any) => {
-                        return param;
-                    });
+                    .map((param: any) => param);
 
                 udiCheckData = outBoundData.filter((detail: any) => detail.udiYn === 'Y')
-                    .map((param: any) => {
-                        return param;
-                    });
+                    .map((param: any) => param);
             });
         if(outBoundData.length < 1) {
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
@@ -680,7 +674,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
                 popup.afterClosed().subscribe((result) => {
                     if(result){
-
                         if(result !== undefined){
 
                             // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -715,14 +708,11 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 }
             }
         });
-
         outBoundData.forEach((outBound: any) => {
             outBound.qty = outBound.qty;
             outBound.lot4 = outBound.udiCode;
         });
-        outBoundData = outBoundData.filter((outBound: any) => outBound.qty > 0 ).map((param: any) => {
-            return param;
-        });
+        outBoundData = outBoundData.filter((outBound: any) => outBound.qty > 0 ).map((param: any) => param);
 
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))

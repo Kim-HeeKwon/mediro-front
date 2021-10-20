@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
     <mat-drawer-container class="flex-auto sm:h-full">
-
         <!-- Drawer -->
         <mat-drawer
             class="w-full dark:bg-gray-900"
@@ -291,7 +291,6 @@
                                                 </mat-checkbox>
                                             </td>
                                         </ng-container>
-
                                         <ng-container matColumnDef="no">
                                             <th mat-header-cell
                                                 class="mediro-th-header-checkbox"
@@ -394,6 +393,7 @@
                                                 <sat-popover #tooltip verticalAlign="below">
                                                     <app-tooltip
                                                     [dataTooltip]="'QT_STATUS'"
+                                                    [dataFilter]="'C'"
                                                     [dataValue]="(estimateHeader.status | fuseFindByKey:'id':status).name">
                                                     </app-tooltip>
                                                 </sat-popover>
@@ -573,6 +573,5 @@
                 </div>
             </div>
         </mat-drawer-content>
-
     </mat-drawer-container>
 </div>
