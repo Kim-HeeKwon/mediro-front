@@ -822,11 +822,18 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:archive',
         link : '/calculate/tax'
     },
+    // {
+    //     id   : 'calculate.bill2',
+    //     title: '반입/반출',
+    //     type : 'basic',
+    //     icon : 'heroicons_outline:desktop-computer',
+    //     link : '/pages/error/500'
+    // },
     {
-        id   : 'calculate.bill2',
-        title: '반입/반출',
+        id   : 'realgrid.realgrid',
+        title: '그리드',
         type : 'basic',
         icon : 'heroicons_outline:desktop-computer',
-        link : '/pages/error/500'
+        link : '/realgrid/realgrid'
     },
 ];

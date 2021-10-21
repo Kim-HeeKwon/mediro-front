@@ -46,12 +46,15 @@
                             ]
                         },
                         "styles": [
+                            "src/@teamplat/styles/realgrid.scss",
                             "src/@teamplat/styles/tailwind.scss",
                             "src/@teamplat/styles/themes.scss",
                             "src/styles/vendors.scss",
                             "src/@teamplat/styles/main.scss",
                             "src/styles/styles.scss",
-                            "src/styles/tailwind.scss"
+                            "src/styles/tailwind.scss",
+                            "src/styles/tailwind.scss",
+                            "src/@teamplat/styles/realgrid_custom.scss"
                         ],
                         "scripts": []
                     },

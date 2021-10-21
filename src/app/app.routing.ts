@@ -130,6 +130,10 @@ export const appRoutes: Route[] = [
                     // tax
                     {path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
                 ]},
+            {path: 'realgrid', children: [
+                    // bill
+                    {path: 'realgrid', loadChildren: () => import('app/modules/admin/realgrid/realgrid/realgrid.module').then(m => m.RealgridModule)},
+                ]},
             // udi
             {path: 'udi', children: [
                     // manages

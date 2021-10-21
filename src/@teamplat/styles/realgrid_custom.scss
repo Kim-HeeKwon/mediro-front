@@ -1,0 +1,28 @@
+.rg-header {
+    //text-align: center;
+    //font-weight: bold;
+    //color: #ffffff;
+    ///* 헤더의 색깔 변경 */
+    //background: #10172A;
+    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-weight: bold;
+}
+
+.rg-renderer{
+    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.rg-head .rg-table tr td.rg-rowindicator-head{
+    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.rg-rowbarcontainer .rg-table tr td.rg-rowindicator-cell{
+    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+/* ... */
+
+.rg-header-focus {
+    /* 포커스 헤더의 색깔 변경 */
+    //background: #000000;
+    //color: #3b2f14;
+}
