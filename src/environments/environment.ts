@@ -12,7 +12,7 @@ export const environment = {
     defaultUserId: 'mediroDefault',
     serverUrl: '',
     //serverTaxUrl: '',
-    serverTaxUrl: 'http://localhost:8097/teamPlatFw/',
+    serverTaxUrl: 'http://localhost:8097/teamPlatBill/',
     test: true
 };
 

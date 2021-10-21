@@ -13,8 +13,16 @@ export class Common {
         return this.api.post(url, accountInfo).pipe(share()); // seq;
     }
 
+    sendDataChgUrl(accountInfo: any, url: string): Observable<any> {
+        return this.api.postChgUrl(url, accountInfo).pipe(share()); // seq;
+    }
+
     sendListData(accountInfo: any, url: string): Observable<any> {
         return this.api.postList(url, accountInfo).pipe(share()); // seq;
+    }
+
+    sendListDataChgUrl(accountInfo: any, url: string): Observable<any> {
+        return this.api.postListChgUrl(url, accountInfo).pipe(share()); // seq;
     }
 
     sendListDataObject(info: any, pageParam: any, url: string): Observable<any> {
@@ -23,6 +31,10 @@ export class Common {
 
     sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
+    }
+
+    sendDataWithPageNationChgUrl(param: any, pageParam: any,url: string): Observable<any> {
+        return this.api.postWithPageChgUrl(url, param, pageParam).pipe(share()); // seq;
     }
 
     put(url: string, param: any): Observable<any> {

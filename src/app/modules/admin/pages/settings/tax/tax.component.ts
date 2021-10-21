@@ -111,7 +111,7 @@ export class SettingsTaxComponent implements OnInit
     }
 
     rtnInfo(): void{
-        this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getCorpInfo')
+        this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getCorpInfo')
             .subscribe((response: any) => {
                 if(response.status === 'SUCCESS'){
                     this.taxForm.patchValue(response.data[0]);
@@ -124,7 +124,7 @@ export class SettingsTaxComponent implements OnInit
                 //this._sessionStore.update(response.data);
             });
 
-        this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getContactInfo')
+        this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getContactInfo')
             .subscribe((response: any) => {
                 if(response.status === 'SUCCESS'){
 
@@ -167,7 +167,7 @@ export class SettingsTaxComponent implements OnInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if(result){
-                    this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/joinMember')
+                    this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/joinMember')
                         .subscribe((response: any) => {
                             this.cfn_alertCheckMessage(response);
                         });
@@ -205,7 +205,7 @@ export class SettingsTaxComponent implements OnInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if(result){
-                    this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/updateCorpInfo')
+                    this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/updateCorpInfo')
                         .subscribe((response: any) => {
                             this.cfn_alertCheckMessage(response);
                         });
@@ -242,7 +242,7 @@ export class SettingsTaxComponent implements OnInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if(result){
-                    this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/updateContact')
+                    this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/updateContact')
                         .subscribe((response: any) => {
                             this.cfn_alertCheckMessage(response);
                         });
@@ -288,7 +288,7 @@ export class SettingsTaxComponent implements OnInit
     }
 
     getTaxCertURL(): void {
-        this._common.sendData(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getTaxCertURL')
+        this._common.sendDataChgUrl(this.taxForm.getRawValue(),environment.serverTaxUrl + '/v1/api/calculate/tax/getTaxCertURL')
             .subscribe((param: any) => {
                 if(param.status !== 'SUCCESS'){
 

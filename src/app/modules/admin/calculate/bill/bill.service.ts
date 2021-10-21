@@ -101,7 +101,7 @@ export class BillService {
     {
         return this.bill$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
+            switchMap(products => this._common.sendListDataChgUrl(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

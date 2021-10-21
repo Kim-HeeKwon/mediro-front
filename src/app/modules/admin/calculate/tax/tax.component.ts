@@ -269,7 +269,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     //상세정보 보기
     selectClickRow(invoiceHeader: any): void {
 
-        this._common.sendData(invoiceHeader,environment.serverTaxUrl + '/v1/api/calculate/tax/getPrintURL')
+        this._common.sendDataChgUrl(invoiceHeader,environment.serverTaxUrl + '/v1/api/calculate/tax/getPrintURL')
             .subscribe((param: any) => {
                 if(param.status !== 'SUCCESS'){
 
