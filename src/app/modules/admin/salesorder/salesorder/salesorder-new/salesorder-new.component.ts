@@ -26,8 +26,8 @@ import {takeUntil} from 'rxjs/operators';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {DeviceDetectorService} from "ngx-device-detector";
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector       : 'salesorder-new',
@@ -51,6 +51,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -241,14 +242,17 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
     backPage(): void{
         this._router.navigate(['salesorder/salesorder']);
     }
+
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
         }
     }
+
     /* 트랜잭션 전 data Set
      * @param sendData
      */
@@ -350,6 +354,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._salesorderService.createSalesOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesorder: any) => {
+                    this.isProgressSpinner = true;
                     this.alertMessage(salesorder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

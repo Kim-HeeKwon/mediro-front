@@ -49,6 +49,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     flashMessage: 'success' | 'error' | null = null;
     salesorderDetailsCount: number = 0;
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -256,6 +257,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         this.salesorderDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((salesorderDetail) => {
+                                this.isProgressSpinner = true;
                                 salesorderDetail.forEach((sendData: any) => {
                                     if (sendData.flag) {
                                         if (sendData.flag === 'C') {
@@ -671,6 +673,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._salesorderService.getDetail(0,10,'soLineNo','asc',this.salesorderHeaderForm.getRawValue());
 
                     this.salesorderDetails$ = this._salesorderService.salesorderDetails$;

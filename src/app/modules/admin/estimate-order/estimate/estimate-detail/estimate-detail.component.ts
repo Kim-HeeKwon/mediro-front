@@ -61,6 +61,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -295,6 +296,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this.estimateDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((estimateDetail) => {
+                                this.isProgressSpinner = true;
                                 estimateDetail.forEach((sendData: any) => {
                                     if (sendData.flag) {
                                         if (sendData.flag === 'C') {

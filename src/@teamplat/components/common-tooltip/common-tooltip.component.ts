@@ -43,7 +43,6 @@ export class CommonTooltipComponent implements OnInit{
                         break;
                     }
                 }
-                console.log(this.toolInfoChg);
             }
         }
     }

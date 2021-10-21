@@ -258,6 +258,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if(result){
+                            this.isProgressSpinner = true;
                             this.orderConfirmCall(this.selection.selected);
                         }else{
                             this.selectClear();
@@ -273,6 +274,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(estimate);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -392,6 +394,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
+                            this.isProgressSpinner = true;
                             this.orderCancelCall(this.selection.selected);
                         }else{
                             this.selectClear();
@@ -407,6 +410,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

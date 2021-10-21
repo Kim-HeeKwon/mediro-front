@@ -51,6 +51,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -248,6 +249,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
@@ -357,6 +359,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._orderService.createOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
+                    this.isProgressSpinner = true;
                     this.alertMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
