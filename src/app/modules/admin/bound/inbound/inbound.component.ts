@@ -46,6 +46,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
 
@@ -383,6 +384,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((result) => {
                             if (result) {
+                                this.isProgressSpinner = true;
                                 this.inBoundCancel(this.selection.selected);
                             }else{
                                 this.closeDetails();
@@ -439,6 +441,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
+                            this.isProgressSpinner = true;
                             this.inBoundClose(this.selection.selected);
                         }else{
                             this.closeDetails();
@@ -477,6 +480,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inboundService.inBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -494,6 +498,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inboundService.inBoundClose(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

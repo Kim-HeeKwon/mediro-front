@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '@teamplat/providers/common/common';
 import {ItemSearchPagination, UdiItem, UdiSearchItem} from './item-search.types';
+import {ItemSearchComponent} from "./item-search.component";
 
 @Injectable({
     providedIn: 'root'

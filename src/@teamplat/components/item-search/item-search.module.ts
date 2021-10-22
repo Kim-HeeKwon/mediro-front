@@ -17,6 +17,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {ItemSearchComponent} from './item-search.component';
 import {FuseFindByKeyPipeModule} from "../../pipes/find-by-key";
+import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.module";
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import {FuseFindByKeyPipeModule} from "../../pipes/find-by-key";
         MatDialogModule,
         SharedModule,
         FuseFindByKeyPipeModule,
+        CommonLoadingBarModule,
     ],
     exports     : [
         ItemSearchComponent

@@ -33,6 +33,7 @@ import {StockHistoryResolvers} from './stock-history/stock-history.resolvers';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 import {StockDetailComponent} from "./stock-detail/stock-detail.component";
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const stockRoutes: Route[] = [
     {
@@ -88,7 +89,8 @@ const stockRoutes: Route[] = [
         FuseColumnResizeModule,
         FuseDateRangeModule,
         MatButtonToggleModule,
-        FuseUserHelpModule
+        FuseUserHelpModule,
+        CommonLoadingBarModule
     ]
 })
 export class StockModule {

@@ -29,6 +29,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseDateRangeModule} from '../../../../../@teamplat/components/date-range';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const itemsRoutes: Route[] = [
     {
@@ -79,6 +80,7 @@ const itemsRoutes: Route[] = [
         FuseDateRangeModule,
         MatButtonToggleModule,
         FuseUserHelpModule,
+        CommonLoadingBarModule,
     ]
 })
 export class ItemsModule { }

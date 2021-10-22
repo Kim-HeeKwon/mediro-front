@@ -21,6 +21,7 @@ import {CommonUdiService} from './common-udi.service';
 import {DisplayedColumn, Column, UdiPagenation} from './common-udi.types';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {FunctionService} from '../../services/function';
+import {AccountComponent} from "../../../app/modules/admin/basic-info/account/account.component";
 
 @Component({
     selector: 'app-common-udi',
@@ -41,7 +42,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     searchForm: FormGroup;
     pagenation: UdiPagenation | null = null;
     pageEvent: PageEvent;
-
+    isProgressSpinner: boolean = false;
     commonValues: Column[] = [];
 
     url: string = '';
@@ -184,11 +185,13 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm.patchValue({'mediroUrl': this.mediroUrl});
         this._udiService.getUdi(0,100,'','asc',this.searchForm.getRawValue());
 
+        this.isProgressSpinner = true;
         this._udiService.getStatus$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status: any) => {
                 if(status !== null){
-                    //this._functionService.cfn_alertSelectMessage(status);
+                    this.isProgressSpinner = false;
+                    // this._functionService.cfn_alertSelectMessage(status);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 }

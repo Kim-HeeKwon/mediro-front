@@ -36,6 +36,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     selection = new SelectionModel<any>(true, []);
     outboundDetailsCount: number = 0;
     outBoundHeaderForm: FormGroup;
@@ -208,6 +209,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         //신규가 아니면 불가능
         if(status !== 'N'){
+            this.isProgressSpinner = false;
             this._functionService.cfn_alert('저장 할 수 없습니다.');
             return;
         }
@@ -217,6 +219,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             let detailCheck = false;
             this.outBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((data) => {
+                    this.isProgressSpinner = false;
 
                     if(data.length === 0){
                         this._functionService.cfn_alert('상세정보에 값이 없습니다.');
@@ -728,11 +731,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      * @param sendData
      */
     outBoundDetailConfirm(sendData: OutBound[]): void{
+        this.isProgressSpinner = true;
         if(sendData){
             this._outboundService.outBoundDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
                     this._functionService.cfn_alertCheckMessage(outBound);
+                    this.isProgressSpinner = false;
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });

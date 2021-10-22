@@ -37,6 +37,7 @@ export class StockDetailComponent implements OnInit, OnDestroy {
     };
     showAlert: boolean = false;
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     selectedItemForm: FormGroup;
     is_edit: boolean = false;
     adjTypes: CommonCode[] = [];
@@ -99,6 +100,7 @@ export class StockDetailComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result){
+                        this.isProgressSpinner = true;
                         this._stockService.stockAdjustment(this.selectedItemForm.getRawValue())
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((stock: any) => {

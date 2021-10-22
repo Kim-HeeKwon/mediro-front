@@ -46,7 +46,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent: PageEvent;
 
     udiItemList$: Observable<UdiItem[]>;
-
+    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     itemsCount: number = 0;
     displayedColumns: DisplayedColumn[] = [];
@@ -126,6 +126,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this._itemSearchService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: ItemSearchPagination) => {
+                this.isProgressSpinner = false;
                 // Update the pagination
                 this.pagination = pagination;
                 // Mark for check
@@ -136,6 +137,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this._itemSearchService.itemHeaderList$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((itemHeader: any) => {
+                this.isProgressSpinner = false;
                 this.itemHeader = itemHeader;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -216,6 +218,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if(this.searchForm.value.grade === 'ALL'){
             this.searchForm.patchValue({'grade':''});
+            this.isProgressSpinner = true;
         }
 
         this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());

@@ -26,6 +26,7 @@ import {FuseAlertModule} from '../../../../../@teamplat/components/alert';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const accountRoutes: Route[] = [
     {
@@ -67,7 +68,8 @@ const accountRoutes: Route[] = [
         SharedModule,
         FuseFindByKeyPipeModule,
         FuseAlertModule,
-        FuseUserHelpModule
+        FuseUserHelpModule,
+        CommonLoadingBarModule
     ]
 })
 export class AccountModule { }

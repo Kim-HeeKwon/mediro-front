@@ -47,6 +47,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatTable,{static:true}) _table: MatTable<any>;
     isLoading: boolean = false;
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     outBoundHeaderForm: FormGroup;
     flashMessage: 'success' | 'error' | null = null;
     outBoundDetailsCount: number = 0;
@@ -183,6 +184,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
@@ -220,9 +222,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             let detailCheck = false;
             this.outBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((data) => {
-
                     if(data.length === 0){
                         this._functionService.cfn_alert('상세정보에 값이 없습니다.');
+                        this.isProgressSpinner = false;
                         detailCheck = true;
                     }
                 });
@@ -255,6 +257,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
+                    this.isProgressSpinner = true;
                     let createList;
                     if (result) {
                         createList = [];
@@ -295,6 +298,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._outboundService.createOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
+                    this.isProgressSpinner = true;
                     this.alertMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

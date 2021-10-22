@@ -32,6 +32,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     );
 
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     selectedItemForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     alert: { type: FuseAlertType; message: string } = {
@@ -123,6 +124,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     {
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
+            this.isProgressSpinner = true;
             //console.log(this.selectedItemForm.getRawValue());
             this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem: any) => {
 
@@ -146,6 +148,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'error',
                 message: param.msg
@@ -153,6 +156,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Show the alert
             this.showAlert = true;
         }else{
+            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'success',
                 message: '등록완료 하였습니다.'

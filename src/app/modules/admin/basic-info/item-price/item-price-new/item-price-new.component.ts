@@ -31,7 +31,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-
+    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     selectedItemPriceForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -93,6 +93,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     itemPriceCreate(): void
     {
         if(!this.selectedItemPriceForm.invalid){
+            this.isProgressSpinner = true;
             this.showAlert = false;
             //console.log(this.selectedItemForm.getRawValue());
             this._itemPriceService.createItemPrice(this.selectedItemPriceForm.getRawValue()).subscribe((newItemPrice: any) => {
@@ -117,6 +118,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'error',
                 message: param.msg
@@ -124,6 +126,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             // Show the alert
             this.showAlert = true;
         }else{
+            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'success',
                 message: '등록완료 하였습니다.'

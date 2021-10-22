@@ -16,12 +16,13 @@ import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {SharedModule} from '../../../app/shared/shared.module';
 import {CommonUdiComponent} from './common-udi.component';
+import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.module";
 
 @NgModule({
     declarations: [
         CommonUdiComponent
     ],
-    imports     : [
+    imports: [
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -38,6 +39,7 @@ import {CommonUdiComponent} from './common-udi.component';
         MatTableModule,
         MatDialogModule,
         SharedModule,
+        CommonLoadingBarModule,
     ],
     exports     : [
         CommonUdiComponent

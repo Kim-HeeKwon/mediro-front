@@ -37,6 +37,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
+    isProgressSpinner: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
@@ -121,7 +122,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             this.showAlert = false;
             this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
-
+                this.isProgressSpinner = true;
                 this.alertMessage(newAccount);
 
                 // Mark for check
@@ -141,6 +142,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
+        this.isProgressSpinner = false;
         if(param.status !== 'SUCCESS'){
             this.alert = {
                 type   : 'error',

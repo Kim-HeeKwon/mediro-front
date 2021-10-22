@@ -43,7 +43,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
-
+    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
 
@@ -328,20 +328,20 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     /**
      * Add a new note
      */
-    createUdiAccount(): void
-    {
-        if(!this.isMobile){
-            const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+    createUdiAccount(): void {
+        if (!this.isMobile) {
+            this.isProgressSpinner = false;
+            const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
                 data: {
-                    headerText : '거래처 조회',
-                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    headerText: '거래처 조회',
+                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
                     code: 'UDI_BCNC',
-                    tail : false,
-                    mediroUrl : 'bcnc/company-info',
-                    tailKey : '',
-                    merge : true,
-                    mergeData : 'account'
+                    tail: false,
+                    mediroUrl: 'bcnc/company-info',
+                    tailKey: '',
+                    merge: true,
+                    mergeData: 'account'
                 },
                 autoFocus: false,
                 maxHeight: '80vh',
@@ -351,18 +351,18 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             popupUdi.afterClosed().subscribe((result) => {
                 this.selectAccount();
             });
-        }else{
+        } else {
             const d = this._matDialog.open(CommonUdiComponent, {
                 data: {
-                    headerText : '거래처 조회',
-                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
+                    headerText: '거래처 조회',
+                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
                     code: 'UDI_BCNC',
-                    tail : false,
-                    mediroUrl : 'bcnc/company-info',
-                    tailKey : '',
-                    merge : true,
-                    mergeData : 'account'
+                    tail: false,
+                    mediroUrl: 'bcnc/company-info',
+                    tailKey: '',
+                    merge: true,
+                    mergeData: 'account'
                 },
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -372,7 +372,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
+                    d.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }
@@ -383,6 +383,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
     }
+
     /**
      * Add a new note
      */
