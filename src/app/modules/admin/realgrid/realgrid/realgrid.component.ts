@@ -107,9 +107,12 @@ export class RealgridComponent implements OnInit {
         this.grid.setEditOptions({
             insertable: true,
             appendable: true,
-            deletable: true,
+            //deletable: true,
+            checkable: true,
+            softDeleting: true,
+           //hideDeletedRows: true,
         });
-        this.grid.deleteSelection(true);
+        //this.grid.deleteSelection(true);
         //undo, Redo
         this.grid.undoable = true;
 
@@ -161,7 +164,7 @@ export class RealgridComponent implements OnInit {
             .subscribe((accounts: any) => {
                 if(accounts != null){
                     this._realGridsService.gfn_DataSetGrid(this.grid, this.realgridDataProvider, accounts);
-                    console.log(accounts);
+                    //console.log(accounts);
                 }
 
                 // Mark for check
@@ -170,7 +173,9 @@ export class RealgridComponent implements OnInit {
     }
 
     saveAccount(): void {
+        const rows = this.realgridDataProvider.getJsonRows();
 
+        console.log(rows);
     }
 
     addRow(): void {
@@ -182,6 +187,7 @@ export class RealgridComponent implements OnInit {
     deleteRow(): void {
         const curr = this.grid.getCurrent();
         this.realgridDataProvider.removeRow(curr.dataRow);
+        //this.grid.deleteSelection(true);
     }
 
     excelExport(): void{

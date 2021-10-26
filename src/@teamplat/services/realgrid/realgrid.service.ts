@@ -25,8 +25,8 @@ export class FuseRealGridService {
         /**
          * 그리드 기본 설정
          */
-        gridView.header.height = 30;
-        gridView.displayOptions.rowHeight = 30;
+        gridView.header.height = 20;
+        gridView.displayOptions.rowHeight = 20;
         //인디케이터 (NO)
         gridView.setRowIndicator({
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
@@ -35,7 +35,7 @@ export class FuseRealGridService {
         //상태바
         gridView.setStateBar({visible: true});
         //체크바
-        gridView.setCheckBar({visible: false});
+        gridView.setCheckBar({visible: true});
         gridView.setContextMenu([
             {
                 label: '-' // menu separator를 삽입합니다.
@@ -61,7 +61,9 @@ export class FuseRealGridService {
 
             dataProvider.clearRows();
 
-            dataProvider.setRows(data);
+            //dataProvider.setRows(data);
+
+            dataProvider.fillJsonData(data, { fillMode: 'set' });
 
             // @ts-ignore
             gridView.refresh();

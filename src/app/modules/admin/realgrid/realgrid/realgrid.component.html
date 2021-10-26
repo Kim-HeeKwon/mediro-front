@@ -103,6 +103,27 @@
                         (click)="excelExport()">
                         <mat-icon [svgIcon]="'heroicons_outline:download'"></mat-icon>
                     </button>
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="addRow()">
+                        +
+                    </button>
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="deleteRow()">
+                        -
+                    </button>
+                    <button
+                        class="ml-2"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="saveAccount()">
+                        <mat-icon [svgIcon]="'heroicons_solid:save'">저장</mat-icon>
+                    </button>
                     <!--                <button style="border: 1px solid; width: 5%;" (click)="selectAccount()">조회</button>-->
                     <!--                <button style="border: 1px solid; width: 5%;" (click)="excelExport()">down</button>-->
                 </div>
