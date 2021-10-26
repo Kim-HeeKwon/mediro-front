@@ -286,6 +286,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
+                    this.isProgressSpinner = true;
                     let createList;
                     let updateList;
                     let deleteList;
@@ -296,7 +297,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this.estimateDetails$
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((estimateDetail) => {
-                                this.isProgressSpinner = true;
                                 estimateDetail.forEach((sendData: any) => {
                                     if (sendData.flag) {
                                         if (sendData.flag === 'C') {

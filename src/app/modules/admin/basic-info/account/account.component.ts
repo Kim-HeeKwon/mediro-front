@@ -452,7 +452,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
         accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
-
+        this.isProgressSpinner = true;
         this._accountService.updateAccount(accountData)
             .subscribe(
                 (param: any) => {
@@ -501,6 +501,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._accountService.deleteAccount(accountData)
                         .subscribe(
                             (param: any) => {
@@ -535,6 +536,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     closeAddressPopup(): void
     {
+        this.isProgressSpinner = false;
         this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
 }

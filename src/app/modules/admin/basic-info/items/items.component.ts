@@ -55,7 +55,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     items$: Observable<InventoryItem[]>;
     pagination: InventoryPagination | null = null;
-
+    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 0;
@@ -272,6 +272,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     closeDetails(): void
     {
+        this.isProgressSpinner = false;
         this.selectedItem = null;
     }
 
@@ -339,7 +340,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     deleteItem(): void
     {
         const itemData = this.selectedItemForm.getRawValue();
-
+        this.isProgressSpinner = true;
         this._itemService.deleteItem(itemData)
             .subscribe(
                 (param: any) => {
@@ -358,7 +359,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     updateItem(): void
     {
         const itemData = this.selectedItemForm.getRawValue();
-
+        this.isProgressSpinner = true;
         this._itemService.updateItem(itemData)
             .subscribe(
                 (param: any) => {

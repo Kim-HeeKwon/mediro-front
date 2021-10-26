@@ -468,8 +468,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                this.isProgressSpinner = true;
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -477,6 +477,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((estimateDetail: any) => {
                             if (estimateDetail != null) {
+                                this.isProgressSpinner = false;
                                 const row = {header: estimateHeader, detail: estimateDetail};
                                 this._router.navigate(['estimate-order/order/order-new'], {
                                     state: {

@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import RealGrid, {DataFieldObject, FormView, GridView, LocalDataProvider, ValueType} from 'realgrid';
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {AccountService} from "../../basic-info/account/account.service";
-import {Observable, Subject} from "rxjs";
-import {AccountData} from "../../basic-info/account/account.types";
-import {takeUntil} from "rxjs/operators";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import RealGrid, {DataFieldObject, FormView, GridView, HandleVisibility, LocalDataProvider, ValueType} from 'realgrid';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {AccountService} from '../../basic-info/account/account.service';
+import {Observable, Subject} from 'rxjs';
+import {AccountData} from '../../basic-info/account/account.types';
+import {takeUntil} from 'rxjs/operators';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-realgrid',
@@ -89,18 +89,19 @@ export class RealgridComponent implements OnInit {
             {name: 'email', fieldName: 'email', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '이메일'},
                 placeHolder: '이메일을 입력해주세요.'},
         ];
-
+        // this.gridView.setSortingOptions({
+        //     enabled: false
+        // });
         this.realgridDataProvider = this._realGridsService.gfn_CreateDataProvider();
         this.grid = this._realGridsService.gfn_CreateGrid(
             this.realgridDataProvider,
             'realgrid',
             this.realgridColumns,
             this.realgridFields);
-
         const filter = [{name: '고객사',
-            criteria: "value = 'CUST'"},
+            criteria: 'value = \'CUST\''},
             {name: '공급사',
-            criteria: "value = 'SUPR'"}];
+            criteria: 'value = \'SUPR\''}];
         this._realGridsService.gfn_FilterGrid(this.grid,'accountType',filter);
         this._realGridsService.gfn_AutoFilterGrid(this.grid,'businessCategory',true);
 
@@ -112,7 +113,10 @@ export class RealgridComponent implements OnInit {
             softDeleting: true,
            //hideDeletedRows: true,
         });
-        //this.grid.deleteSelection(true);
+        console.log(this.realgridColumns);
+        // this.grid.sortingOptions.enabled = false;
+        // this.grid.sortingOptions.handleVisibility = 'always';
+        // this.grid.deleteSelection(true);
         //undo, Redo
         this.grid.undoable = true;
 
@@ -155,6 +159,10 @@ export class RealgridComponent implements OnInit {
         // });
     }
 
+    // sortAccount(): void {
+    //     this.grid.sortingOptions.enabled = false;
+    //     this.grid.sortingOptions.handleVisibility = 'always';
+    // }
 
     selectAccount(): void{
         this._accountService.getAccount(0,1000,'account','asc',{});
@@ -164,7 +172,7 @@ export class RealgridComponent implements OnInit {
             .subscribe((accounts: any) => {
                 if(accounts != null){
                     this._realGridsService.gfn_DataSetGrid(this.grid, this.realgridDataProvider, accounts);
-                    //console.log(accounts);
+                    // console.log(accounts);
                 }
 
                 // Mark for check
