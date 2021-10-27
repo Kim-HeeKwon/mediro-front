@@ -298,7 +298,6 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._outboundService.createOut(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
-                    this.isProgressSpinner = true;
                     this.alertMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
