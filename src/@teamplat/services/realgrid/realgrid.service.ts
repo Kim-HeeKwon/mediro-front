@@ -15,13 +15,27 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/member-ordering,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any): RealGrid.GridView{
+    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any): RealGrid.GridView{
         const gridView = new RealGrid.GridView(id);
         gridView.setDataSource(dataProvider);
 
         dataProvider.setFields(fields);
         gridView.setColumns(columns);
         gridView.displayOptions.emptyMessage = '표시할 데이터가 없습니다.';
+
+        gridView.footers.visible = false;
+        //상태바
+        gridView.setStateBar({visible: false});
+        //체크바
+        gridView.setCheckBar({visible: false});
+
+        gridView.undoable = true;
+
+        if(option !== undefined){
+            if(option.footers){gridView.footers.visible = option.footers;}
+            if(option.stateBar){gridView.setStateBar({visible: option.stateBar});}
+            if(option.checkBar){gridView.setCheckBar({visible: option.checkBar});}
+        }
         /**
          * 그리드 기본 설정
          */
@@ -32,10 +46,6 @@ export class FuseRealGridService {
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
             headText: 'No',
             footText: ''});
-        //상태바
-        gridView.setStateBar({visible: true});
-        //체크바
-        gridView.setCheckBar({visible: true});
         gridView.setContextMenu([
             {
                 label: '-' // menu separator를 삽입합니다.
@@ -105,15 +115,24 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_ExcelExportGrid(gridView: RealGrid.GridView): void{
+    gfn_ExcelExportGrid(gridView: RealGrid.GridView, fileName?: string ): void{
+
+        if(fileName === undefined){
+            fileName = 'Excel';
+        }
+
         gridView.exportGrid({
             type: 'excel',
             target: 'local',
-            fileName: '거래처 목록.xlsx',
+            fileName: fileName + '.xlsx',
             showProgress: true,
             compatibility: true,
+            sheetName: fileName,
             progressMessage: '엑셀 Export중입니다.',
-
+            // exportGrids: [
+            //     { grid: gridView, sheetName: '거래처' },
+            //     { grid: gridView, sheetName: '거래처2' }
+            // ]
         });
     }
 }
