@@ -67,37 +67,47 @@ export class RealgridComponent implements OnInit {
         });
 
         this.realgridColumns = [
-            {name: 'account', fieldName: 'account', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '거래처'}},
-            {name: 'descr', fieldName: 'descr', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '거래처 명'},
+            {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '거래처'}},
+            {name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '거래처 명'},
                 },
-            {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styles: {textAlignment: 'center'},
+            {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'center-cell-text',
                 header: {text: '유형'},
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.accountType),
             },
-            {name: 'address', fieldName: 'address', type: 'data', width: '200', styles: {textAlignment: 'left'}, header: {text: '주소'}},
-            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '200', styles: {textAlignment: 'left'}, header: {text: '상세주소'}},
-            {name: 'addressDetail', fieldName: 'representName', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '대표자명'}},
-            {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '종목'}},
-            {name: 'businessCondition', fieldName: 'businessCondition', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '업태'}},
-            {name: 'custBusinessName', fieldName: 'custBusinessName', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '사업자명'}},
-            {name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '사업자번호'}},
-            {name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '전화번호'},
+            {name: 'address', fieldName: 'address', type: 'data', width: '200', styleName: 'left-cell-text', header: {text: '주소'}},
+            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '200', styleName: 'left-cell-text', header: {text: '상세주소'}},
+            {name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '대표자명'}},
+            {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '종목'}},
+            {name: 'businessCondition', fieldName: 'businessCondition', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '업태'}},
+            {name: 'custBusinessName', fieldName: 'custBusinessName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '사업자명'}},
+            {name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '사업자번호'}},
+            {name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '전화번호'},
                 placeHolder: ''},
-            {name: 'fax', fieldName: 'fax', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '팩스'},
+            {name: 'fax', fieldName: 'fax', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '팩스'},
                 placeHolder: ''},
-            {name: 'email', fieldName: 'email', type: 'data', width: '100', styles: {textAlignment: 'left'}, header: {text: '이메일'},
+            {name: 'email', fieldName: 'email', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '이메일'},
                 placeHolder: '이메일을 입력해주세요.'},
         ];
         // this.gridView.setSortingOptions({
         //     enabled: false
         // });
+
+
         this.realgridDataProvider = this._realGridsService.gfn_CreateDataProvider();
+
+        const gridListOption = {
+            stateBar : true,
+            checkBar : true,
+            footers : false,
+        };
         this.grid = this._realGridsService.gfn_CreateGrid(
             this.realgridDataProvider,
             'realgrid',
             this.realgridColumns,
-            this.realgridFields);
+            this.realgridFields,
+            gridListOption);
+
         const filter = [{name: '고객사',
             criteria: 'value = \'CUST\''},
             {name: '공급사',
@@ -118,7 +128,6 @@ export class RealgridComponent implements OnInit {
         // this.grid.sortingOptions.handleVisibility = 'always';
         // this.grid.deleteSelection(true);
         //undo, Redo
-        this.grid.undoable = true;
 
         // this.formView = this.grid._view.container.formView;
         // this.formView.visible = false;
@@ -182,8 +191,11 @@ export class RealgridComponent implements OnInit {
 
     saveAccount(): void {
         const rows = this.realgridDataProvider.getJsonRows();
+        const row = this.realgridDataProvider.getRows();
+
 
         console.log(rows);
+        console.log(row);
     }
 
     addRow(): void {
@@ -199,7 +211,7 @@ export class RealgridComponent implements OnInit {
     }
 
     excelExport(): void{
-        this._realGridsService.gfn_ExcelExportGrid(this.grid);
+        this._realGridsService.gfn_ExcelExportGrid(this.grid, '거래처 목록');
     }
 
     mobile(): void{

@@ -94,6 +94,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/basic-info/account'
             },
             {
+                id      : 'basic-info.account_Grid',
+                title   : '거래처관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:library',
+                link    : '/basic-info/account_Grid'
+            },
+            {
                 id      : 'basic-info.items',
                 title   : '품목관리',
                 subtitle: '',
