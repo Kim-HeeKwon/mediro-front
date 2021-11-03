@@ -39,8 +39,8 @@ export class FuseRealGridService {
         /**
          * 그리드 기본 설정
          */
-        gridView.header.height = 20;
-        gridView.displayOptions.rowHeight = 20;
+        gridView.header.height = 30;
+        gridView.displayOptions.rowHeight = 30;
         //인디케이터 (NO)
         gridView.setRowIndicator({
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
@@ -57,7 +57,10 @@ export class FuseRealGridService {
         ]);
 
         //정렬
-        gridView.sortingOptions.enabled = true;
+        gridView.sortingOptions.enabled = false;
+        // @ts-ignore
+        gridView.sortingOptions.handleVisibility = 'always';
+
         //컬럼 move
         gridView.displayOptions.columnMovable = true;
         return gridView;

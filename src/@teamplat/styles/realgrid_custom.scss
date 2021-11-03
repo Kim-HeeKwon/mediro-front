@@ -1,11 +1,11 @@
 .rg-header {
     //text-align: center;
     //font-weight: bold;
-    //color: #ffffff;
     ///* 헤더의 색깔 변경 */
-    //background: #10172A;
+    background: #7781E5; //#7781E5
+    color: #ffffff;
     font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    font-weight: bold;
+    font-weight: 400;
 }
 
 .center-cell-text {
@@ -18,25 +18,49 @@
     text-align: right;
 }
 
-.rg-renderer{
-    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-}
-
-.rg-head .rg-table tr td.rg-rowindicator-head{
-    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-}
-
-.rg-rowbarcontainer .rg-table tr td.rg-rowindicator-cell{
-    font-family: "Inter var", ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-}
-/* ... */
-
 .rg-header-focus {
     /* 포커스 헤더의 색깔 변경 */
-    background: var(--fuse-primary);
+    background: #7781E5;
     color: #FFFFFF;
 }
 
 .rg-body .rg-table tr td, .rg-fixed-body .rg-table tr td{
-    //border-right: 0px;
+    border-right: 0px;
+}
+.rg-header .rg-table tr td{
+    border-right: 0px;
+}
+
+.rg-grid{
+    border: none;
+}
+
+.rg-head .rg-table tr td{
+    background: #7781E5;
+    color: #ffffff;
+}
+
+.rg-header-renderer{
+    //padding : 0 10px;
+    //padding-top: 4px;
+    padding-left: 2px;
+    padding-bottom: 0px;
+}
+
+.rg-renderer{
+    padding : 0 10px;
+    //padding-top: 4px;
+}
+
+.mediro-form-custom{
+    font-size: 12px !important;
+    min-height: 30px !important;
+}
+
+.mat-paginator-range-actions{
+    width: 60%;
+}
+.mat-paginator-container{
+    width: 40%;
+
 }

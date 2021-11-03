@@ -1,5 +1,5 @@
 /* Variables */
-$fuse-vertical-navigation-width: 240;
+$fuse-vertical-navigation-width: 210;
 
 fuse-vertical-navigation {
     position: sticky;
@@ -144,6 +144,8 @@ fuse-vertical-navigation {
             overflow-x: hidden;
             overflow-y: auto;
             overscroll-behavior: contain;
+            //border-right: 0.1rem solid #f6f6f8;
+            //background: #0F4C82;
 
             /* Divider */
             > fuse-vertical-navigation-divider-item {
@@ -224,7 +226,7 @@ fuse-vertical-navigation {
                 align-items: center;
                 justify-content: flex-start;
                 padding: 10px 16px;
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 500;
                 line-height: 20px;
                 text-decoration: none;
