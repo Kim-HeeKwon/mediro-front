@@ -1,16 +1,95 @@
-<!--<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
     <mat-drawer-container class="flex-auto sm:h-full">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #drawer>
+            <!-- Header -->
+            <div class="flex items-center justify-between m-4 mr-4 sm:my-4">
+                <!-- Title -->
+                <div class="text-3xl font-extrabold tracking-tight leading-none">검색조건</div>
+                <!-- Close button -->
+                <div class="lg:hidden">
+                    <button
+                        mat-icon-button
+                        (click)="drawer.close()">
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- Panel links -->
+            <div class="flex flex-col divide-y border-t border-b">
+                <!-- 검색조건 -->
+                <form [formGroup]="searchForm">
+                    <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+                        <!-- Name -->
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'accountType'">
+                                    <ng-container *ngFor="let accountType of accountType">
+                                        <mat-option [value]="accountType.id">
+                                            {{accountType.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select [formControlName]="'searchCondition'">
+                                    <ng-container *ngFor="let searchcondition of searchCondition">
+                                        <mat-option [value]="searchcondition.id">
+                                            {{searchcondition.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'searchText'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'검색조건을 선택해주세요.'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <!-- Actions -->
+                <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
+                    <!-- Add product button -->
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="selectAccount()">
+                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                            <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+
+        <!-- Drawer content -->
         <mat-drawer-content class="flex flex-col">
-            &lt;!&ndash; Main &ndash;&gt;
-            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
-                &lt;!&ndash; Load settings panel &ndash;&gt;
+            <!-- Main -->
+            <div class="flex-auto px-11 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+                <!-- Load settings panel -->
                 <div class="mt-8">
                     <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
-                        &lt;!&ndash; Header &ndash;&gt;
-                        <div class="flex flex-col justify-between">
-                            <div class="flex items-center justify-between px-6 pt-4 pb-2">
-                                &lt;!&ndash; Add product button &ndash;&gt;
-                                <div class="text-3xl font-extrabold tracking-tight">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between mediro-backcolor-custom">
+                            <div class="flex items-center justify-between px-11 pt-4 pb-2">
+                                <!-- Add product button -->
+                                <div class="text-2xl font-extrabold tracking-tight">
                                     거래처 관리
                                     <fuse-user-help
                                         [helpCd]="'ACCOUNT'"
@@ -18,8 +97,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-                            &lt;!&ndash; 검색조건 &ndash;&gt;
+                        <div *ngIf="!false" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-11 border-b">
+                            <!-- 검색조건 -->
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
                                 <form
                                     [formGroup]="searchForm">
@@ -32,6 +111,15 @@
                                             </ng-container>
                                         </mat-select>
                                     </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition'">
+                                            <ng-container *ngFor="let searchcondition of searchCondition">
+                                                <mat-option [value]="searchcondition.id">
+                                                    {{searchcondition.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
                                         <input
                                             matInput
@@ -39,104 +127,114 @@
                                             [autocomplete]="'off'"
                                             [placeholder]="'검색조건을 선택해주세요.'">
                                     </mat-form-field>
-                                    &lt;!&ndash; Search &ndash;&gt;
-                                    &lt;!&ndash;                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">&ndash;&gt;
-                                    &lt;!&ndash;                    <mat-icon&ndash;&gt;
-                                    &lt;!&ndash;                        matPrefix&ndash;&gt;
-                                    &lt;!&ndash;                        [svgIcon]="'heroicons_outline:search'"></mat-icon>&ndash;&gt;
-                                    &lt;!&ndash;                    <input&ndash;&gt;
-                                    &lt;!&ndash;                        matInput&ndash;&gt;
-                                    &lt;!&ndash;                        [formControlName]="'searchText'"&ndash;&gt;
-                                    &lt;!&ndash;                        [autocomplete]="'off'"&ndash;&gt;
-                                    &lt;!&ndash;                        [placeholder]="'상품검색'">&ndash;&gt;
-                                    &lt;!&ndash;                </mat-form-field>&ndash;&gt;
                                 </form>
-                            </div>
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                                &lt;!&ndash; Add product button &ndash;&gt;
                                 <button
-                                    class="ml-2"
+                                    class="ml-2 mediro-btn-custom"
                                     mat-flat-button
                                     [color]="'primary'"
                                     (click)="selectAccount()">
                                     <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                                     <span class="ml-2 mr-1">조회</span>
                                 </button>
+
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <!-- Add product button -->
+                                <button
+                                    style="background: none;"
+                                    *ngIf="!isSearchForm"
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-flat-button
+                                    (click)="searchFormClick()">
+                                    <span class="ml-2 mr-1 mediro-span-custom">검색 조건 열기</span>
+                                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                </button>
+                                <button
+                                    style="background: none;"
+                                    *ngIf="isSearchForm"
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-flat-button
+                                    (click)="searchFormClick()">
+                                    <span class="ml-2 mr-1 mediro-span-custom">검색 조건 닫기</span>
+                                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="excelExport()">
+                                    <mat-icon [svgIcon]="'iconsmind:file_excel'"></mat-icon>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom mediro-btn-custom-color"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectAccount()">
+                                    <span class="ml-2 mr-1">통합정보 거래처 가져오기</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="selectAccount()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                    <span class="ml-2 mr-1">신규</span>
+                                </button>
+                            </div>
+
+                        </div>
+                        <div *ngIf="isSearchForm" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-11 border-b">
+                            <!-- 검색조건 -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <form
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition2'">
+                                            <ng-container *ngFor="let searchCondition2 of searchCondition2">
+                                                <mat-option [value]="searchCondition2.id">
+                                                    {{searchCondition2.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectAccount()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                    <span class="ml-2 mr-1">추가 검색</span>
+                                </button>
                             </div>
                         </div>
+                        <div
+                            id="realgrid">
+
+                        </div>
+                        <mat-paginator
+                            class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                            [ngClass]="{'pointer-events-none': false}"
+                            [length]="pagenation === null ? 0 : pagenation.length"
+                            [pageIndex]="pagenation === null ? 0 : pagenation.page"
+                            [pageSize]="pagenation === null ? 0 : pagenation.size"
+                            [pageSizeOptions]="[20, 40, 60, 80, 100]"
+                            (page)="pageEvent($event)"
+                            [showFirstLastButtons]="true"></mat-paginator>
                     </div>
                 </div>
             </div>
         </mat-drawer-content>
     </mat-drawer-container>
-</div>-->
-<div style="position: relative; width: 100%">
-
-    <div style="width:100%; height: 10%;">
-        <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
-            <div class="flex flex-col justify-between">
-                <div class="flex items-center px-6 pt-4 pb-2">
-                    <!-- Add product button -->
-                    <div class="text-3xl font-extrabold tracking-tight">
-                        거래처 관리
-                        <fuse-user-help
-                            [helpCd]="'ACCOUNT'"
-                            [display]="true"></fuse-user-help>
-                    </div>
-                    <button
-                        class="sm:hidden -ml-2"
-                        mat-icon-button>
-                        <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="selectAccount()">
-                        <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                        <span class="ml-2 mr-1">조회</span>
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="excelExport()">
-                        <mat-icon [svgIcon]="'heroicons_outline:download'"></mat-icon>
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="addRow()">
-                        +
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="deleteRow()">
-                        -
-                    </button>
-                    <button
-                        class="ml-2"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="saveAccount()">
-                        <mat-icon [svgIcon]="'heroicons_solid:save'">저장</mat-icon>
-                    </button>
-                    <!--                <button style="border: 1px solid; width: 5%;" (click)="selectAccount()">조회</button>-->
-                    <!--                <button style="border: 1px solid; width: 5%;" (click)="excelExport()">down</button>-->
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-    <div id="realgrid"></div>
-<!--    <button style="border: 1px solid; width: 5%;" (click)="saveAccount()">저장</button>-->
-<!--    <button style="border: 1px solid; width: 5%;" (click)="addRow()">+</button>-->
-<!--    <button style="border: 1px solid; width: 5%;" (click)="deleteRow()">-</button>-->
-<!--    <input type="file" name="excelFile" id="xlf"/>-->
-<!--    <button style="border: 1px solid; width: 5%;" (click)="mobile()">모바일</button>-->
 </div>
-

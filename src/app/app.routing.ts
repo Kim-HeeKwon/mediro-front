@@ -81,8 +81,8 @@ export const appRoutes: Route[] = [
                     // stock
                     {path: 'stock', loadChildren: () => import('app/modules/admin/basic-info/stock/stock.module').then(m => m.StockModule)},
                     // account
+                    //{path: 'account', loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
                     {path: 'account', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
-                    {path: 'account_Grid', loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
                     // supplier
                     //{path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
                     // items

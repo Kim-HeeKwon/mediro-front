@@ -10,4 +10,7 @@ export class Columns{
     lookupDisplay?: boolean;
     styleName?: string;
     placeHolder?: string;
+    values?: object;
+    labels?: object;
+    widget?: object;
 };

@@ -694,7 +694,7 @@
                 border: 0;
 
                 .mat-input-element {
-                    padding: 10px 0; // steve modify
+                    //padding: 10px 0; // steve modify
                     margin-top: 0;
                 }
 
@@ -917,7 +917,8 @@
         .mat-form-field-wrapper {
 
             .mat-form-field-flex {
-                min-height: 40px;
+                //font-size: 12px;
+                min-height: 40px !important;
 
                 .mat-form-field-prefix,
                 .mat-form-field-suffix {
@@ -949,7 +950,7 @@
                 .mat-form-field-infix {
 
                     .mat-input-element {
-                        padding: 11px 0;
+                        //padding: 11px 0;
                     }
                 }
             }
@@ -1205,7 +1206,7 @@
         .mat-paginator-page-size {
             align-items: center;
             min-height: 40px;
-            margin: 8px;
+            //margin: 8px;
 
             .mat-paginator-page-size-label {
                 display: none;
@@ -1223,6 +1224,7 @@
                     margin-bottom: 0;
 
                     .mat-form-field-flex {
+                        border-radius: 0px;
                         min-height: 32px;
                         padding: 0 10px;
                     }
@@ -1232,12 +1234,29 @@
 
         /* Range actions */
         .mat-paginator-range-actions {
-            margin: 8px 0;
+            //margin: 8px 0;
 
             .mat-paginator-range-label {
                 margin-right: 16px;
             }
         }
+    }
+    // override material paginator page switch
+
+    .mat-paginator-navigation-first {
+        order: 1;
+    }
+    .mat-paginator-navigation-previous {
+        order: 2;
+    }
+    .mat-paginator-range-label {
+        order: 3;
+    }
+    .mat-paginator-navigation-next {
+        order: 4;
+    }
+    .mat-paginator-navigation-last {
+        order: 5;
     }
 }
 

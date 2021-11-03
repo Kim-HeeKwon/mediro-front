@@ -7,38 +7,43 @@
     [opened]="!isScreenSmall">
     <!-- Navigation header hook -->
     <ng-container fuseVerticalNavigationContentHeader>
-        <div class="flex items-center w-full p-4 pl-6">
+        <div class="flex items-center w-full p-4 pl-4" style="background: #ffffff; justify-content: center;">
             <!-- Logo -->
             <div class="flex items-center justify-center">
                 <img
                     class="w-16"
                     src="assets/images/logo/logo-text.png">
             </div>
-            <!-- Components -->
-            <div class="flex items-center ml-auto">
-                <!-- <notifications [notifications]="data.notifications"></notifications>-->
-                <user-menu [showAvatar]="false"></user-menu>
-            </div>
         </div>
         <!-- User -->
-        <div class="flex flex-col items-center w-full p-4">
-            <div class="flex flex-col items-center justify-center w-full">
-                <div class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
-                    {{user.name}}
+        <div class="flex justify-center w-full p-4">
+            <div class="flex flex-col items-center justify-center">
+                <div style="font-size: 12px;" class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
+
+                    <span style="margin-left: 30px;">{{user.name}}</span>
+                    <user-menu [showAvatar]="false"></user-menu>
                 </div>
-                <div class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
+                <div style="font-size: 12px;" class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
                     {{user.email}}
                 </div>
             </div>
+<!--            <div class="flex flex-col items-center justify-center">-->
+<!--                &lt;!&ndash; Components &ndash;&gt;-->
+<!--                <div class="flex ml-auto">-->
+<!--                    &lt;!&ndash; <notifications [notifications]="data.notifications"></notifications>&ndash;&gt;-->
+<!--                    <user-menu [showAvatar]="false"></user-menu>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </ng-container>
     <!-- Navigation footer hook -->
     <ng-container fuseVerticalNavigationContentFooter>
-        <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4">
-            <img
-                class="max-w-36"
-                src="assets/images/logo/logo-text.png">
-        </div>
+<!--        <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4"-->
+<!--                style="background: #ffffff;">-->
+<!--            <img-->
+<!--                class="max-w-36"-->
+<!--                src="assets/images/logo/logo-text.png">-->
+<!--        </div>-->
     </ng-container>
 </fuse-vertical-navigation>
 
@@ -49,7 +54,7 @@
 <!--    </div>-->
 
     <!-- Header -->
-    <div class="sticky top-0 flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
+    <div class="sticky top-0 flex flex-0 items-center w-full h-13 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
         <!-- Navigation toggle button -->
         <button *ngIf="isMobile"
             mat-icon-button

@@ -26,7 +26,6 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 import * as moment from 'moment';
-import {NewAccountComponent} from "../../basic-info/account/new-account/new-account.component";
 
 @Component({
     selector: 'app-inbound',
@@ -513,34 +512,4 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this._changeDetectorRef.markForCheck();
     }
 
-    createAccount(): void
-    {
-        if(!this.isMobile){
-            this._matDialog.open(NewAccountComponent, {
-                autoFocus: false,
-                disableClose: true,
-                data     : {
-                    note: {}
-                },
-            });
-        }else{
-            const d = this._matDialog.open(NewAccountComponent, {
-                autoFocus: false,
-                width: 'calc(100% - 50px)',
-                maxWidth: '100vw',
-                maxHeight: '80vh',
-                disableClose: true
-            });
-            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
-                }
-            });
-            d.afterClosed().subscribe(() => {
-                smallDialogSubscription.unsubscribe();
-            });
-        }
-    }
 }

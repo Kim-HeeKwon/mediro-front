@@ -18,7 +18,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'analytics.dashboards',
-                title: '애널리틱',
+                title: '애널리틱스',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
                 link : '/pages/error/500'
@@ -92,14 +92,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:library',
                 link    : '/basic-info/account'
-            },
-            {
-                id      : 'basic-info.account_Grid',
-                title   : '거래처관리',
-                subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:library',
-                link    : '/basic-info/account_Grid'
             },
             {
                 id      : 'basic-info.items',
