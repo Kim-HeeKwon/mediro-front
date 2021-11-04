@@ -162,6 +162,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         if(this._activatedRoute.snapshot.paramMap['params'].length !== (null || undefined)){
 
+            console.log(this._activatedRoute.snapshot.paramMap['params']);
             this.estimateHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );

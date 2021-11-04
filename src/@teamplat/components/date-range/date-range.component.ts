@@ -666,7 +666,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         }else if(dateGbn === '1mon'){
             this.range = {
                 end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-1, 'month').endOf('month').toISOString()
+                start  : moment().utc(false).add(-2, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '3mon'){
             this.range = {
