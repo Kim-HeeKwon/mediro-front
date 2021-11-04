@@ -1,4 +1,4 @@
-#realgrid {
+.realgrid {
     //margin-left: 8px;
     //margin-right: 8px;
     width: 100%;
@@ -48,28 +48,16 @@
     font-weight: 400;
 }
 
-.mat-form-field {
+:host-context ::ng-deep .mat-form-field {
     &.fuse-mat-dense {
         .mat-form-field-wrapper {
             .mat-form-field-flex {
-
                 font-size: 12px !important;
                 min-height: 30px !important;
+                max-height: 30px !important;
+                height: 30px !important;
+                border-radius: 0px !important;
             }
         }
-        font-size: 12px !important;
-        min-height: 30px !important;
-    }
-    &.fuse-mat-no-subscript {
-
-        .mat-form-field-wrapper {
-            .mat-form-field-flex {
-
-                font-size: 12px !important;
-                min-height: 30px !important;
-            }
-        }
-        font-size: 12px !important;
-        min-height: 30px !important;
     }
 }

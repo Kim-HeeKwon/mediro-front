@@ -60,7 +60,6 @@ export class FuseRealGridService {
         gridView.sortingOptions.enabled = false;
         // @ts-ignore
         gridView.sortingOptions.handleVisibility = 'always';
-
         //컬럼 move
         gridView.displayOptions.columnMovable = true;
         return gridView;
@@ -137,5 +136,21 @@ export class FuseRealGridService {
             //     { grid: gridView, sheetName: '거래처2' }
             // ]
         });
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_Destory(gridList: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
+
+        //데이터 초기화
+        dataProvider.clearRows();
+
+        //grid, provider 초기화
+        gridList.destroy();
+        dataProvider.destroy();
+
+        //LocalDataProvider와 GridView 객체 초기화
+        gridList = null;
+        dataProvider = null;
     }
 }

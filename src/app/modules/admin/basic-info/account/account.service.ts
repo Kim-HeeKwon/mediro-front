@@ -47,7 +47,7 @@ export class AccountService {
      *
      * @returns
      */
-    getAccount(page: number = 0, size: number = 10, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getAccount(page: number = 0, size: number = 20, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagenation: AccountPagenation; account: AccountData[] }> {
 
         const searchParam = {};

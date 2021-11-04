@@ -134,6 +134,7 @@ export const appRoutes: Route[] = [
             {path: 'realgrid', children: [
                     // bill
                     {path: 'realgrid', loadChildren: () => import('app/modules/admin/realgrid/realgrid/realgrid.module').then(m => m.RealgridModule)},
+                    {path: 'realgridHD', loadChildren: () => import('app/modules/admin/realgrid/header-detail/header-detail.module').then(m => m.HeaderDetailModule)},
                 ]},
             // udi
             {path: 'udi', children: [

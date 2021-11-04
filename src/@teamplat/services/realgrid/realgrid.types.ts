@@ -2,6 +2,7 @@ export class Columns{
     name?: string;
     fieldName: string;
     type?: string;
+    dataType?: string;
     width?: string;
     styles?: object;
     header?: object;
@@ -13,4 +14,5 @@ export class Columns{
     values?: object;
     labels?: object;
     widget?: object;
+    numberFormat?: any;
 };

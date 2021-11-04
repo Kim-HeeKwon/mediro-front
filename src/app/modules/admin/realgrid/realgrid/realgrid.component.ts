@@ -215,6 +215,17 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
+        this._accountService.accounts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((accounts: any) => {
+                if(accounts != null){
+                    this._realGridsService.gfn_DataSetGrid(this.grid, this.realgridDataProvider, accounts);
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the pagenation
         this._accountService.pagenation$
             .pipe(takeUntil(this._unsubscribeAll))
