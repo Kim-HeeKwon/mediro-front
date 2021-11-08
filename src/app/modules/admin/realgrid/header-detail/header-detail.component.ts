@@ -9,14 +9,21 @@ import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/con
 import {ShortcutsService} from "../../../../layout/common/shortcuts/shortcuts.service";
 import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {merge, Subject} from "rxjs";
+import {merge, Observable, Subject} from "rxjs";
 import * as moment from "moment";
-import {EstimateHeaderPagenation} from "../../estimate-order/estimate/estimate.types";
+import {
+    Estimate,
+    EstimateDetail,
+    EstimateHeader,
+    EstimateHeaderPagenation
+} from "../../estimate-order/estimate/estimate.types";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
 import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
 import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {map, switchMap, takeUntil} from "rxjs/operators";
+import {CommonPopupComponent} from "../../../../../@teamplat/components/common-popup";
+import {CommonPopupItemsComponent} from "../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector: 'app-header-detail',
@@ -34,6 +41,8 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
     status: CommonCode[] = null;
     type: CommonCode[] = null;
     estimateHeaderColumns: Columns[];
+    estimateHeaders$: Observable<EstimateHeader[]>;
+    estimateDetails$ = new Observable<EstimateDetail[]>();
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
@@ -45,8 +54,8 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         }];
     searchCondition2: CommonCode[] = [
         {
-            id: '100',
-            name: '거래처 명'
+            id: 'qtNo',
+            name: '견적 번호'
         }];
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -128,9 +137,11 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             type: ['ALL'],
             account: [''],
             accountNm: [''],
+            qtNo: [''],
             searchCondition: ['100'],
-            searchCondition2: ['100'],
+            searchCondition2: ['qtNo'],
             searchText: [''],
+            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -159,7 +170,7 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 컬럼
         this.estimateHeaderColumns = [
             {name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적번호', styleName: 'left-cell-text'},},
+                , header: {text: '견적번호', styleName: 'left-cell-text'}},
             {name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '견적 생성일자' , styleName: 'left-cell-text'}
             },
@@ -193,7 +204,7 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                 , renderer: {
                     type:'html',
                     template: '<button class="mediro-cell-button">' +
-                                '<span>바로가기</span>' +
+                                '<span>발주서</span>' +
                                 '</button>',
                 }},
             {name: 'soCreate', fieldName: 'soCreate', type: 'data', width: '100', styleName: 'left-cell-text'
@@ -201,7 +212,7 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                 , renderer: {
                     type:'html',
                     template: '<button class="mediro-cell-button">' +
-                        '<span>바로가기</span>' +
+                        '<span>주문서</span>' +
                         '</button>',
                 }},
             {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '150', styleName: 'left-cell-text'
@@ -213,10 +224,15 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
+            stateBar : true,
             checkBar : true,
             footers : false,
         };
+
+        this.estimateHeaderDataProvider.setOptions({
+            softDeleting: true,
+            deleteCreated: true
+        });
 
         //그리드 생성
         this.gridList = this._realGridsService.gfn_CreateGrid(
@@ -232,18 +248,22 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             insertable: false,
             appendable: false,
             editable: false,
-            //deletable: true,
+            deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
+            //hideDeletedRows: false,
         });
+        this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
+        //this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if(clickData.cellType === 'header'){
+
+                this.searchSetValue();
                 this._estimateService.getHeader(this.estimateHeaderPagenation.page,this.estimateHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
             }
             if(this.orderBy === 'asc'){
@@ -254,16 +274,45 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         };
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            //console.log(grid.getValues(clickData.dataRow));
-            //this._router.navigate(['estimate-order/estimate/estimate-detail', grid.getValues(clickData.dataRow)]);
+            if(clickData.cellType !== 'header'){
+                this._router.navigate(['realgrid/realgridHD/detail', grid.getValues(clickData.dataRow)]);
+            }
         };
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        // this.estimateHeaderDataProvider.onRowStateChanged = (provider, row) => {
+        //     console.log(row);
+        //     console.log(this.estimateHeaderDataProvider.getRowState(row) === 'deleted');
+        // };
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellItemClicked = (grid, index, clickData) => {
-            console.log(grid);
-            console.log(index);
-            console.log(clickData);
-            console.log(grid.getValues(index.dataRow));
+
+            if(clickData.target.innerText === '발주서'){
+                this.order(grid.getValues(index.dataRow));
+            }else if(clickData.target.innerText === '주문서'){
+                this.salesorder(grid.getValues(index.dataRow));
+
+            }
+
+            // const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
+            //     data: {
+            //         popup : 'P$_ALL_ITEM',
+            //         headerText : '품목 조회',
+            //     },
+            //     autoFocus: false,
+            //     maxHeight: '90vh',
+            //     disableClose: true
+            // });
+            //
+            // popup.afterClosed()
+            //     .pipe(takeUntil(this._unsubscribeAll))
+            //     .subscribe((result) => {
+            //         if(result){
+            //             console.log(result);
+            //             this._changeDetectorRef.markForCheck();
+            //         }
+            //     });
         };
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
@@ -281,33 +330,235 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             });
     }
 
-    selectHeader(): void {
+    searchSetValue(): void{
         if (this.searchForm.getRawValue().searchCondition === '100') {
             this.searchForm.patchValue({'account': ''});
             this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
         }
+        if (this.searchForm.getRawValue().searchCondition2 === 'qtNo') {
+            this.searchForm.patchValue({'qtNo': this.searchForm.getRawValue().searchText2});
+        }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
+    }
 
+    selectHeader(): void {
+
+        this.searchSetValue();
         this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
 
         this.setGridData();
     }
 
     newEstimate(): void {
-
+        this._router.navigate(['realgrid/realgridHD/new', {}]);
     }
 
-    estimateSend(): void{
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateSend(){
+        //this._realGridsService.gfn_DeleteGrid(this.gridList, this.estimateHeaderDataProvider);
 
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
+
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('발송 대상을 선택해주세요.');
+            return;
+        } else {
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('발송할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if (check) {
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title: '',
+                    message: '발송하시겠습니까?',
+                    icon: this._formBuilder.group({
+                        show: true,
+                        name: 'heroicons_outline:mail',
+                        color: 'primary'
+                    }),
+                    actions: this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show: true,
+                            label: '발송',
+                            color: 'accent'
+                        }),
+                        cancel: this._formBuilder.group({
+                            show: true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isProgressSpinner = true;
+                            this.isLoading = true;
+                            this.estimateSendCall(checkValues);
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            }
+        }
     }
 
-    estimateConfirm(): void {
-
+    estimateSendCall(sendData: Estimate[]): void {
+        if (sendData) {
+            this._estimateService.estimateSend(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this.isProgressSpinner = false;
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    this.isLoading = false;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
     }
 
-    estimateCancel(): void {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateConfirm() {
 
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
+
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('확정 대상을 선택해주세요.');
+            return;
+        } else {
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'N' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if (check) {
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title: '',
+                    message: '확정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isProgressSpinner = true;
+                            this.estimateConfirmCall(checkValues);
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    estimateConfirmCall(sendData: Estimate[]): void {
+        if (sendData) {
+            this._estimateService.estimateConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this.isProgressSpinner = false;
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    estimateCancel() {
+
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
+
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        } else {
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status !== 'N') {
+                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if (check) {
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title: '',
+                    message: '취소하시겠습니까?',
+                    icon: this._formBuilder.group({
+                        show: true,
+                        name: 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions: this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show: true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel: this._formBuilder.group({
+                            show: true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isProgressSpinner = true;
+                            this.estimateCancelCall(checkValues);
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    estimateCancelCall(sendData: Estimate[]): void {
+        if (sendData) {
+            this._estimateService.estimateCancel(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimate: any) => {
+                    this.isProgressSpinner = false;
+                    this._functionService.cfn_alertCheckMessage(estimate);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                });
+        }
     }
 
     searchFormClick(): void {
@@ -325,12 +576,14 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
     //페이징
     pageEvent($event: PageEvent): void {
 
+        this.searchSetValue();
         this._estimateService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'qtNo', this.orderBy, this.searchForm.getRawValue());
     }
 
     setGridData(): void {
 
-        this._estimateService.estimateHeaders$
+        this.estimateHeaders$ = this._estimateService.estimateHeaders$;
+            this._estimateService.estimateHeaders$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((estimateHeaders: any) => {
                 // Update the counts
@@ -339,6 +592,111 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                 }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    order(estimateHeader) {
+        const status = estimateHeader.status;
+
+        if (status !== 'CF') {
+            this._functionService.cfn_alert('확정만 가능합니다. 다시 조회하세요.');
+            return;
+        }
+
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '발주를 생성하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this.isProgressSpinner = true;
+                    this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
+
+                    this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    this._estimateService.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((estimateDetail: any) => {
+                            if (estimateDetail != null) {
+                                this.isProgressSpinner = false;
+                                const row = {header: estimateHeader, detail: estimateDetail};
+                                this._router.navigate(['estimate-order/order/order-new'], {
+                                    state: {
+                                        'header': estimateHeader,
+                                        'detail': estimateDetail
+                                    }
+                                });
+                            }
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                } else {
+                    this.selectHeader();
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    salesorder(estimateHeader) {
+        const status = estimateHeader.status;
+
+        if (status !== 'CF') {
+            this._functionService.cfn_alert('확정만 가능합니다. 다시 조회하세요.');
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '주문을 생성하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                this.isProgressSpinner = true;
+                if (result) {
+                    this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
+
+                    this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    this._estimateService.estimateDetails$
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((estimateDetail: any) => {
+                            if (estimateDetail != null) {
+                                const row = {header: estimateHeader, detail: estimateDetail};
+                                this._router.navigate(['salesorder/salesorder/salesorder-new'], {
+                                    state: {
+                                        'header': estimateHeader,
+                                        'detail': estimateDetail
+                                    }
+                                });
+                            }
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                } else {
+                    this.selectHeader();
+                }
             });
     }
 }

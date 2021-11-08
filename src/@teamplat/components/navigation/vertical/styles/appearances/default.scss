@@ -145,7 +145,7 @@ fuse-vertical-navigation {
             overflow-y: auto;
             overscroll-behavior: contain;
             //border-right: 0.1rem solid #f6f6f8;
-            //background: #0F4C82;
+            background: #292E4B;
 
             /* Divider */
             > fuse-vertical-navigation-divider-item {
@@ -413,6 +413,7 @@ fuse-vertical-navigation {
                 .fuse-vertical-navigation-item-title-wrapper {
 
                     .fuse-vertical-navigation-item-title {
+                        color: #3490DD !important;
                         font-size: 12px;
                         font-weight: 600;
                         letter-spacing: 0.05em;

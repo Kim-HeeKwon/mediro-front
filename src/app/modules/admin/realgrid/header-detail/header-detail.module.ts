@@ -29,6 +29,14 @@ import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help"
 import {HeaderDetailComponent} from "./header-detail.component";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 import {HeaderDetailResolvers} from "./header-detail.resolvers";
+import {EstimateDetailComponent} from "../../estimate-order/estimate/estimate-detail/estimate-detail.component";
+import {EstimateDetailResolvers} from "../../estimate-order/estimate/estimate-detail/estimate-detail.resolvers";
+import {DetailComponent} from "./detail/detail.component";
+import {DetailResolvers} from "./detail/detail.resolvers";
+import {EstimateNewComponent} from "../../estimate-order/estimate/estimate-new/estimate-new.component";
+import {EstimateNewResolvers} from "../../estimate-order/estimate/estimate-new/estimate-new.resolvers";
+import {NewComponent} from "./new/new.component";
+import {NewResolvers} from "./new/new.resolvers";
 
 const estimateRoutes: Route[] = [
     {
@@ -37,12 +45,28 @@ const estimateRoutes: Route[] = [
         resolve  : {
             data: HeaderDetailResolvers
         }
+    },
+    {
+        path     : 'detail',
+        component: DetailComponent,
+        resolve  : {
+            data: DetailResolvers
+        }
+    },
+    {
+        path     : 'new',
+        component: NewComponent,
+        resolve  : {
+            data: NewResolvers
+        }
     }
 ];
 
 @NgModule({
     declarations: [
-        HeaderDetailComponent
+        HeaderDetailComponent,
+        DetailComponent,
+        NewComponent
     ],
     imports: [
         CommonModule,

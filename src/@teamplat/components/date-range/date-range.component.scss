@@ -23,12 +23,12 @@ fuse-date-range {
 
         .start,
         .end {
-            background: #ffffff;
+            //background: #ffffff;
             display: flex;
             align-items: center;
             height: 100%;
-            height: 30px;
-            margin-bottom: 7px;
+            //height: 30px;
+            //margin-bottom: 7px;
             padding: 0 23px;
             border-radius: 6px;
             border-width: 1px;
@@ -36,6 +36,7 @@ fuse-date-range {
             @apply shadow-sm border-gray-300 dark:bg-black dark:bg-opacity-5 dark:border-gray-500;
 
             .date {
+                //font-size: 12px;
                 white-space: nowrap;
 
                 + .time {
@@ -49,10 +50,10 @@ fuse-date-range {
         }
 
         .separator {
-            margin: 0 7px 7px;
+            margin: 0 5px;
 
             @screen sm {
-                margin: 0 7px 7px;
+                margin: 0 7px;
             }
         }
     }
@@ -306,6 +307,7 @@ fuse-date-range {
 .mediro-group-btn{
     margin-top: 3px;
     margin-left: 7px;
+    border-radius: 0px !important;
 }
 
 .mat-button-toggle-group .mat-button-toggle {
@@ -325,11 +327,12 @@ fuse-date-range .range {
 
 .fuse-mat-rounded .mat-button-toggle-group .mat-button-toggle {
     overflow: hidden;
-    border: solid 1px #4f45e4 !important;
+    border: solid 1px rgba(203, 213, 225, var(--tw-border-opacity)) !important;
     /* border: none !important; */
     font-weight: 500;
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-    line-height: 28px !important;
+    //font-size: 12px;
+    line-height: 35px !important;
 }

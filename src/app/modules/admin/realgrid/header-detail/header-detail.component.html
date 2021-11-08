@@ -138,7 +138,7 @@
                     <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
                         <!-- Header -->
                         <div class="flex flex-col justify-between mediro-backcolor-custom">
-                            <div class="flex items-center justify-between px-12 pt-4 pb-2">
+                            <div class="flex items-center justify-between px-12 pt-6 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-2xl font-extrabold tracking-tight">
                                     견적 관리
@@ -161,23 +161,20 @@
                             </div>
                         </div>
                         <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 px-12 mediro-backcolor-custom">
-                            <div class="flex flex-row flex-shrink-0 items-center mt-6 sm:mt-0">
+                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <form
                                     [formGroup]="searchForm">
                                     <fuse-date-range
+                                        class="mt-1-3"
                                         [formControlName]="'range'"
                                         [dateFormat]="'ll'"
                                         [timeRange]="false"
                                         [timeFormat]="'12'"></fuse-date-range>
                                 </form>
-                            </div>
-                        </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-12 border-b">
-                            <!-- 검색조건 -->
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+
                                 <form
                                     [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 ml-2 pr-2">
                                         <mat-select [formControlName]="'status'">
                                             <ng-container *ngFor="let status of status">
                                                 <mat-option [value]="status.id">
@@ -205,41 +202,84 @@
                                         </ng-container>
                                     </mat-form-field>
                                 </form>
-                            </div>
-                            <!-- Actions -->
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
                                 <button
-                                    style="background: none;"
+                                    class="ml-1 mediro-btn-custom"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectHeader()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                    <span class="ml-2 mr-1">검색</span>
+                                </button>
+                                <button
                                     *ngIf="!isSearchForm"
-                                    class="ml-2 mediro-btn-custom"
+                                    class="ml-2 mediro-btn-custom mediro-detail-search-form-custom"
                                     mat-flat-button
                                     (click)="searchFormClick()">
                                     <span class="ml-2 mr-1 mediro-span-custom">상세 열기</span>
                                     <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
                                 </button>
                                 <button
-                                    style="background: none;"
                                     *ngIf="isSearchForm"
-                                    class="ml-2 mediro-btn-custom"
+                                    class="ml-2 mediro-btn-custom mediro-detail-search-form-custom"
                                     mat-flat-button
                                     (click)="searchFormClick()">
                                     <span class="ml-2 mr-1 mediro-span-custom">상세 닫기</span>
                                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                                 </button>
+                            </div>
+                            <div class="flex flex-row flex-shrink-0 items-center mt-2 sm:mt-0">
+
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-3 px-12 mediro-backcolor-custom">
+                            <!-- 검색조건 -->
+                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+                                <form *ngIf="isSearchForm"
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'type'">
+                                            <ng-container *ngFor="let type of type">
+                                                <mat-option [value]="type.id">
+                                                    {{type.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition2'">
+                                            <ng-container *ngFor="let searchCondition2 of searchCondition2">
+                                                <mat-option [value]="searchCondition2.id">
+                                                    {{searchCondition2.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText2'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                </form>
+                                <button
+                                    *ngIf="isSearchForm"
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="selectHeader()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                    <span class="ml-2 mr-1">추가 검색</span>
+                                </button>
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
                                 <button
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'primary'"
                                     (click)="excelExport()">
                                     <mat-icon [svgIcon]="'iconsmind:file_excel'"></mat-icon>
-                                </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-flat-button
-                                    [color]="'primary'"
-                                    (click)="selectHeader()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                                    <span class="ml-2 mr-1">조회</span>
                                 </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"
@@ -254,6 +294,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateSend()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:mail'"></mat-icon>
                                     <span class="ml-2 mr-1">발송</span>
                                 </button>
                                 <button
@@ -261,6 +302,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateConfirm()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
                                     <span class="ml-2 mr-1">확정</span>
                                 </button>
                                 <button
@@ -268,48 +310,21 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateCancel()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                                     <span class="ml-2 mr-1">취소</span>
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="isSearchForm" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-left pt-1 pb-4 px-12 border-b">
-                            <!-- 검색조건 -->
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-                                <form
-                                    [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'searchCondition2'">
-                                            <ng-container *ngFor="let searchCondition2 of searchCondition2">
-                                                <mat-option [value]="searchCondition2.id">
-                                                    {{searchCondition2.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                                        <input
-                                            matInput
-                                            [formControlName]="'searchText'"
-                                            [autocomplete]="'off'"
-                                            [placeholder]="'검색조건을 선택해주세요.'">
-                                    </mat-form-field>
-                                </form>
-                            </div>
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                                <button
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-flat-button
-                                    [color]="'primary'"
-                                    (click)="selectHeader()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                                    <span class="ml-2 mr-1">추가 검색</span>
-                                </button>
-                            </div>
-                        </div>
+<!--                        <div *ngIf="isSearchForm" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-left pt-1 pb-4 px-12 border-b">-->
+<!--                            &lt;!&ndash; 검색조건 &ndash;&gt;-->
+<!--                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
+
+<!--                            </div>-->
+<!--                        </div>-->
 
                         <!-- Main -->
                         <div
-                            class="realgrid"
+                            class="pt-4 realgrid"
                             id="estimateHeaderGrid">
 
                         </div>

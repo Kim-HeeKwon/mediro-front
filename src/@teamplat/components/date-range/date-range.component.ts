@@ -658,7 +658,12 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     //mediro date button settings
     clickDate(dateGbn: string): void
     {
-        if(dateGbn === 'week'){
+        if(dateGbn === 'today'){
+            this.range = {
+                end: moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).startOf('day').toISOString(),
+            };
+        }else if(dateGbn === 'week'){
             this.range = {
                 end: moment().utc(false).startOf('day').toISOString(),
                 start  : moment().utc(false).add(-7, 'day').endOf('day').toISOString()
