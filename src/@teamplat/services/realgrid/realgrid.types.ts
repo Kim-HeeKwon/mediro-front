@@ -6,6 +6,7 @@ export class Columns{
     width?: string;
     styles?: object;
     header?: object;
+    button?: string;
     renderer?: object;
     editor?: object;
     lookupDisplay?: boolean;

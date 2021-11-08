@@ -178,9 +178,17 @@
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'primary'"
-                                    (click)="selectAccount()">
+                                    (click)="additionAccount()">
                                     <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">신규</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="deleteItemPrice()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:minus'"></mat-icon>
+                                    <span class="ml-2 mr-1">삭제</span>
                                 </button>
                             </div>
 

@@ -9,7 +9,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {FunctionService} from '../../../../../@teamplat/services/function';
 
 @Component({
     selector: 'app-realgrid',
@@ -20,18 +21,16 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     accounts$: Observable<AccountData[]>;
-
     pagenation: AccountPagenation | null = null;
     isLoading: boolean = false;
     isSearchForm: boolean = false;
-
+    values = ['', '', '', '', '', '', '', '', '', '', ''];
     // @ts-ignore
     realgridColumns: Columns[];
     //isMobile = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     orderBy: any = 'asc';
-
     searchCondition: CommonCode[] = [
         {
             id: '100',
@@ -93,6 +92,7 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
                 private _codeStore: CodeStore,
                 private _utilService: FuseUtilsService,
                 private _changeDetectorRef: ChangeDetectorRef,
+                private _functionService: FunctionService,
                 private _accountService: AccountService)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
@@ -112,7 +112,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
         const values = [];
         const lables = [];
-
         this.accountType.forEach((param: any) => {
             values.push(param.id);
             lables.push(param.name);
@@ -121,7 +120,9 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 컬럼
         this.realgridColumns = [
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처', styleName: 'left-cell-text'}},
+                , header: {text: '거래처', styleName: 'left-cell-text'},
+                button:'action'
+            },
             {name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명' , styleName: 'left-cell-text'}
                 },
@@ -155,11 +156,10 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
+            stateBar : true,
             checkBar : false,
             footers : false,
         };
-
         //그리드 생성
         this.grid = this._realGridsService.gfn_CreateGrid(
             this.realgridDataProvider,
@@ -178,33 +178,33 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         this.grid.setEditOptions({
-            readOnly: true,
-            insertable: false,
-            appendable: false,
-            editable: false,
-            //deletable: true,
+            readOnly: false,
+            insertable: true,
+            appendable: true,
+            editable: true,
+            deletable: true,
             checkable: false,
             softDeleting: true,
            //hideDeletedRows: true,
-        })
-
-        // gridView.setEditOptions({
-        //     deletable: true,
-        //     deleteRowsConfirm: true,
-        //     deleteRowsMessage: "Are you sure?",
-        //     insertable: true,
-        //     appendable: true
-        // });
+        });
 
         this.grid.setDisplayOptions({liveScroll: false,});
         this.grid.setPasteOptions({enabled: false,});
+        this.grid.displayOptions.useFocusClass = true;
+        this.grid.displayOptions.selectionStyle = 'rows';
+        // this.grid.columnByName('account').buttonVisibility = 'default';
+
+        this.grid.setStateBar({
+            visible: true
+        });
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.grid.onCellClicked = (grid, clickData) => {
             if(clickData.cellType === 'header'){
                 this._accountService.getAccount(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            }
+            };
+            this.grid.columnByName(clickData.column).header.styleName = 'blue-column';
             if(this.orderBy === 'asc'){
                 this.orderBy = 'desc';
             }else{
@@ -238,6 +238,14 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     ngAfterViewInit(): void {
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.grid.onCellButtonClicked = (grid, index, column) => {
+            alert(index.itemIndex + column.fieldName + '셀버튼 클릭');
+        };
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.grid.onCellClicked = (grid, clickData) => {
+            // console.log(clickData);
+        };
         merge(this._paginator.page).pipe(
             switchMap(() => {
                 // console.log('change paginator!!');
@@ -287,9 +295,33 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
             });
     }
 
+    additionAccount(): void {
+        this.realgridDataProvider.addRow(this.values);
+    }
+    deleteItemPrice(): void {
+        const current = this.grid.getCurrent(); // 컬럼 번호
+        this.realgridDataProvider.removeRow(current.dataRow);
+        this.realgridDataProvider.setOptions({
+            //softDeleting: $("#chkSoftDeleting").is(":checked")
+        });
+        // @ts-ignore
+        this.grid.setRowState(current.dataRow, 'deleted');
+        // const jsonData = this.realgridDataProvider.getJsonRow(current.dataRow); // 컬럼 json 정보
+        // this._functionService.cfn_alert(current.dataRow + JSON.stringify(jsonData));
+        // const rowState = $(':input:radio[name='rowState']:checked').val()
+        // this.grid.setRowState(current.dataRow, 1);
+
+        // this.grid.setRowStyleCallback((grid, item, fixed)  => {
+        //         const ret = {};
+        //         const gender = grid.getValue(item.index, 'account');
+        //         if (jsonData.account === gender) {
+        //             return 'orange-color';
+        //         }
+        // });
+    }
+
     //페이징
     pageEvent($event: PageEvent): void {
-
         this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'account', this.orderBy, this.searchForm.getRawValue());
     }
 

@@ -137,3 +137,19 @@
     text-decoration: line-through;
     opacity: 0.4;
 }
+.rg-button-action {
+    background: url(../../assets/images/logo/realgrid.png) no-repeat center;
+}
+
+.rg-button-action:hover {
+    background: url(../../assets/images/logo/realgrid.png) no-repeat center;
+    cursor: pointer;
+}
+
+.rg-button-action:hover:active {
+    background: url(../../assets/images/logo/realgrid.png) no-repeat center;
+}
+
+.rg-button-action:active:hover {
+    background: url(../../assets/images/logo/realgrid.png) no-repeat center;
+}
