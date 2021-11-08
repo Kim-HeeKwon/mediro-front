@@ -1,4 +1,5 @@
 .realgrid {
+    background: #F6F6F8;
     //margin-left: 8px;
     //margin-right: 8px;
     width: 100%;
@@ -9,24 +10,43 @@
 .mat-flat-button .mat-icon, .mat-raised-button .mat-icon, .mat-fab .mat-icon, .mat-mini-fab .mat-icon{
     width: 80%;
     height: 80%;
-    color: #8B9FC1;
+    color: #8B9FC1;//#2A2F49
 }
 
 .border-b{
     border: none;
-    background: #f6f6f8;
+    //background: #f6f6f8;
 }
 
 .mat-option-text{
     font-size: 12px;
 }
 
+.mediro-detail-form-custom{
+    margin-bottom: 0rem !important;
+    background: #f6f6f8;
+}
+
+.mediro-form-field-custom{
+    font-size: 12px;
+}
+
+.mediro-font-custom{
+    font-size: 12px;
+}
+
 .mediro-btn-custom{
+    padding: 0px 6px !important;
     height: 30px;
     min-height: 30px;
     max-height: 30px;
     font-weight: 400;
     font-size: 12px;
+    //background: #2A2F49 !important;
+}
+
+.mediro-detail-search-form-custom{
+    background: none !important;
 }
 
 .mediro-btn-custom-color{
@@ -40,7 +60,7 @@
 }
 
 .mediro-backcolor-custom{
-    background: #f6f6f8;
+    background: #f6f6f8 !important;
 }
 
 .mediro-span-custom{
@@ -52,6 +72,7 @@
     &.fuse-mat-dense {
         .mat-form-field-wrapper {
             .mat-form-field-flex {
+                padding: 0px 8px !important;
                 font-size: 12px !important;
                 min-height: 30px !important;
                 max-height: 30px !important;
@@ -60,4 +81,56 @@
             }
         }
     }
+}
+:host-context ::ng-deep .mat-form-field .mat-form-field-appearance-fill{
+    /* Default style tweaks and enhancements */
+    .mat-form-field-wrapper {
+        .mat-form-field-flex {
+            min-height: 30px !important;
+        }
+    }
+}
+
+:host-context ::ng-deep .fuse-date-range .range .start{
+    padding: 0px 12px !important;
+    height: 30px;
+    margin-bottom: 7px;
+    background: #ffffff;
+    font-size: 12px;
+    border-radius: 0px !important;
+}
+
+:host-context ::ng-deep .fuse-date-range .range .end{
+    padding: 0px 12px !important;
+    height: 30px;
+    margin-bottom: 7px;
+    background: #ffffff;
+    font-size: 12px;
+    border-radius: 0px !important;
+}
+
+
+:host-context ::ng-deep .fuse-date-range {
+    display: flex;
+
+    .range {
+
+        .separator {
+            margin: 0 7px 7px;
+
+            @screen sm {
+                margin: 0 7px 7px;
+            }
+        }
+    }
+}
+
+:host-context ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+    font-size: 12px;
+    line-height: 28px !important;
+}
+
+:host-context ::ng-deep .mat-button-toggle-group .mat-button-toggle{
+    border-radius: 0px !important;
+    margin-left: 0px !important;
 }

@@ -153,4 +153,37 @@ export class FuseRealGridService {
         gridList = null;
         dataProvider = null;
     }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_GetCheckRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
+        const rows = [];
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for(let i=0; i<gridView.getCheckedRows().length; i++){
+            rows.push(dataProvider.getJsonRow(gridView.getCheckedRows()[i]));
+        }
+        return rows;
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_DeleteGrid(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for(let i=0; i<gridView.getCheckedRows().length; i++){
+            dataProvider.removeRow(gridView.getCheckedRows()[i]);
+        }
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_EditGrid(gridView: RealGrid.GridView): void {
+
+        gridView.setRowStyleCallback((grid, item, fixed)  => {
+            if(item.rowState === 'deleted'){
+                return 'mediro-row-delete';
+            }else if(item.rowState === 'none'){
+                return '';
+            }
+        });
+    }
 }
