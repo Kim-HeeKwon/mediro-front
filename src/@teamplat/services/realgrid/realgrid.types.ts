@@ -7,6 +7,7 @@ export class Columns{
     styles?: object;
     header?: object;
     button?: string;
+    styleCallback?: object;
     renderer?: object;
     editor?: object;
     lookupDisplay?: boolean;
