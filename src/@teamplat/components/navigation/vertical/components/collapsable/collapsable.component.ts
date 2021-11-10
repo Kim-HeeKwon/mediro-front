@@ -83,58 +83,60 @@ export class FuseVerticalNavigationCollapsableItemComponent implements OnInit, O
             }
         }
 
-        // Listen for the onCollapsableItemCollapsed from the service
-        this._fuseVerticalNavigationComponent.onCollapsableItemCollapsed
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((collapsedItem) => {
-
-                // Check if the collapsed item is null
-                if ( collapsedItem === null )
-                {
-                    return;
-                }
-
-                // Collapse if this is a children of the collapsed item
-                if ( this._isChildrenOf(collapsedItem, this.item) )
-                {
-                    this.collapse();
-                }
-            });
-
-        // Listen for the onCollapsableItemExpanded from the service if the autoCollapse is on
-        if ( this.autoCollapse )
-        {
-            this._fuseVerticalNavigationComponent.onCollapsableItemExpanded
+        if(this._fuseVerticalNavigationComponent.onCollapsableItemCollapsed !== undefined){
+            // Listen for the onCollapsableItemCollapsed from the service
+            this._fuseVerticalNavigationComponent.onCollapsableItemCollapsed
                 .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((expandedItem) => {
+                .subscribe((collapsedItem) => {
 
-                    // Check if the expanded item is null
-                    if ( expandedItem === null )
+                    // Check if the collapsed item is null
+                    if ( collapsedItem === null )
                     {
                         return;
                     }
 
-                    // Check if this is a parent of the expanded item
-                    if ( this._isChildrenOf(this.item, expandedItem) )
+                    // Collapse if this is a children of the collapsed item
+                    if ( this._isChildrenOf(collapsedItem, this.item) )
                     {
-                        return;
+                        this.collapse();
                     }
-
-                    // Check if this has a children with a matching url with the current active url
-                    if ( this._hasActiveChild(this.item, this._router.url) )
-                    {
-                        return;
-                    }
-
-                    // Check if this is the expanded item
-                    if ( this.item === expandedItem )
-                    {
-                        return;
-                    }
-
-                    // If none of the above conditions are matched, collapse this item
-                    this.collapse();
                 });
+
+            // Listen for the onCollapsableItemExpanded from the service if the autoCollapse is on
+            if ( this.autoCollapse )
+            {
+                this._fuseVerticalNavigationComponent.onCollapsableItemExpanded
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((expandedItem) => {
+
+                        // Check if the expanded item is null
+                        if ( expandedItem === null )
+                        {
+                            return;
+                        }
+
+                        // Check if this is a parent of the expanded item
+                        if ( this._isChildrenOf(this.item, expandedItem) )
+                        {
+                            return;
+                        }
+
+                        // Check if this has a children with a matching url with the current active url
+                        if ( this._hasActiveChild(this.item, this._router.url) )
+                        {
+                            return;
+                        }
+
+                        // Check if this is the expanded item
+                        if ( this.item === expandedItem )
+                        {
+                            return;
+                        }
+
+                        // If none of the above conditions are matched, collapse this item
+                        this.collapse();
+                    });
+            }
         }
 
         // Attach a listener to the NavigationEnd event
@@ -238,7 +240,9 @@ export class FuseVerticalNavigationCollapsableItemComponent implements OnInit, O
         this._changeDetectorRef.markForCheck();
 
         // Execute the observable
-        this._fuseVerticalNavigationComponent.onCollapsableItemExpanded.next(this.item);
+        if(this._fuseVerticalNavigationComponent.onCollapsableItemExpanded !== undefined){
+            this._fuseVerticalNavigationComponent.onCollapsableItemExpanded.next(this.item);
+        }
     }
 
     /**

@@ -215,7 +215,7 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                         '<span>주문서</span>' +
                         '</button>',
                 }},
-            {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '150', styleName: 'left-cell-text'
+            {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '비고' , styleName: 'left-cell-text'}
             },
         ];
@@ -224,14 +224,14 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : true,
+            stateBar : false,
             checkBar : true,
             footers : false,
         };
 
         this.estimateHeaderDataProvider.setOptions({
-            softDeleting: true,
-            deleteCreated: true
+            softDeleting: false,
+            deleteCreated: false
         });
 
         //그리드 생성
@@ -248,9 +248,9 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             insertable: false,
             appendable: false,
             editable: false,
-            deletable: true,
+            deletable: false,
             checkable: true,
-            softDeleting: true,
+            softDeleting: false,
             //hideDeletedRows: false,
         });
         this.gridList.deleteSelection(true);
@@ -262,9 +262,10 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if(clickData.cellType === 'header'){
-
-                this.searchSetValue();
-                this._estimateService.getHeader(this.estimateHeaderPagenation.page,this.estimateHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                if(clickData.cellType !== 'head'){
+                    this.searchSetValue();
+                    this._estimateService.getHeader(this.estimateHeaderPagenation.page,this.estimateHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                }
             }
             if(this.orderBy === 'asc'){
                 this.orderBy = 'desc';
@@ -275,7 +276,9 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if(clickData.cellType !== 'header'){
-                this._router.navigate(['realgrid/realgridHD/detail', grid.getValues(clickData.dataRow)]);
+                if(clickData.cellType !== 'head'){
+                    this._router.navigate(['realgrid/realgridHD/detail', grid.getValues(clickData.dataRow)]);
+                }
             }
         };
 

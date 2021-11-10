@@ -46,15 +46,15 @@ export class FuseRealGridService {
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
             headText: 'No',
             footText: ''});
-        gridView.setContextMenu([
-            {
-                label: '-' // menu separator를 삽입합니다.
-            },
-            {label: 'Excel Export'},
-            {
-                label: '-' // menu separator를 삽입합니다.
-            },
-        ]);
+        // gridView.setContextMenu([
+        //     {
+        //         label: '-' // menu separator를 삽입합니다.
+        //     },
+        //     {label: 'Excel Export'},
+        //     {
+        //         label: '-' // menu separator를 삽입합니다.
+        //     },
+        // ]);
 
         //정렬
         gridView.sortingOptions.enabled = false;

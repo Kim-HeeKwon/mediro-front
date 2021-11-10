@@ -3,11 +3,14 @@
     (click)="openPickerPanel()"
     #pickerPanelOrigin>
 
-        <div class="start">
+    <div class="start">
         <div class="date">{{range.startDate | date:'YYYY.MM.d' }}</div>
         <div
             class="time"
             *ngIf="range.startTime">{{range.startTime}}</div>
+        <mat-icon
+            class="ml-2"
+            [svgIcon]="'date_range'"></mat-icon>
     </div>
 
     <div class="separator">~</div>
@@ -17,6 +20,9 @@
         <div
             class="time"
             *ngIf="range.endTime">{{range.endTime}}</div>
+        <mat-icon
+            class="ml-2"
+            [svgIcon]="'date_range'"></mat-icon>
     </div>
 </div>
 <div [hidden]="rangeHidden">

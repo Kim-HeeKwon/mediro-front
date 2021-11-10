@@ -47,6 +47,7 @@ export class AuthSignInComponent implements OnInit
      */
     ngOnInit(): void
     {
+        console.log('s');
         // Create the form
         this.signInForm = this._formBuilder.group({
             email     : ['', [Validators.required, Validators.email]],
@@ -59,6 +60,9 @@ export class AuthSignInComponent implements OnInit
             this.signInForm.patchValue({email:cookieEmail});
             this.signInForm.patchValue({rememberMe:true});
         }
+
+        //this.signInForm.patchValue({'email' : 'test@naver.com'});
+        //this.signInForm.patchValue({'password' : 'test@naver.com'});
 
     }
 

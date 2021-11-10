@@ -37,6 +37,7 @@ import {EstimateNewComponent} from "../../estimate-order/estimate/estimate-new/e
 import {EstimateNewResolvers} from "../../estimate-order/estimate/estimate-new/estimate-new.resolvers";
 import {NewComponent} from "./new/new.component";
 import {NewResolvers} from "./new/new.resolvers";
+import {AngularSplitModule} from "angular-split";
 
 const estimateRoutes: Route[] = [
     {
@@ -96,7 +97,8 @@ const estimateRoutes: Route[] = [
         MatDialogModule,
         FuseDateRangeModule,
         FuseUserHelpModule,
-        CommonLoadingBarModule
+        CommonLoadingBarModule,
+        AngularSplitModule
     ]
 })
 export class HeaderDetailModule {

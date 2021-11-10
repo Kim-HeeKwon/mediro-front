@@ -11,7 +11,7 @@
             <!-- Header -->
             <div class="flex items-center justify-between m-4 mr-4 sm:my-4">
                 <!-- Title -->
-                <div class="text-3xl font-extrabold tracking-tight leading-none">검색조건</div>
+                <div class="text-2xl font-extrabold tracking-tight leading-none">검색조건</div>
                 <!-- Close button -->
                 <div class="lg:hidden">
                     <button
@@ -75,13 +75,13 @@
                     <!-- Add product button -->
                     <div class="col-span-12">
                         <button
-                            class="ml-3"
+                            class="ml-3 mediro-btn-custom-background-color"
                             mat-raised-button
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="selectHeader()">
-                            <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                            <span class="ml-2 mr-1">조회</span>
+                            <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                            <span class="ml-2 mr-1">검색</span>
                         </button>
                     </div>
                     <div class="col-span-12">
@@ -140,7 +140,7 @@
                         <div class="flex flex-col justify-between mediro-backcolor-custom">
                             <div class="flex items-center justify-between px-12 pt-6 pb-2">
                                 <!-- Add product button -->
-                                <div class="text-2xl font-extrabold tracking-tight">
+                                <div class="text-2xl tracking-tight">
                                     견적 관리
                                     <fuse-user-help
                                         [helpCd]="'ESTIMATE'"
@@ -152,6 +152,22 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
+                                <div class="flex items-center justify-between">
+                                    <button
+                                        class="ml-2 mediro-btn-custom"
+                                        mat-stroked-button
+                                        [color]="'primary'"
+                                        (click)="excelExport()">
+                                        <img src="assets/images/excel/excel_upload.png">
+                                    </button>
+                                    <button
+                                        class="ml-2 mediro-btn-custom"
+                                        mat-stroked-button
+                                        [color]="'primary'"
+                                        (click)="excelExport()">
+                                        <img src="assets/images/excel/excel_down.png">
+                                    </button>
+                                </div>
                             </div>
                             <!-- Loader -->
                             <div
@@ -160,7 +176,7 @@
                                 <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
                             </div>
                         </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 px-12 mediro-backcolor-custom">
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <form
                                     [formGroup]="searchForm">
@@ -171,39 +187,8 @@
                                         [timeRange]="false"
                                         [timeFormat]="'12'"></fuse-date-range>
                                 </form>
-
-                                <form
-                                    [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 ml-2 pr-2">
-                                        <mat-select [formControlName]="'status'">
-                                            <ng-container *ngFor="let status of status">
-                                                <mat-option [value]="status.id">
-                                                    {{status.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'searchCondition'">
-                                            <ng-container *ngFor="let searchCondition of searchCondition">
-                                                <mat-option [value]="searchCondition.id">
-                                                    {{searchCondition.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                                        <ng-container *ngFor="let searchCondition of searchCondition">
-                                            <input
-                                                matInput
-                                                [formControlName]="'searchText'"
-                                                [autocomplete]="'off'"
-                                                [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
-                                        </ng-container>
-                                    </mat-form-field>
-                                </form>
                                 <button
-                                    class="ml-1 mediro-btn-custom"
+                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
                                     mat-flat-button
                                     [color]="'primary'"
                                     (click)="selectHeader()">
@@ -227,60 +212,9 @@
                                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                                 </button>
                             </div>
-                            <div class="flex flex-row flex-shrink-0 items-center mt-2 sm:mt-0">
 
-                            </div>
-                        </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-3 px-12 mediro-backcolor-custom">
-                            <!-- 검색조건 -->
-                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
-                                <form *ngIf="isSearchForm"
-                                    [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'type'">
-                                            <ng-container *ngFor="let type of type">
-                                                <mat-option [value]="type.id">
-                                                    {{type.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'searchCondition2'">
-                                            <ng-container *ngFor="let searchCondition2 of searchCondition2">
-                                                <mat-option [value]="searchCondition2.id">
-                                                    {{searchCondition2.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                                        <input
-                                            matInput
-                                            [formControlName]="'searchText2'"
-                                            [autocomplete]="'off'"
-                                            [placeholder]="'검색조건을 선택해주세요.'">
-                                    </mat-form-field>
-                                </form>
-                                <button
-                                    *ngIf="isSearchForm"
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-flat-button
-                                    [color]="'primary'"
-                                    (click)="selectHeader()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                                    <span class="ml-2 mr-1">추가 검색</span>
-                                </button>
-                            </div>
                             <!-- Actions -->
                             <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                                <button
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-stroked-button
-                                    [color]="'primary'"
-                                    (click)="excelExport()">
-                                    <mat-icon [svgIcon]="'iconsmind:file_excel'"></mat-icon>
-                                </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
@@ -294,7 +228,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateSend()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:mail'"></mat-icon>
+                                    <mat-icon [svgIcon]="'forward_to_inbox'"></mat-icon>
                                     <span class="ml-2 mr-1">발송</span>
                                 </button>
                                 <button
@@ -315,16 +249,73 @@
                                 </button>
                             </div>
                         </div>
-<!--                        <div *ngIf="isSearchForm" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-left pt-1 pb-4 px-12 border-b">-->
-<!--                            &lt;!&ndash; 검색조건 &ndash;&gt;-->
-<!--                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
-
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-6 px-12 mediro-backcolor-custom">
+                            <!-- 검색조건 -->
+                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+                                <form *ngIf="isSearchForm"
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'status'">
+                                            <ng-container *ngFor="let status of status">
+                                                <mat-option [value]="status.id">
+                                                    {{status.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'type'">
+                                            <ng-container *ngFor="let type of type">
+                                                <mat-option [value]="type.id">
+                                                    {{type.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition'">
+                                            <ng-container *ngFor="let searchCondition of searchCondition">
+                                                <mat-option [value]="searchCondition.id">
+                                                    {{searchCondition.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <ng-container *ngFor="let searchCondition of searchCondition">
+                                            <input
+                                                matInput
+                                                [formControlName]="'searchText'"
+                                                [autocomplete]="'off'"
+                                                [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
+                                        </ng-container>
+                                    </mat-form-field>
+                                </form>
+                                <form *ngIf="isSearchForm"
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                        <mat-select [formControlName]="'searchCondition2'">
+                                            <ng-container *ngFor="let searchCondition2 of searchCondition2">
+                                                <mat-option [value]="searchCondition2.id">
+                                                    {{searchCondition2.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            [formControlName]="'searchText2'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색조건을 선택해주세요.'">
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                        </div>
 
                         <!-- Main -->
                         <div
-                            class="pt-4 realgrid"
+                            class="realgrid"
                             id="estimateHeaderGrid">
 
                         </div>

@@ -53,7 +53,8 @@
                             "src/@teamplat/styles/main.scss",
                             "src/styles/styles.scss",
                             "src/styles/tailwind.scss",
-                            "src/@teamplat/styles/realgrid_custom.scss"
+                            "src/@teamplat/styles/realgrid_custom.scss",
+                            "src/@teamplat/styles/font.scss"
                         ],
                         "scripts": []
                     },

@@ -101,8 +101,9 @@ export class NewComponent implements OnInit, OnDestroy, AfterViewInit
         this._unsubscribeAll.complete();
     }
 
-    transactionRow(action: string): void {
-
+    addRow(): void {
+    }
+    delRow(): void {
     }
 
     excelExport(): void {
@@ -132,13 +133,13 @@ export class NewComponent implements OnInit, OnDestroy, AfterViewInit
         this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
         this.estimateDetailColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
+            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'}},
             {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'left-cell-text'}},
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
+            {name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
+            {name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '단위' , styleName: 'left-cell-text'}},
             {name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '수량' , styleName: 'left-cell-text'}
@@ -152,7 +153,7 @@ export class NewComponent implements OnInit, OnDestroy, AfterViewInit
                 , header: {text: '견적금액' , styleName: 'left-cell-text'}
                 , numberFormat : '#,##0'
             },
-            {name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '비고' , styleName: 'left-cell-text'}},
         ];
         //그리드 Provider

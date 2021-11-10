@@ -21,14 +21,14 @@
                         </button>
                     </div>
                     <div class="flex flex-col min-w-0 ml-2">
-                        <div class="text-2xl md:text-2xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                        <div class="text-2xl md:text-2xl tracking-tight leading-7 md:leading-snug truncate">
                             견적 작성
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
                     <button
-                        class="fuse-mat-button-rounded"
+                        class="fuse-mat-button-rounded mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
                         (click)="saveEstimate()">
@@ -45,144 +45,153 @@
     <!--main-->
     <div class="flex flex-auto overflow-hidden">
         <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden mediro-detail-form-custom">
-            <div class="flex pt-4 pl-4 pr-4">
-                <!-- Selected product form -->
-                <form
-                    class="flex flex-col w-full"
-                    [formGroup]="estimateHeaderForm">
-                    <div class="flex p-2">
-                        <div class="flex flex-auto">
-                            <div class="flex flex-col w-full pr-0">
-                                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-                                    <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                        <mat-label>견적 번호</mat-label>
-                                        <input
-                                            class="mediro-form-field-custom"
-                                            matInput
-                                            [formControlName]="'qtNo'">
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                        <mat-label>거래처 코드<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                        <input
-                                            matInput
-                                            [formControlName]="'account'"
-                                            (click)="openAccountSearch()">
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                        <mat-label>거래처 명<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                        <input
-                                            matInput
-                                            [formControlName]="'accountNm'">
-                                    </mat-form-field>
-                                </div>
-                                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-                                    <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                        <mat-label>유형<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                        <mat-select [formControlName]="'type'">
-                                            <ng-container *ngFor="let type of type">
-                                                <mat-option [value]="type.id">
-                                                    {{type.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                        <mat-label>상태<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                        <mat-select [formControlName]="'status'">
-                                            <ng-container *ngFor="let status of status">
-                                                <mat-option [value]="status.id">
-                                                    {{status.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                        <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                                        <mat-icon
-                                            class="icon-size-5"
-                                            [svgIcon]="'heroicons_solid:mail'"
-                                            matPrefix></mat-icon>
-                                        <input type="text"
-                                               matInput
-                                               [formControlName]="'email'">
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                        <mat-label>견적 금액</mat-label>
-                                        <mat-icon
-                                            class="icon-size-5"
-                                            [svgIcon]="'heroicons_solid:currency-dollar'"
-                                            matPrefix></mat-icon>
-                                        <input
-                                            class="text-right"
-                                            type="number"
-                                            matInput
-                                            [formControlName]="'qtAmt'">
-                                    </mat-form-field>
-                                    <!--<mat-form-field class="w-2/6 pr-2">
-                                        <mat-label>주문 번호</mat-label>
-                                        <input type="text"
-                                            matInput
-                                            [formControlName]="'soNo'">
-                                    </mat-form-field>-->
-                                </div>
-                                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-                                    <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                        <mat-label>생성일자</mat-label>
-                                        <input type="date"
-                                               matInput
-                                               [formControlName]="'qtCreDate'">
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                        <mat-label>견적일자</mat-label>
-                                        <input type="date"
-                                               matInput
-                                               [formControlName]="'qtDate'">
-                                    </mat-form-field>
-                                    <mat-form-field class="sm:col-span-4 mediro-form-field-custom">
-                                        <mat-label>비고</mat-label>
-                                        <mat-icon
-                                            class="icon-size-5"
-                                            [svgIcon]="'heroicons_solid:document-text'"
-                                            matPrefix></mat-icon>
-                                        <input type="text"
-                                               matInput
-                                               [formControlName]="'remarkHeader'">
-                                    </mat-form-field>
+
+            <as-split direction="vertical">
+                <as-split-area [size]="40">
+                    <div class="flex pt-4 pl-4 pr-4">
+                        <!-- Selected product form -->
+                        <form
+                            class="flex flex-col w-full"
+                            [formGroup]="estimateHeaderForm">
+                            <div class="flex p-2">
+                                <div class="flex flex-auto">
+                                    <div class="flex flex-col w-full pr-0">
+                                        <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                                <mat-label>견적 번호</mat-label>
+                                                <input
+                                                    class="mediro-form-field-custom"
+                                                    matInput
+                                                    [formControlName]="'qtNo'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                                <mat-label>거래처 코드<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'account'"
+                                                    (click)="openAccountSearch()">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                                <mat-label>거래처 명<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'accountNm'">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>유형<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-select [formControlName]="'type'">
+                                                    <ng-container *ngFor="let type of type">
+                                                        <mat-option [value]="type.id">
+                                                            {{type.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>상태<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-select [formControlName]="'status'">
+                                                    <ng-container *ngFor="let status of status">
+                                                        <mat-option [value]="status.id">
+                                                            {{status.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:mail'"
+                                                    matPrefix></mat-icon>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'email'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                                <mat-label>견적 금액</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:currency-dollar'"
+                                                    matPrefix></mat-icon>
+                                                <input
+                                                    class="text-right"
+                                                    type="number"
+                                                    matInput
+                                                    [formControlName]="'qtAmt'">
+                                            </mat-form-field>
+                                            <!--<mat-form-field class="w-2/6 pr-2">
+                                                <mat-label>주문 번호</mat-label>
+                                                <input type="text"
+                                                    matInput
+                                                    [formControlName]="'soNo'">
+                                            </mat-form-field>-->
+                                        </div>
+                                        <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>생성일자</mat-label>
+                                                <input type="date"
+                                                       matInput
+                                                       [formControlName]="'qtCreDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>견적일자</mat-label>
+                                                <input type="date"
+                                                       matInput
+                                                       [formControlName]="'qtDate'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-4 mediro-form-field-custom">
+                                                <mat-label>비고</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:document-text'"
+                                                    matPrefix></mat-icon>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'remarkHeader'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                </as-split-area>
+                <as-split-area [size]="60">
+                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2 pb-2">
+                        <div class="flex-row text-1xl font-extrabold tracking-tight">
+
+                        </div>
+                        <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
+                            <mat-icon
+                                class="icon-size-7 mr-3 cursor-pointer"
+                                [svgIcon]="'heroicons_outline:plus-circle'"
+                                (click)="addRow()"
+                            ></mat-icon>
+                            <mat-icon
+                                class="icon-size-7 mr-3 cursor-pointer"
+                                [svgIcon]="'heroicons_outline:minus-circle'"
+                                (click)="delRow()"
+                            ></mat-icon>
+                            <mat-icon
+                                class="icon-size-6 cursor-pointer"
+                                [svgIcon]="'iconsmind:file_excel'"
+                                (click)="excelExport()"
+                            ></mat-icon>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
-                <div class="flex-row text-1xl font-extrabold tracking-tight">
 
-                </div>
-                <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                    <mat-icon
-                        class="icon-size-7 mr-3 cursor-pointer"
-                        [svgIcon]="'heroicons_outline:plus-circle'"
-                        (click)="transactionRow('ADD')"
-                    ></mat-icon>
-                    <mat-icon
-                        class="icon-size-7 mr-3 cursor-pointer"
-                        [svgIcon]="'heroicons_outline:minus-circle'"
-                        (click)="transactionRow('DELETE')"
-                    ></mat-icon>
-                    <mat-icon
-                        class="icon-size-6 cursor-pointer"
-                        [svgIcon]="'iconsmind:file_excel'"
-                        (click)="excelExport()"
-                    ></mat-icon>
-                </div>
-            </div>
+                    <!-- Main -->
+                    <div
+                        class="realgrid"
+                        id="estimateDetailGrid">
 
-            <!-- Main -->
-            <div
-                class="pt-4 realgrid"
-                id="estimateDetailGrid">
+                    </div>
+                </as-split-area>
+            </as-split>
 
-            </div>
+
             <mat-paginator
                 class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                 [ngClass]="{'pointer-events-none': false}"
