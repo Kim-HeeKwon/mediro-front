@@ -44,7 +44,7 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     searchCondition2: CommonCode[] = [
         {
             id: '100',
-            name: '거래처'
+            name: '거래처 코드'
         },
         {
             id: '101',
@@ -120,11 +120,35 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 컬럼
         this.realgridColumns = [
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처', styleName: 'left-cell-text'},
-                button:'action'
+                , header: {text: '거래처 코드', styleName: 'left-cell-text'},
+                button:'action',
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                styleCallback: (grid, dataCell) =>  {
+                    if(dataCell.item.rowState === 'created' || dataCell.item.itemState === 'appending' || dataCell.item.itemState === 'inserting'){
+                        return {
+                            editable: true
+                        };
+                    } else {
+                      return {
+                          editable: false
+                      };
+                    }
+                }
             },
             {name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'},
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                styleCallback: (grid, dataCell) =>  {
+                    if(dataCell.item.rowState === 'created' || dataCell.item.itemState === 'appending' || dataCell.item.itemState === 'inserting'){
+                        return {
+                            editable: true
+                        };
+                    } else {
+                        return {
+                            editable: false
+                        };
+                    }
+                }
                 },
             {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'center-cell-text',
                 header: {text: '유형'},
@@ -157,9 +181,15 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 옵션
         const gridListOption = {
             stateBar : true,
-            checkBar : false,
+            checkBar : true,
             footers : false,
         };
+
+        this.realgridDataProvider.setOptions({
+            softDeleting: true,
+            deleteCreated: true
+        });
+
         //그리드 생성
         this.grid = this._realGridsService.gfn_CreateGrid(
             this.realgridDataProvider,
@@ -168,35 +198,46 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
             this.realgridFields,
             gridListOption);
 
-        //필터
-        // const filter = [{name: '고객사',
-        //     criteria: 'value = \'CUST\''},
-        //     {name: '공급사',
-        //     criteria: 'value = \'SUPR\''}];
-        //this._realGridsService.gfn_FilterGrid(this.grid,'accountType',filter);
-        //this._realGridsService.gfn_AutoFilterGrid(this.grid,'businessCategory',true);
-
         //그리드 옵션
         this.grid.setEditOptions({
             readOnly: false,
-            insertable: true,
-            appendable: true,
+            insertable: false,
+            appendable: false,
             editable: true,
+            updatable: true,
             deletable: true,
-            checkable: false,
+            checkable: true,
             softDeleting: true,
-           //hideDeletedRows: true,
+            //hideDeletedRows: false,
         });
 
+        this.grid.deleteSelection(true);
         this.grid.setDisplayOptions({liveScroll: false,});
         this.grid.setPasteOptions({enabled: false,});
-        this.grid.displayOptions.useFocusClass = true;
-        this.grid.displayOptions.selectionStyle = 'rows';
+        // this.grid.displayOptions.useFocusClass = true;
+        // this.grid.displayOptions.selectionStyle = 'rows';
+        // this._realGridsService.gfn_EditGrid(this.grid);
+        this.grid.editOptions.editWhenFocused = true;
+        this.grid.editOptions.commitByCell = true;
+        this.grid.editOptions.commitWhenNoEdit = true;
+        this.grid.editOptions.commitWhenLeave = true;
+        this.grid.editOptions.validateOnEdited = true;
+        // this.grid.editOptions.validateOnExit = false;
+        // this.grid.editOptions.validateOnExit = true;
         // this.grid.columnByName('account').buttonVisibility = 'default';
+        // this.grid.editOptions.commitLevel = 'warning';
 
-        this.grid.setStateBar({
-            visible: true
-        });
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.grid.onValidateColumn = (grid, column, inserting, value) => {
+            if (column.fieldName === 'account' || column.fieldName === 'descr') {
+                if (value === '' || !value) {
+                    return {
+                        level: 'warning',
+                        message: '필수값을 입력해주세요',
+                    };
+                }
+            }
+        };
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -204,7 +245,7 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
             if(clickData.cellType === 'header'){
                 this._accountService.getAccount(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
             };
-            this.grid.columnByName(clickData.column).header.styleName = 'blue-column';
+            // this.grid.columnByName(clickData.column).header.styleName = 'blue-column';
             if(this.orderBy === 'asc'){
                 this.orderBy = 'desc';
             }else{
@@ -242,10 +283,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         this.grid.onCellButtonClicked = (grid, index, column) => {
             alert(index.itemIndex + column.fieldName + '셀버튼 클릭');
         };
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        this.grid.onCellClicked = (grid, clickData) => {
-            // console.log(clickData);
-        };
         merge(this._paginator.page).pipe(
             switchMap(() => {
                 // console.log('change paginator!!');
@@ -271,6 +308,7 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        this._realGridsService.gfn_Destory(this.grid, this.realgridDataProvider);
     }
 
     selectAccount(): void{
@@ -296,29 +334,71 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     additionAccount(): void {
+        this.grid.cancel();
         this.realgridDataProvider.addRow(this.values);
     }
-    deleteItemPrice(): void {
-        const current = this.grid.getCurrent(); // 컬럼 번호
-        this.realgridDataProvider.removeRow(current.dataRow);
-        this.realgridDataProvider.setOptions({
-            //softDeleting: $("#chkSoftDeleting").is(":checked")
-        });
-        // @ts-ignore
-        this.grid.setRowState(current.dataRow, 'deleted');
-        // const jsonData = this.realgridDataProvider.getJsonRow(current.dataRow); // 컬럼 json 정보
-        // this._functionService.cfn_alert(current.dataRow + JSON.stringify(jsonData));
-        // const rowState = $(':input:radio[name='rowState']:checked').val()
-        // this.grid.setRowState(current.dataRow, 1);
 
-        // this.grid.setRowStyleCallback((grid, item, fixed)  => {
-        //         const ret = {};
-        //         const gender = grid.getValue(item.index, 'account');
-        //         if (jsonData.account === gender) {
-        //             return 'orange-color';
-        //         }
-        // });
+    deleteItemPrice(): void {
+        this.grid.cancel();
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.grid, this.realgridDataProvider);
+        if(checkValues.length < 1) {
+            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
+            return;
+        } else {
+            this._realGridsService.gfn_DeleteGrid(this.grid, this.realgridDataProvider);
+            this._realGridsService.gfn_EditGrid(this.grid);
+        }
     }
+    saveGrid(): void {
+        const checkValues = this.grid.getCheckedRows().value;
+        let arr = [];
+        let rows;
+        if (!checkValues || checkValues === 'all') {
+            rows = this.realgridDataProvider.getAllStateRows(); // RowState.NONE은 포함되지 않는다.
+        } else {
+            rows = this.realgridDataProvider.getStateRows(checkValues);
+        }
+        for(let i=0; i < rows.created.length; i++) {
+            const jsonData = this.realgridDataProvider.getJsonRow(rows.created[i]);
+            jsonData.flag = 'C';
+            arr.push(jsonData);
+            console.log(jsonData);
+        }
+        for(let i=0; i < rows.updated.length; i++) {
+            const jsonData = this.realgridDataProvider.getJsonRow(rows.updated[i]);
+            jsonData.flag = 'U';
+            arr.push(jsonData);
+        }
+        for(let i=0; i < rows.deleted.length; i++) {
+            const jsonData = this.realgridDataProvider.getJsonRow(rows.deleted[i]);
+            jsonData.flag = 'D';
+            arr.push(jsonData);
+        }
+        console.log(arr);
+        let log = this.grid.validateCells(null, false);
+        console.log(log);
+        if(log) {
+            if(log[0].dataRow !== '') {
+                this.grid.setCurrent(log[0]);
+                this.grid.setFocus();
+            }
+        }
+    }
+
+    validation(): void{
+        const columns = this.grid.validateCells(null, false);
+
+        if(columns) {
+            for(let i=0; i < columns.length; i++) {
+                let focusCell = this.grid.getCurrent();
+                focusCell = columns[i];
+                if(focusCell.dataRow !== '') {
+                    return focusCell;
+                }
+            }
+        }
+    }
+
 
     //페이징
     pageEvent($event: PageEvent): void {
