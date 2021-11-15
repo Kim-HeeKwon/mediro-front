@@ -1,17 +1,33 @@
-import {Injectable} from "@angular/core";
+import {ChangeDetectorRef, Injectable} from "@angular/core";
 import RealGrid, {GridView, IndicatorValue, LocalDataProvider} from "realgrid";
 import {CommonCode} from "../utils";
+import {FunctionService} from "../function";
+import {Columns} from "./realgrid.types";
+import {CommonPopupItemsComponent} from "../../components/common-popup-items";
+import {takeUntil} from "rxjs/operators";
+import {MatDialog} from "@angular/material/dialog";
+import {Subject} from "rxjs";
 @Injectable({
     providedIn: 'root'
 })
 export class FuseRealGridService {
+
+    // 그리드 생성 전 Provider 생성
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_CreateDataProvider(): RealGrid.LocalDataProvider{
+    gfn_CreateDataProvider(editOption?: boolean): RealGrid.LocalDataProvider{
         const dataProvider = new RealGrid.LocalDataProvider(false);
+
+        if(editOption){
+            dataProvider.setOptions({
+                softDeleting: true,
+                deleteCreated: true
+            });
+        }
         return dataProvider;
     }
+    // 그리드 생성
     // eslint-disable-next-line @typescript-eslint/member-ordering,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -65,6 +81,7 @@ export class FuseRealGridService {
         return gridView;
     }
 
+    // 데이터 셋
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
@@ -82,6 +99,7 @@ export class FuseRealGridService {
         }
     }
 
+    // 그리드 콤보 박스
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     gfn_ComboBox(combo: CommonCode[]): any{
         const rtnCombo = {
@@ -99,6 +117,7 @@ export class FuseRealGridService {
         return rtnCombo;
     }
 
+    // 필터
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
@@ -106,6 +125,8 @@ export class FuseRealGridService {
         gridView.setColumnFilters(columnId, filters);
         //gridView.clearColumnFilters(columnId);
     }
+
+    // 자동 필터
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
@@ -114,6 +135,7 @@ export class FuseRealGridService {
         //gridView.clearColumnFilters(columnId);
     }
 
+    // 엑셀 다운로드
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -138,6 +160,7 @@ export class FuseRealGridService {
         });
     }
 
+    // 그리드 Destory
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_Destory(gridList: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
@@ -154,6 +177,7 @@ export class FuseRealGridService {
         dataProvider = null;
     }
 
+    // 체크 된 행 가져오기
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_GetCheckRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
@@ -165,15 +189,7 @@ export class FuseRealGridService {
         return rows;
     }
 
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_DeleteGrid(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for(let i=0; i<gridView.getCheckedRows().length; i++){
-            dataProvider.removeRow(gridView.getCheckedRows()[i]);
-        }
-    }
-
+    // css 변경 (row)
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_EditGrid(gridView: RealGrid.GridView): void {
@@ -185,5 +201,240 @@ export class FuseRealGridService {
                 return '';
             }
         });
+    }
+
+    // 그리드 행 추가
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_AddRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, values: any[]) {
+        gridView.cancel();
+        dataProvider.addRow(values);
+    }
+
+    // 그리드 행 삭제
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_DelRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
+        gridView.cancel();
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for(let i=0; i<gridView.getCheckedRows().length; i++){
+            dataProvider.removeRow(gridView.getCheckedRows()[i]);
+        }
+    }
+
+    // 그리드 추가, 수정, 삭제 행 가져오기
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
+    gfn_GetEditRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider) {
+        gridView.commit();
+        const rtnList = [];
+        const rows = dataProvider.getAllStateRows();
+        if(rows){
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i < rows.created.length; i++) {
+                const jsonData = dataProvider.getJsonRow(rows.created[i]);
+                jsonData.flag = 'C';
+                rtnList.push(jsonData);
+            }
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i < rows.updated.length; i++) {
+                const jsonData = dataProvider.getJsonRow(rows.updated[i]);
+                jsonData.flag = 'U';
+                rtnList.push(jsonData);
+            }
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i < rows.deleted.length; i++) {
+                const jsonData = dataProvider.getJsonRow(rows.deleted[i]);
+                jsonData.flag = 'D';
+                rtnList.push(jsonData);
+            }
+        }
+
+        return rtnList;
+    }
+
+    // 그리드 밸리데이션
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_ValidationRows(gridView: RealGrid.GridView, functionService: FunctionService) {
+
+        gridView.commit();
+        let rtn = false;
+
+        const val = gridView.validateCells(null, false);
+        if(val !== null && val !== undefined){
+            if(val[0].dataRow !== '') {
+                gridView.setCurrent(val[0]);
+                functionService.cfn_alert(val[0].message);
+                gridView.setFocus();
+                rtn = true;
+            }
+        }
+
+        return rtn;
+    }
+
+    // 그리드 밸리데이션 옵션
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_ValidationOption(gridView: RealGrid.GridView, validationList: string[]) {
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        gridView.onValidateColumn = (grid, column, inserting, value) => {
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<validationList.length; i++){
+                if (column.fieldName === validationList[i]) {
+                    if(value === '' || value === null || value === undefined){
+                        return {
+                            level: 'warning',
+                            message: column.header.text + '를 입력해 주세요.',
+                        };
+                    }
+                };
+            }
+        };
+    }
+
+
+    // 그리드 공통 팝업
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention,max-len
+    gfn_PopUp(isMobile: boolean, isExtraSmall: Observable<BreakpointState>, gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, columns: Columns[], _matDialogPopup: MatDialog, _unsubscribeAll: Subject<any>, _changeDetectorRef: ChangeDetectorRef) {
+
+        //console.log(columns);
+        if(columns.length > 1){
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for(let i=0; i<columns.length; i++){
+                if(columns[i].renderer !== undefined){
+                    gridView.registerCustomRenderer(columns[i].renderer, {
+                        initContent : function(parent) {
+                            const span = this._span = document.createElement('span');
+                            parent.appendChild(span);
+                            parent.appendChild(this._button = document.createElement('span'));
+                            //this._button.id = columns[i].renderer + '_' + i;
+                        },
+
+                        // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                        canClick : function() {
+                            return true;
+                        },
+
+                        // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                        clearContent : function(parent) {
+                            //console.log('DISPOSED......');
+                            parent.innerHTML = '';
+                        },
+
+                        render : function(grid, model, width, height, info) {
+                            info = info || {};
+                            const span = this._span;
+                            // text설정.
+                            span.textContent = model.value;
+
+                            this._value = model.value;
+                            this._button.className = '';
+                            //console.log(model.value);
+                            this._button.className += columns[i].renderer + ' rg-button-action';
+
+                        },
+
+                        click : function(event) {
+                            const grid = this.grid.handler; //
+                            const index = this.index.toProxy();  //
+                            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                            event.preventDefault;
+
+                            if (event.target === this._button) {
+
+                                if(!isMobile){
+                                    const popup = _matDialogPopup.open(CommonPopupItemsComponent, {
+                                        data: {
+                                            popup : columns[i].popUpObject.popUpId,
+                                            headerText : columns[i].popUpObject.popUpHeaderText,
+                                        },
+                                        autoFocus: false,
+                                        maxHeight: '90vh',
+                                        disableClose: true
+                                    });
+
+                                    popup.afterClosed()
+                                        .pipe(takeUntil(_unsubscribeAll))
+                                        .subscribe((result) => {
+                                            if(result){
+                                                const obj = {};
+                                                if(columns[i].popUpObject.popUpDataSet !== null ||
+                                                    columns[i].popUpObject.popUpDataSet !== undefined){
+                                                    const barSplit = columns[i].popUpObject.popUpDataSet.split('|');
+                                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                                    for(let x=0; x<barSplit.length; x++){
+                                                        const keySplit = barSplit[x].split(':');
+                                                        obj[keySplit[0]] = result[keySplit[1]];
+                                                    }
+                                                    dataProvider.updateRows(index.itemIndex, [obj]);
+                                                }else{
+
+                                                    dataProvider.updateRows(index.itemIndex, [result]);
+                                                }
+                                                _changeDetectorRef.markForCheck();
+                                            }
+                                        });
+                                }else{
+                                    const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
+                                        data: {
+                                            popup : columns[i].popUpObject.popUpId,
+                                            headerText : columns[i].popUpObject.popUpHeaderText,
+                                        },
+                                        autoFocus: false,
+                                        width: 'calc(100% - 50px)',
+                                        maxWidth: '100vw',
+                                        maxHeight: '80vh',
+                                        disableClose: true
+                                    });
+
+                                    const smallDialogSubscription = isExtraSmall.subscribe((size: any) => {
+                                        if (size.matches) {
+                                            popup.updateSize('calc(100vw - 10px)','');
+                                        } else {
+                                            // d.updateSize('calc(100% - 50px)', '');
+                                        }
+                                    });
+                                    popup.afterClosed()
+                                        .pipe(takeUntil(_unsubscribeAll))
+                                        .subscribe((result) => {
+
+                                            smallDialogSubscription.unsubscribe();
+                                            const obj = {};
+                                            if(columns[i].popUpObject.popUpDataSet !== null ||
+                                                columns[i].popUpObject.popUpDataSet !== undefined){
+                                                const barSplit = columns[i].popUpObject.popUpDataSet.split('|');
+                                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                                for(let x=0; x<barSplit.length; x++){
+                                                    const keySplit = barSplit[x].split(':');
+                                                    obj[keySplit[0]] = result[keySplit[1]];
+                                                }
+                                                dataProvider.updateRows(index.itemIndex, [obj]);
+                                            }else{
+
+                                                dataProvider.updateRows(index.itemIndex, [result]);
+                                            }
+                                            _changeDetectorRef.markForCheck();
+                                        });
+                                }
+
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    // 팝업 버튼 hide
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_PopUpBtnHide(id: string) {
+
+        const grd = document.getElementsByClassName(id);
+        for(let i=0; i<grd.length; i++){
+            grd.item(i).classList.add('mediro_display_none');
+        }
     }
 }

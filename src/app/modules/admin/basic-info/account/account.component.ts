@@ -67,6 +67,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         'addressDetail',
         'phoneNumber',
         'fax',
+        'fax',
         'email',
     ];
     selectedAccountForm: FormGroup;

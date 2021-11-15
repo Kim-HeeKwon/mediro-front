@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import RealGrid, {DataFieldObject, FormView, GridView, HandleVisibility, LocalDataProvider, ValueType} from 'realgrid';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
@@ -11,6 +11,14 @@ import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {FunctionService} from '../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from "ngx-device-detector";
+import {NewAccountComponent} from "../../basic-info/account/new-account/new-account.component";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {CommonUdiComponent} from "../../../../../@teamplat/components/common-udi";
+import {RealgridNewComponent} from "./realgrid-new/realgrid-new.component";
+import {Router} from "@angular/router";
+import {RealgridDetailComponent} from "./realgrid-detail/realgrid-detail.component";
 
 @Component({
     selector: 'app-realgrid',
@@ -19,12 +27,15 @@ import {FunctionService} from '../../../../../@teamplat/services/function';
 })
 
 export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
+    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
-    isSearchForm: boolean = false;
-    values = ['', '', '', '', '', '', '', '', '', '', ''];
+    isMobile: boolean = false;
     // @ts-ignore
     realgridColumns: Columns[];
     //isMobile = false;
@@ -39,28 +50,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         {
             id: '101',
             name: '거래처 명'
-        }];
-
-    searchCondition2: CommonCode[] = [
-        {
-            id: '100',
-            name: '거래처 코드'
-        },
-        {
-            id: '101',
-            name: '거래처 명'
-        },
-        {
-            id: '102',
-            name: '유형'
-        },
-        {
-            id: '103',
-            name: '주소'
-        },
-        {
-            id: '104',
-            name: '상세주소'
         }];
 
 
@@ -90,12 +79,18 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
                 private _codeStore: CodeStore,
+                private _router: Router,
+                private _matDialog: MatDialog,
+                public _matDialogPopup: MatDialog,
                 private _utilService: FuseUtilsService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _functionService: FunctionService,
-                private _accountService: AccountService)
+                private _deviceService: DeviceDetectorService,
+                private _accountService: AccountService,
+                private readonly breakpointObserver: BreakpointObserver)
     {
         this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
+        this.isMobile = this._deviceService.isMobile();
     }
 
     ngOnInit(): void {
@@ -105,8 +100,7 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
             accountType: ['ALL'],
             descr: [''],
             account: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['100'],
+            searchCondition: ['101'],
             searchText: [''],
         });
 
@@ -120,36 +114,9 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 컬럼
         this.realgridColumns = [
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'left-cell-text'},
-                button:'action',
-                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-                styleCallback: (grid, dataCell) =>  {
-                    if(dataCell.item.rowState === 'created' || dataCell.item.itemState === 'appending' || dataCell.item.itemState === 'inserting'){
-                        return {
-                            editable: true
-                        };
-                    } else {
-                      return {
-                          editable: false
-                      };
-                    }
-                }
-            },
+                , header: {text: '거래처 코드', styleName: 'left-cell-text'}},
             {name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'},
-                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-                styleCallback: (grid, dataCell) =>  {
-                    if(dataCell.item.rowState === 'created' || dataCell.item.itemState === 'appending' || dataCell.item.itemState === 'inserting'){
-                        return {
-                            editable: true
-                        };
-                    } else {
-                        return {
-                            editable: false
-                        };
-                    }
-                }
-                },
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'},},
             {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'center-cell-text',
                 header: {text: '유형'},
                 values: values,
@@ -180,14 +147,14 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : true,
+            stateBar : false,
             checkBar : true,
             footers : false,
         };
 
         this.realgridDataProvider.setOptions({
-            softDeleting: true,
-            deleteCreated: true
+            softDeleting: false,
+            deleteCreated: false
         });
 
         //그리드 생성
@@ -200,44 +167,19 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         this.grid.setEditOptions({
-            readOnly: false,
+            readOnly: true,
             insertable: false,
             appendable: false,
-            editable: true,
-            updatable: true,
-            deletable: true,
+            editable: false,
+            deletable: false,
             checkable: true,
-            softDeleting: true,
+            softDeleting: false,
             //hideDeletedRows: false,
         });
 
         this.grid.deleteSelection(true);
         this.grid.setDisplayOptions({liveScroll: false,});
         this.grid.setPasteOptions({enabled: false,});
-        // this.grid.displayOptions.useFocusClass = true;
-        // this.grid.displayOptions.selectionStyle = 'rows';
-        // this._realGridsService.gfn_EditGrid(this.grid);
-        this.grid.editOptions.editWhenFocused = true;
-        this.grid.editOptions.commitByCell = true;
-        this.grid.editOptions.commitWhenNoEdit = true;
-        this.grid.editOptions.commitWhenLeave = true;
-        this.grid.editOptions.validateOnEdited = true;
-        // this.grid.editOptions.validateOnExit = false;
-        // this.grid.editOptions.validateOnExit = true;
-        // this.grid.columnByName('account').buttonVisibility = 'default';
-        // this.grid.editOptions.commitLevel = 'warning';
-
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        this.grid.onValidateColumn = (grid, column, inserting, value) => {
-            if (column.fieldName === 'account' || column.fieldName === 'descr') {
-                if (value === '' || !value) {
-                    return {
-                        level: 'warning',
-                        message: '필수값을 입력해주세요',
-                    };
-                }
-            }
-        };
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -250,6 +192,50 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
                 this.orderBy = 'desc';
             }else{
                 this.orderBy = 'asc';
+            }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.grid.onCellDblClicked = (grid, clickData) => {
+            if(clickData.cellType !== 'header'){
+                if(clickData.cellType !== 'head'){
+
+                    if(!this.isMobile){
+                        const d = this._matDialog.open(RealgridDetailComponent, {
+                            autoFocus: false,
+                            disableClose: true,
+                            data     : {
+                                selectedAccount : grid.getValues(clickData.dataRow)
+                            },
+                        });
+                        d.afterClosed().subscribe(() => {
+                            this.selectAccount();
+                        });
+
+                    }else{
+                        const d = this._matDialog.open(RealgridDetailComponent, {
+                            data     : {
+                                selectedAccount : grid.getValues(clickData.dataRow)
+                            },
+                            autoFocus: false,
+                            width: 'calc(100% - 50px)',
+                            maxWidth: '100vw',
+                            maxHeight: '80vh',
+                            disableClose: true
+                        });
+                        const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                            if (size.matches) {
+                                d.updateSize('calc(100vw - 10px)','');
+                            } else {
+                                // d.updateSize('calc(100% - 50px)', '');
+                            }
+                        });
+                        d.afterClosed().subscribe(() => {
+                            smallDialogSubscription.unsubscribe();
+                        });
+                    }
+                    //this._router.navigate(['realgrid/realgrid/realgrid-detail', grid.getValues(clickData.dataRow)]);
+                }
             }
         };
 
@@ -333,73 +319,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
             });
     }
 
-    additionAccount(): void {
-        this.grid.cancel();
-        this.realgridDataProvider.addRow(this.values);
-    }
-
-    deleteItemPrice(): void {
-        this.grid.cancel();
-        const checkValues = this._realGridsService.gfn_GetCheckRows(this.grid, this.realgridDataProvider);
-        if(checkValues.length < 1) {
-            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
-            return;
-        } else {
-            this._realGridsService.gfn_DeleteGrid(this.grid, this.realgridDataProvider);
-            this._realGridsService.gfn_EditGrid(this.grid);
-        }
-    }
-    saveGrid(): void {
-        const checkValues = this.grid.getCheckedRows().value;
-        let arr = [];
-        let rows;
-        if (!checkValues || checkValues === 'all') {
-            rows = this.realgridDataProvider.getAllStateRows(); // RowState.NONE은 포함되지 않는다.
-        } else {
-            rows = this.realgridDataProvider.getStateRows(checkValues);
-        }
-        for(let i=0; i < rows.created.length; i++) {
-            const jsonData = this.realgridDataProvider.getJsonRow(rows.created[i]);
-            jsonData.flag = 'C';
-            arr.push(jsonData);
-            console.log(jsonData);
-        }
-        for(let i=0; i < rows.updated.length; i++) {
-            const jsonData = this.realgridDataProvider.getJsonRow(rows.updated[i]);
-            jsonData.flag = 'U';
-            arr.push(jsonData);
-        }
-        for(let i=0; i < rows.deleted.length; i++) {
-            const jsonData = this.realgridDataProvider.getJsonRow(rows.deleted[i]);
-            jsonData.flag = 'D';
-            arr.push(jsonData);
-        }
-        console.log(arr);
-        let log = this.grid.validateCells(null, false);
-        console.log(log);
-        if(log) {
-            if(log[0].dataRow !== '') {
-                this.grid.setCurrent(log[0]);
-                this.grid.setFocus();
-            }
-        }
-    }
-
-    validation(): void{
-        const columns = this.grid.validateCells(null, false);
-
-        if(columns) {
-            for(let i=0; i < columns.length; i++) {
-                let focusCell = this.grid.getCurrent();
-                focusCell = columns[i];
-                if(focusCell.dataRow !== '') {
-                    return focusCell;
-                }
-            }
-        }
-    }
-
-
     //페이징
     pageEvent($event: PageEvent): void {
         this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'account', this.orderBy, this.searchForm.getRawValue());
@@ -410,11 +329,95 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
         this._realGridsService.gfn_ExcelExportGrid(this.grid, '거래처 목록');
     }
 
-    searchFormClick(): void {
-        if(this.isSearchForm){
-            this.isSearchForm = false;
+    createAccount(): void {
+        if(!this.isMobile){
+            this._matDialog.open(RealgridNewComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data     : {
+                    note: {}
+                },
+            });
         }else{
-            this.isSearchForm = true;
+            const d = this._matDialog.open(RealgridNewComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
+    enter(event): void {
+        if(event.keyCode===13){
+            this.selectAccount();
+        }
+    }
+
+    createUdiAccount(): void {
+        if (!this.isMobile) {
+            this.isProgressSpinner = false;
+            const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
+                data: {
+                    headerText: '거래처 조회',
+                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail: false,
+                    mediroUrl: 'bcnc/company-info',
+                    tailKey: '',
+                    merge: true,
+                    mergeData: 'account'
+                },
+                autoFocus: false,
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            popupUdi.afterClosed().subscribe((result) => {
+                this.selectAccount();
+            });
+        } else {
+            const d = this._matDialog.open(CommonUdiComponent, {
+                data: {
+                    headerText: '거래처 조회',
+                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
+                    code: 'UDI_BCNC',
+                    tail: false,
+                    mediroUrl: 'bcnc/company-info',
+                    tailKey: '',
+                    merge: true,
+                    mergeData: 'account'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                smallDialogSubscription.unsubscribe();
+                this.selectAccount();
+            });
         }
     }
 }

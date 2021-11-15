@@ -295,27 +295,7 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                 this.order(grid.getValues(index.dataRow));
             }else if(clickData.target.innerText === '주문서'){
                 this.salesorder(grid.getValues(index.dataRow));
-
             }
-
-            // const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
-            //     data: {
-            //         popup : 'P$_ALL_ITEM',
-            //         headerText : '품목 조회',
-            //     },
-            //     autoFocus: false,
-            //     maxHeight: '90vh',
-            //     disableClose: true
-            // });
-            //
-            // popup.afterClosed()
-            //     .pipe(takeUntil(this._unsubscribeAll))
-            //     .subscribe((result) => {
-            //         if(result){
-            //             console.log(result);
-            //             this._changeDetectorRef.markForCheck();
-            //         }
-            //     });
         };
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
@@ -677,8 +657,8 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                this.isProgressSpinner = true;
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -701,5 +681,11 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                     this.selectHeader();
                 }
             });
+    }
+
+    enter(event): void {
+        if(event.keyCode===13){
+            this.selectHeader();
+        }
     }
 }

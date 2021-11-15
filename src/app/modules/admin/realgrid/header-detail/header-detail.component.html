@@ -285,6 +285,7 @@
                                         <ng-container *ngFor="let searchCondition of searchCondition">
                                             <input
                                                 matInput
+                                                (window:keypress)="enter($event)"
                                                 [formControlName]="'searchText'"
                                                 [autocomplete]="'off'"
                                                 [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
@@ -305,6 +306,7 @@
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
                                         <input
                                             matInput
+                                            (window:keypress)="enter($event)"
                                             [formControlName]="'searchText2'"
                                             [autocomplete]="'off'"
                                             [placeholder]="'검색조건을 선택해주세요.'">

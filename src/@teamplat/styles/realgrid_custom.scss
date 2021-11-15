@@ -142,6 +142,16 @@
 }
 .rg-button-action {
     background: url(../../assets/images/logo/realgrid.png) no-repeat center;
+    width: 15px;
+    height: 15px;
+    margin-top: 1px;
+    float: right;
+}
+.mediro_display_block{
+    visibility: visible !important;
+}
+.mediro_display_none{
+    visibility: hidden !important;
 }
 
 .rg-button-action:hover {

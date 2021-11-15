@@ -229,6 +229,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();

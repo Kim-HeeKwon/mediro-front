@@ -392,7 +392,8 @@ export class Api {
                     'Accept-Language': 'ko-KR',
                     'Authorization': 'Bearer ' + body.accessToken,
                 },params:{
-                    'ds_json': encodeURI(JSON.stringify(body)),
+                    //'ds_json': encodeURI(JSON.stringify(body)),
+                    'ds_json': [JSON.stringify(body)],
                     'ds_session' : JSON.stringify(arrayOfArraysData),
                 }
             });

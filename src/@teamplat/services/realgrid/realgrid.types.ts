@@ -8,7 +8,8 @@ export class Columns{
     header?: object;
     button?: string;
     styleCallback?: object;
-    renderer?: object;
+    renderer?: any;
+    popUpObject?: any;
     editor?: object;
     lookupDisplay?: boolean;
     styleName?: string;

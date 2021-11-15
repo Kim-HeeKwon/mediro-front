@@ -22,7 +22,7 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {EstimateService} from "../../../estimate-order/estimate/estimate.service";
-import {EstimateDetail, EstimateDetailPagenation} from "../../../estimate-order/estimate/estimate.types";
+import {Estimate, EstimateDetail, EstimateDetailPagenation} from "../../../estimate-order/estimate/estimate.types";
 import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
 import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
@@ -41,6 +41,9 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
@@ -123,15 +126,22 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            console.log(this.estimateHeaderForm.getRawValue());
-
             this._estimateService.getDetail(0,20,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
         }
 
+        //페이지 라벨
+        this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
         this.estimateDetailColumns = [
             {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}},
+                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , renderer: 'itemGrdPopup'
+                , popUpObject:
+                    {
+                        popUpId: 'P$_ALL_ITEM',
+                        popUpHeaderText: '품목 조회',
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit'
+                    }},
             {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'left-cell-text'}},
             {name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
@@ -154,11 +164,11 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
                 , header: {text: '비고' , styleName: 'left-cell-text'}},
         ];
         //그리드 Provider
-        this.estimateDetailDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.estimateDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
+            stateBar : true,
             checkBar : true,
             footers : false,
         };
@@ -173,17 +183,60 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         //그리드 옵션
         this.gridList.setEditOptions({
-            readOnly: true,
+            readOnly: false,
             insertable: false,
             appendable: false,
-            editable: false,
-            //deletable: true,
+            editable: true,
+            updatable: true,
+            deletable: true,
             checkable: true,
             softDeleting: true,
             //hideDeletedRows: true,
         });
+
+        this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
+        this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.validateOnEdited = true;
+
+        this._realGridsService.gfn_EditGrid(this.gridList);
+        const validationList = ['itemCd'];
+        this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
+
+        // 셀 edit control
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+
+            //추가시
+            if(dataCell.item.rowState === 'created'){
+                if(dataCell.dataColumn.fieldName === 'itemCd'||
+                    dataCell.dataColumn.fieldName === 'itemNm'||
+                    dataCell.dataColumn.fieldName === 'standard'||
+                    dataCell.dataColumn.fieldName === 'unit'){
+                    return {editable : false};
+                }else {
+                    return {editable : true};
+                }
+            }else{
+                //console.log(dataCell.dataColumn.renderer);
+                if(dataCell.dataColumn.fieldName === 'itemCd'||
+                    dataCell.dataColumn.fieldName === 'itemNm'||
+                    dataCell.dataColumn.fieldName === 'standard'||
+                    dataCell.dataColumn.fieldName === 'unit'){
+
+                    this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
+                    return {editable : false};
+                }else{
+                    return {editable : true};
+                }
+            }
+
+            if(dataCell.dataColumn.fieldName === 'qtAmt'){
+                return {editable : false};
+            }
+        });
+        // eslint-disable-next-line max-len
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -199,8 +252,6 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
         };
 
-        //페이지 라벨
-        this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         this.setGridData();
 
         this._estimateService.estimateDetailPagenation$
@@ -242,15 +293,116 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     saveEstimate(): void{
+
+        const status = this.estimateHeaderForm.controls['status'].value;
+
+        //확정은 불가능
+        if(status === 'CF'){
+            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            return;
+        }
+
+        if(this._realGridsService.gfn_ValidationRows(this.gridList , this._functionService)) {return;}
+
+        if(!this.estimateHeaderForm.invalid){
+            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.estimateDetailDataProvider);
+
+            let detailCheck = false;
+
+            if(rows.length === 0){
+                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+                detailCheck = true;
+            }
+            if(detailCheck){
+                return;
+            }
+
+            const confirmation = this._teamPlatConfirmationService.open({
+                title : '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if(result){
+                        rows = this.headerDataSet(rows);
+                        this._estimateService.saveEstimate(rows)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((estimate: any) => {
+                                    this.isProgressSpinner = true;
+                                    this.alertMessage(estimate);
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+        }else{
+            this._functionService.cfn_alert('필수값을 입력해주세요.');
+        }
+    }
+
+    alertMessage(param: any): void
+    {
+        if(param.status !== 'SUCCESS'){
+            this.isProgressSpinner = false;
+            this._functionService.cfn_alert(param.msg);
+        }else{
+            this.backPage();
+        }
+    }
+
+    /* 트랜잭션 전 data Set
+     * @param sendData
+     */
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    headerDataSet(sendData: Estimate[]) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i=0; i<sendData.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            sendData[i].account = this.estimateHeaderForm.controls['account'].value;
+            sendData[i].qtNo = this.estimateHeaderForm.controls['qtNo'].value;
+            sendData[i].type = this.estimateHeaderForm.controls['type'].value;
+            sendData[i].status = this.estimateHeaderForm.controls['status'].value;
+            sendData[i].email = this.estimateHeaderForm.controls['email'].value;
+            sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
+        }
+        return sendData;
     }
 
     addRow(): void {
+        const values = [
+            '', '', '', '', '', 0, 0, 0, ''
+        ];
+
+        this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
+
     }
     delRow(): void {
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateDetailDataProvider);
+
+        if(checkValues.length < 1){
+            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
+            return;
+        }
+
+        this._realGridsService.gfn_DelRow(this.gridList, this.estimateDetailDataProvider);
+
     }
 
     //페이징
     pageEvent($event: PageEvent): void {
+        // eslint-disable-next-line max-len
         this._estimateService.getDetail(this._estimateDetailPagenator.pageIndex, this._estimateDetailPagenator.pageSize, 'qtLineNo', this.orderBy, this.estimateHeaderForm.getRawValue());
     }
 

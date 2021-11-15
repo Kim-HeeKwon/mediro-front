@@ -28,6 +28,11 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatDialogModule} from "@angular/material/dialog";
 import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
+import {RealgridNewComponent} from "./realgrid-new/realgrid-new.component";
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
+import {RealgridDetailComponent} from "./realgrid-detail/realgrid-detail.component";
+import {DetailComponent} from "../header-detail/detail/detail.component";
+import {DetailResolvers} from "../header-detail/detail/detail.resolvers";
 
 const realGridRoutes: Route[] = [
     {
@@ -36,12 +41,14 @@ const realGridRoutes: Route[] = [
         resolve  : {
             data: RealgridResolvers
         }
-    }
+    },
 ];
 
 @NgModule({
     declarations: [
-        RealgridComponent
+        RealgridComponent,
+        RealgridNewComponent,
+        RealgridDetailComponent
     ],
     imports: [
         CommonModule,
@@ -70,7 +77,8 @@ const realGridRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         FuseDateRangeModule,
-        FuseUserHelpModule
+        FuseUserHelpModule,
+        CommonLoadingBarModule
     ]
 })
 export class RealgridModule {

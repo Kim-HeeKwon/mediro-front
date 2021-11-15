@@ -195,6 +195,24 @@ export class EstimateService {
     /**
      * Create
      */
+    saveEstimate(estimate: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimate, 'v1/api/estimateOrder/estimate/save-Estimate').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * Create
+     */
     createEstimate(estimate: Estimate[]): Observable<Estimate>
     {
         return this.estimates$.pipe(
