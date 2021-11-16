@@ -336,3 +336,47 @@ fuse-date-range .range {
     //font-size: 12px;
     line-height: 35px !important;
 }
+
+.fuse-date-range .range .start{
+    //padding: 0px 12px !important;
+    padding-left: 10px;
+    padding-right: 1px;
+    height: 30px;
+    margin-bottom: 7px;
+    background: #ffffff;
+    font-size: 12px;
+    border-radius: 0px !important;
+}
+.fuse-date-range .range .end{
+    //padding: 0px 12px !important;
+    padding-left: 10px;
+    padding-right: 1px;
+    height: 30px;
+    margin-bottom: 7px;
+    background: #ffffff;
+    font-size: 12px;
+    border-radius: 0px !important;
+}
+.fuse-date-range {
+    display: flex;
+
+    .range {
+
+        .separator {
+            margin: 0 7px 7px;
+
+            @screen sm {
+                margin: 0 7px 7px;
+            }
+        }
+    }
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+    font-size: 12px;
+    line-height: 28px !important;
+}
+.mat-button-toggle-group .mat-button-toggle{
+    border-radius: 0px !important;
+    margin-left: 0px !important;
+}

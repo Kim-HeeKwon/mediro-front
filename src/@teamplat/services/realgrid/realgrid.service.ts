@@ -165,6 +165,8 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_Destory(gridList: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
 
+        gridList.cancel();
+
         //데이터 초기화
         dataProvider.clearRows();
 

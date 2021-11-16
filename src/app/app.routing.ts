@@ -95,23 +95,28 @@ export const appRoutes: Route[] = [
             // estimate-order
             {path: 'estimate-order', children: [
                     // estimate
-                    {path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
+                    //{path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
+                    {path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/dms/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
                     // order
-                    {path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
+                    //{path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
+                    {path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/dms/estimate-order/order/order.module').then(m => m.OrderModule)},
                 ]},
             // salesorder
             {path: 'salesorder', children: [
                     // estimate
-                    {path: 'salesorder', data: {key: 'salesorder'}, loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
+                    //{path: 'salesorder', data: {key: 'salesorder'}, loadChildren: () => import('app/modules/admin/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
+                    {path: 'salesorder', data: {key: 'salesorder'}, loadChildren: () => import('app/modules/dms/salesorder/salesorder/salesorder.module').then(m => m.SalesorderModule)},
                 ]
             },
             // in-out
             {path: 'bound', children: [
                     // inbound
                     //{path: 'in', loadChildren: () => import('app/modules/admin/in-out/in/in.module').then(m => m.InModule)},
-                    {path: 'inbound', data: {key: 'inbound'}, loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
+                    //{path: 'inbound', data: {key: 'inbound'}, loadChildren: () => import('app/modules/admin/bound/inbound/inbound.module').then(m => m.InboundModule)},
+                    {path: 'inbound', data: {key: 'inbound'}, loadChildren: () => import('app/modules/dms/bound/inbound/inbound.module').then(m => m.InboundModule)},
                     // outbound
-                    {path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
+                    //{path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
+                    {path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/dms/bound/outbound/outbound.module').then(m => m.OutboundModule)},
                 ]},
             // stock
             {path: 'stock', children: [
@@ -127,9 +132,11 @@ export const appRoutes: Route[] = [
             // calculate
             {path: 'calculate', children: [
                     // bill
-                    {path: 'bill', data: {key: 'bill'}, loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
+                    //{path: 'bill', data: {key: 'bill'}, loadChildren: () => import('app/modules/admin/calculate/bill/bill.module').then(m => m.BillModule)},
+                    {path: 'bill', data: {key: 'bill'}, loadChildren: () => import('app/modules/dms/calculate/bill/bill.module').then(m => m.BillModule)},
                     // tax
-                    {path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
+                    //{path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
+                    {path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/dms/calculate/tax/tax.module').then(m => m.TaxModule)},
                 ]},
             {path: 'realgrid', children: [
                     // bill

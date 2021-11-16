@@ -99,7 +99,8 @@ export class AuthSignInComponent implements OnInit
                     console.log(this._sessionStore.getValue());
 
                     if(this._sessionStore.getValue().initYn === 'Y'){
-                        this._router.navigateByUrl('/pages/settings/security');
+                        //this._router.navigateByUrl('/pages/settings/security');
+                        this._router.navigateByUrl('/monitoring/dashboards');
                     }else{
                         // Set the redirect url.
                         // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
