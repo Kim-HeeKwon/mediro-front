@@ -27,9 +27,9 @@ import {environment} from "../../../../../environments/environment";
     styleUrls: ['./tax.component.scss']
 })
 export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
-    // isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
-    //     Breakpoints.XSmall
-    // );
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;

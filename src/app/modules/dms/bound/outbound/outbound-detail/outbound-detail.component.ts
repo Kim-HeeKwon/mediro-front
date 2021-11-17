@@ -26,6 +26,7 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {OutBound} from "../outbound.types";
+import {CommonUdiScanComponent} from "../../../../../../@teamplat/components/common-udi-scan";
 
 @Component({
     selector       : 'app-dms-outbound-detail',
@@ -65,15 +66,19 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // @ts-ignore
     outBoundDetailDataProvider: RealGrid.LocalDataProvider;
     outBoundDetailFields: DataFieldObject[] = [
+        {fieldName: 'obNo', dataType: ValueType.TEXT},
         {fieldName: 'obLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'udiYn', dataType: ValueType.TEXT},
+        {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'obQty', dataType: ValueType.NUMBER},
+        {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -333,7 +338,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     addRow(): void {
 
         const values = [
-            '', '', '', '', '', '',  0, 0, 0, ''
+            '', '', '', '', '', '', '', '', '',  0, 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
@@ -464,6 +469,107 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     outBoundConfirm() {
+        const obStatus = this.outBoundHeaderForm.controls['status'].value;
+        if(obStatus !== 'N' && obStatus !== 'P'){
+            this._functionService.cfn_alert('출고할 수 없는 상태입니다.');
+            return false;
+        }
 
+        let outBoundData;
+        let outBoundDataFilter;
+        let udiCheckData;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
+
+        outBoundData = rows.filter((detail: any) => (detail.qty > 0 && detail.qty !== '0'))
+            .map((param: any) => param);
+
+        outBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
+            .map((param: any) => param);
+
+        udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
+            .map((param: any) => param);
+
+        if(outBoundData.length < 1) {
+            this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
+            return false;
+        }else{
+            if(udiCheckData.length > 0){
+                //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                //입력 수량 그대로 가져오기
+                //UDI 정보 INPUT 후 값 셋팅
+
+                const popup =this._matDialogPopup.open(CommonUdiScanComponent, {
+                    data: {
+                        detail : udiCheckData
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
+                popup.afterClosed().subscribe((result) => {
+                    if(result){
+                        if(result !== undefined){
+
+                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                            for(let i=0; i<result.length; i++){
+                                outBoundDataFilter.push(result[i]);
+                            }
+                            this.outBoundCall(outBoundDataFilter);
+                        }
+                    }
+                });
+            }else{
+                this.outBoundCall(outBoundData);
+            }
+        }
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    outBoundCall(outBoundData: OutBound[]){
+        const confirmation = this._teamPlatConfirmationService.open({
+            title  : '출고',
+            message: '출고하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '출고'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        outBoundData.forEach((outBound: any) => {
+            outBound.qty = outBound.qty;
+            outBound.lot4 = outBound.udiCode;
+        });
+        outBoundData = outBoundData.filter((outBound: any) => outBound.qty > 0 ).map((param: any) => param);
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result){
+                    this.outBoundDetailConfirm(outBoundData);
+                }
+            });
+    }
+
+    /* 출고 (상세)
+     *
+     * @param sendData
+     */
+    outBoundDetailConfirm(sendData: OutBound[]): void{
+        this.isProgressSpinner = true;
+        if(sendData){
+            this._outboundService.outBoundDetailConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(outBound);
+                    this.isProgressSpinner = false;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
 }

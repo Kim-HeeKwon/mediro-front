@@ -9,7 +9,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
-            <div class="flex flex-row sm:flex-row flex-auto sm:items-center min-w-0 my-5 sm:my-5">
+            <div class="flex flex-row sm:flex-row flex-auto sm:items-center min-w-0 my-4 sm:my-4">
                 <!-- Avatar and name -->
                 <div class="flex flex-auto items-center min-w-0">
                     <div class="flex-0 w-12 overflow-hidden">
@@ -28,17 +28,7 @@
                 </div>
                 <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
                     <button
-                        class="fuse-mat-button-rounded mediro-btn-custom-background-color"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="inBound()">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:cube'"></mat-icon>
-                        <span class="ml-2">반품</span>
-                    </button>
-                    <button
-                        class="fuse-mat-button-rounded mediro-btn-custom-background-color"
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
                         (click)="salesorderSave()">
@@ -46,6 +36,16 @@
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:save'"></mat-icon>
                         <span class="ml-2 mediro-font-custom">저장</span>
+                    </button>
+                    <button
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="inBound()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:cube'"></mat-icon>
+                        <span class="ml-2">반품</span>
                     </button>
                 </div>
             </div>
@@ -161,21 +161,31 @@
 
                         </div>
                         <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
-                            <mat-icon
-                                class="icon-size-7 mr-3 cursor-pointer"
-                                [svgIcon]="'heroicons_outline:plus-circle'"
-                                (click)="addRow()"
-                            ></mat-icon>
-                            <mat-icon
-                                class="icon-size-7 mr-3 cursor-pointer"
-                                [svgIcon]="'heroicons_outline:minus-circle'"
-                                (click)="delRow()"
-                            ></mat-icon>
-                            <mat-icon
-                                class="icon-size-6 cursor-pointer"
-                                [svgIcon]="'iconsmind:file_excel'"
-                                (click)="excelExport()"
-                            ></mat-icon>
+                            <button
+                                class="ml-2 mediro-btn-custom"
+                                mat-stroked-button>
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:plus-circle'"
+                                    (click)="addRow()"
+                                ></mat-icon>
+                                <span class="ml-2 mr-1">추가</span>
+                            </button>
+                            <button
+                                class="ml-2 mediro-btn-custom"
+                                mat-stroked-button>
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:minus-circle'"
+                                    (click)="delRow()"
+                                ></mat-icon>
+                                <span class="ml-2 mr-1">삭제</span>
+                            </button>
+                            <button
+                                class="ml-2 mediro-btn-custom"
+                                mat-stroked-button
+                                [color]="'primary'"
+                                (click)="excelExport()">
+                                <img src="assets/images/excel/excel_down.png">
+                            </button>
                         </div>
                     </div>
 

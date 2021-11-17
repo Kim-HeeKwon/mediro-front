@@ -146,9 +146,11 @@ export const appRoutes: Route[] = [
             // udi
             {path: 'udi', children: [
                     // manages
-                    {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    //{path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/dms/udi/manages/manages.module').then(m => m.ManagesModule)},
                     // status
-                    {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
+                    //{path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
+                    {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/dms/udi/status/status.module').then(m => m.StatusModule)},
                 ]},
             // Monitoring
             {path: 'monitoring', children: [

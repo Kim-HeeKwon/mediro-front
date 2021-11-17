@@ -25,8 +25,8 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {map, switchMap, takeUntil} from "rxjs/operators";
-import {OrderDetailPagenation} from "../../../estimate-order/order/order.types";
-import {InBound} from "../../../../admin/bound/inbound/inbound.types";
+import {InBound} from "../inbound.types";
+import {CommonUdiRtnScanComponent} from "../../../../../../@teamplat/components/common-udi-rtn-scan";
 
 @Component({
     selector       : 'app-dms-inbound-detail',
@@ -63,12 +63,15 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // @ts-ignore
     inBoundDetailDataProvider: RealGrid.LocalDataProvider;
     inBoundDetailFields: DataFieldObject[] = [
+        {fieldName: 'ibNo', dataType: ValueType.TEXT},
         {fieldName: 'ibLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'udiYn', dataType: ValueType.TEXT},
+        {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'ibExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'ibQty', dataType: ValueType.NUMBER},
@@ -286,7 +289,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
-
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -351,7 +353,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     addRow(): void {
 
         const values = [
-            '', '', '', '', '', '',  0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', ''
+            '', '', '', '', '', '', '', '', '',  0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);
@@ -468,6 +470,135 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     inBoundConfirm() {
+        const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        const ibType = this.inBoundHeaderForm.controls['type'].value;
+        if(ibStatus !== 'N' && ibStatus !== 'P'){
+            this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
+            return false;
+        }
+        let inBoundData;
+        let inBoundDataFilter;
+        let udiCheckData;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
 
+        inBoundData = rows.filter((detail: any) => detail.qty > 0)
+            .map((param: any) => {
+                return param;
+            });
+
+        inBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
+            .map((param: any) => {
+                return param;
+            });
+
+        udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
+            .map((param: any) => {
+                return param;
+            });
+
+        if(inBoundData.length < 1) {
+            this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
+            return false;
+        }else{
+
+            //반품일 경우
+            if(ibType === '2'){
+                if(udiCheckData.length > 0){
+                    //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                    //입력 수량 그대로 가져오기
+                    //UDI 정보 INPUT 후 값 셋팅
+                    const popup =this._matDialogPopup.open(CommonUdiRtnScanComponent, {
+                        data: {
+                            detail : udiCheckData
+                        },
+                        autoFocus: false,
+                        maxHeight: '90vh',
+                        disableClose: true
+                    });
+
+                    popup.afterClosed().subscribe((result) => {
+                        if(result){
+                            if(result !== undefined){
+                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                for(let i=0; i<result.length; i++){
+                                    inBoundDataFilter.push(result[i]);
+                                }
+
+                                const conf = this._teamPlatConfirmationService.open({
+                                    title  : '입고',
+                                    message: '입고하시겠습니까?',
+                                    actions: {
+                                        confirm: {
+                                            label: '입고'
+                                        },
+                                        cancel: {
+                                            label: '닫기'
+                                        }
+                                    }
+                                });
+                                //lot 셋팅
+                                inBoundDataFilter.forEach((inBound: any) => {
+                                    inBound.qty = inBound.qty;
+                                    inBound.lot4 = inBound.udiCode;
+                                });
+                                inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.qty > 0 ).map((param: any) => {
+                                    return param;
+                                });
+                                conf.afterClosed()
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((rtn) => {
+                                        if(rtn){
+                                            this.inBoundDetailConfirm(inBoundDataFilter);
+                                        }
+                                    });
+                            }
+                        }
+                    });
+                }
+            }else{
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '입고',
+                    message: '입고하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '입고'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.inBoundDetailConfirm(inBoundData);
+                        }
+                    });
+            }
+        }
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+
+    }
+
+    /* 입고 (상세)
+     *
+     * @param sendData
+     */
+
+    inBoundDetailConfirm(sendData: InBound[]): void{
+        this.isProgressSpinner = true;
+        if(sendData){
+            this._inboundService.inBoundDetailConfirm(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBound: any) => {
+                    this._functionService.cfn_alertCheckMessage(inBound);
+                    this.isProgressSpinner = false;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
     }
 }
