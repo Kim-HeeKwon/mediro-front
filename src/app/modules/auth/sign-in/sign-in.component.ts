@@ -47,7 +47,6 @@ export class AuthSignInComponent implements OnInit
      */
     ngOnInit(): void
     {
-        console.log('s');
         // Create the form
         this.signInForm = this._formBuilder.group({
             email     : ['', [Validators.required, Validators.email]],
@@ -90,27 +89,33 @@ export class AuthSignInComponent implements OnInit
         // Sign in
         this._authService.signIn(this.signInForm.value)
             .subscribe(
-                () => {
+                (response) => {
                     // ID Cookies Setting
                     this.cookieService.set( 'remeberMe', 'Y' );
                     this.cookieService.set( 'email', this.signInForm.value.email );
 
                     //첫 로그인 유저 패스원드 강제 입력
-                    console.log(this._sessionStore.getValue());
-
-                    if(this._sessionStore.getValue().initYn === 'Y'){
-                        //this._router.navigateByUrl('/pages/settings/security');
-                        this._router.navigateByUrl('/monitoring/dashboards');
+                    //console.log(this._sessionStore.getValue());
+                    if(response.resultD.paymentBasicInfoCnt < 1 ||
+                        response.resultD.paymentCardInfoCnt < 1){
+                        this._router.navigateByUrl('/pages/settings/plan-billing');
                     }else{
-                        // Set the redirect url.
-                        // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                        // to the correct page after a successful sign in. This way, that url can be set via
-                        // routing file and we don't have to touch here.
-                        const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                        if(this._sessionStore.getValue().initYn === 'Y'){
+                            this._router.navigateByUrl('/pages/settings/security');
+                            //this._router.navigateByUrl('/monitoring/dashboards');
+                        }else{
+                            // Set the redirect url.
+                            // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+                            // to the correct page after a successful sign in. This way, that url can be set via
+                            // routing file and we don't have to touch here.
+                            const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
 
-                        // Navigate to the redirect url
-                        this._router.navigateByUrl(redirectURL);
+                            // Navigate to the redirect url
+                            this._router.navigateByUrl(redirectURL);
+                        }
                     }
+
+
 
                 },
                 (response) => {
