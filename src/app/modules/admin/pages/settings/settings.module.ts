@@ -23,6 +23,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
         NewTeamComponent
     ],
     imports: [
+        CommonModule,
         RouterModule.forChild(settingsRoutes),
         MatButtonModule,
         MatFormFieldModule,

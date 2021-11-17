@@ -57,12 +57,12 @@ export class SettingsComponent implements OnInit, OnDestroy
                 title      : '비밀번호',
                 description: '비밀번호 정보 관리'
             },
-            // {
-            //     id         : 'plan-billing',
-            //     icon       : 'heroicons_outline:credit-card',
-            //     title      : '결제',
-            //     description: 'Manage your subscription plan, payment method and billing information'
-            // },
+            {
+                id         : 'plan-billing',
+                icon       : 'heroicons_outline:credit-card',
+                title      : '결제',
+                description: '결제 정보 관리'
+            },
             // {
             //     id         : 'notifications',
             //     icon       : 'heroicons_outline:bell',

@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Common} from "../../../../../../@teamplat/providers/common/common";
+import {SessionStore} from "../../../../../core/session/state/session.store";
+import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
 
 @Component({
     selector       : 'settings-plan-billing',
@@ -9,6 +12,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class SettingsPlanBillingComponent implements OnInit
 {
+    alert: { type: FuseAlertType; message: string } = {
+        type   : 'success',
+        message: ''
+    };
+    showAlert: boolean = false;
+    yearlyBilling: boolean = false;
     planBillingForm: FormGroup;
     plans: any[];
 
@@ -16,7 +25,10 @@ export class SettingsPlanBillingComponent implements OnInit
      * Constructor
      */
     constructor(
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _sessionStore: SessionStore,
+        private _common: Common
     )
     {
     }
@@ -32,34 +44,38 @@ export class SettingsPlanBillingComponent implements OnInit
     {
         // Create the form
         this.planBillingForm = this._formBuilder.group({
-            plan          : ['team'],
-            cardHolder    : ['Brian Hughes'],
-            cardNumber    : [''],
-            cardExpiration: [''],
-            cardCVC       : [''],
-            country       : ['usa'],
-            zip           : ['']
+            mId            : [''],
+            plan           : ['basic',[Validators.required]],
+            cardHolder     : ['',[Validators.required]],
+            cardNumber     : ['',[Validators.required]],
+            cardExpiration : ['',[Validators.required]],
+            cardCVC        : ['',[Validators.required]],
+            cardCompany    : [''],
+            cardPassword   : ['',[Validators.required]],
+            yearPay        : ['']
         });
 
         // Setup the plans
         this.plans = [
             {
                 value  : 'basic',
-                label  : 'BASIC',
-                details: 'Starter plan for individuals.',
-                price  : '10'
+                label  : '기본서비스',
+                details: '유통관리를 고객을 위한 기본 서비스',
+                price  : '49000',
+                yearPrice : '490000'
             },
             {
-                value  : 'team',
-                label  : 'TEAM',
-                details: 'Collaborate up to 10 people.',
-                price  : '20'
+                value  : 'premium',
+                label  : '프리미엄서비스',
+                details: '유통관리 및 데이터 연동 기반 프리미엄 서비스',
+                price  : '99000',
+                yearPrice : '990000'
             },
             {
-                value  : 'enterprise',
-                label  : 'ENTERPRISE',
-                details: 'For bigger businesses.',
-                price  : '40'
+                value  : 'customize',
+                label  : '커스텀서비스',
+                details: '맞춤 고객을 위한 커스텀서비스',
+                price  : '00'
             }
         ];
     }
@@ -77,5 +93,37 @@ export class SettingsPlanBillingComponent implements OnInit
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
+    }
+
+    saveBillingInfo(): void
+    {
+        this.showAlert = false;
+        //this._common.sendData()
+        if(!this.planBillingForm.invalid){
+            this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
+            this.planBillingForm.patchValue({'mId':this._sessionStore.getValue().businessNumber});
+            console.log( this.planBillingForm.getRawValue());
+            console.log( this._sessionStore.getValue());
+            console.log(  this.planBillingForm.valid);
+
+            this._common.sendData(this.planBillingForm.getRawValue(),'/v1/api/payment/payment-basic-info')
+                .subscribe((responseData: any) => {
+                    console.log(responseData);
+                });
+        }else{
+            // Set the alert
+            this.alert = {
+                type   : 'error',
+                message: '성명(기업명), 카드번호, 유효기간 , CVC, 카드비밀번호를 입력해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+        }
+    }
+
+    test(evt){
+        console.log('click');
+        console.log(evt);
     }
 }
