@@ -1,0 +1,160 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">품목 상세정보</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="selectedItemsForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>품목 코드<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemCd'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>품목명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemNm'">
+                        </mat-form-field>
+                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>등급<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-select [formControlName]="'itemGrade'">
+                                <ng-container *ngFor="let itemGrades of itemGrades">
+                                    <mat-option [value]="itemGrades.id">
+                                        {{itemGrades.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>UDI 신고 대상 유무<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-select [formControlName]="'udiYn'">
+                                <ng-container *ngFor="let udiYn of udiYn">
+                                    <mat-option [value]="udiYn.id">
+                                        {{udiYn.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>단위</mat-label>
+                            <mat-select [formControlName]="'unit'">
+                                <ng-container *ngFor="let itemUnit of itemUnit">
+                                    <mat-option [value]="itemUnit.id">
+                                        {{itemUnit.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>규격</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'standard'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>공급사<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'supplier'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래유형</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'taxGbn'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>구매단가</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'buyPrice'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>판매단가</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'salesPrice'">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                <!-- Close -->
+                <button
+                    mat-stroked-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <button
+                    class="ml-12"
+                    mat-stroked-button
+                    (click)="updateItem()">
+                    수정
+                </button>
+                <button
+                    class="ml-2"
+                    mat-stroked-button
+                    (click)="deleteItem()">
+                    삭제
+                </button>
+            </div>
+        </ng-container>
+    </div>
+
+    <div #daum_popup style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+        <img (click)="closeDaumPopup()" src="//t1.daumcdn.net/postcode/resource/images/close.png" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1;width: 6%;" />
+    </div>
+</div>

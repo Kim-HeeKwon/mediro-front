@@ -1,17 +1,19 @@
 import {
-    ChangeDetectionStrategy, ChangeDetectorRef,
+    ChangeDetectionStrategy,
     Component,
-    ElementRef,
+    ElementRef, Inject,
     OnDestroy,
     OnInit, Renderer2,
     ViewChild,
+    ViewEncapsulation
 } from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
 import {Observable, Subject} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AccountService} from '../account.service';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
@@ -19,21 +21,26 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
 import {postcode} from '../../../../../../assets/js/postCode';
 import {geodata} from '../../../../../../assets/js/geoCode';
+import {takeUntil} from 'rxjs/operators';
+import {AccountData} from '../account.types';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {ActivatedRoute, Router} from '@angular/router';
 
-declare let daum: any;
 
 @Component({
-    selector       : 'dms-app-account-new',
-    templateUrl    : 'new-account.component.html',
-    styleUrls      : ['new-account.component.scss']
+    selector       : 'dms-app-account-detail',
+    templateUrl    : 'detail-account.component.html',
+    styleUrls      : ['./detail-account.component.scss'],
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations   : fuseAnimations
 })
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export class NewAccountComponent implements OnInit, OnDestroy
+export class DetailAccountComponent implements  OnInit, OnDestroy
 {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
+    selectedAccount: AccountData | null = null;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
@@ -53,14 +60,17 @@ export class NewAccountComponent implements OnInit, OnDestroy
     filterList: string[];
 
     constructor(
-        public matDialogRef: MatDialogRef<NewAccountComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public matDialogRef: MatDialogRef<DetailAccountComponent>,
         public _matDialogPopup: MatDialog,
         private _renderer: Renderer2,
+        private _router: Router,
+        private _activatedRoute: ActivatedRoute,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _accountService: AccountService,
         private _formBuilder: FormBuilder,
         private _codeStore: CodeStore,
         private _popupStore: PopupStore,
-        private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver
@@ -68,20 +78,23 @@ export class NewAccountComponent implements OnInit, OnDestroy
         this.filterList = ['ALL'];
         this.accountType = _utilService.commonValueFilter(_codeStore.getValue().data,'ACCOUNT_TYPE',this.filterList);
         this.isMobile = this._deviceService.isMobile();
+
+        this.selectedAccount = data.selectedAccount;
     }
 
     /**
      * On init
      */
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         this.selectedAccountForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             account: [{value:'',disabled:true}, [Validators.required]], // 거래처
             udiAccount: [''],
             udiHptlSymbl: [''],
             descr: ['', [Validators.required]],   // 거래처 명
-            accountType: ['', [Validators.required]],   // 유형
-            custBusinessNumber : ['',[Validators.required]],
+            accountType: [{value:'',disabled:true}, [Validators.required]],   // 유형
+            custBusinessNumber : [{value:'',disabled:true},[Validators.required]],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],
@@ -97,12 +110,18 @@ export class NewAccountComponent implements OnInit, OnDestroy
             active: [false]  // cell상태
         });
 
+        if(this.selectedAccount !== null){
+            this.selectedAccountForm.patchValue(
+                this.selectedAccount
+            );
+        }
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void {
+    ngOnDestroy(): void
+    {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -226,52 +245,81 @@ export class NewAccountComponent implements OnInit, OnDestroy
         });
     }
 
-    alertMessage(param: any): void
-    {
-        this.isProgressSpinner = false;
-        if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
-        }else{
-            this.alert = {
-                type   : 'success',
-                message: '등록완료 하였습니다.'
-            };
-            // Show the alert
-            this.showAlert = true;
-            this._accountService.getAccount(0,10,'account','asc','');
-        }
+    /**
+     * 업데이트
+     */
+    // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures,@typescript-eslint/explicit-function-return-type
+    accountUpdate() {
+        const accountData = this.selectedAccountForm.getRawValue();
+
+        accountData.account = this.selectedAccount.account;
+        accountData.accountType = this.selectedAccount.accountType;
+        accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
+        this.isProgressSpinner = true;
+        this._accountService.updateAccount(accountData)
+            .subscribe(
+                (param: any) => {
+                    if(param.status === 'SUCCESS'){
+                        this.matDialogRef.close();
+                    }
+
+                },(response) => {
+                });
     }
-
-    accountCreate(): void
+    /**
+     * 삭제
+     */
+    accountDelete(): void
     {
-        if(!this.selectedAccountForm.invalid){
-            this.showAlert = false;
-            this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
-            this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
-                this.isProgressSpinner = true;
-                this.alertMessage(newAccount);
+        const accountData = this.selectedAccountForm.getRawValue();
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
+        accountData.account = this.selectedAccount.account;
+        accountData.accountType = this.selectedAccount.accountType;
+        accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
+
+        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+            title      : '',
+            message    : '삭제하시겠습니까?',
+            icon       : this._formBuilder.group({
+                show : true,
+                name : 'heroicons_outline:exclamation',
+                color: 'warn'
+            }),
+            actions    : this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show : true,
+                    label: '삭제',
+                    color: 'warn'
+                }),
+                cancel : this._formBuilder.group({
+                    show : true,
+                    label: '닫기'
+                })
+            }),
+            dismissible: true
+        }).value);
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this.isProgressSpinner = true;
+                    this._accountService.deleteAccount(accountData)
+                        .subscribe(
+                            (param: any) => {
+                                if(param.status === 'SUCCESS'){
+                                    this.matDialogRef.close();
+                                }
+
+                            },(response) => {
+                            });
+                }else{
+                }
             });
-        }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '사업자 번호와 거래처 명, 유형을 입력해주세요.'
-            };
-
-            // Show the alert
-            this.showAlert = true;
-        }
     }
     closeDaumPopup(): void
     {
         this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
+
 }

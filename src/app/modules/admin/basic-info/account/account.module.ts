@@ -31,7 +31,6 @@ import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common
 const accountRoutes: Route[] = [
     {
         path     : '',
-        data: {key: 'account'},
         component: AccountComponent,
         resolve  : {
             data: AccountResolver

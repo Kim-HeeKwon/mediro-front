@@ -82,15 +82,18 @@ export const appRoutes: Route[] = [
                     {path: 'stock', loadChildren: () => import('app/modules/admin/basic-info/stock/stock.module').then(m => m.StockModule)},
                     // account
                     //{path: 'account', loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
-                    {path: 'account', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
+                    {path: 'accountno', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
+                    {path: 'account', data:{key: 'account'}, loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
                     // supplier
                     //{path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
                     // items
-                    {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
+                    {path: 'itemsno', data: {key: 'itemsno'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
+                    {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/dms/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
             {path: 'basic-info', children: [
                     // item-price
-                    {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
+                    // {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
+                    {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/dms/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
                     ]},
             // estimate-order
             {path: 'estimate-order', children: [
@@ -121,9 +124,11 @@ export const appRoutes: Route[] = [
             // stock
             {path: 'stock', children: [
                     // stock
-                    {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
+                    // {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
+                    {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/dms/stock/stock/stock.module').then(m => m.StockModule)},
                     // validity
-                    {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
+                    // {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
+                    {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/dms/stock/validity/validity.module').then(m => m.ValidityModule)},
                 ]},
             /*{path: 'bill', children: [
                     // bill
