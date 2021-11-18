@@ -25,8 +25,8 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
 import {OutBound} from "../outbound.types";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
 import {takeUntil} from "rxjs/operators";
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector       : 'app-dms-outbound-new',
@@ -74,6 +74,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
+        {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -259,7 +260,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     addRow(): void {
 
         const values = [
-            '', '', '', '', '', '',  0, 0, ''
+            '', '', '', '', '', '',  0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
@@ -379,7 +380,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     openAccountSearch(): void
     {
         if (!this.isMobile) {
-            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
                     popup: 'P$_ACCOUNT',
                     headerText: '거래처 조회'
@@ -399,7 +400,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                     }
                 });
         } else {
-            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
                     popup: 'P$_ACCOUNT',
                     headerText: '거래처 조회'
@@ -432,7 +433,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     openDlvAccountSearch(): void {
         if(!this.isMobile) {
-            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
                     popup: 'P$_DLVACCOUNT',
                     headerText: '납품처 조회'
@@ -452,7 +453,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                     }
                 });
         } else {
-            const popup = this._matDialogPopup.open(CommonPopupComponent, {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
                     popup: 'P$_ACCOUNT',
                     headerText: '납품처 조회'

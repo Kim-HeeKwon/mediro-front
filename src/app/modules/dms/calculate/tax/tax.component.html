@@ -47,13 +47,11 @@
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <ng-container *ngFor="let searchCondition of searchCondition">
-                                    <input
-                                        matInput
-                                        [formControlName]="'searchText'"
-                                        [autocomplete]="'off'"
-                                        [placeholder]="searchCondition.name + ' 을 입력해주세요.'">
-                                </ng-container>
+                                <input
+                                    matInput
+                                    [formControlName]="'searchText'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'검색조건을 입력해주세요.'">
                             </mat-form-field>
                         </div>
                     </div>

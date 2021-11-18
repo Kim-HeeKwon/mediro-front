@@ -1,0 +1,28 @@
+<div class="flex flex-col flex-auto md:w-360 md:min-w-360 -m-6">
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">재고 상세정보</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div
+        style="height: 300px;"
+        class="realgrid"
+        id="stockHistory">
+
+    </div>
+    <mat-paginator
+        class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+        [ngClass]="{'pointer-events-none': isLoading}"
+        [length]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.length"
+        [pageIndex]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.page"
+        [pageSize]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.size"
+        [pageSizeOptions]="[10,100]"
+        [showFirstLastButtons]="true"></mat-paginator>
+</div>

@@ -191,6 +191,20 @@ export class FuseRealGridService {
         return rows;
     }
 
+    // 전체 데이터 가져오기
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_GetRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
+        let rows = [];
+        gridView.commit();
+        const current = gridView.getCurrent();
+        const options = { datetimeFormat: 'yyyy-MM-dd' };
+        if(dataProvider.getOutputRows(options, 0 , current.dataRow)){
+            rows = dataProvider.getOutputRows(options, 0 , current.dataRow);
+        }
+        return rows;
+    }
+
     // css 변경 (row)
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention

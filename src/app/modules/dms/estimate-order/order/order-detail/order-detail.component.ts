@@ -25,6 +25,8 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {map, switchMap, takeUntil} from "rxjs/operators";
+import {ReportHeaderData} from "../../../../../../@teamplat/components/common-report/common-report.types";
+import {CommonReportComponent} from "../../../../../../@teamplat/components/common-report";
 
 @Component({
     selector       : 'app-dms-order-detail',
@@ -44,6 +46,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
+    reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
@@ -398,6 +401,51 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
     orderReport(): void {
+        const orderDetailData = [];
+        let index = 0;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.orderDetailDataProvider);
+
+        rows.forEach((data: any) => {
+            index++;
+            orderDetailData.push({
+                no : index,
+                itemNm : data.itemNm,
+                standard : data.standard,
+                unit : data.unit,
+                qty : data.reqQty,
+                unitPrice : data.unitPrice,
+                totalAmt : data.poAmt,
+                taxAmt : 0,
+                remark : data.remarkDetail,
+            });
+        });
+        this.reportHeaderData.no = this.orderHeaderForm.getRawValue().poNo;
+        this.reportHeaderData.date = this.orderHeaderForm.getRawValue().poCreDate;
+        this.reportHeaderData.remark = this.orderHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.custBusinessNumber = this.orderHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.orderHeaderForm.getRawValue().custBusinessName;//상호
+        this.reportHeaderData.representName = this.orderHeaderForm.getRawValue().representName;//성명
+        this.reportHeaderData.address = this.orderHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.businessCondition = this.orderHeaderForm.getRawValue().businessCondition;// 업태
+        this.reportHeaderData.businessCategory = this.orderHeaderForm.getRawValue().businessCategory;// 종목
+        this.reportHeaderData.phoneNumber = '0' + this.orderHeaderForm.getRawValue().phoneNumber;// 전화번호
+        this.reportHeaderData.fax = '0' + this.orderHeaderForm.getRawValue().fax;// 팩스번호
+        this.reportHeaderData.toAccountNm = this.orderHeaderForm.getRawValue().toAccountNm;
+        this.reportHeaderData.deliveryDate = this.orderHeaderForm.getRawValue().deliveryDate;
+        this.reportHeaderData.deliveryAddress = '납품 주소란';
+
+        const popup =this._matDialogPopup.open(CommonReportComponent, {
+            data: {
+                divisionText : '발주',
+                division : 'ORDER',
+                header : this.reportHeaderData,
+                body : orderDetailData,
+                tail : ''
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
     }
 
     orderSave(): void{

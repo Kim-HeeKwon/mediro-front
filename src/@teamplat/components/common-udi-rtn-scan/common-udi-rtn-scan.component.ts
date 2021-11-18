@@ -344,7 +344,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
                 return;
             }*/
 
-            if(inBoundData[i].obExpQty < (Number(inBoundData[i].qty) + inBoundData[i].obQty)){
+            if(inBoundData[i].ibExpQty < (Number(inBoundData[i].qty) + inBoundData[i].ibQty)){
                 this._functionService.cfn_alert('수량이 초과되었습니다. 품목코드 : ' + inBoundData[i].itemCd);
                 return;
             }

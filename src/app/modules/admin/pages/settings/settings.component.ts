@@ -79,7 +79,7 @@ export class SettingsComponent implements OnInit, OnDestroy
                 id         : 'tax',
                 icon       : 'heroicons_outline:currency-dollar',
                 title      : '세금계산서',
-                description: '세금계산서 정보 관리 및 인증서 관리'
+                description: '세금계산서 정보 및 인증서 관리'
             }
         ];
 

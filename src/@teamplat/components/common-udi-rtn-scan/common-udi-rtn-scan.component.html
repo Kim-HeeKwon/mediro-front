@@ -1,6 +1,6 @@
 <div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
     <!-- Header -->
-    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <!-- Loader -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -17,7 +17,7 @@
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </button>
     </div>
-    <div class="flex flex-row flex-0 justify-between pt-1 pb-2 px-6 border-b">
+    <div class="flex flex-col sm:flex-row flex-0 justify-between pt-3 pb-2 px-6 border-b">
         <form
             [formGroup]="searchForm">
             <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="sm:col-span-2">
                     <button
-                        class="w-full"
+                        class="w-full mediro-btn-custom mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
                         (click)="inBound()">

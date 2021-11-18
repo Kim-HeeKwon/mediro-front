@@ -29,6 +29,8 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {map, switchMap, takeUntil} from "rxjs/operators";
+import {CommonReportComponent} from "../../../../../../@teamplat/components/common-report";
+import {ReportHeaderData} from "../../../../../../@teamplat/components/common-report/common-report.types";
 
 @Component({
     selector       : 'app-dms-estimate-detail',
@@ -55,6 +57,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
     orderBy: any = 'asc';
+    reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // @ts-ignore
@@ -298,7 +301,50 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._router.navigate(['estimate-order/estimate']);
     }
     reportEstimate(): void{
+        const estimateDetailData = [];
+        let index = 0;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.estimateDetailDataProvider);
+        rows.forEach((data: any) => {
+            index++;
+            estimateDetailData.push({
+                no : index,
+                itemNm : data.itemNm,
+                standard : data.standard,
+                unit : data.unit,
+                qty : data.qty,
+                unitPrice : data.qtPrice,
+                totalAmt : data.qtAmt,
+                taxAmt : 0,
+                remark : data.remarkDetail,
+            });
+        });
+        this.reportHeaderData.no = this.estimateHeaderForm.getRawValue().qtNo;
+        this.reportHeaderData.date = this.estimateHeaderForm.getRawValue().qtCreDate;
+        this.reportHeaderData.remark = this.estimateHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.custBusinessNumber = this.estimateHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.estimateHeaderForm.getRawValue().custBusinessName;//상호
+        this.reportHeaderData.representName = this.estimateHeaderForm.getRawValue().representName;//성명
+        this.reportHeaderData.address = this.estimateHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.businessCondition = this.estimateHeaderForm.getRawValue().businessCondition;// 업태
+        this.reportHeaderData.businessCategory = this.estimateHeaderForm.getRawValue().businessCategory;// 종목
+        this.reportHeaderData.phoneNumber = '0' + this.estimateHeaderForm.getRawValue().phoneNumber;// 전화번호
+        this.reportHeaderData.fax = '0' + this.estimateHeaderForm.getRawValue().fax;// 팩스번호
+        this.reportHeaderData.toAccountNm = this.estimateHeaderForm.getRawValue().toAccountNm;
+        this.reportHeaderData.deliveryDate = this.estimateHeaderForm.getRawValue().deliveryDate;
+        this.reportHeaderData.deliveryAddress = '';
 
+        const popup =this._matDialogPopup.open(CommonReportComponent, {
+            data: {
+                divisionText : '견적',
+                division : 'ESTIMATE',
+                header : this.reportHeaderData,
+                body : estimateDetailData,
+                tail : ''
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
     }
 
     saveEstimate(): void{

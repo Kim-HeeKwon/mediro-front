@@ -26,6 +26,7 @@ import {Bill} from "../bill.types";
 @Component({
     selector       : 'bill-tax',
     templateUrl    : './bill-tax.component.html',
+    styleUrls: ['./bill-tax.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations   : fuseAnimations

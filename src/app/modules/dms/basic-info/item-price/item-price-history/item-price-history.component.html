@@ -1,0 +1,87 @@
+<div class="flex flex-col flex-auto md:w-360 md:min-w-360 -m-6">
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">단가 상세정보</div>
+        <button
+             mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="itemPriceHistoryForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>품목 코드</mat-label>
+                                <input
+                                    class="text-left"
+                                    type="text"
+                                    matInput
+                                    [formControlName]="'itemCd'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>품목 명</mat-label>
+                                <input
+                                    class="text-left"
+                                    type="text"
+                                    matInput
+                                    [formControlName]="'itemNm'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>단가</mat-label>
+                                <input
+                                    class="text-right"
+                                    type="number"
+                                    matInput
+                                    [formControlName]="'unitPrice'">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2">
+        <div class="flex-row text-1xl font-extrabold tracking-tight">
+            이력
+        </div>
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                <button
+                    class="fuse-mat-button-rounded"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="updateItemPrice()">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                    <span class="ml-2">저장</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div
+        style="height: 300px;"
+        class="realgrid"
+        id="itemPriceHistory">
+    </div>
+    <mat-paginator
+        class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+        [ngClass]="{'pointer-events-none': isLoading}"
+        [length]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.length"
+        [pageIndex]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.page"
+        [pageSize]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.size"
+        [pageSizeOptions]="[10,100]"
+        [showFirstLastButtons]="true"></mat-paginator>
+</div>
+
