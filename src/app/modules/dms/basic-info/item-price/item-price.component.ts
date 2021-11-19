@@ -184,20 +184,20 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    const account = grid.getValues(clickData.dataRow).account;
-                    const itemCd = grid.getValues(clickData.dataRow).itemCd;
-                    const type = grid.getValues(clickData.dataRow).type;
+                    // const account = grid.getValues(clickData.dataRow).account;
+                    // const itemCd = grid.getValues(clickData.dataRow).itemCd;
+                    // const type = grid.getValues(clickData.dataRow).type;
 
                     // @ts-ignore
-                    this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
-                        .subscribe((itemPrice) => {
-                            // Set the selected Account
-                            this.selectedItemPriceHeader = itemPrice;
-                            this._itemPriceService.getHistory(0,10,'','asc', this.selectedItemPriceHeader);
-
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+                    // this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
+                    //     .subscribe((itemPrice) => {
+                    //         // Set the selected Account
+                    //         this.selectedItemPriceHeader = itemPrice;
+                    //         this._itemPriceService.getHistory(0,10,'','asc', this.selectedItemPriceHeader);
+                    //
+                    //         // Mark for check
+                    //         this._changeDetectorRef.markForCheck();
+                    //     });
                     if(!this.isMobile) {
                        const d = this._matDialog.open(ItemPriceHistoryComponent, {
                             autoFocus: false,
@@ -206,9 +206,6 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                                 detail : grid.getValues(clickData.dataRow)
                             },
                         });
-                       d.afterOpened().subscribe(() => {
-                           ItemPriceHistoryComponent.prototype.s();
-                       });
                     } else {
                         const d = this._matDialog.open(ItemPriceHistoryComponent, {
                             data     : {

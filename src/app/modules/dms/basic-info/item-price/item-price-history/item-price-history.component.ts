@@ -47,6 +47,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     itemPriceHistoryPagenation: ItemPriceHistoryPagenation | null = null;
     // @ts-ignore
     gridList: RealGrid.GridView;
+    dataForm: any;
     // @ts-ignore
     itemPriceHistoryDataProvider: RealGrid.LocalDataProvider;
     itemPriceHistoryColumns: Columns[];
@@ -74,10 +75,24 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     {
         this.reason = _utilService.commonValue(_codeStore.getValue().data,'PRICE_REASON');
         this.type = _utilService.commonValue(_codeStore.getValue().data,'BL_TYPE');
-        this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
+        this.dataForm = data;
     }
 
     ngOnInit(): void {
+        // Form 생성
+        this.itemPriceHistoryForm = this._formBuilder.group({
+            itemCd: [{value:''},[Validators.required]], // 품목코드
+            itemNm: [{value:''},[Validators.required]], // 품목명
+            account: [{value:''},[Validators.required]], // 거래처 코드
+            accountNm: [{value:''},[Validators.required]], // 거래처 명
+            type: [{value:''}, [Validators.required]],   // 유형
+            unitPrice: [0],   // 단가
+            active: [false]  // cell상태
+        });
+        if(this.dataForm.detail){
+            this.itemPriceHistoryForm.patchValue(this.dataForm.detail);
+        }
+
         const reasonValues = [];
         const reasonLables = [];
         this.reason.forEach((param: any) => {
@@ -124,7 +139,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         ];
 
         //그리드 Provider
-        this.itemPriceHistoryDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
+        this.itemPriceHistoryDataProvider = this._realGridsService.gfn_CreateDataProvider();
 
         //그리드 옵션
         const gridListOption = {
@@ -132,11 +147,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             checkBar : false,
             footers : false,
         };
-
-        this.itemPriceHistoryDataProvider.setOptions({
-            softDeleting: false,
-            deleteCreated: false
-        });
 
         //그리드 생성
         this.gridList = this._realGridsService.gfn_CreateGrid(
@@ -159,12 +169,15 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
+        this.gridList.setCopyOptions({
+            enabled: true,
+            singleMode: false});
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if(clickData.cellType === 'header'){
-                //this._popupService.getDynamicSql(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                this._itemPriceService.getHistory(this.itemPriceHistoryPagenation.page,this.itemPriceHistoryPagenation.size,clickData.column,this.orderBy,this.itemPriceHistoryForm.getRawValue());
             }
             if(this.orderBy === 'asc'){
                 this.orderBy = 'desc';
@@ -173,56 +186,45 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             }
         };
 
-        // this._itemPriceService.itemPriceHistorys$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((itemPriceHistory: any) => {
-        //         if(itemPriceHistory !== null){
-        //             this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
-        //         }
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
+        this._itemPriceService.getHistory(0,20,'addDate','asc',this.itemPriceHistoryForm.getRawValue());
 
-        this._itemPriceService.itemPriceHistoryPagenation$
+        this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
+        this._itemPriceService.itemPriceHistorys$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((itemPriceHistoryPagenation: ItemPriceHistoryPagenation) => {
-                    this.itemPriceHistoryPagenation = itemPriceHistoryPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Form 생성
-        this.itemPriceHistoryForm = this._formBuilder.group({
-            itemCd: [{value:''},[Validators.required]], // 품목코드
-            itemNm: [{value:''},[Validators.required]], // 품목명
-            account: [{value:''},[Validators.required]], // 거래처 코드
-            accountNm: [{value:''},[Validators.required]], // 거래처 명
-            type: [{value:''}, [Validators.required]],   // 유형
-            unitPrice: [0],   // 단가
-            active: [false]  // cell상태
-        });
-
-        this.itemPriceHistoryForm.controls['itemCd'].disable();
-        this.itemPriceHistoryForm.controls['itemNm'].disable();
-
-        this._itemPriceService.itemPrice$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((price: any) => {
-                // Update the pagination
-                if(price !== null){
-                    this.itemPriceHistoryForm.patchValue(price);
+            .subscribe((itemPriceHistory: any) => {
+                if(itemPriceHistory !== null){
+                    console.log(itemPriceHistory);
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
                 }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this._itemPriceService.itemPriceHistoryPagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((itemPriceHistoryPagenation: ItemPriceHistoryPagenation) => {
+                if(itemPriceHistoryPagenation !== null){
+                    this.itemPriceHistoryPagenation = itemPriceHistoryPagenation;
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        this.itemPriceHistoryForm.controls['itemCd'].disable();
+        this.itemPriceHistoryForm.controls['itemNm'].disable();
+
+        this.gridList.refresh();
+        this._changeDetectorRef.markForCheck();
     }
 
     ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-    this._realGridsService.gfn_Destory(this.gridList, this.itemPriceHistoryDataProvider);
-}
+        // Unsubscribe from all subscriptions
+        this._paginator = null;
+        this.itemPriceHistoryPagenation = null;
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+        this._realGridsService.gfn_Destory(this.gridList, this.itemPriceHistoryDataProvider);
+    }
 
     ngAfterViewInit(): void {
             merge(this._paginator.page).pipe(
@@ -282,16 +284,5 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     pageEvent($event: PageEvent): void {
 
         this._itemPriceService.getHistory(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.itemPriceHistoryForm.getRawValue());
-    }
-    s(): void {
-        this._itemPriceService.itemPriceHistorys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((itemPriceHistory: any) => {
-                if(itemPriceHistory !== null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 }

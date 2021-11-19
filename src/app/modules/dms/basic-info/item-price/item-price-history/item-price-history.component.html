@@ -70,7 +70,6 @@
                     [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
                     <span class="ml-2 mr-1">저장</span>
                 </button>
-                <button (click)="s()">클릭</button>
             </div>
         </div>
     </div>
@@ -85,7 +84,7 @@
         [length]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.length"
         [pageIndex]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.page"
         [pageSize]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.size"
-        [pageSizeOptions]="[10, 100]"
+        [pageSizeOptions]="[20, 100]"
         (page)="pageEvent($event)"
         [showFirstLastButtons]="true"></mat-paginator>
 </div>

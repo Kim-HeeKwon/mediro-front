@@ -144,7 +144,7 @@ export class ItemPriceService{
      *
      * @returns
      */
-    getHistory(page: number = 0, size: number = 10, sort: string = 'addDate', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getHistory(page: number = 0, size: number = 20, sort: string = 'addDate', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ itemPriceHistoryPagenation: ItemPriceHistoryPagenation; inBoundDetail: ItemPriceHistory[] }> {
 
         const searchParam = {};
