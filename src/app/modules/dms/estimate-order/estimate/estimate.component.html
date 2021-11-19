@@ -93,12 +93,14 @@
                     </div>
                     <div class="col-span-12">
                         <button
-                            class="ml-3"
+                            class="ml-3 mediro-custom-accent"
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="estimateNew()">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <mat-icon
+                                style="color: #3490DD !important;"
+                                [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">작성</span>
                         </button>
                     </div>
@@ -281,11 +283,13 @@
                             <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
-                                    class="ml-2 mediro-btn-custom"
+                                    class="ml-2 mediro-btn-custom mediro-custom-accent"
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="estimateNew()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                    <mat-icon
+                                        style="color: #3490DD !important;"
+                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">작성</span>
                                 </button>
                                 <button
