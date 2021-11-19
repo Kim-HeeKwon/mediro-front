@@ -42,20 +42,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     billPagenation: BillPagenation | null = null;
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '공급자'
-        },
-        {
-            id: '101',
-            name: '공급받는 자'
-        }];
-    searchCondition2: CommonCode[] = [
-        {
-            id: 'billing',
-            name: '청구 번호'
-        }];
 
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -112,10 +98,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             toAccountNm: [''],
             billing: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['billing'],
-            searchText: [''],
-            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -282,16 +264,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     searchSetValue(): void{
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'toAccountNm': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }else{
-            this.searchForm.patchValue({'toAccountNm': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'accountNm': ''});
-        }
-        if (this.searchForm.getRawValue().searchCondition2 === 'billing') {
-            this.searchForm.patchValue({'billing': this.searchForm.getRawValue().searchText2});
-        }
+
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

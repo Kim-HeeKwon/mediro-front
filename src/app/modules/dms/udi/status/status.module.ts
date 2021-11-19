@@ -23,6 +23,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatDialogModule} from "@angular/material/dialog";
 import {SharedModule} from "../../../../shared/shared.module";
 import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const supplyStatusRoutes: Route[] = [
     {
@@ -59,7 +60,8 @@ const supplyStatusRoutes: Route[] = [
         MatSidenavModule,
         MatDialogModule,
         SharedModule,
-        FuseDateRangeModule
+        FuseDateRangeModule,
+        CommonLoadingBarModule
     ]
 })
 export class StatusModule{

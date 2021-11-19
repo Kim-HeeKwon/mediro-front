@@ -30,6 +30,7 @@ import {FuseColumnResizeModule} from "../../../../../@teamplat/directives/table/
 import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-range";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
+import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 
 const taxRoutes: Route[] = [
     {
@@ -74,7 +75,8 @@ const taxRoutes: Route[] = [
         FuseColumnResizeModule,
         FuseDateRangeModule,
         MatButtonToggleModule,
-        FuseUserHelpModule
+        FuseUserHelpModule,
+        CommonLoadingBarModule
     ]
 })
 export class TaxModule { }

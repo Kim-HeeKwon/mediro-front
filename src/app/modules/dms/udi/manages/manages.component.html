@@ -122,22 +122,6 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
-                                <div class="flex items-center justify-between">
-                                    <button
-                                        class="ml-2 mediro-btn-custom"
-                                        mat-stroked-button
-                                        [color]="'primary'"
-                                        (click)="excelExport()">
-                                        <img src="assets/images/excel/excel_upload.png">
-                                    </button>
-                                    <button
-                                        class="ml-2 mediro-btn-custom"
-                                        mat-stroked-button
-                                        [color]="'primary'"
-                                        (click)="excelExport()">
-                                        <img src="assets/images/excel/excel_down.png">
-                                    </button>
-                                </div>
                             </div>
                             <!-- Loader -->
                             <div
@@ -146,42 +130,73 @@
                                 <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
                             </div>
                         </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-6 px-12 mediro-backcolor-custom">
+
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
+                            <!-- 검색조건 -->
+                            <div
+                                class="flex w-full mt-8 sm:mt-0 pb-4">
+
+                                <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
+
+                                    <form [formGroup]="searchForm"
+                                          class="flex flex-col w-full">
+                                        <div class="flex flex-col w-full">
+                                            <div class="flex w-4/4">
+                                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                    <mat-select [formControlName]="'year'">
+                                                        <ng-container *ngFor="let year of year">
+                                                            <mat-option [value]="year.id">
+                                                                {{year.name}}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                    <mat-select [formControlName]="'month'">
+                                                        <ng-container *ngFor="let month of month">
+                                                            <mat-option [value]="month.id">
+                                                                {{month.name}}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <button
+                                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
+                                                    mat-flat-button
+                                                    [color]="'primary'"
+                                                    (click)="select()">
+                                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                                    <span class="ml-2 mr-1">검색</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
+                            <!-- Actions -->
+                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
-                                <!-- Search -->
-                                <form
-                                    [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'year'">
-                                            <ng-container *ngFor="let year of year">
-                                                <mat-option [value]="year.id">
-                                                    {{year.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'month'">
-                                            <ng-container *ngFor="let month of month">
-                                                <mat-option [value]="month.id">
-                                                    {{month.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </form>
                                 <button
-                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
-                                    mat-flat-button
+                                    class="mediro-btn-custom"
+                                    mat-stroked-button
                                     [color]="'primary'"
-                                    (click)="select()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
-                                    <span class="ml-2 mr-1">검색</span>
+                                    (click)="excelExport()">
+                                    <img src="assets/images/excel/excel_upload.png">
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="excelExport()">
+                                    <img src="assets/images/excel/excel_down.png">
                                 </button>
                             </div>
-
-                            <!-- Actions -->
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">-->
+                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
@@ -212,7 +227,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <!-- Main -->
                         <div
                             class="realgrid"

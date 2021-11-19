@@ -49,20 +49,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '공급자'
-        },
-        {
-            id: '101',
-            name: '공급받는 자'
-        }];
-    searchCondition2: CommonCode[] = [
-        {
-            id: 'invoice',
-            name: '문서 번호'
-        }];
+
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -123,10 +110,6 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             toAccountNm: [''],
             invoice: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['invoice'],
-            searchText: [''],
-            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -334,16 +317,6 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
     searchSetValue(): void{
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'toAccountNm': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }else{
-            this.searchForm.patchValue({'toAccountNm': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'accountNm': ''});
-        }
-        if (this.searchForm.getRawValue().searchCondition2 === 'invoice') {
-            this.searchForm.patchValue({'invoice': this.searchForm.getRawValue().searchText2});
-        }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

@@ -50,16 +50,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     inBoundHeaderPagenation: InBoundHeaderPagenation | null = null;
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '거래처 명'
-        }];
-    searchCondition2: CommonCode[] = [
-        {
-            id: 'ibNo',
-            name: '입고 번호'
-        }];
+
 
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -109,10 +100,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             account: [''],
             accountNm: [''],
             ibNo: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['ibNo'],
-            searchText: [''],
-            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end  : moment().utc(false).startOf('day').toISOString()
@@ -270,13 +257,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_Destory(this.gridList, this.inBoundHeaderDataProvider);
     }
     searchSetValue(): void {
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'account': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }
-        if (this.searchForm.getRawValue().searchCondition2 === 'ibNo') {
-            this.searchForm.patchValue({'ibNo': this.searchForm.getRawValue().searchText2});
-        }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

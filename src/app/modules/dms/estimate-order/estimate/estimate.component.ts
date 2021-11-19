@@ -45,16 +45,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     estimateHeaderPagenation: EstimateHeaderPagenation | null = null;
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '거래처 명'
-        }];
-    searchCondition2: CommonCode[] = [
-        {
-            id: 'qtNo',
-            name: '견적 번호'
-        }];
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -136,10 +126,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
             account: [''],
             accountNm: [''],
             qtNo: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['qtNo'],
-            searchText: [''],
-            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -311,13 +297,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     searchSetValue(): void{
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'account': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }
-        if (this.searchForm.getRawValue().searchCondition2 === 'qtNo') {
-            this.searchForm.patchValue({'qtNo': this.searchForm.getRawValue().searchText2});
-        }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

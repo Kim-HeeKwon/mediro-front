@@ -39,16 +39,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     orderHeaderPagenation: OrderHeaderPagenation | null = null;
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '거래처 명'
-        }];
-    searchCondition2: CommonCode[] = [
-        {
-            id: 'poNo',
-            name: '발주 번호'
-        }];
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -105,10 +95,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
             account: [''],
             accountNm: [''],
             poNo: [''],
-            searchCondition: ['100'],
-            searchCondition2: ['poNo'],
-            searchText: [''],
-            searchText2: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -271,13 +257,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     searchSetValue(): void {
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'account': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }
-        if (this.searchForm.getRawValue().searchCondition2 === 'poNo') {
-            this.searchForm.patchValue({'poNo': this.searchForm.getRawValue().searchText2});
-        }
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

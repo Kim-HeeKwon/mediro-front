@@ -8,7 +8,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8 mediro-detail-top-bg">
             <div class="flex flex-row sm:flex-row flex-auto sm:items-center min-w-0 my-4 sm:my-4">
                 <!-- Avatar and name -->
                 <div class="flex flex-auto items-center min-w-0">
@@ -176,19 +176,19 @@
                         <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
                             <button
                                 class="ml-2 mediro-btn-custom"
+                                (click)="addRow()"
                                 mat-stroked-button>
                                 <mat-icon
                                     [svgIcon]="'heroicons_outline:plus-circle'"
-                                    (click)="addRow()"
                                 ></mat-icon>
                                 <span class="ml-2 mr-1">추가</span>
                             </button>
                             <button
                                 class="ml-2 mediro-btn-custom"
+                                (click)="delRow()"
                                 mat-stroked-button>
                                 <mat-icon
                                     [svgIcon]="'heroicons_outline:minus-circle'"
-                                    (click)="delRow()"
                                 ></mat-icon>
                                 <span class="ml-2 mr-1">삭제</span>
                             </button>

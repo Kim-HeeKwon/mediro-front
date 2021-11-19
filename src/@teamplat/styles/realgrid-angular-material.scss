@@ -67,7 +67,8 @@
 }
 
 .mediro-backcolor-custom{
-    background: #f6f6f8 !important;
+    //background: #f6f6f8 !important;
+    background: #ffffff !important;
 }
 
 .mediro-span-custom{
@@ -174,3 +175,15 @@
 //body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, body.light .mat-stroked-button.mat-primary, body .light .mat-button.mat-primary, body .light .mat-icon-button.mat-primary, body .light .mat-stroked-button.mat-primary svg{
 //    color: #3490DD !important;
 //}
+
+.mediro-bg-card{
+    background: #f6f6f8 !important;
+}
+
+.mediro-ft-label{
+    font-size: 13px !important;
+}
+
+.mediro-detail-top-bg{
+    background: #10172A !important;
+}
