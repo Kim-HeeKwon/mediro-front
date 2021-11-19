@@ -57,19 +57,28 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         this.chgType = _utilService.commonValue(_codeStore.getValue().data,'INV_CHG_TYPE');
     }
     ngOnInit(): void {
-
+        const values = [];
+        const lables = [];
+        this.chgType.forEach((param: any) => {
+            values.push(param.id);
+            lables.push(param.name);
+        });
         //그리드 컬럼
         this.stockHistoryColumns = [
-            {name: 'creDate', fieldName: 'creDate', type: 'data', width: '300', styleName: 'left-cell-text'
+            {name: 'creDate', fieldName: 'creDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '일자', styleName: 'left-cell-text'}},
-            {name: 'chgType', fieldName: 'chgType', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '유형' , styleName: 'left-cell-text'},},
-            {name: 'qty', fieldName: 'qty', type: 'data', width: '150', styleName: 'center-cell-text',
-                header: {text: '수량'},
+            {name: 'chgType', fieldName: 'chgType', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '유형' , styleName: 'left-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true
             },
-            {name: 'chgReason', fieldName: 'chgReason', type: 'data', width: '300', styleName: 'left-cell-text', header: {text: '사유' , styleName: 'left-cell-text'},
+            {name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text',
+                header: {text: '수량', styleName: 'left-cell-text'},
             },
-            {name: 'creUser', fieldName: 'creUser', type: 'data', width: '300', styleName: 'left-cell-text', header: {text: '아이디' , styleName: 'left-cell-text'}},
+            {name: 'chgReason', fieldName: 'chgReason', type: 'data', width: '120', styleName: 'left-cell-text', header: {text: '사유' , styleName: 'left-cell-text'},
+            },
+            {name: 'creUser', fieldName: 'creUser', type: 'data', width: '160', styleName: 'left-cell-text', header: {text: '아이디' , styleName: 'left-cell-text'}},
         ];
 
         this.stockHistoryProvider =  this._realGridsService.gfn_CreateDataProvider();
@@ -104,13 +113,11 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
             checkable: true,
             softDeleting: false,
         });
-        this.gridList.setRowIndicator({
-            visible: false
-        });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
-
+        let height = this.gridList.displayOptions.rowHeight;
+        this.gridList.displayOptions.rowHeight = height + 15;
         this.stockHistorys$ = this._stockService.stockHistorys$;
         this._stockService.stockHistorys$
             .pipe(takeUntil(this._unsubscribeAll))

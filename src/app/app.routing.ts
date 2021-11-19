@@ -82,12 +82,11 @@ export const appRoutes: Route[] = [
                     {path: 'stock', loadChildren: () => import('app/modules/admin/basic-info/stock/stock.module').then(m => m.StockModule)},
                     // account
                     //{path: 'account', loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
-                    {path: 'accountno', loadChildren: () => import('app/modules/admin/basic-info/account/account.module').then(m => m.AccountModule)},
                     {path: 'account', data:{key: 'account'}, loadChildren: () => import('app/modules/dms/basic-info/account/account.module').then(m => m.AccountModule)},
                     // supplier
                     //{path: 'supplier', loadChildren: () => import('app/modules/admin/basic-info/supplier/supplier.module').then(m => m.SupplierModule)},
                     // items
-                    {path: 'itemsno', data: {key: 'itemsno'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
+                    // {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                     {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/dms/basic-info/items/items.module').then(m => m.ItemsModule)},
                 ]},
             {path: 'basic-info', children: [
@@ -143,11 +142,11 @@ export const appRoutes: Route[] = [
                     //{path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/admin/calculate/tax/tax.module').then(m => m.TaxModule)},
                     {path: 'tax', data: {key: 'tax'}, loadChildren: () => import('app/modules/dms/calculate/tax/tax.module').then(m => m.TaxModule)},
                 ]},
-            {path: 'realgrid', children: [
-                    // bill
-                    {path: 'realgrid', loadChildren: () => import('app/modules/admin/realgrid/realgrid/realgrid.module').then(m => m.RealgridModule)},
-                    {path: 'realgridHD', loadChildren: () => import('app/modules/admin/realgrid/header-detail/header-detail.module').then(m => m.HeaderDetailModule)},
-                ]},
+            // {path: 'realgrid', children: [
+            //         // bill
+            //         {path: 'realgrid', loadChildren: () => import('app/modules/admin/realgrid/realgrid/realgrid.module').then(m => m.RealgridModule)},
+            //         {path: 'realgridHD', loadChildren: () => import('app/modules/admin/realgrid/header-detail/header-detail.module').then(m => m.HeaderDetailModule)},
+            //     ]},
             // udi
             {path: 'udi', children: [
                     // manages

@@ -72,7 +72,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
-        {fieldName: 'unitPrice', dataType: ValueType.TEXT}
+        {fieldName: 'unitPrice', dataType: ValueType.NUMBER}
     ];
     constructor(
         private _matDialog: MatDialog,
@@ -115,18 +115,19 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.itemPriceColumns = [
-            {name: 'type', fieldName: 'type', type: 'data', width: '250', styleName: 'left-cell-text'
+            {name: 'type', fieldName: 'type', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '유형', styleName: 'left-cell-text'},
                 values: itemPricevalues,
                 labels: itemPricelables,
                 lookupDisplay: true
             },
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '250', styleName: 'left-cell-text'
+            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드' , styleName: 'left-cell-text'}},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '250', styleName: 'center-cell-text', header: {text: '품목명' , styleName: 'left-cell-text'}},
-            {name: 'account', fieldName: 'account', type: 'data', width: '250', styleName: 'left-cell-text', header: {text: '거래처' , styleName: 'left-cell-text'},},
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '250', styleName: 'left-cell-text', header: {text: '거래처 명' , styleName: 'left-cell-text'}},
-            {name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '250', styleName: 'left-cell-text', header: {text: '단가' , styleName: 'left-cell-text'}},
+            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '품목명' , styleName: 'left-cell-text'}},
+            {name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '거래처' , styleName: 'left-cell-text'},},
+            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '거래처 명' , styleName: 'left-cell-text'}},
+            {name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '150', styleName: 'right-cell-text', header: {text: '단가' , styleName: 'left-cell-text'}
+                , numberFormat : '#,##0'},
         ];
 
         // 그리드 Provider
@@ -151,10 +152,6 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             this.itemPriceColumns,
             this.itemPriceFields,
             gridListOption);
-
-        this.gridList.setCheckBar({
-            visible: false
-        });
 
         //그리드 옵션
         this.gridList.setEditOptions({
@@ -202,17 +199,21 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                             this._changeDetectorRef.markForCheck();
                         });
                     if(!this.isMobile) {
-                        const d = this._matDialog.open(ItemPriceHistoryComponent, {
+                       const d = this._matDialog.open(ItemPriceHistoryComponent, {
                             autoFocus: false,
                             disableClose: true,
                             data     : {
-                                detail : {}
+                                detail : grid.getValues(clickData.dataRow)
                             },
                         });
-                        d.afterClosed().subscribe(() => {
-                        });
+                       d.afterOpened().subscribe(() => {
+                           ItemPriceHistoryComponent.prototype.s();
+                       });
                     } else {
                         const d = this._matDialog.open(ItemPriceHistoryComponent, {
+                            data     : {
+                                detail : grid.getValues(clickData.dataRow)
+                            },
                             autoFocus: false,
                             width: 'calc(100% - 50px)',
                             maxWidth: '100vw',
@@ -267,6 +268,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         if(!this.isMobile){
             this._matDialog.open(ItemPriceNewComponent, {
                 autoFocus: false,
+                maxHeight: '80vh',
                 disableClose: true,
                 data     : {
                     note: {}

@@ -88,6 +88,13 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isMobile = this._deviceService.isMobile();
     }
     ngOnInit(): void {
+
+        const values = [];
+        const lables = [];
+        this.itemGrades.forEach((param: any) => {
+            values.push(param.id);
+            lables.push(param.name);
+        });
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             type: ['ALL'],
@@ -99,29 +106,32 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.stockColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '160', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'},
                 renderer: {
                     'type': 'link',
                     'baseUrl': '#'
                 }
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'left-cell-text'
                 , header: {text: '품목명' , styleName: 'left-cell-text'},},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '150', styleName: 'center-cell-text',
-                header: {text: '품목등급'},
+            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'left-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true,
             },
-            {name: 'poQty', fieldName: 'poQty', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '발주' , styleName: 'left-cell-text'},
+            {name: 'poQty', fieldName: 'poQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '발주' , styleName: 'left-cell-text'},
             },
-            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '보유' , styleName: 'left-cell-text'}},
-            {name: 'acceptableQty', fieldName: 'acceptableQty', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '가납' , styleName: 'left-cell-text'}},
-            {name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '보유' , styleName: 'left-cell-text'}},
+            {name: 'acceptableQty', fieldName: 'acceptableQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '가납' , styleName: 'left-cell-text'}},
+            {name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '불용' , styleName: 'left-cell-text'}},
             {name: 'safetyQty', fieldName: 'safetyQty'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '안전재고' , styleName: 'left-cell-text'}},
-            {name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '150', styleName: 'left-cell-text'
+                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '안전재고' , styleName: 'left-cell-text'}},
+            {name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '장기재고' , styleName: 'left-cell-text'}},
-            {name: 'longterm', fieldName: 'longterm', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '기간' , styleName: 'left-cell-text'}}
+            {name: 'longterm', fieldName: 'longterm', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '기간' , styleName: 'left-cell-text'}}
         ];
 
         this.stockDataProvider = this._realGridsService.gfn_CreateDataProvider();

@@ -120,17 +120,16 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.accountColumns = [
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '거래처 코드', styleName: 'left-cell-text'}},
-            {name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text'
+            {name: 'descr', fieldName: 'descr', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '거래처 명' , styleName: 'left-cell-text'},},
-            {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'center-cell-text',
-                header: {text: '유형'},
+            {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '유형', styleName: 'left-cell-text'},
                 values: values,
                 labels: lables,
-                lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.accountType),
+                lookupDisplay: true
             },
-            {name: 'address', fieldName: 'address', type: 'data', width: '200', styleName: 'left-cell-text', header: {text: '주소' , styleName: 'left-cell-text'},},
-            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '200', styleName: 'left-cell-text', header: {text: '상세주소' , styleName: 'left-cell-text'}},
+            {name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '주소' , styleName: 'left-cell-text'},},
+            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '상세주소' , styleName: 'left-cell-text'}},
             {name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '대표자명' , styleName: 'left-cell-text'}},
             {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '종목' , styleName: 'left-cell-text'}},

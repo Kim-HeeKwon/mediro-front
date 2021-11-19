@@ -38,13 +38,6 @@ const itemsRoutes: Route[] = [
         resolve  : {
             data: ItemsResolver
         }
-    },
-    {
-        path     : ':itemCd',
-        component: ItemsComponent,
-        resolve  : {
-            data: ItemsResolver
-        }
     }
 ];
 

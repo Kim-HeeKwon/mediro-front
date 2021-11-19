@@ -1,6 +1,12 @@
-<div class="flex flex-col flex-auto md:w-360 md:min-w-360 -m-6">
+<div class="flex flex-col flex-auto md:w-180 md:min-w-160 -m-6">
     <app-loading *ngIf="isProgressSpinner"></app-loading>
-    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <!-- Header -->
+    <div
+        class="absolute inset-x-0 bottom-0"
+        *ngIf="isLoading">
+        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
         <div class="text-lg font-medium">단가 상세정보</div>
         <button
              mat-icon-button
@@ -58,15 +64,13 @@
         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
                 <button
-                    class="fuse-mat-button-rounded"
                     mat-flat-button
-                    [color]="'primary'"
-                    (click)="updateItemPrice()">
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
-                    <span class="ml-2">저장</span>
+                    [color]="'accent'"
+                    (click)="updateItemPrice()"
+                    [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
+                    <span class="ml-2 mr-1">저장</span>
                 </button>
+                <button (click)="s()">클릭</button>
             </div>
         </div>
     </div>
@@ -77,11 +81,12 @@
     </div>
     <mat-paginator
         class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-        [ngClass]="{'pointer-events-none': isLoading}"
+        [ngClass]="{'pointer-events-none': false}"
         [length]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.length"
         [pageIndex]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.page"
         [pageSize]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.size"
-        [pageSizeOptions]="[10,100]"
+        [pageSizeOptions]="[10, 100]"
+        (page)="pageEvent($event)"
         [showFirstLastButtons]="true"></mat-paginator>
 </div>
 

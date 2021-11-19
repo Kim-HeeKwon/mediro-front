@@ -97,6 +97,14 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
     }
 
     ngOnInit(): void {
+
+        const values = [];
+        const lables = [];
+        this.itemGrades.forEach((param: any) => {
+            values.push(param.id);
+            lables.push(param.name);
+        });
+
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             type: ['ALL'],
@@ -108,23 +116,26 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
 
         this.validityColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'}
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명' , styleName: 'left-cell-text'},},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '150', styleName: 'center-cell-text',
-                header: {text: '품목등급'},
+            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'left-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true,
             },
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'},
+            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'},
             },
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'lot2', fieldName: 'lot2', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '유효기간 일자' , styleName: 'left-cell-text'}},
-            {name: 'validity', fieldName: 'validity', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
+            {name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '유효기간 일자' , styleName: 'left-cell-text'}},
+            {name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '유효기간' , styleName: 'left-cell-text'}},
             {name: 'qty', fieldName: 'qty'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '현재고' , styleName: 'left-cell-text'}},
-            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '150', styleName: 'left-cell-text'
+                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '현재고' , styleName: 'left-cell-text'}},
+            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '가용재고' , styleName: 'left-cell-text'}}
         ];
 

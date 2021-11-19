@@ -21,7 +21,6 @@ import {CommonUdiService} from './common-udi.service';
 import {DisplayedColumn, Column, UdiPagenation} from './common-udi.types';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {FunctionService} from '../../services/function';
-import {AccountComponent} from "../../../app/modules/admin/basic-info/account/account.component";
 
 @Component({
     selector: 'app-common-udi',

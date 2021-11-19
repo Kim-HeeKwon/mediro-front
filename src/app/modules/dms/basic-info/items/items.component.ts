@@ -80,8 +80,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'taxGbn', dataType: ValueType.TEXT},
-        {fieldName: 'buyPrice', dataType: ValueType.TEXT},
-        {fieldName: 'salesPrice', dataType: ValueType.TEXT}
+        {fieldName: 'buyPrice', dataType: ValueType.NUMBER},
+        {fieldName: 'salesPrice', dataType: ValueType.NUMBER}
     ];
     constructor(
         private _realGridsService: FuseRealGridService,
@@ -158,33 +158,44 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             udiYnlables.push(param.name);
         });
 
+        const taxGbnvalues = [];
+        const taxGbnlables = [];
+        this.taxGbn.forEach((param: any) => {
+            taxGbnvalues.push(param.id);
+            taxGbnlables.push(param.name);
+        });
 
         //그리드 컬럼
         this.itemsColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'}},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명' , styleName: 'left-cell-text'},},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '150', styleName: 'center-cell-text',
-                header: {text: '등급'},
+            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '등급', styleName: 'left-cell-text'},
                 values: itemGradesvalues,
                 labels: itemGradeslables,
                 lookupDisplay: true
             },
-            {name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: 'UDI 대상 유무' , styleName: 'left-cell-text'},
+            {name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: 'UDI 대상 유무' , styleName: 'left-cell-text'},
                 values: udiYnvalues,
                 labels: udiYnlables,
                 lookupDisplay: true
             },
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'supplier', fieldName: 'supplier', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
+            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'}},
+            {name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '공급사' , styleName: 'left-cell-text'}},
             {name: 'taxGbn', fieldName: 'taxGbn'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '거래유형' , styleName: 'left-cell-text'}},
-            {name: 'buyPrice', fieldName: 'buyPrice', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '구매단가' , styleName: 'left-cell-text'}},
-            {name: 'salesPrice', fieldName: 'salesPrice', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '판매단가' , styleName: 'left-cell-text'}}
+                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '거래유형' , styleName: 'left-cell-text'},
+                values: taxGbnvalues,
+                labels: taxGbnlables,
+                lookupDisplay: true},
+            {name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '구매단가' , styleName: 'left-cell-text'}
+                , numberFormat : '#,##0'},
+            {name: 'salesPrice', fieldName: 'salesPrice', type: 'number', width: '100', styleName: 'right-cell-text', header: {text: '판매단가' , styleName: 'left-cell-text'}
+                , numberFormat : '#,##0'}
         ];
 
         // 그리드 Provider

@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {NewItemComponent} from '../../../basic-info/items/new-item/new-item.component';
 import {MatDialog} from '@angular/material/dialog';
 import {NewTeamComponent} from './new-team/new-team/new-team.component';
 import {SessionStore} from '../../../../../core/session/state/session.store';

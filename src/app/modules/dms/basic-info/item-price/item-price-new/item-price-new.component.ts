@@ -15,6 +15,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {ItemPriceService} from '../item-price.service';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {takeUntil} from 'rxjs/operators';
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector       : 'dms-item-price-new',
@@ -75,7 +76,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     openItemSearch(): void
     {
         if(!this.isMobile){
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
+        const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
             data: {
                 popup : 'P$_ALL_ITEM',
                 headerText : '품목 조회'
@@ -94,7 +95,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
                 }
             });
     } else {
-            const d =this._matDialogPopup.open(CommonPopupComponent, {
+            const d =this._matDialogPopup.open(CommonPopupItemsComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',
@@ -122,7 +123,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     openAccountSearch(): void
     {
         if(!this.isMobile){
-        const popup =this._matDialogPopup.open(CommonPopupComponent, {
+        const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
             data: {
                 popup : 'P$_ACCOUNT',
                 headerText : '거래처 조회'
@@ -141,7 +142,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
                 }
             });
     } else {
-            const d =this._matDialogPopup.open(CommonPopupComponent, {
+            const d =this._matDialogPopup.open(CommonPopupItemsComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',

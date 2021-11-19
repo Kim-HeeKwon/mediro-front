@@ -1,7 +1,6 @@
 <div class="flex flex-col flex-auto md:w-200 md:min-w-160 -m-6">
-    <app-loading *ngIf="isProgressSpinner"></app-loading>
     <!-- Header -->
-    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <!-- Loader -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -46,16 +45,16 @@
                 </div>
                 <div class="sm:col-span-2">
                     <button *ngIf="merge"
-                        class="w-full"
-                        mat-flat-button
-                        [color]="'primary'"
+                            class="w-full mediro-btn-custom mediro-btn-custom-background-color"
+                            mat-flat-button
+                            [color]="'primary'"
                         (click)="mergeUdiData()">
                         <span class="ml-2 mr-1">업데이트</span>
                     </button>
                 </div>
                 <div class="sm:col-span-2">
                     <button
-                        class="w-full"
+                        class="w-full mediro-btn-custom mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
                         (click)="select()">
