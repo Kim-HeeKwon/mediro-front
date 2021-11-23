@@ -55,6 +55,9 @@ export class SettingsPlanBillingComponent implements OnInit
             yearPay        : ['']
         });
 
+        // Get Customer Payment Info
+        this.getBillingInfo();
+
         // Setup the plans
         this.plans = [
             {
@@ -98,13 +101,9 @@ export class SettingsPlanBillingComponent implements OnInit
     saveBillingInfo(): void
     {
         this.showAlert = false;
-        //this._common.sendData()
         if(!this.planBillingForm.invalid){
             this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
             this.planBillingForm.patchValue({'mId':this._sessionStore.getValue().businessNumber});
-            console.log( this.planBillingForm.getRawValue());
-            console.log( this._sessionStore.getValue());
-            console.log(  this.planBillingForm.valid);
 
             this._common.sendData(this.planBillingForm.getRawValue(),'/v1/api/payment/payment-basic-info')
                 .subscribe((responseData: any) => {
@@ -122,8 +121,27 @@ export class SettingsPlanBillingComponent implements OnInit
         }
     }
 
-    test(evt){
-        console.log('click');
-        console.log(evt);
+    getBillingInfo(): void
+    {
+        const param = {
+            mId: this._sessionStore.getValue().businessNumber
+        };
+
+        this._common.sendData(param,'/v1/api/payment/get-payment-basic-info')
+            .subscribe((responseData: any) => {
+                console.log('고객정보');
+                //console.log(responseData);
+                if(!this._common.gfn_isNull(responseData.data)){
+                    this.planBillingForm.patchValue({'yearPay':responseData.data[0].yearPay});
+                    this.planBillingForm.patchValue({'plan':responseData.data[0].plan});
+                    this.planBillingForm.patchValue({'cardHolder':responseData.data[0].cardHolder});
+                    this.planBillingForm.patchValue({'cardNumber':responseData.data[0].cardNumber});
+                    this.planBillingForm.patchValue({'cardExpiration':responseData.data[0].cardExpiration});
+                    this.planBillingForm.patchValue({'cardCVC':responseData.data[0].cardCVC});
+                    this.planBillingForm.patchValue({'cardCompany':responseData.data[0].cardCompany});
+                    this.planBillingForm.patchValue({'cardPassword':responseData.data[0].cardPassword});
+                }
+            });
     }
+
 }
