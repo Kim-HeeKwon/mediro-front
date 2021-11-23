@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Common} from "../../../../../../@teamplat/providers/common/common";
-import {SessionStore} from "../../../../../core/session/state/session.store";
-import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
+import {Common} from '../../../../../../@teamplat/providers/common/common';
+import {SessionStore} from '../../../../../core/session/state/session.store';
+import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 
 @Component({
     selector       : 'settings-plan-billing',
