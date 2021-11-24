@@ -277,6 +277,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/pages/settings'
             },
             {
+                id   : 'payment.payment-history',
+                title: '부가서비스',
+                subtitle: '',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/payment/payment-history'
+            },
+            {
                 id   : 'realgrid.realgrid',
                 title: '그리드 one',
                 type : 'basic',

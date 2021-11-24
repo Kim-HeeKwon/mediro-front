@@ -120,6 +120,10 @@ export const appRoutes: Route[] = [
                     //{path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/admin/bound/outbound/outbound.module').then(m => m.OutboundModule)},
                     {path: 'outbound', data: {key: 'outbound'}, loadChildren: () => import('app/modules/dms/bound/outbound/outbound.module').then(m => m.OutboundModule)},
                 ]},
+            {path: 'payment', children: [
+                    {path: 'payment-history', data: {key: 'payment-history'}, loadChildren: () => import('app/modules/dms/payment/payment-history/payment-history.module').then(m => m.paymentHistoryModule)},
+                ]
+            },
             // stock
             {path: 'stock', children: [
                     // stock

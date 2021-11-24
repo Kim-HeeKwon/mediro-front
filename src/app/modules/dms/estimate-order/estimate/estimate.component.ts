@@ -24,7 +24,7 @@ import {map, switchMap, takeUntil} from "rxjs/operators";
 import * as moment from "moment";
 
 @Component({
-    selector: 'dms-estimate',
+    selector: 'app-dms-estimate',
     templateUrl: './estimate.component.html',
     styleUrls: ['./estimate.component.scss']
 })
