@@ -25,6 +25,7 @@ import {CommonUdiComponent} from '../../../../../@teamplat/components/common-udi
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {Router} from '@angular/router';
 import {DetailAccountComponent} from '../account/detail-account/detail-account.component';
+import {OrderService} from "../../estimate-order/order/order.service";
 
 @Component({
     selector: 'dms-app-account',
@@ -89,6 +90,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _matDialog: MatDialog,
                 public _matDialogPopup: MatDialog,
                 private _utilService: FuseUtilsService,
+                private _orderService: OrderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
@@ -243,16 +245,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this._accountService.accounts$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((accounts: any) => {
-                if(accounts != null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, accounts);
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.setGridData();
 
         // Get the pagenation
         this._accountService.pagenation$
@@ -290,25 +283,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectAccount(): void{
-        if(this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'account': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'descr': ''});
-        }else if(this.searchForm.getRawValue().searchCondition === '101'){
-            this.searchForm.patchValue({'account': ''});
-            this.searchForm.patchValue({'descr': this.searchForm.getRawValue().searchText});
-        }
         this._accountService.getAccount(0,20,'account','asc', this.searchForm.getRawValue());
-
-        this._accountService.accounts$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((accounts: any) => {
-                if(accounts != null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, accounts);
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.setGridData();
     }
 
     //페이징
@@ -352,8 +328,27 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     enter(event): void {
         if(event.keyCode===13){
-            this.selectAccount();
+            this.selectHeader();
         }
+    }
+    selectHeader(): void
+    {
+        this._orderService.getHeader(0, 20, 'poNo', 'desc', this.searchForm.getRawValue());
+        this.setGridData();
+    }
+
+    setGridData(): void {
+
+        this._accountService.accounts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((accounts: any) => {
+                if(accounts != null){
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, accounts);
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     createUdiAccount(): void {

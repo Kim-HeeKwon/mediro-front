@@ -92,7 +92,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         if(this.dataForm.detail){
             this.itemPriceHistoryForm.patchValue(this.dataForm.detail);
         }
-
         const reasonValues = [];
         const reasonLables = [];
         this.reason.forEach((param: any) => {
@@ -188,18 +187,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
         this._itemPriceService.getHistory(0,20,'addDate','asc',this.itemPriceHistoryForm.getRawValue());
 
-        this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
-        this._itemPriceService.itemPriceHistorys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((itemPriceHistory: any) => {
-                if(itemPriceHistory !== null){
-                    console.log(itemPriceHistory);
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
         this._itemPriceService.itemPriceHistoryPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((itemPriceHistoryPagenation: ItemPriceHistoryPagenation) => {
@@ -278,6 +265,19 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+    selectItemPrice(): void {
+        this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
+        this._itemPriceService.itemPriceHistorys$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((itemPriceHistory: any) => {
+                if(itemPriceHistory !== null){
+                    console.log(itemPriceHistory);
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     //페이징

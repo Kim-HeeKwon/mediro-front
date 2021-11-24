@@ -1,6 +1,7 @@
 <div class="flex flex-col w-160 md:min-w-160 -m-6">
     <app-loading *ngIf="isProgressSpinner"></app-loading>
-    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+    <div
+        class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <div class="text-lg font-medium">재고 상세정보</div>
         <button
             mat-icon-button
@@ -9,6 +10,16 @@
             <mat-icon
                 class="text-current"
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div [ngStyle]="{'margin': '13px'}">
+        <button
+            class="w-1/12 mediro-btn-custom"
+            mat-flat-button
+            [color]="'accent'"
+            (click)="selectStockHistory()"
+            [ngStyle]="{'align-self': 'right', 'float' : 'right'}">
+            <span class="ml-2 mr-1">불러오기</span>
         </button>
     </div>
     <div

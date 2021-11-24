@@ -54,7 +54,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
-   stockDataProvider: RealGrid.LocalDataProvider;
+    stockDataProvider: RealGrid.LocalDataProvider;
     stockColumns: Columns[];
     // @ts-ignore
     stockFields: DataFieldObject[] = [
@@ -70,6 +70,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'longterm', dataType: ValueType.TEXT}
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
@@ -79,14 +80,14 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,
         private _changeDetectorRef: ChangeDetectorRef,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
-        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data,'TAX_GBN');
-        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
-        this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
+        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_UNIT');
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        this.udiYn = _utilService.commonValue(_codeStore.getValue().data, 'UDI_YN');
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngOnInit(): void {
 
         const values = [];
@@ -113,33 +114,74 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                     'baseUrl': '#'
                 }
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'},},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'left-cell-text'},
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'left-cell-text'},
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
             },
-            {name: 'poQty', fieldName: 'poQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '발주' , styleName: 'left-cell-text'},
+            {
+                name: 'poQty',
+                fieldName: 'poQty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '발주', styleName: 'left-cell-text'},
             },
-            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '보유' , styleName: 'left-cell-text'}},
-            {name: 'acceptableQty', fieldName: 'acceptableQty', type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '가납' , styleName: 'left-cell-text'}},
-            {name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '불용' , styleName: 'left-cell-text'}},
-            {name: 'safetyQty', fieldName: 'safetyQty'
-                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '안전재고' , styleName: 'left-cell-text'}},
-            {name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '장기재고' , styleName: 'left-cell-text'}},
-            {name: 'longterm', fieldName: 'longterm', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '기간' , styleName: 'left-cell-text'}}
+            {
+                name: 'availQty',
+                fieldName: 'availQty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '보유', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'acceptableQty',
+                fieldName: 'acceptableQty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '가납', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '불용', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'safetyQty',
+                fieldName: 'safetyQty'
+                ,
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '안전재고', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '장기재고', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'longterm',
+                fieldName: 'longterm',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '기간', styleName: 'left-cell-text'}
+            }
         ];
 
         this.stockDataProvider = this._realGridsService.gfn_CreateDataProvider();
 
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         this.stockDataProvider.setOptions({
@@ -170,26 +212,18 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                this._stockService.getHeader(this.stockPagenation.page,this.stockPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            };
-            if(this.orderBy === 'asc'){
+            if (clickData.cellType === 'header') {
+                this._stockService.getHeader(this.stockPagenation.page, this.stockPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+            }
+            ;
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
 
-        this.stocks$ = this._stockService.stocks$;
-        this._stockService.stocks$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((stock: any) => {
-                if (stock !== null) {
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockDataProvider, stock);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+       this.setGridData();
         this._stockService.stockPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stockPagenation: StockPagenation) => {
@@ -199,21 +233,21 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             });
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        this.gridList.onCellItemClicked =  (grid, index, clickData) => {
-            if(!this.isMobile){
+        this.gridList.onCellItemClicked = (grid, index, clickData) => {
+            if (!this.isMobile) {
                 const d = this._matDialog.open(StockDetailComponent, {
                     autoFocus: false,
                     disableClose: true,
-                    data     : {
+                    data: {
                         detail: this.stockDataProvider.getJsonRow(this.gridList.getCurrent().dataRow)
                     },
                 });
                 d.afterClosed().subscribe(() => {
                     this.selectHeader();
                 });
-            }else{
+            } else {
                 const d = this._matDialog.open(StockDetailComponent, {
-                    data        : {
+                    data: {
                         detail: this.stockDataProvider.getJsonRow(this.gridList.getCurrent().dataRow)
                     },
                     autoFocus: false,
@@ -224,7 +258,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
                 const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                     if (size.matches) {
-                        d.updateSize('calc(100vw - 10px)','');
+                        d.updateSize('calc(100vw - 10px)', '');
                     } else {
                         // d.updateSize('calc(100% - 50px)', '');
                     }
@@ -258,10 +292,10 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                         d.afterClosed().subscribe(() => {
                         });
-                    }else{
+                    } else {
                         const d = this._matDialog.open(StockHistoryComponent, {
-                            data     : {
-                                selectedStock : grid.getValues(clickData.dataRow)
+                            data: {
+                                selectedStock: grid.getValues(clickData.dataRow)
                             },
                             autoFocus: false,
                             width: 'calc(100% - 50px)',
@@ -271,7 +305,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                         const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                             if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)','');
+                                d.updateSize('calc(100vw - 10px)', '');
                             } else {
                             }
                         });
@@ -295,20 +329,34 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        if (this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'itemCd': ''});
-            this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
-        }
         this._stockService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        this.setGridData();
+    }
+    setGridData(): void {
+        this.stocks$ = this._stockService.stocks$;
+        this._stockService.stocks$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((stock: any) => {
+                if (stock !== null) {
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockDataProvider, stock);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }
+
     //페이징
     pageEvent($event: PageEvent): void {
         this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stock', this.orderBy, this.searchForm.getRawValue());
+    }
+
+    excelExport(): void {
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '보고자료 목록');
     }
 }

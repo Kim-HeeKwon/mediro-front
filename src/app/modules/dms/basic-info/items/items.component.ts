@@ -34,7 +34,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     items$: Observable<InventoryItem[]>;
     isProgressSpinner: boolean = false;
@@ -83,6 +83,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'buyPrice', dataType: ValueType.NUMBER},
         {fieldName: 'salesPrice', dataType: ValueType.NUMBER}
     ];
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _router: Router,
@@ -94,14 +95,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _utilService: FuseUtilsService,
         private _codeStore: CodeStore,
         private _itemService: ItemsService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
-        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data,'TAX_GBN');
-        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
-        this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
+        this.itemUnit = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_UNIT');
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        this.udiYn = _utilService.commonValue(_codeStore.getValue().data, 'UDI_YN');
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngAfterViewInit(): void {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -167,35 +168,79 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         //그리드 컬럼
         this.itemsColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'},},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '품목코드', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'left-cell-text'},
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '등급', styleName: 'left-cell-text'},
                 values: itemGradesvalues,
                 labels: itemGradeslables,
                 lookupDisplay: true
             },
-            {name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: 'UDI 대상 유무' , styleName: 'left-cell-text'},
+            {
+                name: 'udiYn',
+                fieldName: 'udiYn',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: 'UDI 대상 유무', styleName: 'left-cell-text'},
                 values: udiYnvalues,
                 labels: udiYnlables,
                 lookupDisplay: true
             },
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '공급사' , styleName: 'left-cell-text'}},
-            {name: 'taxGbn', fieldName: 'taxGbn'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '거래유형' , styleName: 'left-cell-text'},
+            {
+                name: 'unit',
+                fieldName: 'unit',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '단위', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'standard',
+                fieldName: 'standard',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '규격', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '공급사', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'taxGbn',
+                fieldName: 'taxGbn'
+                ,
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '거래유형', styleName: 'left-cell-text'},
                 values: taxGbnvalues,
                 labels: taxGbnlables,
-                lookupDisplay: true},
-            {name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '구매단가' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'},
-            {name: 'salesPrice', fieldName: 'salesPrice', type: 'number', width: '100', styleName: 'right-cell-text', header: {text: '판매단가' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'}
+                lookupDisplay: true
+            },
+            {
+                name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '구매단가', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'salesPrice',
+                fieldName: 'salesPrice',
+                type: 'number',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '판매단가', styleName: 'left-cell-text'}
+                ,
+                numberFormat: '#,##0'
+            }
         ];
 
         // 그리드 Provider
@@ -203,9 +248,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         this.itemsDataProvider.setOptions({
@@ -239,12 +284,13 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                this._itemService.getItems(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            };
-            if(this.orderBy === 'asc'){
+            if (clickData.cellType === 'header') {
+                this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+            }
+            ;
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
@@ -252,25 +298,25 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            if(clickData.cellType !== 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType !== 'header') {
+                if (clickData.cellType !== 'head') {
 
-                    if(!this.isMobile){
+                    if (!this.isMobile) {
                         const d = this._matDialog.open(DetailItemsComponent, {
                             autoFocus: false,
                             disableClose: true,
-                            data     : {
-                                selectedItem : grid.getValues(clickData.dataRow)
+                            data: {
+                                selectedItem: grid.getValues(clickData.dataRow)
                             },
                         });
                         d.afterClosed().subscribe(() => {
                             this.searchItem();
                         });
 
-                    }else{
+                    } else {
                         const d = this._matDialog.open(DetailItemsComponent, {
-                            data     : {
-                                selectedItem : grid.getValues(clickData.dataRow)
+                            data: {
+                                selectedItem: grid.getValues(clickData.dataRow)
                             },
                             autoFocus: false,
                             width: 'calc(100% - 50px)',
@@ -280,7 +326,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                         });
                         const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                             if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)','');
+                                d.updateSize('calc(100vw - 10px)', '');
                             } else {
                             }
                         });
@@ -295,16 +341,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this._itemService.items$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((items: any) => {
-                if(items != null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemsDataProvider, items);
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.setGridData();
 
         // Get the pagenation
         this._itemService.pagenation$
@@ -320,48 +357,55 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * SearchItem
      */
-    searchItem(): void
-    {
-        console.log(this.searchForm.getRawValue());
-        if(this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'itemCd': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'itemNm': ''});
-        }else if(this.searchForm.getRawValue().searchCondition === '101'){
-            this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
-            this.searchForm.patchValue({'itemCd': ''});
-        }
+    searchItem(): void {
+        this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
+        this.setGridData();
 
-        this._itemService.getItems(0,10,'itemCd','asc',this.searchForm.getRawValue());
-        this.closeDetails();
+        this._router.navigate(['.'], {relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
+    }
 
-        this._router.navigate(['.'], { relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
+    setGridData(): void {
+        this._itemService.items$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((items: any) => {
+                if (items != null) {
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemsDataProvider, items);
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    selectHeader(): void {
+        this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
+        this.setGridData();
     }
 
     enter(event): void {
-        if(event.keyCode===13){
-            this.searchItem();
+        if (event.keyCode === 13) {
+            this.selectHeader();
         }
     }
 
     //엑셀 다운로드
-    excelExport(): void{
+    excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '픔목 내역');
     }
 
     /**
      * Add a new note
      */
-    createItem(): void
-    {
-        if(!this.isMobile){
+    createItem(): void {
+        if (!this.isMobile) {
             this._matDialog.open(NewItemComponent, {
                 autoFocus: false,
                 disableClose: true,
-                data     : {
+                data: {
                     note: {}
                 },
             });
-        }else{
+        } else {
             const d = this._matDialog.open(NewItemComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -371,7 +415,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
+                    d.updateSize('calc(100vw - 10px)', '');
                 } else {
                 }
             });
@@ -384,14 +428,5 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     //페이징
     pageEvent($event: PageEvent): void {
         this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'items', this.orderBy, this.searchForm.getRawValue());
-    }
-
-    /**
-     * Close the details
-     */
-    closeDetails(): void
-    {
-        this.isProgressSpinner = false;
-        this.selectedItem = null;
     }
 }

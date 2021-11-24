@@ -116,21 +116,6 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
-        let height = this.gridList.displayOptions.rowHeight;
-        this.gridList.displayOptions.rowHeight = height + 15;
-        this.stockHistorys$ = this._stockService.stockHistorys$;
-        this._stockService.stockHistorys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((stockHistory: any) => {
-                if(stockHistory !== null){
-                    this.stockHistorysCount = stockHistory.length;
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, stockHistory);
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
         this._stockService.stockHistoryPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stockHistoryPagenation: StockHistoryPagenation) => {
@@ -176,5 +161,20 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this._realGridsService.gfn_Destory(this.gridList, this.stockHistoryProvider);
+    }
+    selectStockHistory(): void {
+        this.stockHistorys$ = this._stockService.stockHistorys$;
+        this._stockService.stockHistorys$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((stockHistory: any) => {
+                if(stockHistory !== null){
+                    this.stockHistorysCount = stockHistory.length;
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, stockHistory);
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
     }
 }

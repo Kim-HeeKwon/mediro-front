@@ -74,6 +74,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER}
     ];
+
     constructor(
         private _matDialog: MatDialog,
         private _realGridsService: FuseRealGridService,
@@ -85,9 +86,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
-        this.type = _utilService.commonValue(_codeStore.getValue().data,'BL_TYPE');
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -115,19 +115,51 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.itemPriceColumns = [
-            {name: 'type', fieldName: 'type', type: 'data', width: '150', styleName: 'left-cell-text'
+            {
+                name: 'type', fieldName: 'type', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '유형', styleName: 'left-cell-text'},
                 values: itemPricevalues,
                 labels: itemPricelables,
                 lookupDisplay: true
             },
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드' , styleName: 'left-cell-text'}},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '품목명' , styleName: 'left-cell-text'}},
-            {name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '거래처' , styleName: 'left-cell-text'},},
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '거래처 명' , styleName: 'left-cell-text'}},
-            {name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '150', styleName: 'right-cell-text', header: {text: '단가' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'},
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '품목코드', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'itemNm',
+                fieldName: 'itemNm',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '품목명', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'account',
+                fieldName: 'account',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '거래처', styleName: 'left-cell-text'},
+            },
+            {
+                name: 'accountNm',
+                fieldName: 'accountNm',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '거래처 명', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'unitPrice',
+                fieldName: 'unitPrice',
+                type: 'number',
+                width: '150',
+                styleName: 'right-cell-text',
+                header: {text: '단가', styleName: 'left-cell-text'}
+                ,
+                numberFormat: '#,##0'
+            },
         ];
 
         // 그리드 Provider
@@ -135,9 +167,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         this.itemPriceDataProvider.setOptions({
@@ -171,12 +203,13 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                this._itemPriceService.getHeader(this.itemPricePagenation.page,this.itemPricePagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            };
-            if(this.orderBy === 'asc'){
+            if (clickData.cellType === 'header') {
+                this._itemPriceService.getHeader(this.itemPricePagenation.page, this.itemPricePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+            }
+            ;
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
@@ -184,33 +217,30 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    // const account = grid.getValues(clickData.dataRow).account;
-                    // const itemCd = grid.getValues(clickData.dataRow).itemCd;
-                    // const type = grid.getValues(clickData.dataRow).type;
+                    const account = grid.getValues(clickData.dataRow).account;
+                    const itemCd = grid.getValues(clickData.dataRow).itemCd;
+                    const type = grid.getValues(clickData.dataRow).type;
 
                     // @ts-ignore
-                    // this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
-                    //     .subscribe((itemPrice) => {
-                    //         // Set the selected Account
-                    //         this.selectedItemPriceHeader = itemPrice;
-                    //         this._itemPriceService.getHistory(0,10,'','asc', this.selectedItemPriceHeader);
-                    //
-                    //         // Mark for check
-                    //         this._changeDetectorRef.markForCheck();
-                    //     });
-                    if(!this.isMobile) {
-                       const d = this._matDialog.open(ItemPriceHistoryComponent, {
+                    this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
+                        .subscribe((itemPrice) => {
+                            // Set the selected Account
+                            this.selectedItemPriceHeader = itemPrice;
+                            this._itemPriceService.getHistory(0, 10, '', 'asc', this.selectedItemPriceHeader);
+
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                    if (!this.isMobile) {
+                        const d = this._matDialog.open(ItemPriceHistoryComponent, {
                             autoFocus: false,
                             disableClose: true,
-                            data     : {
-                                detail : grid.getValues(clickData.dataRow)
+                            data: {
+                                detail: this.selectedItemPriceHeader
                             },
                         });
                     } else {
                         const d = this._matDialog.open(ItemPriceHistoryComponent, {
-                            data     : {
-                                detail : grid.getValues(clickData.dataRow)
-                            },
                             autoFocus: false,
                             width: 'calc(100% - 50px)',
                             maxWidth: '100vw',
@@ -219,7 +249,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                         const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                             if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)','');
+                                d.updateSize('calc(100vw - 10px)', '');
                             } else {
                                 // d.updateSize('calc(100% - 50px)', '');
                             }
@@ -232,16 +262,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         };
 
-        this.itemPrices$ = this._itemPriceService.itemPrices$;
-        this._itemPriceService.itemPrices$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((itemPrices: any) => {
-                if(itemPrices !== null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceDataProvider, itemPrices);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+      this.setGridData();
 
         this._itemPriceService.itemPricePagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -252,26 +273,22 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    selectHeader(): void
-    {
-        if(this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'account': ''});
-            this.searchForm.patchValue({'accountNm': this.searchForm.getRawValue().searchText});
-        }
-        this._itemPriceService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+    selectHeader(): void {
+        this._itemPriceService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        this.setGridData();
     }
 
-    newItemPrice(): void{
-        if(!this.isMobile){
+    newItemPrice(): void {
+        if (!this.isMobile) {
             this._matDialog.open(ItemPriceNewComponent, {
                 autoFocus: false,
                 maxHeight: '80vh',
                 disableClose: true,
-                data     : {
+                data: {
                     note: {}
                 },
             });
-        }else{
+        } else {
             const d = this._matDialog.open(ItemPriceNewComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -281,7 +298,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
+                    d.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }
@@ -294,50 +311,50 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     ngAfterViewInit(): void {
-            // Get products if sort or page changes
-            merge(this._paginator.page).pipe(
-                switchMap(() => {
-                    this.isLoading = true;
-                    // eslint-disable-next-line max-len
-                    return this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
-                }),
-                map(() => {
-                    this.isLoading = false;
-                })
-            ).subscribe();
+        // Get products if sort or page changes
+        merge(this._paginator.page).pipe(
+            switchMap(() => {
+                this.isLoading = true;
+                // eslint-disable-next-line max-len
+                return this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).subscribe();
     }
 
     //엑셀 다운로드
-    excelExport(): void{
+    excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '픔목 내역');
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     deleteItemPrice() {
-        if(this.selection.selected.length > 0){
+        if (this.selection.selected.length > 0) {
 
             const deleteConfirm = this._teamPlatConfirmationService.open(this._formBuilder.group({
-                title      : '',
-                message    : '삭제하시겠습니까?',
-                icon       : this._formBuilder.group({
-                    show : true,
-                    name : 'heroicons_outline:exclamation',
+                title: '',
+                message: '삭제하시겠습니까?',
+                icon: this._formBuilder.group({
+                    show: true,
+                    name: 'heroicons_outline:exclamation',
                     color: 'warn'
                 }),
-                actions    : this._formBuilder.group({
+                actions: this._formBuilder.group({
                     confirm: this._formBuilder.group({
-                        show : true,
+                        show: true,
                         label: '삭제',
                         color: 'warn'
                     }),
-                    cancel : this._formBuilder.group({
-                        show : true,
+                    cancel: this._formBuilder.group({
+                        show: true,
                         label: '닫기'
                     })
                 }),
@@ -351,22 +368,33 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._itemPriceService.deleteItemPrice(this.selection.selected)
                             .subscribe(
                                 (param: any) => {
-                                    if(param.status === 'SUCCESS'){
+                                    if (param.status === 'SUCCESS') {
                                         this._itemPriceService.getHeader();
-                                    }else{
+                                    } else {
                                         this.selectClear();
                                     }
 
-                                },(response) => {
+                                }, (response) => {
                                 });
-                    }else{
+                    } else {
                         this.selectClear();
                     }
                 });
 
         }
     }
-
+    setGridData(): void {
+        this.itemPrices$ = this._itemPriceService.itemPrices$;
+        this._itemPriceService.itemPrices$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((itemPrices: any) => {
+                if (itemPrices !== null) {
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceDataProvider, itemPrices);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+    }
     //페이징
     pageEvent($event: PageEvent): void {
         this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());

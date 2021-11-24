@@ -185,16 +185,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
             }
         };
 
-        this.validitys$ = this._validityService.validitys$;
-        this._validityService.validitys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((validity: any) => {
-                if(validity !== null){
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, validity);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+       this.setGridData();
 
         this._validityService.validityPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -206,15 +197,33 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
     }
     selectHeader(): void
     {
-        if(this.searchForm.getRawValue().searchCondition === '100') {
-            this.searchForm.patchValue({'itemCd': ''});
-            this.searchForm.patchValue({'itemNm': this.searchForm.getRawValue().searchText});
-        }
         this._validityService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+        this.setGridData();
+    }
+    setGridData(): void {
+        this.validitys$ = this._validityService.validitys$;
+        this._validityService.validitys$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((validity: any) => {
+                if(validity !== null){
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, validity);
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     //페이징
     pageEvent($event: PageEvent): void {
         this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+    }
+
+    excelExport(): void {
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '보고자료 목록');
+    }
+    enter(event): void {
+        if(event.keyCode===13){
+            this.selectHeader();
+        }
     }
 }

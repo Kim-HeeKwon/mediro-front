@@ -88,7 +88,7 @@
                         <div class="flex flex-col justify-between mediro-backcolor-custom">
                             <div class="flex items-center justify-between px-12 pt-6 pb-2">
                                 <!-- Add product button -->
-                                <div class="text-2xl font-extrabold tracking-tight">
+                                <div class="text-2xl tracking-tight">
                                     유효기간 관리
                                     <fuse-user-help
                                         [helpCd]="'VALIDITY'"
@@ -102,44 +102,71 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-6 px-12 mediro-backcolor-custom">
+                        <div *ngIf="!isMobile"
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
                             <!-- 검색조건 -->
-                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
-                                <form
-                                    [formGroup]="searchForm">
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'validity'">
-                                            <ng-container *ngFor="let validity of validity">
-                                                <mat-option [value]="validity.id">
-                                                    {{validity.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                        <mat-select [formControlName]="'searchCondition'">
-                                            <ng-container *ngFor="let searchCondition of searchCondition">
-                                                <mat-option [value]="searchCondition.id">
-                                                    {{searchCondition.name}}
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
-                                        <input
-                                            matInput
-                                            [formControlName]="'searchText'"
-                                            [autocomplete]="'off'"
-                                            [placeholder]="'검색조건을 선택해주세요.'">
-                                    </mat-form-field>
-                                </form>
+                            <div class="flex w-full mt-8 sm:mt-0 pb-4">
+                                <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
+
+                                    <form [formGroup]="searchForm"
+                                          class="flex flex-col w-full">
+                                        <div class="flex flex-col w-full">
+                                            <div class="flex w-4/4">
+                                                <form
+                                                    [formGroup]="searchForm">
+                                                    <mat-form-field
+                                                        class="ml-2 mt-6 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                        <mat-select [formControlName]="'validity'">
+                                                            <ng-container *ngFor="let validity of validity">
+                                                                <mat-option [value]="validity.id">
+                                                                    {{validity.name}}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </form>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">품목 명</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:keypress)="enter($event)"
+                                                        [formControlName]="'itemNm'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <button
+                                                    class="ml-2 mt-6 mediro-btn-custom mediro-btn-custom-background-color"
+                                                    mat-flat-button
+                                                    [color]="'primary'"
+                                                    (click)="selectHeader()">
+                                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
+                                                    <span class="ml-2 mr-1">검색</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile"
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
+                            <!-- Actions -->
+                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
+                            <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
-                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
-                                    mat-flat-button
+                                    class="mediro-btn-custom"
+                                    mat-stroked-button
                                     [color]="'primary'"
-                                    (click)="selectHeader()">
-                                    <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
-                                    <span class="ml-2 mr-1">검색</span>
+                                    (click)="excelExport()">
+                                    <img src="assets/images/excel/excel_upload.png">
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'primary'"
+                                    (click)="excelExport()">
+                                    <img src="assets/images/excel/excel_down.png">
                                 </button>
                             </div>
                         </div>
