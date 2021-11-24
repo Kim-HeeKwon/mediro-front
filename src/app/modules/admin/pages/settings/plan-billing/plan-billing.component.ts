@@ -4,6 +4,11 @@ import {Common} from '../../../../../../@teamplat/providers/common/common';
 import {SessionStore} from '../../../../../core/session/state/session.store';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 
+import { loadTossPayments } from '@tosspayments/sdk';
+const clientKey = 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL';
+
+//import { setBill } from 'assets/js/billCode.js';
+
 @Component({
     selector       : 'settings-plan-billing',
     templateUrl    : './plan-billing.component.html',
@@ -142,6 +147,26 @@ export class SettingsPlanBillingComponent implements OnInit
                     this.planBillingForm.patchValue({'cardPassword':responseData.data[0].cardPassword});
                 }
             });
+    }
+
+    billEnterFee(): void
+    {
+        //setBill();
+        loadTossPayments(clientKey).then((tossPayments) => {
+            tossPayments.requestPayment('카드', {
+                amount: 100,
+                orderId: 'ldqyAo3IhDcBSW0sQj41E',
+                orderName: '메디로 가입비',
+                customerName: '박토스',
+                successUrl: window.location.origin + '/success',
+                failUrl: window.location.origin + '/fail',
+            }).catch( (err) => {
+                if (err.code === 'USER_CANCEL') {
+                    // 취소 이벤트 처리
+                    alert('취소');
+                }
+            });
+        });
     }
 
 }
