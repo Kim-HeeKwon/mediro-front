@@ -125,7 +125,8 @@
                                                 <form
                                                     [formGroup]="searchForm">
                                                     <mat-form-field
-                                                        class="ml-2 mt-6 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                        <mat-label class="mediro-ft-label">유형</mat-label>
                                                         <mat-select [formControlName]="'itemGrade'">
                                                             <ng-container *ngFor="let itemgrade of itemGrades">
                                                                 <mat-option [value]="itemgrade.id">

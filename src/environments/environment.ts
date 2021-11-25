@@ -10,9 +10,12 @@ export const environment = {
     },
     userLogtest: 'Y',
     defaultUserId: 'mediroDefault',
-    serverUrl: '',
+    // serverUrl: '',
     //serverTaxUrl: '',
-    serverTaxUrl: 'http://localhost:8097/teamPlatBill/',
+    // serverTaxUrl: 'http://localhost:8097/teamPlatBill/',
+    serverUrl: 'https://www.teammediro.com/teamPlatFw/',
+    // serverTaxUrl: '',
+    serverTaxUrl: 'https://www.teammediro.com/teamPlatFw/',
     test: true
 };
 
@@ -24,3 +27,4 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
