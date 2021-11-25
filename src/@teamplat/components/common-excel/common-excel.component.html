@@ -1,0 +1,67 @@
+<div class="flex flex-col flex-auto md:w-180 md:min-w-160 -m-6">
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="false">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">엑셀 업로드</div>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div><!-- Main -->
+    <div class="flex flex-col sm:flex-row flex-0 justify-between pt-3 pb-2 px-6 border-b">
+        <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
+<!--            <div class="sm:col-span-3 flex flex-row flex-shrink-0 items-center mt-8 mr-4 sm:mt-0">-->
+
+<!--                <label class="upload-btn-label" for="input-files"><span>업로드</span></label>-->
+<!--                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"-->
+<!--                       (change)="excelImport(fileInput.files)" #fileInput>-->
+<!--            </div>-->
+            <div class="sm:col-span-3 flex flex-row flex-shrink-0 items-center mt-8 mr-4 sm:mt-0">
+<!--                <button-->
+<!--                    for="input-files"-->
+<!--                    class="mediro-btn-custom"-->
+<!--                    mat-stroked-button-->
+<!--                    [color]="'primary'">-->
+<!--                    <img src="assets/images/excel/excel_upload.png">-->
+<!--                </button>-->
+                <label class="upload-btn-label" for="input-files">
+                    <span>엑셀 업로드</span>
+                </label>
+                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"
+                       (change)="excelImport(fileInput.files)" #fileInput>
+                <button
+                    class="ml-2 mediro-btn-custom"
+                    mat-stroked-button
+                    [color]="'primary'"
+                    (click)="excelExport()">
+                    <img src="assets/images/excel/excel_down.png">
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <div
+        style="height: 300px;"
+        class="realgrid"
+        id="excelGrid">
+
+    </div>
+    <mat-paginator
+        class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+        [ngClass]="{'pointer-events-none': false}"
+        [length]="pagenation === null ? 0 : pagenation.length"
+        [pageIndex]="pagenation === null ? 0 : pagenation.page"
+        [pageSize]="pagenation === null ? 0 : pagenation.size"
+        [pageSizeOptions]="[1000]"
+        [showFirstLastButtons]="true"></mat-paginator>
+</div>
