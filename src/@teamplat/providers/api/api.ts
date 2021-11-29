@@ -186,6 +186,39 @@ export class Api {
         return req;
     }
 
+
+    postWithExcel(excelType: string, endpoint: string, body: any, body2: any, excelJson: any, reqOpts?: any) {
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'excelType': excelType,
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.post(this.url + endpoint, 'ds_pageNation=[' + JSON.stringify(body2) + ']&'
+            + 'ds_session=' + JSON.stringify(arrayOfArraysData) + '&'
+            + 'ds_excelJson=[' + JSON.stringify(excelJson) + ']'
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+
+        return req;
+    }
+
     postWithPage(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {

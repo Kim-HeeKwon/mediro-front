@@ -37,6 +37,10 @@ export class Common {
         return this.api.postWithPageChgUrl(url, param, pageParam).pipe(share()); // seq;
     }
 
+    sendDataExcel(param: any, pageParam: any, excelJson: any, url: string, excelType: string): Observable<any> {
+        return this.api.postWithExcel(excelType, url, param, pageParam, excelJson).pipe(share()); // seq;
+    }
+
     put(url: string, param: any): Observable<any> {
         return this.api.apiPut(url, param).pipe(share()); // seq;
     }

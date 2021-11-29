@@ -6,11 +6,19 @@ import {Columns} from "./realgrid.types";
 import {CommonPopupItemsComponent} from "../../components/common-popup-items";
 import {takeUntil} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
+import {Common} from "../../providers/common/common";
+import {CommonExcelComponent} from "../../components/common-excel";
+import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
 @Injectable({
     providedIn: 'root'
 })
 export class FuseRealGridService {
+
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    constructor(private _common: Common,
+                public _matDialogPopup: MatDialog,) {
+    }
 
     // 그리드 생성 전 Provider 생성
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -135,6 +143,45 @@ export class FuseRealGridService {
         //gridView.clearColumnFilters(columnId);
     }
 
+    // 엑셀 업로드
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_ExcelImportGrid(excelType: string): void{
+
+        const searchParam = {};
+        searchParam['order'] = '';
+        searchParam['sort'] = '';
+        const pageParam = {
+            page: 1,
+            size: 10,
+        };
+        searchParam['excelType'] = excelType;
+
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        const rtn = new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/common/excel/excel-config-list')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        resolve(response.data);
+                    }
+                }, reject);
+        });
+        rtn.then((l) =>{
+            const popup =this._matDialogPopup.open(CommonExcelComponent, {
+                data: {
+                    jsonData: l,
+                    excelType: excelType
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+        });
+
+    }
+
     // 엑셀 다운로드
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
@@ -146,6 +193,8 @@ export class FuseRealGridService {
         }
 
         gridView.exportGrid({
+            exportSeriesColumn: true,
+            lookupDisplay: true,
             type: 'excel',
             target: 'local',
             fileName: fileName + '.xlsx',

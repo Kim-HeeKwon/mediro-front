@@ -131,7 +131,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
 
         this._route.params.subscribe((params) => {
-            console.log(params);
+
         });
         // getItems
         this.items$ = this._itemService.items$;
@@ -388,6 +388,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    //엑셀 업로드
+    excelImport(): void{
+        this._realGridsService.gfn_ExcelImportGrid('ITEM');
+    }
     //엑셀 다운로드
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '픔목 내역');
