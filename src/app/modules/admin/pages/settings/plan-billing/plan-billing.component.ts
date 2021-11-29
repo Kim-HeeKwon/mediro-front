@@ -4,6 +4,8 @@ import {Common} from '../../../../../../@teamplat/providers/common/common';
 import {SessionStore} from '../../../../../core/session/state/session.store';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 
+import {environment} from 'environments/environment';
+
 import { loadTossPayments } from '@tosspayments/sdk';
 const clientKey = 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL';
 
@@ -25,6 +27,7 @@ export class SettingsPlanBillingComponent implements OnInit
     yearlyBilling: boolean = false;
     planBillingForm: FormGroup;
     plans: any[];
+    enterFee: number = 100;
 
     /**
      * Constructor
@@ -105,6 +108,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
     saveBillingInfo(): void
     {
+        console.log(this._sessionStore.getValue());
         this.showAlert = false;
         if(!this.planBillingForm.invalid){
             this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
@@ -151,19 +155,20 @@ export class SettingsPlanBillingComponent implements OnInit
 
     billEnterFee(): void
     {
-        //setBill();
-        loadTossPayments(clientKey).then((tossPayments) => {
+        //setBill(); window.location.origin => environment
+        loadTossPayments(environment.tossClientKey).then((tossPayments) => {
             tossPayments.requestPayment('카드', {
-                amount: 100,
-                orderId: 'ldqyAo3IhDcBSW0sQj41E',
+                amount: this.enterFee,
+                orderId: this._sessionStore.getValue().businessNumber,
                 orderName: '메디로 가입비',
-                customerName: '박토스',
-                successUrl: window.location.origin + '/success',
-                failUrl: window.location.origin + '/fail',
+                customerName: this._sessionStore.getValue().businessName,
+                successUrl: environment.paymentHookUrl + '/success',
+                failUrl: environment.paymentHookUrl + '/fail',
             }).catch( (err) => {
                 if (err.code === 'USER_CANCEL') {
                     // 취소 이벤트 처리
                     alert('취소');
+                    alert(environment.paymentHookUrl);
                 }
             });
         });
