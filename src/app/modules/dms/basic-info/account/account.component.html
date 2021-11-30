@@ -113,7 +113,8 @@
                                                     <form
                                                         [formGroup]="searchForm">
                                                     <mat-form-field
-                                                        class="ml-2 mt-6 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                        <mat-label class="mediro-ft-label">유형</mat-label>
                                                         <mat-select [formControlName]="'accountType'">
                                                             <ng-container *ngFor="let accountType of accountType">
                                                                 <mat-option [value]="accountType.id">
@@ -124,7 +125,7 @@
                                                         </mat-form-field>
                                                     </form>
                                                     <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label>거래처 코드</mat-label>
+                                                        <mat-label class="mediro-ft-label">거래처 코드</mat-label>
                                                         <input
                                                             matInput
                                                             (window:keypress)="enter($event)"
@@ -132,7 +133,7 @@
                                                             [autocomplete]="'off'">
                                                     </mat-form-field>
                                                     <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label>거래처 명</mat-label>
+                                                        <mat-label class="mediro-ft-label">거래처 명</mat-label>
                                                         <input
                                                             matInput
                                                             (window:keypress)="enter($event)"

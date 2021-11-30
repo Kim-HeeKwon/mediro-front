@@ -121,7 +121,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.orderHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             poNo: [{value:'',disabled:true}],   // 발주번호
-            account: [{value:''},[Validators.required]], // 거래처 코드
+            account: ['', [Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
             type: [{value:''}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태

@@ -30,8 +30,8 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {FunctionService} from '../../../../../../@teamplat/services/function';
-import {DeviceDetectorService} from "ngx-device-detector";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
     selector       : 'estimate-new',

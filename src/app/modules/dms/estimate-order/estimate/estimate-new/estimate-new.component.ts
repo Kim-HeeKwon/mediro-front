@@ -6,30 +6,30 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
     Estimate,
     EstimateDetail,
     EstimateDetailPagenation
-} from "../estimate.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {EstimateService} from "../estimate.service";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {takeUntil} from "rxjs/operators";
-import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+} from '../estimate.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
+import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {EstimateService} from '../estimate.service';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {takeUntil} from 'rxjs/operators';
+import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 
 @Component({
     selector       : 'app-dms-estimate-new',
@@ -103,7 +103,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             qtNo: [{value:'',disabled:true}],   // 견적번호
-            account: [{value:''},[Validators.required]], // 거래처 코드
+            account: ['', [Validators.required]], // 거래처 코드
             accountNm: [{value:'',disabled:true}],   // 거래처 명
             type: [{value:'',disabled:true}, [Validators.required]],   // 유형
             status: [{value:'',disabled:true}, [Validators.required]],   // 상태
@@ -181,7 +181,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             softDeleting: true,
             //hideDeletedRows: true,
         });
-
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setCopyOptions({
@@ -193,7 +192,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.validateOnEdited = true;
-
         this._realGridsService.gfn_EditGrid(this.gridList);
         const validationList = ['itemCd'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);

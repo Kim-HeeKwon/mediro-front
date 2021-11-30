@@ -169,6 +169,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
             },
+            {
+                id   : 'udi.manage-sample',
+                title: '공급내역 맛보기',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/manageSample'
+            },
         ]
     },
     {

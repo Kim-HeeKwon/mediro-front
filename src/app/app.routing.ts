@@ -97,10 +97,10 @@ export const appRoutes: Route[] = [
             // estimate-order
             {path: 'estimate-order', children: [
                     // estimate
-                    //{path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
+                    // {path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/admin/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
                     {path: 'estimate', data: {key: 'estimate'}, loadChildren: () => import('app/modules/dms/estimate-order/estimate/estimate.module').then(m => m.EstimateModule)},
                     // order
-                    //{path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
+                    // {path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/admin/estimate-order/order/order.module').then(m => m.OrderModule)},
                     {path: 'order', data: {key: 'order'}, loadChildren: () => import('app/modules/dms/estimate-order/order/order.module').then(m => m.OrderModule)},
                 ]},
             // salesorder
@@ -156,6 +156,7 @@ export const appRoutes: Route[] = [
                     // manages
                     //{path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
                     {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/dms/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    {path: 'manageSample', data: {key: 'manageSample'}, loadChildren: () => import('app/modules/dms/udi/manages-sample/manages-sample.module').then(m => m.ManagesSampleModule)},
                     // status
                     //{path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
                     {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/dms/udi/status/status.module').then(m => m.StatusModule)},

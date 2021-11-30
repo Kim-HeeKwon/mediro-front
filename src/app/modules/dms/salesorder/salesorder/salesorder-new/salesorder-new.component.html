@@ -149,7 +149,6 @@
                 <as-split-area [size]="60">
                     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2 pb-2">
                         <div class="flex-row text-1xl font-extrabold tracking-tight">
-
                         </div>
                         <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
                             <button
@@ -179,17 +178,13 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- Main -->
                     <div
                         class="realgrid"
                         id="salesorderDetailGrid">
-
                     </div>
                 </as-split-area>
             </as-split>
-
-
             <mat-paginator
                 class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                 [ngClass]="{'pointer-events-none': false}"
@@ -198,7 +193,8 @@
                 [pageSize]="salesorderDetailPagenation === null ? 0 : salesorderDetailPagenation.size"
                 [pageSizeOptions]="[20, 40, 60, 80, 100]"
                 (page)="pageEvent($event)"
-                [showFirstLastButtons]="true"></mat-paginator>
+                [showFirstLastButtons]="true">
+            </mat-paginator>
         </div>
     </div>
 </div>

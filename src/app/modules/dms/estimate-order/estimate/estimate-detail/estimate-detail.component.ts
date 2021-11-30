@@ -6,31 +6,31 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
     Estimate,
     EstimateDetail,
     EstimateDetailPagenation
-} from "../estimate.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {EstimateService} from "../estimate.service";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {CommonReportComponent} from "../../../../../../@teamplat/components/common-report";
-import {ReportHeaderData} from "../../../../../../@teamplat/components/common-report/common-report.types";
+} from '../estimate.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
+import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {EstimateService} from '../estimate.service';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
+import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
 
 @Component({
     selector       : 'app-dms-estimate-detail',
@@ -364,7 +364,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let detailCheck = false;
 
-            if(rows.length === 0){
+            if(rows.length === 0 && this.estimateHeaderForm.getRawValue().email === ''){
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }

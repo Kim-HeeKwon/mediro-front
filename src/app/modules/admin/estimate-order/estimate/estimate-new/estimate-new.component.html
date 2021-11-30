@@ -21,7 +21,10 @@
                         </button>
                     </div>
                     <div class="flex flex-col min-w-0 ml-2">
-                        <div class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate">견적 작성</div>
+                        <div
+                            class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                            견적 작성
+                        </div>
                     </div>
                 </div>
                 <!-- Actions -->
@@ -64,14 +67,20 @@
                                                     [formControlName]="'qtNo'">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2">
-                                                <mat-label>거래처 코드<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>거래처 코드
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <input
                                                     matInput
                                                     [formControlName]="'account'"
                                                     (click)="openAccountSearch()">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2">
-                                                <mat-label>거래처 명<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>거래처 명
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <input
                                                     matInput
                                                     [formControlName]="'accountNm'">
@@ -79,7 +88,10 @@
                                         </div>
                                         <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
                                             <mat-form-field class="sm:col-span-1">
-                                                <mat-label>유형<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>유형
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <mat-select [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
                                                         <mat-option [value]="type.id">
@@ -89,7 +101,10 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-1">
-                                                <mat-label>상태<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>상태
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <mat-select [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
@@ -99,7 +114,10 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2">
-                                                <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>이메일
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <mat-icon
                                                     class="icon-size-5"
                                                     [svgIcon]="'heroicons_solid:mail'"
@@ -155,9 +173,9 @@
                             </div>
                         </form>
                     </div>
-                    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
+                    <div
+                        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
                         <div class="flex-row text-1xl font-extrabold tracking-tight">
-
                         </div>
                         <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
                             <mat-icon
@@ -170,11 +188,10 @@
                                 [svgIcon]="'heroicons_outline:minus-circle'"
                                 (click)="transactionRow('DELETE',selection)"
                             ></mat-icon>
-<!--                            <button mat-button-->
-<!--                                    class="mr-2"-->
-<!--                                    mat-flat-button-->
-<!--                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>-->
-
+                            <!--                            <button mat-button-->
+                            <!--                                    class="mr-2"-->
+                            <!--                                    mat-flat-button-->
+                            <!--                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>-->
                         </div>
                     </div>
                     <!-- Table wrapper -->
@@ -239,7 +256,8 @@
                                              class="mediro-th mediro-th-display">
                                             <span mat-sort-header>
                                                 {{column.headerText}}
-                                                <mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                <mat-icon class="icon-size-3"
+                                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
                                             </span>
                                         </div>
                                         <div *ngIf="!column.validators"
@@ -306,88 +324,100 @@
                         <!-- 최근견적서 body  mt-6 mr-3 mb-6 ml-6 mt-6 mr-6 mb-6 ml-3 mt-6 mr-3 mb-6 ml-3-->
                         <div class="flex">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full min-w-0 m-3">
-                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                <div
+                                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
-<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
-<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
-<!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
-                                    </div>
-                                    <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
-                                    </div>
-                                    <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
-                                    </div>
-                                    <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
-                                    <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234
+                                        </div>
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                <div
+                                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234
+                                        </div>
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                <div
+                                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234
+                                        </div>
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
                                         <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적</div>
                                     </div>
                                     <div class="flex items-start p-1 justify-between">
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>
-                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01 </div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">견적번호 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">1231231234
+                                        </div>
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 : </div>-->
+                                        <!--                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 : </div>-->
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래처명 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">메디로회사</div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래유형 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">일반견적</div>
+                                    </div>
+                                    <div class="flex items-start p-1 justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">거래일자 :</div>
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">2021-08-01
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -437,7 +467,8 @@
                         </div>
                         <!-- 견적서작성 body -->
                         <div class="flex">
-                            <div class="flex flex-col sm:col-span-1 flex-auto m-6 p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div
+                                class="flex flex-col sm:col-span-1 flex-auto m-6 p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex pt-2 pl-4 pr-4 bg-card">
                                     <!-- Selected product form -->
                                     <form
@@ -527,7 +558,8 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
+                                <div
+                                    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-4 pb-2 bg-card">
                                     <div class="flex-row text-1xl font-extrabold tracking-tight">
                                         리스트
                                     </div>
@@ -546,11 +578,6 @@
                                             [svgIcon]="'heroicons_outline:minus-circle'"
                                             (click)="transactionRow('DELETE',selection)"
                                         ></mat-icon>
-                                        <!--                            <button mat-button-->
-                                        <!--                                    class="mr-2"-->
-                                        <!--                                    mat-flat-button-->
-                                        <!--                                    (click)="transactionRow('DELETE',selection)" mat-flat-button color="accent">-</button>-->
-
                                     </div>
                                 </div>
                                 <!-- Table wrapper -->
@@ -651,24 +678,12 @@
                                             [pageSize]="0"
                                             [pageSizeOptions]="[10,100]"
                                             [showFirstLastButtons]="true"></mat-paginator>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <!-- 견적서작성 Footer -->
-<!--                        <div class="flex">-->
-<!--                            <div class="flex flex-col sm:col-span-1 flex-auto m-6 p-6 bg-card shadow rounded-2xl overflow-hidden">-->
-<!--                                <div class="flex items-start justify-between">-->
-<!--                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">견적서 작성</div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                 </mat-tab>
-<!--                <mat-tab label="자주 쓰는 거래처">-->
-<!--                </mat-tab>-->
             </mat-tab-group>
         </div>
     </div>
