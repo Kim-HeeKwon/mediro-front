@@ -554,6 +554,26 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             }
                         }
                     });
+                }else{
+                    const confirmation = this._teamPlatConfirmationService.open({
+                        title  : '입고',
+                        message: '입고하시겠습니까?',
+                        actions: {
+                            confirm: {
+                                label: '입고'
+                            },
+                            cancel: {
+                                label: '닫기'
+                            }
+                        }
+                    });
+                    confirmation.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if(result){
+                                this.inBoundDetailConfirm(inBoundData);
+                            }
+                        });
                 }
             }else{
                 const confirmation = this._teamPlatConfirmationService.open({

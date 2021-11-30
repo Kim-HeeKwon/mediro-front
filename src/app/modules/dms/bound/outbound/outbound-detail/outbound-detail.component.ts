@@ -470,6 +470,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     outBoundConfirm() {
         const obStatus = this.outBoundHeaderForm.controls['status'].value;
+        const obType = this.outBoundHeaderForm.controls['type'].value;
         if(obStatus !== 'N' && obStatus !== 'P'){
             this._functionService.cfn_alert('출고할 수 없는 상태입니다.');
             return false;
@@ -493,31 +494,37 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
             return false;
         }else{
-            if(udiCheckData.length > 0){
-                //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
-                //입력 수량 그대로 가져오기
-                //UDI 정보 INPUT 후 값 셋팅
+            //일반출고, 폐기, 가납출고, 반품출고
+            if(obType === '1' || obType === '3' || obType === '5' || obType === '6'){
+                console.log(obType);
+                if(udiCheckData.length > 0){
+                    //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                    //입력 수량 그대로 가져오기
+                    //UDI 정보 INPUT 후 값 셋팅
 
-                const popup =this._matDialogPopup.open(CommonUdiScanComponent, {
-                    data: {
-                        detail : udiCheckData
-                    },
-                    autoFocus: false,
-                    maxHeight: '90vh',
-                    disableClose: true
-                });
-                popup.afterClosed().subscribe((result) => {
-                    if(result){
-                        if(result !== undefined){
+                    const popup =this._matDialogPopup.open(CommonUdiScanComponent, {
+                        data: {
+                            detail : udiCheckData
+                        },
+                        autoFocus: false,
+                        maxHeight: '90vh',
+                        disableClose: true
+                    });
+                    popup.afterClosed().subscribe((result) => {
+                        if(result){
+                            if(result !== undefined){
 
-                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                            for(let i=0; i<result.length; i++){
-                                outBoundDataFilter.push(result[i]);
+                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                for(let i=0; i<result.length; i++){
+                                    outBoundDataFilter.push(result[i]);
+                                }
+                                this.outBoundCall(outBoundDataFilter);
                             }
-                            this.outBoundCall(outBoundDataFilter);
                         }
-                    }
-                });
+                    });
+                }else{
+                    this.outBoundCall(outBoundData);
+                }
             }else{
                 this.outBoundCall(outBoundData);
             }
