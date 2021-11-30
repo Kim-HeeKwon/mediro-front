@@ -130,8 +130,11 @@ export const appRoutes: Route[] = [
                     // {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/admin/stock/stock/stock.module').then(m => m.StockModule)},
                     {path: 'stock', data: {key: 'stock'}, loadChildren: () => import('app/modules/dms/stock/stock/stock.module').then(m => m.StockModule)},
                     // validity
-                    // {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
+                    //{path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/admin/stock/validity/validity.module').then(m => m.ValidityModule)},
                     {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/dms/stock/validity/validity.module').then(m => m.ValidityModule)},
+                    {path: 'safety', data: {key: 'safety'}, loadChildren: () => import('app/modules/dms/stock/safety/safety.module').then(m => m.SafetyModule)},
+                    {path: 'acceptable', data: {key: 'acceptable'}, loadChildren: () => import('app/modules/dms/stock/acceptable/acceptable.module').then(m => m.AcceptableModule)},
+
                 ]},
             /*{path: 'bill', children: [
                     // bill

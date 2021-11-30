@@ -91,14 +91,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'estimate-order.estimate',
-                title: '견적',
+                title: '견적 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:pencil-alt',
                 link : '/estimate-order/estimate'
             },
             {
                 id      : 'estimate-order.order',
-                title   : '발주',
+                title   : '발주 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:pencil',
@@ -106,7 +106,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id      : 'salesorder.salesorder',
-                title   : '주문',
+                title   : '주문 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:pencil',
@@ -114,21 +114,21 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'bound.inbound',
-                title: '입고',
+                title: '입고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-add',
                 link : '/bound/inbound'
             },
             {
                 id   : 'bound.outbound',
-                title: '출고',
+                title: '출고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-remove',
                 link : '/bound/outbound'
             },
             {
                 id   : 'stock.stock',
-                title: '재고',
+                title: '재고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
@@ -199,13 +199,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/pages/error/500'
             },
             {
-                id      : '',
+                id      : 'stock.safety',
                 title   : '안전재고',
-                subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
-                /*link    : '/basic-info/safety-stock'*/
-                link    : '/pages/error/500',
+                link    : '/stock/safety'
             },
             {
                 id   : 'stock.validity',
@@ -222,12 +220,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/pages/error/500'
             },
             {
-                id   : 'smart-plus.status',
-                title: '가납재고',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
-            }
+                id      : 'stock.acceptable',
+                title   : '가납재고',
+                type    : 'basic',
+                icon    : 'heroicons_outline:cube',
+                link    : '/stock/acceptable'
+            },
         ]
     },
     {
@@ -501,14 +499,14 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'estimate-order.estimate',
-                title: '견적',
+                title: '견적 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:pencil-alt',
                 link : '/estimate-order/estimate'
             },
             {
                 id      : 'estimate-order.order',
-                title   : '발주',
+                title   : '발주 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:pencil',
@@ -516,7 +514,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
             {
                 id      : 'salesorder.salesorder',
-                title   : '주문',
+                title   : '주문 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:pencil',
@@ -524,21 +522,21 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
             {
                 id   : 'bound.inbound',
-                title: '입고',
+                title: '입고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-add',
                 link : '/bound/inbound'
             },
             {
                 id   : 'bound.outbound',
-                title: '출고',
+                title: '출고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:folder-remove',
                 link : '/bound/outbound'
             },
             {
                 id   : 'stock.stock',
-                title: '재고',
+                title: '재고 관리',
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
@@ -602,13 +600,11 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 link : '/pages/error/500'
             },
             {
-                id      : '',
-                title   : '안전재고',
-                subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                /*link    : '/basic-info/safety-stock'*/
-                link    : '/pages/error/500',
+                id   : 'stock.safety',
+                title: '안전재고',
+                type : 'basic',
+                icon : 'heroicons_outline:cube',
+                link : '/stock/safety'
             },
             {
                 id   : 'stock.validity',
@@ -625,11 +621,11 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 link : '/pages/error/500'
             },
             {
-                id   : 'smart-plus.status',
+                id   : 'stock.acceptable',
                 title: '가납재고',
                 type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                icon : 'heroicons_outline:cube',
+                link : '/stock/acceptable'
             }
         ]
     },
