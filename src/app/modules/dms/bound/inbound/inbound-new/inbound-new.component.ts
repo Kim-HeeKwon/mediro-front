@@ -106,7 +106,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver)
     {
-        this.filterList = ['ALL'];
+        this.filterList = ['ALL','1','2'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_STATUS', this.filterList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
@@ -122,6 +122,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                     const detail = this._router.getCurrentNavigation().extras.state.detail;
                     this.inBoundHeaders = header;
                     this.inBoundDetails = detail;
+                    this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'IB_TYPE', ['ALL']);
                 }
             }
 

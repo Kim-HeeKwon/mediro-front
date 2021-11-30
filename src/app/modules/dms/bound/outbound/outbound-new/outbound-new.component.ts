@@ -99,7 +99,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
     )
     {
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', ['ALL']);
+        const typeFilter = ['ALL', '1', '4' ,'6'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', typeFilter);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', ['ALL']);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
