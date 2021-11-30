@@ -562,7 +562,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     outBoundDetailConfirm(sendData: OutBound[]): void{
         this.isProgressSpinner = true;
         if(sendData){
-            this._outboundService.outBoundDetailConfirm(sendData)
+            const rows = this.headerDataSet(sendData);
+            this._outboundService.outBoundDetailConfirm(rows)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
                     this._functionService.cfn_alertCheckMessage(outBound);

@@ -877,7 +877,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     inBoundDetailConfirm(sendData: InBound[]): void{
         this.isProgressSpinner = true;
         if(sendData){
-            this._inboundService.inBoundDetailConfirm(sendData)
+            const rows = this.headerDataSet(sendData);
+            this._inboundService.inBoundDetailConfirm(rows)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_alertCheckMessage(inBound);
