@@ -298,12 +298,11 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             }),
             dismissible: true
         }).value);
-
+        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._accountService.deleteAccount(accountData)
                         .subscribe(
                             (param: any) => {

@@ -39,6 +39,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
 
     taxButton: string = 'save';
     taxCount: number = 0;
+    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     showAlert: boolean = false;
     detailList: any;
@@ -171,6 +172,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
+                    this.isProgressSpinner = true;
                     if(result) {
                         this.invoiceCall(this.detailList, 'INVOICE');
                     }
@@ -209,6 +211,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
+                    this.isProgressSpinner = true;
                     if(result) {
                         this.invoiceCall(this.detailList, 'SAVE');
                     }
@@ -254,6 +257,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
 
     invoiceCall(sendData: Bill[], check?: any): void{
         if(sendData){
+            this.isProgressSpinner = false;
             sendData = this.headerDataSet(sendData, check);
             this._billService.invoice(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))

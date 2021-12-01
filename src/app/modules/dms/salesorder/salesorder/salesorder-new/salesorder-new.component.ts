@@ -220,6 +220,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             commitEdit: true,
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);

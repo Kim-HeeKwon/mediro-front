@@ -61,12 +61,12 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
-        {fieldName: 'poQty', dataType: ValueType.TEXT},
-        {fieldName: 'availQty', dataType: ValueType.TEXT},
-        {fieldName: 'acceptableQty', dataType: ValueType.TEXT},
-        {fieldName: 'unusedQty', dataType: ValueType.TEXT},
-        {fieldName: 'safetyQty', dataType: ValueType.TEXT},
-        {fieldName: 'longtermQty', dataType: ValueType.TEXT},
+        {fieldName: 'poQty', dataType: ValueType.NUMBER},
+        {fieldName: 'availQty', dataType: ValueType.NUMBER},
+        {fieldName: 'acceptableQty', dataType: ValueType.NUMBER},
+        {fieldName: 'unusedQty', dataType: ValueType.NUMBER},
+        {fieldName: 'safetyQty', dataType: ValueType.NUMBER},
+        {fieldName: 'longtermQty', dataType: ValueType.NUMBER},
         {fieldName: 'longterm', dataType: ValueType.TEXT}
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -117,13 +117,18 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'left-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'left-cell-text'},
                 values: values,
                 labels: lables,
-                lookupDisplay: true,
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
+                 }
             },
             {
                 name: 'poQty',
@@ -131,7 +136,10 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '발주', styleName: 'left-cell-text'},
+                header: {text: '발주', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'availQty',
@@ -140,6 +148,9 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '100',
                 styleName: 'right-cell-text',
                 header: {text: '보유', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'acceptableQty',
@@ -148,10 +159,16 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '100',
                 styleName: 'right-cell-text',
                 header: {text: '가납', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '불용', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'safetyQty',
@@ -161,10 +178,16 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '100',
                 styleName: 'right-cell-text',
                 header: {text: '안전재고', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '장기재고', styleName: 'left-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'longterm',
@@ -172,7 +195,9 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '기간', styleName: 'left-cell-text'}
+                header: {text: '기간', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             }
         ];
 
@@ -357,6 +382,6 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '보고자료 목록');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '재고 목록');
     }
 }

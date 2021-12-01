@@ -170,18 +170,24 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.itemsColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'},
+                , header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '등급', styleName: 'left-cell-text'},
                 values: itemGradesvalues,
                 labels: itemGradeslables,
-                lookupDisplay: true
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'udiYn',
@@ -192,7 +198,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 header: {text: 'UDI 대상 유무', styleName: 'left-cell-text'},
                 values: udiYnvalues,
                 labels: udiYnlables,
-                lookupDisplay: true
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'unit',
@@ -200,7 +208,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '단위', styleName: 'left-cell-text'}
+                header: {text: '단위', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'standard',
@@ -208,11 +218,15 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '규격', styleName: 'left-cell-text'}
+                header: {text: '규격', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '공급사', styleName: 'left-cell-text'}
+                , header: {text: '공급사', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'taxGbn',
@@ -224,12 +238,16 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 header: {text: '거래유형', styleName: 'left-cell-text'},
                 values: taxGbnvalues,
                 labels: taxGbnlables,
-                lookupDisplay: true
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '구매단가', styleName: 'left-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'salesPrice',
@@ -239,7 +257,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 styleName: 'right-cell-text',
                 header: {text: '판매단가', styleName: 'left-cell-text'}
                 ,
-                numberFormat: '#,##0'
+                numberFormat: '#,##0', renderer:{
+                    showTooltip:true
+                }
             }
         ];
 

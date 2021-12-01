@@ -120,11 +120,15 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '유형', styleName: 'left-cell-text'},
                 values: itemPricevalues,
                 labels: itemPricelables,
-                lookupDisplay: true
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemNm',
@@ -132,7 +136,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '품목명', styleName: 'left-cell-text'}
+                header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'account',
@@ -140,7 +146,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '거래처', styleName: 'left-cell-text'},
+                header: {text: '거래처', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'accountNm',
@@ -148,7 +156,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '거래처 명', styleName: 'left-cell-text'}
+                header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'unitPrice',
@@ -156,9 +166,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'number',
                 width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '단가', styleName: 'left-cell-text'}
-                ,
-                numberFormat: '#,##0'
+                header: {text: '단가', styleName: 'left-cell-text'}, numberFormat: '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
         ];
 

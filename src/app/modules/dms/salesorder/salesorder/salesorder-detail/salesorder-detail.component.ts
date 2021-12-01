@@ -214,6 +214,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             commitEdit: true,
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -454,12 +455,11 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 }
             }
         });
-
+        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._salesorderService.getDetail(0,20,'soLineNo','asc',this.salesorderHeaderForm.getRawValue());
 
                     this.salesorderDetails$ = this._salesorderService.salesorderDetails$;

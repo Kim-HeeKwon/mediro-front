@@ -233,6 +233,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             commitEdit: true,
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -401,6 +402,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
     orderReport(): void {
+        this.isProgressSpinner = true;
         const orderDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.orderDetailDataProvider);
@@ -446,6 +448,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             maxHeight: '100vh',
             disableClose: true
         });
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(()=> {
+                this.isProgressSpinner = false;
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     orderSave(): void{

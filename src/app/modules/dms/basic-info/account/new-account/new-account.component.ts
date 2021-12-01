@@ -80,7 +80,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             udiAccount: [''],
             udiHptlSymbl: [''],
             descr: ['', [Validators.required]],   // 거래처 명
-            accountType: ['', [Validators.required]],   // 유형
+            accountType: [{value:'CUST',disabled:true}, [Validators.required]],   // 유형
             custBusinessNumber : ['',[Validators.required]],
             custBusinessName: [''],
             representName: [''],
@@ -249,11 +249,11 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     accountCreate(): void
     {
+        this.isProgressSpinner = true;
         if(!this.selectedAccountForm.invalid){
             this.showAlert = false;
             this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
-                this.isProgressSpinner = true;
                 this.alertMessage(newAccount);
 
                 // Mark for check

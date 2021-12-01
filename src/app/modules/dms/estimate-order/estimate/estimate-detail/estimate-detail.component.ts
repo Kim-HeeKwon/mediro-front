@@ -210,6 +210,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             commitEdit: true,
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -301,6 +302,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._router.navigate(['estimate-order/estimate']);
     }
     reportEstimate(): void{
+        this.isProgressSpinner = true;
         const estimateDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.estimateDetailDataProvider);
@@ -333,7 +335,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.reportHeaderData.deliveryDate = this.estimateHeaderForm.getRawValue().deliveryDate;
         this.reportHeaderData.deliveryAddress = '';
 
-        const popup =this._matDialogPopup.open(CommonReportComponent, {
+        const popup = this._matDialogPopup.open(CommonReportComponent, {
             data: {
                 divisionText : '견적',
                 division : 'ESTIMATE',
@@ -345,6 +347,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             maxHeight: '100vh',
             disableClose: true
         });
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(()=> {
+                    this.isProgressSpinner = false;
+                    this._changeDetectorRef.markForCheck();
+            });
     }
 
     saveEstimate(): void{

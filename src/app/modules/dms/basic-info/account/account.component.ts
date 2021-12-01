@@ -25,7 +25,6 @@ import {CommonUdiComponent} from '../../../../../@teamplat/components/common-udi
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {Router} from '@angular/router';
 import {DetailAccountComponent} from '../account/detail-account/detail-account.component';
-import {OrderService} from "../../estimate-order/order/order.service";
 
 @Component({
     selector: 'dms-app-account',
@@ -54,8 +53,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         {
             id: '101',
             name: '거래처 명'
-        }];
-    accountType: CommonCode[] = null;
+        }
+    ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -71,12 +70,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     accountFields: DataFieldObject[] = [
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'descr', dataType: ValueType.TEXT},
-        {fieldName: 'accountType', dataType: ValueType.TEXT},
+        {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'address', dataType: ValueType.TEXT},
         {fieldName: 'addressDetail', dataType: ValueType.TEXT},
         {fieldName: 'representName', dataType: ValueType.TEXT},
         {fieldName: 'businessCategory', dataType: ValueType.TEXT},
-        {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'custBusinessName', dataType: ValueType.TEXT},
         {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
@@ -90,62 +88,70 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _matDialog: MatDialog,
                 public _matDialogPopup: MatDialog,
                 private _utilService: FuseUtilsService,
-                private _orderService: OrderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _accountService: AccountService,
                 private readonly breakpointObserver: BreakpointObserver)
     {
-        this.accountType = _utilService.commonValue(_codeStore.getValue().data,'ACCOUNT_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            accountType: ['ALL'],
             descr: [''],
             account: [''],
-            searchCondition: ['101'],
-            searchText: [''],
-        });
-
-        const values = [];
-        const lables = [];
-        this.accountType.forEach((param: any) => {
-            values.push(param.id);
-            lables.push(param.name);
+            businessCondition: [''],
+            businessCategory: ['']
         });
 
         //그리드 컬럼
         this.accountColumns = [
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'left-cell-text'}},
+                , header: {text: '거래처 코드', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'descr', fieldName: 'descr', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'},},
-            {name: 'accountType', fieldName: 'accountType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '유형', styleName: 'left-cell-text'},
-                values: values,
-                labels: lables,
-                lookupDisplay: true
-            },
-            {name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '주소' , styleName: 'left-cell-text'},},
-            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '상세주소' , styleName: 'left-cell-text'}},
-            {name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '대표자명' , styleName: 'left-cell-text'}},
-            {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '종목' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'businessCondition', fieldName: 'businessCondition'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '업태' , styleName: 'left-cell-text'}},
+                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '업태' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
+            {name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '주소' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
+            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '상세주소' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
+            {name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '대표자명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
+            {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '종목' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'custBusinessName', fieldName: 'custBusinessName', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '사업자명' , styleName: 'left-cell-text'}},
+                , header: {text: '사업자명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             // eslint-disable-next-line max-len
-            {name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '사업자번호' , styleName: 'left-cell-text'}},
+            {name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '사업자번호' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '전화번호' , styleName: 'left-cell-text'},
-                placeHolder: ''},
+                placeHolder: '', renderer:{
+                    showTooltip:true
+                }},
             {name: 'fax', fieldName: 'fax', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '팩스' , styleName: 'left-cell-text'},
-                placeHolder: ''},
-            {name: 'email', fieldName: 'email', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '이메일' , styleName: 'left-cell-text'}},
+                placeHolder: '', renderer:{
+                    showTooltip:true
+                }},
+            {name: 'email', fieldName: 'email', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '이메일' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
         ];
 
         //그리드 Provider
@@ -333,7 +339,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     selectHeader(): void
     {
-        this._orderService.getHeader(0, 20, 'poNo', 'desc', this.searchForm.getRawValue());
+        this._accountService.getAccount(0, 20, 'account', 'desc', this.searchForm.getRawValue());
         this.setGridData();
     }
 
@@ -353,7 +359,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     createUdiAccount(): void {
         if (!this.isMobile) {
-            this.isProgressSpinner = false;
             const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
                 data: {
                     headerText: '거래처 조회',

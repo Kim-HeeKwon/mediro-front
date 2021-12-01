@@ -141,56 +141,84 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
                 values: valuesMFlag,
                 labels: lablesMFlag,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.mFlag),
+                editor: this._realGridsService.gfn_ComboBox(this.mFlag), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'suplyFlagCode', fieldName: 'suplyFlagCode', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '공급구분', styleName: 'left-cell-text'},
                 values: valuesSuplyFlagCode,
                 labels: lablesSuplyFlagCode,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.suplyFlagCode),
+                editor: this._realGridsService.gfn_ComboBox(this.suplyFlagCode), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'suplyTypeCode', fieldName: 'suplyTypeCode', type: 'data', width: '200', styleName: 'left-cell-text',
                 header: {text: '공급형태', styleName: 'left-cell-text'},
                 values: valuesSuplyTypeCode,
                 labels: lablesSuplyTypeCode,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.suplyTypeCode),
+                editor: this._realGridsService.gfn_ComboBox(this.suplyTypeCode), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'meddevItemSeq', fieldName: 'meddevItemSeq', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '품목일련번호' , styleName: 'left-cell-text'}
+                , header: {text: '품목일련번호' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'stdCode', fieldName: 'stdCode', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '표준코드' , styleName: 'left-cell-text'}
+                , header: {text: '표준코드' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'lotNo', fieldName: 'lotNo', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '로트번호' , styleName: 'left-cell-text'}
+                , header: {text: '로트번호' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'manufYm', fieldName: 'manufYm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '제조연월' , styleName: 'left-cell-text'}
+                , header: {text: '제조연월' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'bcncCode', fieldName: 'bcncCode', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받은자 코드' , styleName: 'left-cell-text'}
+                , header: {text: '공급받은자 코드' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받은자' , styleName: 'left-cell-text'}
+                , header: {text: '공급받은자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'dvyfgEntpName', fieldName: 'dvyfgEntpName', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '납품장소 업체' , styleName: 'left-cell-text'}
+                , header: {text: '납품장소 업체' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'suplyDate', fieldName: 'suplyDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '공급일자' , styleName: 'left-cell-text'}
+                , header: {text: '공급일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'suplyQty', fieldName: 'suplyQty', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급수량' , styleName: 'left-cell-text'}
+                , header: {text: '공급수량' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
                 , numberFormat : '#,##0'
             },
             {name: 'suplyUntpc', fieldName: 'suplyUntpc', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급단가' , styleName: 'left-cell-text'}
+                , header: {text: '공급단가' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
                 , numberFormat : '#,##0'
             },
             {name: 'suplyAmt', fieldName: 'suplyAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급금액' , styleName: 'left-cell-text'}
+                , header: {text: '공급금액' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
                 , numberFormat : '#,##0'
             },
             {name: 'udiFlag', fieldName: 'udiFlag', type: 'data', width: '100', styleName: 'left-cell-text',
@@ -198,10 +226,14 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
                 values: valuesUdiFlag,
                 labels: lablesUdiFlag,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.udiFlag),
+                editor: this._realGridsService.gfn_ComboBox(this.udiFlag), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'message', fieldName: 'message', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '메세지' , styleName: 'left-cell-text'}
+                , header: {text: '메세지' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
         ];
 

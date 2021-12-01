@@ -120,39 +120,61 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.outBoundHeaderColumns = [
             {name: 'obNo', fieldName: 'obNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '출고번호', styleName: 'left-cell-text'}},
+                , header: {text: '출고번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'obCreDate', fieldName: 'obCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '출고 생성일자' , styleName: 'left-cell-text'}
+                , header: {text: '출고 생성일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'obDate', fieldName: 'obDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '출고 일자' , styleName: 'left-cell-text'}
+                , header: {text: '출고 일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type),
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '상태', styleName: 'left-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status),
+                editor: this._realGridsService.gfn_ComboBox(this.status), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 주소' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처 주소' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'dlvAccountNm', fieldName: 'dlvAccountNm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '납품처 명' , styleName: 'left-cell-text'}},
+                , header: {text: '납품처 명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'dlvAddress', fieldName: 'dlvAddress', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '납품주소', styleName: 'left-cell-text'}},
+                , header: {text: '납품주소', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'dlvDate', fieldName: 'dlvDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '납품 일자', styleName: 'left-cell-text'}},
+                , header: {text: '납품 일자', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}
+                , header: {text: '비고' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
         ];
         //그리드 Provider

@@ -51,9 +51,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'lot2', dataType: ValueType.TEXT},
-        {fieldName: 'validity', dataType: ValueType.TEXT},
-        {fieldName: 'qty', dataType: ValueType.TEXT},
-        {fieldName: 'availQty', dataType: ValueType.TEXT}
+        {fieldName: 'validity', dataType: ValueType.NUMBER},
+        {fieldName: 'qty', dataType: ValueType.NUMBER},
+        {fieldName: 'availQty', dataType: ValueType.NUMBER}
     ];
     constructor(
         private _realGridsService: FuseRealGridService,
@@ -117,26 +117,48 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.validityColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'left-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'},},
+                , header: {text: '품목명' , styleName: 'left-cell-text'},
+            renderer:{
+                showTooltip:true
+            }
+        },
             {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'left-cell-text'},
+            renderer:{
+            showTooltip:true
+            },
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
             },
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'},
+            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'},  renderer:{
+                    showTooltip:true
+                },
             },
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '유효기간 일자' , styleName: 'left-cell-text'}},
+            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'},  renderer:{
+                    showTooltip:true
+                },},
+            {name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '유효기간 일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                },},
             {name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '유효기간' , styleName: 'left-cell-text'}},
+                , header: {text: '유효기간' , styleName: 'left-cell-text'}, numberFormat: '#,##0', renderer:{
+                    showTooltip:true
+                },},
             {name: 'qty', fieldName: 'qty'
-                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '현재고' , styleName: 'left-cell-text'}},
-            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '가용재고' , styleName: 'left-cell-text'}}
+                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '현재고' , styleName: 'left-cell-text'}, numberFormat: '#,##0',  renderer:{
+                    showTooltip:true
+                },},
+            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text', numberFormat: '#,##0'
+                , header: {text: '가용재고' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                },}
         ];
 
         this.validityDataProvider = this._realGridsService.gfn_CreateDataProvider();

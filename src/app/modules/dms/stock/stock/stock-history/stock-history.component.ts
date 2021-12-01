@@ -168,7 +168,6 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stockHistory: any) => {
                 if(stockHistory !== null){
-                    this.stockHistorysCount = stockHistory.length;
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, stockHistory);
                 }
 

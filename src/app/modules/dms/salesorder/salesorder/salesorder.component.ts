@@ -125,39 +125,59 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.salesorderHeaderColumns = [
             {name: 'soNo', fieldName: 'soNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '주문번호', styleName: 'left-cell-text'}},
+                , header: {text: '주문번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'soCreDate', fieldName: 'soCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '주문 생성일자' , styleName: 'left-cell-text'}
+                , header: {text: '주문 생성일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'soDate', fieldName: 'soDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '주문 일자' , styleName: 'left-cell-text'}
+                , header: {text: '주문 일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type),
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '상태', styleName: 'left-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status),
+                editor: this._realGridsService.gfn_ComboBox(this.status), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'soAmt', fieldName: 'soAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '주문 금액' , styleName: 'left-cell-text'}
+                , header: {text: '주문 금액' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
                 , numberFormat : '#,##0'
             },
             {name: 'obNo', fieldName: 'obNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '출고번호', styleName: 'left-cell-text'}},
+                , header: {text: '출고번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '400', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}
+                , header: {text: '비고' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
         ];
         //그리드 Provider

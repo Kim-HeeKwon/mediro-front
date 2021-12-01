@@ -126,52 +126,80 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.billColumns = [
             {name: 'billingCreDate', fieldName: 'billingCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '생성일자' , styleName: 'left-cell-text'}
+                , header: {text: '생성일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '마감일자' , styleName: 'left-cell-text'}
+                , header: {text: '마감일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'billing', fieldName: 'billing', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '청구번호', styleName: 'left-cell-text'}},
+                , header: {text: '청구번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'invoice', fieldName: 'invoice', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '문서번호', styleName: 'left-cell-text'}},
+                , header: {text: '문서번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급자' , styleName: 'left-cell-text'}},
+                , header: {text: '공급자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'toAccountNm', fieldName: 'toAccountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받는 자' , styleName: 'left-cell-text'}},
+                , header: {text: '공급받는 자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목코드' , styleName: 'left-cell-text'}},
+                , header: {text: '품목코드' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'}},
+                , header: {text: '품목명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type),
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'taxGbn', fieldName: 'taxGbn', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '거래유형', styleName: 'left-cell-text'},
                 values: valuesTaxGbn,
                 labels: lablesTaxGbn,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.taxGbn),
+                editor: this._realGridsService.gfn_ComboBox(this.taxGbn), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'billingQty', fieldName: 'billingQty', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'billingAmt', fieldName: 'billingAmt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '공급가액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'taxAmt', fieldName: 'taxAmt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '세액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'billingTotalAmt', fieldName: 'billingTotalAmt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '총 금액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
             },
         ];
         //그리드 Provider

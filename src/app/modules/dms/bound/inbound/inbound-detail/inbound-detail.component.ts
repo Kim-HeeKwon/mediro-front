@@ -245,6 +245,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             commitEdit: true,
             checkReadOnly: true});
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -470,10 +471,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     inBoundConfirm() {
+        this.isProgressSpinner = true;
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         const ibType = this.inBoundHeaderForm.controls['type'].value;
         if(ibStatus !== 'N' && ibStatus !== 'P'){
             this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
+            this.isProgressSpinner = false;
             return false;
         }
         let inBoundData;
@@ -498,6 +501,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         if(inBoundData.length < 1) {
             this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
+            this.isProgressSpinner = false;
             return false;
         }else{
 
@@ -591,6 +595,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
+                        this.isProgressSpinner = false;
                         if(result){
                             this.inBoundDetailConfirm(inBoundData);
                         }
@@ -609,13 +614,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
 
     inBoundDetailConfirm(sendData: InBound[]): void{
-        this.isProgressSpinner = true;
         if(sendData){
             this._inboundService.inBoundDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_alertCheckMessage(inBound);
-                    this.isProgressSpinner = false;
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });

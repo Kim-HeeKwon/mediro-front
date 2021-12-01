@@ -145,12 +145,11 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             }),
             dismissible: true
         }).value);
-
+        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._itemService.deleteItem(itemData)
                         .subscribe(
                             (param: any) => {

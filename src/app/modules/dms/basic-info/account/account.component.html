@@ -28,33 +28,38 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'accountType'">
-                                    <ng-container *ngFor="let accountType of accountType">
-                                        <mat-option [value]="accountType.id">
-                                            {{accountType.name}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="sm:col-span-4">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'searchCondition'">
-                                    <ng-container *ngFor="let searchcondition of searchCondition">
-                                        <mat-option [value]="searchcondition.id">
-                                            {{searchcondition.name}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
+                                <input
+                                    matInput
+                                    [formControlName]="'businessCondition'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'업태를 입력해주세요.'">
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
-                                    [formControlName]="'searchText'"
+                                    [formControlName]="'businessCategory'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'검색조건을 선택해주세요.'">
+                                    [placeholder]="'종목을 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'account'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'거래처를 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'descr'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'거래처명을 입력해주세요.'">
                             </mat-form-field>
                         </div>
                     </div>
@@ -63,11 +68,11 @@
                 <div class="grid grid-cols-12 gap-2 w-full mt-4 p-2">
                     <!-- Add product button -->
                     <div class="col-span-12">
-                        <button
-                            class="ml-3"
-                            mat-flat-button
-                            [color]="'primary'"
-                            [ngStyle]="{'width': '94%'}"
+                    <button
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
                             (click)="selectAccount()">
                             <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                             <span class="ml-2 mr-1">조회</span>
@@ -105,25 +110,27 @@
                                 <!-- 검색조건 -->
                                 <div class="flex w-full mt-8 sm:mt-0 pb-4">
                                     <div
-                                        class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
+                                        class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-backcolor-custom">
                                         <form [formGroup]="searchForm"
                                               class="flex flex-col w-full">
                                             <div class="flex flex-col w-full">
                                                 <div class="flex w-4/4">
-                                                    <form
-                                                        [formGroup]="searchForm">
-                                                    <mat-form-field
-                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                                        <mat-label class="mediro-ft-label">유형</mat-label>
-                                                        <mat-select [formControlName]="'accountType'">
-                                                            <ng-container *ngFor="let accountType of accountType">
-                                                                <mat-option [value]="accountType.id">
-                                                                    {{accountType.name}}
-                                                                </mat-option>
-                                                            </ng-container>
-                                                        </mat-select>
+                                                        <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                        <mat-label class="mediro-ft-label">업태</mat-label>
+                                                            <input
+                                                                matInput
+                                                                (window:keypress)="enter($event)"
+                                                                [formControlName]="'businessCondition'"
+                                                                [autocomplete]="'off'">
                                                         </mat-form-field>
-                                                    </form>
+                                                        <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                            <mat-label class="mediro-ft-label">종목</mat-label>
+                                                            <input
+                                                                matInput
+                                                                (window:keypress)="enter($event)"
+                                                                [formControlName]="'businessCategory'"
+                                                                [autocomplete]="'off'">
+                                                        </mat-form-field>
                                                     <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                         <mat-label class="mediro-ft-label">거래처 코드</mat-label>
                                                         <input

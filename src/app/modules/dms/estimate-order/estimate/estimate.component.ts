@@ -1,27 +1,27 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {merge, Observable, Subject} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {merge, Observable, Subject} from 'rxjs';
 import {
     Estimate,
     EstimateDetail,
     EstimateHeader,
     EstimateHeaderPagenation
-} from "./estimate.types";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {EstimateService} from "./estimate.service";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
-import {ShortcutsService} from "../../../../layout/common/shortcuts/shortcuts.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import * as moment from "moment";
+} from './estimate.types';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {EstimateService} from './estimate.service';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {ShortcutsService} from '../../../../layout/common/shortcuts/shortcuts.service';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-dms-estimate',
@@ -154,33 +154,49 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
         //그리드 컬럼
         this.estimateHeaderColumns = [
             {name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적번호', styleName: 'left-cell-text'}},
+                , header: {text: '견적번호', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '견적 생성일자' , styleName: 'left-cell-text'}
+                , header: {text: '견적 생성일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '견적 일자' , styleName: 'left-cell-text'}
+                , header: {text: '견적 일자' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type),
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
+            showTooltip:true
+        }
             },
             {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '상태', styleName: 'left-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status),
+                editor: this._realGridsService.gfn_ComboBox(this.status), renderer:{
+                    showTooltip:true
+                }
             },
             {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}},
+                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }},
             {name: 'qtAmt', fieldName: 'qtAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '견적 금액' , styleName: 'left-cell-text'}
+                , header: {text: '견적 금액' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
                 , numberFormat : '#,##0'
             },
             {name: 'poCreate', fieldName: 'poCreate', type: 'data', width: '100', styleName: 'left-cell-text'
@@ -200,7 +216,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
                         '</button>',
                 }},
             {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}
+                , header: {text: '비고' , styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
         ];
         //그리드 Provider
@@ -581,8 +599,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
+                this.isProgressSpinner = true;
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -590,7 +608,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((estimateDetail: any) => {
                             if (estimateDetail != null) {
-                                this.isProgressSpinner = false;
                                 const row = {header: estimateHeader, detail: estimateDetail};
                                 this._router.navigate(['estimate-order/order/order-new'], {
                                     state: {
@@ -601,8 +618,10 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
                             }
                             // Mark for check
                             this._changeDetectorRef.markForCheck();
+                            return;
                         });
                 } else {
+                    this.isProgressSpinner = false;
                     this.selectHeader();
                 }
             });
@@ -635,8 +654,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
+                this.isProgressSpinner = true;
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -654,8 +673,10 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
                             }
                             // Mark for check
                             this._changeDetectorRef.markForCheck();
+                            return;
                         });
                 } else {
+                    this.isProgressSpinner = false;
                     this.selectHeader();
                 }
             });
