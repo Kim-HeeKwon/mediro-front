@@ -17,12 +17,13 @@ import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
 import {SharedModule} from "../../../app/shared/shared.module";
 import {CommonPopupItemsComponent} from "./common-popup-items.component";
+import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.module";
 
 @NgModule({
     declarations: [
         CommonPopupItemsComponent
     ],
-    imports     : [
+    imports: [
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -39,6 +40,7 @@ import {CommonPopupItemsComponent} from "./common-popup-items.component";
         MatTableModule,
         MatDialogModule,
         SharedModule,
+        CommonLoadingBarModule,
     ],
     exports     : [
         CommonPopupItemsComponent

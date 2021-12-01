@@ -48,6 +48,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     udiItemList$: Observable<UdiItem[]>;
     isProgressSpinner: boolean = false;
     isLoading: boolean = false;
+    validatorsRequired: boolean = true;
     itemsCount: number = 0;
     displayedColumns: DisplayedColumn[] = [];
     itemsTableColumns: string[] = ['entpName','itemName','itemNoFullname','brandName','typeName','udidiCode','grade'];
@@ -95,9 +96,9 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             itemName: ['',],
-            entpName: ['',Validators.required],
+            entpName: ['',],
             udidiCode: [''],
-            typeName: ['', Validators.required],
+            typeName: ['',],
             brandName: [''],
             itemNoFullname: [''],
             grade: ['ALL'],
@@ -211,17 +212,23 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     searchUdiItem(): void{
-        if ( this.searchForm.invalid )
-        {
-            return;
-        }
-
+        this.isProgressSpinner = true;
         if(this.searchForm.value.grade === 'ALL'){
             this.searchForm.patchValue({'grade':''});
-            this.isProgressSpinner = true;
         }
-
-        this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+        if(this.searchForm.getRawValue().entpName !== '' &&
+            this.searchForm.getRawValue().typeName !== '') {
+            this.validatorsRequired = false;
+            this.isProgressSpinner = false;
+            this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+        } else if(this.searchForm.getRawValue().udidiCode !== '') {
+            this.validatorsRequired = false;
+            this.isProgressSpinner = false;
+            this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+        } else {
+            this.isProgressSpinner = false;
+            this.validatorsRequired = true;
+        }
     }
 
     pageChange(evt: any): void{

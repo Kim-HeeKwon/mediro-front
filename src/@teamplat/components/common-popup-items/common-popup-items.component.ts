@@ -46,6 +46,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     isLoading: boolean = false;
+    isProgressSpinner: boolean = false;
     popupCount: number = 0;
     displayedColumns: DisplayedColumn[] = [];
     clickedRows = new Set<any>();
@@ -268,7 +269,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
         let whereVal;
         const curVal = this.searchForm.controls['type'].value;
         const textCond = this.searchForm.controls['searchText'].value;
-
+        this.isProgressSpinner = true;
         if(this.where !== undefined){
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
@@ -329,6 +330,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
             .subscribe((gridList: any) => {
                 // Update the counts
                 if (gridList !== null) {
+                    this.isProgressSpinner = false;
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.popupDataProvider, gridList);
                 }
                 // Mark for check

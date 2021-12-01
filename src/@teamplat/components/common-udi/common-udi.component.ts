@@ -178,16 +178,17 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     selectRow(row: any): void {
         this._matDialogRef.close(row);
     }
-    select(): void{
 
+    select(): void{
+        // @ts-ignore
         this.searchForm.patchValue({'url': this.url});
         this.searchForm.patchValue({'mediroUrl': this.mediroUrl});
         this._udiService.getUdi(0,100,'','asc',this.searchForm.getRawValue());
 
-        this.isProgressSpinner = true;
         this._udiService.getStatus$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status: any) => {
+                this.isProgressSpinner = true;
                 if(status !== null){
                     this.isProgressSpinner = false;
                     // this._functionService.cfn_alertSelectMessage(status);
@@ -196,8 +197,8 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
         });
     }
-    mergeUdiData(): void{
 
+    mergeUdiData(): void {
         if(this.merge){
             let rowData;
             this._udiService.getList$
@@ -205,6 +206,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                 .subscribe((getList: any) => {
                     // Update the counts
                     if(getList !== null){
+                        this.isProgressSpinner = true;
                         rowData = getList;
                     }
 
