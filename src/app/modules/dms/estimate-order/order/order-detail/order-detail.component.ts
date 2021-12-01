@@ -472,7 +472,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             let detailCheck = false;
 
             if(rows.length === 0){
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+                this._functionService.cfn_alert('안전재고 수량을 입력해주세요.');
                 detailCheck = true;
             }
             if(detailCheck){

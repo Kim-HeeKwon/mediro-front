@@ -157,12 +157,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
                 , header: {text: '견적번호', styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }},
-            {name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '견적 생성일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
-            {name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '견적 일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }

@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Common} from "../../../../../@teamplat/providers/common/common";
 import {Safety, SafetyPagenation} from "./safety.types";
+import {map, switchMap, take} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -80,5 +81,23 @@ export class SafetyService{
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * save
+     */
+    safetySave(safetys: Safety[]): Observable<Safety>
+    {
+        return this.safetys$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(safetys, 'v1/api/basicInfo/safety/save-Safety').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

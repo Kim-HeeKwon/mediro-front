@@ -26,6 +26,7 @@ import {DeviceDetectorService} from "ngx-device-detector";
 import {OrderService} from "../order.service";
 import {takeUntil} from "rxjs/operators";
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+import {LatelyCardComponent} from "../../../../../../@teamplat/components/lately-card";
 
 @Component({
     selector       : 'app-dms-order-new',
@@ -467,6 +468,70 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                         this.orderHeaderForm.patchValue({'email': result.email});
                     }
                 });
+        }
+    }
+
+    //최근 발주
+    latelyOrder(): void {
+        if(!this.isMobile){
+            const popup =this._matDialogPopup.open(LatelyCardComponent, {
+                data: {
+                    text : '발주',
+                    content : 'ORDER'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed().subscribe((result) => {
+                if(result){
+                    this.orderHeaderForm.patchValue(
+                        result.header[0]
+                    );
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderDetailDataProvider, result.detail);
+                    for(let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++){
+
+                        this.orderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
+        }else{
+            const d = this._matDialogPopup.open(LatelyCardComponent, {
+                data: {
+                    text : '발주',
+                    content : 'ORDER'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)','');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    this.orderHeaderForm.patchValue(
+                        result.header[0]
+                    );
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderDetailDataProvider, result.detail);
+                    for(let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++){
+
+                        this.orderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
+                    this._changeDetectorRef.markForCheck();
+                }
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 }

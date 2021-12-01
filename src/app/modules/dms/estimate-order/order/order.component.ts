@@ -126,12 +126,12 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
                 , header: {text: '발주번호', styleName: 'left-cell-text'}, renderer:{
             showTooltip:true
         }},
-            {name: 'poCreDate', fieldName: 'poCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'poCreDate', fieldName: 'poCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '발주 생성일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
-            {name: 'poDate', fieldName: 'poDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'poDate', fieldName: 'poDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '발주 일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }

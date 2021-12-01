@@ -1,0 +1,62 @@
+<div class="overflow-x-auto sm:overflow-y-auto"
+     cdkScrollable>
+    <app-loading *ngIf="isProgressSpinner"></app-loading>
+    <!-- 최근견적서 header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+
+        <div class="flex-row text-2xl font-extrabold tracking-tight">
+            최근 {{text}}서 선택
+            <mat-icon
+                class="ml-1.5 icon-size-5 text-hint"
+                [svgIcon]="'heroicons_outline:information-circle'"
+                [matTooltip]="'최근 사용하신 견적 내역을 선택하여 간편하게 견적을 생성할 수 있습니다.'"></mat-icon>
+        </div>
+
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+<!--    <div class="flex pt-4 pr-4">-->
+<!--        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center px-6 pt-2">-->
+<!--            &lt;!&ndash; Title &ndash;&gt;-->
+<!--            <div class="flex-row text-2xl font-extrabold tracking-tight">최근 견적서 선택</div>-->
+<!--            <mat-icon-->
+<!--                class="ml-1.5 icon-size-5 text-hint"-->
+<!--                [svgIcon]="'heroicons_outline:information-circle'"-->
+<!--                [matTooltip]="'최근 사용하신 견적 내역을 선택하여 간편하게 견적을 생성할 수 있습니다.'"></mat-icon>-->
+<!--        </div>-->
+<!--    </div>-->
+    <!-- 최근견적서 body  mt-6 mr-3 mb-6 ml-6 mt-6 mr-6 mb-6 ml-3 mt-6 mr-3 mb-6 ml-3-->
+    <div class="flex">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full min-w-0 m-3">
+
+            <ng-container *ngFor="let lately of lately; trackBy: trackByFn">
+                <div
+                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card"
+                    [ngClass]="{'ring ring-inset ritrackByFnng-primary': lately.click === 1}"
+                    (click)="select(lately)">
+                    <div class="flex items-start p-1 justify-between">
+<!--                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">{{text}}번호 :</div>-->
+<!--                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">1231231234-->
+<!--                        </div>-->
+                    </div>
+                    <div class="flex items-start p-1 justify-between">
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">거래처명 : </div>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">{{lately.accountNm}}</div>
+                    </div>
+                    <div class="flex items-start p-1 justify-between">
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">{{text}}일자 : </div>
+                        <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">{{lately.date}}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+</div>

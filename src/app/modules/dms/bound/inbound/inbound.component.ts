@@ -130,12 +130,12 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '입고번호', styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }},
-            {name: 'ibCreDate', fieldName: 'ibCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'ibCreDate', fieldName: 'ibCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '입고 생성일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
-            {name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '입고 일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }

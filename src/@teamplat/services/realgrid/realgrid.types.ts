@@ -1,6 +1,8 @@
 export class Columns{
     name?: string;
-    fieldName: string;
+    fieldNames?: string;
+    fillHeight?: number;
+    fieldName?: string;
     type?: string;
     dataType?: string;
     width?: string;

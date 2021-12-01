@@ -82,19 +82,27 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.acceptableColumns = [
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'left-cell-text'},
+                , header: {text: '거래처 코드', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명', styleName: 'left-cell-text'},
+                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'},
+                , header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',

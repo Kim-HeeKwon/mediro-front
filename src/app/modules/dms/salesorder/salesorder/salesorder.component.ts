@@ -128,12 +128,12 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '주문번호', styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }},
-            {name: 'soCreDate', fieldName: 'soCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'soCreDate', fieldName: 'soCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '주문 생성일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
-            {name: 'soDate', fieldName: 'soDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'soDate', fieldName: 'soDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '주문 일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }

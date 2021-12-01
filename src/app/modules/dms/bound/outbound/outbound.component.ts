@@ -123,12 +123,12 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '출고번호', styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }},
-            {name: 'obCreDate', fieldName: 'obCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'obCreDate', fieldName: 'obCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '출고 생성일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
-            {name: 'obDate', fieldName: 'obDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'obDate', fieldName: 'obDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '출고 일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
