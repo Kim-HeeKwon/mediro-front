@@ -170,75 +170,75 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.invoiceHeaderColumns = [
             {name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '작성일자' , styleName: 'left-cell-text'}
+                , header: {text: '작성일자' , styleName: 'center-cell-text'}
             },
             {name: 'invoice', fieldName: 'invoice', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '문서번호', styleName: 'left-cell-text'}
+                , header: {text: '문서번호', styleName: 'center-cell-text'}
                 ,renderer:{
                     type:'button'
                 }},
             {name: 'taxBillNo', fieldName: 'taxBillNo', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '국세청 전송번호' , styleName: 'left-cell-text'}},
+                , header: {text: '국세청 전송번호' , styleName: 'center-cell-text'}},
             {name: 'bisNo', fieldName: 'bisNo', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급자 사업자번호' , styleName: 'left-cell-text'}},
+                , header: {text: '공급자 사업자번호' , styleName: 'center-cell-text'}},
             {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급자' , styleName: 'left-cell-text'}},
+                , header: {text: '공급자' , styleName: 'center-cell-text'}},
             {name: 'toBisNo', fieldName: 'toBisNo', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받는 자 사업자번호' , styleName: 'left-cell-text'}},
+                , header: {text: '공급받는 자 사업자번호' , styleName: 'center-cell-text'}},
             {name: 'toAccountNm', fieldName: 'toAccountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받는 자' , styleName: 'left-cell-text'}},
+                , header: {text: '공급받는 자' , styleName: 'center-cell-text'}},
             {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '유형', styleName: 'left-cell-text'},
+                header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.type),
             },
             {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '상태', styleName: 'left-cell-text'},
+                header: {text: '상태', styleName: 'center-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.status),
             },
             {name: 'issueType', fieldName: 'issueType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '발행형태', styleName: 'left-cell-text'},
+                header: {text: '발행형태', styleName: 'center-cell-text'},
                 values: valuesIssueType,
                 labels: lablesIssueType,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.issueType),
             },
             {name: 'taxType', fieldName: 'taxType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '과세형태', styleName: 'left-cell-text'},
+                header: {text: '과세형태', styleName: 'center-cell-text'},
                 values: valuesTaxType,
                 labels: lablesTaxType,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.taxType),
             },
             {name: 'chargeDirection', fieldName: 'chargeDirection', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '과금방향', styleName: 'left-cell-text'},
+                header: {text: '과금방향', styleName: 'center-cell-text'},
                 values: valuesChargeDirection,
                 labels: lablesChargeDirection,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.chargeDirection),
             },
             {name: 'purposeType', fieldName: 'purposeType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '영수/청구', styleName: 'left-cell-text'},
+                header: {text: '영수/청구', styleName: 'center-cell-text'},
                 values: valuesPurposeType,
                 labels: lablesPurposeType,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.purposeType),
             },
             {name: 'supplyAmt', fieldName: 'supplyAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '총 공급가액' , styleName: 'left-cell-text'}
+                , header: {text: '총 공급가액' , styleName: 'center-cell-text'}
                 , numberFormat : '#,##0'
             },
             {name: 'taxAmt', fieldName: 'taxAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '총 세액' , styleName: 'left-cell-text'}
+                , header: {text: '총 세액' , styleName: 'center-cell-text'}
                 , numberFormat : '#,##0'
             },
             {name: 'totalAmt', fieldName: 'totalAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '총 금액' , styleName: 'left-cell-text'}
+                , header: {text: '총 금액' , styleName: 'center-cell-text'}
                 , numberFormat : '#,##0'
             },
         ];

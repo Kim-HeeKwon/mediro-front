@@ -105,7 +105,9 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
-                    console.log(result);
+                    if(result.modelId === ''){
+                        result.modelId = result.medDevSeq;
+                    }
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
@@ -136,6 +138,9 @@ export class NewItemComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
+                    if(result.modelId === ''){
+                        result.modelId = result.medDevSeq;
+                    }
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
