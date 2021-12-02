@@ -69,6 +69,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             accountNm: [{value:'', disabled:true}], // 거래처명
             type: ['', [Validators.required]], // 유형
             unitPrice: [0, [Validators.required]], // 단가
+            effectiveDate: ['', [Validators.required]], // 적용일자
             active: [false]  // cell상태
         });
     }
@@ -184,7 +185,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '품목, 거래처, 유형, 단가를 입력해주세요.'
+                message: '품목, 거래처, 유형, 단가, 적용일자를 입력해주세요.'
             };
 
             // Show the alert
@@ -210,7 +211,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
-            this._itemPriceService.getHeader(0,10,'itemNm','desc','');
+            this._itemPriceService.getHeader(0,20,'itemNm','desc','');
         }
     }
 

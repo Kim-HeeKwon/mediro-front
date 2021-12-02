@@ -23,6 +23,7 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
 import {fuseAnimations} from "../../../../../../@teamplat/animations";
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'dms-item-price-history',
@@ -53,6 +54,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     itemPriceHistoryColumns: Columns[];
     itemPriceHistoryFields: DataFieldObject[] = [
         {fieldName: 'addDate', dataType: ValueType.TEXT},
+        {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'reason', dataType: ValueType.TEXT},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
@@ -65,6 +67,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _realGridsService: FuseRealGridService,
+        private _functionService: FunctionService,
         private _itemPriceService: ItemPriceService,
         public matDialogRef: MatDialogRef<ItemPriceHistoryComponent>,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -86,7 +89,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             account: [{value:''},[Validators.required]], // 거래처 코드
             accountNm: [{value:''},[Validators.required]], // 거래처 명
             type: [{value:''}, [Validators.required]],   // 유형
-            unitPrice: [0],   // 단가
+            unitPrice: [{value:''}, [Validators.required]],   // 단가
+            effectiveDate: [{value:''}, [Validators.required]],   // 단가 적용일자
             active: [false]  // cell상태
         });
         if(this.dataForm.detail){
@@ -107,34 +111,36 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         });
         //그리드 컬럼
         this.itemPriceHistoryColumns = [
-            {name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '일자', styleName: 'left-cell-text'}},
-            {name: 'reason', fieldName: 'reason', type: 'data', width: '100', styleName: 'left-cell-text'
+            {name: 'addDate', fieldName: 'addDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '이력 일자', styleName: 'left-cell-text'}},
+            {name: 'effectiveDate', fieldName: 'effectiveDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '단가 적용일자', styleName: 'left-cell-text'}},
+            {name: 'reason', fieldName: 'reason', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '사유', styleName: 'left-cell-text'},
                 values: reasonValues,
                 labels: reasonLables,
                 lookupDisplay: true
             },
-            {name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '100', styleName: 'right-cell-text'
+            {name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '단가' , styleName: 'left-cell-text'}
                 , numberFormat : '#,##0'},
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '품목코드' , styleName: 'left-cell-text'}},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'}
-            },
-            {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처' , styleName: 'left-cell-text'}
-            },
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처명' , styleName: 'left-cell-text'}
-            },
-            {name: 'type', fieldName: 'type', type: 'data', width: '100 ', styleName: 'left-cell-text'
-                , header: {text: '유형' , styleName: 'left-cell-text'},
-                values: typeValues,
-                labels: typeLables,
-                lookupDisplay: true
-            },
+            // {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '품목코드' , styleName: 'left-cell-text'}},
+            // {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '품목명' , styleName: 'left-cell-text'}
+            // },
+            // {name: 'account', fieldName: 'account', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '거래처' , styleName: 'left-cell-text'}
+            // },
+            // {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '거래처명' , styleName: 'left-cell-text'}
+            // },
+            // {name: 'type', fieldName: 'type', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '유형' , styleName: 'left-cell-text'},
+            //     values: typeValues,
+            //     labels: typeLables,
+            //     lookupDisplay: true
+            // },
         ];
 
         //그리드 Provider
@@ -184,8 +190,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                 this.orderBy = 'asc';
             }
         };
-
-        this._itemPriceService.getHistory(0,20,'addDate','asc',this.itemPriceHistoryForm.getRawValue());
+        //페이지 라벨
+        this._paginator._intl.itemsPerPageLabel = '';
 
         this._itemPriceService.itemPriceHistoryPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -199,6 +205,9 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.itemPriceHistoryForm.controls['itemCd'].disable();
         this.itemPriceHistoryForm.controls['itemNm'].disable();
+        this.itemPriceHistoryForm.controls['account'].disable();
+        this.itemPriceHistoryForm.controls['accountNm'].disable();
+        this.itemPriceHistoryForm.controls['type'].disable();
 
         this.gridList.refresh();
         this._changeDetectorRef.markForCheck();
@@ -234,6 +243,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         itemPrice['itemCd'] = this.itemPriceHistoryForm.controls['itemCd'].value;
         itemPrice['type'] = this.itemPriceHistoryForm.controls['type'].value;
         itemPrice['unitPrice'] = this.itemPriceHistoryForm.controls['unitPrice'].value;
+        itemPrice['effectiveDate'] = this.itemPriceHistoryForm.controls['effectiveDate'].value;
 
         itemPriceArray.push(itemPrice);
 
@@ -258,6 +268,10 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                     this._itemPriceService.updateItemPrice(itemPriceArray)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((itemPriceHistory: any) => {
+                            this._functionService.cfn_alertCheckMessage(itemPriceHistory);
+                            this.selectItemPrice();
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
                             this.isProgressSpinner = false;
                         });
                 }
@@ -267,12 +281,14 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this._changeDetectorRef.markForCheck();
     }
     selectItemPrice(): void {
+
+        this._itemPriceService.getHistory(0,20,'addDate','asc',this.itemPriceHistoryForm.getRawValue());
+
         this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
         this._itemPriceService.itemPriceHistorys$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((itemPriceHistory: any) => {
                 if(itemPriceHistory !== null){
-                    console.log(itemPriceHistory);
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
                 }
                 // Mark for check

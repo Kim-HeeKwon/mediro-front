@@ -65,7 +65,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id      : 'monitoring',
         title   : '대시보드',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'space_dashboard',
         children: [
             {
                 id   : 'monitoring.dashboards',
@@ -87,7 +87,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id      : 'monitoring',
         title   : '유통관리',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'local_shipping',
         children: [
             {
                 id   : 'estimate-order.estimate',
@@ -153,7 +153,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id      : 'udi',
         title: '공급내역 보고',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'insert_chart',
         children: [
             {
                 id   : 'udi.manages',
@@ -182,7 +182,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id      : 'smart-plus',
         title   : '스마트플러스',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'playlist_add',
         children: [
             {
                 id   : 'smart-plus.manages',
@@ -232,7 +232,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id      : 'basic-info',
         title   : '기준정보',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'info',
         children: [
             {
                 id   : 'basic-info.status',
@@ -473,7 +473,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         id      : 'monitoring',
         title   : '대시보드',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'space_dashboard',
         children: [
             {
                 id   : 'monitoring.dashboards',
@@ -495,7 +495,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         id      : 'monitoring',
         title   : '유통관리',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'local_shipping',
         children: [
             {
                 id   : 'estimate-order.estimate',
@@ -561,7 +561,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         id      : 'udi',
         subtitle: '공급내역 보고',
         type    : 'group',
-        icon    : 'heroicons_outline:home',
+        icon    : 'insert_chart',
         children: [
             {
                 id   : 'udi.manages',
@@ -583,7 +583,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         id      : 'smart-plus',
         title   : '스마트플러스',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'playlist_add',
         children: [
             {
                 id   : 'smart-plus.manages',
@@ -633,7 +633,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         id      : 'basic-info',
         title   : '기준정보',
         type    : 'collapsable',
-        icon    : 'heroicons_outline:home',
+        icon    : 'info',
         children: [
             {
                 id   : 'basic-info.status',

@@ -8,6 +8,7 @@ export interface ItemPrice
     itemNm: string;             //품목명
     type: string;               //유형
     unitPrice: number;          //단가
+    effectiveDate?: string;     //적용일자
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -24,6 +25,7 @@ export interface ItemPriceHistory
     itemNm: string;             //품목명
     type: string;               //유형
     unitPrice: number;          //단가
+    effectiveDate?: string;     //적용일자
     addDate?: string;
     addUser?: string;
     updDate?: string;

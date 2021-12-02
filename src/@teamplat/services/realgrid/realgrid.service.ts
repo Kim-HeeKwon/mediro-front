@@ -63,8 +63,8 @@ export class FuseRealGridService {
         /**
          * 그리드 기본 설정
          */
-        gridView.header.height = 30;
-        gridView.displayOptions.rowHeight = 30;
+        gridView.header.height = 27;
+        gridView.displayOptions.rowHeight = 27;
         //인디케이터 (NO)
         gridView.setRowIndicator({
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,

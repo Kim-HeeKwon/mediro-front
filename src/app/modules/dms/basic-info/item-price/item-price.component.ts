@@ -26,6 +26,7 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {ItemPriceHistoryComponent} from './item-price-history/item-price-history.component';
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-app-item-price',
@@ -36,10 +37,11 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     selection = new SelectionModel<any>(true, []);
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
+    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     isLoading: boolean = false;
     selectedItemPriceHeader: ItemPrice | null = null;
@@ -68,6 +70,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     itemPriceFields: DataFieldObject[] = [
         {fieldName: 'type', dataType: ValueType.TEXT},
+        {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
@@ -77,6 +80,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private _matDialog: MatDialog,
+        private _functionService: FunctionService,
         private _realGridsService: FuseRealGridService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
@@ -116,11 +120,16 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.itemPriceColumns = [
             {
-                name: 'type', fieldName: 'type', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'type', fieldName: 'type', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '유형', styleName: 'left-cell-text'},
                 values: itemPricevalues,
                 labels: itemPricelables,
                 lookupDisplay: true, renderer:{
+                    showTooltip:true
+                }
+            },
+            {name: 'effectiveDate', fieldName: 'effectiveDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '단가 적용일자' , styleName: 'left-cell-text'}, renderer:{
                     showTooltip:true
                 }
             },
@@ -249,6 +258,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                                 detail: this.selectedItemPriceHeader
                             },
                         });
+                        d.afterClosed().subscribe(() => {
+                            this.selectHeader();
+                        });
                     } else {
                         const d = this._matDialog.open(ItemPriceHistoryComponent, {
                             autoFocus: false,
@@ -266,14 +278,16 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                         d.afterClosed().subscribe(() => {
                             smallDialogSubscription.unsubscribe();
+                            this.selectHeader();
                         });
                     }
                 }
             }
         };
 
-      this.setGridData();
-
+        this.setGridData();
+        //페이지 라벨
+        this._paginator._intl.itemsPerPageLabel = '';
         this._itemPriceService.itemPricePagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((itemPricePagenation: ItemPricePagenation) => {
@@ -284,7 +298,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._itemPriceService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        this._itemPriceService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
         this.setGridData();
     }
 
@@ -347,9 +361,12 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     deleteItemPrice() {
-        if (this.selection.selected.length > 0) {
-
-            const deleteConfirm = this._teamPlatConfirmationService.open(this._formBuilder.group({
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.itemPriceDataProvider);
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        }else {
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                 title: '',
                 message: '삭제하시겠습니까?',
                 icon: this._formBuilder.group({
@@ -371,26 +388,28 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 dismissible: true
             }).value);
 
-            deleteConfirm.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if (result) {
-                        this._itemPriceService.deleteItemPrice(this.selection.selected)
-                            .subscribe(
-                                (param: any) => {
-                                    if (param.status === 'SUCCESS') {
-                                        this._itemPriceService.getHeader();
-                                    } else {
-                                        this.selectClear();
-                                    }
 
-                                }, (response) => {
-                                });
-                    } else {
-                        this.selectClear();
-                    }
-                });
-
+            confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isProgressSpinner = true;
+                            this._itemPriceService.deleteItemPrice(checkValues)
+                                .subscribe(
+                                    (param: any) => {
+                                        this.isProgressSpinner = false;
+                                        this._functionService.cfn_alertCheckMessage(param);
+                                        // Mark for check
+                                        this._changeDetectorRef.markForCheck();
+                                        this.selectHeader();
+                                    }, (response) => {
+                                    });
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
         }
     }
     setGridData(): void {

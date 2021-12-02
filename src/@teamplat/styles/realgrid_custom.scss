@@ -9,6 +9,13 @@
 }
 .rg-root{
     color: #767A82 !important;
+    background: #F7FAFC;
+}
+.rg-body{
+    background: #F7FAFC;
+}
+.rg-fixed-body{
+    background: #F7FAFC;
 }
 
 .center-cell-text {
@@ -33,14 +40,19 @@
 }
 
 .rg-body .rg-table tr td, .rg-fixed-body .rg-table tr td{
-    border-right: 0px;
+    //border-right: 0px;
 }
 .rg-header .rg-table tr td{
-    border-right: 0px;
+    //border-right: 0px;
 }
 
 .rg-grid{
-    border: none;
+    //border: none;
+
+    border-top: 1px solid #D2D5DA;
+    border-bottom: 1px solid #D2D5DA;
+    border-right: 0px;
+    border-left: 0px;
 }
 
 .rg-head .rg-table tr td{
@@ -94,7 +106,7 @@
 }
 
 .rg-scrolltrack{
-    background: #ffffff;
+    background: #F7FAFC;
     border: 0px solid #AFB8C3;
 }
 

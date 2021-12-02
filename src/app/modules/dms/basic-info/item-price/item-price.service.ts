@@ -69,7 +69,7 @@ export class ItemPriceService{
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{ itemPricePagenation: ItemPricePagenation; itemPrice: ItemPrice[] }> {
 
         const searchParam = {};
