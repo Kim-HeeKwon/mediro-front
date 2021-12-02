@@ -341,7 +341,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 division : 'ESTIMATE',
                 header : this.reportHeaderData,
                 body : estimateDetailData,
-                tail : ''
+                tail : '',
+                estimate: true,
             },
             autoFocus: false,
             maxHeight: '100vh',

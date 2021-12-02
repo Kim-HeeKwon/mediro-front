@@ -442,7 +442,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 division : 'ORDER',
                 header : this.reportHeaderData,
                 body : orderDetailData,
-                tail : ''
+                tail : '',
+                order: true,
             },
             autoFocus: false,
             maxHeight: '100vh',
