@@ -17,7 +17,7 @@ import {CommonPopupService} from '../common-popup/common-popup.service';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import {Observable, Subject} from 'rxjs';
 import {ReportHeaderData} from './common-report.types';
-import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import RealGrid, {CopyOptions, DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../services/realgrid';
 import {takeUntil} from 'rxjs/operators';
@@ -191,9 +191,9 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.orderCommonReportColumns = [
             {
-            name: 'poLineNo', fieldName: 'poLineNo', type: 'data', width: '50', styleName: 'left-cell-text'
-            , header: {text: '순번', styleName: 'left-cell-text'}
-                , numberFormat : '#,##0',
+                name: 'poLineNo', fieldName: 'poLineNo', type: 'data', width: '50', styleName: 'left-cell-text'
+                , header: {text: '순번', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0',
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
@@ -259,7 +259,7 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
             checkBar: false,
             footers: false,
         };
-        if(this.estimate === true) {
+        if (this.estimate === true) {
             // 견적 그리드
             this.gridList = this._realGridsService.gfn_CreateGrid(
                 this.commonReportDataProvider,
@@ -271,7 +271,7 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
             this.estimateReport();
         }
 
-        if(this.order === true) {
+        if (this.order === true) {
             // 발주 그리드
             this.gridList = this._realGridsService.gfn_CreateGrid(
                 this.commonReportDataProvider,
@@ -295,6 +295,10 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
             inserta1ble: false,
             deletable: false,
             editWhenFocused: false
+        });
+        this.gridList.setDisplayOptions({vscrollBar: false,});
+        this.gridList.setCopyOptions({
+            lookupDisplay: true,
         });
     }
 

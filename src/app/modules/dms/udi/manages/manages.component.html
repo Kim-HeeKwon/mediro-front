@@ -131,16 +131,18 @@
                             </div>
                         </div>
 
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
+                        <div *ngIf="!isMobile"
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
                             <!-- 검색조건 -->
                             <div class="flex w-full mt-8 sm:mt-0 pb-4">
-                                <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden">
+                                <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
 
                                     <form [formGroup]="searchForm"
                                           class="flex flex-col w-full">
                                         <div class="flex flex-col w-full">
                                             <div class="flex w-4/4">
-                                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                <mat-form-field
+                                                    class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
                                                     <mat-select [formControlName]="'year'">
                                                         <ng-container *ngFor="let year of year">
                                                             <mat-option [value]="year.id">
@@ -149,7 +151,8 @@
                                                         </ng-container>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
+                                                <mat-form-field
+                                                    class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
                                                     <mat-select [formControlName]="'month'">
                                                         <ng-container *ngFor="let month of month">
                                                             <mat-option [value]="month.id">
@@ -174,7 +177,8 @@
 
                             </div>
                         </div>
-                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
+                        <div *ngIf="!isMobile"
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
                             <!-- Actions -->
                             <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">

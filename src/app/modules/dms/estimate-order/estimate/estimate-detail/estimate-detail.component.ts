@@ -33,16 +33,15 @@ import {CommonReportComponent} from '../../../../../../@teamplat/components/comm
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
 
 @Component({
-    selector       : 'app-dms-estimate-detail',
-    templateUrl    : './estimate-detail.component.html',
+    selector: 'app-dms-estimate-detail',
+    templateUrl: './estimate-detail.component.html',
     styleUrls: ['./estimate-detail.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
-{
-    @ViewChild(MatPaginator, { static: true }) private _estimateDetailPagenator: MatPaginator;
+export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild(MatPaginator, {static: true}) private _estimateDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
@@ -76,6 +75,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
     ];
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
@@ -90,11 +90,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
+        private readonly breakpointObserver: BreakpointObserver) {
         this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_TYPE', this.filterList);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'QT_STATUS', this.filterList);
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_TYPE', this.filterList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_STATUS', this.filterList);
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -103,16 +102,16 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // Form 생성
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            qtNo: [{value:'',disabled:true}],   // 견적번호
-            account: [{value:'',disabled:true},[Validators.required]], // 거래처 코드
-            accountNm: [{value:'',disabled:true}],   // 거래처 명
-            type: [{value:'',disabled:true}, [Validators.required]],   // 유형
-            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
-            qtAmt: [{value:'',disabled:true}],   // 견적금액
-            soNo: [{value:'',disabled:true}],   // 주문번호
-            qtCreDate: [{value:'',disabled:true}],//견적 생성일자
-            qtDate: [{value:'',disabled:true}], //견적일자
-            email:[''],//이메일
+            qtNo: [{value: '', disabled: true}],   // 견적번호
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
+            accountNm: [{value: '', disabled: true}],   // 거래처 명
+            type: [{value: '', disabled: true}, [Validators.required]],   // 유형
+            status: [{value: '', disabled: true}, [Validators.required]],   // 상태
+            qtAmt: [{value: '', disabled: true}],   // 견적금액
+            soNo: [{value: '', disabled: true}],   // 주문번호
+            qtCreDate: [{value: '', disabled: true}],//견적 생성일자
+            qtDate: [{value: '', disabled: true}], //견적일자
+            email: [''],//이메일
             remarkHeader: [''], //비고
             toAccountNm: [''],
             deliveryDate: [''],
@@ -127,19 +126,20 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             active: [false]  // cell상태
         });
 
-        if(this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)){
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
             this.estimateHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._estimateService.getDetail(0,20,'qtLineNo','asc',this.estimateHeaderForm.getRawValue());
+            this._estimateService.getDetail(0, 20, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
         }
 
         //페이지 라벨
         this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
         this.estimateDetailColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
@@ -147,36 +147,48 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit'
-                    }},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}},
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+                    }
             },
-            {name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'left-cell-text'}
             },
-            {name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '견적금액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'left-cell-text'}
             },
-            {name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}},
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'left-cell-text'}
+            },
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '수량', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '단가', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '견적금액', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'left-cell-text'}
+            },
         ];
         //그리드 Provider
         this.estimateDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : true,
-            checkBar : true,
-            footers : false,
+            stateBar: true,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -204,13 +216,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         this.gridList.setPasteOptions({
             enabled: true,
+            startEdit: false,
             commitEdit: true,
-            checkReadOnly: true});
+            checkReadOnly: true
+        });
         this.gridList.editOptions.commitByCell = true;
-        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -221,31 +235,31 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //추가시
-            if(dataCell.item.rowState === 'created'){
-                if(dataCell.dataColumn.fieldName === 'itemCd'||
-                    dataCell.dataColumn.fieldName === 'itemNm'||
-                    dataCell.dataColumn.fieldName === 'standard'||
-                    dataCell.dataColumn.fieldName === 'unit'){
-                    return {editable : false};
-                }else {
-                    return {editable : true};
+            if (dataCell.item.rowState === 'created') {
+                if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                    dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'standard' ||
+                    dataCell.dataColumn.fieldName === 'unit') {
+                    return {editable: false};
+                } else {
+                    return {editable: true};
                 }
-            }else{
+            } else {
                 //console.log(dataCell.dataColumn.renderer);
-                if(dataCell.dataColumn.fieldName === 'itemCd'||
-                    dataCell.dataColumn.fieldName === 'itemNm'||
-                    dataCell.dataColumn.fieldName === 'standard'||
-                    dataCell.dataColumn.fieldName === 'unit'){
+                if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                    dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'standard' ||
+                    dataCell.dataColumn.fieldName === 'unit') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
-                    return {editable : false};
-                }else{
-                    return {editable : true};
+                    return {editable: false};
+                } else {
+                    return {editable: true};
                 }
             }
 
-            if(dataCell.dataColumn.fieldName === 'qtAmt'){
-                return {editable : false};
+            if (dataCell.dataColumn.fieldName === 'qtAmt') {
+                return {editable: false};
             }
         });
         // eslint-disable-next-line max-len
@@ -254,13 +268,13 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
+            if (clickData.cellType === 'header') {
                 // eslint-disable-next-line max-len
-                this._estimateService.getDetail(this.estimateDetailPagenation.page,this.estimateDetailPagenation.size,clickData.column,this.orderBy,this.estimateHeaderForm.getRawValue());
+                this._estimateService.getDetail(this.estimateDetailPagenation.page, this.estimateDetailPagenation.size, clickData.column, this.orderBy, this.estimateHeaderForm.getRawValue());
             }
-            if(this.orderBy === 'asc'){
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
@@ -298,10 +312,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._realGridsService.gfn_Destory(this.gridList, this.estimateDetailDataProvider);
     }
 
-    backPage(): void{
+    backPage(): void {
         this._router.navigate(['estimate-order/estimate']);
     }
-    reportEstimate(): void{
+
+    reportEstimate(): void {
         this.isProgressSpinner = true;
         const estimateDetailData = [];
         let index = 0;
@@ -309,15 +324,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         rows.forEach((data: any) => {
             index++;
             estimateDetailData.push({
-                no : index,
-                itemNm : data.itemNm,
-                standard : data.standard,
-                unit : data.unit,
-                qty : data.qty,
-                unitPrice : data.qtPrice,
-                totalAmt : data.qtAmt,
-                taxAmt : 0,
-                remark : data.remarkDetail,
+                no: index,
+                itemNm: data.itemNm,
+                standard: data.standard,
+                unit: data.unit,
+                qty: data.qty,
+                unitPrice: data.qtPrice,
+                totalAmt: data.qtAmt,
+                taxAmt: 0,
+                remark: data.remarkDetail,
             });
         });
         this.reportHeaderData.no = this.estimateHeaderForm.getRawValue().qtNo;
@@ -337,11 +352,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         const popup = this._matDialogPopup.open(CommonReportComponent, {
             data: {
-                divisionText : '견적',
-                division : 'ESTIMATE',
-                header : this.reportHeaderData,
-                body : estimateDetailData,
-                tail : '',
+                divisionText: '견적',
+                division: 'ESTIMATE',
+                header: this.reportHeaderData,
+                body: estimateDetailData,
+                tail: '',
                 estimate: true,
             },
             autoFocus: false,
@@ -350,39 +365,41 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
         popup.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(()=> {
-                    this.isProgressSpinner = false;
-                    this._changeDetectorRef.markForCheck();
+            .subscribe(() => {
+                this.isProgressSpinner = false;
+                this._changeDetectorRef.markForCheck();
             });
     }
 
-    saveEstimate(): void{
+    saveEstimate(): void {
 
         const status = this.estimateHeaderForm.controls['status'].value;
 
         //확정은 불가능
-        if(status === 'CF'){
+        if (status === 'CF') {
             this._functionService.cfn_alert('저장 할 수 없습니다.');
             return;
         }
 
-        if(this._realGridsService.gfn_ValidationRows(this.gridList , this._functionService)) {return;}
+        if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
+            return;
+        }
 
-        if(!this.estimateHeaderForm.invalid){
+        if (!this.estimateHeaderForm.invalid) {
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.estimateDetailDataProvider);
 
             let detailCheck = false;
 
-            if(rows.length === 0 && this.estimateHeaderForm.getRawValue().email === ''){
+            if (rows.length === 0 && this.estimateHeaderForm.getRawValue().email === '') {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }
-            if(detailCheck){
+            if (detailCheck) {
                 return;
             }
 
             const confirmation = this._teamPlatConfirmationService.open({
-                title : '',
+                title: '',
                 message: '저장하시겠습니까?',
                 actions: {
                     confirm: {
@@ -397,7 +414,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
+                    if (result) {
                         rows = this.headerDataSet(rows);
                         this._estimateService.saveEstimate(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -411,17 +428,16 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
-        }else{
+        } else {
             this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
 
-    alertMessage(param: any): void
-    {
-        if(param.status !== 'SUCCESS'){
+    alertMessage(param: any): void {
+        if (param.status !== 'SUCCESS') {
             this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
-        }else{
+        } else {
             this.backPage();
         }
     }
@@ -429,10 +445,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     /* 트랜잭션 전 data Set
      * @param sendData
      */
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Estimate[]) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i=0; i<sendData.length; i++) {
+        for (let i = 0; i < sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.estimateHeaderForm.controls['account'].value;
             sendData[i].qtNo = this.estimateHeaderForm.controls['qtNo'].value;
@@ -452,10 +469,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
 
     }
+
     delRow(): void {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateDetailDataProvider);
 
-        if(checkValues.length < 1){
+        if (checkValues.length < 1) {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         }
@@ -476,7 +494,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((estimateDetail: any) => {
                 // Update the counts
-                if(estimateDetail !== null){
+                if (estimateDetail !== null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.estimateDetailDataProvider, estimateDetail);
                 }
 

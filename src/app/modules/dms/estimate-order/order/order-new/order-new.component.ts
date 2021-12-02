@@ -29,16 +29,15 @@ import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/
 import {LatelyCardComponent} from "../../../../../../@teamplat/components/lately-card";
 
 @Component({
-    selector       : 'app-dms-order-new',
-    templateUrl    : './order-new.component.html',
+    selector: 'app-dms-order-new',
+    templateUrl: './order-new.component.html',
     styleUrls: ['./order-new.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
-{
-    @ViewChild(MatPaginator, { static: true }) private _orderDetailPagenator: MatPaginator;
+export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild(MatPaginator, {static: true}) private _orderDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
@@ -94,16 +93,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
+        private readonly breakpointObserver: BreakpointObserver) {
         this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_TYPE', this.filterList);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'PO_STATUS', this.filterList);
-        if(this._router.getCurrentNavigation() !== (null && undefined)){
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'PO_TYPE', this.filterList);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'PO_STATUS', this.filterList);
+        if (this._router.getCurrentNavigation() !== (null && undefined)) {
 
-            if(this._router.getCurrentNavigation().extras.state !== undefined){
-                if(this._router.getCurrentNavigation().extras.state.header !== undefined
-                    && this._router.getCurrentNavigation().extras.state.detail !== undefined){
+            if (this._router.getCurrentNavigation().extras.state !== undefined) {
+                if (this._router.getCurrentNavigation().extras.state.header !== undefined
+                    && this._router.getCurrentNavigation().extras.state.detail !== undefined) {
                     //console.log(this._router.getCurrentNavigation().extras.state.header);
                     const header = this._router.getCurrentNavigation().extras.state.header;
                     const detail = this._router.getCurrentNavigation().extras.state.detail;
@@ -121,15 +119,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         // Form 생성
         this.orderHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            poNo: [{value:'',disabled:true}],   // 발주번호
+            poNo: [{value: '', disabled: true}],   // 발주번호
             account: ['', [Validators.required]], // 거래처 코드
-            accountNm: [{value:'',disabled:true}],   // 거래처 명
-            type: [{value:''}, [Validators.required]],   // 유형
-            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
-            poAmt: [{value:'',disabled:true}],   // 발주금액
-            poCreDate: [{value:'',disabled:true}],//발주 생성일자
-            poDate: [{value:'',disabled:true}], //발주일자
-            email : [], //이메일
+            accountNm: [{value: '', disabled: true}],   // 거래처 명
+            type: [{value: ''}, [Validators.required]],   // 유형
+            status: [{value: '', disabled: true}, [Validators.required]],   // 상태
+            poAmt: [{value: '', disabled: true}],   // 발주금액
+            poCreDate: [{value: '', disabled: true}],//발주 생성일자
+            poDate: [{value: '', disabled: true}], //발주일자
+            email: [], //이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -138,7 +136,8 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         //그리드 컬럼
         this.orderDetailColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'left-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
@@ -150,43 +149,56 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             'poReqQty:poQty|invQty:availQty'
                     }
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}},
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'left-cell-text'}
             },
-            {name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '보유' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'left-cell-text'}
             },
-            {name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '요청수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'left-cell-text'}
             },
-            {name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '발주', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
             },
-            {name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주금액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '보유', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
             },
-            {name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}},
+            {
+                name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '요청수량', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '단가', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '발주금액', styleName: 'left-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'left-cell-text'}
+            },
         ];
         //그리드 Provider
         this.orderDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : true,
-            checkBar : true,
-            footers : false,
+            stateBar: true,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -213,13 +225,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         this.gridList.setPasteOptions({
             enabled: true,
+            startEdit: false,
             commitEdit: true,
-            checkReadOnly: true});
+            checkReadOnly: true
+        });
         this.gridList.editOptions.commitByCell = true;
-        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
@@ -230,22 +244,22 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //추가시
-            if(dataCell.dataColumn.fieldName === 'itemCd'||
-                dataCell.dataColumn.fieldName === 'itemNm'||
-                dataCell.dataColumn.fieldName === 'standard'||
-                dataCell.dataColumn.fieldName === 'unit'||
-                dataCell.dataColumn.fieldName === 'poReqQty'||
-                dataCell.dataColumn.fieldName === 'invQty'||
-                dataCell.dataColumn.fieldName === 'poAmt'){
-                return {editable : false};
-            }else {
-                return {editable : true};
+            if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'standard' ||
+                dataCell.dataColumn.fieldName === 'unit' ||
+                dataCell.dataColumn.fieldName === 'poReqQty' ||
+                dataCell.dataColumn.fieldName === 'invQty' ||
+                dataCell.dataColumn.fieldName === 'poAmt') {
+                return {editable: false};
+            } else {
+                return {editable: true};
             }
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
         this.orderDetails$ = this._orderService.orderDetails$;
-        if(this.estimateHeader !== undefined){
+        if (this.estimateHeader !== undefined) {
 
             this.orderHeaderForm.patchValue({'account': this.estimateHeader.account});
             this.orderHeaderForm.patchValue({'accountNm': this.estimateHeader.accountNm});
@@ -254,7 +268,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this.orderHeaderForm.patchValue({'status': 'N'});
             this.orderHeaderForm.patchValue({'remarkHeader': this.estimateHeader.remarkHeader});
 
-        }else{
+        } else {
 
             this.orderHeaderForm.patchValue({'account': ''});
             this.orderHeaderForm.patchValue({'type': '1'});
@@ -262,7 +276,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this.orderHeaderForm.patchValue({'remarkHeader': ''});
         }
 
-        if(this.estimateDetail !== undefined){
+        if (this.estimateDetail !== undefined) {
             this.orderDetails$
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((orderDetail) => {
@@ -282,7 +296,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             reqQty: estimateDetail.qty,
                             qty: 0,
                             poQty: 0,
-                            poAmt:estimateDetail.qtAmt,
+                            poAmt: estimateDetail.qtAmt,
                             remarkDetail: estimateDetail.remarkDetail,
                         });
                     });
@@ -315,7 +329,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.orderDetailDataProvider);
 
-        if(checkValues.length < 1){
+        if (checkValues.length < 1) {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         }
@@ -329,23 +343,25 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     orderSave(): void {
         const status = this.orderHeaderForm.controls['status'].value;
-        if(this._realGridsService.gfn_ValidationRows(this.gridList , this._functionService)) {return;}
+        if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
+            return;
+        }
 
-        if(!this.orderHeaderForm.invalid){
+        if (!this.orderHeaderForm.invalid) {
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.orderDetailDataProvider);
 
             let detailCheck = false;
 
-            if(rows.length === 0){
+            if (rows.length === 0) {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }
-            if(detailCheck){
+            if (detailCheck) {
                 return;
             }
 
             const confirmation = this._teamPlatConfirmationService.open({
-                title : '',
+                title: '',
                 message: '저장하시겠습니까?',
                 actions: {
                     confirm: {
@@ -360,7 +376,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
+                    if (result) {
                         rows = this.headerDataSet(rows);
                         this._orderService.createOrder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -374,17 +390,19 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             // Mark for check
             this._changeDetectorRef.markForCheck();
 
-        }else{
+        } else {
             this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
+
     /* 트랜잭션 전 data Set
      * @param sendData
      */
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Order[]) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i=0; i<sendData.length; i++) {
+        for (let i = 0; i < sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.orderHeaderForm.controls['account'].value;
             sendData[i].poNo = this.orderHeaderForm.controls['poNo'].value;
@@ -399,29 +417,29 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
     backPage(): void {
         this._router.navigate(['estimate-order/order']);
     }
+
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
         //this._orderService.getDetail(this._orderDetailPagenator.pageIndex, this._orderDetailPagenator.pageSize, 'poLineNo', this.orderBy, this.orderHeaderForm.getRawValue());
     }
 
-    alertMessage(param: any): void
-    {
-        if(param.status !== 'SUCCESS'){
+    alertMessage(param: any): void {
+        if (param.status !== 'SUCCESS') {
             this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
-        }else{
+        } else {
             this.backPage();
         }
     }
 
     openAccountSearch(): void {
-        if(!this.isMobile){
+        if (!this.isMobile) {
 
-            const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
-                    popup : 'P$_ACCOUNT',
-                    headerText : '거래처 조회',
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회',
                 },
                 autoFocus: false,
                 maxHeight: '90vh',
@@ -431,18 +449,18 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             popup.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
+                    if (result) {
                         this.orderHeaderForm.patchValue({'account': result.accountCd});
                         this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
                         this.orderHeaderForm.patchValue({'email': result.email});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
-        }else{
-            const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
-                    popup : 'P$_ACCOUNT',
-                    headerText : '거래처 조회'
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회'
                 },
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -453,7 +471,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    popup.updateSize('calc(100vw - 10px)','');
+                    popup.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }
@@ -461,7 +479,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             popup.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
+                    if (result) {
                         smallDialogSubscription.unsubscribe();
                         this.orderHeaderForm.patchValue({'account': result.accountCd});
                         this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
@@ -473,11 +491,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
 
     //최근 발주
     latelyOrder(): void {
-        if(!this.isMobile){
-            const popup =this._matDialogPopup.open(LatelyCardComponent, {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(LatelyCardComponent, {
                 data: {
-                    text : '발주',
-                    content : 'ORDER'
+                    text: '발주',
+                    content: 'ORDER'
                 },
                 autoFocus: false,
                 maxHeight: '90vh',
@@ -485,12 +503,12 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
             popup.afterClosed().subscribe((result) => {
-                if(result){
+                if (result) {
                     this.orderHeaderForm.patchValue(
                         result.header[0]
                     );
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderDetailDataProvider, result.detail);
-                    for(let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++){
+                    for (let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++) {
 
                         this.orderDetailDataProvider.setRowState(i, 'created', false);
                     }
@@ -498,11 +516,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
                     this._changeDetectorRef.markForCheck();
                 }
             });
-        }else{
+        } else {
             const d = this._matDialogPopup.open(LatelyCardComponent, {
                 data: {
-                    text : '발주',
-                    content : 'ORDER'
+                    text: '발주',
+                    content: 'ORDER'
                 },
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -512,18 +530,18 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
+                    d.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }
             });
             d.afterClosed().subscribe((result) => {
-                if(result){
+                if (result) {
                     this.orderHeaderForm.patchValue(
                         result.header[0]
                     );
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderDetailDataProvider, result.detail);
-                    for(let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++){
+                    for (let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++) {
 
                         this.orderDetailDataProvider.setRowState(i, 'created', false);
                     }

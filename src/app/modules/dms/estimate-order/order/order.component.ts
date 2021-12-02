@@ -23,7 +23,7 @@ import {Order} from "./order.types";
     templateUrl: './order.component.html',
     styleUrls: ['./order.component.scss']
 })
-export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
+export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
@@ -37,7 +37,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
     orderDetails$ = new Observable<OrderDetail[]>();
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     orderHeaderPagenation: OrderHeaderPagenation | null = null;
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -80,10 +80,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _utilService: FuseUtilsService,
                 private _shortcutService: ShortcutsService,
-                private _deviceService: DeviceDetectorService,)
-    {
-        this.status = _utilService.commonValue(_codeStore.getValue().data,'PO_STATUS');
-        this.type = _utilService.commonValue(_codeStore.getValue().data,'PO_TYPE');
+                private _deviceService: DeviceDetectorService,) {
+        this.status = _utilService.commonValue(_codeStore.getValue().data, 'PO_STATUS');
+        this.type = _utilService.commonValue(_codeStore.getValue().data, 'PO_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -122,55 +121,67 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 컬럼
         this.orderHeaderColumns = [
-            {name: 'poNo', fieldName: 'poNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주번호', styleName: 'left-cell-text'}, renderer:{
-            showTooltip:true
-        }},
-            {name: 'poCreDate', fieldName: 'poCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주 생성일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'poNo', fieldName: 'poNo', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '발주번호', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'poDate', fieldName: 'poDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주 일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'poCreDate', fieldName: 'poCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '발주 생성일자', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'poDate', fieldName: 'poDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '발주 일자', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
-            showTooltip:true
-        }
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer: {
+                    showTooltip: true
+                }
             },
-            {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '상태', styleName: 'left-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status), renderer:{
-                    showTooltip:true
+                editor: this._realGridsService.gfn_ComboBox(this.status), renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'poAmt', fieldName: 'poAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주 금액' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '거래처', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
-                , numberFormat : '#,##0'
             },
-            {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '400', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'poAmt', fieldName: 'poAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '발주 금액', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '400', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
         ];
@@ -179,9 +190,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -209,30 +220,31 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
         this.gridList.setPasteOptions({enabled: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         //this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType === 'header') {
+                if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._orderService.getHeader(this.orderHeaderPagenation.page,this.orderHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                    this._orderService.getHeader(this.orderHeaderPagenation.page, this.orderHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 }
             }
-            if(this.orderBy === 'asc'){
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            if(clickData.cellType !== 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType !== 'header') {
+                if (clickData.cellType !== 'head') {
                     this._router.navigate(['estimate-order/order/order-detail', grid.getValues(clickData.dataRow)]);
                 }
             }
@@ -294,8 +306,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
             });
     }
 
-    selectHeader(): void
-    {
+    selectHeader(): void {
+        this.isSearchForm = true;
         this.searchSetValue();
         this._orderService.getHeader(0, 20, 'poNo', 'desc', this.searchForm.getRawValue());
         this.setGridData();
@@ -306,23 +318,23 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    orderSend(){
+    orderSend() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.orderHeaderDataProvider);
         if (checkValues.length < 1) {
             this._functionService.cfn_alert('발송 대상을 선택해주세요.');
             return;
-        }else{
+        } else {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if(checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C'){
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C') {
                     this._functionService.cfn_alert('발송할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
             }
 
-            if(check) {
+            if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                     title: '',
                     message: '발송하시겠습니까?',
@@ -362,8 +374,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
         }
     }
 
-    orderSendCall(sendData: Order[]): void{
-        if(sendData){
+    orderSendCall(sendData: Order[]): void {
+        if (sendData) {
             this._orderService.orderSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
@@ -382,20 +394,20 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
         if (checkValues.length < 1) {
             this._functionService.cfn_alert('발주 대상을 선택해주세요.');
             return;
-        }else{
+        } else {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let i=0; i<checkValues.length; i++){
-                if(checkValues[i].status !== 'S' && checkValues[i].status !== 'P'){
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status !== 'S' && checkValues[i].status !== 'P') {
                     this._functionService.cfn_alert('발주할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
             }
 
-            if(check){
+            if (check) {
                 const confirmation = this._teamPlatConfirmationService.open({
-                    title  : '',
+                    title: '',
                     message: '발주하시겠습니까?',
                     actions: {
                         confirm: {
@@ -410,10 +422,10 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
                 confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        if(result){
+                        if (result) {
                             this.isProgressSpinner = true;
                             this.orderConfirmCall(checkValues);
-                        }else{
+                        } else {
                             this.selectHeader();
                         }
                     });
@@ -423,8 +435,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
         }
     }
 
-    orderConfirmCall(sendData: Order[]): void{
-        if(sendData){
+    orderConfirmCall(sendData: Order[]): void {
+        if (sendData) {
             this._orderService.orderConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
@@ -436,17 +448,18 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
                 });
         }
     }
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     orderCancel() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.orderHeaderDataProvider);
-        if(checkValues.length < 1){
+        if (checkValues.length < 1) {
             this._functionService.cfn_alert('취소 대상을 선택해주세요.');
             return;
-        }else{
+        } else {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let i=0; i<checkValues.length; i++){
-                if(checkValues[i].status !== 'N'){
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status !== 'N') {
                     this._functionService.cfn_alert('취소할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
@@ -455,21 +468,21 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
 
             if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
-                    title      : '',
-                    message    : '취소하시겠습니까?',
-                    icon       : this._formBuilder.group({
-                        show : true,
-                        name : 'heroicons_outline:exclamation',
+                    title: '',
+                    message: '취소하시겠습니까?',
+                    icon: this._formBuilder.group({
+                        show: true,
+                        name: 'heroicons_outline:exclamation',
                         color: 'warn'
                     }),
-                    actions    : this._formBuilder.group({
+                    actions: this._formBuilder.group({
                         confirm: this._formBuilder.group({
-                            show : true,
+                            show: true,
                             label: '취소',
                             color: 'warn'
                         }),
-                        cancel : this._formBuilder.group({
-                            show : true,
+                        cancel: this._formBuilder.group({
+                            show: true,
                             label: '닫기'
                         })
                     }),
@@ -492,8 +505,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
         }
     }
 
-    orderCancelCall(sendData: Order[]): void{
-        if(sendData){
+    orderCancelCall(sendData: Order[]): void {
+        if (sendData) {
             this._orderService.orderCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
@@ -505,13 +518,15 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
                 });
         }
     }
+
     searchFormClick(): void {
-        if(this.isSearchForm){
+        if (this.isSearchForm) {
             this.isSearchForm = false;
-        }else{
+        } else {
             this.isSearchForm = true;
         }
     }
+
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '발주 목록');
     }
@@ -524,7 +539,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }

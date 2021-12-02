@@ -29,7 +29,7 @@ import * as moment from 'moment';
     styleUrls: ['./estimate.component.scss']
 })
 
-export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
+export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
@@ -43,7 +43,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     estimateDetails$ = new Observable<EstimateDetail[]>();
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     estimateHeaderPagenation: EstimateHeaderPagenation | null = null;
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -153,71 +153,87 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 컬럼
         this.estimateHeaderColumns = [
-            {name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적번호', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적 생성일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '견적번호', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적 일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '견적 생성일자', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '견적 일자', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'left-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
-            showTooltip:true
-        }
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer: {
+                    showTooltip: true
+                }
             },
-            {name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
+            {
+                name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '상태', styleName: 'left-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status), renderer:{
-                    showTooltip:true
+                editor: this._realGridsService.gfn_ComboBox(this.status), renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'qtAmt', fieldName: 'qtAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '견적 금액' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '거래처', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
-                , numberFormat : '#,##0'
             },
-            {name: 'poCreate', fieldName: 'poCreate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '발주서' , styleName: 'center-cell-text'}
+            {
+                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'qtAmt', fieldName: 'qtAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '견적 금액', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'poCreate', fieldName: 'poCreate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '발주서', styleName: 'center-cell-text'}
                 , renderer: {
-                    type:'html',
+                    type: 'html',
                     template: '<button class="mediro-cell-button">' +
                         '<span>발주서</span>' +
                         '</button>',
-                }},
-            {name: 'soCreate', fieldName: 'soCreate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '주문서' , styleName: 'center-cell-text'}
+                }
+            },
+            {
+                name: 'soCreate', fieldName: 'soCreate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '주문서', styleName: 'center-cell-text'}
                 , renderer: {
-                    type:'html',
+                    type: 'html',
                     template: '<button class="mediro-cell-button">' +
                         '<span>주문서</span>' +
                         '</button>',
-                }},
-            {name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                }
+            },
+            {
+                name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'left-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
         ];
@@ -226,9 +242,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -255,29 +271,30 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
         this.gridList.setPasteOptions({enabled: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         //this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType === 'header') {
+                if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._estimateService.getHeader(this.estimateHeaderPagenation.page,this.estimateHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                    this._estimateService.getHeader(this.estimateHeaderPagenation.page, this.estimateHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 }
             }
-            if(this.orderBy === 'asc'){
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            if(clickData.cellType !== 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType !== 'header') {
+                if (clickData.cellType !== 'head') {
                     this._router.navigate(['estimate-order/estimate/estimate-detail', grid.getValues(clickData.dataRow)]);
                 }
             }
@@ -292,9 +309,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellItemClicked = (grid, index, clickData) => {
 
-            if(clickData.target.innerText === '발주서'){
+            if (clickData.target.innerText === '발주서') {
                 this.order(grid.getValues(index.dataRow));
-            }else if(clickData.target.innerText === '주문서'){
+            } else if (clickData.target.innerText === '주문서') {
                 this.salesorder(grid.getValues(index.dataRow));
             }
         };
@@ -314,13 +331,13 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
             });
     }
 
-    searchSetValue(): void{
+    searchSetValue(): void {
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }
 
     selectHeader(): void {
-
+        this.isSearchForm = true;
         this.searchSetValue();
         this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
 
@@ -332,7 +349,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    estimateSend(){
+    estimateSend() {
         //this._realGridsService.gfn_DeleteGrid(this.gridList, this.estimateHeaderDataProvider);
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
@@ -526,6 +543,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
             this._changeDetectorRef.markForCheck();
         }
     }
+
     estimateCancelCall(sendData: Estimate[]): void {
         if (sendData) {
             this._estimateService.estimateCancel(sendData)
@@ -541,9 +559,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     searchFormClick(): void {
-        if(this.isSearchForm){
+        if (this.isSearchForm) {
             this.isSearchForm = false;
-        }else{
+        } else {
             this.isSearchForm = true;
         }
     }
@@ -683,7 +701,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }
