@@ -29,7 +29,7 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'type'">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
                                     <ng-container *ngFor="let type of type">
                                         <mat-option [value]="type.id">
                                             {{type.name}}
@@ -129,7 +129,8 @@
                                                         class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"
                                                         style="width: 174px">
                                                         <mat-label class="mediro-ft-label">유형</mat-label>
-                                                        <mat-select [formControlName]="'type'">
+                                                        <mat-select (ngModelChange)="selectHeader()"
+                                                                    [formControlName]="'type'">
                                                             <ng-container *ngFor="let type of type">
                                                                 <mat-option [value]="type.id">
                                                                     {{type.name}}
@@ -157,16 +158,13 @@
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
-
                             </div>
                         </div>
                         <!-- Actions -->
                         <div *ngIf="!isMobile"
                              class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
                             <!-- Actions -->
-                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
                                     class="mediro-btn-custom"

@@ -1,20 +1,20 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {Safety, SafetyPagenation} from "./safety.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {SafetyService} from "./safety.service";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {Safety, SafetyPagenation} from './safety.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {SafetyService} from './safety.service';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
 
 @Component({
     selector: 'dms-app-safety',
@@ -26,7 +26,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         Breakpoints.XSmall
     );
 
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     orderBy: any = 'asc';
     safetys$: Observable<Safety[]>;
@@ -56,6 +56,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'poQty', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
@@ -72,6 +73,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.invYn = _utilService.commonValue(_codeStore.getValue().data, 'INV_YN');
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngOnInit(): void {
         const values = [];
         const lables = [];
@@ -90,30 +92,30 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.safetyColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'left-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'},
+                , header: {text: '규격', styleName: 'center-cell-text'},
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'},
+                , header: {text: '단위', styleName: 'center-cell-text'},
             },
             {
                 name: 'safetyQty',
@@ -121,8 +123,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '120',
                 styleName: 'right-cell-text',
-                header: {text: '안전재고수량', styleName: 'left-cell-text'},
-                numberFormat : '#,##0'
+                header: {text: '안전재고수량', styleName: 'center-cell-text'},
+                numberFormat: '#,##0'
             },
             {
                 name: 'availQty',
@@ -130,8 +132,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '120',
                 styleName: 'right-cell-text',
-                header: {text: '보유', styleName: 'left-cell-text'},
-                numberFormat : '#,##0'
+                header: {text: '보유', styleName: 'center-cell-text'},
+                numberFormat: '#,##0'
             },
             {
                 name: 'poQty',
@@ -139,28 +141,15 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '120',
                 styleName: 'right-cell-text',
-                header: {text: '발주대상수량', styleName: 'left-cell-text'},
-                numberFormat : '#,##0',
-                // styleCallback: (grid, dataCell) => {
-                //     const ret = {
-                //         styleName: ''
-                //     };
-                //     const safetyQty = grid.getValue(dataCell.index.itemIndex, 'safetyQty');
-                //     const availQty = grid.getValue(dataCell.index.itemIndex, 'availQty');
-                //     if(safetyQty > availQty){
-                //         console.log(safetyQty);
-                //         console.log(availQty);
-                //         ret.styleName = 'red-color';
-                //         return ret;
-                //     }
-                // }
+                header: {text: '발주대상수량', styleName: 'center-cell-text'},
+                numberFormat: '#,##0',
             },
         ];
         this.safetyDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         const gridListOption = {
-            stateBar : true,
-            checkBar : true,
+            stateBar: true,
+            checkBar: true,
             footers: false,
         };
 
@@ -185,18 +174,19 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
 
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         this.gridList.setPasteOptions({
             enabled: true,
             commitEdit: true,
-            checkReadOnly: true});
+            checkReadOnly: true
+        });
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
@@ -206,15 +196,15 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //추가시
-            if(dataCell.dataColumn.fieldName === 'itemCd'||
-                dataCell.dataColumn.fieldName === 'itemNm'||
-                dataCell.dataColumn.fieldName === 'standard'||
-                dataCell.dataColumn.fieldName === 'unit'||
+            if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'standard' ||
+                dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade' ||
-                dataCell.dataColumn.fieldName === 'availQty'){
-                return {editable : false};
-            }else {
-                return {editable : true};
+                dataCell.dataColumn.fieldName === 'availQty') {
+                return {editable: false};
+            } else {
+                return {editable: true};
             }
         });
 
@@ -224,7 +214,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             const safetyQty = grid.getValue(item.index, 'safetyQty');
             const availQty = grid.getValue(item.index, 'availQty');
-            if(safetyQty > availQty){
+            if (safetyQty > availQty) {
                 ret.styleName = 'red-color';
                 return ret;
             }
@@ -233,7 +223,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 this._safetyService.getHeader(this.safetyPagenation.page, this.safetyPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-            };
+            }
+            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -253,12 +244,13 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             });
     }
+
     ngAfterViewInit(): void {
         merge(this._paginator.page).pipe(
-            switchMap(() => {
+            switchMap(() =>
                 // eslint-disable-next-line max-len
-                return this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
-            }),
+                 this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue())
+            ),
             map(() => {
             })
         ).subscribe();
@@ -305,19 +297,19 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     safetySave(): void {
-        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.safetyDataProvider);
+        const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.safetyDataProvider);
         let detailCheck = false;
-        if(rows.length === 0){
+        if (rows.length === 0) {
             this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
             detailCheck = true;
         }
 
-        if(detailCheck){
+        if (detailCheck) {
             return;
         }
 
         const confirmation = this._teamPlatConfirmationService.open({
-            title : '',
+            title: '',
             message: '저장하시겠습니까?',
             actions: {
                 confirm: {

@@ -6,39 +6,38 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {OutBoundDetail, OutBoundDetailPagenation} from "../outbound.types";
-import {OutboundService} from "../outbound.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {OutBound} from "../outbound.types";
-import {takeUntil} from "rxjs/operators";
-import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
+import {OutBoundDetail, OutBoundDetailPagenation} from '../outbound.types';
+import {OutboundService} from '../outbound.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {OutBound} from '../outbound.types';
+import {takeUntil} from 'rxjs/operators';
+import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 
 @Component({
-    selector       : 'app-dms-outbound-new',
-    templateUrl    : './outbound-new.component.html',
+    selector: 'app-dms-outbound-new',
+    templateUrl: './outbound-new.component.html',
     styleUrls: ['./outbound-new.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
-{
-    @ViewChild(MatPaginator, { static: true }) private _outBoundDetailPagenator: MatPaginator;
+export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild(MatPaginator, {static: true}) private _outBoundDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
     isProgressSpinner: boolean = false;
@@ -97,34 +96,33 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
         private _functionService: FunctionService,
-    )
-    {
-        const typeFilter = ['ALL', '1', '4' ,'6'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_TYPE', typeFilter);
-        this.status = _utilService.commonValueFilter(_codeStore.getValue().data,'OB_STATUS', ['ALL']);
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+    ) {
+        const typeFilter = ['ALL', '1', '4', '6'];
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'OB_TYPE', typeFilter);
+        this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'OB_STATUS', ['ALL']);
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
+
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Form 생성
         this.outBoundHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
-            obNo: [{value:'',disabled:true}],   // 출고번호
-            account: [{value:''},[Validators.required]], // 거래처 코드
-            accountNm: [{value:'',disabled:true}],   // 거래처 명
-            address: [{value:''}, [Validators.required]],   // 거래처 주소
-            type: [{value:''}, [Validators.required]],   // 유형
-            status: [{value:'',disabled:true}, [Validators.required]],   // 상태
-            dlvAccount: [{value:''}],   // 납품처
-            dlvAccountNm: [{value:''}],   // 납품처
-            dlvAddress: [{value:''}],   // 납품처 주소
-            dlvDate: [{value:''}, [Validators.required]],//납품일자
-            obCreDate: [{value:'',disabled:true}],//작성일
-            obDate: [{value:'',disabled:true}], //출고일
+            obNo: [{value: '', disabled: true}],   // 출고번호
+            account: [{value: ''}, [Validators.required]], // 거래처 코드
+            accountNm: [{value: '', disabled: true}],   // 거래처 명
+            address: [{value: ''}, [Validators.required]],   // 거래처 주소
+            type: [{value: ''}, [Validators.required]],   // 유형
+            status: [{value: '', disabled: true}, [Validators.required]],   // 상태
+            dlvAccount: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAddress: [{value: ''}],   // 납품처 주소
+            dlvDate: [{value: ''}, [Validators.required]],//납품일자
+            obCreDate: [{value: '', disabled: true}],//작성일
+            obDate: [{value: '', disabled: true}], //출고일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -140,8 +138,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         //그리드 컬럼
         this.outBoundDetailColumns = [
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -151,38 +150,49 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
                             'standard:standard|unit:unit'
                     }
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}},
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'left-cell-text'},
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'center-cell-text'}
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.status),
             },
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격' , styleName: 'left-cell-text'}},
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위' , styleName: 'left-cell-text'}},
-            {name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '출고대상수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
-            {name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0'
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
-            {name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고' , styleName: 'left-cell-text'}},
+            {
+                name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '출고대상수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'center-cell-text'}
+            },
         ];
         //그리드 Provider
         this.outBoundDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : true,
-            checkBar : true,
-            footers : false,
+            stateBar: true,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -203,17 +213,18 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
+            singleMode: false
+        });
         this.gridList.setPasteOptions({
             enabled: true,
             commitEdit: true,
-            checkReadOnly: true});
+            checkReadOnly: true
+        });
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.validateOnEdited = true;
 
@@ -225,14 +236,14 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //추가시
-            if(dataCell.dataColumn.fieldName === 'itemCd'||
-                dataCell.dataColumn.fieldName === 'itemNm'||
-                dataCell.dataColumn.fieldName === 'standard'||
-                dataCell.dataColumn.fieldName === 'unit'||
-                dataCell.dataColumn.fieldName === 'itemGrade'){
-                return {editable : false};
-            }else {
-                return {editable : true};
+            if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'standard' ||
+                dataCell.dataColumn.fieldName === 'unit' ||
+                dataCell.dataColumn.fieldName === 'itemGrade') {
+                return {editable: false};
+            } else {
+                return {editable: true};
             }
         });
         // eslint-disable-next-line max-len
@@ -249,8 +260,10 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.outBoundHeaderForm.patchValue({'remarkHeader': ''});
 
     }
+
     ngAfterViewInit(): void {
     }
+
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -259,9 +272,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     addRow(): void {
-
         const values = [
-            '', '', '', '', '', '',  0, 0, 0, ''
+            '', '', '', '', '', '', 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
@@ -271,7 +283,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.outBoundDetailDataProvider);
 
-        if(checkValues.length < 1){
+        if (checkValues.length < 1) {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         }
@@ -286,24 +298,26 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     outBoundSave(): void {
         const status = this.outBoundHeaderForm.controls['status'].value;
 
-        if(this._realGridsService.gfn_ValidationRows(this.gridList , this._functionService)) {return;}
+        if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
+            return;
+        }
 
-        if(!this.outBoundHeaderForm.invalid){
+        if (!this.outBoundHeaderForm.invalid) {
 
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.outBoundDetailDataProvider);
 
             let detailCheck = false;
 
-            if(rows.length === 0){
+            if (rows.length === 0) {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }
-            if(detailCheck){
+            if (detailCheck) {
                 return;
             }
 
             const confirmation = this._teamPlatConfirmationService.open({
-                title : '',
+                title: '',
                 message: '저장하시겠습니까?',
                 actions: {
                     confirm: {
@@ -318,7 +332,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    if(result){
+                    if (result) {
                         rows = this.headerDataSet(rows);
                         this._outboundService.createOut(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -333,7 +347,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
-        }else{
+        } else {
             this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
@@ -341,10 +355,11 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     /* 트랜잭션 전 data Set
      * @param sendData
      */
+
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: OutBound[]) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i=0; i<sendData.length; i++) {
+        for (let i = 0; i < sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.outBoundHeaderForm.controls['account'].value;
             sendData[i].address = this.outBoundHeaderForm.controls['address'].value;
@@ -359,17 +374,11 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         return sendData;
     }
 
-    //페이징
-    pageEvent($event: PageEvent): void {
-        // eslint-disable-next-line max-len
-    }
-
-    alertMessage(param: any): void
-    {
-        if(param.status !== 'SUCCESS'){
+    alertMessage(param: any): void {
+        if (param.status !== 'SUCCESS') {
             this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
-        }else{
+        } else {
             this.backPage();
         }
     }
@@ -378,8 +387,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
         this._router.navigate(['bound/outbound']);
     }
 
-    openAccountSearch(): void
-    {
+    openAccountSearch(): void {
         if (!this.isMobile) {
             const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
@@ -414,7 +422,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    popup.updateSize('calc(100vw - 10px)','');
+                    popup.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }
@@ -433,7 +441,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     openDlvAccountSearch(): void {
-        if(!this.isMobile) {
+        if (!this.isMobile) {
             const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
                 data: {
                     popup: 'P$_DLVACCOUNT',
@@ -467,7 +475,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    popup.updateSize('calc(100vw - 10px)','');
+                    popup.updateSize('calc(100vw - 10px)', '');
                 } else {
                     // d.updateSize('calc(100% - 50px)', '');
                 }

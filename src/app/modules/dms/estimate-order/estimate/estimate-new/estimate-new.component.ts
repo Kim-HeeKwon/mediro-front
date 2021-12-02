@@ -30,7 +30,7 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
-import {LatelyCardComponent} from "../../../../../../@teamplat/components/lately-card";
+import {LatelyCardComponent} from '../../../../../../@teamplat/components/lately-card';
 
 @Component({
     selector: 'app-dms-estimate-new',
@@ -122,7 +122,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.estimateDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -133,34 +133,34 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'left-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '견적금액', styleName: 'left-cell-text'}
+                , header: {text: '견적금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
         //그리드 Provider
@@ -192,7 +192,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             commitByCell: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
@@ -348,12 +347,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['estimate-order/estimate']);
     }
 
-    //페이징
-    pageEvent($event: PageEvent): void {
-        // eslint-disable-next-line max-len
-        //this._estimateService.getDetail(this._estimateDetailPagenator.pageIndex, this._estimateDetailPagenator.pageSize, 'qtLineNo', this.orderBy, this.estimateHeaderForm.getRawValue());
-    }
-
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
             this.isProgressSpinner = false;
@@ -402,8 +395,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
                     popup.updateSize('calc(100vw - 10px)', '');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
                 }
             });
             popup.afterClosed()
@@ -461,8 +452,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
                     d.updateSize('calc(100vw - 10px)', '');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
                 }
             });
             d.afterClosed().subscribe((result) => {

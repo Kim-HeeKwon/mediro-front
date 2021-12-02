@@ -1,22 +1,22 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {merge, Observable, Subject} from "rxjs";
-import {OrderDetail, OrderHeader, OrderHeaderPagenation} from "./order.types";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {ActivatedRoute, Router} from "@angular/router";
-import {OrderService} from "./order.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
-import {ShortcutsService} from "../../../../layout/common/shortcuts/shortcuts.service";
-import {DeviceDetectorService} from "ngx-device-detector";
-import * as moment from "moment";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {Order} from "./order.types";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {merge, Observable, Subject} from 'rxjs';
+import {OrderDetail, OrderHeader, OrderHeaderPagenation} from './order.types';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {ActivatedRoute, Router} from '@angular/router';
+import {OrderService} from './order.service';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {ShortcutsService} from '../../../../layout/common/shortcuts/shortcuts.service';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import * as moment from 'moment';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {Order} from './order.types';
 
 @Component({
     selector: 'dms-order',
@@ -100,7 +100,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             }],
             start: [],
             end: [],
-
         });
 
         const valuesType = [];
@@ -123,25 +122,25 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         this.orderHeaderColumns = [
             {
                 name: 'poNo', fieldName: 'poNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주번호', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '발주번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'poCreDate', fieldName: 'poCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주 생성일자', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '발주 생성일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'poDate', fieldName: 'poDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '발주 일자', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '발주 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '유형', styleName: 'left-cell-text'},
+                header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
@@ -151,7 +150,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '상태', styleName: 'left-cell-text'},
+                header: {text: '상태', styleName: 'center-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
@@ -161,26 +160,26 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '거래처', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'poAmt', fieldName: 'poAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주 금액', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '발주 금액', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '400', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -212,7 +211,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             deletable: false,
             checkable: true,
             softDeleting: false,
-            //hideDeletedRows: false,
         });
 
         this.gridList.deleteSelection(true);
@@ -222,7 +220,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             enabled: true,
             singleMode: false
         });
-        //this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions

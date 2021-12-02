@@ -29,7 +29,7 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'itemGrade'">
+                                <mat-select (ngModelChange)="searchItem()" [formControlName]="'itemGrade'">
                                     <ng-container *ngFor="let itemgrade of itemGrades">
                                         <mat-option [value]="itemgrade.id">
                                             {{itemgrade.name}}
@@ -126,7 +126,8 @@
                                                         class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"
                                                         style="width: 174px">
                                                         <mat-label class="mediro-ft-label">유형</mat-label>
-                                                        <mat-select [formControlName]="'itemGrade'">
+                                                        <mat-select (ngModelChange)="searchItem()"
+                                                                    [formControlName]="'itemGrade'">
                                                             <ng-container *ngFor="let itemgrade of itemGrades">
                                                                 <mat-option [value]="itemgrade.id">
                                                                     {{itemgrade.name}}

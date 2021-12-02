@@ -1,22 +1,22 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {merge, Observable, Subject} from "rxjs";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Bill, BillPagenation} from "./bill.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {BillService} from "./bill.service";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import * as moment from "moment";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {BillTaxComponent} from "./bill-tax/bill-tax.component";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {merge, Observable, Subject} from 'rxjs';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Bill, BillPagenation} from './bill.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {BillService} from './bill.service';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import * as moment from 'moment';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {BillTaxComponent} from './bill-tax/bill-tax.component';
 
 @Component({
     selector: 'dms-bill',
@@ -40,7 +40,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     bills$: Observable<Bill[]>;
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     billPagenation: BillPagenation | null = null;
 
     // @ts-ignore
@@ -83,10 +83,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         private _router: Router,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
-        this.type = _utilService.commonValue(_codeStore.getValue().data,'BL_TYPE');
-        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data,'TAX_GBN');
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
+        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -125,80 +124,113 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.billColumns = [
-            {name: 'billingCreDate', fieldName: 'billingCreDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '생성일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'billingCreDate',
+                fieldName: 'billingCreDate',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '생성일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '마감일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '마감일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'billing', fieldName: 'billing', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '청구번호', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'invoice', fieldName: 'invoice', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '문서번호', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'toAccountNm', fieldName: 'toAccountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받는 자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목코드' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '유형', styleName: 'left-cell-text'},
+            {
+                name: 'billing', fieldName: 'billing', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '청구번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'invoice', fieldName: 'invoice', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '문서번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '공급자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'toAccountNm', fieldName: 'toAccountNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '공급받는 자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.type), renderer:{
-                    showTooltip:true
+                editor: this._realGridsService.gfn_ComboBox(this.type), renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'taxGbn', fieldName: 'taxGbn', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '거래유형', styleName: 'left-cell-text'},
+            {
+                name: 'taxGbn', fieldName: 'taxGbn', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '거래유형', styleName: 'center-cell-text'},
                 values: valuesTaxGbn,
                 labels: lablesTaxGbn,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.taxGbn), renderer:{
-                    showTooltip:true
+                editor: this._realGridsService.gfn_ComboBox(this.taxGbn), renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'billingQty', fieldName: 'billingQty', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0', renderer:{
-                    showTooltip:true
+            {
+                name: 'billingQty', fieldName: 'billingQty', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'billingAmt', fieldName: 'billingAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급가액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0', renderer:{
-                    showTooltip:true
+            {
+                name: 'billingAmt', fieldName: 'billingAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '공급가액', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'taxAmt', fieldName: 'taxAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '세액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0', renderer:{
-                    showTooltip:true
+            {
+                name: 'taxAmt', fieldName: 'taxAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '세액', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'billingTotalAmt', fieldName: 'billingTotalAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '총 금액' , styleName: 'left-cell-text'}
-                , numberFormat : '#,##0', renderer:{
-                    showTooltip:true
+            {
+                name: 'billingTotalAmt',
+                fieldName: 'billingTotalAmt',
+                type: 'number',
+                width: '100',
+                styleName: 'right-cell-text'
+                ,
+                header: {text: '총 금액', styleName: 'center-cell-text'}
+                ,
+                numberFormat: '#,##0',
+                renderer: {
+                    showTooltip: true
                 }
             },
         ];
@@ -207,9 +239,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         //그리드 생성
@@ -236,22 +268,22 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.setPasteOptions({enabled: false,});
         this.gridList.setCopyOptions({
             enabled: true,
-            singleMode: false});
-        //this._realGridsService.gfn_EditGrid(this.gridList);
+            singleMode: false
+        });
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType === 'header') {
+                if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._billService.getHeader(this.billPagenation.page,this.billPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                    this._billService.getHeader(this.billPagenation.page, this.billPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 }
             }
-            if(this.orderBy === 'asc'){
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
@@ -291,7 +323,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_Destory(this.gridList, this.billDataProvider);
     }
 
-    searchSetValue(): void{
+    searchSetValue(): void {
 
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
@@ -313,7 +345,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-
+        this.isSearchForm = true;
         this.searchSetValue();
         this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
 
@@ -321,9 +353,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     searchFormClick(): void {
-        if(this.isSearchForm){
+        if (this.isSearchForm) {
             this.isSearchForm = false;
-        }else{
+        } else {
             this.isSearchForm = true;
         }
     }
@@ -340,7 +372,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }
@@ -348,20 +380,20 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     taxSave() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.billDataProvider);
-        if(checkValues.length < 1){
+        if (checkValues.length < 1) {
             this._functionService.cfn_alert('대상을 선택해주세요.');
             return;
-        }else{
+        } else {
             const typeArr = [];
             const toAccountArr = [];
             const taxTypeArr = [];
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let i=0; i<checkValues.length; i++){
+            for (let i = 0; i < checkValues.length; i++) {
                 typeArr.push(checkValues[i].type);
                 toAccountArr.push(checkValues[i].toAccount);
                 taxTypeArr.push(checkValues[i].taxGbn);
-                if(checkValues[i].invoice === '' && checkValues[i].invoice === undefined
-                    && checkValues[i].invoice === null){
+                if (checkValues[i].invoice === '' && checkValues[i].invoice === undefined
+                    && checkValues[i].invoice === null) {
                     this._functionService.cfn_alert('발행할 수 없는 상태입니다. 청구번호 : ' + checkValues[i].billing);
                     return false;
 
@@ -372,42 +404,42 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             const toAccountSet = new Set(toAccountArr);
             const taxTypeSet = new Set(taxTypeArr);
 
-            if(typeSet.size > 1){
+            if (typeSet.size > 1) {
                 this._functionService.cfn_alert('매출, 매입은 따로 선택해야 합니다.');
                 return false;
             }
-            if(toAccountSet.size > 1){
+            if (toAccountSet.size > 1) {
                 this._functionService.cfn_alert('다수 업체를 선택할 수 없습니다.');
                 return false;
             }
-            if(taxTypeSet.size > 1){
+            if (taxTypeSet.size > 1) {
                 this._functionService.cfn_alert('과세, 영세, 면세는 따로 선택해야 합니다.');
                 return false;
             }
 
-            if(!this.isMobile){
+            if (!this.isMobile) {
                 const d = this._matDialog.open(BillTaxComponent, {
                     autoFocus: false,
                     maxHeight: '90vh',
                     disableClose: true,
-                    data : {select : checkValues, button : 'save'}
+                    data: {select: checkValues, button: 'save'}
                 });
 
                 d.afterClosed().subscribe(() => {
                     this.selectHeader();
                 });
-            }else{
+            } else {
                 const d = this._matDialog.open(BillTaxComponent, {
                     autoFocus: false,
                     width: 'calc(100% - 50px)',
                     maxWidth: '100vw',
                     maxHeight: '80vh',
                     disableClose: true,
-                    data : {select : checkValues, button : 'save'}
+                    data: {select: checkValues, button: 'save'}
                 });
                 const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                     if (size.matches) {
-                        d.updateSize('calc(100vw - 10px)','');
+                        d.updateSize('calc(100vw - 10px)', '');
                     } else {
                         // d.updateSize('calc(100% - 50px)', '');
                     }

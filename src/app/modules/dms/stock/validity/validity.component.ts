@@ -18,7 +18,7 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
     templateUrl: './validity.component.html',
     styleUrls: ['./validity.component.scss']
 })
-export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -55,6 +55,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER}
     ];
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _validityService: ValidityService,
@@ -63,10 +64,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         private _router: Router,
         private _changeDetectorRef: ChangeDetectorRef,
         private _codeStore: CodeStore,
-        private _deviceService: DeviceDetectorService,)
-    {
-        this.validity = _utilService.commonValue(_codeStore.getValue().data,'INV_VALIDITY');
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        private _deviceService: DeviceDetectorService,) {
+        this.validity = _utilService.commonValue(_codeStore.getValue().data, 'INV_VALIDITY');
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
             // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
@@ -75,18 +75,19 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         });
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngAfterViewInit(): void {
-            // Get products if sort or page changes
-            merge(this._paginator.page).pipe(
-                switchMap(() => {
-                    this.isLoading = true;
-                    // eslint-disable-next-line max-len
-                    return this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
-                }),
-                map(() => {
-                    this.isLoading = false;
-                })
-            ).subscribe();
+        // Get products if sort or page changes
+        merge(this._paginator.page).pipe(
+            switchMap(() => {
+                this.isLoading = true;
+                // eslint-disable-next-line max-len
+                return this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).subscribe();
     }
 
     ngOnDestroy(): void {
@@ -97,7 +98,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
     }
 
     ngOnInit(): void {
-
         const values = [];
         const lables = [];
         this.itemGrades.forEach((param: any) => {
@@ -117,56 +117,101 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.validityColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'},
-                renderer:{
-                    showTooltip:true
+                , header: {text: '품목코드', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명' , styleName: 'left-cell-text'},
-            renderer:{
-                showTooltip:true
-            }
-        },
-            {name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'left-cell-text'},
-            renderer:{
-            showTooltip:true
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
             },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
             },
-            {name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '규격' , styleName: 'left-cell-text'},  renderer:{
-                    showTooltip:true
+            {
+                name: 'standard',
+                fieldName: 'standard',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '규격', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
                 },
             },
-            {name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '단위' , styleName: 'left-cell-text'},  renderer:{
-                    showTooltip:true
-                },},
-            {name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '유효기간 일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                },},
-            {name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '유효기간' , styleName: 'left-cell-text'}, numberFormat: '#,##0', renderer:{
-                    showTooltip:true
-                },},
-            {name: 'qty', fieldName: 'qty'
-                , type: 'data', width: '100', styleName: 'right-cell-text', header: {text: '현재고' , styleName: 'left-cell-text'}, numberFormat: '#,##0',  renderer:{
-                    showTooltip:true
-                },},
-            {name: 'availQty', fieldName: 'availQty', type: 'data', width: '100', styleName: 'right-cell-text', numberFormat: '#,##0'
-                , header: {text: '가용재고' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                },}
+            {
+                name: 'unit',
+                fieldName: 'unit',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '단위', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
+            },
+            {
+                name: 'lot2',
+                fieldName: 'lot2',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '유효기간 일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
+            },
+            {
+                name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '유효기간', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                },
+            },
+            {
+                name: 'qty',
+                fieldName: 'qty'
+                ,
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '현재고', styleName: 'center-cell-text'},
+                numberFormat: '#,##0',
+                renderer: {
+                    showTooltip: true
+                },
+            },
+            {
+                name: 'availQty',
+                fieldName: 'availQty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                numberFormat: '#,##0'
+                ,
+                header: {text: '가용재고', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
+            }
         ];
 
         this.validityDataProvider = this._realGridsService.gfn_CreateDataProvider();
 
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         this.validityDataProvider.setOptions({
@@ -197,17 +242,18 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                this._validityService.getHeader(this.validityPagenation.page,this.validityPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            };
-            if(this.orderBy === 'asc'){
+            if (clickData.cellType === 'header') {
+                this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+            }
+            ;
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
 
-       this.setGridData();
+        this.setGridData();
 
         this._validityService.validityPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -217,17 +263,18 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
                 this._changeDetectorRef.markForCheck();
             });
     }
-    selectHeader(): void
-    {
-        this._validityService.getHeader(0,10,'itemNm','desc',this.searchForm.getRawValue());
+
+    selectHeader(): void {
+        this._validityService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
         this.setGridData();
     }
+
     setGridData(): void {
         this.validitys$ = this._validityService.validitys$;
         this._validityService.validitys$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((validity: any) => {
-                if(validity !== null){
+                if (validity !== null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, validity);
                 }
                 // Mark for check
@@ -243,8 +290,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit  {
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '보고자료 목록');
     }
+
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }

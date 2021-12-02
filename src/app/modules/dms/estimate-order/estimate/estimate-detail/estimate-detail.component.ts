@@ -98,7 +98,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     ngOnInit(): void {
-
         // Form 생성
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
@@ -140,7 +139,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.estimateDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -151,34 +150,34 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'left-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '견적금액', styleName: 'left-cell-text'}
+                , header: {text: '견적금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
         //그리드 Provider
@@ -209,7 +208,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
 
         this.gridList.deleteSelection(true);
@@ -233,7 +231,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
-
             //추가시
             if (dataCell.item.rowState === 'created') {
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
@@ -245,7 +242,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     return {editable: true};
                 }
             } else {
-                //console.log(dataCell.dataColumn.renderer);
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||

@@ -6,27 +6,27 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Order, OrderDetail, OrderDetailPagenation} from "../order.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {OrderService} from "../order.service";
-import {takeUntil} from "rxjs/operators";
-import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
-import {LatelyCardComponent} from "../../../../../../@teamplat/components/lately-card";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Order, OrderDetail, OrderDetailPagenation} from '../order.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
+import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {OrderService} from '../order.service';
+import {takeUntil} from 'rxjs/operators';
+import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
+import {LatelyCardComponent} from '../../../../../../@teamplat/components/lately-card';
 
 @Component({
     selector: 'app-dms-order-new',
@@ -109,7 +109,6 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.estimateDetail = detail;
                 }
             }
-
             this._changeDetectorRef.markForCheck();
         }
         this.isMobile = this._deviceService.isMobile();
@@ -138,7 +137,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.orderDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -151,24 +150,24 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주', styleName: 'left-cell-text'}
+                , header: {text: '발주', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '보유', styleName: 'left-cell-text'}
+                , header: {text: '보유', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
@@ -178,17 +177,17 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주금액', styleName: 'left-cell-text'}
+                , header: {text: '발주금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
         //그리드 Provider
@@ -219,7 +218,6 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
@@ -418,12 +416,6 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['estimate-order/order']);
     }
 
-    //페이징
-    pageEvent($event: PageEvent): void {
-        // eslint-disable-next-line max-len
-        //this._orderService.getDetail(this._orderDetailPagenator.pageIndex, this._orderDetailPagenator.pageSize, 'poLineNo', this.orderBy, this.orderHeaderForm.getRawValue());
-    }
-
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
             this.isProgressSpinner = false;
@@ -531,8 +523,6 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
                     d.updateSize('calc(100vw - 10px)', '');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
                 }
             });
             d.afterClosed().subscribe((result) => {

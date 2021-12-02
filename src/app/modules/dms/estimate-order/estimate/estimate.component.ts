@@ -132,7 +132,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             }],
             start: [],
             end: [],
-
         });
 
         const valuesType = [];
@@ -155,25 +154,25 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this.estimateHeaderColumns = [
             {
                 name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적번호', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '견적번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적 생성일자', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '견적 생성일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '견적 일자', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '견적 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '유형', styleName: 'left-cell-text'},
+                header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
@@ -183,7 +182,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '상태', styleName: 'left-cell-text'},
+                header: {text: '상태', styleName: 'center-cell-text'},
                 values: valuesStatus,
                 labels: lablesStatus,
                 lookupDisplay: true,
@@ -193,19 +192,19 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '거래처', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '견적 금액', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '견적 금액', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
@@ -232,11 +231,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
         ];
+
         //그리드 Provider
         this.estimateHeaderDataProvider = this._realGridsService.gfn_CreateDataProvider();
 
@@ -273,7 +273,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             enabled: true,
             singleMode: false
         });
-        //this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -291,6 +290,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.orderBy = 'asc';
             }
         };
+
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
@@ -299,12 +299,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
         };
-
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        // this.estimateHeaderDataProvider.onRowStateChanged = (provider, row) => {
-        //     console.log(row);
-        //     console.log(this.estimateHeaderDataProvider.getRowState(row) === 'deleted');
-        // };
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellItemClicked = (grid, index, clickData) => {
@@ -350,8 +344,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     estimateSend() {
-        //this._realGridsService.gfn_DeleteGrid(this.gridList, this.estimateHeaderDataProvider);
-
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
 
         if (checkValues.length < 1) {
@@ -488,7 +480,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     estimateCancel() {
-
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateHeaderDataProvider);
 
         if (checkValues.length < 1) {

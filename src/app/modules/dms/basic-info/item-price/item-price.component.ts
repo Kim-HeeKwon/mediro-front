@@ -9,14 +9,13 @@ import {
 import {merge, Observable, Subject} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
 import {ItemPrice, ItemPricePagenation} from './item-price.types';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {MatDialog} from '@angular/material/dialog';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {ItemPriceService} from './item-price.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
@@ -26,7 +25,7 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {ItemPriceHistoryComponent} from './item-price-history/item-price-history.component';
-import {FunctionService} from "../../../../../@teamplat/services/function";
+import {FunctionService} from '../../../../../@teamplat/services/function';
 
 @Component({
     selector: 'dms-app-item-price',
@@ -37,7 +36,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     selection = new SelectionModel<any>(true, []);
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -121,22 +120,29 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.itemPriceColumns = [
             {
                 name: 'type', fieldName: 'type', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '유형', styleName: 'left-cell-text'},
+                , header: {text: '유형', styleName: 'center-cell-text'},
                 values: itemPricevalues,
                 labels: itemPricelables,
-                lookupDisplay: true, renderer:{
-                    showTooltip:true
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
                 }
             },
-            {name: 'effectiveDate', fieldName: 'effectiveDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단가 적용일자' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+            {
+                name: 'effectiveDate',
+                fieldName: 'effectiveDate',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '단가 적용일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -145,8 +151,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -155,8 +161,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '거래처', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                header: {text: '거래처', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -165,8 +171,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -175,8 +181,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'number',
                 width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '단가', styleName: 'left-cell-text'}, numberFormat: '#,##0', renderer:{
-                    showTooltip:true
+                header: {text: '단가', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             },
         ];
@@ -272,8 +278,6 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                         const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                             if (size.matches) {
                                 d.updateSize('calc(100vw - 10px)', '');
-                            } else {
-                                // d.updateSize('calc(100% - 50px)', '');
                             }
                         });
                         d.afterClosed().subscribe(() => {
@@ -323,8 +327,6 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
                     d.updateSize('calc(100vw - 10px)', '');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
                 }
             });
             d.afterClosed().subscribe(() => {
@@ -365,7 +367,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         if (checkValues.length < 1) {
             this._functionService.cfn_alert('취소 대상을 선택해주세요.');
             return;
-        }else {
+        } else {
             const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                 title: '',
                 message: '삭제하시겠습니까?',
@@ -390,28 +392,29 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
             confirmation.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if (result) {
-                            this.isProgressSpinner = true;
-                            this._itemPriceService.deleteItemPrice(checkValues)
-                                .subscribe(
-                                    (param: any) => {
-                                        this.isProgressSpinner = false;
-                                        this._functionService.cfn_alertCheckMessage(param);
-                                        // Mark for check
-                                        this._changeDetectorRef.markForCheck();
-                                        this.selectHeader();
-                                    }, (response) => {
-                                    });
-                        } else {
-                            this.selectHeader();
-                        }
-                    });
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.isProgressSpinner = true;
+                        this._itemPriceService.deleteItemPrice(checkValues)
+                            .subscribe(
+                                (param: any) => {
+                                    this.isProgressSpinner = false;
+                                    this._functionService.cfn_alertCheckMessage(param);
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                    this.selectHeader();
+                                }, (response) => {
+                                });
+                    } else {
+                        this.selectHeader();
+                    }
+                });
             // Mark for check
             this._changeDetectorRef.markForCheck();
         }
     }
+
     setGridData(): void {
         this.itemPrices$ = this._itemPriceService.itemPrices$;
         this._itemPriceService.itemPrices$
@@ -424,6 +427,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             });
     }
+
     //페이징
     pageEvent($event: PageEvent): void {
         this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());

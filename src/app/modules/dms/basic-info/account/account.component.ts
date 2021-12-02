@@ -19,7 +19,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import {DeviceDetectorService} from 'ngx-device-detector';
-import { MatDialog} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {CommonUdiComponent} from '../../../../../@teamplat/components/common-udi';
 import {NewAccountComponent} from '../account/new-account/new-account.component';
@@ -35,7 +35,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
     isMobile: boolean = false;
@@ -81,6 +81,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'fax', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
     ];
+
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
                 private _codeStore: CodeStore,
@@ -92,8 +93,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _accountService: AccountService,
-                private readonly breakpointObserver: BreakpointObserver)
-    {
+                private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -108,50 +108,134 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.accountColumns = [
-            {name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'descr', fieldName: 'descr', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처 명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'businessCondition', fieldName: 'businessCondition'
-                , type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '업태' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text', header: {text: '주소' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'addressDetail', fieldName: 'addressDetail', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '상세주소' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '대표자명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'businessCategory', fieldName: 'businessCategory', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '종목' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'custBusinessName', fieldName: 'custBusinessName', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '사업자명' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
+            {
+                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'descr', fieldName: 'descr', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'businessCondition',
+                fieldName: 'businessCondition'
+                ,
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '업태', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'address',
+                fieldName: 'address',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '주소', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'addressDetail',
+                fieldName: 'addressDetail',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '상세주소', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'representName',
+                fieldName: 'representName',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '대표자명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'businessCategory',
+                fieldName: 'businessCategory',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '종목', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'custBusinessName',
+                fieldName: 'custBusinessName',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '사업자명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
             // eslint-disable-next-line max-len
-            {name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '사업자번호' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
-            {name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '전화번호' , styleName: 'left-cell-text'},
-                placeHolder: '', renderer:{
-                    showTooltip:true
-                }},
-            {name: 'fax', fieldName: 'fax', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '팩스' , styleName: 'left-cell-text'},
-                placeHolder: '', renderer:{
-                    showTooltip:true
-                }},
-            {name: 'email', fieldName: 'email', type: 'data', width: '100', styleName: 'left-cell-text', header: {text: '이메일' , styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
-                }},
+            {
+                name: 'custBusinessNumber',
+                fieldName: 'custBusinessNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '사업자번호', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'phoneNumber',
+                fieldName: 'phoneNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '전화번호', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fax',
+                fieldName: 'fax',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '팩스', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'email',
+                fieldName: 'email',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '이메일', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
         //그리드 Provider
@@ -159,9 +243,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
-            footers : false,
+            stateBar: false,
+            checkBar: true,
+            footers: false,
         };
 
         this.accountDataProvider.setOptions({
@@ -195,37 +279,38 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                this._accountService.getAccount(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            };
-            if(this.orderBy === 'asc'){
+            if (clickData.cellType === 'header') {
+                this._accountService.getAccount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+            }
+            ;
+            if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
-            }else{
+            } else {
                 this.orderBy = 'asc';
             }
         };
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            if(clickData.cellType !== 'header'){
-                if(clickData.cellType !== 'head'){
+            if (clickData.cellType !== 'header') {
+                if (clickData.cellType !== 'head') {
 
-                    if(!this.isMobile){
+                    if (!this.isMobile) {
                         const d = this._matDialog.open(DetailAccountComponent, {
                             autoFocus: false,
                             disableClose: true,
-                            data     : {
-                                selectedAccount : grid.getValues(clickData.dataRow)
+                            data: {
+                                selectedAccount: grid.getValues(clickData.dataRow)
                             },
                         });
                         d.afterClosed().subscribe(() => {
                             this.selectAccount();
                         });
 
-                    }else{
+                    } else {
                         const d = this._matDialog.open(DetailAccountComponent, {
-                            data     : {
-                                selectedAccount : grid.getValues(clickData.dataRow)
+                            data: {
+                                selectedAccount: grid.getValues(clickData.dataRow)
                             },
                             autoFocus: false,
                             width: 'calc(100% - 50px)',
@@ -235,7 +320,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                         const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                             if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)','');
+                                d.updateSize('calc(100vw - 10px)', '');
                             } else {
                                 // d.updateSize('calc(100% - 50px)', '');
                             }
@@ -288,8 +373,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_Destory(this.gridList, this.accountDataProvider);
     }
 
-    selectAccount(): void{
-        this._accountService.getAccount(0,20,'account','asc', this.searchForm.getRawValue());
+    selectAccount(): void {
+        this._accountService.getAccount(0, 20, 'account', 'asc', this.searchForm.getRawValue());
         this.setGridData();
     }
 
@@ -299,20 +384,20 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     //엑셀 다운로드
-    excelExport(): void{
+    excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '거래처 목록');
     }
 
     createAccount(): void {
-        if(!this.isMobile){
+        if (!this.isMobile) {
             this._matDialog.open(NewAccountComponent, {
                 autoFocus: false,
                 disableClose: true,
-                data     : {
+                data: {
                     note: {}
                 },
             });
-        }else{
+        } else {
             const d = this._matDialog.open(NewAccountComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -322,7 +407,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                 if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)','');
+                    d.updateSize('calc(100vw - 10px)', '');
                 } else {
                 }
             });
@@ -333,12 +418,12 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     enter(event): void {
-        if(event.keyCode===13){
+        if (event.keyCode === 13) {
             this.selectHeader();
         }
     }
-    selectHeader(): void
-    {
+
+    selectHeader(): void {
         this._accountService.getAccount(0, 20, 'account', 'desc', this.searchForm.getRawValue());
         this.setGridData();
     }
@@ -348,7 +433,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this._accountService.accounts$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((accounts: any) => {
-                if(accounts != null){
+                if (accounts != null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, accounts);
                 }
 

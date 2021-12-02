@@ -1,18 +1,18 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {Acceptable, AcceptablePagenation} from "./acceptable.types";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {AcceptableService} from "./acceptable.service";
-import {map, switchMap, takeUntil} from "rxjs/operators";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {Acceptable, AcceptablePagenation} from './acceptable.types';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {AcceptableService} from './acceptable.service';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'dms-app-acceptable',
@@ -23,7 +23,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     orderBy: any = 'asc';
     acceptables$: Observable<Acceptable[]>;
@@ -52,6 +52,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
@@ -65,6 +66,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngOnInit(): void {
         const values = [];
         const lables = [];
@@ -82,42 +84,42 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.acceptableColumns = [
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'left-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'},
+                , header: {text: '규격', styleName: 'center-cell-text'},
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'},
+                , header: {text: '단위', styleName: 'center-cell-text'},
             },
             {
                 name: 'availQty',
@@ -125,14 +127,16 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '보유', styleName: 'left-cell-text'},
-                numberFormat : '#,##0'
+                header: {text: '보유', styleName: 'center-cell-text'},
+                numberFormat: '#,##0'
             },
-            {name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '입고일자' , styleName: 'left-cell-text'}
+            {
+                name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '입고일자', styleName: 'center-cell-text'}
             },
-            {name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간' , styleName: 'left-cell-text'}
+            {
+                name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '유효기간', styleName: 'center-cell-text'}
             },
         ];
 
@@ -174,7 +178,8 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 this._acceptableService.getHeader(this.acceptablePagenation.page, this.acceptablePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-            };
+            }
+            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -197,14 +202,15 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit(): void {
         merge(this._paginator.page).pipe(
-            switchMap(() => {
+            switchMap(() =>
                 // eslint-disable-next-line max-len
-                return this._acceptableService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'accountNm', this.orderBy, this.searchForm.getRawValue());
-            }),
+                 this._acceptableService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'accountNm', this.orderBy, this.searchForm.getRawValue())
+            ),
             map(() => {
             })
         ).subscribe();
     }
+
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -224,6 +230,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             });
     }
+
     selectHeader(): void {
         this._acceptableService.getHeader(0, 20, 'accountNm', 'desc', this.searchForm.getRawValue());
         this.setGridData();

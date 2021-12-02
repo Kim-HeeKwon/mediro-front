@@ -20,15 +20,15 @@ import {MatSort} from '@angular/material/sort';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {fuseAnimations} from '@teamplat/animations';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {FuseRealGridService} from "../../services/realgrid";
-import {Columns} from "../../services/realgrid/realgrid.types";
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {FuseRealGridService} from '../../services/realgrid';
+import {Columns} from '../../services/realgrid/realgrid.types';
 
-export interface DisplayedColumn{
+export interface DisplayedColumn {
     id: string;
 }
 
-export interface Column{
+export interface Column {
     id: string;
     name: string;
     width?: string;
@@ -38,12 +38,12 @@ export interface Column{
     selector: 'app-common-popup-items',
     templateUrl: './common-popup-items.component.html',
     styleUrls: ['./common-popup-items.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations
+    animations: fuseAnimations
 })
 export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     isLoading: boolean = false;
     isProgressSpinner: boolean = false;
@@ -69,8 +69,8 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
     type: CommonCode[] = [];
 
-    private _dataSet: BehaviorSubject<any> = new BehaviorSubject(null);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         public _matDialogRef: MatDialogRef<CommonPopupItemsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -82,7 +82,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
         private _popupStore: PopupStore) {
         this.popupInfo = _utilService.commonPopupValue(_popupStore.getValue().data, data.popup);
         this.asPopupCd = data.popup;
-        if(data.headerText){
+        if (data.headerText) {
             this.headerText = data.headerText;
         }
         this.where = data.where;
@@ -102,15 +102,15 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
                 name: param.extColNm,            //컬럼명;
                 width: param.extColWidVal,
             };
-            if(param.extColCondGbnVal !== '' && param.extColCondGbnVal !== null){
+            if (param.extColCondGbnVal !== '' && param.extColCondGbnVal !== null) {
                 this.type.push({
-                    id : param.extColId,
-                    name : param.extColNm,
+                    id: param.extColId,
+                    name: param.extColNm,
                 });
             }
 
-            if(param.extColCondGbnVal === 'W'){
-                this.searchForm.patchValue({'type' : param.extColId});
+            if (param.extColCondGbnVal === 'W') {
+                this.searchForm.patchValue({'type': param.extColId});
             }
 
             this.displayedColumns.push(param.extColId);
@@ -118,21 +118,21 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
         });
 
-        if(this.displayedColumns){
+        if (this.displayedColumns) {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for(let i=0; i<this.displayedColumns.length; i++){
+            for (let i = 0; i < this.displayedColumns.length; i++) {
                 // @ts-ignore
                 this.popupFields.push({fieldName: this.displayedColumns[i], dataType: ValueType.TEXT});
             }
         }
 
-        if(this.commonValues){
-
+        if (this.commonValues) {
             this.commonValues.forEach((param: any) => {
-
-                 this.popupColumns.push({name: param.id, fieldName: param.id, type: 'data'
-                     , width: param.width === '' ? '100' : param.width, styleName: 'left-cell-text'
-                         , header: {text: param.name, styleName: 'left-cell-text'}});
+                this.popupColumns.push({
+                    name: param.id, fieldName: param.id, type: 'data'
+                    , width: param.width === '' ? '100' : param.width, styleName: 'left-cell-text'
+                    , header: {text: param.name, styleName: 'center-cell-text'}
+                });
             });
         }
         //그리드 Provider
@@ -140,9 +140,9 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : false,
-            footers : false,
+            stateBar: false,
+            checkBar: false,
+            footers: false,
         };
 
         //그리드 생성
@@ -169,23 +169,15 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
 
         //정렬
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
-        this.gridList.onCellClicked = (grid, clickData) => {
-            if(clickData.cellType === 'header'){
-                //this._popupService.getDynamicSql(this.pagenation.page,this.pagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-            }
-            if(this.orderBy === 'asc'){
-                this.orderBy = 'desc';
-            }else{
-                this.orderBy = 'asc';
-            }
-        };
+        if (this.orderBy === 'asc') {
+            this.orderBy = 'desc';
+        } else {
+            this.orderBy = 'asc';
+        }
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
-            //console.log(grid.getValues(clickData.dataRow));
             this._matDialogRef.close(grid.getValues(clickData.dataRow));
-            //this._router.navigate(['estimate-order/estimate/estimate-detail', grid.getValues(clickData.dataRow)]);
         };
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
@@ -201,9 +193,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
     }
-
 
     /**
      * After view init
@@ -217,13 +207,11 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
                 const textCond = this.searchForm.controls['searchText'].value;
 
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
-                    return param;
-                });
+                const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => param);
 
-                if(textCond === ''){
+                if (textCond === '') {
                     whereVal = 'K:LIKE_BOTH:';
-                }else{
+                } else {
                     whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
                 }
                 this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
@@ -264,21 +252,20 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
     selectRow(row: any): void {
         this._matDialogRef.close(row);
     }
-    select(): void{
+
+    select(): void {
 
         let whereVal;
         const curVal = this.searchForm.controls['type'].value;
         const textCond = this.searchForm.controls['searchText'].value;
         this.isProgressSpinner = true;
-        if(this.where !== undefined){
+        if (this.where !== undefined) {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
-                return param;
-            });
+            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => param);
 
-            if(textCond === ''){
+            if (textCond === '') {
                 whereVal = 'K:LIKE_BOTH:';
-            }else{
+            } else {
                 whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
             }
 
@@ -287,33 +274,33 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
             for (let i = 0; i < listWhere.length; i++) {
                 const tmpStr = listWhere[i];
                 const tmpArr = tmpStr.split(':');
-                if (tmpArr[2] === 'K' || tmpArr[2] === 'W') {continue;}
-                if(tmpArr[2] === ('' && null && undefined)){
+                if (tmpArr[2] === 'K' || tmpArr[2] === 'W') {
+                    continue;
+                }
+                if (tmpArr[2] === ('' && null && undefined)) {
                     continue;
                 }
                 whereVal += '|' + tmpArr[0] + ':' + tmpArr[1] + ':' + tmpArr[2];
             }
-        }else{
+        } else {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => {
-                return param;
-            });
+            const ds_combo = this.popupInfo.filter((item: any) => item.extColId === curVal).map((param: any) => param);
 
-            if(textCond === ''){
+            if (textCond === '') {
                 whereVal = 'K:LIKE_BOTH:';
-            }else{
+            } else {
                 whereVal = ds_combo[0].extColCondGbnVal + ':' + ds_combo[0].extEtcQryColCondVal + ':' + textCond;
             }
         }
 
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
         this.searchForm.patchValue({'acWhereVal': whereVal});
-        this._popupService.getDynamicSql(0,1000,'','asc',this.searchForm.getRawValue());
+        this._popupService.getDynamicSql(0, 1000, '', 'asc', this.searchForm.getRawValue());
 
         this.setGridData();
     }
 
-    getProperty(element, id: string): string{
+    getProperty(element, id: string): string {
         return element[id];
     }
 

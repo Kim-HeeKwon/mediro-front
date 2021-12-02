@@ -170,23 +170,23 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.itemsColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '등급', styleName: 'left-cell-text'},
+                header: {text: '등급', styleName: 'center-cell-text'},
                 values: itemGradesvalues,
                 labels: itemGradeslables,
-                lookupDisplay: true, renderer:{
-                    showTooltip:true
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -195,11 +195,11 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: 'UDI 대상 유무', styleName: 'left-cell-text'},
+                header: {text: 'UDI 대상 유무', styleName: 'center-cell-text'},
                 values: udiYnvalues,
                 labels: udiYnlables,
-                lookupDisplay: true, renderer:{
-                    showTooltip:true
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -208,8 +208,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '단위', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -218,14 +218,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '규격', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '공급사', styleName: 'left-cell-text'}, renderer:{
-                    showTooltip:true
+                , header: {text: '공급사', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -235,18 +235,18 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '거래유형', styleName: 'left-cell-text'},
+                header: {text: '거래유형', styleName: 'center-cell-text'},
                 values: taxGbnvalues,
                 labels: taxGbnlables,
-                lookupDisplay: true, renderer:{
-                    showTooltip:true
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
                 }
             },
             {
                 name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '구매단가', styleName: 'left-cell-text'}
-                , numberFormat: '#,##0', renderer:{
-                    showTooltip:true
+                , header: {text: '구매단가', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             },
             {
@@ -255,10 +255,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'number',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '판매단가', styleName: 'left-cell-text'}
+                header: {text: '판매단가', styleName: 'center-cell-text'}
                 ,
-                numberFormat: '#,##0', renderer:{
-                    showTooltip:true
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
                 }
             }
         ];
@@ -409,9 +409,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     //엑셀 업로드
-    excelImport(): void{
+    excelImport(): void {
         this._realGridsService.gfn_ExcelImportGrid('ITEM');
     }
+
     //엑셀 다운로드
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '픔목 내역');

@@ -6,27 +6,27 @@ import {
     OnInit,
     ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Order, OrderDetail, OrderDetailPagenation} from "../order.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
-import {OrderService} from "../order.service";
-import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
-import {FunctionService} from "../../../../../../@teamplat/services/function";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {ReportHeaderData} from "../../../../../../@teamplat/components/common-report/common-report.types";
-import {CommonReportComponent} from "../../../../../../@teamplat/components/common-report";
+} from '@angular/core';
+import {fuseAnimations} from '../../../../../../@teamplat/animations';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Order, OrderDetail, OrderDetailPagenation} from '../order.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
+import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CodeStore} from '../../../../../core/common-code/state/code.store';
+import {OrderService} from '../order.service';
+import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
+import {FunctionService} from '../../../../../../@teamplat/services/function';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
+import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
 
 @Component({
     selector: 'app-dms-order-detail',
@@ -146,7 +146,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.orderDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -157,54 +157,54 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주', styleName: 'left-cell-text'}
+                , header: {text: '발주', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '보유', styleName: 'left-cell-text'}
+                , header: {text: '보유', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '요청수량', styleName: 'left-cell-text'}
+                , header: {text: '요청수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'left-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poQty', fieldName: 'poQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주수량', styleName: 'left-cell-text'}
+                , header: {text: '발주수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주금액', styleName: 'left-cell-text'}
+                , header: {text: '발주금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
         //그리드 Provider
@@ -235,7 +235,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             deletable: true,
             checkable: true,
             softDeleting: true,
-            //hideDeletedRows: true,
         });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
@@ -270,7 +269,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     return {editable: true};
                 }
             } else {
-                //console.log(dataCell.dataColumn.renderer);
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
@@ -365,9 +363,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.orderDetailDataProvider);
 
         rows = rows.filter((detail: any) => (detail.qty > 0 && detail.flag === 'U'))
-            .map((param: any) => {
-                return param;
-            });
+            .map((param: any) => param);
 
         if (rows.length < 1) {
             this._functionService.cfn_alert('발주 수량이 존재하지 않습니다.');

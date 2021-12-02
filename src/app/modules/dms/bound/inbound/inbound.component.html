@@ -37,7 +37,7 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'status'">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'status'">
                                     <ng-container *ngFor="let status of status">
                                         <mat-option [value]="status.id">
                                             {{status.name}}
@@ -48,7 +48,7 @@
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select [formControlName]="'type'">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
                                     <ng-container *ngFor="let type of type">
                                         <mat-option [value]="type.id">
                                             {{type.name}}
@@ -127,7 +127,6 @@
                 </div>
             </div>
         </mat-drawer>
-
         <!-- Drawer content -->
         <mat-drawer-content class="flex flex-col">
             <!-- Main -->
@@ -207,11 +206,10 @@
                                                 </button>
                                             </div>
                                         </div>
-
                                         <div *ngIf="isSearchForm" class="flex w-full mt-1">
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>유형</mat-label>
-                                                <mat-select [formControlName]="'type'">
+                                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
                                                         <mat-option [value]="type.id">
                                                             {{type.name}}
@@ -221,7 +219,8 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>상태</mat-label>
-                                                <mat-select [formControlName]="'status'">
+                                                <mat-select (ngModelChange)="selectHeader()"
+                                                            [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
                                                             {{status.name}}
@@ -247,15 +246,12 @@
                                             </mat-form-field>
                                         </div>
                                     </form>
-
                                 </div>
-
                             </div>
                         </div>
                         <div *ngIf="!isMobile"
                              class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
                             <!-- Actions -->
-                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
                                     class="mediro-btn-custom"
@@ -272,7 +268,6 @@
                                     <img src="assets/images/excel/excel_down.png">
                                 </button>
                             </div>
-                            <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button
                                     class="ml-2 mediro-btn-custom mediro-custom-accent"
@@ -300,16 +295,12 @@
                                     <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                                     <span class="ml-2 mr-1">취소</span>
                                 </button>
-
                             </div>
-
                         </div>
-
                         <!-- Main -->
                         <div
                             class="realgrid"
                             id="inBoundHeaderGrid">
-
                         </div>
                         <mat-paginator
                             class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"

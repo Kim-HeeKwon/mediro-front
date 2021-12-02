@@ -28,8 +28,8 @@ import {
 import {EstimateService} from '../../../app/modules/dms/estimate-order/estimate/estimate.service';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
 import {MatPaginator} from '@angular/material/paginator';
-import {OrderDetail} from "../../../app/modules/dms/estimate-order/order/order.types";
-import {OrderService} from "../../../app/modules/dms/estimate-order/order/order.service";
+import {OrderDetail} from '../../../app/modules/dms/estimate-order/order/order.types';
+import {OrderService} from '../../../app/modules/dms/estimate-order/order/order.service';
 
 @Component({
     selector: 'app-common-report',
@@ -108,7 +108,6 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         private _popupService: CommonPopupService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _popupStore: PopupStore) {
-        //console.log(data.body);
         if (data.divisionText) {
             this.headerText = data.divisionText + '서';
             this.divisionText = data.divisionText;
@@ -150,105 +149,105 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         this.estimateCommonReportColumns = [
             {
                 name: 'qtLineNo', fieldName: 'qtLineNo', type: 'data', width: '50', styleName: 'left-cell-text'
-                , header: {text: '순번', styleName: 'left-cell-text'}
+                , header: {text: '순번', styleName: 'center-cell-text'}
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '180', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '180', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'left-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '견적금액', styleName: 'left-cell-text'}
+                , header: {text: '견적금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
 
         this.orderCommonReportColumns = [
             {
                 name: 'poLineNo', fieldName: 'poLineNo', type: 'data', width: '50', styleName: 'left-cell-text'
-                , header: {text: '순번', styleName: 'left-cell-text'}
+                , header: {text: '순번', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0',
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text'}
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '180', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '70', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'left-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '70', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'left-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '발주', styleName: 'left-cell-text'}
+                , header: {text: '발주', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '보유', styleName: 'left-cell-text'}
+                , header: {text: '보유', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '요청수량', styleName: 'left-cell-text'}
+                , header: {text: '요청수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'left-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poQty', fieldName: 'poQty', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '발주수량', styleName: 'left-cell-text'}
+                , header: {text: '발주수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'left-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '70', styleName: 'right-cell-text'
-                , header: {text: '발주금액', styleName: 'left-cell-text'}
+                , header: {text: '발주금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'left-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}
             },
         ];
 
@@ -401,6 +400,4 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         window.print();
         document.body.innerHTML = originalContents;
     }
-
-
 }
