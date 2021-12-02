@@ -32,7 +32,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     orderBy: any = 'asc';
     stocks$: Observable<Stock[]>;
@@ -66,8 +66,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'acceptableQty', dataType: ValueType.NUMBER},
         {fieldName: 'unusedQty', dataType: ValueType.NUMBER},
         {fieldName: 'safetyQty', dataType: ValueType.NUMBER},
+        {fieldName: 'longterm', dataType: ValueType.TEXT},
         {fieldName: 'longtermQty', dataType: ValueType.NUMBER},
-        {fieldName: 'longterm', dataType: ValueType.TEXT}
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -103,27 +103,75 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             searchCondition: ['100'],
             searchText: [''],
         });
+        const columnLayout = [
+            'itemCd',
+            'itemNm',
+            'itemGrade',
+            {
+                name: 'stockGroup',
+                direction: 'horizontal',
+                items: [
+                    {
+                        name: 'stockO',
+                        direction: 'horizontal',
+                        items: [
+                            'poQty',
+                            'availQty'
+                        ],
+                        header: {
+                            text: '주문 가능',
+                        }
+                    },
+                    {
+                        name: 'stockX',
+                        direction: 'horizontal',
+                        items: [
+                            'acceptableQty',
+                            'unusedQty',
+                        ],
+                        header: {
+                            text: '주문 불가능',
+                        }
+                    },
+                ],
+                header: {
+                    text: '재고 현황',
+                }
+            },
+            'safetyQty',
+            {
+                name: 'long',
+                direction: 'horizontal',
+                items: [
+                    'longterm',
+                    'longtermQty'
+                ],
+                header: {
+                    text: '장기재고',
+                }
+            },
+        ];
 
         //그리드 컬럼
         this.stockColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '160', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'left-cell-text'},
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '160', styleName: 'center-cell-text'
+                , header: {text: '품목코드', styleName: 'center-cell-text'},
                 renderer: {
                     'type': 'link',
                     'baseUrl': '#'
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'left-cell-text'},
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'center-cell-text'
+                , header: {text: '품목명', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'left-cell-text'},
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'center-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
                 lookupDisplay: true, renderer:{
@@ -136,7 +184,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '발주', styleName: 'left-cell-text'}
+                header: {text: '발주', styleName: 'center-cell-text'}
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
@@ -147,7 +195,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '보유', styleName: 'left-cell-text'}
+                header: {text: '보유', styleName: 'center-cell-text'}
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
@@ -158,14 +206,14 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '가납', styleName: 'left-cell-text'}
+                header: {text: '가납', styleName: 'center-cell-text'}
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             {
                 name: 'unusedQty', fieldName: 'unusedQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '불용', styleName: 'left-cell-text'}
+                , header: {text: '불용', styleName: 'center-cell-text'}
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
@@ -177,14 +225,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '안전재고', styleName: 'left-cell-text'}
-                , numberFormat : '#,##0', renderer:{
-                    showTooltip:true
-                }
-            },
-            {
-                name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '장기재고', styleName: 'left-cell-text'}
+                header: {text: '안전재고', styleName: 'center-cell-text'}
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
@@ -194,11 +235,19 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 fieldName: 'longterm',
                 type: 'data',
                 width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '기간', styleName: 'left-cell-text'}, renderer:{
+                styleName: 'center-cell-text',
+                header: {text: '기간', styleName: 'center-cell-text'}, renderer:{
                     showTooltip:true
                 }
-            }
+            },
+            {
+                name: 'longtermQty', fieldName: 'longtermQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '장기재고', styleName: 'center-cell-text'}
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+
         ];
 
         this.stockDataProvider = this._realGridsService.gfn_CreateDataProvider();
@@ -219,7 +268,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             'stock',
             this.stockColumns,
             this.stockFields,
-            gridListOption);
+            gridListOption,
+            columnLayout);
 
         this.gridList.setEditOptions({
             readOnly: true,
@@ -247,6 +297,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.orderBy = 'asc';
             }
         };
+        //페이지 라벨
+        this._paginator._intl.itemsPerPageLabel = '';
 
        this.setGridData();
         this._stockService.stockPagenation$
@@ -354,7 +406,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._stockService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        this._stockService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
         this.setGridData();
     }
     setGridData(): void {

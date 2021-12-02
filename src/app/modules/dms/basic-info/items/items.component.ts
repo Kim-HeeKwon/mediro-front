@@ -398,7 +398,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectHeader(): void {
-        this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
+        this._itemService.getItems(0, 20, 'itemNm', 'asc', this.searchForm.getRawValue());
         this.setGridData();
     }
 

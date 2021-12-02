@@ -39,12 +39,15 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/member-ordering,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any): RealGrid.GridView{
+    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any, columnLayout?: any): RealGrid.GridView{
         const gridView = new RealGrid.GridView(id);
         gridView.setDataSource(dataProvider);
 
         dataProvider.setFields(fields);
         gridView.setColumns(columns);
+        if(columnLayout){
+            gridView.setColumnLayout(columnLayout);
+        }
         gridView.displayOptions.emptyMessage = '표시할 데이터가 없습니다.';
 
         gridView.footers.visible = false;

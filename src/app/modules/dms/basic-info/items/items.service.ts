@@ -81,7 +81,7 @@ export class ItemsService {
      *
      * @returns
      */
-    getItems(page: number = 0, size: number = 10, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getItems(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
         const searchParam = {};
