@@ -488,7 +488,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     inBoundConfirm() {
-        this.isProgressSpinner = true;
+        // this.isProgressSpinner = true;
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         const ibType = this.inBoundHeaderForm.controls['type'].value;
         if (ibStatus !== 'N' && ibStatus !== 'P') {
@@ -560,6 +560,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                                 conf.afterClosed()
                                     .pipe(takeUntil(this._unsubscribeAll))
                                     .subscribe((rtn) => {
+                                        this.isProgressSpinner = false;
                                         if (rtn) {
                                             this.inBoundDetailConfirm(inBoundDataFilter);
                                         }
@@ -583,6 +584,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     confirmation.afterClosed()
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((result) => {
+                            this.isProgressSpinner = false;
                             if (result) {
                                 this.inBoundDetailConfirm(inBoundData);
                             }
