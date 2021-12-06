@@ -261,11 +261,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         });
         this.gridList.setPasteOptions({
             enabled: true,
+            startEdit: false,
             commitEdit: true,
             checkReadOnly: true
         });
         this.gridList.editOptions.commitByCell = true;
-        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);

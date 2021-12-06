@@ -156,8 +156,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '견적금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
+                , numberFormat: '#,##0'},
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '비고', styleName: 'center-cell-text'}
