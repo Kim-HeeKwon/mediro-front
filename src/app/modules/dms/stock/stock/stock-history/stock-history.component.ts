@@ -13,12 +13,11 @@ import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.ty
 import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
 
 @Component({
-    selector       : 'dms-stock-history',
-    templateUrl    : 'stock-history.component.html',
-    styleUrls      : ['stock-history.component.scss'],
+    selector: 'dms-stock-history',
+    templateUrl: 'stock-history.component.html',
+    styleUrls: ['stock-history.component.scss'],
 })
-export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
-{
+export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     stockHistoryPagenation: StockHistoryPagenation | null = null;
     isProgressSpinner: boolean = false;
     @ViewChild(MatPaginator) private _stockHistoryPagenator: MatPaginator;
@@ -46,16 +45,17 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'creUser', dataType: ValueType.TEXT}
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         private _realGridsService: FuseRealGridService,
         private _stockService: StockService,
         public matDialogRef: MatDialogRef<StockHistoryComponent>,
         private _codeStore: CodeStore,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _utilService: FuseUtilsService)
-    {
-        this.chgType = _utilService.commonValue(_codeStore.getValue().data,'INV_CHG_TYPE');
+        private _utilService: FuseUtilsService) {
+        this.chgType = _utilService.commonValue(_codeStore.getValue().data, 'INV_CHG_TYPE');
     }
+
     ngOnInit(): void {
         const values = [];
         const lables = [];
@@ -65,29 +65,61 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         });
         //그리드 컬럼
         this.stockHistoryColumns = [
-            {name: 'creDate', fieldName: 'creDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '일자', styleName: 'left-cell-text'}},
-            {name: 'chgType', fieldName: 'chgType', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유형' , styleName: 'left-cell-text'},
+            {
+                name: 'creDate', fieldName: 'creDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'chgType', fieldName: 'chgType', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '유형', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
-                lookupDisplay: true
+                lookupDisplay: true,
+                renderer: {
+                    showTooltip: true
+                }
             },
-            {name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text',
-                header: {text: '수량', styleName: 'left-cell-text'},
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text',
+                header: {text: '수량', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
             },
-            {name: 'chgReason', fieldName: 'chgReason', type: 'data', width: '120', styleName: 'left-cell-text', header: {text: '사유' , styleName: 'left-cell-text'},
+            {
+                name: 'chgReason',
+                fieldName: 'chgReason',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '사유', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
             },
-            {name: 'creUser', fieldName: 'creUser', type: 'data', width: '160', styleName: 'left-cell-text', header: {text: '아이디' , styleName: 'left-cell-text'}},
+            {
+                name: 'creUser',
+                fieldName: 'creUser',
+                type: 'data',
+                width: '160',
+                styleName: 'left-cell-text',
+                header: {text: '아이디', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
-        this.stockHistoryProvider =  this._realGridsService.gfn_CreateDataProvider();
+        this.stockHistoryProvider = this._realGridsService.gfn_CreateDataProvider();
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : false,
-            footers : false,
+            stateBar: false,
+            checkBar: false,
+            footers: false,
         };
 
         this.stockHistoryProvider.setOptions({
@@ -120,7 +152,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stockHistoryPagenation: StockHistoryPagenation) => {
                 // Update the pagination
-                if(stockHistoryPagenation !== null){
+                if (stockHistoryPagenation !== null) {
                     this.stockHistoryPagenation = stockHistoryPagenation;
                 }
                 // Mark for check
@@ -135,26 +167,26 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stocks: any) => {
                 // Update the pagination
-                if(stock !== null){
+                if (stock !== null) {
                     stock = stocks;
                 }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-        if(stock === null){
+        if (stock === null) {
             stock = {};
         }
-            merge(this._stockHistoryPagenator.page).pipe(
-                switchMap(() => {
-                    this.isLoading = true;
-                    // eslint-disable-next-line max-len
-                    return this._stockService.getStockHistory(this._stockHistoryPagenator.pageIndex, this._stockHistoryPagenator.pageSize, 'seq', this.orderBy, stock);
-                }),
-                map(() => {
-                    this.isLoading = false;
-                })
-            ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
-        }
+        merge(this._stockHistoryPagenator.page).pipe(
+            switchMap(() => {
+                this.isLoading = true;
+                // eslint-disable-next-line max-len
+                return this._stockService.getStockHistory(this._stockHistoryPagenator.pageIndex, this._stockHistoryPagenator.pageSize, 'seq', this.orderBy, stock);
+            }),
+            map(() => {
+                this.isLoading = false;
+            })
+        ).pipe(takeUntil(this._unsubscribeAll)).subscribe();
+    }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
@@ -162,12 +194,13 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit
         this._unsubscribeAll.complete();
         this._realGridsService.gfn_Destory(this.gridList, this.stockHistoryProvider);
     }
+
     selectStockHistory(): void {
         this.stockHistorys$ = this._stockService.stockHistorys$;
         this._stockService.stockHistorys$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((stockHistory: any) => {
-                if(stockHistory !== null){
+                if (stockHistory !== null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, stockHistory);
                 }
 

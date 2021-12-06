@@ -1,6 +1,18 @@
 /* Variables */
 $body-cell-padding: 2px;
 
+@media(max-width: 577px) {
+    .range {
+        width: 100%;
+    }
+    .start,
+    .end {
+        width: 50%;
+    }
+    .date {
+        margin: auto;
+    }
+}
 fuse-date-range {
     display: flex;
 
@@ -37,7 +49,7 @@ fuse-date-range {
 
             .date {
                 //font-size: 12px;
-                white-space: nowrap;
+                white-space: nowrap;ㅋ
 
                 + .time {
                     margin-left: 8px;

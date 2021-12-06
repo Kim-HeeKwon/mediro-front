@@ -45,6 +45,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
     );
     selection = new SelectionModel<any>(true, []);
     isLoading: boolean = false;
+    isProgressSpinner: boolean = false;
     searchForm: FormGroup;
     inboundDetailsCount: number = 0;
     inBoundDetails$ = new Observable<InBoundDetails[]>();

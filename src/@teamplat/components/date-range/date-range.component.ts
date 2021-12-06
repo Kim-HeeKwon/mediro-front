@@ -6,7 +6,7 @@ import { MatCalendarCellCssClasses, MatMonthView } from '@angular/material/datep
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import {DeviceDetectorService} from "ngx-device-detector";
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector     : 'fuse-date-range',

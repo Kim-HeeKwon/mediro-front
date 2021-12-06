@@ -428,7 +428,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
             let detailCheck = false;
 
-            if (rows.length === 0) {
+            if (rows.length === 0 && this.inBoundHeaderForm.getRawValue().remarkHeader === '') {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }
@@ -488,7 +488,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     inBoundConfirm() {
-        // this.isProgressSpinner = true;
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         const ibType = this.inBoundHeaderForm.controls['type'].value;
         if (ibStatus !== 'N' && ibStatus !== 'P') {
@@ -560,7 +559,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                                 conf.afterClosed()
                                     .pipe(takeUntil(this._unsubscribeAll))
                                     .subscribe((rtn) => {
-                                        this.isProgressSpinner = false;
+                                        this.isProgressSpinner = true;
                                         if (rtn) {
                                             this.inBoundDetailConfirm(inBoundDataFilter);
                                         }
@@ -625,6 +624,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
      */
 
     inBoundDetailConfirm(sendData: InBound[]): void {
+        this.isProgressSpinner = false;
         if (sendData) {
             this._inboundService.inBoundDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))

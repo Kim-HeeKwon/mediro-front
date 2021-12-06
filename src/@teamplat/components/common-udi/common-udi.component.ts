@@ -180,6 +180,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     select(): void{
+        this.isProgressSpinner = true;
         // @ts-ignore
         this.searchForm.patchValue({'url': this.url});
         this.searchForm.patchValue({'mediroUrl': this.mediroUrl});
@@ -188,7 +189,6 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
         this._udiService.getStatus$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((status: any) => {
-                this.isProgressSpinner = true;
                 if(status !== null){
                     this.isProgressSpinner = false;
                     // this._functionService.cfn_alertSelectMessage(status);
@@ -206,7 +206,6 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                 .subscribe((getList: any) => {
                     // Update the counts
                     if(getList !== null){
-                        this.isProgressSpinner = true;
                         rowData = getList;
                     }
 
@@ -220,6 +219,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._udiService.mergeAccount(rowData)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((salesOrder: any) => {
+                            this.isProgressSpinner = true;
                             this._functionService.cfn_alertCheckMessage(salesOrder);
                             // Mark for check
                             this._changeDetectorRef.markForCheck();

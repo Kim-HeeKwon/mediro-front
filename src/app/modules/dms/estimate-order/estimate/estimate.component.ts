@@ -334,7 +334,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isSearchForm = true;
         this.searchSetValue();
         this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
-
         this.setGridData();
     }
 
@@ -568,18 +567,18 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this._estimateService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'qtNo', this.orderBy, this.searchForm.getRawValue());
     }
 
+    // @ts-ignore
     setGridData(): void {
-
         this.estimateHeaders$ = this._estimateService.estimateHeaders$;
         this._estimateService.estimateHeaders$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((estimateHeaders: any) => {
+                const estimate = estimateHeaders;
                 // Update the counts
                 if (estimateHeaders !== null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.estimateHeaderDataProvider, estimateHeaders);
                 }
                 // Mark for check
-                this._changeDetectorRef.markForCheck();
             });
     }
 
@@ -608,8 +607,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                this.isProgressSpinner = true;
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -630,7 +629,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                             return;
                         });
                 } else {
-                    this.isProgressSpinner = false;
                     this.selectHeader();
                 }
             });
@@ -663,8 +661,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                this.isProgressSpinner = true;
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -685,7 +683,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                             return;
                         });
                 } else {
-                    this.isProgressSpinner = false;
                     this.selectHeader();
                 }
             });

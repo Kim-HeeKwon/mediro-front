@@ -353,7 +353,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 header: this.reportHeaderData,
                 body: estimateDetailData,
                 tail: '',
-                estimate: true,
             },
             autoFocus: false,
             maxHeight: '100vh',
@@ -386,7 +385,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let detailCheck = false;
 
-            if (rows.length === 0 && this.estimateHeaderForm.getRawValue().email === '') {
+            if (rows.length === 0 && this.estimateHeaderForm.getRawValue().email === ''
+                && this.estimateHeaderForm.getRawValue().remarkHeader === '') {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }

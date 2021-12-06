@@ -409,7 +409,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let detailCheck = false;
 
-            if (rows.length === 0) {
+            if (rows.length === 0 && this.outBoundHeaderForm.getRawValue().remarkHeader === '') {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
             }
@@ -518,7 +518,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     popup.afterClosed().subscribe((result) => {
                         if (result) {
                             if (result !== undefined) {
-
                                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                                 for (let i = 0; i < result.length; i++) {
                                     outBoundDataFilter.push(result[i]);
@@ -562,6 +561,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
+                    this.isProgressSpinner = true;
                     this.outBoundDetailConfirm(outBoundData);
                 }
             });
@@ -572,7 +572,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      * @param sendData
      */
     outBoundDetailConfirm(sendData: OutBound[]): void {
-        this.isProgressSpinner = true;
+        this.isProgressSpinner = false;
         if (sendData) {
             const rows = this.headerDataSet(sendData);
             this._outboundService.outBoundDetailConfirm(rows)

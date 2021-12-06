@@ -228,7 +228,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
-        this.isProgressSpinner = false;
         if(param.status !== 'SUCCESS'){
             this.alert = {
                 type   : 'error',
@@ -245,6 +244,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             this.showAlert = true;
             this._accountService.getAccount(0,10,'account','asc','');
         }
+        this.isProgressSpinner = false;
     }
 
     accountCreate(): void
@@ -265,7 +265,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
                 type   : 'error',
                 message: '사업자 번호와 거래처 명, 유형을 입력해주세요.'
             };
-
+            this.isProgressSpinner = false;
             // Show the alert
             this.showAlert = true;
         }

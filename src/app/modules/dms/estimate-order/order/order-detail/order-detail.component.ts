@@ -460,7 +460,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: this.reportHeaderData,
                 body: orderDetailData,
                 tail: '',
-                order: true,
             },
             autoFocus: false,
             maxHeight: '100vh',
@@ -491,7 +490,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
             let detailCheck = false;
 
-            if (rows.length === 0) {
+            if (rows.length === 0 &&
+                this.orderHeaderForm.getRawValue().email === ''
+                && this.orderHeaderForm.getRawValue().remarkHeader === '') {
                 this._functionService.cfn_alert('안전재고 수량을 입력해주세요.');
                 detailCheck = true;
             }

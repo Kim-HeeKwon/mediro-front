@@ -29,7 +29,57 @@
         </button>
     </div>
     <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
-
+        <!--        &lt;!&ndash; Date &ndash;&gt;-->
+        <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [matDatepicker]="picker1">-->
+        <!--                <mat-datepicker-toggle-->
+        <!--                    matSuffix-->
+        <!--                    [for]="picker1"></mat-datepicker-toggle>-->
+        <!--                <mat-datepicker #picker1></mat-datepicker>-->
+        <!--            </mat-form-field>-->
+        <!--            <div class=""> - </div>-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [matDatepicker]="picker2">-->
+        <!--                <mat-datepicker-toggle-->
+        <!--                    matSuffix-->
+        <!--                    [for]="picker2"></mat-datepicker-toggle>-->
+        <!--                <mat-datepicker #picker2></mat-datepicker>-->
+        <!--            </mat-form-field>-->
+        <!--        </div>-->
+        <!--        &lt;!&ndash; Actions &ndash;&gt;-->
+        <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">-->
+        <!--            &lt;!&ndash; Search &ndash;&gt;-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+        <!--                <mat-icon-->
+        <!--                    matPrefix-->
+        <!--                    [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [formControl]="searchInputControl"-->
+        <!--                    [autocomplete]="'off'"-->
+        <!--                    [placeholder]="'상품검색'">-->
+        <!--            </mat-form-field>-->
+        <!--            &lt;!&ndash; Add product button &ndash;&gt;-->
+        <!--            <button-->
+        <!--                class="ml-4"-->
+        <!--                mat-flat-button-->
+        <!--                [color]="'primary'">-->
+        <!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+        <!--                <span class="ml-2 mr-1">조회</span>-->
+        <!--            </button>-->
+        <!--            <button-->
+        <!--                class="ml-4"-->
+        <!--                mat-flat-button-->
+        <!--                [color]="'accent'">-->
+        <!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+        <!--                <span class="ml-2 mr-1">신규등록</span>-->
+        <!--            </button>-->
+        <!--        </div>-->
     </div>
 
     <div style="padding: 2em" id="printPage">
@@ -83,14 +133,157 @@
             </tr>
             </tbody>
         </table>
-<!--        <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">-->
 
-            <div
-                class="realgrid-Report"
-                id="estimateCommonReportGrid">
-            </div>
-<!--        </div>-->
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
+            <tr style="background-color: lightgray; text-align: center; font-weight: bold;">
+                <td style="border: solid 1px">순번</td>
+                <td style="border: solid 1px">품목</td>
+                <td style="border: solid 1px">규격</td>
+                <td style="border: solid 1px">단위</td>
+                <td style="border: solid 1px">수량</td>
+                <td style="border: solid 1px">단가</td>
+                <td style="border: solid 1px">공급가액</td>
+                <!--<td style="border: solid 1px">세액</td>-->
+                <td style="border: solid 1px">비고</td>
+            </tr>
+            <tbody *ngFor="let row of detail; let i=dataIndex;">
+
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">{{row.no}}</td>
+                <td style="border: solid 1px;">{{row.itemNm}}</td>
+                <td style="border: solid 1px;">{{row.standard}}</td>
+                <td style="border: solid 1px;">{{row.unit}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.qty)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.unitPrice)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.totalAmt)}}</td>
+                <!--<td style="border: solid 1px;text-align: right;padding-right: 5px;">{{this.priceToString(row.taxAmt)}}</td>-->
+                <td style="border: solid 1px;padding-left: 2px;">{{row.remark}}</td>
+            </tr>
+            </tbody>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px; background-color: lightgray; font-weight: bold;" colspan="4">합 &nbsp;&nbsp;&nbsp;&nbsp; 계</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(qty)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(unitPrice)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(totalAmt)}}</td>
+                <!--<td style="border: solid 1px;text-align: right;padding-right: 5px;">{{this.priceToString(taxAmt)}}</td>-->
+                <td style="border: solid 1px"></td>
+            </tr>
+
+            <!--<tbody>
+            <tr style="background-color: lightgray; text-align: center; font-weight: bold;">
+                <td style="border: solid 1px">순번</td>
+                <td style="border: solid 1px">품목</td>
+                <td style="border: solid 1px">규격</td>
+                <td style="border: solid 1px">수량</td>
+                <td style="border: solid 1px">단가</td>
+                <td style="border: solid 1px">공급가액</td>
+                <td style="border: solid 1px">세액</td>
+                <td style="border: solid 1px">비고</td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">1</td>
+                <td style="border: solid 1px">밴드</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">1,000</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">3</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">4</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">5</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">6</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">7</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">8</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr><tr style="text-align: center;">
+                <td style="border: solid 1px">9</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: solid 1px">10</td>
+                <td style="border: solid 1px">카테터</td>
+                <td style="border: solid 1px">PKG</td>
+                <td style="border: solid 1px">2</td>
+                <td style="border: solid 1px">2,000</td>
+                <td style="border: solid 1px">3,000</td>
+                <td style="border: solid 1px">200</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+
+
+            </tbody>-->
+        </table>
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
             <tbody>
             <tr style="text-align: center; padding:5px;">
                 <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납기일자</td>
@@ -98,6 +291,12 @@
                 <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납품장소</td>
                 <td style="border: solid 1px; padding:5px;" colspan="3">{{reportHeaderData.deliveryAddress}}</td>
             </tr>
+            <!--<tr style="text-align: center; padding:5px;">
+                <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">유효일자</td>
+                <td style="border: solid 1px" colspan="3">카테터</td>
+                <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">결제조건</td>
+                <td style="border: solid 1px" colspan="3">2</td>
+            </tr>-->
             <tr style="text-align: center;">
                 <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">비고</td>
                 <td style="border: solid 1px" colspan="7">{{reportHeaderData.remark}} </td>
@@ -105,4 +304,109 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Main -->
+    <!--    <ngx-datatable-->
+    <!--        class="bootstrap bg-transparent"-->
+    <!--        [rows]="items"-->
+    <!--        [columnMode]="ColumnMode.force"-->
+    <!--        [headerHeight]="60"-->
+    <!--        [limit]="10"-->
+    <!--        [rowHeight]="62"-->
+    <!--        [scrollbarV]="true"-->
+    <!--        [scrollbarH]="true"-->
+    <!--        [selected]="selected"-->
+    <!--        [selectionType]="SelectionType.checkbox"-->
+    <!--        [displayCheck]="displayCheck"-->
+    <!--        (select)="onSelect($event)"-->
+    <!--        (activate)="onActivate($event)"-->
+    <!--        [footerHeight]="50">-->
+    <!--        <ngx-datatable-column-->
+    <!--            [width]="30"-->
+    <!--            [sortable]="false"-->
+    <!--            [canAutoResize]="false"-->
+    <!--            [draggable]="false"-->
+    <!--            [resizeable]="false"-->
+    <!--            [headerCheckboxable]="true"-->
+    <!--            [checkboxable]="true"-->
+    <!--        >-->
+    <!--        </ngx-datatable-column>-->
+    <!--        <ngx-datatable-column prop="name" name="이름" [width]="120">-->
+    <!--            <ng-template let-value="value" ngx-datatable-cell-template>-->
+    <!--                <strong (click)="tblClick(value)">{{ value }}</strong>-->
+    <!--            </ng-template>-->
+    <!--        </ngx-datatable-column>-->
+    <!--        <ngx-datatable-column prop="sku" name="주문자" [width]="100">-->
+    <!--        </ngx-datatable-column>-->
+    <!--        <ngx-datatable-column prop="price" name="상품명" [width]="340"></ngx-datatable-column>-->
+    <!--    </ngx-datatable>-->
+
+    <!--        <ngx-datatable-->
+    <!--            class="bootstrap"-->
+    <!--            [rows]="items"-->
+    <!--            columnMode="force"-->
+    <!--            [headerHeight]="50"-->
+    <!--            [footerHeight]="50"-->
+    <!--            [rowHeight]="50"-->
+    <!--            [scrollbarV]="true"-->
+    <!--            [scrollbarH]="true"-->
+    <!--        >-->
+    <!--                    <ngx-datatable-column-->
+    <!--                        [width]="30"-->
+    <!--                        [sortable]="false"-->
+    <!--                        [canAutoResize]="false"-->
+    <!--                        [draggable]="false"-->
+    <!--                        [resizeable]="false"-->
+    <!--                        [headerCheckboxable]="true"-->
+    <!--                        [checkboxable]="true"-->
+    <!--                    >-->
+    <!--                    </ngx-datatable-column>-->
+    <!--                    <ngx-datatable-column prop="name" name="이름" [width]="120">-->
+    <!--                        <ng-template let-value="value" ngx-datatable-cell-template>-->
+    <!--                            <strong (click)="tblClick(value)">{{ value }}</strong>-->
+    <!--                        </ng-template>-->
+    <!--                    </ngx-datatable-column>-->
+    <!--                    <ngx-datatable-column prop="sku" name="주문자" [width]="100">-->
+    <!--                    </ngx-datatable-column>-->
+    <!--                    <ngx-datatable-column prop="price" name="상품명" [width]="340"></ngx-datatable-column>-->
+    <!--        </ngx-datatable>-->
+
+
+    <!--    <div class="custom-datatable">-->
+    <!--        <ngx-datatable-->
+    <!--            class="bootstrap min-w-320 bg-transparent"-->
+    <!--            style="height: 80vh;"-->
+    <!--            [rows]="items"-->
+    <!--            [columnMode]="ColumnMode.force"-->
+    <!--            [headerHeight]="45"-->
+    <!--            [limit]="10"-->
+    <!--            [rowHeight]="50"-->
+    <!--            [scrollbarV]="true"-->
+    <!--            [scrollbarH]="true"-->
+    <!--            [selected]="selected"-->
+    <!--            [selectionType]="SelectionType.checkbox"-->
+    <!--            [displayCheck]="displayCheck"-->
+    <!--            (select)="onSelect($event)"-->
+    <!--            (activate)="onActivate($event)"-->
+    <!--            [footerHeight]="45">-->
+    <!--            <ngx-datatable-column-->
+    <!--                [width]="30"-->
+    <!--                [sortable]="false"-->
+    <!--                [canAutoResize]="false"-->
+    <!--                [draggable]="false"-->
+    <!--                [resizeable]="false"-->
+    <!--                [headerCheckboxable]="false"-->
+    <!--                [checkboxable]="true"-->
+    <!--            >-->
+    <!--            </ngx-datatable-column>-->
+    <!--            <ngx-datatable-column prop="name" name="이름" [width]="120">-->
+    <!--                <ng-template let-value="value" ngx-datatable-cell-template>-->
+    <!--                    <strong (click)="tblClick(value)">{{ value }}</strong>-->
+    <!--                </ng-template>-->
+    <!--            </ngx-datatable-column>-->
+    <!--            <ngx-datatable-column prop="sku" name="주문자" [width]="100">-->
+    <!--            </ngx-datatable-column>-->
+    <!--            <ngx-datatable-column prop="price" name="상품명" [width]="340"></ngx-datatable-column>-->
+    <!--        </ngx-datatable>-->
+    <!--    </div>-->
 </div>

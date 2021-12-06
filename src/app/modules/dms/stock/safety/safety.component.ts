@@ -107,15 +107,21 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
-                lookupDisplay: true,
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'},
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'},
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'safetyQty',
@@ -124,7 +130,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '120',
                 styleName: 'right-cell-text',
                 header: {text: '안전재고수량', styleName: 'center-cell-text'},
-                numberFormat: '#,##0'
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'availQty',
@@ -133,7 +141,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '120',
                 styleName: 'right-cell-text',
                 header: {text: '보유', styleName: 'center-cell-text'},
-                numberFormat: '#,##0'
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'poQty',
@@ -142,7 +152,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '120',
                 styleName: 'right-cell-text',
                 header: {text: '발주대상수량', styleName: 'center-cell-text'},
-                numberFormat: '#,##0',
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
         ];
         this.safetyDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
@@ -249,7 +261,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         merge(this._paginator.page).pipe(
             switchMap(() =>
                 // eslint-disable-next-line max-len
-                 this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue())
+                this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue())
             ),
             map(() => {
             })
