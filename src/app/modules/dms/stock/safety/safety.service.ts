@@ -51,7 +51,7 @@ export class SafetyService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ safetyPagenation: SafetyPagenation; safety: Safety[] }> {
+        Promise<{ safetyPagenation: SafetyPagenation; safety: Safety[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -77,7 +77,7 @@ export class SafetyService{
                     if (response.status === 'SUCCESS') {
                         this._safetys.next(response.data);
                         this._safetyPagenation.next(response.pageNation);
-                        resolve(this._safetys);
+                        resolve({safety: response.data, safetyPagenation: response.pageNation});
                     }
                 }, reject);
         });

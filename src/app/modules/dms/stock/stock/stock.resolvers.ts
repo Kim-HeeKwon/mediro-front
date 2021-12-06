@@ -27,7 +27,7 @@ export class StockResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._stockService.getHeader()
+                //this._stockService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

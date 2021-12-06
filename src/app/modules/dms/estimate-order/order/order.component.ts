@@ -228,7 +228,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._orderService.getHeader(this.orderHeaderPagenation.page, this.orderHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    const rtn = this._orderService.getHeader(this.orderHeaderPagenation.page, this.orderHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -306,8 +307,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        this._orderService.getHeader(0, 20, 'poNo', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._orderService.getHeader(0, 20, 'poNo', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     orderNew(): void {
@@ -535,7 +537,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._orderService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'poNo', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._orderService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'poNo', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -543,4 +546,23 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectHeader();
         }
     }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderHeaderDataProvider, ex.orderHeader);
+            this._orderService.orderHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((orderHeaderPagenation: OrderHeaderPagenation) => {
+                    // Update the pagination
+                    this.orderHeaderPagenation = orderHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.orderHeader.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

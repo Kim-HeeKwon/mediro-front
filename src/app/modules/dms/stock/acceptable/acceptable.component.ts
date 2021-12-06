@@ -13,6 +13,8 @@ import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {AcceptableService} from './acceptable.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {ValidityPagenation} from "../validity/validity.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-app-acceptable',
@@ -58,6 +60,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         private _matDialog: MatDialog,
         private _acceptableService: AcceptableService,
         private _formBuilder: FormBuilder,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,
@@ -177,7 +180,8 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._acceptableService.getHeader(this.acceptablePagenation.page, this.acceptablePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._acceptableService.getHeader(this.acceptablePagenation.page, this.acceptablePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -232,8 +236,9 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._acceptableService.getHeader(0, 20, 'accountNm', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._acceptableService.getHeader(0, 20, 'accountNm', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -244,10 +249,29 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._acceptableService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'accountNm', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._acceptableService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'accountNm', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '가납재고 목록');
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.acceptableDataProvider, ex.acceptable);
+            this._acceptableService.acceptablePagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((acceptablePagenation: AcceptablePagenation) => {
+                    // Update the pagination
+                    this.acceptablePagenation = acceptablePagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.acceptable.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

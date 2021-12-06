@@ -24,6 +24,8 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {MatSort} from '@angular/material/sort';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
+import {AccountPagenation} from "../account/account.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-app-items',
@@ -74,10 +76,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     itemsFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
-        {fieldName: 'unit', dataType: ValueType.TEXT},
-        {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'taxGbn', dataType: ValueType.TEXT},
         {fieldName: 'buyPrice', dataType: ValueType.NUMBER},
@@ -91,6 +93,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _route: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _matDialog: MatDialog,
+        private _functionService: FunctionService,
         private _deviceService: DeviceDetectorService,
         private _utilService: FuseUtilsService,
         private _codeStore: CodeStore,
@@ -181,6 +184,26 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
+                name: 'standard',
+                fieldName: 'standard',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'unit',
+                fieldName: 'unit',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '등급', styleName: 'center-cell-text'},
                 values: itemGradesvalues,
@@ -199,26 +222,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 values: udiYnvalues,
                 labels: udiYnlables,
                 lookupDisplay: true, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'unit',
-                fieldName: 'unit',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'standard',
-                fieldName: 'standard',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -305,9 +308,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-            }
-            ;
+                const rtn = this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
+            };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -378,10 +381,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      * SearchItem
      */
     searchItem(): void {
-        this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
-
-        this._router.navigate(['.'], {relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
+        const rtn = this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
+        //this._router.navigate(['.'], {relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
     }
 
     setGridData(): void {
@@ -398,8 +401,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectHeader(): void {
-        this._itemService.getItems(0, 20, 'itemNm', 'asc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._itemService.getItems(0, 20, 'itemNm', 'asc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -452,6 +456,25 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'items', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'items', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemsDataProvider, ex.products);
+            this._itemService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inventoryPagination: InventoryPagination) => {
+                    // Update the pagination
+                    this.pagenation = inventoryPagination;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.products.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

@@ -52,6 +52,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
+    itemGrades: CommonCode[] = null;
     filterList: string[];
     estimateHeaderForm: FormGroup;
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
@@ -69,6 +70,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'qtPrice', dataType: ValueType.NUMBER},
         {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
@@ -94,6 +96,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_STATUS', this.filterList);
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -116,32 +119,47 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             active: [false]  // cell상태
         });
 
+        const valuesItemGrades = [];
+        const lablesItemGrades = [];
+        this.itemGrades.forEach((param: any) => {
+            valuesItemGrades.push(param.id);
+            lablesItemGrades.push(param.name);
+        });
+
         //페이지 라벨
         this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
         this.estimateDetailColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit'
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade'
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'}
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                values: valuesItemGrades,
+                labels: lablesItemGrades,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.itemGrades),
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
@@ -215,7 +233,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //console.log(dataCell.item.rowState); // 추가 , 삭제, 수정 변경시
-            if (dataCell.dataColumn.fieldName === 'itemCd') {
+            if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'standard' ||
+                dataCell.dataColumn.fieldName === 'unit' ||
+                dataCell.dataColumn.fieldName === 'itemGrade') {
                 return {editable: false};
             } else {
                 return {editable: true};
@@ -245,7 +267,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
     addRow(): void {
 
         const values = [
-            '', '', '', '', '', 0, 0, 0, ''
+            '', '', '', '', '', '', 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);

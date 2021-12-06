@@ -12,6 +12,7 @@ import {ValidityService} from './validity.service';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-app-validity',
@@ -63,6 +64,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         private _utilService: FuseUtilsService,
         private _router: Router,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _functionService: FunctionService,
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,) {
         this.validity = _utilService.commonValue(_codeStore.getValue().data, 'INV_VALIDITY');
@@ -243,7 +245,8 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -265,8 +268,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._validityService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._validityService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     setGridData(): void {
@@ -284,7 +288,8 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     excelExport(): void {
@@ -295,5 +300,23 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         if (event.keyCode === 13) {
             this.selectHeader();
         }
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, ex.validity);
+            this._validityService.validityPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((validityPagenation: ValidityPagenation) => {
+                    // Update the pagination
+                    this.validityPagenation = validityPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.validity.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

@@ -12,6 +12,7 @@ import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimat
 export class CommonExcelService{
 
     private _rtnList: BehaviorSubject<any> = new BehaviorSubject(null);
+
     /**
      * Constructor
      */
@@ -26,7 +27,7 @@ export class CommonExcelService{
     }
     // eslint-disable-next-line @typescript-eslint/naming-convention
     getExcelTransaction(excelJson, excelType, isProgressSpinner):
-        Observable<any>{
+        Promise<any>{
 
         const searchParam = {};
         searchParam['order'] = '';
@@ -61,5 +62,23 @@ export class CommonExcelService{
 
 
         });
+    }
+
+    /**
+     * Create
+     */
+    dataUpload(data: any): Observable<any>
+    {
+        return this.rtnList$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(data, 'v1/api/common/excel/dataUpload').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

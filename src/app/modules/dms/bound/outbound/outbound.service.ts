@@ -112,7 +112,7 @@ export class OutboundService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'obNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ outBoundHeaderPagenation: OutBoundHeaderPagenation; outBoundHeader: OutBoundHeader[] }> {
+        Promise<{ outBoundHeaderPagenation: OutBoundHeaderPagenation; outBoundHeader: OutBoundHeader[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -145,7 +145,7 @@ export class OutboundService{
                     if (response.status === 'SUCCESS') {
                         this._outBoundHeaders.next(response.data);
                         this._outBoundHeaderPagenation.next(response.pageNation);
-                        resolve(this._outBoundHeaders);
+                        resolve({outBoundHeader: response.data, outBoundHeaderPagenation: response.pageNation});
                     }
                 }, reject);
         });

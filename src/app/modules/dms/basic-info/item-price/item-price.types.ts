@@ -6,6 +6,9 @@ export interface ItemPrice
     accountNm: string;          //거래처명
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    standard: string;           //규격
+    unit: string;               //단위
+    itemGrade: string;          //품목등급
     type: string;               //유형
     unitPrice: number;          //단가
     effectiveDate?: string;     //적용일자

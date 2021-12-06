@@ -1,7 +1,7 @@
 import {
     AfterViewInit,
     ChangeDetectionStrategy, ChangeDetectorRef,
-    Component,
+    Component, ElementRef,
     Inject,
     OnDestroy,
     OnInit, ViewChild,
@@ -21,6 +21,9 @@ import {MatPaginator} from "@angular/material/paginator";
 import * as XLSX from 'xlsx';
 import {CommonExcelService} from "./common-excel.service";
 import {takeUntil} from "rxjs/operators";
+import {TeamPlatConfirmationService} from "../../services/confirmation";
+import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
+import {FunctionService} from "../../services/function";
 
 @Component({
     selector: 'app-common-excel',
@@ -45,15 +48,20 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
     excelColumns: any[] = [];
     commonValues: any[] = [];
     pagenation: any | null = null;
+    dataRows: any;
+    @ViewChild('fileInput')
+    myInputVariable: ElementRef;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
         public _matDialogRef: MatDialogRef<CommonExcelComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _realGridsService: FuseRealGridService,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _formBuilder: FormBuilder,
         private _excelService: CommonExcelService,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _popupStore: PopupStore) {
         this.jsonData = data.jsonData;
@@ -88,7 +96,6 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
 
-        this.excelFields.push('lineNo');
         if(this.displayedColumns){
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for(let i=0; i<this.displayedColumns.length; i++){
@@ -96,9 +103,6 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.excelFields.push({fieldName: this.displayedColumns[i], dataType: ValueType.TEXT});
             }
         }
-        this.excelColumns.push({name: 'lineNo', fieldName: 'lineNo', type: 'data'
-            , width: '80', styleName: 'left-cell-text'
-            , header: {text: '라인번호', styleName: 'left-cell-text'}});
         if(this.commonValues){
             this.commonValues.forEach((param: any) => {
 
@@ -117,6 +121,8 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.excelFields.push('errMsg');
         this.excelFields.push('errCode');
+        this.excelFields.push('uploadKey');
+        this.excelFields.push('lineNo');
 
         //그리드 Provider
         this.excelDataProvider = this._realGridsService.gfn_CreateDataProvider();
@@ -179,7 +185,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    excelImport(files: FileList) {
+    excelSelect(files: FileList) {
         //console.log(files);
         const file = files[0];
         if(typeof file === 'undefined'){
@@ -191,6 +197,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
         const reader = new FileReader();
 
         let jsonObj;
+
         //let isProgressSpinner = this.isProgressSpinner;
         const excelService = this._excelService;
         const excelType = this.excelType;
@@ -259,18 +266,80 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
         }else{
             reader.readAsArrayBuffer(file);
         }
+        this.myInputVariable.nativeElement.value = '';
         this._excelService.rtnList$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((rtnList: any) => {
                 // Update the counts
                 if(rtnList != null){
                     if(rtnList.status === 'SUCCESS'){
-                        console.log(rtnList.data);
                         this._realGridsService.gfn_DataSetGrid(this.gridList, this.excelDataProvider, rtnList.data);
                         // Mark for check
                         this._changeDetectorRef.markForCheck();
                     }
                 }
             });
+    }
+
+    excelImport(): void {
+
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.excelDataProvider);
+
+        if(rows.length > 0){
+            console.log(rows);
+
+            const confirmation = this._teamPlatConfirmationService.open({
+                title: '',
+                message: '업로드하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    const sendData = this.headerDataSet(rows);
+
+                    this._excelService.dataUpload(sendData)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((a: any) => {
+                            this.isProgressSpinner = true;
+                            this.alertMessage(a);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    /* 트랜잭션 전 data Set
+     * @param sendData
+     */
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    headerDataSet(sendData: any) {
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i = 0; i < sendData.length; i++) {
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            sendData[i].excelType = this.excelType;
+        }
+        return sendData;
+    }
+
+
+    alertMessage(param: any): void {
+        if (param.status !== 'SUCCESS') {
+            this._functionService.cfn_alert(param.msg);
+        } else {
+            this._matDialogRef.close();
+        }
     }
 }

@@ -27,7 +27,7 @@ export class BillResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._billService.getHeader()
+                //this._billService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

@@ -25,7 +25,7 @@ export class SafetyResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._safetyService.getHeader()
+                //this._safetyService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

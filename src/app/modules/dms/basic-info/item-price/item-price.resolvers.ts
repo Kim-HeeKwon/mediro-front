@@ -27,7 +27,7 @@ export class ItemPriceResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._itemPriceService.getHeader()
+                //this._itemPriceService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

@@ -350,8 +350,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     select(): void {
         this.searchSetValue();
-        this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
 
@@ -495,8 +496,11 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     //페이징
     pageEvent($event: PageEvent): void {
 
+        //this.isProgressSpinner = true;
         this.searchSetValue();
-        this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
+        //this.isProgressSpinner = false;
     }
 
     enter(event): void {
@@ -546,5 +550,23 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 smallDialogSubscription.unsubscribe();
             });
         }
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.managesDataProvider, ex.manages);
+            this._managesService.managesPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((managesPagenation: ManagesPagenation) => {
+                    // Update the pagination
+                    this.managesPagenation = managesPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.manages.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

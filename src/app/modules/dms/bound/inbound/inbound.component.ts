@@ -230,7 +230,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._inBoundService.getHeader(this.inBoundHeaderPagenation.page, this.inBoundHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    const rtn = this._inBoundService.getHeader(this.inBoundHeaderPagenation.page, this.inBoundHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -308,8 +309,9 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        this._inBoundService.getHeader(0, 20, 'ibNo', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._inBoundService.getHeader(0, 20, 'ibNo', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     inBoundNew(): void {
@@ -482,7 +484,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._inBoundService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'ibNo', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._inBoundService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'ibNo', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -490,4 +493,22 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectHeader();
         }
     }
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.inBoundHeaderDataProvider, ex.inBoundHeader);
+            this._inBoundService.inBoundHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBoundHeaderPagenation: InBoundHeaderPagenation) => {
+                    // Update the pagination
+                    this.inBoundHeaderPagenation = inBoundHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.inBoundHeader.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

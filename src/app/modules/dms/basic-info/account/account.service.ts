@@ -48,7 +48,7 @@ export class AccountService {
      * @returns
      */
     getAccount(page: number = 0, size: number = 20, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
-        Observable<{ pagenation: AccountPagenation; account: AccountData[] }> {
+        Promise<{ pagenation: AccountPagenation; account: AccountData[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -74,7 +74,7 @@ export class AccountService {
                     if(response.status === 'SUCCESS'){
                         this._accounts.next(response.data);
                         this._pagenation.next(response.pageNation);
-                        resolve(this._accounts);
+                        resolve({account: response.data, pagenation: response.pageNation});
                     }
                 }, reject);
         });

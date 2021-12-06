@@ -7,6 +7,7 @@ export interface SalesOrder
     itemCd: string;
     itemNm: string;
     standard: string;
+    itemGrade: string;
     unit: string;
     reqQty: number;
     qty: number;
@@ -62,6 +63,7 @@ export interface SalesOrderDetail
     itemNm: string;
     standard: string;
     unit: string;
+    itemGrade: string;
     reqQty: number;
     qty: number;
     poReqQty?: number;

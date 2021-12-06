@@ -50,7 +50,7 @@ export class AcceptableService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ acceptablePagenation: AcceptablePagenation; safety: Acceptable[] }> {
+        Promise<{ acceptablePagenation: AcceptablePagenation; acceptable: Acceptable[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -76,7 +76,7 @@ export class AcceptableService{
                     if (response.status === 'SUCCESS') {
                         this._acceptables.next(response.data);
                         this._acceptablePagenation.next(response.pageNation);
-                        resolve(this._acceptables);
+                        resolve({acceptable: response.data, acceptablePagenation: response.pageNation});
                     }
                 }, reject);
         });

@@ -66,9 +66,9 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'ibLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
-        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'ibExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
@@ -155,7 +155,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.inBoundDetailColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
@@ -163,12 +163,20 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
-                            'standard:standard|unit:unit'
+                            'standard:standard|unit:unit|itemGrade:itemGrade'
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}
+            },
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'}
+            },
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'}
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
@@ -176,15 +184,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status),
-            },
-            {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
-            },
-            {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                editor: this._realGridsService.gfn_ComboBox(this.itemGrades),
             },
             {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'

@@ -27,7 +27,7 @@ export class TaxResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._taxService.getHeader()
+                //this._taxService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

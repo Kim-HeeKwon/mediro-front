@@ -25,7 +25,7 @@ export class AcceptableResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._acceptableService.getHeader()
+                //this._acceptableService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

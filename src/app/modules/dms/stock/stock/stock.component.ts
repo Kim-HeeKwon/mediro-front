@@ -22,6 +22,7 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-app-stock',
@@ -60,6 +61,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     stockFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'poQty', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
@@ -77,6 +80,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         private _stockService: StockService,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -106,6 +110,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         const columnLayout = [
             'itemCd',
             'itemNm',
+            'standard',
+            'unit',
             'itemGrade',
             {
                 name: 'stockGroup',
@@ -155,7 +161,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.stockColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '160', styleName: 'center-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'},
                 renderer: {
                     'type': 'link',
@@ -163,8 +169,22 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '160', styleName: 'center-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }
@@ -288,7 +308,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._stockService.getHeader(this.stockPagenation.page, this.stockPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._stockService.getHeader(this.stockPagenation.page, this.stockPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -406,8 +427,9 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._stockService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._stockService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
     setGridData(): void {
         this.stocks$ = this._stockService.stocks$;
@@ -430,10 +452,30 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stock', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stock', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '재고 목록');
     }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockDataProvider, ex.stock);
+            this._stockService.stockPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((stockPagenation: StockPagenation) => {
+                    // Update the pagination
+                    this.stockPagenation = stockPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.stock.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

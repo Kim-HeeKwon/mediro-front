@@ -36,6 +36,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     searchForm: FormGroup;
     taxGbn: CommonCode[] = null;
     type: CommonCode[] = null;
+    itemGrades: CommonCode[] = [];
     billColumns: Columns[];
     bills$: Observable<Bill[]>;
     isSearchForm: boolean = false;
@@ -61,6 +62,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'toAccountNm', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'type', dataType: ValueType.TEXT},
         {fieldName: 'taxGbn', dataType: ValueType.TEXT},
         {fieldName: 'billingQty', dataType: ValueType.NUMBER},
@@ -86,6 +90,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly breakpointObserver: BreakpointObserver) {
         this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
         this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -120,6 +125,13 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         this.taxGbn.forEach((param: any) => {
             valuesTaxGbn.push(param.id);
             lablesTaxGbn.push(param.name);
+        });
+
+        const values = [];
+        const lables = [];
+        this.itemGrades.forEach((param: any) => {
+            values.push(param.id);
+            lables.push(param.name);
         });
 
         //그리드 컬럼
@@ -176,6 +188,29 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
+                }
+            },
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'center-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
                 }
             },
             {
@@ -278,7 +313,8 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._billService.getHeader(this.billPagenation.page, this.billPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    const rtn = this._billService.getHeader(this.billPagenation.page, this.billPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -347,9 +383,10 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
+        const rtn = this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
 
-        this.setGridData();
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     searchFormClick(): void {
@@ -368,7 +405,8 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._billService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'billing', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._billService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'billing', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -452,5 +490,23 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this._changeDetectorRef.markForCheck();
         this.selectHeader();
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.billDataProvider, ex.bill);
+            this._billService.billPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((billPagenation: BillPagenation) => {
+                    // Update the pagination
+                    this.billPagenation = billPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.bill.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

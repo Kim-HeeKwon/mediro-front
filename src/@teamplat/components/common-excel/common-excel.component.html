@@ -34,11 +34,14 @@
 <!--                    [color]="'primary'">-->
 <!--                    <img src="assets/images/excel/excel_upload.png">-->
 <!--                </button>-->
-                <label class="upload-btn-label" for="input-files">
-                    <span>엑셀 업로드</span>
-                </label>
-                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"
-                       (change)="excelImport(fileInput.files)" #fileInput>
+
+                <button
+                    class="ml-2 mediro-btn-custom"
+                    mat-stroked-button
+                    [color]="'primary'"
+                    (click)="excelImport()">
+                    <img src="assets/images/excel/excel_upload.png">
+                </button>
                 <button
                     class="ml-2 mediro-btn-custom"
                     mat-stroked-button
@@ -46,6 +49,13 @@
                     (click)="excelExport()">
                     <img src="assets/images/excel/excel_down.png">
                 </button>
+                <label class="ml-2 upload-btn-label" for="input-files">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                </label>
+                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"
+                       (change)="excelSelect(fileInput.files)" #fileInput>
             </div>
 
         </div>

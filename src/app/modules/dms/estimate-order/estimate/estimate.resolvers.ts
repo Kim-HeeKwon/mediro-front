@@ -28,7 +28,7 @@ export class EstimateResolvers implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
             Promise.all([
-                this._estimateService.getHeader()
+                //this._estimateService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

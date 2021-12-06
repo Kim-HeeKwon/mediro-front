@@ -26,7 +26,7 @@ export class InboundResolver implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._inboundService.getHeader()
+                //this._inboundService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

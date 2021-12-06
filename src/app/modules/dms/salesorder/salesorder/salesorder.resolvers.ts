@@ -28,7 +28,7 @@ export class SalesorderResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._salesorderService.getHeader()
+                //this._salesorderService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

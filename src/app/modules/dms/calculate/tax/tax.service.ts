@@ -83,7 +83,7 @@ export class TaxService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'invoice', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ invoiceHeaderPagenation: InvoiceHeaderPagenation; invoiceHeader: InvoiceHeader[] }> {
+        Promise<{ invoiceHeaderPagenation: InvoiceHeaderPagenation; invoiceHeader: InvoiceHeader[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -116,7 +116,7 @@ export class TaxService {
                     if (response.status === 'SUCCESS') {
                         this._invoiceHeaders.next(response.data);
                         this._invoiceHeaderPagenation.next(response.pageNation);
-                        resolve(this._invoiceHeaders);
+                        resolve({invoiceHeader: response.data, invoiceHeaderPagenation: response.pageNation});
                     }
                 }, reject);
         });

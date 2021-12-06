@@ -281,7 +281,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._estimateService.getHeader(this.estimateHeaderPagenation.page, this.estimateHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    const rtn = this._estimateService.getHeader(this.estimateHeaderPagenation.page, this.estimateHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -333,8 +334,9 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     estimateNew(): void {
@@ -567,7 +569,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._estimateService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'qtNo', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._estimateService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'qtNo', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     // @ts-ignore
@@ -696,4 +699,23 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectHeader();
         }
     }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.estimateHeaderDataProvider, ex.estimateHeader);
+            this._estimateService.estimateHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimateHeaderPagenation: EstimateHeaderPagenation) => {
+                    // Update the pagination
+                    this.estimateHeaderPagenation = estimateHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.estimateHeader.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

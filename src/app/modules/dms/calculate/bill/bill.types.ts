@@ -11,6 +11,10 @@ export interface Bill
     type: string;
     status: string;
     itemCd: string;
+    itemNm: string;
+    standard: string;
+    unit: string;
+    itemGrade: string;
     taxGbn: string;
     billingQty: number;
     billingAmt: number;

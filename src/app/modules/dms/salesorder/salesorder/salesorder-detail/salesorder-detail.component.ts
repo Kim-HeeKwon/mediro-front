@@ -47,6 +47,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     type: CommonCode[] = null;
     status: CommonCode[] = null;
+    itemGrades: CommonCode[] = null;
     filterList: string[];
     estimateHeader: any;
     estimateDetail: any;
@@ -67,6 +68,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'poReqQty', dataType: ValueType.NUMBER},
         {fieldName: 'invQty', dataType: ValueType.NUMBER},
         {fieldName: 'reqQty', dataType: ValueType.NUMBER},
@@ -95,6 +97,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'SO_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'SO_STATUS', this.filterList);
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -128,10 +131,16 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         //페이지 라벨
         this._salesorderDetailPagenator._intl.itemsPerPageLabel = '';
 
+        const valuesItemGrades = [];
+        const lablesItemGrades = [];
+        this.itemGrades.forEach((param: any) => {
+            valuesItemGrades.push(param.id);
+            lablesItemGrades.push(param.name);
+        });
         //그리드 컬럼
         this.salesorderDetailColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
@@ -139,21 +148,29 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
-                            'standard:standard|unit:unit|unitPrice:salesPrice|' +
+                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice|' +
                             'poReqQty:poQty|invQty:availQty'
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}
             },
             {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'}
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'}
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                values: valuesItemGrades,
+                labels: lablesItemGrades,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.itemGrades),
             },
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
@@ -242,7 +259,8 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
-                    dataCell.dataColumn.fieldName === 'unit') {
+                    dataCell.dataColumn.fieldName === 'unit' ||
+                    dataCell.dataColumn.fieldName === 'itemGrade') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -252,7 +270,8 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
-                    dataCell.dataColumn.fieldName === 'unit') {
+                    dataCell.dataColumn.fieldName === 'unit' ||
+                    dataCell.dataColumn.fieldName === 'itemGrade') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
@@ -334,7 +353,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     addRow(): void {
         const values = [
-            '', '', '', '', '', 0, 0, 0, 0, 0, 0, ''
+            '', '', '', '', '', '', 0, 0, 0, 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.salesorderDetailDataProvider, values);

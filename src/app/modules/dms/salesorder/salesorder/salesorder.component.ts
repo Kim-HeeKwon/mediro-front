@@ -240,7 +240,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (clickData.cellType !== 'head') {
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._salesorderService.getHeader(this.salesorderHeaderPagenation.page, this.salesorderHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    const rtn = this._salesorderService.getHeader(this.salesorderHeaderPagenation.page, this.salesorderHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -317,8 +318,9 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        this._salesorderService.getHeader(0, 20, 'soNo', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._salesorderService.getHeader(0, 20, 'soNo', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     salesorderNew(): void {
@@ -478,7 +480,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._salesorderService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'soNo', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._salesorderService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'soNo', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -486,4 +489,23 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectHeader();
         }
     }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.salesorderHeaderDataProvider, ex.salesorderHeader);
+            this._salesorderService.salesorderHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((salesorderHeaderPagenation: SalesOrderHeaderPagenation) => {
+                    // Update the pagination
+                    this.salesorderHeaderPagenation = salesorderHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.salesorderHeader.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

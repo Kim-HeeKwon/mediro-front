@@ -80,7 +80,7 @@ export class SalesorderService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'soNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ salesorderHeaderPagenation: SalesOrderHeaderPagenation; salesorderHeader: SalesOrderHeader[] }> {
+        Promise<{ salesorderHeaderPagenation: SalesOrderHeaderPagenation; salesorderHeader: SalesOrderHeader[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -112,7 +112,7 @@ export class SalesorderService {
                     if (response.status === 'SUCCESS') {
                         this._salesorderHeaders.next(response.data);
                         this._salesorderHeaderPagenation.next(response.pageNation);
-                        resolve(this._salesorderHeaders);
+                        resolve({salesorderHeader: response.data, salesorderHeaderPagenation: response.pageNation});
                     }
                 }, reject);
         });

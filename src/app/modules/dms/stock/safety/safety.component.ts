@@ -234,7 +234,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._safetyService.getHeader(this.safetyPagenation.page, this.safetyPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._safetyService.getHeader(this.safetyPagenation.page, this.safetyPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -289,8 +290,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._safetyService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._safetyService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -301,7 +303,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._safetyService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     excelExport(): void {
@@ -357,5 +360,24 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     order(): void {
 
+    }
+
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.safetyDataProvider, ex.safety);
+            this._safetyService.safetyPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((safetyPagenation: SafetyPagenation) => {
+                    // Update the pagination
+                    this.safetyPagenation = safetyPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.safety.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

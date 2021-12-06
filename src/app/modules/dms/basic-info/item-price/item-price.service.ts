@@ -70,7 +70,7 @@ export class ItemPriceService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ itemPricePagenation: ItemPricePagenation; itemPrice: ItemPrice[] }> {
+        Promise<{ itemPricePagenation: ItemPricePagenation; itemPrice: ItemPrice[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -96,7 +96,7 @@ export class ItemPriceService{
                     if (response.status === 'SUCCESS') {
                         this._itemPrices.next(response.data);
                         this._itemPricePagenation.next(response.pageNation);
-                        resolve(this._itemPrices);
+                        resolve({itemPrice: response.data, itemPricePagenation: response.pageNation});
                     }
                 }, reject);
         });

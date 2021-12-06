@@ -1,7 +1,7 @@
 //$font-change: 'NanumBarunGothic', 'serif' !important; //나눔바른고딕
 //$font-change: 's-core-dream-regular' !important; //에스 코어 드림
-$font-change: Helvetica, '맑은 고딕', 'malgun gothic', 'Apple SD Gothic Neo', 'Apple SD 산돌고딕 Neo', 'Microsoft NeoGothic', 'Droid sans', sans-serif !important; // 애플 산돌고딕 네오 서체
-
+//$font-change: Helvetica, '맑은 고딕', 'malgun gothic', 'Apple SD Gothic Neo', 'Apple SD 산돌고딕 Neo', 'Microsoft NeoGothic', 'Droid sans', sans-serif !important; // 애플 산돌고딕 네오 서체
+$font-change: arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif;
 body {
     font-family: #{$font-change};
 }

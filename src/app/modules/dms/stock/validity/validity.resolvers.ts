@@ -26,7 +26,7 @@ export class ValidityResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._validityService.getHeader()
+                //this._validityService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore

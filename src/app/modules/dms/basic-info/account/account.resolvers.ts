@@ -28,7 +28,7 @@ export class AccountResolver implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._accountService.getAccount()
+                //this._accountService.getAccount()
             ]).then(
                 () => {
                     // @ts-ignore

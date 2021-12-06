@@ -68,7 +68,7 @@ export class ManagesService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 10, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{managesPagenation: ManagesPagenation; manages: Manages[] }> {
+        Promise<{managesPagenation: ManagesPagenation; manages: Manages[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -101,7 +101,7 @@ export class ManagesService {
                     if (response.status === 'SUCCESS') {
                         this._manages.next(response.data);
                         this._managesPagenation.next(response.pageNation);
-                        resolve(this._manages);
+                        resolve({manages: response.data, managesPagenation: response.pageNation});
                     }
                 }, reject);
         });

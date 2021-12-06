@@ -331,7 +331,8 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                 if(clickData.cellType !== 'head'){
                     this.searchSetValue();
                     // eslint-disable-next-line max-len
-                    this._taxService.getHeader(this.invoiceHeaderPagenation.page,this.invoiceHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                    const rtn = this._taxService.getHeader(this.invoiceHeaderPagenation.page,this.invoiceHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if(this.orderBy === 'asc'){
@@ -402,9 +403,10 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
 
         this.searchSetValue();
-        this._taxService.getHeader(0, 20, 'invoice', 'desc', this.searchForm.getRawValue());
+        const rtn = this._taxService.getHeader(0, 20, 'invoice', 'desc', this.searchForm.getRawValue());
 
-        this.setGridData();
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     searchFormClick(): void {
@@ -423,7 +425,8 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
 
         this.searchSetValue();
-        this._taxService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'invoice', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._taxService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'invoice', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
@@ -647,5 +650,23 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                     window.open(param.data[0].url, '상세 정보(' + invoiceHeader.invoice + ')','top=50,left=200,width=1100,height=700');
                 }
             });
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.invoiceHeaderDataProvider, ex.invoiceHeader);
+            this._taxService.invoiceHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((invoiceHeaderPagenation: InvoiceHeaderPagenation) => {
+                    // Update the pagination
+                    this.invoiceHeaderPagenation = invoiceHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.invoiceHeader.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

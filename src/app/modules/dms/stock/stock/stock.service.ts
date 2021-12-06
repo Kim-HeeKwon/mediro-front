@@ -87,7 +87,7 @@ export class StockService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ stockPagenation: StockPagenation; stock: Stock[] }> {
+        Promise<{ stockPagenation: StockPagenation; stock: Stock[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -113,7 +113,7 @@ export class StockService{
                     if (response.status === 'SUCCESS') {
                         this._stocks.next(response.data);
                         this._stockPagenation.next(response.pageNation);
-                        resolve(this._stocks);
+                        resolve({stock: response.data, stockPagenation: response.pageNation});
                     }
                 }, reject);
         });

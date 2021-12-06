@@ -54,7 +54,7 @@ export class BillService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'billing', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{billPagenation: BillPagenation; bill: Bill[] }> {
+        Promise<{billPagenation: BillPagenation; bill: Bill[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -87,7 +87,7 @@ export class BillService {
                     if (response.status === 'SUCCESS') {
                         this._bills.next(response.data);
                         this._billPagenation.next(response.pageNation);
-                        resolve(this._bills);
+                        resolve({bill: response.data, billPagenation: response.pageNation});
                     }
                 }, reject);
         });

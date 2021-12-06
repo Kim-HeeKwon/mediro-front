@@ -8,6 +8,7 @@ export interface Estimate
     itemNm: string;
     standard: string;
     unit: string;
+    itemGrade: string;
     qty: number;
     poReqQty?: number;
     invQty?: number;

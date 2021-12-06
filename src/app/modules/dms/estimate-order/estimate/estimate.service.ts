@@ -80,7 +80,7 @@ export class EstimateService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'qtNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ estimateHeaderPagenation: EstimateHeaderPagenation; estimateHeader: EstimateHeader[] }> {
+        Promise<{ estimateHeaderPagenation: EstimateHeaderPagenation; estimateHeader: EstimateHeader[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -114,7 +114,7 @@ export class EstimateService {
                     if (response.status === 'SUCCESS') {
                         this._estimateHeaders.next(response.data);
                         this._estimateHeaderPagenation.next(response.pageNation);
-                        resolve(this._estimateHeaders);
+                        resolve({estimateHeaderPagenation: response.pageNation , estimateHeader: response.data});
                     }
                 }, reject);
         });

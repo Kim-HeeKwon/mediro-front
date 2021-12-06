@@ -49,7 +49,7 @@ export class ValidityService{
      * @returns
      */
     getHeader(page: number = 0, size: number = 10, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{validityPagenation: ValidityPagenation; validity: Validity[] }> {
+        Promise<{validityPagenation: ValidityPagenation; validity: Validity[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -75,7 +75,7 @@ export class ValidityService{
                     if (response.status === 'SUCCESS') {
                         this._validitys.next(response.data);
                         this._validityPagenation.next(response.pageNation);
-                        resolve(this._validitys);
+                        resolve({validity: response.data, validityPagenation: response.pageNation});
                     }
                 }, reject);
         });

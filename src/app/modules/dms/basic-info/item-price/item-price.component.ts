@@ -26,6 +26,7 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {ItemPriceHistoryComponent} from './item-price-history/item-price-history.component';
 import {FunctionService} from '../../../../../@teamplat/services/function';
+import {InventoryPagination} from "../items/items.types";
 
 @Component({
     selector: 'dms-app-item-price',
@@ -48,6 +49,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     searchForm: FormGroup;
     itemPrices$: Observable<ItemPrice[]>;
     type: CommonCode[] = null;
+    itemGrades: CommonCode[] = [];
     orderBy: any = 'asc';
     searchCondition: CommonCode[] = [
         {
@@ -72,6 +74,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
+        {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER}
@@ -91,6 +96,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private readonly breakpointObserver: BreakpointObserver) {
         this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
+        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -114,6 +120,13 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.type.forEach((param: any) => {
             itemPricevalues.push(param.id);
             itemPricelables.push(param.name);
+        });
+
+        const itemGradesvalues = [];
+        const itemGradeslables = [];
+        this.itemGrades.forEach((param: any) => {
+            itemGradesvalues.push(param.id);
+            itemGradeslables.push(param.name);
         });
 
         //그리드 컬럼
@@ -152,6 +165,35 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '150',
                 styleName: 'left-cell-text',
                 header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'standard',
+                fieldName: 'standard',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'unit',
+                fieldName: 'unit',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '등급', styleName: 'center-cell-text'},
+                values: itemGradesvalues,
+                labels: itemGradeslables,
+                lookupDisplay: true, renderer: {
                     showTooltip: true
                 }
             },
@@ -229,7 +271,8 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._itemPriceService.getHeader(this.itemPricePagenation.page, this.itemPricePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._itemPriceService.getHeader(this.itemPricePagenation.page, this.itemPricePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -302,8 +345,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._itemPriceService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._itemPriceService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     newItemPrice(): void {
@@ -430,12 +474,31 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     selectClear() {
         this.selection.clear();
         this._changeDetectorRef.markForCheck();
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceDataProvider, ex.itemPrice);
+            this._itemPriceService.itemPricePagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((itemPricePagination: ItemPricePagenation) => {
+                    // Update the pagination
+                    this.itemPricePagenation = itemPricePagination;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.itemPrice.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
     }
 }

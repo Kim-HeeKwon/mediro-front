@@ -94,7 +94,7 @@ export class InboundService {
      * @returns
      */
     getHeader(page: number = 0, size: number = 20, sort: string = 'ibNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ inBoundHeaderPagenation: InBoundHeaderPagenation; inBoundHeader: InBoundHeader[] }> {
+        Promise<{ inBoundHeaderPagenation: InBoundHeaderPagenation; inBoundHeader: InBoundHeader[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -127,7 +127,7 @@ export class InboundService {
                     if (response.status === 'SUCCESS') {
                         this._inBoundHeaders.next(response.data);
                         this._inBoundHeaderPagenation.next(response.pageNation);
-                        resolve(this._inBoundHeaders);
+                        resolve({inBoundHeader: response.data, inBoundHeaderPagenation: response.pageNation});
                     }
                 }, reject);
         });

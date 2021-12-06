@@ -280,9 +280,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this._accountService.getAccount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-            }
-            ;
+                const rtn = this._accountService.getAccount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
+            };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -374,13 +374,15 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectAccount(): void {
-        this._accountService.getAccount(0, 20, 'account', 'asc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn =this._accountService.getAccount(0, 20, 'account', 'asc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'account', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'account', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     //엑셀 다운로드
@@ -424,8 +426,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        this._accountService.getAccount(0, 20, 'account', 'desc', this.searchForm.getRawValue());
-        this.setGridData();
+        const rtn = this._accountService.getAccount(0, 20, 'account', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 
     setGridData(): void {
@@ -496,4 +499,22 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
     }
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, ex.account);
+            this._accountService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((accountPagenation: AccountPagenation) => {
+                    // Update the pagination
+                    this.pagenation = accountPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.account.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+        });
+    }
+
 }

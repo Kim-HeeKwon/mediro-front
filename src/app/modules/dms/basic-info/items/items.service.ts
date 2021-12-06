@@ -82,7 +82,7 @@ export class ItemsService {
      * @returns
      */
     getItems(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
-        Observable<{ pagination: InventoryPagination; products: InventoryItem[] }>{
+        Promise<{ pagination: InventoryPagination; products: InventoryItem[] }>{
 
         const searchParam = {};
 
@@ -118,7 +118,7 @@ export class ItemsService {
                 .subscribe((response: any) => {
                     this._items.next(response.data);
                     this._pagination.next(response.pageNation);
-                    resolve(this._items);
+                    resolve({products: response.data, pagination: response.pageNation});
                 }, reject);
         });
     }

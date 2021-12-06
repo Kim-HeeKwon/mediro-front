@@ -4,9 +4,9 @@ export interface Stock
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
-    itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위
+    itemGrade: string;          //품목등급
     poQty: number;
     availQty: number;
     acceptableQty: number;

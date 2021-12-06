@@ -27,7 +27,7 @@ export class OutboundResolver implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._outboundService.getHeader()
+                //this._outboundService.getHeader()
             ]).then(
                 () => {
                     // @ts-ignore
