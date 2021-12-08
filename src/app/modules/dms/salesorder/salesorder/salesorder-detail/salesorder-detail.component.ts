@@ -386,10 +386,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
             let detailCheck = false;
 
-            if (rows.length === 0) {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
-                detailCheck = true;
-            }
+            // if(this.salesorderHeaderForm.untouched){
+            //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            //     detailCheck = true;
+            // }
             if (detailCheck) {
                 return;
             }
@@ -458,15 +458,42 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: SalesOrder[]) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.salesorderHeaderForm.controls['account'].value;
-            sendData[i].soNo = this.salesorderHeaderForm.controls['soNo'].value;
-            sendData[i].type = this.salesorderHeaderForm.controls['type'].value;
-            sendData[i].status = this.salesorderHeaderForm.controls['status'].value;
-            sendData[i].remarkHeader = this.salesorderHeaderForm.controls['remarkHeader'].value;
+        if(sendData.length === 0){
+            sendData.push({
+                account: this.salesorderHeaderForm.controls['account'].value,
+                soNo: this.salesorderHeaderForm.controls['soNo'].value,
+                type: this.salesorderHeaderForm.controls['type'].value,
+                status: this.salesorderHeaderForm.controls['status'].value,
+                remarkHeader: this.salesorderHeaderForm.controls['remarkHeader'].value,
+                email: '',
+                itemCd: '',
+                itemGrade: '',
+                itemNm: '',
+                mId: '',
+                obNo: '',
+                qty: 0,
+                remarkDetail: '',
+                reqQty: 0,
+                soAmt: 0,
+                soCreDate: '',
+                soDate: '',
+                soLineNo: 0,
+                standard: '',
+                unit: '',
+                unitPrice: 0
+            });
+        }else{
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < sendData.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                sendData[i].account = this.salesorderHeaderForm.controls['account'].value;
+                sendData[i].soNo = this.salesorderHeaderForm.controls['soNo'].value;
+                sendData[i].type = this.salesorderHeaderForm.controls['type'].value;
+                sendData[i].status = this.salesorderHeaderForm.controls['status'].value;
+                sendData[i].remarkHeader = this.salesorderHeaderForm.controls['remarkHeader'].value;
+            }
         }
+
         return sendData;
     }
 

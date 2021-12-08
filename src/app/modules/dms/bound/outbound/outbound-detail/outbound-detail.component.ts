@@ -409,10 +409,10 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let detailCheck = false;
 
-            if (rows.length === 0 && this.outBoundHeaderForm.getRawValue().remarkHeader === '') {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
-                detailCheck = true;
-            }
+            // if(this.outBoundHeaderForm.untouched){
+            //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            //     detailCheck = true;
+            // }
             if (detailCheck) {
                 return;
             }
@@ -455,20 +455,47 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: OutBound[], outBoundHeader?: any) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.outBoundHeaderForm.controls['account'].value;
-            sendData[i].address = this.outBoundHeaderForm.controls['address'].value;
-            sendData[i].obNo = this.outBoundHeaderForm.controls['obNo'].value;
-            sendData[i].type = this.outBoundHeaderForm.controls['type'].value;
-            sendData[i].status = this.outBoundHeaderForm.controls['status'].value;
-            sendData[i].dlvAccount = this.outBoundHeaderForm.controls['dlvAccount'].value;
-            sendData[i].dlvAddress = this.outBoundHeaderForm.controls['dlvAddress'].value;
-            sendData[i].dlvDate = this.outBoundHeaderForm.controls['dlvDate'].value;
-            sendData[i].remarkHeader = this.outBoundHeaderForm.controls['remarkHeader'].value;
+        if(sendData.length === 0){
+            sendData.push({
+                account: this.outBoundHeaderForm.controls['account'].value,
+                address: this.outBoundHeaderForm.controls['address'].value,
+                obNo: this.outBoundHeaderForm.controls['obNo'].value,
+                type: this.outBoundHeaderForm.controls['type'].value,
+                status: this.outBoundHeaderForm.controls['status'].value,
+                dlvAccount: this.outBoundHeaderForm.controls['dlvAccount'].value,
+                dlvAddress: this.outBoundHeaderForm.controls['dlvAddress'].value,
+                dlvDate: this.outBoundHeaderForm.controls['dlvDate'].value,
+                remarkHeader: this.outBoundHeaderForm.controls['remarkHeader'].value,
+                dlvAccountNm: '',
+                itemCd: '',
+                itemNm: '',
+                mId: '',
+                obCreDate: '',
+                obDate: '',
+                obExpQty: 0,
+                obLineNo: 0,
+                obQty: 0,
+                qty: 0,
+                remarkDetail: '',
+                udiYn: '',
+            });
+        }else{
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < sendData.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                sendData[i].account = this.outBoundHeaderForm.controls['account'].value;
+                sendData[i].address = this.outBoundHeaderForm.controls['address'].value;
+                sendData[i].obNo = this.outBoundHeaderForm.controls['obNo'].value;
+                sendData[i].type = this.outBoundHeaderForm.controls['type'].value;
+                sendData[i].status = this.outBoundHeaderForm.controls['status'].value;
+                sendData[i].dlvAccount = this.outBoundHeaderForm.controls['dlvAccount'].value;
+                sendData[i].dlvAddress = this.outBoundHeaderForm.controls['dlvAddress'].value;
+                sendData[i].dlvDate = this.outBoundHeaderForm.controls['dlvDate'].value;
+                sendData[i].remarkHeader = this.outBoundHeaderForm.controls['remarkHeader'].value;
 
+            }
         }
+
         return sendData;
     }
 

@@ -406,11 +406,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let detailCheck = false;
 
-            if (rows.length === 0 && this.estimateHeaderForm.getRawValue().email === ''
-                && this.estimateHeaderForm.getRawValue().remarkHeader === '') {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
-                detailCheck = true;
-            }
+            // if(this.estimateHeaderForm.untouched){
+            //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            //     detailCheck = true;
+            // }
+
             if (detailCheck) {
                 return;
             }
@@ -465,15 +465,41 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Estimate[]) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.estimateHeaderForm.controls['account'].value;
-            sendData[i].qtNo = this.estimateHeaderForm.controls['qtNo'].value;
-            sendData[i].type = this.estimateHeaderForm.controls['type'].value;
-            sendData[i].status = this.estimateHeaderForm.controls['status'].value;
-            sendData[i].email = this.estimateHeaderForm.controls['email'].value;
-            sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
+        if(sendData.length === 0){
+            sendData.push({
+                account: this.estimateHeaderForm.controls['account'].value,
+                qtNo: this.estimateHeaderForm.controls['qtNo'].value,
+                type: this.estimateHeaderForm.controls['type'].value,
+                status: this.estimateHeaderForm.controls['status'].value,
+                email: this.estimateHeaderForm.controls['email'].value,
+                remarkHeader: this.estimateHeaderForm.controls['remarkHeader'].value,
+                itemCd: '',
+                itemGrade: '',
+                itemNm: '',
+                mId: '',
+                qtAmt: 0,
+                qtCreDate: '',
+                qtDate: '',
+                qtLineNo: 0,
+                qtPrice: 0,
+                qty: 0,
+                remarkDetail: '',
+                soNo: '',
+                standard: '',
+                unit: '',
+            });
+
+        }else{
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < sendData.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                sendData[i].account = this.estimateHeaderForm.controls['account'].value;
+                sendData[i].qtNo = this.estimateHeaderForm.controls['qtNo'].value;
+                sendData[i].type = this.estimateHeaderForm.controls['type'].value;
+                sendData[i].status = this.estimateHeaderForm.controls['status'].value;
+                sendData[i].email = this.estimateHeaderForm.controls['email'].value;
+                sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
+            }
         }
         return sendData;
     }

@@ -81,7 +81,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             itemCd: [{value:'',disabled:true}], // 품목코드
             itemNm: ['', [Validators.required]], // 품목명
             itemGrade: [{value:'',disabled:true}], // 등급
-            udiYn: [{value:'',disabled:true}], // UDI 신고 대상 유무
+            udiYn: [{value:''}], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
@@ -105,7 +105,6 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
     // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures,@typescript-eslint/explicit-function-return-type
     updateItem() {
         const itemData = this.selectedItemsForm.getRawValue();
-        this.isProgressSpinner = true;
         this._itemService.updateItem(itemData)
             .subscribe(
                 (param: any) => {
@@ -145,11 +144,11 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             }),
             dismissible: true
         }).value);
-        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
+                    this.isProgressSpinner = true;
                     this._itemService.deleteItem(itemData)
                         .subscribe(
                             (param: any) => {

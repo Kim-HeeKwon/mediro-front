@@ -313,17 +313,19 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-
-        // Get the pagenation
-        this._estimateService.estimateHeaderPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((estimateHeaderPagenation: EstimateHeaderPagenation) => {
-                // Update the pagination
-                this.estimateHeaderPagenation = estimateHeaderPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        // // Get the pagenation
+        // this._estimateService.estimateHeaderPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((estimateHeaderPagenation: EstimateHeaderPagenation) => {
+        //         // Update the pagination
+        //         this.estimateHeaderPagenation = estimateHeaderPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     searchSetValue(): void {

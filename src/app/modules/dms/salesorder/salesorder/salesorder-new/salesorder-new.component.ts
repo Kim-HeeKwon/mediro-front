@@ -97,7 +97,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver) {
         this.filterList = ['ALL'];
-        this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'SO_TYPE', this.filterList);
+        this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'SO_TYPE', ['ALL', '2', '3', '5']);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'SO_STATUS', this.filterList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         if (this._router.getCurrentNavigation() !== (null && undefined)) {

@@ -125,7 +125,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                             'availQty'
                         ],
                         header: {
-                            text: '주문 가능',
+                            text: '가용',
                         }
                     },
                     {
@@ -136,7 +136,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                             'unusedQty',
                         ],
                         header: {
-                            text: '주문 불가능',
+                            text: '비가용',
                         }
                     },
                 ],
@@ -454,6 +454,10 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent($event: PageEvent): void {
         const rtn = this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stock', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
+    }
+
+    excelImport(): void {
+        this._realGridsService.gfn_ExcelImportGrid('STOCK');
     }
 
     excelExport(): void {

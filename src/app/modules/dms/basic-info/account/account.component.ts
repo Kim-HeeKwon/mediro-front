@@ -69,6 +69,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     accountFields: DataFieldObject[] = [
         {fieldName: 'account', dataType: ValueType.TEXT},
+        {fieldName: 'accountType', dataType: ValueType.TEXT},
         {fieldName: 'descr', dataType: ValueType.TEXT},
         {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'address', dataType: ValueType.TEXT},

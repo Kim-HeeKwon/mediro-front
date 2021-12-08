@@ -511,12 +511,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
             let detailCheck = false;
 
-            if (rows.length === 0 &&
-                this.orderHeaderForm.getRawValue().email === ''
-                && this.orderHeaderForm.getRawValue().remarkHeader === '') {
-                this._functionService.cfn_alert('안전재고 수량을 입력해주세요.');
-                detailCheck = true;
-            }
+            // if(this.orderHeaderForm.untouched){
+            //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            //     detailCheck = true;
+            // }
             if (detailCheck) {
                 return;
             }
@@ -562,16 +560,43 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Order[]) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.orderHeaderForm.controls['account'].value;
-            sendData[i].poNo = this.orderHeaderForm.controls['poNo'].value;
-            sendData[i].type = this.orderHeaderForm.controls['type'].value;
-            sendData[i].status = this.orderHeaderForm.controls['status'].value;
-            sendData[i].email = this.orderHeaderForm.controls['email'].value;
-            sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
+        if(sendData.length === 0){
+            sendData.push({
+                account: this.orderHeaderForm.controls['account'].value,
+                poNo: this.orderHeaderForm.controls['poNo'].value,
+                type: this.orderHeaderForm.controls['type'].value,
+                status: this.orderHeaderForm.controls['status'].value,
+                email: this.orderHeaderForm.controls['email'].value,
+                remarkHeader: this.orderHeaderForm.controls['remarkHeader'].value,
+                itemCd: '',
+                itemGrade: '',
+                itemNm: '',
+                mId: '',
+                poAmt: 0,
+                poCreDate: '',
+                poDate: '',
+                poLineNo: 0,
+                poQty: 0,
+                qty: 0,
+                remarkDetail: '',
+                reqQty: 0,
+                standard: '',
+                unit: '',
+                unitPrice: 0,
+            });
+        }else{
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < sendData.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                sendData[i].account = this.orderHeaderForm.controls['account'].value;
+                sendData[i].poNo = this.orderHeaderForm.controls['poNo'].value;
+                sendData[i].type = this.orderHeaderForm.controls['type'].value;
+                sendData[i].status = this.orderHeaderForm.controls['status'].value;
+                sendData[i].email = this.orderHeaderForm.controls['email'].value;
+                sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
+            }
         }
+
         return sendData;
     }
 

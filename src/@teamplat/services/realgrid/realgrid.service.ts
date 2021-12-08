@@ -189,7 +189,7 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_ExcelExportGrid(gridView: RealGrid.GridView, fileName?: string ): void{
+    gfn_ExcelExportGrid(gridView: RealGrid.GridView, fileName?: string, showColumns?: any, hideColumns?: any): void{
 
         if(fileName === undefined){
             fileName = 'Excel';
@@ -203,6 +203,9 @@ export class FuseRealGridService {
             fileName: fileName + '.xlsx',
             showProgress: true,
             compatibility: true,
+            showColumns: showColumns,
+            hideColumns: hideColumns,
+            applyDynamicStyles: true,
             sheetName: fileName,
             progressMessage: '엑셀 Export중입니다.',
             // exportGrids: [

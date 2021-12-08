@@ -91,15 +91,15 @@
         <!-- Drawer content -->
         <mat-drawer-content class="flex flex-col">
             <!-- Main -->
-            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-8">
                 <!-- Load settings panel -->
                 <div class="mt-8">
                     <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
                         <!-- Header -->
                         <div class="flex flex-col justify-between mediro-backcolor-custom">
-                            <div class="flex items-center justify-between px-12 pt-6 pb-2">
+                            <div class="flex items-center justify-between px-8 pt-4 pb-2">
                                 <!-- Add product button -->
-                                <div class="text-2xl tracking-tight">
+                                <div class="text-2xl tracking-tight text-17s text-bold-600">
                                     계약단가관리
                                     <fuse-user-help
                                         [helpCd]="'ITEMPRICE'"
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div *ngIf="!isMobile"
-                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-12 mediro-backcolor-custom">
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
                             <!-- 검색조건 -->
                             <div class="flex w-full mt-8 sm:mt-0 pb-4">
                                 <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
@@ -126,7 +126,7 @@
                                                 <form
                                                     [formGroup]="searchForm">
                                                     <mat-form-field
-                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"
+                                                        class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"
                                                         style="width: 174px">
                                                         <mat-label class="mediro-ft-label">유형</mat-label>
                                                         <mat-select (ngModelChange)="selectHeader()"
@@ -143,7 +143,7 @@
                                                     <mat-label class="mediro-ft-label">거래처 명</mat-label>
                                                     <input
                                                         matInput
-                                                        (window:keypress)="enter($event)"
+                                                        (window:onkeypress)="enter($event)"
                                                         [formControlName]="'accountNm'"
                                                         [autocomplete]="'off'">
                                                 </mat-form-field>
@@ -163,7 +163,7 @@
                         </div>
                         <!-- Actions -->
                         <div *ngIf="!isMobile"
-                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-6 px-12 mediro-backcolor-custom">
+                             class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-4 px-8 mediro-backcolor-custom">
                             <!-- Actions -->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                 <button

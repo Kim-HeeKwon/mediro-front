@@ -260,17 +260,19 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-
-        // Get the pagenation
-        this._outBoundService.outBoundHeaderPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((outBoundHeaderPagenation: OutBoundHeaderPagenation) => {
-                // Update the pagination
-                this.outBoundHeaderPagenation = outBoundHeaderPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        // // Get the pagenation
+        // this._outBoundService.outBoundHeaderPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((outBoundHeaderPagenation: OutBoundHeaderPagenation) => {
+        //         // Update the pagination
+        //         this.outBoundHeaderPagenation = outBoundHeaderPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     setGridData(): void {

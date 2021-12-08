@@ -251,17 +251,19 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-
-        // Get the pagenation
-        this._orderService.orderHeaderPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((orderHeaderPagenation: OrderHeaderPagenation) => {
-                // Update the pagination
-                this.orderHeaderPagenation = orderHeaderPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        // // Get the pagenation
+        // this._orderService.orderHeaderPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((orderHeaderPagenation: OrderHeaderPagenation) => {
+        //         // Update the pagination
+        //         this.orderHeaderPagenation = orderHeaderPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {

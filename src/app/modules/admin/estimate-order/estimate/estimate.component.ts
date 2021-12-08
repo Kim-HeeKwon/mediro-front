@@ -106,7 +106,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             end: [],
 
         });
-        this._estimateService.getHeader();
         // getHeader
         this.estimateHeaders$ = this._estimateService.estimateHeaders$;
         this._estimateService.estimateHeaders$

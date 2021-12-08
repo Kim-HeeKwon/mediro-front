@@ -428,10 +428,10 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
             let detailCheck = false;
 
-            if (rows.length === 0 && this.inBoundHeaderForm.getRawValue().remarkHeader === '') {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
-                detailCheck = true;
-            }
+            // if(this.inBoundHeaderForm.untouched){
+            //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            //     detailCheck = true;
+            // }
             if (detailCheck) {
                 return;
             }
@@ -474,15 +474,56 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: InBound[], inBoundHeader?: any) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < sendData.length; i++) {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            sendData[i].account = this.inBoundHeaderForm.controls['account'].value;
-            sendData[i].ibNo = this.inBoundHeaderForm.controls['ibNo'].value;
-            sendData[i].type = this.inBoundHeaderForm.controls['type'].value;
-            sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
-            sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;
-            sendData[i].remarkHeader = this.inBoundHeaderForm.controls['remarkHeader'].value;
+        if(sendData.length === 0){
+            sendData.push({
+                account: this.inBoundHeaderForm.controls['account'].value,
+                ibNo: this.inBoundHeaderForm.controls['ibNo'].value,
+                type: this.inBoundHeaderForm.controls['type'].value,
+                status: this.inBoundHeaderForm.controls['status'].value,
+                supplier: this.inBoundHeaderForm.controls['supplier'].value,
+                remarkHeader: this.inBoundHeaderForm.controls['remarkHeader'].value,
+                ibCreDate: '',
+                ibDate: '',
+                ibExpQty: 0,
+                ibLineNo: 0,
+                ibQty: 0,
+                itemCd: '',
+                itemGrade: '',
+                itemNm: '',
+                lot1: '',
+                lot10: '',
+                lot2: '',
+                lot3: '',
+                lot4: '',
+                lot5: '',
+                lot6: '',
+                lot7: '',
+                lot8: '',
+                lot9: '',
+                mId: '',
+                poLineNo: 0,
+                poNo: '',
+                qty: 0,
+                remarkDetail: '',
+                standard: '',
+                supplierNm: '',
+                totalAmt: 0,
+                udiYn: '',
+                unit: '',
+                unitPrice: 0,
+            });
+        }else{
+
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < sendData.length; i++) {
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                sendData[i].account = this.inBoundHeaderForm.controls['account'].value;
+                sendData[i].ibNo = this.inBoundHeaderForm.controls['ibNo'].value;
+                sendData[i].type = this.inBoundHeaderForm.controls['type'].value;
+                sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
+                sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;
+                sendData[i].remarkHeader = this.inBoundHeaderForm.controls['remarkHeader'].value;
+            }
         }
         return sendData;
     }

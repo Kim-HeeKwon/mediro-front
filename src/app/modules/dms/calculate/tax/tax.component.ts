@@ -402,6 +402,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectHeader(): void {
 
+        this.isSearchForm = true;
         this.searchSetValue();
         const rtn = this._taxService.getHeader(0, 20, 'invoice', 'desc', this.searchForm.getRawValue());
 

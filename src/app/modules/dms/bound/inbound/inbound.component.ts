@@ -253,17 +253,19 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-
-        // Get the pagenation
-        this._inBoundService.inBoundHeaderPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((inBoundHeaderPagenation: InBoundHeaderPagenation) => {
-                // Update the pagination
-                this.inBoundHeaderPagenation = inBoundHeaderPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        // // Get the pagenation
+        // this._inBoundService.inBoundHeaderPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((inBoundHeaderPagenation: InBoundHeaderPagenation) => {
+        //         // Update the pagination
+        //         this.inBoundHeaderPagenation = inBoundHeaderPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {

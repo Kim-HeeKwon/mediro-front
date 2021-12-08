@@ -234,13 +234,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'collapsable',
         icon    : 'info',
         children: [
-            {
-                id   : 'basic-info.status',
-                title: '초기재고등록',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
-            },
+            // {
+            //     id   : 'basic-info.status',
+            //     title: '초기재고등록',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '/pages/error/500'
+            // },
             {
                 id      : 'basic-info.account',
                 title   : '거래처관리',
@@ -635,13 +635,13 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         type    : 'collapsable',
         icon    : 'info',
         children: [
-            {
-                id   : 'basic-info.status',
-                title: '초기재고등록',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
-            },
+            // {
+            //     id   : 'basic-info.status',
+            //     title: '초기재고등록',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '/pages/error/500'
+            // },
             {
                 id      : 'basic-info.account',
                 title   : '거래처관리',

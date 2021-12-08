@@ -68,6 +68,29 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.totalAmt += reportDetail.totalAmt;
                 this.taxAmt += reportDetail.taxAmt;
             });
+
+            if(this.detail.length < 20){
+                let idx = this.detail.length;
+                const lastIdx = 20 - this.detail.length;
+                for(let i=0; i<lastIdx; i++){
+                    this.detail.push({
+                        itemGrade: '',
+                        itemNm: '',
+                        no: idx+1,
+                        qty: '',
+                        remark: '',
+                        standard: '',
+                        taxAmt: '',
+                        totalAmt: '',
+                        unit: '',
+                        unitPrice: '',
+                    });
+
+                    idx++;
+                }
+
+
+            }
         }
 
     }

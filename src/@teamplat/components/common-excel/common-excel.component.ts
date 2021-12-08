@@ -86,7 +86,8 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 const commonValue: any = {
                     id: fieldNm,              //컬럼ID;
                     name: param.descr,            //컬럼명;
-                    width: 120
+                    width: 120,
+                    textColor: param.textColor
                 };
 
                 this.displayedColumns.push(fieldNm);
@@ -96,6 +97,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
 
+        this.excelFields.push('errMsg');
         if(this.displayedColumns){
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for(let i=0; i<this.displayedColumns.length; i++){
@@ -103,34 +105,35 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.excelFields.push({fieldName: this.displayedColumns[i], dataType: ValueType.TEXT});
             }
         }
+        this.excelColumns.push({name: 'errMsg', fieldName: 'errMsg', type: 'data'
+            , width: '300', styleName: 'left-cell-text'
+            , header: {text: '에러 메세지', styleName: 'left-cell-text'}, renderer: {
+                showTooltip: true
+            }});
         if(this.commonValues){
             this.commonValues.forEach((param: any) => {
 
                 this.excelColumns.push({name: param.id, fieldName: param.id, type: 'data'
                     , width: param.width === '' ? '100' : param.width, styleName: 'left-cell-text'
-                    , header: {text: param.name, styleName: 'left-cell-text'}});
+                    , header: {text: param.name, styleName: 'left-cell-text' + param.width === '' ? '' : ' ' + param.textColor }});
             });
         }
 
-        this.excelColumns.push({name: 'errCode', fieldName: 'errCode', type: 'data'
-            , width: '100', styleName: 'left-cell-text'
-            , header: {text: '에러 코드', styleName: 'left-cell-text'}});
-        this.excelColumns.push({name: 'errMsg', fieldName: 'errMsg', type: 'data'
-            , width: '300', styleName: 'left-cell-text'
-            , header: {text: '에러 메세지', styleName: 'left-cell-text'}});
+        // this.excelColumns.push({name: 'errCode', fieldName: 'errCode', type: 'data'
+        //     , width: '100', styleName: 'left-cell-text'
+        //     , header: {text: '에러 코드', styleName: 'left-cell-text'}});
 
-        this.excelFields.push('errMsg');
         this.excelFields.push('errCode');
         this.excelFields.push('uploadKey');
         this.excelFields.push('lineNo');
 
         //그리드 Provider
-        this.excelDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.excelDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar : false,
-            checkBar : true,
+            stateBar : true,
+            checkBar : false,
             footers : false,
         };
 
@@ -144,22 +147,48 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         this.gridList.setEditOptions({
-            readOnly: true,
+            readOnly: false,
             insertable: false,
             appendable: false,
-            editable: false,
-            //deletable: true,
-            checkable: false,
-            softDeleting: false,
-            //hideDeletedRows: true,
+            editable: true,
+            updatable: true,
+            deletable: true,
+            commitByCell: true,
+            checkable: true,
+            softDeleting: true,
         });
         //인디케이터 (NO)
+        this.gridList.deleteSelection(true);
         this.gridList.setRowIndicator({
             visible: false, displayValue: IndicatorValue.INDEX, zeroBase: false,
             headText: 'No',
             footText: ''});
         this.gridList.setDisplayOptions({liveScroll: false,});
-        this.gridList.setPasteOptions({enabled: false,});
+        this.gridList.setCopyOptions({
+            enabled: true,
+            singleMode: false
+        });
+        this.gridList.setPasteOptions({
+            enabled: true,
+            startEdit: false,
+            commitEdit: true,
+            checkReadOnly: true
+        });
+        this.gridList.setCopyOptions({
+            singleMode: false,
+        });
+        this._realGridsService.gfn_EditGrid(this.gridList);
+
+        // 셀 edit control
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+
+            //console.log(dataCell.item.rowState); // 추가 , 삭제, 수정 변경시
+            if (dataCell.dataColumn.fieldName === 'errMsg') {
+                return {editable: false};
+            } else {
+                return {editable: true};
+            }
+        });
 
         this._paginator._intl.itemsPerPageLabel = '';
     }
@@ -181,7 +210,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, 'Excel Upload');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, 'Excel Upload', '', ['errMsg']);
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -273,7 +302,13 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 // Update the counts
                 if(rtnList != null){
                     if(rtnList.status === 'SUCCESS'){
-                        this._realGridsService.gfn_DataSetGrid(this.gridList, this.excelDataProvider, rtnList.data);
+                        console.log(rtnList.data);
+                        if(rtnList.data.length === 0){
+                            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+                            this._matDialogRef.close();
+                        }else{
+                            this._realGridsService.gfn_DataSetGrid(this.gridList, this.excelDataProvider, rtnList.data);
+                        }
                         // Mark for check
                         this._changeDetectorRef.markForCheck();
                     }
@@ -304,19 +339,23 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    const sendData = this.headerDataSet(rows);
+                    if(result){
+                        const sendData = this.headerDataSet(rows);
 
-                    this._excelService.dataUpload(sendData)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((a: any) => {
-                            this.isProgressSpinner = true;
-                            this.alertMessage(a);
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+                        this._excelService.dataUpload(sendData)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((a: any) => {
+                                this.isProgressSpinner = true;
+                                this.alertMessage(a);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+                    }
                 });
             // Mark for check
             this._changeDetectorRef.markForCheck();
+        }else{
+            //this._matDialogRef.close();
         }
     }
 
@@ -336,10 +375,18 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     alertMessage(param: any): void {
+        console.log(param);
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this._matDialogRef.close();
+            if(param.data.length > 0){
+                this._realGridsService.gfn_DataSetGrid(this.gridList, this.excelDataProvider, param.data);
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            }else{
+                this._matDialogRef.close();
+            }
         }
+        this.isProgressSpinner = false;
     }
 }

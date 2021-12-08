@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-auto md:w-180 md:min-w-160 -m-6">
+<div class="flex flex-col flex-auto md:w-240 md:min-w-160 -m-6">
     <app-loading *ngIf="isProgressSpinner"></app-loading>
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
@@ -19,14 +19,8 @@
         </button>
     </div><!-- Main -->
     <div class="flex flex-col sm:flex-row flex-0 justify-between pt-3 pb-2 px-6 border-b">
-        <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
-<!--            <div class="sm:col-span-3 flex flex-row flex-shrink-0 items-center mt-8 mr-4 sm:mt-0">-->
-
-<!--                <label class="upload-btn-label" for="input-files"><span>업로드</span></label>-->
-<!--                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"-->
-<!--                       (change)="excelImport(fileInput.files)" #fileInput>-->
-<!--            </div>-->
-            <div class="sm:col-span-3 flex flex-row flex-shrink-0 items-center mt-8 mr-4 sm:mt-0">
+        <div class="grid sm:grid-cols-2 gap-2 w-full sm:pr-2">
+            <div class="sm:col-span-1 flex flex-row flex-shrink-0 items-center mt-8 mr-4 sm:mt-0">
 <!--                <button-->
 <!--                    for="input-files"-->
 <!--                    class="mediro-btn-custom"-->
@@ -36,24 +30,23 @@
 <!--                </button>-->
 
                 <button
-                    class="ml-2 mediro-btn-custom"
+                    class="ml-2 mediro-btn-custom mediro-custom-accent"
                     mat-stroked-button
-                    [color]="'primary'"
+                    [color]="'accent'"
                     (click)="excelImport()">
-                    <img src="assets/images/excel/excel_upload.png">
+                    <span class="ml-1 mr-1">재 업로드</span>
                 </button>
                 <button
-                    class="ml-2 mediro-btn-custom"
+                    class="ml-2 mediro-btn-custom mediro-custom-accent"
                     mat-stroked-button
-                    [color]="'primary'"
+                    [color]="'accent'"
                     (click)="excelExport()">
-                    <img src="assets/images/excel/excel_down.png">
+                    <span class="ml-1 mr-1">다운로드</span>
                 </button>
-                <label class="ml-2 upload-btn-label" for="input-files">
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
-                </label>
+            </div>
+            <div class="sm:col-span-1 flex flex-row flex-shrink-0 items-center justify-between mt-8 sm:mt-0">
+                <label></label>
+                <label class="upload-btn-label" for="input-files"><span>엑셀 업로드</span></label>
                 <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"
                        (change)="excelSelect(fileInput.files)" #fileInput>
             </div>

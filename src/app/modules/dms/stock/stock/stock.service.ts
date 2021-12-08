@@ -179,7 +179,7 @@ export class StockService{
                     if (response.status === 'SUCCESS') {
                         this._stock.next(search);
                         this._stockHistorys.next(response.data);
-                        console.log(response.pageNation);
+                        //console.log(response.pageNation);
                         this._stockHistoryPagenation.next(response.pageNation);
                         resolve(this._stockHistorys);
                     }
