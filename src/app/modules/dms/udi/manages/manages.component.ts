@@ -133,6 +133,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             month: [MM + ''],
             searchText: [''],
             suplyContStdmt: [''],
+            bcncName: [''],
             offset: [1],
             limit: [100],
         });
@@ -189,7 +190,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'meddevItemSeq',
                 fieldName: 'meddevItemSeq',
                 type: 'data',
-                width: '100',
+                width: '150',
                 styleName: 'left-cell-text'
                 ,
                 header: {text: '품목일련번호', styleName: 'center-cell-text'},
@@ -222,8 +223,8 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '공급받은자', styleName: 'center-cell-text'}, renderer: {
+                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '공급받은 자(반품한 자)', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

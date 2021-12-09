@@ -143,7 +143,8 @@
                                             <div class="flex w-4/4">
                                                 <mat-form-field
                                                     class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                                    <mat-select [formControlName]="'year'">
+                                                    <mat-label>년</mat-label>
+                                                    <mat-select (ngModelChange)="select()" [formControlName]="'year'">
                                                         <ng-container *ngFor="let year of year">
                                                             <mat-option [value]="year.id">
                                                                 {{year.name}}
@@ -153,7 +154,8 @@
                                                 </mat-form-field>
                                                 <mat-form-field
                                                     class="fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2">
-                                                    <mat-select [formControlName]="'month'">
+                                                    <mat-label>월</mat-label>
+                                                    <mat-select (ngModelChange)="select()"  [formControlName]="'month'">
                                                         <ng-container *ngFor="let month of month">
                                                             <mat-option [value]="month.id">
                                                                 {{month.name}}
@@ -161,8 +163,16 @@
                                                         </ng-container>
                                                     </mat-select>
                                                 </mat-form-field>
+                                                <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label>공급받은 자(반품한 자)</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'bcncName'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
                                                 <button
-                                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
+                                                    class="ml-2 mt-6 mediro-btn-custom mediro-btn-custom-background-color"
                                                     mat-flat-button
                                                     [color]="'primary'"
                                                     (click)="select()">
