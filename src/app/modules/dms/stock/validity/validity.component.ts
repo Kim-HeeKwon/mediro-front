@@ -132,16 +132,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-                values: values,
-                labels: lables,
-                lookupDisplay: true,
-            },
-            {
                 name: 'standard',
                 fieldName: 'standard',
                 type: 'data',
@@ -162,6 +152,16 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 renderer: {
                     showTooltip: true
                 },
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
+                values: values,
+                labels: lables,
+                lookupDisplay: true,
             },
             {
                 name: 'lot2',

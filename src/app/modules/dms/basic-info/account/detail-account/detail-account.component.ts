@@ -94,7 +94,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             udiHptlSymbl: [''],
             descr: ['', [Validators.required]],   // 거래처 명
             accountType: [{value:'',disabled:true}, [Validators.required]],   // 유형
-            custBusinessNumber : [{value:'',disabled:true},[Validators.required]],
+            custBusinessNumber : [{value:''},[Validators.required]],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],
@@ -254,8 +254,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
 
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
-        accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
-        this.isProgressSpinner = true;
+        accountData.custBusinessNumber = this.selectedAccountForm.getRawValue().custBusinessNumber;
         this._accountService.updateAccount(accountData)
             .subscribe(
                 (param: any) => {
@@ -298,7 +297,6 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             }),
             dismissible: true
         }).value);
-        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
