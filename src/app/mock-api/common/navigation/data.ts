@@ -157,7 +157,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: '식약청 공급내역 보고',
+                title: 'UDI 공급내역보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
@@ -281,28 +281,28 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cog',
                 link : '/pages/settings'
             },
-            {
-                id   : 'payment.payment-history',
-                title: '부가서비스',
-                subtitle: '',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/payment/payment-history'
-            },
-            {
-                id   : 'realgrid.realgrid',
-                title: '그리드 one',
-                type : 'basic',
-                //icon : 'heroicons_outline:desktop-computer',
-                link : '/realgrid/realgrid'
-            },
-            {
-                id   : 'realgrid.realgridHD',
-                title: '그리드 (H-D)',
-                type : 'basic',
-                //icon : 'heroicons_outline:desktop-computer',
-                link : '/realgrid/realgridHD'
-            },
+            // {
+            //     id   : 'payment.payment-history',
+            //     title: '부가서비스',
+            //     subtitle: '',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '/payment/payment-history'
+            // },
+            // {
+            //     id   : 'realgrid.realgrid',
+            //     title: '그리드 one',
+            //     type : 'basic',
+            //     //icon : 'heroicons_outline:desktop-computer',
+            //     link : '/realgrid/realgrid'
+            // },
+            // {
+            //     id   : 'realgrid.realgridHD',
+            //     title: '그리드 (H-D)',
+            //     type : 'basic',
+            //     //icon : 'heroicons_outline:desktop-computer',
+            //     link : '/realgrid/realgridHD'
+            // },
         ]
     },
     // {
@@ -565,7 +565,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: '식약청 공급내역 보고',
+                title: 'UDI 공급내역보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'

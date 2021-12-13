@@ -64,6 +64,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+        {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'poQty', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
         {fieldName: 'acceptableQty', dataType: ValueType.NUMBER},
@@ -103,7 +104,10 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             type: ['ALL'],
+            itemCd: [''],
             itemNm: [''],
+            itemGrade: ['ALL'],
+            supplier: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
@@ -113,6 +117,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             'standard',
             'unit',
             'itemGrade',
+            'supplier',
             {
                 name: 'stockGroup',
                 direction: 'horizontal',
@@ -190,13 +195,20 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'center-cell-text',
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
                 lookupDisplay: true, renderer:{
                     showTooltip:true
                  }
+            },
+            {
+                name: 'supplier', fieldName: 'supplier', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '공급처', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
             },
             {
                 name: 'poQty',

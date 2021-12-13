@@ -87,8 +87,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             standard: [''], // 규격
             supplier: [{value:'',disabled:true}], // 공급사
             taxGbn: [''], // 거래유형
-            buyPrice: [''], // 구매단가
-            salesPrice: [''], // 판매단가
+            buyPrice: [''], // 매입단가
+            salesPrice: [''], // 매출단가
             active: [false]  // cell상태
         });
 

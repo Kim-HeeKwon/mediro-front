@@ -57,12 +57,6 @@ export class SettingsComponent implements OnInit, OnDestroy
                 title      : '비밀번호',
                 description: '비밀번호 정보 관리'
             },
-            {
-                id         : 'plan-billing',
-                icon       : 'heroicons_outline:credit-card',
-                title      : '결제',
-                description: '결제 정보 관리'
-            },
             // {
             //     id         : 'notifications',
             //     icon       : 'heroicons_outline:bell',
@@ -80,7 +74,13 @@ export class SettingsComponent implements OnInit, OnDestroy
                 icon       : 'heroicons_outline:currency-dollar',
                 title      : '세금계산서',
                 description: '세금계산서 정보 및 인증서 관리'
-            }
+            },
+            {
+                id         : 'plan-billing',
+                icon       : 'heroicons_outline:credit-card',
+                title      : '결제',
+                description: '결제 정보 관리'
+            },
         ];
 
         // Subscribe to media changes

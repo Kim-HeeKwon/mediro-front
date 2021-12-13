@@ -50,6 +50,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     estimateHeaderDataProvider: RealGrid.LocalDataProvider;
     estimateHeaderFields: DataFieldObject[] = [
+        {fieldName: 'qt', dataType: ValueType.TEXT},
         {fieldName: 'no', dataType: ValueType.TEXT},
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'qtNo', dataType: ValueType.TEXT},

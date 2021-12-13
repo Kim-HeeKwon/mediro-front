@@ -39,6 +39,8 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     itemGrades: CommonCode[] = [];
     billColumns: Columns[];
     bills$: Observable<Bill[]>;
+    isAccount: boolean = true;
+    isToAccount: boolean = true;
     isSearchForm: boolean = false;
     orderBy: any = 'desc';
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
@@ -55,6 +57,8 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'billingCreDate', dataType: ValueType.TEXT},
         {fieldName: 'billingDate', dataType: ValueType.TEXT},
         {fieldName: 'lineNo', dataType: ValueType.TEXT},
+        {fieldName: 'obNo', dataType: ValueType.TEXT},
+        {fieldName: 'obLineNo', dataType: ValueType.TEXT},
         {fieldName: 'invoice', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
@@ -102,6 +106,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             toAccountNm: [''],
             billing: [''],
+            obNo: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -136,27 +141,15 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.billColumns = [
+            // {
+            //     name: 'billing', fieldName: 'billing', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '청구번호', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
-                name: 'billingCreDate',
-                fieldName: 'billingCreDate',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '생성일자', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '마감일자', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'billing', fieldName: 'billing', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '청구번호', styleName: 'center-cell-text'}, renderer: {
+                name: 'obNo', fieldName: 'obNo', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '출고번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -205,7 +198,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'center-cell-text',
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'center-cell-text'},
                 values: values,
                 labels: lables,
@@ -265,6 +258,24 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 ,
                 numberFormat: '#,##0',
                 renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'billingCreDate',
+                fieldName: 'billingCreDate',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '생성일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '마감일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -508,5 +519,24 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });
+    }
+
+    selectTypeHeader(type: CommonCode[]): void {
+        if(this.searchForm.getRawValue().type === 'B'){
+            this.isAccount = true;
+            this.isToAccount = false;
+        }else if(this.searchForm.getRawValue().type === 'S'){
+            this.isAccount = false;
+            this.isToAccount = true;
+        }else{
+            this.isAccount = true;
+            this.isToAccount = true;
+        }
+        this.isSearchForm = true;
+        this.searchSetValue();
+        const rtn = this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
+
+        //this.setGridData();
+        this.selectCallBack(rtn);
     }
 }

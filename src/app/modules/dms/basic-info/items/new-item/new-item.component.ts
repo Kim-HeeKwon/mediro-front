@@ -74,8 +74,8 @@ export class NewItemComponent implements OnInit, OnDestroy
             unit: [], // 단위
             standard: [''], // 규격
             supplier: [''], // 공급사
-            buyPrice: [, [Validators.required]], // 구매단가
-            salesPrice: [, [Validators.required]], // 판매단가
+            buyPrice: [, [Validators.required]], // 매입단가
+            salesPrice: [, [Validators.required]], // 매출단가
             entpName: [], // 업체명
             fomlInfo: [], // 모델명
             itemNoFullname: [], // 품목허가번호
@@ -197,7 +197,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '품목코드, 품목등급, UDI 대상유무, 품목명, (구매,판매) 단가를 입력해주세요.'
+                message: '품목코드, 품목등급, UDI 대상유무, 품목명, (매입, 매출) 단가를 입력해주세요.'
             };
 
             // Show the alert

@@ -90,10 +90,36 @@
                                             <div class="flex w-4/4">
                                                 <mat-form-field
                                                     class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">품목코드</mat-label>
+                                                    <input
+                                                        matInput
+                                                        [formControlName]="'itemCd'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field
+                                                    class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                     <mat-label class="mediro-ft-label">품목 명</mat-label>
                                                     <input
                                                         matInput
                                                         [formControlName]="'itemNm'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label>품목등급</mat-label>
+                                                    <mat-select (ngModelChange)="selectHeader()" [formControlName]="'itemGrade'">
+                                                        <ng-container *ngFor="let itemGrade of itemGrades">
+                                                            <mat-option [value]="itemGrade.id">
+                                                                {{itemGrade.name}}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field
+                                                    class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">공급처</mat-label>
+                                                    <input
+                                                        matInput
+                                                        [formControlName]="'supplier'"
                                                         [autocomplete]="'off'">
                                                 </mat-form-field>
                                                 <button

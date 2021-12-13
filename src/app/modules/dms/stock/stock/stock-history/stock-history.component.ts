@@ -1,9 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, Subject} from 'rxjs';
 import {StockHistory, StockHistoryPagenation} from '../stock.types';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
@@ -11,6 +11,7 @@ import {StockService} from '../stock.service';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: 'dms-stock-history',
@@ -27,6 +28,9 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     stockHistorysCount: number = 0;
     stockHistorys$ = new Observable<StockHistory[]>();
     chgType: CommonCode[] = null;
+    itemGrade: CommonCode[] = null;
+    dataForm: any;
+    stockHistoryForm: FormGroup;
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -47,16 +51,34 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private _realGridsService: FuseRealGridService,
         private _stockService: StockService,
         public matDialogRef: MatDialogRef<StockHistoryComponent>,
         private _codeStore: CodeStore,
+        private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService) {
         this.chgType = _utilService.commonValue(_codeStore.getValue().data, 'INV_CHG_TYPE');
+        this.itemGrade = _utilService.commonValueFilter(_codeStore.getValue().data, 'ITEM_GRADE', ['ALL']);
+        this.dataForm = data;
     }
 
     ngOnInit(): void {
+        // Form 생성
+        this.stockHistoryForm = this._formBuilder.group({
+            itemCd: [{value: ''}], // 품목코드
+            itemNm: [{value: ''}], // 품목명
+            standard: [{value: ''}], // 규격
+            unit: [{value: ''}], // 단위
+            itemGrade: [{value: ''}], // 품목등급
+            supplier: [{value: ''}], // 공급처
+            active: [false]  // cell상태
+        });
+        if (this.dataForm.selectedStock) {
+            this.stockHistoryForm.patchValue(this.dataForm.selectedStock);
+        }
+
         const values = [];
         const lables = [];
         this.chgType.forEach((param: any) => {
@@ -158,6 +180,14 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        this.stockHistoryForm.controls['itemCd'].disable();
+        this.stockHistoryForm.controls['itemNm'].disable();
+        this.stockHistoryForm.controls['standard'].disable();
+        this.stockHistoryForm.controls['unit'].disable();
+        this.stockHistoryForm.controls['itemGrade'].disable();
+        this.stockHistoryForm.controls['supplier'].disable();
+
     }
 
     ngAfterViewInit(): void {

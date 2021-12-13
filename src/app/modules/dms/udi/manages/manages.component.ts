@@ -217,13 +217,13 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'bcncCode', fieldName: 'bcncCode', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'bcncCode', fieldName: 'bcncCode', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '공급받은자 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '공급받은 자(반품한 자)', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }

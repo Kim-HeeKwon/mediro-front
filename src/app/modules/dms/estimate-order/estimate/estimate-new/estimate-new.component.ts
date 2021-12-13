@@ -243,6 +243,14 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 return {editable: true};
             }
         });
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            console.log(field);
+            if(this.estimateDetailDataProvider.getOrgFieldName(field) === 'A'){
+                //grid.setValue(itemIndex, "B", "b")
+            }
+        });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
 

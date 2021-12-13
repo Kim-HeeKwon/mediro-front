@@ -110,19 +110,19 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
-                values: values,
-                labels: lables,
-                lookupDisplay: true,
-            },
-            {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'},
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'},
+            },
+            {
+                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '품목등급', styleName: 'center-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true,
             },
             {
                 name: 'availQty',

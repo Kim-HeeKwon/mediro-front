@@ -127,6 +127,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             popupUdi.afterClosed().subscribe((result) => {
                 if(result){
+                    console.log(result);
                     this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
                     this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
                     this.selectedAccountForm.patchValue({'descr': result.companyName});
@@ -181,6 +182,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
+                    console.log(result);
                     this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
                     this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
                     this.selectedAccountForm.patchValue({'descr': result.companyName});

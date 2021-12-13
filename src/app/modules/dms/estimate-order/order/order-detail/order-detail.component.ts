@@ -187,12 +187,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주', styleName: 'center-cell-text'}
+                , header: {text: '기발주량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '보유', styleName: 'center-cell-text'}
+                , header: {text: '보유재고량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
@@ -212,7 +212,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text'}
+                , header: {text: '매입단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {

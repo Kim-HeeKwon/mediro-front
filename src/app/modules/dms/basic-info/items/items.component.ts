@@ -216,7 +216,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: 'udiYn',
                 fieldName: 'udiYn',
                 type: 'data',
-                width: '100',
+                width: '150',
                 styleName: 'left-cell-text',
                 header: {text: 'UDI 대상 유무', styleName: 'center-cell-text'},
                 values: udiYnvalues,
@@ -247,7 +247,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             {
                 name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '구매단가', styleName: 'center-cell-text'}
+                , header: {text: '매입단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -258,7 +258,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: 'number',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '판매단가', styleName: 'center-cell-text'}
+                header: {text: '매출단가', styleName: 'center-cell-text'}
                 ,
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true

@@ -192,6 +192,14 @@
                                         </div>
                                         <div *ngIf="isSearchForm" class="flex w-full mt-1">
                                             <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                <mat-label>출고번호</mat-label>
+                                                <input
+                                                    matInput
+                                                    (window:onkeypress)="enter($event)"
+                                                    [formControlName]="'obNo'"
+                                                    [autocomplete]="'off'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>거래유형</mat-label>
                                                 <mat-select (ngModelChange)="selectHeader()"
                                                             [formControlName]="'taxGbn'">
@@ -204,7 +212,7 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>유형</mat-label>
-                                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
+                                                <mat-select (ngModelChange)="selectTypeHeader(type)" [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
                                                         <mat-option [value]="type.id">
                                                             {{type.name}}
@@ -212,7 +220,9 @@
                                                     </ng-container>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            <mat-form-field
+                                                *ngIf="isAccount"
+                                                class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>공급자</mat-label>
                                                 <input
                                                     matInput
@@ -220,7 +230,9 @@
                                                     [formControlName]="'accountNm'"
                                                     [autocomplete]="'off'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            <mat-form-field
+                                                *ngIf="isToAccount"
+                                                class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>공급받는 자</mat-label>
                                                 <input
                                                     matInput
@@ -228,14 +240,14 @@
                                                     [formControlName]="'toAccountNm'"
                                                     [autocomplete]="'off'">
                                             </mat-form-field>
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                <mat-label>청구번호</mat-label>
-                                                <input
-                                                    matInput
-                                                    (window:onkeypress)="enter($event)"
-                                                    [formControlName]="'billing'"
-                                                    [autocomplete]="'off'">
-                                            </mat-form-field>
+<!--                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
+<!--                                                <mat-label>청구번호</mat-label>-->
+<!--                                                <input-->
+<!--                                                    matInput-->
+<!--                                                    (window:onkeypress)="enter($event)"-->
+<!--                                                    [formControlName]="'billing'"-->
+<!--                                                    [autocomplete]="'off'">-->
+<!--                                            </mat-form-field>-->
                                         </div>
                                     </form>
                                 </div>
