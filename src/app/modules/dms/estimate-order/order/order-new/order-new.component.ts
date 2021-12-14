@@ -273,6 +273,28 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 return {editable: true};
             }
         });
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.orderDetailDataProvider.getOrgFieldName(field) === 'reqQty' ||
+                this.orderDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const reqQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.orderDetailDataProvider,
+                        itemIndex,'reqQty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.orderDetailDataProvider,
+                        itemIndex,'unitPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.orderDetailDataProvider,
+                        itemIndex,
+                        'poAmt',
+                        reqQty * unitPrice);
+                },100);
+            }
+        });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
         this.orderDetails$ = this._orderService.orderDetails$;

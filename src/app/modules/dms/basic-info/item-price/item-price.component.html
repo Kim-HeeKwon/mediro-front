@@ -42,6 +42,33 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
+                                    [placeholder]="'품목코드를 입력해주세요.'"
+                                    [formControlName]="'itemCd'"
+                                    [autocomplete]="'off'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [placeholder]="'품목명을 입력해주세요.'"
+                                    [formControlName]="'itemNm'"
+                                    [autocomplete]="'off'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [placeholder]="'거래처코드을 입력해주세요.'"
+                                    [formControlName]="'account'"
+                                    [autocomplete]="'off'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
                                     [placeholder]="'거래처명을 입력해주세요.'"
                                     [formControlName]="'accountNm'"
                                     [autocomplete]="'off'">
@@ -139,6 +166,30 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </form>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">품목 코드</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'itemCd'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">품목 명</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'itemNm'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">거래처 코드</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'account'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
                                                 <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                     <mat-label class="mediro-ft-label">거래처 명</mat-label>
                                                     <input

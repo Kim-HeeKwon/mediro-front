@@ -1,7 +1,7 @@
 import {
     AfterViewInit, ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, ElementRef,
     Inject,
     OnDestroy,
     OnInit,
@@ -20,6 +20,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {fuseAnimations} from '@teamplat/animations';
 import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import {CodeStore} from '../../../app/core/common-code/state/code.store';
+import {MatInput} from "@angular/material/input";
 
 export interface DisplayedColumn{
     id: string;
@@ -41,6 +42,7 @@ export interface Column{
 export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
+    @ViewChild('udidiCode') udidiCode: ElementRef;
 
     // MatPaginator Output
     pageEvent: PageEvent;
@@ -71,6 +73,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         public _matDialogRef: MatDialogRef<ItemSearchComponent>,
         //@Inject(MAT_DIALOG_DATA) public data: any,
         private _utilService: FuseUtilsService,
+        @Inject(ElementRef) private element: ElementRef,
         private _formBuilder: FormBuilder,
         private _itemSearchService: ITemSearchService,
         private _codeStore: CodeStore,
@@ -108,6 +111,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             recordCountPerPage: [100],
         });
 
+
         // getItems
         this.udiItemList$ = this._itemSearchService.udiItemList$;
 
@@ -115,7 +119,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this._itemSearchService.udiItemList$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((items: any) => {
-                if(items !== null){
+                if (items !== null) {
                     // Update the counts
                     this.itemsCount = items.length;
                 }
@@ -144,6 +148,10 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             });
 
+        const that = this;
+        setTimeout(() =>{
+            that.udidiCode.nativeElement.focus();
+        },100);
     }
 
 
@@ -224,6 +232,12 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if(this.searchForm.getRawValue().udidiCode !== '') {
             this.isProgressSpinner = true;
             this.validatorsRequired = false;
+            if(this.searchForm.getRawValue().udidiCode.length === 13){
+                this.searchForm.patchValue({'udidiCode': '0' + this.searchForm.getRawValue().udidiCode});
+            }else if(this.searchForm.getRawValue().udidiCode.length > 13){
+                const code = this.searchForm.getRawValue().udidiCode.substring(2, 16);
+                this.searchForm.patchValue({'udidiCode': code});
+            }
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
             this.isProgressSpinner = false;
         } else {

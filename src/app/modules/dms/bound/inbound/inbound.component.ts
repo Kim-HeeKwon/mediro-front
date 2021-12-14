@@ -162,8 +162,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '거래처', styleName: 'center-cell-text'}, renderer: {
+                name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -245,7 +245,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    console.log(grid.getValues(clickData.dataRow));
                     this._router.navigate(['bound/inbound/inbound-detail', grid.getValues(clickData.dataRow)]);
                 }
             }

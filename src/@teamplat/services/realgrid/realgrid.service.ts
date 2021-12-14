@@ -514,10 +514,36 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     gfn_AllDataSetRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, column: string, value: any) {
 
+        gridView.commit();
+
         const rowCount = dataProvider.getRowCount();
 
         for(let i = 0; i < rowCount; i ++){
             dataProvider.setValue(i, column, value);
-        }
+        };
+    }
+
+    // 그리드 전체 셀 데이터 셋 (index)
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_CellDataSetRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, index: any, column: string, value: any) {
+
+        gridView.commit();
+
+        dataProvider.setValue(index, column, value);
+    }
+
+    // 그리드 전체 셀 데이터 Get (index)
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_CellDataGetRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, index: any, column: string): any {
+
+        gridView.commit();
+
+        let rtn;
+        // eslint-disable-next-line prefer-const
+        rtn = dataProvider.getValue(index, column);
+        //dataProvider.setValue(index, column, value);
+        return rtn;
     }
 }

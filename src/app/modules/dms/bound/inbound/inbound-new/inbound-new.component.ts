@@ -279,10 +279,33 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 dataCell.dataColumn.fieldName === 'itemNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
-                dataCell.dataColumn.fieldName === 'itemGrade') {
+                dataCell.dataColumn.fieldName === 'itemGrade'||
+                dataCell.dataColumn.fieldName === 'totalAmt') {
                 return {editable: false};
             } else {
                 return {editable: true};
+            }
+        });
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'qty' ||
+                this.inBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const qty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'qty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'unitPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.inBoundDetailDataProvider,
+                        itemIndex,
+                        'totalAmt',
+                        qty * unitPrice);
+                },100);
             }
         });
         // eslint-disable-next-line max-len

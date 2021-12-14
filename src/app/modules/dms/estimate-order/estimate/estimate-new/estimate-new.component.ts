@@ -250,7 +250,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 dataCell.dataColumn.fieldName === 'itemNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
-                dataCell.dataColumn.fieldName === 'itemGrade') {
+                dataCell.dataColumn.fieldName === 'itemGrade' ||
+                dataCell.dataColumn.fieldName === 'qtAmt') {
                 return {editable: false};
             } else {
                 return {editable: true};
@@ -259,11 +260,27 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
-            console.log(field);
-            if(this.estimateDetailDataProvider.getOrgFieldName(field) === 'A'){
-                //grid.setValue(itemIndex, "B", "b")
+            if(this.estimateDetailDataProvider.getOrgFieldName(field) === 'qty' ||
+                this.estimateDetailDataProvider.getOrgFieldName(field) === 'qtPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const qty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.estimateDetailDataProvider,
+                        itemIndex,'qty');
+                    const qtPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.estimateDetailDataProvider,
+                        itemIndex,'qtPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.estimateDetailDataProvider,
+                        itemIndex,
+                        'qtAmt',
+                        qty * qtPrice);
+                },100);
             }
         });
+
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
 

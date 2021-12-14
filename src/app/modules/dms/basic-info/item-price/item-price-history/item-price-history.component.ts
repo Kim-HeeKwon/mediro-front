@@ -61,6 +61,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'type', dataType: ValueType.TEXT},
+        {fieldName: 'addUser', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -111,8 +112,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         //그리드 컬럼
         this.itemPriceHistoryColumns = [
             {
-                name: 'addDate', fieldName: 'addDate', type: 'data', width: '170', styleName: 'left-cell-text'
-                , header: {text: '이력 일자', styleName: 'center-cell-text'}, renderer: {
+                name: 'addDate', fieldName: 'addDate', type: 'data', width: '130', styleName: 'left-cell-text'
+                , header: {text: '수정 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -120,7 +121,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                 name: 'effectiveDate',
                 fieldName: 'effectiveDate',
                 type: 'data',
-                width: '170',
+                width: '130',
                 styleName: 'left-cell-text'
                 ,
                 header: {text: '단가 적용일자', styleName: 'center-cell-text'},
@@ -129,7 +130,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                 }
             },
             {
-                name: 'reason', fieldName: 'reason', type: 'data', width: '170', styleName: 'left-cell-text'
+                name: 'reason', fieldName: 'reason', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '사유', styleName: 'center-cell-text'},
                 values: reasonValues,
                 labels: reasonLables,
@@ -138,7 +139,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                 }
             },
             {
-                name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '180', styleName: 'right-cell-text'
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '단가', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -161,6 +162,12 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             //     labels: typeLables,
             //     lookupDisplay: true
             // },
+            ,{
+                name: 'addUser', fieldName: 'addUser', type: 'data', width: '160', styleName: 'left-cell-text'
+                , header: {text: '아이디', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
         //그리드 Provider

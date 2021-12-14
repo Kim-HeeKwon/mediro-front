@@ -286,6 +286,28 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 return {editable: false};
             }
         });
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.salesorderDetailDataProvider.getOrgFieldName(field) === 'reqQty' ||
+                this.salesorderDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const reqQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.salesorderDetailDataProvider,
+                        itemIndex,'reqQty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.salesorderDetailDataProvider,
+                        itemIndex,'unitPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.salesorderDetailDataProvider,
+                        itemIndex,
+                        'soAmt',
+                        reqQty * unitPrice);
+                },100);
+            }
+        });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.salesorderDetailDataProvider, this.salesorderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
 

@@ -30,9 +30,38 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
+                                    [formControlName]="'itemCd'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'품목코드를 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
                                     [formControlName]="'itemNm'"
                                     [autocomplete]="'off'"
                                     [placeholder]="'품목명을 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'itemGrades'">
+                                    <ng-container *ngFor="let itemGrades of itemGrades">
+                                        <mat-option [value]="itemGrades.id">
+                                            {{itemGrades.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'supplier'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'공급처를 입력해주세요.'">
                             </mat-form-field>
                         </div>
                     </div>

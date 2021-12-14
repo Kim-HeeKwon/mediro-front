@@ -281,7 +281,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade' ||
+                    dataCell.dataColumn.fieldName === 'totalAmt') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -292,7 +293,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade'||
+                    dataCell.dataColumn.fieldName === 'totalAmt') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
@@ -306,6 +308,28 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 dataCell.dataColumn.fieldName === 'poReqQty' ||
                 dataCell.dataColumn.fieldName === 'invQty') {
                 return {editable: false};
+            }
+        });
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibExpQty' ||
+                this.inBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const ibExpQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'ibExpQty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'unitPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.inBoundDetailDataProvider,
+                        itemIndex,
+                        'totalAmt',
+                        ibExpQty * unitPrice);
+                },100);
             }
         });
         // eslint-disable-next-line max-len
@@ -667,7 +691,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     inBoundDetailConfirm(sendData: InBound[]): void {
         this.isProgressSpinner = false;
         if (sendData) {
-            this._inboundService.inBoundDetailConfirm(sendData)
+            const rows = this.headerDataSet(sendData);
+            this._inboundService.inBoundDetailConfirm(rows)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_alertCheckMessage(inBound);

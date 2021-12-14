@@ -110,6 +110,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             type: ['ALL'],
+            itemCd: [''],
+            itemNm: [''],
+            account: [''],
             accountNm: [''],
             searchCondition: ['100'],
             searchText: [''],
@@ -203,7 +206,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text',
-                header: {text: '거래처', styleName: 'center-cell-text'}, renderer: {
+                header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

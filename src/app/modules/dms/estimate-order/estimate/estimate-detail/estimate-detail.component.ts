@@ -270,7 +270,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
-                    dataCell.dataColumn.fieldName === 'itemGrade' ) {
+                    dataCell.dataColumn.fieldName === 'itemGrade'||
+                    dataCell.dataColumn.fieldName === 'qtAmt' ) {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -280,7 +281,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit'||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade' ||
+                    dataCell.dataColumn.fieldName === 'qtAmt') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
@@ -291,6 +293,29 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             if (dataCell.dataColumn.fieldName === 'qtAmt') {
                 return {editable: false};
+            }
+        });
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.estimateDetailDataProvider.getOrgFieldName(field) === 'qty' ||
+                this.estimateDetailDataProvider.getOrgFieldName(field) === 'qtPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const qty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.estimateDetailDataProvider,
+                        itemIndex,'qty');
+                    const qtPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.estimateDetailDataProvider,
+                        itemIndex,'qtPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.estimateDetailDataProvider,
+                        itemIndex,
+                        'qtAmt',
+                        qty * qtPrice);
+                },100);
             }
         });
         // eslint-disable-next-line max-len
