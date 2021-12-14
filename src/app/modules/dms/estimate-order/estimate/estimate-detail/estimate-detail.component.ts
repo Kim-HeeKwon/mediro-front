@@ -66,6 +66,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // @ts-ignore
     estimateDetailDataProvider: RealGrid.LocalDataProvider;
     estimateDetailFields: DataFieldObject[] = [
+        {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'qtLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
@@ -113,6 +114,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
+            effectiveDate: [{value: ''}], //견적가 적용일자
             email: [''],//이메일
             remarkHeader: [''], //비고
             toAccountNm: [''],
@@ -147,6 +149,19 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
         this.estimateDetailColumns = [
+            {
+                name: 'effectiveDate', fieldName: 'effectiveDate', type: 'date', width: '150', styleName: 'left-cell-text'
+                , header: {text: '견적가 적용일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , datetimeFormat: 'yyyy-MM-dd'
+                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+                , editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM-dd',
+                    textReadOnly: true,
+                }
+            },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}
@@ -432,6 +447,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
+                        console.log(rows);
                         rows = this.headerDataSet(rows);
                         this._estimateService.saveEstimate(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -466,6 +482,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Estimate[]) {
         if(sendData.length === 0){
+            let effectiveDate = '';
+            if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+                this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+                this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+            }else{
+                effectiveDate = this.estimateHeaderForm.controls['effectiveDate'].value;
+            }
+
             sendData.push({
                 account: this.estimateHeaderForm.controls['account'].value,
                 qtNo: this.estimateHeaderForm.controls['qtNo'].value,
@@ -473,6 +498,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 status: this.estimateHeaderForm.controls['status'].value,
                 email: this.estimateHeaderForm.controls['email'].value,
                 remarkHeader: this.estimateHeaderForm.controls['remarkHeader'].value,
+                effectiveDateH: effectiveDate,
                 itemCd: '',
                 itemGrade: '',
                 itemNm: '',
@@ -499,14 +525,31 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 sendData[i].status = this.estimateHeaderForm.controls['status'].value;
                 sendData[i].email = this.estimateHeaderForm.controls['email'].value;
                 sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
+
+                if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+                    this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+                    this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+                    this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+                    sendData[i].effectiveDateH = '';
+                }else{
+                    sendData[i].effectiveDateH = this.estimateHeaderForm.controls['effectiveDate'].value;
+                }
             }
         }
         return sendData;
     }
 
     addRow(): void {
+        let effectiveDate = '';
+        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+        }else{
+            effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
+        }
         const values = [
-            '', '', '', '', '', '', 0, 0, 0, ''
+            effectiveDate, '', '', '', '', '', '', 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
@@ -548,5 +591,22 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '견적 상세목록');
+    }
+
+    // 견적가 변동
+    effectiveDateChange(): void {
+        this._changeDetectorRef.markForCheck();
+
+        let effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
+        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+        }else{
+            effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
+        }
+
+        this._realGridsService.gfn_AllDataSetRow(this.gridList, this.estimateDetailDataProvider, 'effectiveDate', effectiveDate);
+
     }
 }

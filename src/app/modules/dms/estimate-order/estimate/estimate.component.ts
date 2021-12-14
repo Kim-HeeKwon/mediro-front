@@ -56,6 +56,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'qtNo', dataType: ValueType.TEXT},
         {fieldName: 'qtCreDate', dataType: ValueType.TEXT},
         {fieldName: 'qtDate', dataType: ValueType.TEXT},
+        {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'type', dataType: ValueType.TEXT},
         {fieldName: 'status', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
@@ -160,14 +161,20 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'qtCreDate', fieldName: 'qtCreDate', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '견적 생성일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'qtDate', fieldName: 'qtDate', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '견적 일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'effectiveDate', fieldName: 'effectiveDate', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '견적가 적용일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

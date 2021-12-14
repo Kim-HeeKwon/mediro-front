@@ -508,4 +508,16 @@ export class FuseRealGridService {
             grd.item(i).classList.add('mediro_display_none');
         }
     }
+
+    // 그리드 전체 셀 데이터 셋
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_AllDataSetRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, column: string, value: any) {
+
+        const rowCount = dataProvider.getRowCount();
+
+        for(let i = 0; i < rowCount; i ++){
+            dataProvider.setValue(i, column, value);
+        }
+    }
 }

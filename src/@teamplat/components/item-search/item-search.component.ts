@@ -212,17 +212,20 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     searchUdiItem(): void{
-        this.isProgressSpinner = true;
         if(this.searchForm.value.grade === 'ALL'){
             this.searchForm.patchValue({'grade':''});
         }
         if(this.searchForm.getRawValue().entpName !== '' &&
             this.searchForm.getRawValue().typeName !== '') {
+            this.isProgressSpinner = true;
             this.validatorsRequired = false;
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+            this.isProgressSpinner = false;
         } else if(this.searchForm.getRawValue().udidiCode !== '') {
+            this.isProgressSpinner = true;
             this.validatorsRequired = false;
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
+            this.isProgressSpinner = false;
         } else {
             this.validatorsRequired = true;
         }

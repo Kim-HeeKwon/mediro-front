@@ -19,5 +19,7 @@ export class Columns{
     values?: object;
     labels?: object;
     widget?: object;
+    mask?: any;
+    datetimeFormat?: any;
     numberFormat?: any;
 };

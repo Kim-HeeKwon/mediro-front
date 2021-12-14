@@ -19,6 +19,8 @@ export interface Estimate
     qtCreDate: string;          //견적생성일자
     qtDate: string;             //견적일자
     qtAmt: number;              //견적금액
+    effectiveDateH?: string;      //견적가 적용금액(H)
+    effectiveDate?: string;      //견적가 적용금액
     remarkHeader: string;       //비고
     remarkDetail: string;
     soNo: string;               //주문번호

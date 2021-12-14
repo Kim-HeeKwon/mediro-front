@@ -244,7 +244,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
-            this._accountService.getAccount(0,10,'account','asc','');
+            this._accountService.getAccount(0,20,'account','asc','');
         }
         this.isProgressSpinner = false;
     }
