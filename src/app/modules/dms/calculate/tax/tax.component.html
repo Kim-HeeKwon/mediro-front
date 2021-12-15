@@ -193,7 +193,7 @@
                                             </div>
                                         </div>
 
-                                        <div *ngIf="isSearchForm" class="flex w-full mt-1">
+                                        <div *ngIf="isSearchForm" class="flex w-full">
                                             <mat-form-field class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>공급자</mat-label>
                                                 <input
@@ -229,15 +229,15 @@
                             <!-- Actions -->
                             <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+<!--                                <button-->
+<!--                                    class="mediro-btn-custom"-->
+<!--                                    mat-stroked-button-->
+<!--                                    [color]="'primary'"-->
+<!--                                    (click)="excelExport()">-->
+<!--                                    <img src="assets/images/excel/excel_upload.png">-->
+<!--                                </button>-->
                                 <button
                                     class="mediro-btn-custom"
-                                    mat-stroked-button
-                                    [color]="'primary'"
-                                    (click)="excelExport()">
-                                    <img src="assets/images/excel/excel_upload.png">
-                                </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'primary'"
                                     (click)="excelExport()">
@@ -251,6 +251,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="invoice()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
                                     <span class="ml-1 mr-1">발행</span>
                                 </button>
                                 <button
@@ -258,6 +259,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="invoiceCancel()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                                     <span class="ml-1 mr-1">발행취소</span>
                                 </button>
                                 <button
@@ -265,6 +267,7 @@
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="invoiceDelete()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                                     <span class="ml-1 mr-1">삭제</span>
                                 </button>
                             </div>

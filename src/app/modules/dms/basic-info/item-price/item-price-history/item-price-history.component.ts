@@ -53,6 +53,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     itemPriceHistoryColumns: Columns[];
     itemPriceHistoryFields: DataFieldObject[] = [
         {fieldName: 'addDate', dataType: ValueType.TEXT},
+        {fieldName: 'endDate', dataType: ValueType.TEXT},
         {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'reason', dataType: ValueType.TEXT},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
@@ -111,12 +112,12 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         });
         //그리드 컬럼
         this.itemPriceHistoryColumns = [
-            {
-                name: 'addDate', fieldName: 'addDate', type: 'data', width: '130', styleName: 'left-cell-text'
-                , header: {text: '수정 일자', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
+            // {
+            //     name: 'addDate', fieldName: 'addDate', type: 'data', width: '130', styleName: 'left-cell-text'
+            //     , header: {text: '수정 일자', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
                 name: 'effectiveDate',
                 fieldName: 'effectiveDate',
@@ -125,6 +126,18 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                 styleName: 'left-cell-text'
                 ,
                 header: {text: '단가 적용일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'endDate',
+                fieldName: 'endDate',
+                type: 'data',
+                width: '130',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '단가 종료일자', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }

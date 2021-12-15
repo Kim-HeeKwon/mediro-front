@@ -333,14 +333,14 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-       this.setGridData();
-        this._stockService.stockPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((stockPagenation: StockPagenation) => {
-                this.stockPagenation = stockPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+       // this.setGridData();
+       //  this._stockService.stockPagenation$
+       //      .pipe(takeUntil(this._unsubscribeAll))
+       //      .subscribe((stockPagenation: StockPagenation) => {
+       //          this.stockPagenation = stockPagenation;
+       //          // Mark for check
+       //          this._changeDetectorRef.markForCheck();
+       //      });
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellItemClicked = (grid, index, clickData) => {
@@ -426,6 +426,8 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
         };
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
     }
 
     ngAfterViewInit(): void {

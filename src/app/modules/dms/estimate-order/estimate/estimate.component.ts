@@ -50,7 +50,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     estimateHeaderDataProvider: RealGrid.LocalDataProvider;
     estimateHeaderFields: DataFieldObject[] = [
-        {fieldName: 'qt', dataType: ValueType.TEXT},
+        {fieldName: 'Rating', dataType: ValueType.TEXT},
         {fieldName: 'no', dataType: ValueType.TEXT},
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'qtNo', dataType: ValueType.TEXT},
@@ -154,6 +154,24 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.estimateHeaderColumns = [
+            // {
+            //     name: 'Rating',
+            //     fieldName: 'Rating',
+            //     type: 'data',
+            //     width: '200',
+            //     renderer: {
+            //         type: 'signalbar',
+            //         barCount: 5,
+            //         minimum: 0,
+            //         maximum: 5,
+            //         startRate: 20,
+            //         endRate: 100
+            //     },
+            //     header: {
+            //         text: 'Process bar'
+            //     },
+            //     styleName: 'right-column'
+            // },
             {
                 name: 'qtNo', fieldName: 'qtNo', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '견적번호', styleName: 'center-cell-text'}, renderer: {

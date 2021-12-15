@@ -73,15 +73,40 @@ export class FuseRealGridService {
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
             headText: 'No',
             footText: ''});
-        // gridView.setContextMenu([
-        //     {
-        //         label: '-' // menu separator를 삽입합니다.
-        //     },
-        //     {label: 'Excel Export'},
-        //     {
-        //         label: '-' // menu separator를 삽입합니다.
-        //     },
-        // ]);
+        gridView.setContextMenu([
+            {
+                label: '열 고정',
+                tag: 'fixedCol'
+            }, {
+                label: '행 고정',
+                tag: 'fixedRow'
+            }, {
+                label: '열 고정 취소',
+                tag: 'fixedColCancel'
+            },{
+                label: '행 고정 취소',
+                tag: 'fixedRowCancel'
+            },{
+                label: '전체 취소',
+                tag: 'all'
+            },
+        ]);
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        gridView.onContextMenuItemClicked = ((grid, item, clickData) => {
+            if (item.tag === 'fixedCol') {
+                const count = grid.getColumnProperty(clickData.column, 'displayIndex') + 1;
+                grid.setFixedOptions({ colCount: count });
+            } else if (item.tag === 'fixedRow') {
+                const count = clickData.itemIndex + 1;
+                grid.setFixedOptions({ rowCount: count });
+            } else if (item.tag === 'fixedColCancel') {
+                grid.setFixedOptions({ colCount: 0 });
+            } else if (item.tag === 'fixedRowCancel') {
+                grid.setFixedOptions({ rowCount: 0 });
+            } else if (item.tag === 'all') {
+                grid.setFixedOptions({ colCount: 0, rowCount: 0 });
+            };
+        });
 
         //정렬
         gridView.sortingOptions.enabled = false;

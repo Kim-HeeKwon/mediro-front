@@ -184,9 +184,10 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 , numberFormat: '#,##0'
             },
             {
-                name: 'obNo', fieldName: 'obNo', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'obNo', fieldName: 'obNo', type: 'data', width: '150', styleName: 'center-cell-text'
                 , header: {text: '출고번호', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
+                    showTooltip: true,
+                    type: 'button'
                 }
             },
             {

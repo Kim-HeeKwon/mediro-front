@@ -196,7 +196,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div *ngIf="isSearchForm" class="flex w-full mt-1">
+                                        <div *ngIf="isSearchForm" class="flex w-full">
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>유형</mat-label>
                                                 <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
@@ -243,15 +243,15 @@
                              class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-4 px-8 mediro-backcolor-custom">
                             <!-- Actions -->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+<!--                                <button-->
+<!--                                    class="mediro-btn-custom"-->
+<!--                                    mat-stroked-button-->
+<!--                                    [color]="'primary'"-->
+<!--                                    (click)="excelExport()">-->
+<!--                                    <img src="assets/images/excel/excel_upload.png">-->
+<!--                                </button>-->
                                 <button
                                     class="mediro-btn-custom"
-                                    mat-stroked-button
-                                    [color]="'primary'"
-                                    (click)="excelExport()">
-                                    <img src="assets/images/excel/excel_upload.png">
-                                </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'primary'"
                                     (click)="excelExport()">

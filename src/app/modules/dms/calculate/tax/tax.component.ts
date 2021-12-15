@@ -175,7 +175,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip:true
                 }
             },
-            {name: 'invoice', fieldName: 'invoice', type: 'data', width: '200', styleName: 'left-cell-text'
+            {name: 'invoice', fieldName: 'invoice', type: 'data', width: '200', styleName: 'center-cell-text'
                 , header: {text: '문서번호', styleName: 'center-cell-text'}
                 ,renderer:{
                     type:'button'
