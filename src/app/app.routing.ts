@@ -37,6 +37,19 @@ export const appRoutes: Route[] = [
         ]
     },
 
+    {
+        path: 'report',
+        canActivate: [NoAuthGuard],
+        canActivateChild: [NoAuthGuard],
+        component: LayoutComponent,
+        data: {
+            layout: 'empty'
+        },
+        children: [
+            {path: 'list', loadChildren: () => import('@teamplat/components/common-report-list/common-report-list.module').then(m => m.CommonReportListModule)},
+        ]
+    },
+
     // Auth routes for authenticated users
     {
         path: '',
@@ -159,7 +172,6 @@ export const appRoutes: Route[] = [
                     // manages
                     //{path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
                     {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/dms/udi/manages/manages.module').then(m => m.ManagesModule)},
-                    {path: 'manageSample', data: {key: 'manageSample'}, loadChildren: () => import('app/modules/dms/udi/manages-sample/manages-sample.module').then(m => m.ManagesSampleModule)},
                     // status
                     //{path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
                     {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/dms/udi/status/status.module').then(m => m.StatusModule)},

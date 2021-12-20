@@ -115,6 +115,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
+            deliveryDate: [{value: ''}], //납기일자
             effectiveDate: [{value: ''}], //견적가 적용일자
             email: [], //이메일
             remarkHeader: [''], //비고
@@ -414,6 +415,15 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].effectiveDateH = '';
             }else{
                 sendData[i].effectiveDateH = this.estimateHeaderForm.controls['effectiveDate'].value;
+            }
+
+            if(this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === ''){
+                sendData[i].deliveryDate = '';
+            }else{
+                sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
             }
         }
         return sendData;

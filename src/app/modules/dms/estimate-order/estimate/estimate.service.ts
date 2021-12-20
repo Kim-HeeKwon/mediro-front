@@ -121,6 +121,44 @@ export class EstimateService {
     }
 
     /**
+     * Post getHeader
+     *
+     * @returns
+     */
+    getDetailReport(page: number = 0, size: number = 1000, sort: string = 'lineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Promise<{ estimateDetailPagenation: EstimateDetailPagenation; estimateDetail: EstimateDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/estimate/detail-List')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._estimateDetails.next(response.data);
+                        this._estimateDetailPagenation.next(response.pageNation);
+                        resolve({estimateDetailPagenation: response.pageNation , estimateDetail: response.data});
+                    }
+                }, reject);
+        });
+    }
+
+    /**
      * Post getDetail
      *
      * @returns
@@ -296,6 +334,23 @@ export class EstimateService {
         return this.estimates$.pipe(
             take(1),
             switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+    /**
+     * 회신
+     */
+    estimateReply(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/reply').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

@@ -398,14 +398,15 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     inBoundClose(): boolean {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.inBoundHeaderDataProvider);
         if (checkValues.length < 1) {
-            this._functionService.cfn_alert('마감 대상을 선택해주세요.');
+            this._functionService.cfn_alert('종결 대상을 선택해주세요.');
             return;
         } else {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status === 'N' || checkValues[i].status === 'C' || checkValues[i].status === 'F') {
-                    this._functionService.cfn_alert('마감할 수 없는 상태입니다. 입고번호 : ' + checkValues[i].ibNo);
+                if (checkValues[i].status === 'N' || checkValues[i].status === 'C' || checkValues[i].status === 'F'
+                    || checkValues[i].status === 'S') {
+                    this._functionService.cfn_alert('종결할 수 없는 상태입니다. 입고번호 : ' + checkValues[i].ibNo);
                     check = false;
                     return false;
                 }
@@ -414,7 +415,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                     title: '',
-                    message: '마감하시겠습니까?',
+                    message: '종결하시겠습니까?',
                     icon: this._formBuilder.group({
                         show: true,
                         name: 'heroicons_outline:exclamation',
@@ -423,7 +424,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     actions: this._formBuilder.group({
                         confirm: this._formBuilder.group({
                             show: true,
-                            label: '마감',
+                            label: '확인',
                             color: 'primary'
                         }),
                         cancel: this._formBuilder.group({
@@ -450,7 +451,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    /* 마감
+    /* 종결
      *
      * @param sendData
      */

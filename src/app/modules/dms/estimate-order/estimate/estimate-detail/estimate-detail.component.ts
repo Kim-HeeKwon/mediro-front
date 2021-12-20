@@ -115,10 +115,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
             effectiveDate: [{value: ''}], //견적가 적용일자
+            deliveryDate: [{value: ''}],
             email: [''],//이메일
             remarkHeader: [''], //비고
             toAccountNm: [''],
-            deliveryDate: [''],
             custBusinessNumber: [''],// 사업자 등록번호
             custBusinessName: [''],//상호
             representName: [''],//성명
@@ -516,6 +516,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 effectiveDate = this.estimateHeaderForm.controls['effectiveDate'].value;
             }
 
+            let deliveryDate = '';
+            if(this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === ''){
+            }else{
+                deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
+            }
+
             sendData.push({
                 account: this.estimateHeaderForm.controls['account'].value,
                 qtNo: this.estimateHeaderForm.controls['qtNo'].value,
@@ -524,6 +533,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 email: this.estimateHeaderForm.controls['email'].value,
                 remarkHeader: this.estimateHeaderForm.controls['remarkHeader'].value,
                 effectiveDateH: effectiveDate,
+                deliveryDate: deliveryDate,
                 itemCd: '',
                 itemGrade: '',
                 itemNm: '',
@@ -558,6 +568,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     sendData[i].effectiveDateH = '';
                 }else{
                     sendData[i].effectiveDateH = this.estimateHeaderForm.controls['effectiveDate'].value;
+                }
+
+                if(this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+                    this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
+                    this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+                    this.estimateHeaderForm.getRawValue().deliveryDate === ''){
+                    sendData[i].deliveryDate = '';
+                }else{
+                    sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
                 }
             }
         }

@@ -11,6 +11,7 @@ import {HttpClient} from "@angular/common/http";
 import {Common} from "../../../../../@teamplat/providers/common/common";
 import * as moment from "moment";
 import {map, switchMap, take} from "rxjs/operators";
+import {Estimate} from "../estimate/estimate.types";
 
 @Injectable({
     providedIn: 'root'
@@ -114,6 +115,44 @@ export class OrderService {
                         this._orderHeaders.next(response.data);
                         this._orderHeaderPagenation.next(response.pageNation);
                         resolve({orderHeader: response.data, orderHeaderPagenation: response.pageNation});
+                    }
+                }, reject);
+        });
+    }
+
+    /**
+     * Post getDetail
+     *
+     * @returns
+     */
+    getDetailReport(page: number = 0, size: number = 20, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Promise<{ orderDetailPagenation: OrderDetailPagenation; orderDetail: OrderDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/detail-List')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._orderDetails.next(response.data);
+                        this._orderDetailPagenation.next(response.pageNation);
+                        resolve({orderDetail: response.data, orderDetailPagenation: response.pageNation});
                     }
                 }, reject);
         });
@@ -301,6 +340,24 @@ export class OrderService {
         return this.orders$.pipe(
             take(1),
             switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/cancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * 회신
+     */
+    orderReply(orders: Order[]): Observable<Order>
+    {
+        return this.orders$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/reply').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

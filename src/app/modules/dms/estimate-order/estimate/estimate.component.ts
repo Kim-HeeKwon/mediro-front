@@ -191,6 +191,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'deliveryDate', fieldName: 'deliveryDate', type: 'data', width: '130', styleName: 'left-cell-text'
+                , header: {text: '납기 일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'effectiveDate', fieldName: 'effectiveDate', type: 'data', width: '130', styleName: 'left-cell-text'
                 , header: {text: '견적가 적용일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
@@ -382,6 +388,12 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'RS') {
+                    this._functionService.cfn_alert('이미 발송했습니다. 견적번호 : ' + checkValues[i].qtNo);
+                    check = false;
+                    return false;
+                }
+
                 if (checkValues[i].status === 'CF' || checkValues[i].status === 'C') {
                     this._functionService.cfn_alert('발송할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
                     check = false;

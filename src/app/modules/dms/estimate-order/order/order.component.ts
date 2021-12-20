@@ -328,6 +328,11 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'S') {
+                    this._functionService.cfn_alert('이미 발송했습니다. 발주번호 : ' + checkValues[i].poNo);
+                    check = false;
+                    return false;
+                }
                 if (checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C') {
                     this._functionService.cfn_alert('발송할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;

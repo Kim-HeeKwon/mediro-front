@@ -1,20 +1,20 @@
 <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
-    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/3 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-2/5 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-26">
+            <div class="w-24" style="margin: auto;">
                 <img src="assets/images/logo/logo-text.png">
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">로그인</div>
-            <div class="flex items-baseline mt-0.5 font-medium">
-                <div>계정이 없으신가요?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-up']">가입하기
-                </a>
-            </div>
+            <div class="mt-8 text-3xl tracking-tight leading-tight">로그인</div>
+<!--            <div class="flex items-baseline mt-0.5 font-medium">-->
+<!--                <div>계정이 없으신가요?</div>-->
+<!--                <a-->
+<!--                    class="ml-1 text-primary-500 hover:underline"-->
+<!--                    [routerLink]="['/sign-up']">가입하기-->
+<!--                </a>-->
+<!--            </div>-->
 
             <!-- Alert -->
             <fuse-alert
@@ -35,7 +35,7 @@
 
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>이메일</mat-label>
+                    <mat-label class="text-13s">이메일</mat-label>
                     <input
                         id="email"
                         matInput
@@ -50,7 +50,7 @@
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
-                    <mat-label>비밀번호</mat-label>
+                    <mat-label class="text-13s">비밀번호</mat-label>
                     <input
                         id="password"
                         matInput
@@ -79,18 +79,20 @@
                 <!-- Actions -->
                 <div class="inline-flex items-end justify-between w-full mt-1.5">
                     <mat-checkbox
-                        [color]="'primary'"
+                        class="text-13s"
+                        [color]="'accent'"
                         [formControlName]="'rememberMe'">
                         아이디 저장
                     </mat-checkbox>
-                    <a
-                        class="text-md font-medium text-primary-500 hover:underline"
-                        [routerLink]="['/forgot-password']">비밀번호를 잊어버리셨나요?
-                    </a>
+<!--                    <a-->
+<!--                        class="text-md font-medium text-primary-500 hover:underline"-->
+<!--                        [routerLink]="['/forgot-password']">비밀번호를 잊어버리셨나요?-->
+<!--                    </a>-->
                 </div>
 
                 <!-- Submit button -->
                 <button
+                    style="background: #002740"
                     class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
                     [color]="'primary'"
@@ -104,6 +106,21 @@
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
                 </button>
+
+                <div class="flex items-baseline mt-4 justify-between font-medium">
+                    <a
+                        class="ml-4 hover:underline"
+                        [routerLink]="['/forgot-password']">비밀번호 찾기
+                    </a>
+                    <a
+                        class="ml-4 hover:underline"
+                        [routerLink]="['/sign-up']">아이디 찾기
+                    </a>
+                    <a
+                        class="ml-4 mr-4 hover:underline"
+                        [routerLink]="['/sign-up']">회원가입
+                    </a>
+                </div>
 
                 <!-- Separator -->
 <!--                <div class="flex items-center mt-8">-->
@@ -142,7 +159,8 @@
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-2/3 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-3/5 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l"
+    >
         <!-- Background - @formatter:off -->
         <!-- Rings -->
         <svg class="absolute inset-0 pointer-events-none"
@@ -165,12 +183,18 @@
         <!-- @formatter:on -->
         <!-- Content -->
         <div class="z-10 relative w-full max-w-2xl">
-            <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>온라인 의료기기 유통 플랫폼</div>
-                <div>메디로</div>
+            <div class="text-4xl font-bold leading-none text-gray-100">
+                <div>의료기기 판매점 전용 유통관리 프로그램</div>
+<!--                <div>메디로</div>-->
+                <div class="mt-6 w-50">
+                    <img src="assets/images/logo/mediro_white_logo.png">
+                </div>
             </div>
-            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
-                간편하게 유통/판매/물류 서비스를 이용해보세요.
+            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                판매점 유통 업무 온라인 처리, 간편한 식약처 공급내역 보고
+            </div>
+            <div class="mt-1 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                2개월 무료체험해 보시고 결정하세요.
             </div>
         </div>
     </div>
