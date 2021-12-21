@@ -3,10 +3,12 @@ export interface Bill
     no?: number;
     mId: string;                //회원사
     account: string;
+    bisNo: string;
     accountNm: string;
     billing: string;
     lineNo: number;
     toAccount: string;
+    toBisNo: string;
     toAccountNm: string;
     type: string;
     status: string;

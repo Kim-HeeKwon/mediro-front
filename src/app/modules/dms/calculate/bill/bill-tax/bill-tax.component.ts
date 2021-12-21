@@ -88,8 +88,10 @@ export class BillTaxComponent implements OnInit, OnDestroy
     {
         this.taxForm = this._formBuilder.group({
             account : [{value: '',disabled:true}, [Validators.required]], // 공급자 사업자번호
+            bisNo : [{value: '',disabled:true}, [Validators.required]], // 공급자 사업자번호
             accountNm : [{value: '',disabled:true}, [Validators.required]], // 공급자
             toAccount : [{value: '',disabled:true}, [Validators.required]], // 공급받는자 사업자번호
+            toBisNo : [{value: '',disabled:true}, [Validators.required]], // 공급받는자 사업자번호
             toAccountNm : [{value: '',disabled:true}, [Validators.required]], // 공급받는자
             issueType: [{value: '',disabled:true}, [Validators.required]], // 발행형태
             chargeDirection: [{value: '',disabled:true}, [Validators.required]], // 과금방향
@@ -133,9 +135,11 @@ export class BillTaxComponent implements OnInit, OnDestroy
         this.taxForm.patchValue({'billingTotalAmt': billingTotalAmt});
 
         this.taxForm.patchValue({'account': this.detailList[0].account});
+        this.taxForm.patchValue({'bisNo': this.detailList[0].bisNo});
         this.taxForm.patchValue({'accountNm': this.detailList[0].accountNm});
 
         this.taxForm.patchValue({'toAccount': this.detailList[0].toAccount});
+        this.taxForm.patchValue({'toBisNo': this.detailList[0].toBisNo});
         this.taxForm.patchValue({'toAccountNm': this.detailList[0].toAccountNm});
 
         this.taxCount = this.detailList.length;
@@ -239,8 +243,10 @@ export class BillTaxComponent implements OnInit, OnDestroy
         for (let i=0; i<sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.taxForm.controls['account'].value;
+            sendData[i].bisNo = this.taxForm.controls['bisNo'].value;
             sendData[i].accountNm = this.taxForm.controls['accountNm'].value;
             sendData[i].toAccount = this.taxForm.controls['toAccount'].value;
+            sendData[i].toBisNo = this.taxForm.controls['toBisNo'].value;
             sendData[i].toAccountNm = this.taxForm.controls['toAccountNm'].value;
             sendData[i].issueType = this.taxForm.controls['issueType'].value;
             sendData[i].chargeDirection = this.taxForm.controls['chargeDirection'].value;
