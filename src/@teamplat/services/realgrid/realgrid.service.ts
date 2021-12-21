@@ -10,6 +10,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {Common} from "../../providers/common/common";
 import {CommonExcelComponent} from "../../components/common-excel";
 import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
+import {replace} from "lodash-es";
 @Injectable({
     providedIn: 'root'
 })
@@ -394,7 +395,8 @@ export class FuseRealGridService {
     // 그리드 공통 팝업
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention,max-len
-    gfn_PopUp(isMobile: boolean, isExtraSmall: Observable<BreakpointState>, gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, columns: Columns[], _matDialogPopup: MatDialog, _unsubscribeAll: Subject<any>, _changeDetectorRef: ChangeDetectorRef) {
+    gfn_PopUp(isMobile: boolean, isExtraSmall: Observable<BreakpointState>, gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, columns: Columns[], _matDialogPopup: MatDialog, _unsubscribeAll: Subject<any>, _changeDetectorRef: ChangeDetectorRef
+                ,param?: any) {
 
         //console.log(columns);
         if(columns.length > 1){
@@ -441,11 +443,20 @@ export class FuseRealGridService {
 
                             if (event.target === this._button) {
 
+                                let where = '';
+                                if(columns[i].popUpObject.where !== undefined){
+                                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                                    for(let v=0; v<columns[i].popUpObject.where.length; v++){
+                                        // eslint-disable-next-line max-len
+                                        where += replace(columns[i].popUpObject.where[v].replace, '#{' + columns[i].popUpObject.where[v].key + '}', param.controls[columns[i].popUpObject.where[v].key].value);
+                                    }
+                                }
                                 if(!isMobile){
                                     const popup = _matDialogPopup.open(CommonPopupItemsComponent, {
                                         data: {
                                             popup : columns[i].popUpObject.popUpId,
                                             headerText : columns[i].popUpObject.popUpHeaderText,
+                                            where: where
                                         },
                                         autoFocus: false,
                                         maxHeight: '90vh',
@@ -478,6 +489,7 @@ export class FuseRealGridService {
                                         data: {
                                             popup : columns[i].popUpObject.popUpId,
                                             headerText : columns[i].popUpObject.popUpHeaderText,
+                                            where : where,
                                         },
                                         autoFocus: false,
                                         width: 'calc(100% - 50px)',

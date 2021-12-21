@@ -16,6 +16,7 @@ import {ItemPriceService} from '../item-price.service';
 import {CommonPopupComponent} from '../../../../../../@teamplat/components/common-popup';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+import {formatDate} from "@angular/common";
 
 @Component({
     selector       : 'dms-item-price-new',
@@ -38,6 +39,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
         type   : 'success',
         message: ''
     };
+    minDate: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
         public matDialogRef: MatDialogRef<ItemPriceNewComponent>,
@@ -72,6 +74,8 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             effectiveDate: ['', [Validators.required]], // 적용일자
             active: [false]  // cell상태
         });
+
+        this.minDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     }
 
     openItemSearch(): void

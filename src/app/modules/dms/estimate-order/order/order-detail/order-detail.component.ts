@@ -164,7 +164,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:buyPrice|' +
-                            'poReqQty:poQty|invQty:availQty'
+                            'poReqQty:poQty|invQty:availQty',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -204,12 +208,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
+                , header: {text: '발주잔량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'poQty', fieldName: 'poQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주수량', styleName: 'center-cell-text'}
+                , header: {text: '실제 발주량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
@@ -332,7 +336,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.orderHeaderForm);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -585,6 +589,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: Order[]) {
         if(sendData.length === 0){
+
+            let deliveryDate = '';
+            if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.orderHeaderForm.getRawValue().deliveryDate === undefined ||
+                this.orderHeaderForm.getRawValue().deliveryDate === null ||
+                this.orderHeaderForm.getRawValue().deliveryDate === ''){
+            }else{
+                deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
+            }
+
             sendData.push({
                 account: this.orderHeaderForm.controls['account'].value,
                 poNo: this.orderHeaderForm.controls['poNo'].value,
@@ -592,6 +606,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 status: this.orderHeaderForm.controls['status'].value,
                 email: this.orderHeaderForm.controls['email'].value,
                 remarkHeader: this.orderHeaderForm.controls['remarkHeader'].value,
+                deliveryDate: deliveryDate,
                 itemCd: '',
                 itemGrade: '',
                 itemNm: '',
@@ -618,6 +633,15 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].status = this.orderHeaderForm.controls['status'].value;
                 sendData[i].email = this.orderHeaderForm.controls['email'].value;
                 sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
+
+                if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
+                    this.orderHeaderForm.getRawValue().deliveryDate === undefined ||
+                    this.orderHeaderForm.getRawValue().deliveryDate === null ||
+                    this.orderHeaderForm.getRawValue().deliveryDate === ''){
+                    sendData[i].deliveryDate = '';
+                }else{
+                    sendData[i].deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
+                }
             }
         }
 

@@ -27,6 +27,7 @@ import {OrderService} from '../order.service';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {LatelyCardComponent} from '../../../../../../@teamplat/components/lately-card';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-order-new',
@@ -129,6 +130,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             poAmt: [{value: '', disabled: true}],   // 발주금액
             poCreDate: [{value: '', disabled: true}],//발주 생성일자
             poDate: [{value: '', disabled: true}], //발주일자
+            deliveryDate: [{value: ''}], //납기일자
             email: [], //이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
@@ -155,7 +157,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:buyPrice|' +
-                            'poReqQty:poQty|invQty:availQty'
+                            'poReqQty:poQty|invQty:availQty',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -296,7 +302,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.orderDetailDataProvider, this.orderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.orderHeaderForm);
         this.orderDetails$ = this._orderService.orderDetails$;
         if (this.estimateHeader !== undefined) {
 
@@ -344,6 +350,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 });
         }
+        const now = new Date();
+        const deliveryDate = formatDate(new Date(now.setDate(now.getDate() + 7)), 'yyyy-MM-dd', 'en');
+
+        this.orderHeaderForm.patchValue({deliveryDate: deliveryDate});
+        this._changeDetectorRef.markForCheck();
     }
 
     ngAfterViewInit(): void {
@@ -450,6 +461,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].status = this.orderHeaderForm.controls['status'].value;
             sendData[i].email = this.orderHeaderForm.controls['email'].value;
             sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
+
+            if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.orderHeaderForm.getRawValue().deliveryDate === undefined ||
+                this.orderHeaderForm.getRawValue().deliveryDate === null ||
+                this.orderHeaderForm.getRawValue().deliveryDate === ''){
+                sendData[i].deliveryDate = '';
+            }else{
+                sendData[i].deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
+            }
         }
         return sendData;
     }

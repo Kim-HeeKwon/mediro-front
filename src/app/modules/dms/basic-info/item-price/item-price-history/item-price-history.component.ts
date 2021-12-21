@@ -24,6 +24,7 @@ import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.ty
 import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
 import {fuseAnimations} from "../../../../../../@teamplat/animations";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'dms-item-price-history',
@@ -48,6 +49,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     // @ts-ignore
     gridList: RealGrid.GridView;
     dataForm: any;
+    minDate: string;
     // @ts-ignore
     itemPriceHistoryDataProvider: RealGrid.LocalDataProvider;
     itemPriceHistoryColumns: Columns[];
@@ -94,6 +96,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             effectiveDate: [{value: ''}, [Validators.required]],   // 단가 적용일자
             active: [false]  // cell상태
         });
+        const now = new Date();
+        this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
         if (this.dataForm.detail) {
             this.itemPriceHistoryForm.patchValue(this.dataForm.detail);
         }
@@ -251,6 +255,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this.itemPriceHistoryForm.controls['type'].disable();
 
         this.gridList.refresh();
+        this.itemPriceHistoryForm.patchValue({effectiveDate: ''});
         this._changeDetectorRef.markForCheck();
     }
 

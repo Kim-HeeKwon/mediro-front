@@ -20,6 +20,7 @@ export interface Order
     email: string;              //이메일
     poCreDate: string;          //발주생성일자
     poDate: string;             //발주일자
+    deliveryDate?: string;          //납기일자
     poAmt: number;              //발주금액
     remarkHeader: string;       //비고
     remarkDetail: string;

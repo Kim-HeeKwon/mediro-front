@@ -181,6 +181,7 @@
                                                 <mat-label>견적가 적용일자</mat-label>
                                                 <input type="date"
                                                        matInput
+                                                       [min]="minDate"
                                                        (ngModelChange)="effectiveDateChange()"
                                                        [formControlName]="'effectiveDate'">
                                             </mat-form-field>

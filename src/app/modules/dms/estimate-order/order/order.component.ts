@@ -139,6 +139,12 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'deliveryDate', fieldName: 'deliveryDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '납기 일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,

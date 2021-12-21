@@ -31,6 +31,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {LatelyCardComponent} from '../../../../../../@teamplat/components/lately-card';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-estimate-new',
@@ -54,6 +55,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
     status: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
     filterList: string[];
+    minDate: string;
     estimateHeaderForm: FormGroup;
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
@@ -121,6 +123,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
+        const now = new Date();
+        this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
 
         const valuesItemGrades = [];
         const lablesItemGrades = [];
@@ -142,6 +146,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     type: 'date',
                     datetimeFormat: 'yyyy-MM-dd',
                     textReadOnly: true,
+                    minDate: this.minDate
                 }
             },
             {
@@ -152,7 +157,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade'
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -283,7 +292,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(
+            // eslint-disable-next-line max-len
+            this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef,
+            this.estimateHeaderForm
+        );
 
         this.estimateDetails$ = this._estimateService.estimateDetails$;
         this.estimateHeaderForm.patchValue({'account': ''});
@@ -291,6 +304,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.estimateHeaderForm.patchValue({'status': 'N'});
         this.estimateHeaderForm.patchValue({'soNo': ''});
         this.estimateHeaderForm.patchValue({'remarkHeader': ''});
+        this.estimateHeaderForm.patchValue({effectiveDate: ''});
     }
 
     ngAfterViewInit(): void {

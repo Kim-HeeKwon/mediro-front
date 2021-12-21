@@ -154,7 +154,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice|' +
-                            'poReqQty:poQty|invQty:availQty'
+                            'poReqQty:poQty|invQty:availQty',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -296,7 +300,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.salesorderDetailDataProvider, this.salesorderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.salesorderDetailDataProvider, this.salesorderDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.salesorderHeaderForm);
         this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
         if (this.estimateHeader !== undefined) {
             this.salesorderHeaderForm.patchValue({'account': this.estimateHeader.account});

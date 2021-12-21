@@ -31,6 +31,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-estimate-detail',
@@ -53,6 +54,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     status: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
     filterList: string[];
+    minDate: string;
     estimateHeaderForm: FormGroup;
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
@@ -129,6 +131,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             fax: [''],// 팩스번호
             active: [false]  // cell상태
         });
+        const now = new Date();
+        this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
 
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
             this.estimateHeaderForm.patchValue(
@@ -160,6 +164,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     type: 'date',
                     datetimeFormat: 'yyyy-MM-dd',
                     textReadOnly: true,
+                    minDate: this.minDate
                 }
             },
             {
@@ -170,7 +175,11 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade'
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -319,7 +328,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.estimateDetailDataProvider, this.estimateDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef,this.estimateHeaderForm);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -345,6 +354,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+        //this.estimateHeaderForm.patchValue({effectiveDate: ''});
     }
 
     ngAfterViewInit(): void {
