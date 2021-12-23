@@ -24,6 +24,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule} from "@angular/common";
+import {SettingsUserGuideComponent} from "./userGuide/userGuide.component";
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import {CommonModule} from "@angular/common";
         SettingsNotificationsComponent,
         SettingsTeamComponent,
         SettingsTaxComponent,
+        SettingsUserGuideComponent,
         NewTeamComponent
     ],
     imports: [

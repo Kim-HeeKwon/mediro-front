@@ -1,0 +1,40 @@
+.Guide {
+    height: auto;
+    margin: 20px;
+}
+
+.Guide-user {
+    margin: 15px;
+    height: auto;
+}
+
+.Guide-hover {
+    width: 170px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px #3399dd solid;
+    margin: 10px auto;
+    text-align: center;
+    font-weight: 400;
+    cursor: pointer;
+}
+.Guide-hover:hover {
+    box-shadow:200px 0 0 0 rgba(0,0,0,0.5) inset;
+}
+.guide-btn-custom {
+    width: 170px;
+    height: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    font-weight: 400;
+    font-size: 12px;
+}
+.guide-box {
+    float: left;
+    width: 50%;
+    height: auto;
+}
+
+.guide-bottom {
+    float: none;
+}

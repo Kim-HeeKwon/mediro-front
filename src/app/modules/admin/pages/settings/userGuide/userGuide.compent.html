@@ -1,0 +1,346 @@
+<div class="w-full max-w-3xl">
+    <div class="w-full">
+        <div class="Guide">
+            <div class="sm:col-span-3" style="margin-bottom: 25px">
+                <fuse-alert
+                    [appearance]="'outline'"
+                    [type]="'info'">
+                    메뉴얼 (동영상)??
+                </fuse-alert>
+            </div>
+            <div class="guide-box">
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="account()">
+                        <span style="font-size: 20px;">거래처 관리</span>
+                    </button>
+                    <div *ngIf="accountBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="accountCreated()"><span>거래처 조회</span></button>
+                    </div>
+                    <div *ngIf="accountBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="accountCreated()"><span>거래처 신규 등록</span></button>
+                    </div>
+                    <div *ngIf="accountBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="accountCreated()"><span>거래처 수정</span></button>
+                    </div>
+                    <div *ngIf="accountBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="accountCreated()"><span>거래처 삭제</span></button>
+                    </div>
+                    <div *ngIf="accountBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="accountCreated()"><span>거래처 업데이트</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="item()">
+                        <span style="font-size: 20px;">품목 관리</span>
+                    </button>
+                    <div *ngIf="itemBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemCreated()"><span>품목 조회</span></button>
+                    </div>
+                    <div *ngIf="itemBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemCreated()"><span>품목 신규 등록</span></button>
+                    </div>
+                    <div *ngIf="itemBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemCreated()"><span>품목 수정</span></button>
+                    </div>
+                    <div *ngIf="itemBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemCreated()"><span>품목 삭제</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="itemPrice()">
+                        <span style="font-size: 20px;">단가 관리</span>
+                    </button>
+                    <div *ngIf="itemPriceBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemPriceCreated()"><span>단가 조회</span></button>
+                    </div>
+                    <div *ngIf="itemPriceBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemPriceCreated()"><span>단가 신규 등록</span></button>
+                    </div>
+                    <div *ngIf="itemPriceBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemPriceCreated()"><span>단가 수정</span></button>
+                    </div>
+                    <div *ngIf="itemPriceBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="itemPriceCreated()"><span>단가 삭제</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="estimate()">
+                        <span style="font-size: 20px;">견적 관리</span>
+                    </button>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 조회</span></button>
+                    </div>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 작성</span></button>
+                    </div>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 수정</span></button>
+                    </div>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 발송</span></button>
+                    </div>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 확정</span></button>
+                    </div>
+                    <div *ngIf="estimateBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="estimateCreated()"><span>견적 취소</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="order()">
+                        <span style="font-size: 20px;">발주 관리</span>
+                    </button>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 조회</span></button>
+                    </div>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 작성</span></button>
+                    </div>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 수정</span></button>
+                    </div>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 발송</span></button>
+                    </div>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 확정</span></button>
+                    </div>
+                    <div *ngIf="orderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="orderCreated()"><span>발주 취소</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="salesorder()">
+                        <span style="font-size: 20px;">주문 관리</span>
+                    </button>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 조회</span></button>
+                    </div>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 작성</span></button>
+                    </div>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 수정</span></button>
+                    </div>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 확정</span></button>
+                    </div>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 취소</span></button>
+                    </div>
+                    <div *ngIf="salesorderBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="salesorderCreated()"><span>주문 반품</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-box">
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="inbound()">
+                        <span style="font-size: 20px;">입고 관리</span>
+                    </button>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 조회</span></button>
+                    </div>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 신규 등록</span></button>
+                    </div>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 수정</span></button>
+                    </div>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 부분입고/입고</span></button>
+                    </div>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 마감</span></button>
+                    </div>
+                    <div *ngIf="inboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="inboundCreated()"><span>입고 취소</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="outbound()">
+                        <span style="font-size: 20px;">출고 관리</span>
+                    </button>
+                    <div *ngIf="outboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="outboundCreated()"><span>출고 조회</span></button>
+                    </div>
+                    <div *ngIf="outboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="outboundCreated()"><span>출고 신규 등록</span></button>
+                    </div>
+                    <div *ngIf="outboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="outboundCreated()"><span>출고 수정</span></button>
+                    </div>
+                    <div *ngIf="outboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="outboundCreated()"><span>출고 부분출고/출고</span></button>
+                    </div>
+                    <div *ngIf="outboundBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="outboundCreated()"><span>출고 취소</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="stock()">
+                        <span style="font-size: 20px;">재고 관리</span>
+                    </button>
+                    <div *ngIf="stockBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="stockCreated()"><span>재고 조회</span></button>
+                    </div>
+                    <div *ngIf="stockBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="stockCreated()"><span>재고 조정</span></button>
+                    </div>
+                    <div *ngIf="stockBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="stockCreated()"><span>재고 이력 조회</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="bill()">
+                        <span style="font-size: 20px;">정산 및 마감 관리</span>
+                    </button>
+                    <div *ngIf="billBtn">
+                        <button
+                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
+                            mat-flat-button (click)="billCreated()"><span>정산 및 마감 조회</span></button>
+                    </div>
+                </div>
+
+                <div>
+                    <button
+                        mat-stroked-button
+                        [color]="'accent'"
+                        class="Guide-hover mediro-custom-accent" (click)="tax()">
+                        <span style="font-size: 20px;">계신서 발행 관리</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

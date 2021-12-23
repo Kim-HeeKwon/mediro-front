@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit, OnDestroy
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'account';
+    selectedPanel: string = 'user-guide';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -80,6 +80,12 @@ export class SettingsComponent implements OnInit, OnDestroy
                 icon       : 'heroicons_outline:credit-card',
                 title      : '결제',
                 description: '결제 정보 관리'
+            },
+            {
+                id         : 'user-guide',
+                icon       : 'heroicons_outline:credit-card',
+                title      : '사용자 매뉴얼',
+                description: '사용자 매뉴얼 관리'
             },
         ];
 
