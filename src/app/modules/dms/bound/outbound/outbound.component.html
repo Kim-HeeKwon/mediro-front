@@ -114,6 +114,16 @@
                             <span class="ml-2 mr-1">취소</span>
                         </button>
                     </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="outBoundClose()">
+                            <span class="ml-2 mr-1">확정</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </mat-drawer>
@@ -276,6 +286,14 @@
                                     (click)="outBoundCancel()">
                                     <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
                                     <span class="ml-2 mr-1">취소</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="outBoundClose()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                    <span class="ml-2 mr-1">확정</span>
                                 </button>
                             </div>
                         </div>

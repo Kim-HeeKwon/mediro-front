@@ -282,7 +282,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
-                    dataCell.dataColumn.fieldName === 'totalAmt') {
+                    dataCell.dataColumn.fieldName === 'totalAmt' ||
+                    dataCell.dataColumn.fieldName === 'ibQty') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -294,7 +295,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade'||
-                    dataCell.dataColumn.fieldName === 'totalAmt') {
+                    dataCell.dataColumn.fieldName === 'totalAmt'||
+                    dataCell.dataColumn.fieldName === 'ibQty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};

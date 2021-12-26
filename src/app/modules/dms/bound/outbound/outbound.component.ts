@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from './outbound.types';
+import {InBound} from "../inbound/inbound.types";
 
 @Component({
     selector: 'dms-outbound',
@@ -445,4 +446,74 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    outBoundClose(): boolean {
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.outBoundHeaderDataProvider);
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('확정 대상을 선택해주세요.');
+            return;
+        } else {
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'N' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 출고번호 : ' + checkValues[i].obNo);
+                    check = false;
+                    return false;
+                }
+
+                if (checkValues[i].status === 'PC' || checkValues[i].status === 'SC') {
+                    this._functionService.cfn_alert('이미 확정되었습니다. 출고번호 : ' + checkValues[i].obNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if (check) {
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title: '',
+                    message: '확정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this.isProgressSpinner = true;
+                            this.outBoundCloseCall(checkValues);
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    /* 확정
+     *
+     * @param sendData
+     */
+    outBoundCloseCall(sendData: OutBound[]): void {
+        if (sendData) {
+            this._outBoundService.outBoundClose(sendData)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outBound: any) => {
+                    this.isProgressSpinner = false;
+                    this._functionService.cfn_alertCheckMessage(outBound);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                    this.selectHeader();
+                    this.isSearchForm = true;
+                });
+        }
+    }
 }

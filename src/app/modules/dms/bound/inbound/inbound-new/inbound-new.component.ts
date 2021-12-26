@@ -191,11 +191,11 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '입고대상수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
-            {
-                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
+            // {
+            //     name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+            //     , header: {text: '수량', styleName: 'center-cell-text'}
+            //     , numberFormat: '#,##0'
+            // },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '단가', styleName: 'center-cell-text'}
@@ -288,14 +288,14 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
-            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'qty' ||
+            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibExpQty' ||
                 this.inBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
                 const that = this;
                 setTimeout(() =>{
                     const qty = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList,
                         this.inBoundDetailDataProvider,
-                        itemIndex,'qty');
+                        itemIndex,'ibExpQty');
                     const unitPrice = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList,
                         this.inBoundDetailDataProvider,

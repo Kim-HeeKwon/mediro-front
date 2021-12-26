@@ -264,7 +264,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade'||
+                    dataCell.dataColumn.fieldName === 'poReqQty' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
+                    dataCell.dataColumn.fieldName === 'soAmt') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -275,7 +278,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade'||
+                    dataCell.dataColumn.fieldName === 'poReqQty' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
+                    dataCell.dataColumn.fieldName === 'soAmt') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};

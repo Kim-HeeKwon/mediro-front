@@ -482,7 +482,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        console.log(rows);
                         rows = this.headerDataSet(rows);
                         this._estimateService.saveEstimate(rows)
                             .pipe(takeUntil(this._unsubscribeAll))

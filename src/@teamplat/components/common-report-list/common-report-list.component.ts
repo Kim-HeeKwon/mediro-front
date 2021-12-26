@@ -17,6 +17,7 @@ import {TeamPlatConfirmationService} from "../../services/confirmation";
 import {OrderService} from "../../../app/modules/dms/estimate-order/order/order.service";
 import {takeUntil} from "rxjs/operators";
 import {FunctionService} from "../../services/function";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
     selector: 'app-common-report-list',
@@ -46,6 +47,7 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
         private _changeDetectorRef: ChangeDetectorRef,
         private _estimateService: EstimateService,
         private _functionService: FunctionService,
+        private _formBuilder: FormBuilder,
         private _orderService: OrderService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _activatedRoute: ActivatedRoute,) {
@@ -294,6 +296,55 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
     }
     priceToString(price): number {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    reject(): void{
+
+        if(this.param.check === 'order'){
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title: '',
+                message: '거절하시겠습니까?',
+                icon: this._formBuilder.group({
+                    show: true,
+                    name: 'heroicons_outline:exclamation',
+                    color: 'warn'
+                }),
+                actions: this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show: true,
+                        label: '거절',
+                        color: 'warn'
+                    }),
+                    cancel: this._formBuilder.group({
+                        show: true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+
+                        const sendData = this.header;
+
+                        if (sendData) {
+                            this._orderService.orderReject(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((order: any) => {
+                                    this._functionService.cfn_alertCheckMessage(order);
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    } else {
+                    }
+                });
+        }
+
+
     }
 
     resend(): void{

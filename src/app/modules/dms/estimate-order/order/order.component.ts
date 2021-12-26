@@ -339,7 +339,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     check = false;
                     return false;
                 }
-                if (checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C') {
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C' ||
+                    checkValues[i].status === 'CFA') {
                     this._functionService.cfn_alert('발송할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
@@ -411,7 +412,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status !== 'S' && checkValues[i].status !== 'P') {
+                if (checkValues[i].status !== 'S' && checkValues[i].status !== 'P'&&
+                    checkValues[i].status !== 'CFA') {
                     this._functionService.cfn_alert('발주할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;

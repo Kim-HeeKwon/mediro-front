@@ -6,6 +6,7 @@ import {Common} from "../../../../../@teamplat/providers/common/common";
 import * as moment from "moment";
 import {map, switchMap, take} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
+import {Estimate} from "../../estimate-order/estimate/estimate.types";
 
 @Injectable({
     providedIn: 'root'
@@ -101,6 +102,24 @@ export class BillService {
         return this.bill$.pipe(
             take(1),
             switchMap(products => this._common.sendListDataChgUrl(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * save
+     */
+    saveTaxGbn(bills: Bill[]): Observable<Bill>
+    {
+        return this.bills$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(bills, 'v1/api/calculate/bill/save-taxGbn').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

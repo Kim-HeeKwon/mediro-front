@@ -398,15 +398,20 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     inBoundClose(): boolean {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.inBoundHeaderDataProvider);
         if (checkValues.length < 1) {
-            this._functionService.cfn_alert('종결 대상을 선택해주세요.');
+            this._functionService.cfn_alert('확정 대상을 선택해주세요.');
             return;
         } else {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status === 'N' || checkValues[i].status === 'C' || checkValues[i].status === 'F'
-                    || checkValues[i].status === 'S') {
-                    this._functionService.cfn_alert('종결할 수 없는 상태입니다. 입고번호 : ' + checkValues[i].ibNo);
+                if (checkValues[i].status === 'N' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 입고번호 : ' + checkValues[i].ibNo);
+                    check = false;
+                    return false;
+                }
+
+                if (checkValues[i].status === 'PC' || checkValues[i].status === 'SC') {
+                    this._functionService.cfn_alert('이미 확정되었습니다. 입고번호 : ' + checkValues[i].ibNo);
                     check = false;
                     return false;
                 }
@@ -415,24 +420,15 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                     title: '',
-                    message: '종결하시겠습니까?',
-                    icon: this._formBuilder.group({
-                        show: true,
-                        name: 'heroicons_outline:exclamation',
-                        color: 'warning'
-                    }),
-                    actions: this._formBuilder.group({
-                        confirm: this._formBuilder.group({
-                            show: true,
-                            label: '확인',
-                            color: 'primary'
-                        }),
-                        cancel: this._formBuilder.group({
-                            show: true,
+                    message: '확정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
                             label: '닫기'
-                        })
-                    }),
-                    dismissible: true
+                        }
+                    }
                 }).value);
 
                 confirmation.afterClosed()
@@ -451,7 +447,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    /* 종결
+    /* 확정
      *
      * @param sendData
      */
@@ -465,7 +461,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = false;
+                    this.isSearchForm = true;
                 });
         }
     }

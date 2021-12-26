@@ -40,6 +40,19 @@
                         <span class="ml-2 mr-1 mediro-font-custom">회신</span>
                     </button>
                 </div>
+                <div *ngIf="param.check === 'order'"
+                     class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="reject()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                        <span class="ml-2 mr-1 mediro-font-custom">거절</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

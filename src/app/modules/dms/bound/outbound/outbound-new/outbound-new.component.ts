@@ -175,11 +175,11 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '출고대상수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
-            {
-                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
+            // {
+            //     name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+            //     , header: {text: '수량', styleName: 'center-cell-text'}
+            //     , numberFormat: '#,##0'
+            // },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '비고', styleName: 'center-cell-text'}

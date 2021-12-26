@@ -106,6 +106,16 @@
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="saveTaxGbn()">
+                            <span class="ml-1 mr-1">저장</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-2"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="taxSave()">
                             <span class="ml-1 mr-1">마감</span>
                         </button>
@@ -273,6 +283,14 @@
                                 </button>
                             </div>
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="saveTaxGbn()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
+                                    <span class="ml-2 mr-1">저장</span>
+                                </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button

@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {BillTaxComponent} from './bill-tax/bill-tax.component';
+import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 
 @Component({
     selector: 'dms-bill',
@@ -35,6 +36,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerOpened: boolean = false;
     searchForm: FormGroup;
     taxGbn: CommonCode[] = null;
+    taxGbnFilter: CommonCode[] = null;
     type: CommonCode[] = null;
     itemGrades: CommonCode[] = [];
     billColumns: Columns[];
@@ -91,11 +93,13 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         private _activatedRoute: ActivatedRoute,
         private _functionService: FunctionService,
         private _router: Router,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver) {
         this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
         this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
+        this.taxGbnFilter = _utilService.commonValueFilter(_codeStore.getValue().data, 'TAX_GBN',['ALL']);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.isMobile = this._deviceService.isMobile();
     }
@@ -129,7 +133,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             lablesType.push(param.name);
         });
 
-        this.taxGbn.forEach((param: any) => {
+        this.taxGbnFilter.forEach((param: any) => {
             valuesTaxGbn.push(param.id);
             lablesTaxGbn.push(param.name);
         });
@@ -224,7 +228,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 values: valuesTaxGbn,
                 labels: lablesTaxGbn,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.taxGbn), renderer: {
+                editor: this._realGridsService.gfn_ComboBox(this.taxGbnFilter), renderer: {
                     showTooltip: true
                 }
             },
@@ -283,11 +287,11 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             },
         ];
         //그리드 Provider
-        this.billDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.billDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar: false,
+            stateBar: true,
             checkBar: true,
             footers: false,
         };
@@ -302,14 +306,14 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         this.gridList.setEditOptions({
-            readOnly: true,
+            readOnly: false,
             insertable: false,
             appendable: false,
-            editable: false,
-            deletable: false,
+            editable: true,
+            updatable: true,
+            deletable: true,
             checkable: true,
-            softDeleting: false,
-            //hideDeletedRows: false,
+            softDeleting: true,
         });
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
@@ -318,7 +322,24 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             enabled: true,
             singleMode: false
         });
+        this.gridList.setPasteOptions({
+            enabled: true,
+            startEdit: false,
+            commitEdit: true,
+            checkReadOnly: true
+        });
+        this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.validateOnEdited = true;
+        this._realGridsService.gfn_EditGrid(this.gridList);
 
+        // 셀 edit control
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+            if (dataCell.dataColumn.fieldName === 'taxGbn') {
+                return {editable: true};
+            }else{
+                return {editable: false};
+            }
+        });
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -540,5 +561,67 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //this.setGridData();
         this.selectCallBack(rtn);
+    }
+
+    saveTaxGbn(): void {
+
+        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.billDataProvider);
+        if(rows.length < 1){
+            this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            return;
+        }
+        let detailCheck = false;
+
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i = 0; i < rows.length; i++) {
+            console.log(rows[i].invoice);
+            if (rows[i].invoice !== '' && rows[i].invoice !== null && rows[i].invoice !== undefined) {
+                this._functionService.cfn_alert('마감 정보는 수정할 수 없습니다.');
+                detailCheck = true;
+                return;
+            }
+        }
+
+        if (detailCheck) {
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '저장하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._billService.saveTaxGbn(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((bill: any) => {
+                            this.isProgressSpinner = true;
+                            this.alertMessage(bill);
+                        });
+                }
+            });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+
+    alertMessage(param: any): void {
+        this.isProgressSpinner = false;
+        if (param.status !== 'SUCCESS') {
+            this._functionService.cfn_alert(param.msg);
+        }else{
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.','check-circle');
+        }
+        this.selectHeader();
     }
 }

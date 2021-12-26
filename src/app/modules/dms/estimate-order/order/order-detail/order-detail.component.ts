@@ -202,17 +202,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 , numberFormat: '#,##0'
             },
             {
-                name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '요청수량', styleName: 'center-cell-text'}
+                name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '발주 요청량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
+            // {
+            //     name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+            //     , header: {text: '발주잔량', styleName: 'center-cell-text'}
+            //     , numberFormat: '#,##0'
+            // },
             {
-                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주잔량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
-            {
-                name: 'poQty', fieldName: 'poQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                name: 'poQty', fieldName: 'poQty', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '실제 발주량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
@@ -288,7 +288,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit'||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade'||
+                    dataCell.dataColumn.fieldName === 'poReqQty' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
+                    dataCell.dataColumn.fieldName === 'poAmt') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -298,7 +301,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit'||
-                    dataCell.dataColumn.fieldName === 'itemGrade') {
+                    dataCell.dataColumn.fieldName === 'itemGrade' ||
+                    dataCell.dataColumn.fieldName === 'poReqQty' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
+                    dataCell.dataColumn.fieldName === 'poAmt') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
