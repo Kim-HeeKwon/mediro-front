@@ -185,17 +185,17 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             },
             {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '입고대상수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
-            {
-                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
+                , header: {text: '입고예정수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
                 name: 'ibQty', fieldName: 'ibQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '입고수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '미입고수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
@@ -283,7 +283,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
                     dataCell.dataColumn.fieldName === 'totalAmt' ||
-                    dataCell.dataColumn.fieldName === 'ibQty') {
+                    dataCell.dataColumn.fieldName === 'ibQty' ||
+                    dataCell.dataColumn.fieldName === 'qty') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -295,8 +296,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade'||
-                    dataCell.dataColumn.fieldName === 'totalAmt'||
-                    dataCell.dataColumn.fieldName === 'ibQty') {
+                    dataCell.dataColumn.fieldName === 'totalAmt' ||
+                    dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
@@ -305,10 +306,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             }
 
-            if (
-                dataCell.dataColumn.fieldName === 'ibQty' ||
-                dataCell.dataColumn.fieldName === 'poReqQty' ||
-                dataCell.dataColumn.fieldName === 'invQty') {
+            if (dataCell.dataColumn.fieldName === 'poReqQty' ||
+                dataCell.dataColumn.fieldName === 'invQty' ||
+                dataCell.dataColumn.fieldName === 'qty') {
                 return {editable: false};
             }
         });
@@ -369,7 +369,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             .subscribe((inboundDetail: any) => {
                 // Update the counts
                 if (inboundDetail !== null) {
+
+                    inboundDetail.forEach((param) => {
+                        param.ibQty = param.ibExpQty - param.qty;
+                    });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.inBoundDetailDataProvider, inboundDetail);
+
                 }
 
                 // Mark for check
@@ -398,8 +403,13 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         this._realGridsService.gfn_Destory(this.gridList, this.inBoundDetailDataProvider);
     }
 
-    addRow(): void {
+    addRow(): boolean {
 
+        const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        if (ibStatus !== 'N') {
+            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            return false;
+        }
         const values = [
             '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', ''
         ];
@@ -407,8 +417,13 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);
     }
 
-    delRow(): void {
+    delRow(): boolean {
 
+        const ibStatus = this.inBoundHeaderForm.controls['status'].value;
+        if (ibStatus !== 'N') {
+            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            return false;
+        }
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.inBoundDetailDataProvider);
 
         if (checkValues.length < 1) {
@@ -557,18 +572,26 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     inBoundConfirm() {
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         const ibType = this.inBoundHeaderForm.controls['type'].value;
-        if (ibStatus !== 'N' && ibStatus !== 'P') {
+        if (ibStatus !== 'N' && ibStatus !== 'P' && ibStatus !== 'S') {
             this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
             this.isProgressSpinner = false;
             return false;
         }
         let inBoundData;
+        let inBoundSetData;
         let inBoundDataFilter;
         let udiCheckData;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
 
-        inBoundData = rows.filter((detail: any) => detail.qty > 0)
+        // inBoundData = rows.filter((detail: any) => detail.ibQty > 0)
+        //     .map((param: any) => param);
+
+        inBoundData = rows;
+
+        inBoundSetData = rows.filter((detail: any) =>
+            (detail.ibExpqty <= detail.ibqty))
             .map((param: any) => param);
+
 
         inBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
             .map((param: any) => param);
@@ -576,86 +599,70 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
             .map((param: any) => param);
 
-        if (inBoundData.length < 1) {
-            this._functionService.cfn_alert('입고 수량이 존재하지 않습니다.');
+        if (inBoundSetData.length > 0) {
+            this._functionService.cfn_alert('입고 수량이 초과됬습니다.');
             this.isProgressSpinner = false;
             return false;
-        } else {
+        }
 
-            //반품일 경우
-            if (ibType === '2') {
-                if (udiCheckData.length > 0) {
-                    //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
-                    //입력 수량 그대로 가져오기
-                    //UDI 정보 INPUT 후 값 셋팅
-                    const popup = this._matDialogPopup.open(CommonUdiRtnScanComponent, {
-                        data: {
-                            detail: udiCheckData
-                        },
-                        autoFocus: false,
-                        maxHeight: '90vh',
-                        disableClose: true
-                    });
+        // if (inBoundData.length < 1) {
+        //     this._functionService.cfn_alert('입력 수량이 존재하지 않습니다.');
+        //     this.isProgressSpinner = false;
+        //     return false;
+        // }
 
-                    popup.afterClosed().subscribe((result) => {
-                        if (result) {
-                            if (result !== undefined) {
-                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                                for (let i = 0; i < result.length; i++) {
-                                    inBoundDataFilter.push(result[i]);
+        //반품일 경우
+        if (ibType === '2') {
+            if (udiCheckData.length > 0) {
+                //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+                //입력 수량 그대로 가져오기
+                //UDI 정보 INPUT 후 값 셋팅
+                const popup = this._matDialogPopup.open(CommonUdiRtnScanComponent, {
+                    data: {
+                        detail: udiCheckData
+                    },
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true
+                });
+
+                popup.afterClosed().subscribe((result) => {
+                    if (result) {
+                        if (result !== undefined) {
+                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                            for (let i = 0; i < result.length; i++) {
+                                inBoundDataFilter.push(result[i]);
+                            }
+
+                            const conf = this._teamPlatConfirmationService.open({
+                                title: '입고',
+                                message: '입고하시겠습니까?',
+                                actions: {
+                                    confirm: {
+                                        label: '입고'
+                                    },
+                                    cancel: {
+                                        label: '닫기'
+                                    }
                                 }
-
-                                const conf = this._teamPlatConfirmationService.open({
-                                    title: '입고',
-                                    message: '입고하시겠습니까?',
-                                    actions: {
-                                        confirm: {
-                                            label: '입고'
-                                        },
-                                        cancel: {
-                                            label: '닫기'
-                                        }
+                            });
+                            //lot 셋팅
+                            inBoundDataFilter.forEach((inBound: any) => {
+                                inBound.ibQty = inBound.qty;
+                                inBound.lot4 = inBound.udiCode;
+                            });
+                            inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.qty > 0).map((param: any) => param);
+                            conf.afterClosed()
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((rtn) => {
+                                    this.isProgressSpinner = true;
+                                    if (rtn) {
+                                        this.inBoundDetailConfirm(inBoundDataFilter);
                                     }
                                 });
-                                //lot 셋팅
-                                inBoundDataFilter.forEach((inBound: any) => {
-                                    inBound.qty = inBound.qty;
-                                    inBound.lot4 = inBound.udiCode;
-                                });
-                                inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.qty > 0).map((param: any) => param);
-                                conf.afterClosed()
-                                    .pipe(takeUntil(this._unsubscribeAll))
-                                    .subscribe((rtn) => {
-                                        this.isProgressSpinner = true;
-                                        if (rtn) {
-                                            this.inBoundDetailConfirm(inBoundDataFilter);
-                                        }
-                                    });
-                            }
                         }
-                    });
-                } else {
-                    const confirmation = this._teamPlatConfirmationService.open({
-                        title: '입고',
-                        message: '입고하시겠습니까?',
-                        actions: {
-                            confirm: {
-                                label: '입고'
-                            },
-                            cancel: {
-                                label: '닫기'
-                            }
-                        }
-                    });
-                    confirmation.afterClosed()
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((result) => {
-                            this.isProgressSpinner = false;
-                            if (result) {
-                                this.inBoundDetailConfirm(inBoundData);
-                            }
-                        });
-                }
+                    }
+                });
             } else {
                 const confirmation = this._teamPlatConfirmationService.open({
                     title: '입고',
@@ -678,6 +685,27 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         }
                     });
             }
+        } else {
+            const confirmation = this._teamPlatConfirmationService.open({
+                title: '입고',
+                message: '입고하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '입고'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            });
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    this.isProgressSpinner = false;
+                    if (result) {
+                        this.inBoundDetailConfirm(inBoundData);
+                    }
+                });
         }
 
         // Mark for check

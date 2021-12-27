@@ -390,7 +390,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = false;
                 });
         }
     }
@@ -461,7 +460,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = true;
                 });
         }
     }

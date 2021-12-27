@@ -361,4 +361,22 @@ export class EstimateService {
         );
     }
 
+    /**
+     * 재요청
+     */
+    estimateRequest(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/request').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
 }

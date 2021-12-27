@@ -304,7 +304,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (!this.outBoundHeaderForm.invalid) {
 
-            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.outBoundDetailDataProvider);
+            let rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
 
             let detailCheck = false;
 

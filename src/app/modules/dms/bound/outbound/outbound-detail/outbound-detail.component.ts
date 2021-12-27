@@ -188,7 +188,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
+                , header: {text: '잔량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             {
@@ -349,8 +349,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._realGridsService.gfn_Destory(this.gridList, this.outBoundDetailDataProvider);
     }
 
-    addRow(): void {
+    addRow(): boolean {
 
+        const obStatus = this.outBoundHeaderForm.controls['status'].value;
+        if (obStatus !== 'N') {
+            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            return false;
+        }
         const values = [
             '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, ''
         ];
@@ -358,7 +363,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
     }
 
-    delRow(): void {
+    delRow(): boolean {
+
+        const obStatus = this.outBoundHeaderForm.controls['status'].value;
+        if (obStatus !== 'N') {
+            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            return false;
+        }
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.outBoundDetailDataProvider);
 

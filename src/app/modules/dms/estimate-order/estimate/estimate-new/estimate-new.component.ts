@@ -359,7 +359,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (!this.estimateHeaderForm.invalid) {
 
-            const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.estimateDetailDataProvider);
+            const rows = this._realGridsService.gfn_GetRows(this.gridList, this.estimateDetailDataProvider);
 
             let detailCheck = false;
 

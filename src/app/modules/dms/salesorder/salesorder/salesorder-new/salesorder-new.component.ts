@@ -387,7 +387,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         }
 
         if (!this.salesorderHeaderForm.invalid) {
-            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.salesorderDetailDataProvider);
+            let rows = this._realGridsService.gfn_GetRows(this.gridList, this.salesorderDetailDataProvider);
 
             let detailCheck = false;
 

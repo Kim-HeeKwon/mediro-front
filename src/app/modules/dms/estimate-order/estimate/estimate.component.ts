@@ -388,7 +388,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status === 'RS') {
+                if (checkValues[i].status === 'S') {
                     this._functionService.cfn_alert('이미 발송했습니다. 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
@@ -452,7 +452,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = false;
                 });
         }
     }
@@ -516,7 +515,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = false;
                 });
         }
     }
@@ -588,7 +586,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
-                    this.isSearchForm = false;
                 });
         }
     }

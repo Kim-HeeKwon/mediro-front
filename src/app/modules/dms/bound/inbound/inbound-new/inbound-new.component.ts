@@ -188,7 +188,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '입고대상수량', styleName: 'center-cell-text'}
+                , header: {text: '입고예정수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0'
             },
             // {
@@ -417,7 +417,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (!this.inBoundHeaderForm.invalid) {
 
-            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
+            let rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
 
             let detailCheck = false;
 

@@ -28,6 +28,19 @@
                     </div>
                 </div>
                 <!-- Actions -->
+                <div *ngIf="param.check === 'estimate'"
+                     class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="requestEstimate()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:table'"></mat-icon>
+                        <span class="ml-2 mr-1 mediro-font-custom">재요청</span>
+                    </button>
+                </div>
                 <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
                     <button
                         class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
@@ -37,7 +50,7 @@
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:table'"></mat-icon>
-                        <span class="ml-2 mr-1 mediro-font-custom">회신</span>
+                        <span class="ml-2 mr-1 mediro-font-custom">회신(승인)</span>
                     </button>
                 </div>
                 <div *ngIf="param.check === 'order'"

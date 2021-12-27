@@ -678,8 +678,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '발주 상세목록');
     }
 
-    addRow(): void {
-
+    addRow(): boolean {
+        const poStatus = this.orderHeaderForm.controls['status'].value;
+        if (poStatus !== 'N') {
+            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            return false;
+        }
         const values = [
             '', '', '', '', '', '', 0, 0, 0, 0, 0, 0, 0, ''
         ];
@@ -687,7 +691,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_AddRow(this.gridList, this.orderDetailDataProvider, values);
     }
 
-    delRow(): void {
+    delRow(): boolean {
+
+        const poStatus = this.orderHeaderForm.controls['status'].value;
+        if (poStatus !== 'N') {
+            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            return false;
+        }
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.orderDetailDataProvider);
 

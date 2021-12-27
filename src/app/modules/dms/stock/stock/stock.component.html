@@ -46,7 +46,7 @@
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'itemGrades'">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'itemGrade'">
                                     <ng-container *ngFor="let itemGrades of itemGrades">
                                         <mat-option [value]="itemGrades.id">
                                             {{itemGrades.name}}

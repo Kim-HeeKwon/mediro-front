@@ -408,4 +408,43 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
         }
 
     }
+
+    requestEstimate() {
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '재요청 하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+
+        if(this.param.check === 'estimate'){
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+
+                        const sendData = this.header;
+
+                        if (sendData) {
+                            this._estimateService.estimateRequest(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((estimate: any) => {
+                                    this._functionService.cfn_alertCheckMessage(estimate);
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    } else {
+                    }
+                });
+        }
+
+    }
 }

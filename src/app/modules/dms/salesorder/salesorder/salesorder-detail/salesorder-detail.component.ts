@@ -383,7 +383,12 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             });
     }
 
-    addRow(): void {
+    addRow(): boolean {
+        const soStatus = this.salesorderHeaderForm.controls['status'].value;
+        if (soStatus !== 'N') {
+            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            return false;
+        }
         const values = [
             '', '', '', '', '', '', 0, 0, 0, 0, 0, 0, ''
         ];
@@ -391,7 +396,12 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this._realGridsService.gfn_AddRow(this.gridList, this.salesorderDetailDataProvider, values);
     }
 
-    delRow(): void {
+    delRow(): boolean {
+        const soStatus = this.salesorderHeaderForm.controls['status'].value;
+        if (soStatus !== 'N') {
+            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            return false;
+        }
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.salesorderDetailDataProvider);
 
         if (checkValues.length < 1) {
