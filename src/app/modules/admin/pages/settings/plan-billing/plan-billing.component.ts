@@ -156,6 +156,31 @@ export class SettingsPlanBillingComponent implements OnInit
     billEnterFee(): void
     {
         //setBill(); window.location.origin => environment
+        // successUrl: environment.paymentHookUrl + '/success',  'http://localhost:8096/teamPlatFw/success',
+        // failUrl: environment.paymentHookUrl + '/fail',
+        loadTossPayments(environment.tossClientKey).then((tossPayments) => {
+            tossPayments.requestPayment('카드', {
+                amount: this.enterFee,
+                orderId: this._sessionStore.getValue().businessNumber,
+                orderName: '메디로 가입비',
+                customerName: this._sessionStore.getValue().businessName,
+                successUrl: environment.paymentHookUrl + '/success',
+                failUrl: environment.paymentHookUrl + '/fail',
+            }).catch( (err) => {
+                if (err.code === 'USER_CANCEL') {
+                    // 취소 이벤트 처리
+                    alert('취소');
+                    alert(environment.paymentHookUrl);
+                }
+            });
+        });
+    }
+
+    billEnterFeeAccount(): void
+    {
+        //setBill(); window.location.origin => environment
+        // successUrl: environment.paymentHookUrl + '/success',  'http://localhost:8096/teamPlatFw/success',
+        // failUrl: environment.paymentHookUrl + '/fail',
         loadTossPayments(environment.tossClientKey).then((tossPayments) => {
             tossPayments.requestPayment('카드', {
                 amount: this.enterFee,
