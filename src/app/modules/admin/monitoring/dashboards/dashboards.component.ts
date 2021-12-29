@@ -21,6 +21,8 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from "../../../../core/session/state/session.store";
 import {ApexOptions} from "ng-apexcharts";
+import ApexCharts from 'apexcharts';
+import {Chart, ChartData, ChartOptions, ChartType} from "chart.js";
 
 @Component({
   selector: 'app-dashboards',
@@ -39,10 +41,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   soInfo$: Observable<DashboardInfo1>;
   udiInfo$: Observable<any>;
   udiInfos: any;
-  ibInfo: IbInfo = {sCnt:0,pCnt:0,cCnt:0,fCnt:0,nCnt:0};
-  obInfo: ObInfo = {sCnt:0, cCnt:0, pCnt:0, nCnt:0, dCnt:0};
-  qtInfo: QtInfo = {sCnt:0, cCnt:0, nCnt:0, cfCnt:0, rCnt:0};
-  poInfo: PoInfo = {psCnt:0, nCnt:0, pCnt:0, sCnt:0};
+  ibInfo: IbInfo = {nCnt:0,cCnt:0,pCnt:0,sCnt:0,pcCnt:0,scCnt:0};
+  obInfo: ObInfo = {nCnt:0, cCnt:0, pCnt:0, sCnt:0, pcCnt:0, scCnt:0};
+  qtInfo: QtInfo = {nCnt:0, cCnt:0, sCnt:0, cfaCnt:0, cfCnt:0};
+  poInfo: PoInfo = {nCnt:0, cCnt:0, sCnt:0, pCnt:0, cfaCnt:0, cfCnt:0};
   soInfo: SoInfo = {sCnt:0, cCnt:0, nCnt:0};
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
@@ -90,48 +92,52 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       this.ibInfo$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.ibInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'P').map((result: any) => {this.ibInfo.pCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'N').map((result: any) => {this.ibInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'F').map((result: any) => {this.ibInfo.fCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'C').map((result: any) => {this.ibInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'P').map((result: any) => {this.ibInfo.pCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.ibInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'PC').map((result: any) => {this.ibInfo.pcCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'SC').map((result: any) => {this.ibInfo.scCnt= result.totalCnt;});
           });
       //견적
       this.qtInfo$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.qtInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.qtInfo.cCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'N').map((result: any) => {this.qtInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.qtInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.qtInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'CFA').map((result: any) => {this.qtInfo.cfaCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'CF').map((result: any) => {this.qtInfo.cfCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'R').map((result: any) => {this.qtInfo.rCnt= result.totalCnt;});
           });
       //출고
       this.obInfo$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'PS').map((result: any) => {this.obInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.obInfo.cCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'N').map((result: any) => {this.obInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.obInfo.cCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'P').map((result: any) => {this.obInfo.pCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'D').map((result: any) => {this.obInfo.dCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.obInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'PC').map((result: any) => {this.obInfo.pcCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'SC').map((result: any) => {this.obInfo.scCnt= result.totalCnt;});
           });
       //발주
       this.poInfo$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.poInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'PS').map((result: any) => {this.poInfo.psCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'N').map((result: any) => {this.poInfo.nCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'C').map((result: any) => {this.poInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.poInfo.sCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'P').map((result: any) => {this.poInfo.pCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'CFA').map((result: any) => {this.poInfo.cfaCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'CF').map((result: any) => {this.poInfo.cfCnt= result.totalCnt;});
           });
       //주문
       this.soInfo$
           .pipe(takeUntil(this._unsubscribeAll))
           .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.soInfo.sCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'N').map((result: any) => {this.soInfo.nCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'C').map((result: any) => {this.soInfo.cCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'S').map((result: any) => {this.soInfo.sCnt= result.totalCnt;});
           });
 
 
@@ -168,6 +174,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           });
 
       this._dashboardsService.getRecallItem();
+
+      this.qtChart();
+      this.poChart();
+      this.soChart();
+
+      this.billChart();
+
+      this._changeDetectorRef.markForCheck();
   }
 
     /**
@@ -287,6 +301,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
     goPage(gbn): void
     {
+        return;
         if(gbn === 'QT'){
             this._router.navigate(['/estimate-order/estimate']);
         }else if(gbn === 'IB'){
@@ -302,4 +317,265 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         }
     }
 
+    actionButton() {
+
+    }
+
+    qtChart() {
+
+        const doughnutChartLabels = [
+            '작성 : ' + this.qtInfo.nCnt,
+            '임시저장 : ' + this.qtInfo.nCnt,
+            '재견적 : ' + this.qtInfo.sCnt,
+            '미확정 : ' + this.qtInfo.cfaCnt,
+            '견적확정 : ' + this.qtInfo.cfCnt];
+
+        const doughnutChartData =  {
+            labels: doughnutChartLabels,
+            datasets: [
+                { data: [ this.qtInfo.nCnt, this.qtInfo.nCnt, this.qtInfo.sCnt ,this.qtInfo.cfaCnt , this.qtInfo.cfCnt ],
+                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    borderWidth : 1,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverOffset: 4,}
+            ],
+        };
+        const doughnutChartOption = {
+            cutout: 30,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        boxWidth: 0,
+                        font: {weight : 'bold'},
+                        textAlign : 'right'
+                        // color: 'rgb(255, 99, 132)'
+                    },
+                    position: 'right'
+                },
+            },
+        };
+        const qt = this.qtInfo;
+        const doughnutChartPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+
+                ctx.fillStyle = '#3983DC';
+                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
+
+                ctx.font = '50px';
+                ctx.textAlign = 'center';
+                ctx.fillText('' + qt.cfCnt , width / 2, top + (height / 1.9));
+            }
+        };
+
+        const ctx = document.getElementById('qt_chart');
+        // @ts-ignore
+        const qtChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: doughnutChartData,
+            options: doughnutChartOption,
+            plugins: [doughnutChartPlugin],
+        });
+    }
+
+
+    poChart() {
+        const doughnutChartLabels = [
+            '작성 : ' + this.poInfo.nCnt,
+            '임시저장 : ' + this.poInfo.nCnt,
+            '부분발주 : ' + this.poInfo.pCnt,
+            '미확정 : ' + this.poInfo.cfaCnt,
+            '발주확정 : ' + this.poInfo.cfCnt];
+
+        const doughnutChartData =  {
+            labels: doughnutChartLabels,
+            datasets: [
+                { data: [ this.poInfo.nCnt, this.poInfo.nCnt, this.poInfo.pCnt , this.poInfo.cfaCnt , this.poInfo.cfCnt ],
+                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    borderWidth : 1,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverOffset: 4,}
+            ],
+        };
+        const doughnutChartOption = {
+            cutout: 30,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        boxWidth: 0,
+                        font: {weight : 'bold'},
+                        textAlign : 'right'
+                        // color: 'rgb(255, 99, 132)'
+                    },
+                    position: 'right'
+                },
+            },
+        };
+        const po = this.poInfo;
+        const doughnutChartPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+
+                ctx.fillStyle = '#3983DC';
+                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
+
+                ctx.font = '50px';
+                ctx.textAlign = 'center';
+                ctx.fillText('' + po.cfCnt , width / 2, top + (height / 1.9));
+            }
+        };
+
+        const ctx = document.getElementById('po_chart');
+        // @ts-ignore
+        const poChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: doughnutChartData,
+            options: doughnutChartOption,
+            plugins: [doughnutChartPlugin],
+        });
+    }
+
+    soChart() {
+        const doughnutChartLabels = [
+            '주문접수 : ' + this.soInfo.nCnt,
+            '주문취소 : ' + this.soInfo.cCnt,
+            '등록완료 : ' + this.soInfo.sCnt,];
+
+        const doughnutChartData =  {
+            labels: doughnutChartLabels,
+            datasets: [
+                { data: [ this.soInfo.nCnt, this.soInfo.cCnt, this.soInfo.sCnt],
+                    backgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
+                    hoverBackgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
+                    borderWidth : 1,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: ['#45AAB4' , '#FBB45C' , '#F36480'],
+                    hoverOffset: 4,}
+            ],
+        };
+        const doughnutChartOption = {
+            cutout: 30,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        boxWidth: 0,
+                        font: {weight : 'bold'},
+                        textAlign : 'right'
+                        // color: 'rgb(255, 99, 132)'
+                    },
+                    position: 'right'
+                },
+            },
+        };
+        const so = this.soInfo;
+        const doughnutChartPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+
+                ctx.fillStyle = '#3983DC';
+                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
+
+                ctx.font = '50px';
+                ctx.textAlign = 'center';
+                ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.9));
+            }
+        };
+
+        const ctx = document.getElementById('so_chart');
+        // @ts-ignore
+        const soChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: doughnutChartData,
+            options: doughnutChartOption,
+            plugins: [doughnutChartPlugin],
+        });
+    }
+
+    billChart() {
+
+        const ctx = document.getElementById('bill_chart');
+        // @ts-ignore
+        const mixedChart = new Chart(ctx, {
+            data: {
+                datasets: [{
+                    type: 'line',
+                    label: '매입     ' + '1,000,000 원',
+                    data: [50, 70, 30, 100 , 20 , 30],
+                    fill: false,
+                    borderColor: '#3983DC',
+                    pointBackgroundColor: '#3983DC',
+                    hoverBackgroundColor: '#3983DC',
+                    backgroundColor: '#3983DC',
+                    hoverBorderColor : '#3983DC',
+                    pointBorderColor : '#3983DC',
+                    pointHoverBackgroundColor :'#3983DC',
+                    pointHoverBorderColor: '#3983DC',
+                    borderWidth: 1,
+                    pointBorderWidth: 0.1,
+                    hoverBorderWidth: 0.1,
+                },{
+                    type: 'line',
+                    label: '매출     ' + '2,500,000 원',
+                    data: [10, 30, 40, 50 , 10 , 100],
+                    fill: false,
+                    borderColor: '#45AAB4',
+                    pointBackgroundColor: '#45AAB4',
+                    hoverBackgroundColor: '#45AAB4',
+                    backgroundColor: '#45AAB4',
+                    hoverBorderColor : '#45AAB4',
+                    pointBorderColor : '#45AAB4',
+                    pointHoverBackgroundColor :'#45AAB4',
+                    pointHoverBorderColor: '#45AAB4',
+                    borderWidth: 1,
+                    pointBorderWidth: 0.1,
+                    hoverBorderWidth: 0.1,
+                }],
+                labels: ['21.07', '21.08', '21.09', '21.10', '21.11', '21.12']
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        boxWidth: 0,
+                        boxHeight: 0,
+                        align: 'center',
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 8,
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 0,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 }

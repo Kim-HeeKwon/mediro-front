@@ -29,37 +29,41 @@ export interface DashboardInfo1
 
 export interface IbInfo
 {
-    sCnt?: number;
-    pCnt?: number;
     nCnt?: number;
-    fCnt?: number;
     cCnt?: number;
+    pCnt?: number;
+    sCnt?: number;
+    pcCnt?: number;
+    scCnt?: number;
 }
 
 export interface ObInfo
 {
-    cCnt?: number;
-    dCnt?: number;
     nCnt?: number;
+    cCnt?: number;
     pCnt?: number;
     sCnt?: number;
+    pcCnt?: number;
+    scCnt?: number;
 }
 
 export interface QtInfo
 {
-    sCnt?: number;
-    rCnt?: number;
     nCnt?: number;
-    cfCnt?: number;
     cCnt?: number;
+    sCnt?: number;
+    cfaCnt?: number;
+    cfCnt?: number;
 }
 
 export interface PoInfo
 {
     nCnt?: number;
-    pCnt?: number;
-    psCnt?: number;
+    cCnt?: number;
     sCnt?: number;
+    pCnt?: number;
+    cfaCnt?: number;
+    cfCnt?: number;
 }
 
 export interface SoInfo
