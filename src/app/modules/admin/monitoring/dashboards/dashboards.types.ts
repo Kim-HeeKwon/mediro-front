@@ -52,6 +52,7 @@ export interface QtInfo
     nCnt?: number;
     cCnt?: number;
     sCnt?: number;
+    rsCnt?: number;
     cfaCnt?: number;
     cfCnt?: number;
 }
@@ -71,4 +72,9 @@ export interface SoInfo
     sCnt?: number;
     nCnt?: number;
     cCnt?: number;
+}
+
+export interface BillInfo
+{
+    totalCnt?: number;
 }

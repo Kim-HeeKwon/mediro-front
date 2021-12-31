@@ -30,7 +30,10 @@ export class DashboardsResolvers implements Resolve<any> {
             Promise.all([
                 //this._dashboardsService.getRecallItem()
                 this._dashboardsService.getDashboardInfo1(),
-                this._dashboardsService.getDashboardInfo2()
+                //this._dashboardsService.getDashboardInfo2()
+                this._dashboardsService.getDashboardBill(),
+                this._dashboardsService.getDashboardUdi(),
+                this._dashboardsService.getDashboardStock(),
             ]).then(
                 () => {
                     // @ts-ignore

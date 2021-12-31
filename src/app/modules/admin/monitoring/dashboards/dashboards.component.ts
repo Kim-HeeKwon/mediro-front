@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChil
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {merge, Observable, Subject} from 'rxjs';
 import {
+    BillInfo,
     DashboardInfo1,
     DashboardsPagination,
     IbInfo,
@@ -40,12 +41,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   poInfo$: Observable<DashboardInfo1>;
   soInfo$: Observable<DashboardInfo1>;
   udiInfo$: Observable<any>;
+  bill$: Observable<any>;
+  billInfo$: Observable<any>;
+  stockInfo$: Observable<any>;
+  stockInfos: any;
   udiInfos: any;
+  billInfos: any;
   ibInfo: IbInfo = {nCnt:0,cCnt:0,pCnt:0,sCnt:0,pcCnt:0,scCnt:0};
   obInfo: ObInfo = {nCnt:0, cCnt:0, pCnt:0, sCnt:0, pcCnt:0, scCnt:0};
-  qtInfo: QtInfo = {nCnt:0, cCnt:0, sCnt:0, cfaCnt:0, cfCnt:0};
+  qtInfo: QtInfo = {nCnt:0, cCnt:0, sCnt:0, rsCnt:0, cfaCnt:0, cfCnt:0};
   poInfo: PoInfo = {nCnt:0, cCnt:0, sCnt:0, pCnt:0, cfaCnt:0, cfCnt:0};
   soInfo: SoInfo = {sCnt:0, cCnt:0, nCnt:0};
+  billInfo: BillInfo = {totalCnt:0};
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
   isLoading: boolean = false;
@@ -55,6 +62,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   racallTaleData: any = null;
 
   reacllItemsCount: number = 0;
+  sumPoQty: number = 0;
+  sumAvailQty: number = 0;
+  sumPoAvailQty: number = 0;
+  sumAcceptableQty: number = 0;
+  sumUnusedQty: number = 0;
+  sumAcceptableUnusedQty: number = 0;
+  sumAll: number = 0;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -78,15 +92,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       this.qtInfo$ = this._dashboardsService.qtInfo$;
       this.poInfo$ = this._dashboardsService.poInfo$;
       this.soInfo$ = this._dashboardsService.soInfo$;
+      this.billInfo$ = this._dashboardsService.billInfo$;
       this.udiInfo$ = this._dashboardsService.udiInfo$;
-      //udi정보
-      this.udiInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-                this.udiInfos = data;
-                console.log(this.udiInfos);
-                this._prepareChartData();
-      });
+      this.stockInfo$ = this._dashboardsService.stockInfo$;
+      this.bill$ = this._dashboardsService.bill$;
 
       //입고
       this.ibInfo$
@@ -106,6 +115,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
               data.filter(option => option.subCd === 'N').map((result: any) => {this.qtInfo.nCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'C').map((result: any) => {this.qtInfo.cCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'S').map((result: any) => {this.qtInfo.sCnt= result.totalCnt;});
+              data.filter(option => option.subCd === 'RS').map((result: any) => {this.qtInfo.rsCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'CFA').map((result: any) => {this.qtInfo.cfaCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'CF').map((result: any) => {this.qtInfo.cfCnt= result.totalCnt;});
           });
@@ -138,6 +148,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
               data.filter(option => option.subCd === 'N').map((result: any) => {this.soInfo.nCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'C').map((result: any) => {this.soInfo.cCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'S').map((result: any) => {this.soInfo.sCnt= result.totalCnt;});
+          });
+      //정산
+      this.billInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              data.filter(option => option.subCd === 'TOTAL').map((result: any) => {this.billInfo.totalCnt= result.totalCnt;});
           });
 
 
@@ -179,9 +195,29 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       this.poChart();
       this.soChart();
 
-      this.billChart();
-      this.udiChart();
-      this.stockChart();
+      //정산정보
+      this.bill$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              this.billInfos = data;
+              this.billChart(this.billInfos);
+          });
+      //udi정보
+      this.udiInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+                this.udiInfos = data;
+                this.udiChart(data);
+                //this._prepareChartData();
+      });
+      //재고정보
+      this.stockInfo$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe((data: any) => {
+              this.stockInfos = data;
+              this.stockChart(data);
+              //this._prepareChartData();
+          });
 
       this._changeDetectorRef.markForCheck();
   }
@@ -193,80 +229,80 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
      */
     private _prepareChartData(): void {
         // UDI 공급내역
-        this.chartUdiInfo = {
-            chart: {
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'line',
-                toolbar: {
-                    show: false
-                },
-                zoom: {
-                    enabled: false
-                }
-            },
-            colors: ['#64748B', '#94A3B8'],
-            dataLabels: {
-                enabled: true,
-                enabledOnSeries: [0],
-                background: {
-                    borderWidth: 0
-                }
-            },
-            grid: {
-                borderColor: 'var(--fuse-border)'
-            },
-            labels: this.udiInfos.labels,
-            legend: {
-                show: false
-            },
-            plotOptions: {
-                bar: {
-                    columnWidth: '50%'
-                }
-            },
-            series: this.udiInfos.series,
-            states: {
-                hover: {
-                    filter: {
-                        type: 'darken',
-                        value: 0.75
-                    }
-                }
-            },
-            stroke: {
-                width: [3, 0]
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark'
-            },
-            xaxis: {
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
-                    color: 'var(--fuse-border)'
-                },
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)'
-                    }
-                },
-                tooltip: {
-                    enabled: false
-                }
-            },
-            yaxis: {
-                labels: {
-                    offsetX: -16,
-                    style: {
-                        colors: 'var(--fuse-text-secondary)'
-                    }
-                }
-            }
-        };
+        // this.chartUdiInfo = {
+        //     chart: {
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'line',
+        //         toolbar: {
+        //             show: false
+        //         },
+        //         zoom: {
+        //             enabled: false
+        //         }
+        //     },
+        //     colors: ['#64748B', '#94A3B8'],
+        //     dataLabels: {
+        //         enabled: true,
+        //         enabledOnSeries: [0],
+        //         background: {
+        //             borderWidth: 0
+        //         }
+        //     },
+        //     grid: {
+        //         borderColor: 'var(--fuse-border)'
+        //     },
+        //     labels: this.udiInfos.labels,
+        //     legend: {
+        //         show: false
+        //     },
+        //     plotOptions: {
+        //         bar: {
+        //             columnWidth: '50%'
+        //         }
+        //     },
+        //     series: this.udiInfos.series,
+        //     states: {
+        //         hover: {
+        //             filter: {
+        //                 type: 'darken',
+        //                 value: 0.75
+        //             }
+        //         }
+        //     },
+        //     stroke: {
+        //         width: [3, 0]
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark'
+        //     },
+        //     xaxis: {
+        //         axisBorder: {
+        //             show: false
+        //         },
+        //         axisTicks: {
+        //             color: 'var(--fuse-border)'
+        //         },
+        //         labels: {
+        //             style: {
+        //                 colors: 'var(--fuse-text-secondary)'
+        //             }
+        //         },
+        //         tooltip: {
+        //             enabled: false
+        //         }
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             offsetX: -16,
+        //             style: {
+        //                 colors: 'var(--fuse-text-secondary)'
+        //             }
+        //         }
+        //     }
+        // };
     }
 
     /**
@@ -327,15 +363,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
         const doughnutChartLabels = [
             '작성 : ' + this.qtInfo.nCnt,
-            '요청 : ' + this.qtInfo.nCnt,
-            '재견적요청 : ' + this.qtInfo.sCnt,
+            '요청 : ' + this.qtInfo.sCnt,
+            '재견적요청 : ' + this.qtInfo.rsCnt,
             '미확정 : ' + this.qtInfo.cfaCnt,
             '견적확정 : ' + this.qtInfo.cfCnt];
 
         const doughnutChartData =  {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ this.qtInfo.nCnt, this.qtInfo.nCnt, this.qtInfo.sCnt ,this.qtInfo.cfaCnt , this.qtInfo.cfCnt ],
+                { data: [ this.qtInfo.nCnt, this.qtInfo.sCnt, this.qtInfo.rsCnt ,this.qtInfo.cfaCnt , this.qtInfo.cfCnt ],
                     backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     borderWidth : 1,
@@ -511,16 +547,31 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         });
     }
 
-    billChart() {
+    priceToString(price): number {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    billChart(billInfos: any) {
 
+        const buyPrice = [];
+        const salesPrice = [];
+        const date = [];
+        const buy = billInfos.filter((option: any) => option.type === 'B').map((param: any) => {
+            date.push(param.day);
+            buyPrice.push(param.totalAmt);
+            return param;
+        });
+        const sales = billInfos.filter((option: any) => option.type === 'S').map((param: any) => {
+            salesPrice.push(param.totalAmt);
+            return param;
+        });
         const ctx = document.getElementById('bill_chart');
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
             data: {
                 datasets: [{
                     type: 'line',
-                    label: '매입     ' + '1,000,000 원',
-                    data: [50, 70, 30, 100 , 20 , 30],
+                    label: '매입     ' + this.priceToString(billInfos[billInfos.length - 2].totalAmt) + ' 원',
+                    data: buyPrice,
                     fill: false,
                     borderColor: '#3983DC',
                     pointBackgroundColor: '#3983DC',
@@ -535,8 +586,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     hoverBorderWidth: 0.1,
                 },{
                     type: 'line',
-                    label: '매출     ' + '2,500,000 원',
-                    data: [10, 30, 40, 50 , 10 , 100],
+                    label: '매출     ' + this.priceToString(billInfos[billInfos.length -1].totalAmt) + ' 원',
+                    data: salesPrice,
                     fill: false,
                     borderColor: '#45AAB4',
                     pointBackgroundColor: '#45AAB4',
@@ -550,7 +601,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }],
-                labels: ['21.07', '21.08', '21.09', '21.10', '21.11', '21.12']
+                labels: date
             },
             options: {
                 plugins: {
@@ -581,7 +632,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         });
     }
 
-    udiChart() {
+    udiChart(data: any) {
+
+        const eveCnt = [];
+        const nowCnt = [];
+        const eve = data.filter((option: any) => option.day === 'E').map((param: any) => {
+            eveCnt.push(param.totalCnt);
+            return param;
+        });
+        const now = data.filter((option: any) => option.day === 'N').map((param: any) => {
+            nowCnt.push(param.totalCnt);
+            return param;
+        });
         const udiPlugin = {
             id: 'plugin',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
@@ -616,7 +678,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 datasets: [{
                     type: 'bar',
                     label: '전월보고',
-                    data: [50, 70, 30, 100],
+                    data: eveCnt,
                     fill: false,
                     borderColor: '#206491',
                     pointBackgroundColor: '#206491',
@@ -632,7 +694,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 },{
                     type: 'bar',
                     label: '당월등록',
-                    data: [10, 30, 40, 50],
+                    data: nowCnt,
                     fill: false,
                     borderColor: '#45AAB4',
                     pointBackgroundColor: '#45AAB4',
@@ -679,17 +741,40 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         });
     }
 
-    stockChart() {
+    stockChart(data: any) {
+        console.log(data);
         const doughnutChartLabels = [
-            '1등급 : ' + 1,
-            '2등급 : ' + 2,
-            '3등급 : ' + 3,
-            '4등급 : ' + 4,];
+            '1등급 : ' + data[0].availQty,
+            '2등급 : ' + data[1].availQty,
+            '3등급 : ' + data[2].availQty,
+            '4등급 : ' + data[3].availQty,];
+
+        let use = 0;
+        let unUse = 0;
+        data.forEach((item) => {
+           use += item.poQty;
+           use += item.availQty;
+           unUse += item.acceptableQty;
+           unUse += item.unusedQty;
+           this.sumPoQty += item.poQty;
+           this.sumAvailQty += item.availQty;
+           this.sumPoAvailQty += item.poQty;
+           this.sumPoAvailQty += item.availQty;
+           this.sumAcceptableQty += item.acceptableQty;
+           this.sumUnusedQty += item.unusedQty;
+           this.sumAcceptableUnusedQty += item.acceptableQty;
+           this.sumAcceptableUnusedQty += item.unusedQty;
+           this.sumAll += item.poQty;
+           this.sumAll += item.availQty;
+           this.sumAll += item.acceptableQty;
+           this.sumAll += item.unusedQty;
+        });
+        const totalAvailQty = data[0].availQty + data[1].availQty + data[2].availQty + data[3].availQty;
 
         const doughnutChartData =  {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ 1, 2, 3 ,4 ],
+                { data: [data[0].availQty, data[1].availQty, data[2].availQty, data[3].availQty ],
                     backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' ],
                     hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
                     borderWidth : 1,
@@ -726,7 +811,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
                 ctx.font = '50px';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + 0 , width / 2, top + (height / 1.9));
+                ctx.fillText('' + totalAvailQty , width / 2, top + (height / 1.9));
             }
         };
 
@@ -774,7 +859,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 datasets: [{
                     type: 'bar',
                     axis: 'y',
-                    data: [50 , 35],
+                    data: [use , unUse],
                     fill: false,
                     borderColor: ['#3983DC','#BDBDBD'],
                     pointBackgroundColor: ['#3983DC','#BDBDBD'],

@@ -22,6 +22,9 @@ export class DashboardsService {
     private _soInfo: BehaviorSubject<DashboardInfo1> = new BehaviorSubject(null);
 
     private _udiInfo: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _billInfo: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _stockInfo: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _bill: BehaviorSubject<any> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -76,6 +79,21 @@ export class DashboardsService {
     get udiInfo$(): Observable<any>
     {
         return this._udiInfo.asObservable();
+    }
+
+    get billInfo$(): Observable<any>
+    {
+        return this._billInfo.asObservable();
+    }
+
+    get stockInfo$(): Observable<any>
+    {
+        return this._stockInfo.asObservable();
+    }
+
+    get bill$(): Observable<any>
+    {
+        return this._bill.asObservable();
     }
 
 
@@ -133,6 +151,7 @@ export class DashboardsService {
                     this._poInfo.next(response.data.filter(option => option.type === 'PO'));
                     this._qtInfo.next(response.data.filter(option => option.type === 'QT'));
                     this._soInfo.next(response.data.filter(option => option.type === 'SO'));
+                    this._billInfo.next(response.data.filter(option => option.type === 'BILL'));
                     resolve(response);
                 }, reject);
         });
@@ -154,6 +173,64 @@ export class DashboardsService {
                     //console.log(response);
                     this._udiInfo.next(response.data[0]);
                     resolve(response[0]);
+                }, reject);
+        });
+    }
+    /**
+     * Post bill
+     *
+     * @returns
+     */
+    getDashboardBill(): Observable<{order: any[]}> {
+
+        const param = {'name':'bill'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-bill')
+                .subscribe((response: any) => {
+                    //console.log(response);
+                    this._bill.next(response.data);
+                    resolve(response.data);
+                }, reject);
+        });
+    }
+    /**
+     * Post Udi
+     *
+     * @returns
+     */
+    getDashboardUdi(): Observable<{order: any[]}> {
+
+        const param = {'name':'udi'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-udi')
+                .subscribe((response: any) => {
+                    //console.log(response);
+                    this._udiInfo.next(response.data);
+                    resolve(response.data);
+                }, reject);
+        });
+    }
+
+    /**
+     * Post Stock
+     *
+     * @returns
+     */
+    getDashboardStock(): Observable<{order: any[]}> {
+
+        const param = {'name':'stock'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-stock')
+                .subscribe((response: any) => {
+                    //console.log(response);
+                    this._stockInfo.next(response.data);
+                    resolve(response.data);
                 }, reject);
         });
     }

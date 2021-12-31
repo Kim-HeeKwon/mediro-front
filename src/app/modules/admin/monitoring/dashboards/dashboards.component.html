@@ -98,18 +98,18 @@
                                     {{qtInfo.nCnt}}
                                 </div>
                             </div>
-                            <!-- 임시저장 -->
+                            <!-- 요청 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">요청</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{qtInfo.nCnt}}
+                                    {{qtInfo.sCnt}}
                                 </div>
                             </div>
                             <!-- 재견적 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">재견적요청</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{qtInfo.sCnt}}
+                                    {{qtInfo.rsCnt}}
                                 </div>
                             </div>
                             <!-- 미확정 -->
@@ -551,14 +551,14 @@
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-navy">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">실적집계</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    0
+                                    {{billInfo.totalCnt}}
                                 </div>
                             </div>
                             <!-- 계산서미발행 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">계산서미발행</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    0
+                                    {{billInfo.totalCnt}}
                                 </div>
                             </div>
                         </div>
@@ -613,17 +613,17 @@
                         <div>공급내역 보고</div>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row items-start justify-between">
+                <div class="flex flex-col sm:flex-row items-start justify-between mt-4">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate"></div>
 
-                    <div class="mt-3 sm:mt-0 sm:ml-2">
-                        <mat-button-toggle-group
-                            value="this-week"
-                            #udiInfoWeekSelector="matButtonToggleGroup">
-                            <mat-button-toggle value="last-week">전월</mat-button-toggle>
-                            <mat-button-toggle value="this-week">당월</mat-button-toggle>
-                        </mat-button-toggle-group>
-                    </div>
+<!--                    <div class="mt-3 sm:mt-0 sm:ml-2">-->
+<!--                        <mat-button-toggle-group-->
+<!--                            value="this-week"-->
+<!--                            #udiInfoWeekSelector="matButtonToggleGroup">-->
+<!--                            <mat-button-toggle value="last-week">전월</mat-button-toggle>-->
+<!--                            <mat-button-toggle value="this-week">당월</mat-button-toggle>-->
+<!--                        </mat-button-toggle-group>-->
+<!--                    </div>-->
                 </div>
                 <div class="grid grid-cols-5 lg:grid-cols-5 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer" (click)="goPage('UDI')">
                     <!-- New vs. Closed -->
@@ -738,7 +738,8 @@
                     <!-- Overview -->
                     <div class="flex flex-col p-6 col-span-4 text-12s" style="text-align: center;">
                         <table border="2" style="border: 2px solid #ffffff; width: max-content" style="width: 100%;">
-                            <tr style="background-color:#3983DC; color: #ffffff;b">
+
+                            <tr style="background-color:#3983DC; color: #ffffff;">
                                 <th rowspan="2">등급</th>
                                 <th colspan="3">가용</th>
                                 <th colspan="3">비가용</th>
@@ -752,58 +753,29 @@
                                 <td>불용</td>
                                 <td>소계</td>
                             </tr>
-                            <tr>
-                                <td style="background-color:#7DC4FF;">1</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">80</td>
-                            </tr>
-                            <tr>
-                                <td style="background-color:#7DC4FF;">2</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">80</td>
-                            </tr>
-                            <tr>
-                                <td style="background-color:#7DC4FF;">3</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">80</td>
-                            </tr>
-                            <tr>
-                                <td style="background-color:#7DC4FF;">4</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">10</td>
-                                <td style="background-color:#CFE8F9;">30</td>
-                                <td style="background-color:#CFE8F9;">40</td>
-                                <td style="background-color:#CFE8F9;">80</td>
-                            </tr>
+                            <tbody *ngFor="let row of stockInfos; let i=dataIndex;">
+                                <tr>
+                                    <td style="background-color:#7DC4FF;">{{row.subCd}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.poQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.availQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.poQty + row.availQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.acceptableQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.unusedQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.acceptableQty + row.unusedQty}}</td>
+                                    <td style="background-color:#CFE8F9;">{{row.poQty + row.availQty + row.acceptableQty + row.unusedQty}}</td>
+                                </tr>
+                            </tbody>
                             <tr>
                                 <td style="background-color:#A2D6F4;">Sum</td>
-                                <td style="background-color:#A2D6F4;">40</td>
-                                <td style="background-color:#A2D6F4;">120</td>
-                                <td style="background-color:#A2D6F4;">160</td>
-                                <td style="background-color:#A2D6F4;">40</td>
-                                <td style="background-color:#A2D6F4;">120</td>
-                                <td style="background-color:#A2D6F4;">160</td>
-                                <td style="background-color:#A2D6F4;">200</td>
+                                <td style="background-color:#A2D6F4;">{{sumPoQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumAvailQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumPoAvailQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumAcceptableQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumUnusedQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumAcceptableUnusedQty}}</td>
+                                <td style="background-color:#A2D6F4;">{{sumAll}}</td>
                             </tr>
                         </table>
-
                     </div>
                 </div>
 <!--                <div class="flex flex-col sm:flex-row items-start justify-between">-->
