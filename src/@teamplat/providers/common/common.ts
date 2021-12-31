@@ -20,6 +20,9 @@ export class Common {
     sendListData(accountInfo: any, url: string): Observable<any> {
         return this.api.postList(url, accountInfo).pipe(share()); // seq;
     }
+    sendListDataLoading(accountInfo: any, url: string): Observable<any> {
+        return this.api.postListLoading(url, accountInfo).pipe(share()); // seq;
+    }
 
     sendListDataChgUrl(accountInfo: any, url: string): Observable<any> {
         return this.api.postListChgUrl(url, accountInfo).pipe(share()); // seq;

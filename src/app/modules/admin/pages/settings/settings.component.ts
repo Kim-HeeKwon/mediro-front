@@ -83,8 +83,8 @@ export class SettingsComponent implements OnInit, OnDestroy
             },
             {
                 id         : 'user-guide',
-                icon       : 'heroicons_outline:credit-card',
-                title      : '사용자 매뉴얼',
+                icon       : 'heroicons_outline:play',
+                title      : '매뉴얼',
                 description: '사용자 매뉴얼 관리'
             },
         ];

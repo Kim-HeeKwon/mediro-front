@@ -1,20 +1,16 @@
-import {
-    ChangeDetectionStrategy,
-    Component, Input,
-    OnInit, ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
-import {MatDrawer} from '@angular/material/sidenav';
-import {takeUntil} from "rxjs/operators";
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {MatDrawer} from "@angular/material/sidenav";
 
 @Component({
-    selector: 'settings-userGuide',
-    templateUrl: './userGuide.compent.html',
-    styleUrls: ['./userGuide.compent.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-manual',
+    templateUrl: './manual.component.html',
+    styleUrls: ['./manual.component.scss']
 })
-export class SettingsUserGuideComponent implements OnInit {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export class manualComponent implements OnInit, AfterViewInit,OnDestroy {
+    @ViewChild('drawer') drawer: MatDrawer;
+    drawerMode: 'over' | 'side' = 'side';
+    drawerOpened: boolean = true;
     url: string;
     basicInfo: boolean = false;
     circulation: boolean = false;
@@ -34,6 +30,11 @@ export class SettingsUserGuideComponent implements OnInit {
     tax: boolean = false;
 
     private _helpCd: string;
+    ngAfterViewInit(): void {
+    }
+
+    ngOnDestroy(): void {
+    }
 
     ngOnInit(): void {
     }
@@ -282,5 +283,4 @@ export class SettingsUserGuideComponent implements OnInit {
         const sendData = {helpCd: this._helpCd};
         window.open('https://canyon-tourmaline-630.notion.site/5d8f147cf3a1461b8ba8b1d2f23cae88', this._helpCd, 'top=50,left=200,width=1100,height=1100');
     }
-
 }

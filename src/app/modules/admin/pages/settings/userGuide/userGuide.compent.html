@@ -1,346 +1,1046 @@
 <div class="w-full max-w-3xl">
     <div class="w-full">
-        <div class="Guide">
-            <div class="sm:col-span-3" style="margin-bottom: 25px">
-                <fuse-alert
-                    [appearance]="'outline'"
-                    [type]="'info'">
-                    메뉴얼 (동영상)??
-                </fuse-alert>
-            </div>
-            <div class="guide-box">
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="account()">
-                        <span style="font-size: 20px;">거래처 관리</span>
-                    </button>
-                    <div *ngIf="accountBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="accountCreated()"><span>거래처 조회</span></button>
-                    </div>
-                    <div *ngIf="accountBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="accountCreated()"><span>거래처 신규 등록</span></button>
-                    </div>
-                    <div *ngIf="accountBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="accountCreated()"><span>거래처 수정</span></button>
-                    </div>
-                    <div *ngIf="accountBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="accountCreated()"><span>거래처 삭제</span></button>
-                    </div>
-                    <div *ngIf="accountBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="accountCreated()"><span>거래처 업데이트</span></button>
-                    </div>
-                </div>
+        <div class=" flex flex-auto overflow-hidden">
+            <div class="relative flex flex-col sm:flex-row sm:mb-18 overflow-hidden mediro-detail-form-custom">
+                <div class="flex pt-4">
+                    <div class="flex flex-col w-full">
+                        <div class="flex">
+                            <div class="flex flex-auto">
+                                <div class="flex flex-col pr-0">
+                            <div class="flex flex-auto">
+                                <div class="flex flex-col pr-0">
+                                    <button class="manual-btn manual-btn-title" *ngIf="!basicInfo"
+                                            (click)="basicInfoBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'info'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">기준 정보</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </button>
+                                    <button class="manual-btn manual-btn-title" *ngIf="basicInfo"
+                                            (click)="basicInfoBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'info'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">기준 정보</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                    </button>
+                                    <div *ngIf="basicInfo">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="accountBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:library'"></mat-icon>
+                                            <span class="ml-2 ml-4 mediro-span-custom">거래처 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="basicInfo">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="itemBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                                            <span class="ml-2 ml-4 mediro-span-custom">품목 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="basicInfo">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="itemPriceBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                                            <span class="ml-2 ml-4 mediro-span-custom">단가 관리</span>
+                                        </button>
+                                    </div>
+                                    <button class="manual-btn manual-btn-title" *ngIf="!circulation"
+                                            (click)="circulationBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'local_shipping'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">유통 관리</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </button>
+                                    <button class="manual-btn manual-btn-title" *ngIf="circulation"
+                                            (click)="circulationBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'local_shipping'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">유통 관리</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                    </button>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="estimateBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">견적 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="orderBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">발주 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="salesorderBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">주문 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="inboundBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:folder-add'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">입고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="outboundBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:folder-remove'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">출고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="stockBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">재고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="billBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:archive'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">정산 및 마감 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="circulation">
+                                        <button class="manual-btn manual-btn-title"
+                                                (click)="taxBtn()"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:archive'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">계산 발행 관리</span>
+                                        </button>
+                                    </div>
+                                    <button class="manual-btn manual-btn-title" *ngIf="!udi"
+                                            (click)="udiBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'insert_chart'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span-udi">공급내역 보고</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </button>
+                                    <button class="manual-btn manual-btn-title" *ngIf="udi"
+                                            (click)="udiBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'insert_chart'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span-udi">공급내역 보고</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                    </button>
+                                    <div *ngIf="udi">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">공급내역 보고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="udi">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">공급내역 전송 관리</span>
+                                        </button>
+                                    </div>
+                                    <button class="manual-btn manual-btn-title" *ngIf="!smartPlus"
+                                            (click)="smartPlusBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'playlist_add'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span-udi">스마트 플러스</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </button>
+                                    <button class="manual-btn manual-btn-title" *ngIf="smartPlus"
+                                            (click)="smartPlusBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'playlist_add'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span-udi">스마트 플러스</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                    </button>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">자동발주 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">정기주문 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">안전재고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">유효기간 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">장기재고 관리</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="smartPlus">
+                                        <button class="manual-btn manual-btn-title"
+                                                mat-flat-button>
+                                            <mat-icon class="maual-icon"
+                                                      [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-span-custom">가납재고 관리</span>
+                                        </button>
+                                    </div>
+                                    <button class="manual-btn manual-btn-title" *ngIf="!etc"
+                                            (click)="etcBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">기타 관리</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </button>
+                                    <button class="manual-btn manual-btn-title" *ngIf="etc"
+                                            (click)="etcBtn()"
+                                            mat-flat-button>
+                                        <mat-icon [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                                        <span class="mediro-ft-label manual-btn-span">기타 관리</span>
+                                        <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                                    </button>
+                                </div>
+                                <div class="flex flex-col pr-0">
+                                    <div class="flex" style="margin-top: 40px" *ngIf="account">
+                                        <button class="manual-btn-child">
+                                            <span class="ml-2 mr-1">거래처 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountLookupBook()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountLookupVideo()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="account">
+                                        <button class="manual-btn-child">
+                                            <span>거래처 신규 등록</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                            (click)="accountCreatBook()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountCreatVideo()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="account">
+                                        <button class="manual-btn-child">
+                                            <span>거래처 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountUpdateBook()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountUpdateVideo()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="account">
+                                        <button class="manual-btn-child">
+                                            <span>거래처 삭제</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountDeleteBook()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountDeleteVideo()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="account">
+                                        <button class="manual-btn-child">
+                                            <span>거래처 업데이트</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountNewUpdateBook()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button
+                                                (click)="accountNewUpdateVideo()">
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="item" style="margin-top: 80px">
+                                        <button class="manual-btn-child">
+                                            <span>품목 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="item">
+                                        <button class="manual-btn-child">
+                                            <span>품목 신규 등록</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="item">
+                                        <button class="manual-btn-child">
+                                            <span>품목 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="item">
+                                        <button class="manual-btn-child">
+                                            <span>품목 삭제</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="itemPrice" style="margin-top: 120px">
+                                        <button class="manual-btn-child">
+                                            <span>단가 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="itemPrice">
+                                        <button class="manual-btn-child">
+                                            <span>단가 신규 등록</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="itemPrice">
+                                        <button class="manual-btn-child">
+                                            <span>단가 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="itemPrice">
+                                        <button class="manual-btn-child">
+                                            <span>단가 삭제</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
 
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="item()">
-                        <span style="font-size: 20px;">품목 관리</span>
-                    </button>
-                    <div *ngIf="itemBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemCreated()"><span>품목 조회</span></button>
+                                    <div *ngIf="estimate" style="margin-top: 80px">
+                                        <button class="manual-btn-child">
+                                            <span>견적 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="estimate">
+                                        <button class="manual-btn-child">
+                                            <span>견적 작성</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="estimate">
+                                        <button class="manual-btn-child">
+                                            <span>견적 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="estimate">
+                                        <button class="manual-btn-child">
+                                            <span>견적 발송</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="estimate">
+                                        <button class="manual-btn-child">
+                                            <span>견적 확정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="estimate">
+                                        <button class="manual-btn-child">
+                                            <span>견적 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order" style="margin-top: 120px">
+                                        <button class="manual-btn-child">
+                                            <span>발주 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order">
+                                        <button class="manual-btn-child">
+                                            <span>발주 작성</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order">
+                                        <button class="manual-btn-child">
+                                            <span>발주 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order">
+                                        <button class="manual-btn-child">
+                                            <span>발주 발송</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order">
+                                        <button class="manual-btn-child">
+                                            <span>발주 확정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="order">
+                                        <button class="manual-btn-child">
+                                            <span>발주 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder" style="margin-top: 160px">
+                                        <button class="manual-btn-child">
+                                            <span>주문 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder">
+                                        <button class="manual-btn-child">
+                                            <span>주문 작성</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder">
+                                        <button class="manual-btn-child">
+                                            <span>주문 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder">
+                                        <button class="manual-btn-child">
+                                            <span>주문 확정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder">
+                                        <button class="manual-btn-child">
+                                            <span>주문 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="salesorder">
+                                        <button class="manual-btn-child">
+                                            <span>주문 반품</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound" style="margin-top: 200px;">
+                                        <button class="manual-btn-child">
+                                            <span>입고 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound">
+                                        <button class="manual-btn-child">
+                                            <span>입고 신규 등록</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound">
+                                        <button class="manual-btn-child">
+                                            <span>입고 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound">
+                                        <button class="manual-btn-child">
+                                            <span>입고 부분입고/입고</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound">
+                                        <button class="manual-btn-child">
+                                            <span>입고 마감</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="inbound">
+                                        <button class="manual-btn-child">
+                                            <span>입고 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="outbound" style="margin-top: 240px">
+                                        <button class="manual-btn-child">
+                                            <span>출고 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="outbound">
+                                        <button class="manual-btn-child">
+                                            <span>출고 신규 등록</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="outbound">
+                                        <button class="manual-btn-child">
+                                            <span>출고 수정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="outbound">
+                                        <button class="manual-btn-child">
+                                            <span>출고 부분출고/출고</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="outbound">
+                                        <button class="manual-btn-child">
+                                            <span>출고 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="stock" style="margin-top: 280px">
+                                        <button class="manual-btn-child">
+                                            <span>재고 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="stock">
+                                        <button class="manual-btn-child">
+                                            <span>재고 조정</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="stock">
+                                        <button class="manual-btn-child">
+                                            <span>재고 이력 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="bill" style="margin-top: 320px">
+                                        <button class="manual-btn-child">
+                                            <span>정산 및 마감 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="bill">
+                                        <button class="manual-btn-child">
+                                            <span>정산 및 마감 저장</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="bill">
+                                        <button class="manual-btn-child">
+                                            <span>정산 마감</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="tax" style="margin-top: 360px">
+                                        <button class="manual-btn-child">
+                                            <span>계산서 발행 조회</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="tax">
+                                        <button class="manual-btn-child">
+                                            <span>계산서 발행</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="tax">
+                                        <button class="manual-btn-child">
+                                            <span>계산서 발행 취소</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="tax">
+                                        <button class="manual-btn-child">
+                                            <span>계산서 발행 삭제</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+                                            <span class="ml-2 mr-1">매뉴얼</span>
+                                        </button>
+                                        <button class="manual-video-book"
+                                                mat-flat-button>
+                                            <mat-icon [svgIcon]="'heroicons_outline:play'"></mat-icon>
+                                            <span class="ml-2 mr-1">동영상</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div *ngIf="itemBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemCreated()"><span>품목 신규 등록</span></button>
-                    </div>
-                    <div *ngIf="itemBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemCreated()"><span>품목 수정</span></button>
-                    </div>
-                    <div *ngIf="itemBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemCreated()"><span>품목 삭제</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="itemPrice()">
-                        <span style="font-size: 20px;">단가 관리</span>
-                    </button>
-                    <div *ngIf="itemPriceBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemPriceCreated()"><span>단가 조회</span></button>
-                    </div>
-                    <div *ngIf="itemPriceBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemPriceCreated()"><span>단가 신규 등록</span></button>
-                    </div>
-                    <div *ngIf="itemPriceBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemPriceCreated()"><span>단가 수정</span></button>
-                    </div>
-                    <div *ngIf="itemPriceBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="itemPriceCreated()"><span>단가 삭제</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="estimate()">
-                        <span style="font-size: 20px;">견적 관리</span>
-                    </button>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 조회</span></button>
-                    </div>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 작성</span></button>
-                    </div>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 수정</span></button>
-                    </div>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 발송</span></button>
-                    </div>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 확정</span></button>
-                    </div>
-                    <div *ngIf="estimateBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="estimateCreated()"><span>견적 취소</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="order()">
-                        <span style="font-size: 20px;">발주 관리</span>
-                    </button>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 조회</span></button>
-                    </div>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 작성</span></button>
-                    </div>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 수정</span></button>
-                    </div>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 발송</span></button>
-                    </div>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 확정</span></button>
-                    </div>
-                    <div *ngIf="orderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="orderCreated()"><span>발주 취소</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="salesorder()">
-                        <span style="font-size: 20px;">주문 관리</span>
-                    </button>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 조회</span></button>
-                    </div>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 작성</span></button>
-                    </div>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 수정</span></button>
-                    </div>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 확정</span></button>
-                    </div>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 취소</span></button>
-                    </div>
-                    <div *ngIf="salesorderBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="salesorderCreated()"><span>주문 반품</span></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="guide-box">
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="inbound()">
-                        <span style="font-size: 20px;">입고 관리</span>
-                    </button>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 조회</span></button>
-                    </div>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 신규 등록</span></button>
-                    </div>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 수정</span></button>
-                    </div>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 부분입고/입고</span></button>
-                    </div>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 마감</span></button>
-                    </div>
-                    <div *ngIf="inboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="inboundCreated()"><span>입고 취소</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="outbound()">
-                        <span style="font-size: 20px;">출고 관리</span>
-                    </button>
-                    <div *ngIf="outboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="outboundCreated()"><span>출고 조회</span></button>
-                    </div>
-                    <div *ngIf="outboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="outboundCreated()"><span>출고 신규 등록</span></button>
-                    </div>
-                    <div *ngIf="outboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="outboundCreated()"><span>출고 수정</span></button>
-                    </div>
-                    <div *ngIf="outboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="outboundCreated()"><span>출고 부분출고/출고</span></button>
-                    </div>
-                    <div *ngIf="outboundBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="outboundCreated()"><span>출고 취소</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="stock()">
-                        <span style="font-size: 20px;">재고 관리</span>
-                    </button>
-                    <div *ngIf="stockBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="stockCreated()"><span>재고 조회</span></button>
-                    </div>
-                    <div *ngIf="stockBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="stockCreated()"><span>재고 조정</span></button>
-                    </div>
-                    <div *ngIf="stockBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="stockCreated()"><span>재고 이력 조회</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="bill()">
-                        <span style="font-size: 20px;">정산 및 마감 관리</span>
-                    </button>
-                    <div *ngIf="billBtn">
-                        <button
-                            class="mt-5 guide-btn-custom mediro-detail-search-form-custom"
-                            mat-flat-button (click)="billCreated()"><span>정산 및 마감 조회</span></button>
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        mat-stroked-button
-                        [color]="'accent'"
-                        class="Guide-hover mediro-custom-accent" (click)="tax()">
-                        <span style="font-size: 20px;">계신서 발행 관리</span>
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

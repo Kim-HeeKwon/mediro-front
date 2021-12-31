@@ -1,19 +1,22 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map, filter, scan, tap} from 'rxjs/operators';
 import {environment} from 'environments/environment';
+import {MatDialog} from "@angular/material/dialog";
+import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
+
 @Injectable()
 export class Api {
 
     private url: string;
     private urlBill: string;
 
-    constructor(public http: HttpClient) {
+    constructor(public http: HttpClient,
+                public _matDialog: MatDialog,) {
         this.url = environment.serverUrl;
         this.urlBill = environment.serverTaxUrl;
     }
@@ -125,7 +128,39 @@ export class Api {
 
         return req;
     }
+    postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
 
+        const req = this.http.post(this.url + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        })
+        return req;
+    }
     postListChgUrl(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {

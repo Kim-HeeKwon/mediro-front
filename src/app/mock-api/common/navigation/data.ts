@@ -281,136 +281,143 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cog',
                 link : '/pages/settings'
             },
-            // {
-            //     id   : 'payment.payment-history',
-            //     title: '부가서비스',
-            //     subtitle: '',
-            //     type : 'basic',
-            //     icon : 'heroicons_outline:desktop-computer',
-            //     link : '/payment/payment-history'
-            // },
-            // {
-            //     id   : 'realgrid.realgrid',
-            //     title: '그리드 one',
-            //     type : 'basic',
-            //     //icon : 'heroicons_outline:desktop-computer',
-            //     link : '/realgrid/realgrid'
-            // },
-            // {
-            //     id   : 'realgrid.realgridHD',
-            //     title: '그리드 (H-D)',
-            //     type : 'basic',
-            //     //icon : 'heroicons_outline:desktop-computer',
-            //     link : '/realgrid/realgridHD'
-            // },
+            {
+                id   : 'manual.manual-video',
+                title: '매뉴얼',
+                type : 'basic',
+                icon : 'heroicons_outline:play',
+                link : '/manual/manual-video'
+            },
+            {
+                id   : 'payment.payment-history',
+                title: '부가서비스',
+                subtitle: '',
+                type : 'basic',
+                icon : 'heroicons_outline:desktop-computer',
+                link : '/payment/payment-history'
+            },
+            {
+                id   : 'realgrid.realgrid',
+                title: '그리드 one',
+                type : 'basic',
+                //icon : 'heroicons_outline:desktop-computer',
+                link : '/realgrid/realgrid'
+            },
+            {
+                id   : 'realgrid.realgridHD',
+                title: '그리드 (H-D)',
+                type : 'basic',
+                //icon : 'heroicons_outline:desktop-computer',
+                link : '/realgrid/realgridHD'
+            },
         ]
     },
-    // {
-    //     id      : 'user-interface',
-    //     title   : 'User Interface',
-    //     subtitle: '개발자 참고',
-    //     type    : 'group',
-    //     icon    : 'heroicons_outline:collection',
-    //     children: [
-    //         {
-    //             id      : 'user-interface.icons',
-    //             title   : 'Icons',
-    //             type    : 'collapsable',
-    //             icon    : 'heroicons_outline:lightning-bolt',
-    //             children: [
-    //                 {
-    //                     id   : 'user-interface.icons.heroicons-outline',
-    //                     title: 'Heroicons Outline',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/heroicons-outline'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.heroicons-solid',
-    //                     title: 'Heroicons Solid',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/heroicons-solid'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-twotone',
-    //                     title: 'Material Twotone',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-twotone'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-outline',
-    //                     title: 'Material Outline',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-outline'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-solid',
-    //                     title: 'Material Solid',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-solid'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.iconsmind',
-    //                     title: 'Iconsmind',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/iconsmind'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.feather',
-    //                     title: 'Feather',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/feather'
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             id      : 'user-interface.forms',
-    //             title   : 'Forms',
-    //             type    : 'collapsable',
-    //             icon    : 'heroicons_outline:pencil-alt',
-    //             children: [
-    //                 {
-    //                     id   : 'user-interface.forms.fields',
-    //                     title: 'Fields',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/fields'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.forms.layouts',
-    //                     title: 'Layouts',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/layouts'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.forms.wizards',
-    //                     title: 'Wizards',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/wizards'
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             id   : 'user-interface.cards',
-    //             title: 'Cards',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:duplicate',
-    //             link : '/ui/cards'
-    //         },
-    //         {
-    //             id   : 'user-interface.example',
-    //             title: 'Example',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:duplicate',
-    //             link : '/example'
-    //         },
-    //     ]
-    // },
+    {
+        id      : 'user-interface',
+        title   : 'User Interface',
+        subtitle: '개발자 참고',
+        type    : 'group',
+        icon    : 'heroicons_outline:collection',
+        children: [
+            {
+                id      : 'user-interface.icons',
+                title   : 'Icons',
+                type    : 'collapsable',
+                icon    : 'heroicons_outline:lightning-bolt',
+                children: [
+                    {
+                        id   : 'user-interface.icons.heroicons-outline',
+                        title: 'Heroicons Outline',
+                        type : 'basic',
+                        link : '/ui/icons/heroicons-outline'
+                    },
+                    {
+                        id   : 'user-interface.icons.heroicons-solid',
+                        title: 'Heroicons Solid',
+                        type : 'basic',
+                        link : '/ui/icons/heroicons-solid'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-twotone',
+                        title: 'Material Twotone',
+                        type : 'basic',
+                        link : '/ui/icons/material-twotone'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-outline',
+                        title: 'Material Outline',
+                        type : 'basic',
+                        link : '/ui/icons/material-outline'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-solid',
+                        title: 'Material Solid',
+                        type : 'basic',
+                        link : '/ui/icons/material-solid'
+                    },
+                    {
+                        id   : 'user-interface.icons.iconsmind',
+                        title: 'Iconsmind',
+                        type : 'basic',
+                        link : '/ui/icons/iconsmind'
+                    },
+                    {
+                        id   : 'user-interface.icons.feather',
+                        title: 'Feather',
+                        type : 'basic',
+                        link : '/ui/icons/feather'
+                    }
+                ]
+            },
+            {
+                id      : 'user-interface.forms',
+                title   : 'Forms',
+                type    : 'collapsable',
+                icon    : 'heroicons_outline:pencil-alt',
+                children: [
+                    {
+                        id   : 'user-interface.forms.fields',
+                        title: 'Fields',
+                        type : 'basic',
+                        link : '/ui/forms/fields'
+                    },
+                    {
+                        id   : 'user-interface.forms.layouts',
+                        title: 'Layouts',
+                        type : 'basic',
+                        link : '/ui/forms/layouts'
+                    },
+                    {
+                        id   : 'user-interface.forms.wizards',
+                        title: 'Wizards',
+                        type : 'basic',
+                        link : '/ui/forms/wizards'
+                    }
+                ]
+            },
+            {
+                id   : 'user-interface.cards',
+                title: 'Cards',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/ui/cards'
+            },
+            {
+                id   : 'user-interface.example',
+                title: 'Example',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/example'
+            },
+        ]
+    },
     {
         id  : 'divider-2',
         type: 'divider'
     },
 ];
 export const defaultNavigationM: FuseNavigationItem[] = [
-    /* {
+     {
          id      : 'user-interface',
          title   : 'User Interface',
          subtitle: '개발자 참고',
@@ -468,7 +475,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                           ]
                       },
         ]
-     },*/
+     },
     {
         id      : 'monitoring',
         title   : '대시보드',
@@ -698,105 +705,105 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
         ]
     },
-    // {
-    //     id      : 'user-interface',
-    //     title   : 'User Interface',
-    //     subtitle: '개발자 참고',
-    //     type    : 'group',
-    //     icon    : 'heroicons_outline:collection',
-    //     children: [
-    //         {
-    //             id      : 'user-interface.icons',
-    //             title   : 'Icons',
-    //             type    : 'collapsable',
-    //             icon    : 'heroicons_outline:lightning-bolt',
-    //             children: [
-    //                 {
-    //                     id   : 'user-interface.icons.heroicons-outline',
-    //                     title: 'Heroicons Outline',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/heroicons-outline'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.heroicons-solid',
-    //                     title: 'Heroicons Solid',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/heroicons-solid'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-twotone',
-    //                     title: 'Material Twotone',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-twotone'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-outline',
-    //                     title: 'Material Outline',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-outline'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.material-solid',
-    //                     title: 'Material Solid',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/material-solid'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.iconsmind',
-    //                     title: 'Iconsmind',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/iconsmind'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.icons.feather',
-    //                     title: 'Feather',
-    //                     type : 'basic',
-    //                     link : '/ui/icons/feather'
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             id      : 'user-interface.forms',
-    //             title   : 'Forms',
-    //             type    : 'collapsable',
-    //             icon    : 'heroicons_outline:pencil-alt',
-    //             children: [
-    //                 {
-    //                     id   : 'user-interface.forms.fields',
-    //                     title: 'Fields',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/fields'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.forms.layouts',
-    //                     title: 'Layouts',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/layouts'
-    //                 },
-    //                 {
-    //                     id   : 'user-interface.forms.wizards',
-    //                     title: 'Wizards',
-    //                     type : 'basic',
-    //                     link : '/ui/forms/wizards'
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             id   : 'user-interface.cards',
-    //             title: 'Cards',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:duplicate',
-    //             link : '/ui/cards'
-    //         },
-    //         {
-    //             id   : 'user-interface.example',
-    //             title: 'Example',
-    //             type : 'basic',
-    //             icon : 'heroicons_outline:duplicate',
-    //             link : '/example'
-    //         },
-    //     ]
-    // },
+    {
+        id      : 'user-interface',
+        title   : 'User Interface',
+        subtitle: '개발자 참고',
+        type    : 'group',
+        icon    : 'heroicons_outline:collection',
+        children: [
+            {
+                id      : 'user-interface.icons',
+                title   : 'Icons',
+                type    : 'collapsable',
+                icon    : 'heroicons_outline:lightning-bolt',
+                children: [
+                    {
+                        id   : 'user-interface.icons.heroicons-outline',
+                        title: 'Heroicons Outline',
+                        type : 'basic',
+                        link : '/ui/icons/heroicons-outline'
+                    },
+                    {
+                        id   : 'user-interface.icons.heroicons-solid',
+                        title: 'Heroicons Solid',
+                        type : 'basic',
+                        link : '/ui/icons/heroicons-solid'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-twotone',
+                        title: 'Material Twotone',
+                        type : 'basic',
+                        link : '/ui/icons/material-twotone'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-outline',
+                        title: 'Material Outline',
+                        type : 'basic',
+                        link : '/ui/icons/material-outline'
+                    },
+                    {
+                        id   : 'user-interface.icons.material-solid',
+                        title: 'Material Solid',
+                        type : 'basic',
+                        link : '/ui/icons/material-solid'
+                    },
+                    {
+                        id   : 'user-interface.icons.iconsmind',
+                        title: 'Iconsmind',
+                        type : 'basic',
+                        link : '/ui/icons/iconsmind'
+                    },
+                    {
+                        id   : 'user-interface.icons.feather',
+                        title: 'Feather',
+                        type : 'basic',
+                        link : '/ui/icons/feather'
+                    }
+                ]
+            },
+            {
+                id      : 'user-interface.forms',
+                title   : 'Forms',
+                type    : 'collapsable',
+                icon    : 'heroicons_outline:pencil-alt',
+                children: [
+                    {
+                        id   : 'user-interface.forms.fields',
+                        title: 'Fields',
+                        type : 'basic',
+                        link : '/ui/forms/fields'
+                    },
+                    {
+                        id   : 'user-interface.forms.layouts',
+                        title: 'Layouts',
+                        type : 'basic',
+                        link : '/ui/forms/layouts'
+                    },
+                    {
+                        id   : 'user-interface.forms.wizards',
+                        title: 'Wizards',
+                        type : 'basic',
+                        link : '/ui/forms/wizards'
+                    }
+                ]
+            },
+            {
+                id   : 'user-interface.cards',
+                title: 'Cards',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/ui/cards'
+            },
+            {
+                id   : 'user-interface.example',
+                title: 'Example',
+                type : 'basic',
+                icon : 'heroicons_outline:duplicate',
+                link : '/example'
+            },
+        ]
+    },
     {
         id  : 'divider-2',
         type: 'divider'
@@ -821,90 +828,90 @@ export const futuristicNavigation: FuseNavigationItem[] = [
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
+    {
+        id   : 'estimate-order.estimate',
+        title: '견적',
+        type : 'basic',
+        icon : 'heroicons_outline:pencil-alt',
+        link : '/estimate-order/estimate'
+    },
+    {
+        id      : 'estimate-order.order',
+        title   : '발주',
+        subtitle: '',
+        type    : 'basic',
+        icon    : 'heroicons_outline:pencil',
+        link    : '/estimate-order/order'
+    },
+    {
+        id      : 'salesorder.salesorder',
+        title   : '주문',
+        subtitle: '',
+        type    : 'basic',
+        icon    : 'heroicons_outline:pencil',
+        link    : '/salesorder/salesorder'
+    },
+    {
+        id   : 'bound.inbound',
+        title: '입고',
+        type : 'basic',
+        icon : 'heroicons_outline:folder-add',
+        link : '/bound/inbound'
+    },
+    {
+        id   : 'bound.outbound',
+        title: '출고',
+        type : 'basic',
+        icon : 'heroicons_outline:folder-remove',
+        link : '/bound/outbound'
+    },
+    {
+        id   : 'stock.stock',
+        title: '재고',
+        type : 'basic',
+        icon : 'heroicons_outline:cube',
+        link : '/stock/stock'
+    },
+    {
+        id   : 'stock.validity',
+        title: '유효기간',
+        type : 'basic',
+        icon : 'heroicons_outline:calendar',
+        link : '/stock/validity'
+    },
+    {
+        id   : 'calculate.bill',
+        title: '정산 및 마감',
+        type : 'basic',
+        icon : 'heroicons_outline:archive',
+        link : '/calculate/bill'
+    },
+    {
+        id   : 'calculate.tax',
+        title: '계산서 발행',
+        type : 'basic',
+        icon : 'heroicons_outline:archive',
+        link : '/calculate/tax'
+    },
     // {
-    //     id   : 'estimate-order.estimate',
-    //     title: '견적',
+    //     id   : 'calculate.bill2',
+    //     title: '반입/반출',
     //     type : 'basic',
-    //     icon : 'heroicons_outline:pencil-alt',
-    //     link : '/estimate-order/estimate'
+    //     icon : 'heroicons_outline:desktop-computer',
+    //     link : '/pages/error/500'
     // },
-    // {
-    //     id      : 'estimate-order.order',
-    //     title   : '발주',
-    //     subtitle: '',
-    //     type    : 'basic',
-    //     icon    : 'heroicons_outline:pencil',
-    //     link    : '/estimate-order/order'
-    // },
-    // {
-    //     id      : 'salesorder.salesorder',
-    //     title   : '주문',
-    //     subtitle: '',
-    //     type    : 'basic',
-    //     icon    : 'heroicons_outline:pencil',
-    //     link    : '/salesorder/salesorder'
-    // },
-    // {
-    //     id   : 'bound.inbound',
-    //     title: '입고',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:folder-add',
-    //     link : '/bound/inbound'
-    // },
-    // {
-    //     id   : 'bound.outbound',
-    //     title: '출고',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:folder-remove',
-    //     link : '/bound/outbound'
-    // },
-    // {
-    //     id   : 'stock.stock',
-    //     title: '재고',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:cube',
-    //     link : '/stock/stock'
-    // },
-    // {
-    //     id   : 'stock.validity',
-    //     title: '유효기간',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:calendar',
-    //     link : '/stock/validity'
-    // },
-    // {
-    //     id   : 'calculate.bill',
-    //     title: '정산 및 마감',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:archive',
-    //     link : '/calculate/bill'
-    // },
-    // {
-    //     id   : 'calculate.tax',
-    //     title: '계산서 발행',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:archive',
-    //     link : '/calculate/tax'
-    // },
-    // // {
-    // //     id   : 'calculate.bill2',
-    // //     title: '반입/반출',
-    // //     type : 'basic',
-    // //     icon : 'heroicons_outline:desktop-computer',
-    // //     link : '/pages/error/500'
-    // // },
-    // {
-    //     id   : 'realgrid.realgrid',
-    //     title: '그리드',
-    //     type : 'basic',
-    //     //icon : 'heroicons_outline:desktop-computer',
-    //     link : '/realgrid/realgrid'
-    // },
-    // {
-    //     id   : 'realgrid.realgridHD',
-    //     title: '그리드(2)',
-    //     type : 'basic',
-    //     //icon : 'heroicons_outline:desktop-computer',
-    //     link : '/realgrid/realgridHD'
-    // },
+    {
+        id   : 'realgrid.realgrid',
+        title: '그리드',
+        type : 'basic',
+        //icon : 'heroicons_outline:desktop-computer',
+        link : '/realgrid/realgrid'
+    },
+    {
+        id   : 'realgrid.realgridHD',
+        title: '그리드(2)',
+        type : 'basic',
+        //icon : 'heroicons_outline:desktop-computer',
+        link : '/realgrid/realgridHD'
+    },
 ];
