@@ -180,6 +180,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       this.soChart();
 
       this.billChart();
+      this.udiChart();
+      this.stockChart();
 
       this._changeDetectorRef.markForCheck();
   }
@@ -272,16 +274,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
      */
     ngAfterViewInit(): void {
         // Get products if sort or page changes
-        merge(this._paginator.page).pipe(
-            switchMap(() => {
-
-                this.isLoading = true;
-                return this._dashboardsService.getRecallItem(this._paginator.pageIndex, this._paginator.pageSize, '', '','');
-            }),
-            map(() => {
-                this.isLoading = false;
-            })
-        ).subscribe();
+        // merge(this._paginator.page).pipe(
+        //     switchMap(() => {
+        //
+        //         this.isLoading = true;
+        //         return this._dashboardsService.getRecallItem(this._paginator.pageIndex, this._paginator.pageSize, '', '','');
+        //     }),
+        //     map(() => {
+        //         this.isLoading = false;
+        //     })
+        // ).subscribe();
 
     }
 
@@ -325,8 +327,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
         const doughnutChartLabels = [
             '작성 : ' + this.qtInfo.nCnt,
-            '임시저장 : ' + this.qtInfo.nCnt,
-            '재견적 : ' + this.qtInfo.sCnt,
+            '요청 : ' + this.qtInfo.nCnt,
+            '재견적요청 : ' + this.qtInfo.sCnt,
             '미확정 : ' + this.qtInfo.cfaCnt,
             '견적확정 : ' + this.qtInfo.cfCnt];
 
@@ -349,7 +351,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold'},
+                        font: {weight : 'bold', size: 10},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -389,20 +391,19 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
     poChart() {
         const doughnutChartLabels = [
             '작성 : ' + this.poInfo.nCnt,
-            '임시저장 : ' + this.poInfo.nCnt,
-            '부분발주 : ' + this.poInfo.pCnt,
+            '발주서 발송 : ' + this.poInfo.sCnt,
             '미확정 : ' + this.poInfo.cfaCnt,
             '발주확정 : ' + this.poInfo.cfCnt];
 
         const doughnutChartData =  {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ this.poInfo.nCnt, this.poInfo.nCnt, this.poInfo.pCnt , this.poInfo.cfaCnt , this.poInfo.cfCnt ],
-                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                { data: [ this.poInfo.nCnt, this.poInfo.sCnt , this.poInfo.cfaCnt , this.poInfo.cfCnt ],
+                    backgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverBackgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     borderWidth : 1,
                     hoverBorderWidth: 3,
-                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
+                    hoverBorderColor: ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     hoverOffset: 4,}
             ],
         };
@@ -413,7 +414,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold'},
+                        font: {weight : 'bold', size: 10},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -474,7 +475,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold'},
+                        font: {weight : 'bold', size: 10},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -568,6 +569,249 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                         }
                     },
                     y: {
+                        display: false,
+                        ticks: {
+                            font: {
+                                size: 0,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    udiChart() {
+        const udiPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    if(!meta.hidden){
+                        meta.data.forEach((element, index) => {
+                           ctx.fillStyle = '#000000';
+                           const fontSize = 15;
+                           const fontStyle = 'normal';
+                           const fontFamily = '';
+                           ctx.font = '15px';
+                           const dataString = dataset.data[index].toString();
+                           ctx.textAlign = 'center';
+                           ctx.textBaseline = 'middle';
+                           const position = element.tooltipPosition();
+                           const padding = 5;
+                           ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                        });
+                    }
+                });
+            }
+        };
+        const ctx = document.getElementById('udi_chart');
+        // @ts-ignore
+        const mixedChart = new Chart(ctx, {
+            plugins: [udiPlugin],
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: '전월보고',
+                    data: [50, 70, 30, 100],
+                    fill: false,
+                    borderColor: '#206491',
+                    pointBackgroundColor: '#206491',
+                    hoverBackgroundColor: '#206491',
+                    backgroundColor: '#206491',
+                    hoverBorderColor : '#206491',
+                    pointBorderColor : '#206491',
+                    pointHoverBackgroundColor :'#206491',
+                    pointHoverBorderColor: '#206491',
+                    borderWidth: 1,
+                    pointBorderWidth: 0.1,
+                    hoverBorderWidth: 0.1,
+                },{
+                    type: 'bar',
+                    label: '당월등록',
+                    data: [10, 30, 40, 50],
+                    fill: false,
+                    borderColor: '#45AAB4',
+                    pointBackgroundColor: '#45AAB4',
+                    hoverBackgroundColor: '#45AAB4',
+                    backgroundColor: '#45AAB4',
+                    hoverBorderColor : '#45AAB4',
+                    pointBorderColor : '#45AAB4',
+                    pointHoverBackgroundColor :'#45AAB4',
+                    pointHoverBorderColor: '#45AAB4',
+                    borderWidth: 1,
+                    pointBorderWidth: 0.1,
+                    hoverBorderWidth: 0.1,
+                }],
+                labels: ['1등급','2등급','3등급','4등급']
+            },
+            options: {
+                plugins: {
+                    tooltip: true,
+                    legend: {
+                        position: 'bottom',
+                        boxWidth: 0,
+                        boxHeight: 0,
+                        align: 'center',
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 8,
+                            }
+                        }
+                    },
+                    y: {
+                        display: false,
+                        ticks: {
+                            font: {
+                                size: 0,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    stockChart() {
+        const doughnutChartLabels = [
+            '1등급 : ' + 1,
+            '2등급 : ' + 2,
+            '3등급 : ' + 3,
+            '4등급 : ' + 4,];
+
+        const doughnutChartData =  {
+            labels: doughnutChartLabels,
+            datasets: [
+                { data: [ 1, 2, 3 ,4 ],
+                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' ],
+                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
+                    borderWidth : 1,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
+                    hoverOffset: 4,}
+            ],
+        };
+        const doughnutChartOption = {
+            cutout: 30,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        boxWidth: 0,
+                        font: {weight : 'bold', size: 10},
+                        textAlign : 'right'
+                        // color: 'rgb(255, 99, 132)'
+                    },
+                    position: 'right'
+                },
+            },
+        };
+        const doughnutChartPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+
+                ctx.fillStyle = '#3983DC';
+                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
+
+                ctx.font = '50px';
+                ctx.textAlign = 'center';
+                ctx.fillText('' + 0 , width / 2, top + (height / 1.9));
+            }
+        };
+
+        const ctx = document.getElementById('stock_chart');
+        // @ts-ignore
+        const qtChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: doughnutChartData,
+            options: doughnutChartOption,
+            plugins: [doughnutChartPlugin],
+        });
+
+
+        const stockPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    if(!meta.hidden){
+                        meta.data.forEach((element, index) => {
+                            ctx.fillStyle = '#000000';
+                            const fontSize = 15;
+                            const fontStyle = 'normal';
+                            const fontFamily = '';
+                            ctx.font = '15px';
+                            const dataString = dataset.data[index].toString();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            const position = element.tooltipPosition();
+                            const padding = 5;
+                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                        });
+                    }
+                });
+            }
+        };
+        const ctx2 = document.getElementById('stock2_chart');
+        // @ts-ignore
+        const mixedChart = new Chart(ctx2, {
+            plugins: [stockPlugin],
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    axis: 'y',
+                    data: [50 , 35],
+                    fill: false,
+                    borderColor: ['#3983DC','#BDBDBD'],
+                    pointBackgroundColor: ['#3983DC','#BDBDBD'],
+                    hoverBackgroundColor: ['#3983DC','#BDBDBD'],
+                    backgroundColor: ['#3983DC','#BDBDBD'],
+                    hoverBorderColor : ['#3983DC','#BDBDBD'],
+                    pointBorderColor : ['#3983DC','#BDBDBD'],
+                    pointHoverBackgroundColor :['#3983DC','#BDBDBD'],
+                    pointHoverBorderColor: ['#3983DC' ,'#BDBDBD'],
+                    borderWidth: 1,
+                    pointBorderWidth: 0.1,
+                    hoverBorderWidth: 0.1,
+                }],
+                labels: ['가용', '비가용'],
+            },
+            options: {
+                indexAxis: 'y',
+                plugins: {
+                    tooltip: true,
+                    legend: {
+                        display: false,
+                        position: 'bottom',
+                        boxWidth: 0,
+                        boxHeight: 0,
+                        align: 'center',
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 8,
+                            }
+                        }
+                    },
+                    y: {
+                        display: false,
                         ticks: {
                             font: {
                                 size: 0,

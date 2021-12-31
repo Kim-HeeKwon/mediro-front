@@ -298,6 +298,52 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
+    reCancel(): void{
+        if(this.param.check === 'estimate'){
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title: '',
+                message: '취소하시겠습니까?',
+                icon: this._formBuilder.group({
+                    show: true,
+                    name: 'heroicons_outline:exclamation',
+                    color: 'warn'
+                }),
+                actions: this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show: true,
+                        label: '취소',
+                        color: 'warn'
+                    }),
+                    cancel: this._formBuilder.group({
+                        show: true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+
+                        const sendData = this.header;
+
+                        if (sendData) {
+                            this._estimateService.estimateReCancel(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((estimate: any) => {
+                                    this._functionService.cfn_alertCheckMessage(estimate);
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    } else {
+                    }
+                });
+        }
+    }
+
     reject(): void{
 
         if(this.param.check === 'order'){

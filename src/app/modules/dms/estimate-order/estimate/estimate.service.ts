@@ -379,4 +379,22 @@ export class EstimateService {
         );
     }
 
+    /**
+     * 취소
+     */
+    estimateReCancel(estimates: Estimate[]): Observable<Estimate>
+    {
+        return this.estimates$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/reCancel').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
 }

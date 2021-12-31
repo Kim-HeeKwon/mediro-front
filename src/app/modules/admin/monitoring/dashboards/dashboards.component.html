@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-auto min-w-0">
+<div class="flex flex-col flex-auto min-w-0" style="background-color: #CDD7E0">
     <!-- Loader -->
     <div
         class="flex flex-col inset-x-0 bottom-0"
@@ -44,7 +44,7 @@
 <!--        </div>-->
 <!--    </div>-->
     <!-- Main -->
-    <div class="flex-auto mt-4 mx-4 sm:mt-4 sm:mx-4">
+    <div class="flex-auto mt-6 mx-2 sm:mt-6 sm:mx-2">
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0">
             <!-- 견적 -->
@@ -100,14 +100,14 @@
                             </div>
                             <!-- 임시저장 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">요청</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{qtInfo.nCnt}}
                                 </div>
                             </div>
                             <!-- 재견적 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">재견적</div>
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">재견적요청</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{qtInfo.sCnt}}
                                 </div>
@@ -142,28 +142,28 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 gap-2">
                             <!-- 작성 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">작성</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{poInfo.nCnt}}
                                 </div>
                             </div>
                             <!-- 임시저장 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{poInfo.nCnt}}
-                                </div>
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>-->
+<!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+<!--                                    {{poInfo.nCnt}}-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <!-- 부분발주 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">부분발주</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{poInfo.pCnt}}
-                                </div>
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">부분발주</div>-->
+<!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+<!--                                    {{poInfo.pCnt}}-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <!-- 미확정 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">미확정</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{poInfo.cfaCnt}}
@@ -226,28 +226,14 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 gap-2">
                             <!-- 주문등록 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">주문접수</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{soInfo.nCnt}}
                                 </div>
                             </div>
-                            <!-- 주문 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{soInfo.nCnt}}
-                                </div>
-                            </div>
-                            <!-- 주문확정 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">주문취소</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{soInfo.cCnt}}
-                                </div>
-                            </div>
-                            <!-- 취소 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+                            <!-- 등록완료 -->
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">등록완료</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{soInfo.sCnt}}
@@ -332,14 +318,14 @@
                                 </div>
                             </div>
                             <!-- 확정 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">입고취소</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{ibInfo.cCnt}}
-                                </div>
-                            </div>
-                            <!-- 취소 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">입고취소</div>-->
+<!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+<!--                                    {{ibInfo.cCnt}}-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <!-- 미확정 -->
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">미확정</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{ibInfo.pCnt + ibInfo.sCnt}}
@@ -436,14 +422,14 @@
                                 </div>
                             </div>
                             <!-- 출고취소 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">출고취소</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{obInfo.cCnt}}
-                                </div>
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">출고취소</div>-->
+<!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+<!--                                    {{obInfo.cCnt}}-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <!-- 미확정 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">미확정</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{obInfo.pCnt + obInfo.sCnt}}
@@ -562,28 +548,14 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 gap-2">
                             <!-- 실적집계 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-navy">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">실적집계</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     0
                                 </div>
                             </div>
-                            <!-- 마감취소 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">마감취소</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    0
-                                </div>
-                            </div>
-                            <!-- 송장미발행 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">송장미발행</div>
-                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    0
-                                </div>
-                            </div>
                             <!-- 계산서미발행 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">계산서미발행</div>
                                 <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     0
@@ -634,23 +606,33 @@
 <!--                </div>-->
 <!--            </div>-->
 
-            <!-- UDI 신고 현황 -->
+            <!-- 공급내역 보고 -->
             <div class="sm:col-span-3 md:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
+                <div class="flex flex-col items-center mt-2">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                        <div>공급내역 보고</div>
+                    </div>
+                </div>
                 <div class="flex flex-col sm:flex-row items-start justify-between">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">UDI 공급내역 현황</div>
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate"></div>
+
                     <div class="mt-3 sm:mt-0 sm:ml-2">
                         <mat-button-toggle-group
                             value="this-week"
                             #udiInfoWeekSelector="matButtonToggleGroup">
-                            <mat-button-toggle value="last-week">지난 주</mat-button-toggle>
-                            <mat-button-toggle value="this-week">이번 주</mat-button-toggle>
+                            <mat-button-toggle value="last-week">전월</mat-button-toggle>
+                            <mat-button-toggle value="this-week">당월</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>
-<!--                <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer" (click)="goPage('UDI')">-->
-<!--                    &lt;!&ndash; New vs. Closed &ndash;&gt;-->
-<!--                    <div class="flex flex-col flex-auto">-->
-<!--                        <div class="font-medium text-secondary">성공 vs. 실패</div>-->
+                <div class="grid grid-cols-5 lg:grid-cols-5 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer" (click)="goPage('UDI')">
+                    <!-- New vs. Closed -->
+                    <div class="flex flex-col flex-auto col-span-3">
+                        <div class="font-medium text-secondary"></div>
+                        <div class="chart_css h-full">
+                            <canvas class="" id="udi_chart" baseChart height="170">
+                            </canvas>
+                        </div>
 <!--                        <div class="flex flex-col flex-auto">-->
 <!--                            <apx-chart-->
 <!--                                class="flex-auto w-full h-80"-->
@@ -668,10 +650,38 @@
 <!--                                [xaxis]="chartUdiInfo.xaxis"-->
 <!--                                [yaxis]="chartUdiInfo.yaxis"></apx-chart>-->
 <!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; Overview &ndash;&gt;-->
-<!--                    <div class="flex flex-col">-->
-<!--                        <div class="font-medium text-secondary">보고상태</div>-->
+                    </div>
+                    <!-- Overview -->
+                    <div class="flex flex-col p-6 col-span-2">
+                        <div class="font-medium text-secondary"></div>
+                        <div class="flex-auto grid grid-cols-4 gap-6">
+                            <!-- 임시등록 -->
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시등록</div>
+                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
+                                    0
+                                </div>
+                            </div>
+                            <!-- 월보고 -->
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">월보고</div>
+                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
+                                    D-7
+                                </div>
+                            </div>
+                            <!-- 반품 -->
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">반품</div>
+                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
+                                </div>
+                            </div>
+                            <!-- 보고목록 -->
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">보고목록</div>
+                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
+                                </div>
+                            </div>
+                        </div>
 <!--                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">-->
 <!--                            &lt;!&ndash; 성공 &ndash;&gt;-->
 <!--                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">-->
@@ -702,22 +712,111 @@
 <!--                                <div class="mt-1 text-sm sm:text-lg font-medium">요청중</div>-->
 <!--                            </div>-->
 <!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
-
-            <div class="sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
-                <div class="flex flex-col sm:flex-row items-start justify-between">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate"></div>
-                    <div class="mt-3 sm:mt-0 sm:ml-2">
-                        <mat-button-toggle-group
-                            value="recall-item"
-                            #taskSelector="matButtonToggleGroup">
-                            <!-- <mat-button-toggle value="news">의료기기 News</mat-button-toggle> -->
-                            <mat-button-toggle value="recall-item">회수대상 의료기기</mat-button-toggle>
-                        </mat-button-toggle-group>
                     </div>
                 </div>
+            </div>
+
+            <!--재고-->
+            <div class="sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
+                <div class="flex flex-col items-center mt-2">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                        <div>재고</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer">
+                    <!-- New vs. Closed -->
+                    <div class="flex flex-col flex-auto col-span-2">
+                        <div class="chart_css h-full" style="margin-top: -30px;">
+                            <canvas class="" id="stock_chart" baseChart height="100">
+                            </canvas>
+                        </div>
+                        <div class="chart_css w-full h-full">
+                            <canvas class="" id="stock2_chart" baseChart width="100" height="50">
+                            </canvas>
+                        </div>
+                    </div>
+                    <!-- Overview -->
+                    <div class="flex flex-col p-6 col-span-4 text-12s" style="text-align: center;">
+                        <table border="2" style="border: 2px solid #ffffff; width: max-content" style="width: 100%;">
+                            <tr style="background-color:#3983DC; color: #ffffff;b">
+                                <th rowspan="2">등급</th>
+                                <th colspan="3">가용</th>
+                                <th colspan="3">비가용</th>
+                                <th rowspan="2">합계</th>
+                            </tr>
+                            <tr style="background-color:#3983DC; color: #ffffff;">
+                                <td>발주</td>
+                                <td>보유</td>
+                                <td>소계</td>
+                                <td>가납</td>
+                                <td>불용</td>
+                                <td>소계</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#7DC4FF;">1</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">80</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#7DC4FF;">2</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">80</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#7DC4FF;">3</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">80</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#7DC4FF;">4</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">10</td>
+                                <td style="background-color:#CFE8F9;">30</td>
+                                <td style="background-color:#CFE8F9;">40</td>
+                                <td style="background-color:#CFE8F9;">80</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:#A2D6F4;">Sum</td>
+                                <td style="background-color:#A2D6F4;">40</td>
+                                <td style="background-color:#A2D6F4;">120</td>
+                                <td style="background-color:#A2D6F4;">160</td>
+                                <td style="background-color:#A2D6F4;">40</td>
+                                <td style="background-color:#A2D6F4;">120</td>
+                                <td style="background-color:#A2D6F4;">160</td>
+                                <td style="background-color:#A2D6F4;">200</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+<!--                <div class="flex flex-col sm:flex-row items-start justify-between">-->
+<!--                    <div class="text-lg font-medium tracking-tight leading-6 truncate"></div>-->
+<!--                    <div class="mt-3 sm:mt-0 sm:ml-2">-->
+<!--                        <mat-button-toggle-group-->
+<!--                            value="recall-item"-->
+<!--                            #taskSelector="matButtonToggleGroup">-->
+<!--                            &lt;!&ndash; <mat-button-toggle value="news">의료기기 News</mat-button-toggle> &ndash;&gt;-->
+<!--                            <mat-button-toggle value="recall-item">회수대상 의료기기</mat-button-toggle>-->
+<!--                        </mat-button-toggle-group>-->
+<!--                    </div>-->
+<!--                </div>-->
 <!--                <div *ngIf="taskSelector.value == 'recall-item'" class="flex flex-col flex-auto">-->
 <!--                    <div class="flex flex-col flex-auto mt-2 overflow-x-auto">-->
 <!--                        <ng-container *ngIf="reacllItemsCount > 0; else noItems">-->
