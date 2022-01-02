@@ -13,6 +13,10 @@ export class Common {
         return this.api.post(url, accountInfo).pipe(share()); // seq;
     }
 
+    sendDataLoading(accountInfo: any, url: string): Observable<any> {
+        return this.api.postLoading(url, accountInfo).pipe(share()); // seq;
+    }
+
     sendDataChgUrl(accountInfo: any, url: string): Observable<any> {
         return this.api.postChgUrl(url, accountInfo).pipe(share()); // seq;
     }
@@ -20,6 +24,7 @@ export class Common {
     sendListData(accountInfo: any, url: string): Observable<any> {
         return this.api.postList(url, accountInfo).pipe(share()); // seq;
     }
+
     sendListDataLoading(accountInfo: any, url: string): Observable<any> {
         return this.api.postListLoading(url, accountInfo).pipe(share()); // seq;
     }
@@ -28,12 +33,24 @@ export class Common {
         return this.api.postListChgUrl(url, accountInfo).pipe(share()); // seq;
     }
 
+    sendListDataChgUrlLoading(accountInfo: any, url: string): Observable<any> {
+        return this.api.postListChgUrlLoading(url, accountInfo).pipe(share()); // seq;
+    }
+
     sendListDataObject(info: any, pageParam: any, url: string): Observable<any> {
         return this.api.postObjectList(url, info, pageParam).pipe(share()); // seq;
     }
 
+    sendListDataObjectLoading(info: any, pageParam: any, url: string): Observable<any> {
+        return this.api.postObjectListLoading(url, info, pageParam).pipe(share()); // seq;
+    }
+
     sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
+    }
+
+    sendDataWithPageNationLoading(param: any, pageParam: any,url: string): Observable<any> {
+        return this.api.postWithPageLoading(url, param, pageParam).pipe(share()); // seq;
     }
 
     sendDataWithPageNationChgUrl(param: any, pageParam: any,url: string): Observable<any> {
@@ -48,16 +65,32 @@ export class Common {
         return this.api.apiPut(url, param).pipe(share()); // seq;
     }
 
+    putLoading(url: string, param: any): Observable<any> {
+        return this.api.apiPutLoading(url, param).pipe(share()); // seq;
+    }
+
     listPut(url: string, param: any): Observable<any> {
         return this.api.apiListPut(url, param).pipe(share()); // seq;
+    }
+
+    listPutLoading(url: string, param: any): Observable<any> {
+        return this.api.apiListPutLoading(url, param).pipe(share()); // seq;
     }
 
     delete(url: string, param: any): Observable<any> {
         return this.api.apiDelete(url, param).pipe(share()); // seq;
     }
 
+    deleteLoading(url: string, param: any): Observable<any> {
+        return this.api.apiDeleteLoading(url, param).pipe(share()); // seq;
+    }
+
     listDelete(url: string, param: any): Observable<any> {
         return this.api.apiListDelete(url, param).pipe(share()); // seq;
+    }
+
+    listDeleteLoading(url: string, param: any): Observable<any> {
+        return this.api.apiListDeleteLoading(url, param).pipe(share()); // seq;
     }
 
     sendFile(accountInfo: any, url: string): Observable<any> {

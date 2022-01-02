@@ -27,7 +27,6 @@ import {SalesOrder} from '../../../admin/salesorder/salesorder/salesorder.types'
 export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -366,7 +365,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.salesorderConfirmCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -384,7 +382,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._salesorderService.salesorderConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesOrder: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(salesOrder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -437,7 +434,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.salesorderCancelCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -456,7 +452,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._salesorderService.salesorderCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesOrder: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(salesOrder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

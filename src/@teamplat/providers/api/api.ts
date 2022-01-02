@@ -69,6 +69,43 @@ export class Api {
         return req;
     }
 
+    postLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
+
+        return req;
+    }
+
+
     postChgUrl(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
@@ -128,6 +165,7 @@ export class Api {
 
         return req;
     }
+
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loding-bar-matdialog'
@@ -158,9 +196,10 @@ export class Api {
             });
         req.pipe().subscribe(() => {
             loading.close();
-        })
+        });
         return req;
     }
+
     postListChgUrl(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
@@ -191,6 +230,40 @@ export class Api {
         return req;
     }
 
+    postListChgUrlLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.post('' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        req.pipe().subscribe(()  => {
+            loading.close();
+        })
+        return req;
+    }
+
     postObjectList(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
 
         if (!reqOpts) {
@@ -217,6 +290,41 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
+
+        return req;
+    }
+
+    postObjectListLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
 
         return req;
     }
@@ -280,6 +388,41 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
+
+        return req;
+    }
+
+    postWithPageLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
 
         return req;
     }
@@ -382,7 +525,37 @@ export class Api {
                     'Authorization': 'Bearer ' + body.accessToken,
                 }
             });
-        //return this.http.put(this.url + '/' + endpoint, body, reqOpts);
+    }
+
+    apiPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
+        return req;
     }
 
     apiListPut(endpoint: string, body: any, reqOpts?: any): Observable<any> {
@@ -410,6 +583,37 @@ export class Api {
         //return this.http.put(this.url + '/' + endpoint, body, reqOpts);
     }
 
+    apiListPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
+        return req;
+    }
+
+
     apiDelete(endpoint: string, body: any, reqOpts?: any): Observable<any> {
 
         const arrayOfArraysData = [{
@@ -424,18 +628,53 @@ export class Api {
         //this.toBody = 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData))
         return this.http.delete(this.url + '/' + endpoint
             , {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'X-Requested-With': 'XMLHttpRequest',
-                'Access-Control-Allow-Origin': '*',
-                'Accept': 'application/json, text/plain, */*; q=0.01',
-                'Accept-Language': 'ko-KR',
-                'Authorization': 'Bearer ' + body.accessToken,
-            },params:{
-                'ds_json': '[' + JSON.stringify(body) + ']',
-                'ds_session' : JSON.stringify(arrayOfArraysData),
-            }
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }, params: {
+                    'ds_json': '[' + JSON.stringify(body) + ']',
+                    'ds_session': JSON.stringify(arrayOfArraysData),
+                }
+            });
+    }
+
+    apiDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
         });
+
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        //this.toBody = 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData))
+        const req = this.http.delete(this.url + '/' + endpoint
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }, params: {
+                    'ds_json': '[' + JSON.stringify(body) + ']',
+                    'ds_session': JSON.stringify(arrayOfArraysData),
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
+        return req;
     }
 
     apiListDelete(endpoint: string, body: any, reqOpts?: any): Observable<any> {
@@ -459,12 +698,47 @@ export class Api {
                     'Accept': 'application/json, text/plain, */*; q=0.01',
                     'Accept-Language': 'ko-KR',
                     'Authorization': 'Bearer ' + body.accessToken,
-                },params:{
+                }, params: {
                     //'ds_json': encodeURI(JSON.stringify(body)),
                     'ds_json': [JSON.stringify(body)],
-                    'ds_session' : JSON.stringify(arrayOfArraysData),
+                    'ds_session': JSON.stringify(arrayOfArraysData),
                 }
             });
+    }
+
+    apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loding-bar-matdialog'
+        });
+
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+
+        const req = this.http.delete(this.url + '/' + endpoint
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR',
+                    'Authorization': 'Bearer ' + body.accessToken,
+                }, params: {
+                    //'ds_json': encodeURI(JSON.stringify(body)),
+                    'ds_json': [JSON.stringify(body)],
+                    'ds_session': JSON.stringify(arrayOfArraysData),
+                }
+            });
+        req.pipe().subscribe(() => {
+            loading.close();
+        });
+        return req;
     }
 
     delete(endpoint: string, reqOpts?: any): Observable<any> {

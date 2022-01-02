@@ -81,7 +81,7 @@ export class StatusService {
     {
         return this.supplyStatus$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(supplyStatuses, 'v1/api/udi/supply-info/resend').pipe(
+            switchMap(products => this._common.sendListDataLoading(supplyStatuses, 'v1/api/udi/supply-info/resend').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

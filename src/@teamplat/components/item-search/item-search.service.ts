@@ -69,7 +69,7 @@ export class ITemSearchService{
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/scraping/udi-portal/udi-portal-item-list')
+            this._common.sendDataWithPageNationLoading(searchParam, pageParam, 'v1/api/scraping/udi-portal/udi-portal-item-list')
                 .subscribe((response: any) => {
                     if(response.data.length > 0){
                         const itemHeader: any = [];

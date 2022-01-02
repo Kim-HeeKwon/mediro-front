@@ -34,7 +34,6 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
     lately: any[];
     row: any[];
     header: any;
-    isProgressSpinner: boolean = false;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -81,7 +80,6 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             //searchParam['excelType'] = excelType;
 
-            this.isProgressSpinner = true;
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             const rtn = new Promise((resolve, reject) => {
@@ -107,8 +105,6 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.header = l;
                     this.lately = this.row;
                     this._changeDetectorRef.markForCheck();
-
-                    this.isProgressSpinner = false;
                 }
             });
         }else if(this.content === 'ORDER'){
@@ -120,8 +116,6 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                 size: 4,
             };
             //searchParam['excelType'] = excelType;
-
-            this.isProgressSpinner = true;
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             const rtn = new Promise((resolve, reject) => {
@@ -147,8 +141,6 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.header = l;
                     this.lately = this.row;
                     this._changeDetectorRef.markForCheck();
-
-                    this.isProgressSpinner = false;
                 }
             });
         }

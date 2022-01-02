@@ -34,7 +34,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
 
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -363,7 +362,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.inBoundCancelCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -385,7 +383,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inBoundService.inBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -434,7 +431,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.inBoundCloseCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -455,7 +451,6 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inBoundService.inBoundClose(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

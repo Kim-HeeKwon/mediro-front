@@ -43,7 +43,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
 
@@ -331,7 +330,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     createUdiAccount(): void {
         if (!this.isMobile) {
-            this.isProgressSpinner = false;
             const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
                 data: {
                     headerText: '거래처 조회',
@@ -453,7 +451,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
         accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
-        this.isProgressSpinner = true;
         this._accountService.updateAccount(accountData)
             .subscribe(
                 (param: any) => {
@@ -502,7 +499,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._accountService.deleteAccount(accountData)
                         .subscribe(
                             (param: any) => {
@@ -537,7 +533,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     closeAddressPopup(): void
     {
-        this.isProgressSpinner = false;
         this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
 }

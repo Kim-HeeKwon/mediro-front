@@ -209,7 +209,7 @@ export class OrderService {
     {
         return this.orders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(order, 'v1/api/estimateOrder/order/save-Order').pipe(
+            switchMap(products => this._common.sendListDataLoading(order, 'v1/api/estimateOrder/order/save-Order').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -227,7 +227,7 @@ export class OrderService {
     {
         return this.orders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(order, 'v1/api/estimateOrder/order').pipe(
+            switchMap(products => this._common.sendListDataLoading(order, 'v1/api/estimateOrder/order').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -295,7 +295,7 @@ export class OrderService {
     {
         return this.orders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/confirm').pipe(
+            switchMap(products => this._common.sendListDataLoading(orders, 'v1/api/estimateOrder/order/confirm').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -324,7 +324,7 @@ export class OrderService {
     {
         return this.orders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/send').pipe(
+            switchMap(products => this._common.sendListDataLoading(orders, 'v1/api/estimateOrder/order/send').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -339,7 +339,7 @@ export class OrderService {
     {
         return this.orders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(orders, 'v1/api/estimateOrder/order/cancel').pipe(
+            switchMap(products => this._common.sendListDataLoading(orders, 'v1/api/estimateOrder/order/cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

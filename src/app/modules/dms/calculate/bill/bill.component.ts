@@ -31,7 +31,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -605,7 +604,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._billService.saveTaxGbn(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((bill: any) => {
-                            this.isProgressSpinner = true;
                             this.alertMessage(bill);
                         });
                 }
@@ -616,7 +614,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     alertMessage(param: any): void {
-        this.isProgressSpinner = false;
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         }else{

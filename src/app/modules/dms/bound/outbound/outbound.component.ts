@@ -29,7 +29,6 @@ import {InBound} from "../inbound/inbound.types";
 export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -370,7 +369,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.outBoundCancelCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -392,7 +390,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._outBoundService.outBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -485,7 +482,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.outBoundCloseCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -506,7 +502,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._outBoundService.outBoundClose(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

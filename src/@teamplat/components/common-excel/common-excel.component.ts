@@ -36,7 +36,6 @@ import {FunctionService} from "../../services/function";
 export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
-    isProgressSpinner: boolean = false;
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -227,7 +226,6 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
         let jsonObj;
 
-        //let isProgressSpinner = this.isProgressSpinner;
         const excelService = this._excelService;
         const excelType = this.excelType;
 
@@ -345,7 +343,6 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._excelService.dataUpload(sendData)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((a: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(a);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
@@ -387,6 +384,5 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._matDialogRef.close();
             }
         }
-        this.isProgressSpinner = false;
     }
 }

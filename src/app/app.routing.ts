@@ -187,7 +187,7 @@ export const appRoutes: Route[] = [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             // Pages
             {path: 'manual', children: [
-                    {path: 'manual-video', loadChildren: () => import('app/modules/dms/manual/manual-video/manual.module').then(m => m.ManualModule)},
+                    {path: 'manual-video', data: {key: 'manual'}, loadChildren: () => import('app/modules/dms/manual/manual-video/manual.module').then(m => m.ManualModule)},
                 ]},
             {path: 'pages', children: [
                     // Settings

@@ -40,7 +40,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     @ViewChild(MatPaginator, {static: true}) private _inBoundDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     orderBy: any = 'asc';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -446,7 +445,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();
@@ -498,7 +496,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         this._inboundService.saveIn(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -574,7 +571,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         const ibType = this.inBoundHeaderForm.controls['type'].value;
         if (ibStatus !== 'N' && ibStatus !== 'P' && ibStatus !== 'S') {
             this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
-            this.isProgressSpinner = false;
             return false;
         }
         let inBoundData;
@@ -601,13 +597,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
         if (inBoundSetData.length > 0) {
             this._functionService.cfn_alert('입고 수량이 초과됬습니다.');
-            this.isProgressSpinner = false;
             return false;
         }
 
         // if (inBoundData.length < 1) {
         //     this._functionService.cfn_alert('입력 수량이 존재하지 않습니다.');
-        //     this.isProgressSpinner = false;
         //     return false;
         // }
 
@@ -655,7 +649,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                             conf.afterClosed()
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((rtn) => {
-                                    this.isProgressSpinner = true;
                                     if (rtn) {
                                         this.inBoundDetailConfirm(inBoundDataFilter);
                                     }
@@ -679,7 +672,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 confirmation.afterClosed()
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
-                        this.isProgressSpinner = false;
                         if (result) {
                             this.inBoundDetailConfirm(inBoundData);
                         }
@@ -701,7 +693,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    this.isProgressSpinner = false;
                     if (result) {
                         this.inBoundDetailConfirm(inBoundData);
                     }
@@ -719,7 +710,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
      */
 
     inBoundDetailConfirm(sendData: InBound[]): void {
-        this.isProgressSpinner = false;
         if (sendData) {
             const rows = this.headerDataSet(sendData);
             this._inboundService.inBoundDetailConfirm(rows)

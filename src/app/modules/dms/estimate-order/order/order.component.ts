@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
@@ -26,7 +26,6 @@ import {Order} from './order.types';
 export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -374,7 +373,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.isLoading = true;
                             this.orderSendCall(checkValues);
                         } else {
@@ -392,7 +390,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -437,7 +434,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.orderConfirmCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -454,7 +450,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -507,7 +502,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.orderCancelCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -524,7 +518,6 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

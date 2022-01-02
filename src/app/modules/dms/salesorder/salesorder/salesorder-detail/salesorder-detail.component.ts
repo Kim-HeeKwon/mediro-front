@@ -39,7 +39,6 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
     @ViewChild(MatPaginator, {static: true}) private _salesorderDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     orderBy: any = 'asc';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -457,7 +456,6 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         this._salesorderService.saveSalesorder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -487,7 +485,6 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();
@@ -559,7 +556,6 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 }
             }
         });
-        this.isProgressSpinner = true;
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {

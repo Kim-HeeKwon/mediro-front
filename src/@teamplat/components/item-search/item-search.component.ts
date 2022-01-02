@@ -48,7 +48,6 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     pageEvent: PageEvent;
 
     udiItemList$: Observable<UdiItem[]>;
-    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     validatorsRequired: boolean = true;
     itemsCount: number = 0;
@@ -131,7 +130,6 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this._itemSearchService.pagination$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((pagination: ItemSearchPagination) => {
-                this.isProgressSpinner = false;
                 // Update the pagination
                 this.pagination = pagination;
                 // Mark for check
@@ -142,7 +140,6 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this._itemSearchService.itemHeaderList$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((itemHeader: any) => {
-                this.isProgressSpinner = false;
                 this.itemHeader = itemHeader;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -225,12 +222,9 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         if(this.searchForm.getRawValue().entpName !== '' &&
             this.searchForm.getRawValue().typeName !== '') {
-            this.isProgressSpinner = true;
             this.validatorsRequired = false;
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
-            this.isProgressSpinner = false;
         } else if(this.searchForm.getRawValue().udidiCode !== '') {
-            this.isProgressSpinner = true;
             this.validatorsRequired = false;
             if(this.searchForm.getRawValue().udidiCode.length === 13){
                 this.searchForm.patchValue({'udidiCode': '0' + this.searchForm.getRawValue().udidiCode});
@@ -239,7 +233,6 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchForm.patchValue({'udidiCode': code});
             }
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
-            this.isProgressSpinner = false;
         } else {
             this.validatorsRequired = true;
         }

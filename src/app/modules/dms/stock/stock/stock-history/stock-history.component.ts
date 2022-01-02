@@ -20,7 +20,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     stockHistoryPagenation: StockHistoryPagenation | null = null;
-    isProgressSpinner: boolean = false;
     @ViewChild(MatPaginator) private _stockHistoryPagenator: MatPaginator;
     @ViewChild(MatSort) private _stockHistorySort: MatSort;
     orderBy: any = 'asc';

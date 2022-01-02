@@ -201,7 +201,7 @@ export class StockService{
 
         return this.stockAdjs$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataObject(stockAdj, pageParam, 'v1/api/basicInfo/stock/stock-adj').pipe(
+            switchMap(products => this._common.sendListDataObjectLoading(stockAdj, pageParam, 'v1/api/basicInfo/stock/stock-adj').pipe(
                 map((result) => {
                     // Return the new product
                     return result;

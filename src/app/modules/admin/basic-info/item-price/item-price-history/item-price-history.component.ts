@@ -27,7 +27,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     @ViewChild(MatPaginator) private _itemPriceHistoryPagenator: MatPaginator;
     @ViewChild(MatSort) private _itemPriceHistorySort: MatSort;
     isLoading: boolean = false;
-    isProgressSpinner: boolean = false;
     itemPriceHistoryForm: FormGroup;
     selection = new SelectionModel<any>(true, []);
     itemPriceHistorysCount: number = 0;
@@ -220,11 +219,9 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if(result){
-                    this.isProgressSpinner = true;
                     this._itemPriceService.updateItemPrice(itemPriceArray)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((itemPriceHistory: any) => {
-                            this.isProgressSpinner = false;
                         });
                 }
             });

@@ -29,7 +29,6 @@ export class StockDetailComponent implements OnInit, OnDestroy {
         message: ''
     };
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
-    isProgressSpinner: boolean = false;
     showAlert: boolean = false;
     isMobile: boolean = false;
     selectedStockForm: FormGroup;
@@ -92,7 +91,6 @@ export class StockDetailComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result){
-                        this.isProgressSpinner = true;
                         this._stockService.stockAdjustment(this.selectedStockForm.getRawValue())
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((stock: any) => {

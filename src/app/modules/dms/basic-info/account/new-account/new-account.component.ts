@@ -35,7 +35,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
@@ -246,12 +245,10 @@ export class NewAccountComponent implements OnInit, OnDestroy
             this.showAlert = true;
             this._accountService.getAccount(0,20,'account','asc','');
         }
-        this.isProgressSpinner = false;
     }
 
     accountCreate(): void
     {
-        this.isProgressSpinner = true;
         if(!this.selectedAccountForm.invalid){
             this.showAlert = false;
             this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
@@ -267,7 +264,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
                 type   : 'error',
                 message: '사업자 번호와 거래처 명, 유형을 입력해주세요.'
             };
-            this.isProgressSpinner = false;
             // Show the alert
             this.showAlert = true;
         }

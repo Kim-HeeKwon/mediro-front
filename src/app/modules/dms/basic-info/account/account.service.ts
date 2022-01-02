@@ -87,7 +87,7 @@ export class AccountService {
     {
         return this.accounts$.pipe(
             take(1),
-            switchMap(products => this._common.sendData(accountData, 'v1/api/basicInfo/account').pipe(
+            switchMap(products => this._common.sendDataLoading(accountData, 'v1/api/basicInfo/account').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                         // Update the products with the new product
@@ -104,7 +104,7 @@ export class AccountService {
      */
     updateAccount(accountData: AccountData): Observable<{account: AccountData[] }> {
 
-        return this._common.put('v1/api/basicInfo/account', accountData).pipe(
+        return this._common.putLoading('v1/api/basicInfo/account', accountData).pipe(
             switchMap((response: any) => of(response))
         );
         // @ts-ignore
@@ -120,7 +120,7 @@ export class AccountService {
      */
     deleteAccount(accountData: AccountData): Observable<{account: AccountData[]}> {
 
-        return this._common.delete('v1/api/basicInfo/account', accountData).pipe(
+        return this._common.deleteLoading('v1/api/basicInfo/account', accountData).pipe(
             switchMap((response: any) => of(response))
         );
         // @ts-ignore

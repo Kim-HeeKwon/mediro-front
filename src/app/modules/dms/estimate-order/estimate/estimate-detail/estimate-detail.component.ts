@@ -45,7 +45,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatPaginator, {static: true}) private _estimateDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -383,7 +382,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     reportEstimate(): void {
-        this.isProgressSpinner = true;
         const estimateDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.estimateDetailDataProvider);
@@ -432,7 +430,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         popup.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-                this.isProgressSpinner = false;
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -486,7 +483,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this._estimateService.saveEstimate(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((estimate: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(estimate);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -502,7 +498,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();

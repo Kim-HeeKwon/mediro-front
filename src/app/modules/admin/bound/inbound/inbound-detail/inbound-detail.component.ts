@@ -39,7 +39,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatPaginator) private _inBoundDetailPagenator: MatPaginator;
     @ViewChild(MatSort) private _inBoundDetailSort: MatSort;
     isLoading: boolean = false;
-    isProgressSpinner: boolean = false;
     selection = new SelectionModel<any>(true, []);
     inboundDetailsCount: number = 0;
     inBoundHeaderForm: FormGroup;
@@ -267,13 +266,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         //신규가 아니면 불가능
         if(status !== 'N'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert('저장 할 수 없습니다.');
             return;
         }
 
         if(this.inBoundHeaderForm.controls['status'].value !== 'N'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert('신규 상태에서만 수정이 가능합니다.');
             return;
         }
@@ -283,7 +280,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             let detailCheck = false;
             this.inBoundDetails$.pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((data) => {
-                    this.isProgressSpinner = false;
 
                     if(data.length === 0){
                         this._functionService.cfn_alert('상세정보에 값이 없습니다.');
@@ -875,14 +871,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
      */
 
     inBoundDetailConfirm(sendData: InBound[]): void{
-        this.isProgressSpinner = true;
         if(sendData){
             const rows = this.headerDataSet(sendData);
             this._inboundService.inBoundDetailConfirm(rows)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_alertCheckMessage(inBound);
-                    this.isProgressSpinner = false;
                     this.reloadDetail();
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

@@ -40,7 +40,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator, {static: true}) private _orderDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     orderBy: any = 'asc';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -464,7 +463,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
-                    this.isProgressSpinner = true;
                     this.alertMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -473,7 +471,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     orderReport(): void {
-        this.isProgressSpinner = true;
         const orderDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.orderDetailDataProvider);
@@ -523,7 +520,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         popup.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => {
-                this.isProgressSpinner = false;
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -574,7 +570,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._orderService.saveOrder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -667,7 +662,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();

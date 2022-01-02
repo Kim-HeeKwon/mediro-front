@@ -41,7 +41,6 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     selection = new SelectionModel<any>(true, []);
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
-    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     isLoading: boolean = false;
     selectedItemPriceHeader: ItemPrice | null = null;
@@ -442,11 +441,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        this.isProgressSpinner = true;
                         this._itemPriceService.deleteItemPrice(checkValues)
                             .subscribe(
                                 (param: any) => {
-                                    this.isProgressSpinner = false;
                                     this._functionService.cfn_alertCheckMessage(param);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();

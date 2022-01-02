@@ -161,7 +161,7 @@ export class ItemsService {
     {
         return this.items$.pipe(
             take(1),
-            switchMap(products => this._common.sendData(item, 'v1/api/basicInfo/item').pipe(
+            switchMap(products => this._common.sendDataLoading(item, 'v1/api/basicInfo/item').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                         // Update the products with the new product
@@ -180,7 +180,7 @@ export class ItemsService {
      * @param InventoryItem
      */
     deleteItem(itemData: InventoryItem): Observable<{response: any}> {
-        return this._common.delete('v1/api/basicInfo/item', itemData).pipe(
+        return this._common.deleteLoading('v1/api/basicInfo/item', itemData).pipe(
             switchMap((response: any) => of(response))
         );
     }
@@ -191,7 +191,7 @@ export class ItemsService {
      * @param InventoryItem
      */
     updateItem(itemData: InventoryItem): Observable<{response: any}> {
-        return this._common.put('v1/api/basicInfo/item', itemData).pipe(
+        return this._common.putLoading('v1/api/basicInfo/item', itemData).pipe(
             switchMap((response: any) => of(response))
         );
     }

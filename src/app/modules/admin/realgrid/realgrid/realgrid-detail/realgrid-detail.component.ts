@@ -41,7 +41,6 @@ export class RealgridDetailComponent implements OnInit, OnDestroy
     );
     selectedAccount: AccountData | null = null;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
@@ -141,7 +140,6 @@ export class RealgridDetailComponent implements OnInit, OnDestroy
         accountData.account = this.selectedAccount.account;
         accountData.accountType = this.selectedAccount.accountType;
         accountData.custBusinessNumber = this.selectedAccount.custBusinessNumber;
-        this.isProgressSpinner = true;
         this._accountService.updateAccount(accountData)
             .subscribe(
                 (param: any) => {
@@ -189,7 +187,6 @@ export class RealgridDetailComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._accountService.deleteAccount(accountData)
                         .subscribe(
                             (param: any) => {
@@ -206,7 +203,6 @@ export class RealgridDetailComponent implements OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
-        this.isProgressSpinner = false;
         if(param.status !== 'SUCCESS'){
             this.alert = {
                 type   : 'error',

@@ -27,7 +27,6 @@ export class NewItemComponent implements OnInit, OnDestroy
     );
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     selectedItemForm: FormGroup;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -161,7 +160,6 @@ export class NewItemComponent implements OnInit, OnDestroy
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'error',
                 message: param.msg
@@ -169,7 +167,6 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Show the alert
             this.showAlert = true;
         }else{
-            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'success',
                 message: '등록완료 하였습니다.'
@@ -185,7 +182,6 @@ export class NewItemComponent implements OnInit, OnDestroy
     {
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
-            this.isProgressSpinner = true;
             this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem: any) => {
 
                 this.alertMessage(newItem);

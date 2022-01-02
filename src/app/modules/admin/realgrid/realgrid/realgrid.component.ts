@@ -33,7 +33,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
     @ViewChild(MatPaginator, { static: true }) _paginator: MatPaginator;
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
-    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     isMobile: boolean = false;
     // @ts-ignore
@@ -367,7 +366,6 @@ export class RealgridComponent implements OnInit, OnDestroy, AfterViewInit{
 
     createUdiAccount(): void {
         if (!this.isMobile) {
-            this.isProgressSpinner = false;
             const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
                 data: {
                     headerText: '거래처 조회',

@@ -40,7 +40,6 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator, {static: true}) private _outBoundDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     orderBy: any = 'asc';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -337,7 +336,6 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._outboundService.createOut(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((outBound: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(outBound);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -376,7 +374,6 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();

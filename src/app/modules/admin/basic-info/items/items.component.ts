@@ -16,6 +16,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {InventoryItem, InventoryPagination} from './items.types';
 import {ItemsService} from './items.service';
+// @ts-ignore
 import {NewItemComponent} from './new-item/new-item.component';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
@@ -55,7 +56,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     items$: Observable<InventoryItem[]>;
     pagination: InventoryPagination | null = null;
-    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     searchInputControl: FormControl = new FormControl();
     itemsCount: number = 0;
@@ -85,10 +85,15 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     formFieldHelpers: string[] = [''];
 
-    excelData:any;
-    file:File;
-    arrayBuffer:any;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    excelData: any;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    file: File;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    arrayBuffer: any;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     excelFileName: string;
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     excelFileNameYn: boolean;
 
     constructor(
@@ -272,7 +277,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     closeDetails(): void
     {
-        this.isProgressSpinner = false;
         this.selectedItem = null;
     }
 
@@ -340,7 +344,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     deleteItem(): void
     {
         const itemData = this.selectedItemForm.getRawValue();
-        this.isProgressSpinner = true;
         this._itemService.deleteItem(itemData)
             .subscribe(
                 (param: any) => {
@@ -359,7 +362,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     updateItem(): void
     {
         const itemData = this.selectedItemForm.getRawValue();
-        this.isProgressSpinner = true;
         this._itemService.updateItem(itemData)
             .subscribe(
                 (param: any) => {
@@ -372,50 +374,53 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
     }
 
-    incomingfile(event) {
-        this.file= event.target.files[0];
-
-        if(this.file.size > 1000){
-            this.excelFileName = this.file.name;
-            this.excelFileNameYn = true;
-        }
-    }
+    // incomingfile(event) {
+    //     this.file= event.target.files[0];
+    //
+    //     if(this.file.size > 1000){
+    //         this.excelFileName = this.file.name;
+    //         this.excelFileNameYn = true;
+    //     }
+    // }
 
     upLoad(): void
     {
         const fileReader = new FileReader();
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         fileReader.onload = (e) => {
             this.arrayBuffer = fileReader.result;
-            let data = new Uint8Array(this.arrayBuffer);
-            let arr = new Array();
-            for(let i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-            let bstr = arr.join("");
-            let workbook = XLSX.read(bstr, {type:"binary"});
-            let first_sheet_name = workbook.SheetNames[0];
-            let worksheet = workbook.Sheets[first_sheet_name];
+            const data = new Uint8Array(this.arrayBuffer);
+            const arr = new Array();
+            // eslint-disable-next-line eqeqeq
+            for(let i = 0; i != data.length; ++i) {arr[i] = String.fromCharCode(data[i]);}
+            const bstr = arr.join('');
+            const workbook = XLSX.read(bstr, {type:'binary'});
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const first_sheet_name = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[first_sheet_name];
 
             this.excelData = XLSX.utils.sheet_to_json(worksheet,{raw:true});
             this.uploadToServe(this.excelData);
-        }
+        };
         fileReader.readAsArrayBuffer(this.file);
     }
 
     uploadToServe(fileData): void{
-        let dataSets = [];
+        const dataSets = [];
         let indexCnt = 0;
 
         fileData.filter(data => data)
             .forEach(
-                data => {
+                (data) => {
                     dataSets[indexCnt] = data;
                     indexCnt = indexCnt +1 ;
                 }
             );
 
         // 상품 업로드
-        let arrCondition = {
-            "excelData": dataSets
-        }
+        const arrCondition = {
+            'excelData': dataSets
+        };
 
         console.log(arrCondition);
 

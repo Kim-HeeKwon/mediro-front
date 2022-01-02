@@ -196,7 +196,7 @@ export class TaxService {
     {
         return this.invoiceHeader$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataChgUrl(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-issue').pipe(
+            switchMap(products => this._common.sendListDataChgUrlLoading(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-issue').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -214,7 +214,7 @@ export class TaxService {
     {
         return this.invoiceHeader$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataChgUrl(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-cancel').pipe(
+            switchMap(products => this._common.sendListDataChgUrlLoading(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -232,7 +232,7 @@ export class TaxService {
     {
         return this.invoiceHeader$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataChgUrl(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-delete').pipe(
+            switchMap(products => this._common.sendListDataChgUrlLoading(invoiceHeaders, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice-delete').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

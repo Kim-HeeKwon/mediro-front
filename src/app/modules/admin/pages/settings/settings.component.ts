@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit, OnDestroy
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'user-guide';
+    selectedPanel: string = 'plan-billing';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**

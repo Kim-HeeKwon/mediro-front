@@ -32,7 +32,6 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     selectedItemPriceForm: FormGroup;
     type: CommonCode[] = null;
     filterList: string[];
-    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     showAlert: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
@@ -176,10 +175,8 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     itemPriceCreate(): void
     {
         if(!this.selectedItemPriceForm.invalid){
-            this.isProgressSpinner = true;
             this.showAlert = false;
             this._itemPriceService.createItemPrice(this.selectedItemPriceForm.getRawValue()).subscribe((newItemPrice: any) => {
-
                 this.alertMessage(newItemPrice);
 
                 // Mark for check
@@ -200,7 +197,6 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'error',
                 message: param.msg
@@ -208,7 +204,6 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             // Show the alert
             this.showAlert = true;
         }else{
-            this.isProgressSpinner = false;
             this.alert = {
                 type   : 'success',
                 message: '등록완료 하였습니다.'

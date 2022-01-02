@@ -39,7 +39,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     items$: Observable<InventoryItem[]>;
-    isProgressSpinner: boolean = false;
     isMobile: boolean = false;
     isLoading: boolean = false;
     drawerMode: 'over' | 'side' = 'over';

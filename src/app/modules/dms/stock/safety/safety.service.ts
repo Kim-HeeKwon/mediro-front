@@ -90,7 +90,7 @@ export class SafetyService{
     {
         return this.safetys$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(safetys, 'v1/api/basicInfo/safety/save-Safety').pipe(
+            switchMap(products => this._common.sendListDataLoading(safetys, 'v1/api/basicInfo/safety/save-Safety').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

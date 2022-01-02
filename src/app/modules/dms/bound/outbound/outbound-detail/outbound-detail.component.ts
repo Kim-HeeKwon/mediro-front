@@ -40,7 +40,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild(MatPaginator, {static: true}) private _outBoundDetailPagenator: MatPaginator;
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     orderBy: any = 'asc';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -393,7 +392,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         } else {
             this.backPage();
@@ -408,7 +406,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const status = this.outBoundHeaderForm.controls['status'].value;
         //신규가 아니면 불가능
         if (status !== 'N') {
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert('저장 할 수 없습니다.');
             return;
         }
@@ -451,7 +448,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this._outboundService.saveOut(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((outBound: any) => {
-                                this.isProgressSpinner = true;
                                 this.alertMessage(outBound);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -600,7 +596,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
-                this.isProgressSpinner = true;
                 if (result) {
                     this.outBoundDetailConfirm(outBoundData);
                 }
@@ -618,7 +613,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
                     this._functionService.cfn_alertCheckMessage(outBound);
-                    this.isProgressSpinner = false;
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });

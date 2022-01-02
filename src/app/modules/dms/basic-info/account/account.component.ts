@@ -39,7 +39,6 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     accounts$: Observable<AccountData[]>;
     pagenation: AccountPagenation | null = null;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;

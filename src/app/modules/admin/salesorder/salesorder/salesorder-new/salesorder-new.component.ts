@@ -51,7 +51,6 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -203,6 +202,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                 .subscribe((salesorderDetail) => {
                     this.estimateDetail.forEach((estimateDetail: any) => {
                         salesorderDetail.push({
+                            itemGrade: '',
                             no: estimateDetail.length + 1,
                             flag: 'C',
                             itemCd: estimateDetail.itemCd,
@@ -216,7 +216,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
                             poReqQty: estimateDetail.poReqQty,
                             invQty: estimateDetail.invQty,
                             soAmt:estimateDetail.qtAmt,
-                            remarkDetail: estimateDetail.remarkDetail,
+                            remarkDetail: estimateDetail.remarkDetail
                         });
                     });
                     this._changeDetectorRef.markForCheck();
@@ -246,7 +246,6 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
@@ -354,7 +353,6 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._salesorderService.createSalesOrder(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesorder: any) => {
-                    this.isProgressSpinner = true;
                     this.alertMessage(salesorder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

@@ -230,7 +230,7 @@ export class OutboundService{
     {
         return this.outBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/save-OutBound').pipe(
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/save-OutBound').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -248,7 +248,7 @@ export class OutboundService{
     {
         return this.outBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound').pipe(
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -316,7 +316,7 @@ export class OutboundService{
     {
         return this.outBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/cancel').pipe(
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -352,7 +352,7 @@ export class OutboundService{
     {
         return this.outBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/confirm-detail').pipe(
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/confirm-detail').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -370,7 +370,7 @@ export class OutboundService{
     {
         return this.outBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(outBounds, 'v1/api/inOut/outBound/close').pipe(
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/close').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

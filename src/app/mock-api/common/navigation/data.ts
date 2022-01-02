@@ -689,6 +689,13 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cog',
                 link : '/pages/settings'
             },
+            {
+                id   : 'manual.manual-video',
+                title: '매뉴얼',
+                type : 'basic',
+                icon : 'heroicons_outline:play',
+                link : '/manual/manual-video'
+            },
             // {
             //     id   : 'realgrid.realgrid',
             //     title: '그리드 one',

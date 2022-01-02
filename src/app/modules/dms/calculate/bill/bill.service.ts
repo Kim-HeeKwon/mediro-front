@@ -101,7 +101,7 @@ export class BillService {
     {
         return this.bill$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataChgUrl(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
+            switchMap(products => this._common.sendListDataChgUrlLoading(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -119,7 +119,7 @@ export class BillService {
     {
         return this.bills$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(bills, 'v1/api/calculate/bill/save-taxGbn').pipe(
+            switchMap(products => this._common.sendListDataLoading(bills, 'v1/api/calculate/bill/save-taxGbn').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

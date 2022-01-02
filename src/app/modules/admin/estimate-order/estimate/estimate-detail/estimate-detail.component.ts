@@ -61,7 +61,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -229,7 +228,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
@@ -288,7 +286,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    this.isProgressSpinner = true;
                     let createList;
                     let updateList;
                     let deleteList;

@@ -34,7 +34,6 @@ import {CommonPopupItemsComponent} from "../../../../../@teamplat/components/com
 export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -384,7 +383,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.isLoading = true;
                             this.estimateSendCall(checkValues);
                         } else {
@@ -400,7 +398,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             this._estimateService.estimateSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(estimate);
                     this.isLoading = false;
                     // Mark for check
@@ -447,7 +444,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.estimateConfirmCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -464,7 +460,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             this._estimateService.estimateConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(estimate);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -519,7 +514,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.estimateCancelCall(checkValues);
                         } else {
                             this.selectHeader();
@@ -535,7 +529,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             this._estimateService.estimateCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(estimate);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -604,7 +597,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;
@@ -612,7 +604,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((estimateDetail: any) => {
                             if (estimateDetail != null) {
-                                this.isProgressSpinner = false;
                                 const row = {header: estimateHeader, detail: estimateDetail};
                                 this._router.navigate(['estimate-order/order/order-new'], {
                                     state: {
@@ -658,7 +649,6 @@ export class HeaderDetailComponent implements OnInit, OnDestroy, AfterViewInit{
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
 
                     this.estimateDetails$ = this._estimateService.estimateDetails$;

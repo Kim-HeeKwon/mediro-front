@@ -12,7 +12,6 @@ import {Subject} from "rxjs";
 export class paymentHistoryComponent implements OnInit, OnDestroy{
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;

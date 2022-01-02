@@ -45,7 +45,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     @ViewChild(MatSort) private _sort: MatSort;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     selection = new SelectionModel<any>(true, []);
 
@@ -383,7 +382,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result) => {
                         if (result) {
-                            this.isProgressSpinner = true;
                             this.outBoundCancel(this.selection.selected);
                         }else{
                             this.closeDetails();
@@ -406,7 +404,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._outboundService.outBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
-                    this.isProgressSpinner = false;
                     this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

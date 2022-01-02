@@ -51,7 +51,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     flashMessage: 'success' | 'error' | null = null;
     inBoundDetailsCount: number = 0;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     selectedItemForm: FormGroup;
     is_edit: boolean = false;
 
@@ -311,7 +310,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
 
                     if(data.length === 0){
                         this._functionService.cfn_alert('상세정보에 값이 없습니다.');
-                        this.isProgressSpinner = false;
                         detailCheck = true;
                     }
                 });
@@ -344,7 +342,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    this.isProgressSpinner = true;
                     let createList;
                     if(result){
                         createList = [];
@@ -385,7 +382,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
             this._inboundService.createIn(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
-                    this.isProgressSpinner = true;
                     this.alertMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -396,7 +392,6 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();

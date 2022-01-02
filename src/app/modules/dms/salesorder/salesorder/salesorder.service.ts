@@ -200,7 +200,7 @@ export class SalesorderService {
     {
         return this.salesorders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(salesorder, 'v1/api/salesorder/save-Salesorder').pipe(
+            switchMap(products => this._common.sendListDataLoading(salesorder, 'v1/api/salesorder/save-Salesorder').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -217,7 +217,7 @@ export class SalesorderService {
     {
         return this.salesorders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(salesorder, 'v1/api/salesorder').pipe(
+            switchMap(products => this._common.sendListDataLoading(salesorder, 'v1/api/salesorder').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -255,7 +255,7 @@ export class SalesorderService {
     {
         return this.salesorders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(salesOrders, 'v1/api/salesorder/confirm').pipe(
+            switchMap(products => this._common.sendListDataLoading(salesOrders, 'v1/api/salesorder/confirm').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -272,7 +272,7 @@ export class SalesorderService {
     {
         return this.salesorders$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(salesOrders, 'v1/api/salesorder/cancel').pipe(
+            switchMap(products => this._common.sendListDataLoading(salesOrders, 'v1/api/salesorder/cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

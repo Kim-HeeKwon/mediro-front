@@ -236,7 +236,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimate, 'v1/api/estimateOrder/estimate/save-Estimate').pipe(
+            switchMap(products => this._common.sendListDataLoading(estimate, 'v1/api/estimateOrder/estimate/save-Estimate').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -254,7 +254,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimate, 'v1/api/estimateOrder/estimate').pipe(
+            switchMap(products => this._common.sendListDataLoading(estimate, 'v1/api/estimateOrder/estimate').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -299,7 +299,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/send',).pipe(
+            switchMap(products => this._common.sendListDataLoading(estimates, 'v1/api/estimateOrder/estimate/send',).pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -316,7 +316,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/confirm').pipe(
+            switchMap(products => this._common.sendListDataLoading(estimates, 'v1/api/estimateOrder/estimate/confirm').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -333,7 +333,7 @@ export class EstimateService {
     {
         return this.estimates$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(estimates, 'v1/api/estimateOrder/estimate/cancel').pipe(
+            switchMap(products => this._common.sendListDataLoading(estimates, 'v1/api/estimateOrder/estimate/cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

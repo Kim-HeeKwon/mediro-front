@@ -36,7 +36,6 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
     );
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedItem: InventoryItem | null = null;
-    isProgressSpinner: boolean = false;
     showAlert: boolean = false;
     isMobile: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
@@ -148,7 +147,6 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._itemService.deleteItem(itemData)
                         .subscribe(
                             (param: any) => {

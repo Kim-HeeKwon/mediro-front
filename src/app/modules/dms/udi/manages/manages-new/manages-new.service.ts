@@ -48,7 +48,7 @@ export class ManagesNewService {
 
     createSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
 
-        return this._common.sendListData(manages, 'v1/api/udi/supply-info').pipe(
+        return this._common.sendListDataLoading(manages, 'v1/api/udi/supply-info').pipe(
             switchMap((response: any) => of(response))
         );
     }

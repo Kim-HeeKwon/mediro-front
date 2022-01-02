@@ -32,7 +32,6 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     safetys$: Observable<Safety[]>;
     drawerOpened: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     safetyPagenation: SafetyPagenation | null = null;
     searchForm: FormGroup;
     itemGrades: CommonCode[] = [];
@@ -340,11 +339,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._safetyService.safetySave(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((safety: any) => {
-                            this.isProgressSpinner = false;
                             this._functionService.cfn_alertCheckMessage(safety);
                             // Mark for check
                             this._changeDetectorRef.markForCheck();

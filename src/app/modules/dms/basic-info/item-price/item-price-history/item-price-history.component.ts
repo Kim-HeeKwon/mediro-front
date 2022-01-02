@@ -38,7 +38,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     orderBy: any = 'asc';
     itemPriceHistorys$ = new Observable<ItemPriceHistory[]>();
-    isProgressSpinner: boolean = false;
     isLoading: boolean = false;
     selectedItemPrice: ItemPriceHistory | null = null;
     itemPriceHistoryForm: FormGroup;
@@ -227,6 +226,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                // eslint-disable-next-line max-len
                 this._itemPriceService.getHistory(this.itemPriceHistoryPagenation.page, this.itemPriceHistoryPagenation.size, clickData.column, this.orderBy, this.itemPriceHistoryForm.getRawValue());
             }
             if (this.orderBy === 'asc') {
@@ -311,7 +311,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this.isProgressSpinner = true;
                     this._itemPriceService.updateItemPrice(itemPriceArray)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((itemPriceHistory: any) => {
@@ -319,7 +318,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                             this.selectItemPrice();
                             // Mark for check
                             this._changeDetectorRef.markForCheck();
-                            this.isProgressSpinner = false;
                         });
                 }
             });

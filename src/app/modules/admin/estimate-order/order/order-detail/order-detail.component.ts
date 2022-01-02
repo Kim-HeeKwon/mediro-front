@@ -56,7 +56,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
         Breakpoints.XSmall
     );
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
@@ -224,7 +223,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
     alertMessage(param: any): void
     {
         if(param.status !== 'SUCCESS'){
-            this.isProgressSpinner = false;
             this._functionService.cfn_alert(param.msg);
         }else{
             this.backPage();
@@ -284,7 +282,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    this.isProgressSpinner = true;
                     let createList;
                     let updateList;
                     let deleteList;
@@ -296,7 +293,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((orderDetail) => {
                                 orderDetail.forEach((sendData: any) => {
-                                    console.log(this.isProgressSpinner);
                                     if (sendData.flag) {
                                         if (sendData.flag === 'C') {
                                             createList.push(sendData);
@@ -777,7 +773,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._orderService.orderDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
-                    this.isProgressSpinner = true;
                     this.alertMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

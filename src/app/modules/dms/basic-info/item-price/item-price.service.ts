@@ -110,9 +110,10 @@ export class ItemPriceService{
     {
         return this.itemPrices$.pipe(
             take(1),
-            switchMap(products => this._common.sendData(itemPrice, 'v1/api/basicInfo/itemPrice').pipe(
+            switchMap(products => this._common.sendDataLoading(itemPrice, 'v1/api/basicInfo/itemPrice').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
+                        console.log(result);
                         // Update the products with the new product
                         // this._items.next([newProduct.data, ...products]);
                     }
@@ -127,14 +128,14 @@ export class ItemPriceService{
      */
     updateItemPrice(itemPriceHistory: ItemPriceHistory[]): Observable<{itemPriceHistory: ItemPriceHistory[] }> {
 
-        return this._common.listPut('v1/api/basicInfo/itemPrice', itemPriceHistory).pipe(
+        return this._common.listPutLoading('v1/api/basicInfo/itemPrice', itemPriceHistory).pipe(
             switchMap((response: any) => of(response))
         );
     }
 
     deleteItemPrice(itemPrice: ItemPrice[]): Observable<{itemPrice: ItemPrice[] }> {
 
-        return this._common.listDelete('v1/api/basicInfo/itemPrice', itemPrice).pipe(
+        return this._common.listDeleteLoading('v1/api/basicInfo/itemPrice', itemPrice).pipe(
             switchMap((response: any) => of(response))
         );
     }

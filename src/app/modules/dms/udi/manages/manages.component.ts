@@ -30,7 +30,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     isLoading: boolean = false;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -496,12 +495,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-
-        //this.isProgressSpinner = true;
         this.searchSetValue();
         const rtn = this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
-        //this.isProgressSpinner = false;
     }
 
     enter(event): void {

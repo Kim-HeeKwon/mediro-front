@@ -126,7 +126,7 @@ export class ManagesService {
 
         return this.manages$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataObject(manages, pageParam, 'v1/api/udi/udiDi-product/info').pipe(
+            switchMap(products => this._common.sendListDataObjectLoading(manages, pageParam, 'v1/api/udi/udiDi-product/info').pipe(
                 map((result) => {
                     // Return the new product
                     return result;
@@ -179,7 +179,7 @@ export class ManagesService {
 
     updateSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
 
-        return this._common.listPut('v1/api/udi/supply-info', manages).pipe(
+        return this._common.listPutLoading('v1/api/udi/supply-info', manages).pipe(
             switchMap((response: any) => of(response))
         );
     }
@@ -193,7 +193,7 @@ export class ManagesService {
 
     deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
 
-        return this._common.sendListData(manages, 'v1/api/udi/supply-info/delete').pipe(
+        return this._common.sendListDataLoading(manages, 'v1/api/udi/supply-info/delete').pipe(
             switchMap((response: any) => of(response))
         );
     }

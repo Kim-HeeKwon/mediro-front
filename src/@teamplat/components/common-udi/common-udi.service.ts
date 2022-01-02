@@ -72,7 +72,7 @@ export class CommonUdiService{
         };
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/udi/' + search.mediroUrl)
+            this._common.sendDataWithPageNationLoading(searchParam, pageParam, 'v1/api/udi/' + search.mediroUrl)
                 .pipe(retry(2))
                 .subscribe((response: any) => {
                     if(response.status === 'SUCCESS'){
@@ -97,7 +97,7 @@ export class CommonUdiService{
     {
         return this.getList$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(data, 'v1/api/basicInfo/account/merge').pipe(
+            switchMap(products => this._common.sendListDataLoading(data, 'v1/api/basicInfo/account/merge').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

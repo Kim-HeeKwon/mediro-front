@@ -42,7 +42,6 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
     );
     selectedAccount: AccountData | null = null;
     isMobile: boolean = false;
-    isProgressSpinner: boolean = false;
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;

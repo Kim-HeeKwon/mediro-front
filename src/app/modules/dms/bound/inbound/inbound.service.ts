@@ -228,7 +228,7 @@ export class InboundService {
     {
         return this.inBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/confirm-detail').pipe(
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/confirm-detail').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -246,7 +246,7 @@ export class InboundService {
     {
         return this.inBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/cancel').pipe(
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/cancel').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -264,7 +264,7 @@ export class InboundService {
     {
         return this.inBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/close').pipe(
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/close').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -282,7 +282,7 @@ export class InboundService {
     {
         return this.inBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound/save-InBound').pipe(
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/save-InBound').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
@@ -299,7 +299,7 @@ export class InboundService {
     {
         return this.inBounds$.pipe(
             take(1),
-            switchMap(products => this._common.sendListData(inBounds, 'v1/api/inOut/inBound').pipe(
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }
