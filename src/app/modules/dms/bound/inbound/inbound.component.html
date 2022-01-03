@@ -218,8 +218,7 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>상태</mat-label>
-                                                <mat-select (ngModelChange)="selectHeader()"
-                                                            [formControlName]="'status'">
+                                                <mat-select [formControlName]="'status'" multiple>
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
                                                             {{status.name}}

@@ -183,4 +183,44 @@ export class FunctionService implements OnInit, OnDestroy{
             });
         return validCheck;
     }
+
+    // 검색조건 멀티 콤보
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    cfn_multipleComboValueGet(arr): string{
+        if(typeof arr === 'object'){
+            if(arr !== (null || undefined)){
+                let str = '';
+                if(arr.length !== 0){
+                    if(arr.length === 1){
+                        if(arr[0] === 'ALL'){
+                            str = arr[0] + '';
+                        }else{
+                            str = "'" + arr[0] + "'";
+                        }
+                    }else{
+                        let idx = 1;
+                        str += "'";
+                        arr.forEach((param) => {
+                            str += param;
+                            if(arr.length !== idx){
+                                str += "','";
+                            }else{
+                                str += "'";
+                            }
+                            idx++;
+                        });
+                    }
+                }else{
+                    str = '';
+                }
+
+                return str;
+            }else{
+                return arr;
+            }
+        }else{
+            return arr;
+        }
+
+    }
 }

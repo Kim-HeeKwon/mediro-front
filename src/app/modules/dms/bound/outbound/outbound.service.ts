@@ -12,6 +12,7 @@ import {Common} from "../../../../../@teamplat/providers/common/common";
 import * as moment from "moment";
 import {map, switchMap, take} from "rxjs/operators";
 import {InBound} from "../inbound/inbound.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +32,7 @@ export class OutboundService{
      * Constructor
      */
     constructor(private _httpClient: HttpClient,
+                private _functionService: FunctionService,
                 private _common: Common) {
 
     }
@@ -133,6 +135,8 @@ export class OutboundService{
                 searchParam['end'] =  moment().utc(false).startOf('day').toISOString();
             }
         }
+
+        searchParam['status'] = this._functionService.cfn_multipleComboValueGet(searchParam['status']);
 
         const pageParam = {
             page: page,

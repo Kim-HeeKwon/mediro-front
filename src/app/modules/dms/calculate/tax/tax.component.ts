@@ -115,8 +115,22 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             }],
             start: [],
             end: [],
-
         });
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
+            && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
+            this.searchForm = this._formBuilder.group({
+                accountNm: [''],
+                toAccountNm: [''],
+                invoice: [''],
+                range: [{
+                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(false).startOf('day').toISOString()
+                }],
+                start: [],
+                end: [],
+            });
+            this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+        }
 
         const valuesType = [];
         const lablesType = [];
@@ -350,16 +364,19 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
-        this.setGridData();
 
-
-        this._taxService.invoiceHeaderPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((invoiceHeaderPagenation: InvoiceHeaderPagenation) => {
-                this.invoiceHeaderPagenation = invoiceHeaderPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        //
+        // this._taxService.invoiceHeaderPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((invoiceHeaderPagenation: InvoiceHeaderPagenation) => {
+        //         this.invoiceHeaderPagenation = invoiceHeaderPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
     searchSetValue(): void{
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});

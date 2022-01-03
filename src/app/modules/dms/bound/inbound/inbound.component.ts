@@ -91,7 +91,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            status: ['ALL'],
+            status: [['ALL']],
             type: ['ALL'],
             account: [''],
             accountNm: [''],
@@ -103,6 +103,29 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             start: [],
             end: []
         });
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
+            && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
+            this.searchForm = this._formBuilder.group({
+                status: [['ALL']],
+                type: ['ALL'],
+                account: [''],
+                accountNm: [''],
+                ibNo: [''],
+                range: [{
+                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(false).startOf('day').toISOString()
+                }],
+                start: [],
+                end: []
+            });
+            if(this._activatedRoute.snapshot.paramMap['params'].status !== (null || undefined)){
+                const arr = this._activatedRoute.snapshot.paramMap['params'].status.split(',');
+                this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+                this.searchForm.patchValue({'status': arr});
+            }else{
+                this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+            }
+        }
 
         const valuesType = [];
         const lablesType = [];

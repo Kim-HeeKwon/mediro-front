@@ -47,6 +47,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   stockInfos: any;
   udiInfos: any;
   billInfos: any;
+  udiLastDay: any;
   ibInfo: IbInfo = {nCnt:0,cCnt:0,pCnt:0,sCnt:0,pcCnt:0,scCnt:0};
   obInfo: ObInfo = {nCnt:0, cCnt:0, pCnt:0, sCnt:0, pcCnt:0, scCnt:0};
   qtInfo: QtInfo = {nCnt:0, cCnt:0, sCnt:0, rsCnt:0, cfaCnt:0, cfCnt:0};
@@ -337,22 +338,33 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         this._router.navigate(['/pages/settings']);
     }
 
-    goPage(gbn): void
-    {
-        return;
-        if(gbn === 'QT'){
-            this._router.navigate(['/estimate-order/estimate']);
-        }else if(gbn === 'IB'){
-            this._router.navigate(['/bound/inbound']);
-        }else if(gbn === 'OB'){
-            this._router.navigate(['/bound/outbound']);
-        }else if(gbn === 'SO'){
-            this._router.navigate(['/salesorder/salesorder']);
-        }else if(gbn === 'PO'){
-            this._router.navigate(['/estimate-order/order']);
-        }else if(gbn === 'UDI'){
-            this._router.navigate(['/udi/status']);
+    goPage(obj): void {
+        if (obj.gbn === 'QT') {
+            if (obj.status === 'QR') {
+                this._router.navigate(['/estimate-order/estimate', {type: obj.status}]);
+            } else {
+                this._router.navigate(['/estimate-order/estimate', {status: obj.status}]);
+            }
+        } else if (obj.gbn === 'PO') {
+            this._router.navigate(['/estimate-order/order', {status: obj.status}]);
+        } else if (obj.gbn === 'SO') {
+            this._router.navigate(['/salesorder/salesorder', {status: obj.status}]);
+        } else if (obj.gbn === 'IB') {
+            this._router.navigate(['/bound/inbound', {status: obj.status}]);
+        }else if(obj.gbn === 'OB'){
+            this._router.navigate(['/bound/outbound', {status: obj.status}]);
+        }else if(obj.gbn === 'BILL'){
+            this._router.navigate(['/calculate/bill', {status: obj.status}]);
+        }else if(obj.gbn === 'TAX'){
+            this._router.navigate(['/calculate/tax', {status: obj.status}]);
         }
+
+
+        // }else if(gbn === 'OB'){
+        //     this._router.navigate(['/bound/outbound']);
+        // }else if(gbn === 'UDI'){
+        //     this._router.navigate(['/udi/status']);
+        // }
     }
 
     actionButton() {
@@ -739,10 +751,24 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 }
             }
         });
+
+        const currDay = new Date();
+        const year = currDay.getFullYear();
+        const month = currDay.getMonth() + 1;
+        const date = new Date(year, month, 0);
+        const day = date.getDate();
+        const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
+
+        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+
+        if(diffDays === 0){
+            this.udiLastDay = 'D-day';
+        }else{
+            this.udiLastDay = 'D-' + diffDays;
+        }
     }
 
     stockChart(data: any) {
-        console.log(data);
         const doughnutChartLabels = [
             '1등급 : ' + data[0].availQty,
             '2등급 : ' + data[1].availQty,

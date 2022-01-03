@@ -100,6 +100,23 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             start: [],
             end: [],
         });
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
+            && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
+            this.searchForm = this._formBuilder.group({
+                status: ['ALL'],
+                type: ['ALL'],
+                account: [''],
+                accountNm: [''],
+                poNo: [''],
+                range: [{
+                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(false).startOf('day').toISOString()
+                }],
+                start: [],
+                end: [],
+            });
+            this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+        }
 
         const valuesType = [];
         const lablesType = [];

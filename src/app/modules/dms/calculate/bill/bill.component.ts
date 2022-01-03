@@ -118,8 +118,26 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             }],
             start: [],
             end: [],
-
         });
+
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
+            && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
+            this.searchForm = this._formBuilder.group({
+                taxGbn: ['ALL'],
+                type: ['ALL'],
+                accountNm: [''],
+                toAccountNm: [''],
+                billing: [''],
+                obNo: [''],
+                range: [{
+                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(false).startOf('day').toISOString()
+                }],
+                start: [],
+                end: [],
+            });
+            this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+        }
 
         const valuesType = [];
         const lablesType = [];
@@ -359,17 +377,19 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-
-        // Get the pagenation
-        this._billService.billPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((billPagenation: BillPagenation) => {
-                // Update the pagination
-                this.billPagenation = billPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        //
+        // // Get the pagenation
+        // this._billService.billPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((billPagenation: BillPagenation) => {
+        //         // Update the pagination
+        //         this.billPagenation = billPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {
