@@ -393,13 +393,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             ],
         };
         const doughnutChartOption = {
-            cutout: 30,
+            cutout: 40,
             plugins: {
                 legend: {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 10},
+                        font: {weight : 'bold', size: 12},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -419,9 +419,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '50px';
+                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + qt.cfCnt , width / 2, top + (height / 1.9));
+                ctx.fillText('' + qt.cfCnt , width / 2.1, top + (height / 1.85));
             }
         };
 
@@ -456,13 +456,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             ],
         };
         const doughnutChartOption = {
-            cutout: 30,
+            cutout: 40,
             plugins: {
                 legend: {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 10},
+                        font: {weight : 'bold', size: 12},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -482,9 +482,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '50px';
+                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + po.cfCnt , width / 2, top + (height / 1.9));
+                ctx.fillText('' + po.cfCnt , width / 2.1, top + (height / 1.85));
             }
         };
 
@@ -517,13 +517,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             ],
         };
         const doughnutChartOption = {
-            cutout: 30,
+            cutout: 40,
             plugins: {
                 legend: {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 10},
+                        font: {weight : 'bold', size: 12},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -543,9 +543,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '50px';
+                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.9));
+                ctx.fillText('' + so.sCnt, width / 2.1, top + (height / 1.85));
             }
         };
 
@@ -810,13 +810,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             ],
         };
         const doughnutChartOption = {
-            cutout: 30,
+            cutout: 35,
             plugins: {
                 legend: {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 10},
+                        font: {weight : 'bold', size: 12},
                         textAlign : 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -835,9 +835,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '50px';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + totalAvailQty , width / 2, top + (height / 1.9));
+                ctx.fillText('' + totalAvailQty , width / 2.0, top + (height / 1.85));
             }
         };
 
