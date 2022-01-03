@@ -21,7 +21,8 @@ export function createInitialState(): User {
         phone: null,
         userType: null,
         imgPath: null,
-        popBillId: null
+        popBillId: null,
+        businessName: null,
     };
 }
 

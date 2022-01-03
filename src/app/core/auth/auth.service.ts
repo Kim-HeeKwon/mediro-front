@@ -74,6 +74,15 @@ export class AuthService
         return localStorage.getItem('id') ?? '';
     }
 
+    set userBusinessName(businessName: string){
+        localStorage.setItem('businessName', businessName);
+    }
+
+    get userBusinessName(): string
+    {
+        return localStorage.getItem('businessName') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -143,6 +152,7 @@ export class AuthService
                 this.userEmail = response.resultD.email;
                 this.userMid = response.resultD.mid;
                 this.userId = response.resultD.id;
+                this.userBusinessName = response.resultD.businessName;
 
                 response.resultD.mId = response.resultD.mid;
 
@@ -151,13 +161,13 @@ export class AuthService
                 this._user = response.resultD;
                 this._userService.user = response.resultD;
 
-                console.log('user Check!!');
-                //console.log(response.resultD);
+                //console.log('user Check!!');
+                console.log(response.resultD);
 
                 // Store the akita store
                 this._sessionStore.update(response.resultD);
 
-                console.log(this._sessionStore.getValue());
+                //console.log(this._sessionStore.getValue());
 
                 // Return a new observable with the response
                 return of(response);
@@ -175,7 +185,8 @@ export class AuthService
             'accessToken': this.accessToken,
             'email' : this.userEmail,
             'mId'   : this.userMid,
-            'id'   : this.userId
+            'id'   : this.userId,
+            'businessName'   : this.userBusinessName,
         };
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
