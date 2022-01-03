@@ -13,7 +13,7 @@
             <!-- Header -->
             <div class="flex items-center justify-between m-8 mr-6 sm:my-10">
                 <!-- Title -->
-                <div class="text-3xl font-extrabold tracking-tight leading-none">마이페이지</div>
+                <div class="text-3xl font-extrabold tracking-tight leading-none">매뉴얼</div>
                 <!-- Close button -->
                 <div class="lg:hidden">
                     <button
@@ -76,28 +76,20 @@
                 <!-- Load settings panel -->
                 <div class="mt-8">
                     <ng-container [ngSwitch]="selectedPanel">
-                        <!-- Account -->
-                        <ng-container *ngSwitchCase="'account'">
-                            <settings-account></settings-account>
+                        <ng-container *ngSwitchCase="'basicInfo'">
+                            <basicInfo-Manual></basicInfo-Manual>
                         </ng-container>
-                        <!-- Security -->
-                        <ng-container *ngSwitchCase="'security'">
-                            <settings-security></settings-security>
+                        <ng-container *ngSwitchCase="'circulation'">
+                            <circulation-Manual></circulation-Manual>
                         </ng-container>
-                        <!-- Notifications -->
-                        <ng-container *ngSwitchCase="'notifications'">
-                            <settings-notifications></settings-notifications>
+                        <ng-container *ngSwitchCase="'udi'">
+                            <udi-Manual></udi-Manual>
                         </ng-container>
-                        <!-- Team -->
-                        <ng-container *ngSwitchCase="'team'">
-                            <settings-team></settings-team>
+                        <ng-container *ngSwitchCase="'smartPlus'">
+                            <smartPlus-Manual></smartPlus-Manual>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'tax'">
-                            <settings-tax></settings-tax>
-                        </ng-container>
-                        <!-- Plan & Billing -->
-                        <ng-container *ngSwitchCase="'plan-billing'">
-                            <settings-plan-billing></settings-plan-billing>
+                        <ng-container *ngSwitchCase="'etc'">
+                            <etc-Manual></etc-Manual>
                         </ng-container>
                     </ng-container>
                 </div>

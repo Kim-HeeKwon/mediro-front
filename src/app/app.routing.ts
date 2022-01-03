@@ -4,7 +4,6 @@ import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import {InitialCommonPopupDataResolver, InitialDataResolver} from 'app/app.resolvers';
 import { InitialCommonCodeDataResolver } from 'app/app.resolvers';
-import {ManualModule} from "./modules/dms/manual/manual-video/manual.module";
 
 // @formatter:off
 // tslint:disable:max-line-length
@@ -187,7 +186,7 @@ export const appRoutes: Route[] = [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             // Pages
             {path: 'manual', children: [
-                    {path: 'manual-video', data: {key: 'manual'}, loadChildren: () => import('app/modules/dms/manual/manual-video/manual.module').then(m => m.ManualModule)},
+                    {path: 'manual', data: {key: 'manual'}, loadChildren: () => import('app/modules/dms/manual/manual/manual.module').then(m => m.ManualModule)},
                 ]},
             {path: 'pages', children: [
                     // Settings

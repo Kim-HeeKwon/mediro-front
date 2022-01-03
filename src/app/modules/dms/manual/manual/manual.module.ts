@@ -23,6 +23,11 @@ import {MatSortModule} from "@angular/material/sort";
 import {SharedModule} from "../../../../shared/shared.module";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
+import {basicInfoManualComponent} from "../basicInfo-manual/basicInfo-Manual.component";
+import {circulationManualComponent} from "../circulation-manual/circulation-Manual.component";
+import {udiManualComponent} from "../udi-manual/udi-Manual.component";
+import {smartPlusManualComponent} from "../smartPlus-manual/smartPlus-Manual.component";
+import {etcManualComponent} from "../etc-manual/etc-Manual.component";
 
 
 const manualsRoutes: Route[] = [
@@ -33,7 +38,12 @@ const manualsRoutes: Route[] = [
 ];
 @NgModule({
     declarations: [
-        manualComponent
+        manualComponent,
+        basicInfoManualComponent,
+        circulationManualComponent,
+        udiManualComponent,
+        smartPlusManualComponent,
+        etcManualComponent
     ],
     imports: [
         CommonModule,

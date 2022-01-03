@@ -81,12 +81,6 @@ export class SettingsComponent implements OnInit, OnDestroy
                 title      : '결제',
                 description: '결제 정보 관리'
             },
-            {
-                id         : 'user-guide',
-                icon       : 'heroicons_outline:play',
-                title      : '매뉴얼',
-                description: '사용자 매뉴얼 관리'
-            },
         ];
 
         // Subscribe to media changes

@@ -282,20 +282,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/pages/settings'
             },
             {
-                id   : 'manual.manual-video',
+                id   : 'manual.manual',
                 title: '매뉴얼',
                 type : 'basic',
                 icon : 'heroicons_outline:play',
-                link : '/manual/manual-video'
+                link : '/manual/manual'
             },
-            {
-                id   : 'payment.payment-history',
-                title: '부가서비스',
-                subtitle: '',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/payment/payment-history'
-            },
+            // {
+            //     id   : 'payment.payment-history',
+            //     title: '부가서비스',
+            //     subtitle: '',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '/payment/payment-history'
+            // },
             // {
             //     id   : 'realgrid.realgrid',
             //     title: '그리드 one',
@@ -690,11 +690,11 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 link : '/pages/settings'
             },
             {
-                id   : 'manual.manual-video',
+                id   : 'manual.manual',
                 title: '매뉴얼',
                 type : 'basic',
                 icon : 'heroicons_outline:play',
-                link : '/manual/manual-video'
+                link : '/manual/manual'
             },
             // {
             //     id   : 'realgrid.realgrid',

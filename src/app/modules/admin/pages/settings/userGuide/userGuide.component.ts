@@ -4,8 +4,6 @@ import {
     OnInit, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {MatDrawer} from '@angular/material/sidenav';
-import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector: 'settings-userGuide',
