@@ -496,6 +496,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         this._inboundService.saveIn(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -715,6 +716,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             this._inboundService.inBoundDetailConfirm(rows)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

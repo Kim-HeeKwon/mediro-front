@@ -94,6 +94,9 @@ export class StockDetailComponent implements OnInit, OnDestroy {
                         this._stockService.stockAdjustment(this.selectedStockForm.getRawValue())
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((stock: any) => {
+
+                                this._functionService.cfn_loadingBarClear();
+
                                 this._functionService.cfn_alertCheckMessage(stock);
                                 //팝업 닫고
                                 this.matDialogRef.close();

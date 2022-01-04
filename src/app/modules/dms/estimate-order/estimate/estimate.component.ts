@@ -461,6 +461,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this._estimateService.estimateSend(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(estimate);
                     this.isLoading = false;
                     // Mark for check
@@ -523,6 +524,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this._estimateService.estimateConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(estimate);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -592,6 +594,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             this._estimateService.estimateCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((estimate: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(estimate);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

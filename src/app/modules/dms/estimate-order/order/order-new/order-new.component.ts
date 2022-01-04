@@ -431,6 +431,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._orderService.createOrder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });

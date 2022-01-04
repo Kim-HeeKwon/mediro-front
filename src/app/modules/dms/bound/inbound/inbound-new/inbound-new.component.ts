@@ -449,6 +449,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._inboundService.createIn(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((inBound: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(inBound);
                                 this._changeDetectorRef.markForCheck();
                             });

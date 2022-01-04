@@ -414,6 +414,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._outBoundService.outBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -526,6 +527,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._outBoundService.outBoundClose(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

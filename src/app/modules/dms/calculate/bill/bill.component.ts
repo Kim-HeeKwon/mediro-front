@@ -624,6 +624,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._billService.saveTaxGbn(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((bill: any) => {
+                            this._functionService.cfn_loadingBarClear();
                             this.alertMessage(bill);
                         });
                 }

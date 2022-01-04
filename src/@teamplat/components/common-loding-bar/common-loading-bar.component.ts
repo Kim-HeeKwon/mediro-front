@@ -1,4 +1,5 @@
-import {Component, Injectable, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, Injectable, OnInit, Optional, ViewEncapsulation} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 
 @Component({
@@ -12,7 +13,8 @@ import {Component, Injectable, OnInit, ViewEncapsulation} from '@angular/core';
 @Injectable()
 export class CommonLoadingBarComponent implements OnInit{
 
-    constructor(
+    constructor(public dialogRef: MatDialogRef<CommonLoadingBarComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: any
     )
     {
     }
@@ -20,5 +22,9 @@ export class CommonLoadingBarComponent implements OnInit{
     // eslint-disable-next-line @angular-eslint/contextual-lifecycle
     ngOnInit(): void {
     }
+    close(){
+        this.dialogRef.close();
+    }
+
 }
 

@@ -20,6 +20,7 @@ import {ItemsService} from '../items.service';
 import {takeUntil} from 'rxjs/operators';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'dms-app-items-detail',
@@ -49,6 +50,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
     selectedItemsForm: FormGroup;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
+        private _functionService: FunctionService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public matDialogRef: MatDialogRef<DetailItemsComponent>,
         private _formBuilder: FormBuilder,
@@ -107,6 +109,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
         this._itemService.updateItem(itemData)
             .subscribe(
                 (param: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     if(param.status === 'SUCCESS'){
                         this.matDialogRef.close();
                     }
@@ -150,6 +153,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
                     this._itemService.deleteItem(itemData)
                         .subscribe(
                             (param: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 if(param.status === 'SUCCESS'){
                                     this.matDialogRef.close();
                                 }

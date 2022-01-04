@@ -479,6 +479,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                             this._taxService.invoice(this.headerDataSet(checkValues))
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((bill: any) => {
+                                    this._functionService.cfn_loadingBarClear();
                                     this.cfn_alertCheckMessage(bill);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();
@@ -528,6 +529,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                             this._taxService.invoiceCancel(this.headerDataSet(checkValues))
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((bill: any) => {
+                                    this._functionService.cfn_loadingBarClear();
                                     this.cfn_alertCheckMessage(bill);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();
@@ -577,6 +579,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                             this._taxService.invoiceDelete(this.headerDataSet(checkValues))
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((bill: any) => {
+                                    this._functionService.cfn_loadingBarClear();
                                     this.cfn_alertCheckMessage(bill);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();

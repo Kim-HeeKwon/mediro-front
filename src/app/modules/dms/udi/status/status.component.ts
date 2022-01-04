@@ -409,6 +409,7 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._statusService.suplyResend(sendData)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((status: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this._functionService.cfn_alertCheckMessage(status);
                                 this.selectHeader();
                                 // Mark for check

@@ -399,6 +399,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._salesorderService.salesorderConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesOrder: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(salesOrder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -469,6 +470,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._salesorderService.salesorderCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((salesOrder: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(salesOrder);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

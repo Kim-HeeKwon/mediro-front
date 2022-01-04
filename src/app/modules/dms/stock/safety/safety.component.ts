@@ -342,6 +342,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._safetyService.safetySave(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((safety: any) => {
+                            this._functionService.cfn_loadingBarClear();
                             this._functionService.cfn_alertCheckMessage(safety);
                             // Mark for check
                             this._changeDetectorRef.markForCheck();

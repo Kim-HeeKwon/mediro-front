@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Common} from '@teamplat/providers/common/common';
 import {ItemSearchPagination, UdiItem, UdiSearchItem} from './item-search.types';
 import {ItemSearchComponent} from "./item-search.component";
+import {FunctionService} from "../../services/function";
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,8 @@ export class ITemSearchService{
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient, private _common: Common) {
+    constructor(private _httpClient: HttpClient, private _common: Common,
+                private _functionService: FunctionService,) {
     }
 
     /**
@@ -71,6 +73,7 @@ export class ITemSearchService{
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNationLoading(searchParam, pageParam, 'v1/api/scraping/udi-portal/udi-portal-item-list')
                 .subscribe((response: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     if(response.data.length > 0){
                         const itemHeader: any = [];
                         // eslint-disable-next-line guard-for-in

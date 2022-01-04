@@ -249,6 +249,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((manages: any) => {
                 //console.log(manages);
+                this._functionService.cfn_loadingBarClear();
                 this.alertValueSettingMessage(manages);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -290,6 +291,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
                             this._managesNewService.createSupplyInfo(sendData)
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((manage: any) => {
+                                    this._functionService.cfn_loadingBarClear();
                                     this._functionService.cfn_alertCheckMessage(manage);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();

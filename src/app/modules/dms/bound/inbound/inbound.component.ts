@@ -406,6 +406,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inBoundService.inBoundCancel(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -474,6 +476,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this._inBoundService.inBoundClose(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

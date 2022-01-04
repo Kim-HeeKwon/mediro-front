@@ -1,11 +1,12 @@
-import {ChangeDetectorRef, Injectable, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {ChangeDetectorRef, Injectable, OnDestroy, OnInit, Optional} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ErrorAlertComponent} from '../../components/common-alert/error-alert';
 import {takeUntil} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {TeamPlatConfirmationService} from '../confirmation';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {TableConfig} from "../../components/common-table/common-table.types";
+import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,15 @@ export class FunctionService implements OnInit, OnDestroy{
     constructor(
         private _formBuilder: FormBuilder,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
-        private _matDialog: MatDialog) {
+        public _matDialog: MatDialog,
+        @Optional() public _matDialogRef: MatDialogRef<any>,
+        ) {
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    cfn_loadingBarClear(): void{
+        this._matDialogRef = this._matDialog.getDialogById('loadingBar');
+        this._matDialogRef.close();
     }
     // eslint-disable-next-line @angular-eslint/contextual-lifecycle
     ngOnInit(): void {

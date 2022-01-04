@@ -113,7 +113,6 @@ export class ItemPriceService{
             switchMap(products => this._common.sendDataLoading(itemPrice, 'v1/api/basicInfo/itemPrice').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
-                        console.log(result);
                         // Update the products with the new product
                         // this._items.next([newProduct.data, ...products]);
                     }

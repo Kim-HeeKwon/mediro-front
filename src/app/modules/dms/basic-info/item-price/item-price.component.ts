@@ -444,6 +444,9 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._itemPriceService.deleteItemPrice(checkValues)
                             .subscribe(
                                 (param: any) => {
+
+                                    this._functionService.cfn_loadingBarClear();
+
                                     this._functionService.cfn_alertCheckMessage(param);
                                     // Mark for check
                                     this._changeDetectorRef.markForCheck();

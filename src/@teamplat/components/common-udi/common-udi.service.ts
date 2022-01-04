@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Common} from '../../providers/common/common';
 import {UdiPagenation} from './common-udi.types';
 import {map, mergeMap, retry, switchMap, take} from 'rxjs/operators';
+import {FunctionService} from "../../services/function";
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,8 @@ export class CommonUdiService{
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient, private _common: Common) {
+    constructor(private _httpClient: HttpClient, private _common: Common,
+                private _functionService: FunctionService,) {
     }
     /**
      * Getter
@@ -75,6 +77,7 @@ export class CommonUdiService{
             this._common.sendDataWithPageNationLoading(searchParam, pageParam, 'v1/api/udi/' + search.mediroUrl)
                 .pipe(retry(2))
                 .subscribe((response: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     if(response.status === 'SUCCESS'){
                         this._status.next(response);
                         this._msg.next('');

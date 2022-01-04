@@ -314,6 +314,9 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
                     this._itemPriceService.updateItemPrice(itemPriceArray)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((itemPriceHistory: any) => {
+
+                            this._functionService.cfn_loadingBarClear();
+
                             this._functionService.cfn_alertCheckMessage(itemPriceHistory);
                             this.selectItemPrice();
                             // Mark for check

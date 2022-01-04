@@ -17,6 +17,7 @@ import {CommonPopupComponent} from '../../../../../../@teamplat/components/commo
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 import {formatDate} from "@angular/common";
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'dms-item-price-new',
@@ -41,6 +42,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
     minDate: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
+        private _functionService: FunctionService,
         public matDialogRef: MatDialogRef<ItemPriceNewComponent>,
         public _matDialogPopup: MatDialog,
         private _itemPriceService: ItemPriceService,
@@ -177,6 +179,9 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
         if(!this.selectedItemPriceForm.invalid){
             this.showAlert = false;
             this._itemPriceService.createItemPrice(this.selectedItemPriceForm.getRawValue()).subscribe((newItemPrice: any) => {
+
+                this._functionService.cfn_loadingBarClear();
+
                 this.alertMessage(newItemPrice);
 
                 // Mark for check

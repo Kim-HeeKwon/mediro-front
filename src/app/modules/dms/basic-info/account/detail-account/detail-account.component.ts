@@ -25,6 +25,7 @@ import {takeUntil} from 'rxjs/operators';
 import {AccountData} from '../account.types';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 
 @Component({
@@ -59,6 +60,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
     filterList: string[];
 
     constructor(
+        private _functionService: FunctionService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public matDialogRef: MatDialogRef<DetailAccountComponent>,
         public _matDialogPopup: MatDialog,
@@ -257,6 +259,9 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
         this._accountService.updateAccount(accountData)
             .subscribe(
                 (param: any) => {
+
+                    this._functionService.cfn_loadingBarClear();
+
                     if(param.status === 'SUCCESS'){
                         this.matDialogRef.close();
                     }
@@ -303,6 +308,9 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
                     this._accountService.deleteAccount(accountData)
                         .subscribe(
                             (param: any) => {
+
+                                this._functionService.cfn_loadingBarClear();
+
                                 if(param.status === 'SUCCESS'){
                                     this.matDialogRef.close();
                                 }

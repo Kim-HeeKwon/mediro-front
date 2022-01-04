@@ -14,6 +14,7 @@ import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'dms-new-item',
@@ -40,6 +41,7 @@ export class NewItemComponent implements OnInit, OnDestroy
     udiYn: CommonCode[] = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
+        private _functionService: FunctionService,
         public matDialogRef: MatDialogRef<NewItemComponent>,
         public _matDialogPopup: MatDialog,
         private _formBuilder: FormBuilder,
@@ -183,6 +185,8 @@ export class NewItemComponent implements OnInit, OnDestroy
         if(!this.selectedItemForm.invalid){
             this.showAlert = false;
             this._itemService.createItem(this.selectedItemForm.getRawValue()).subscribe((newItem: any) => {
+
+                this._functionService.cfn_loadingBarClear();
 
                 this.alertMessage(newItem);
 

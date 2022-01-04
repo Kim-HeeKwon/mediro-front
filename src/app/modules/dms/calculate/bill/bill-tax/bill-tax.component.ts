@@ -264,6 +264,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
             this._billService.invoice(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((bill: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this.cfn_alertCheckMessage(bill);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();

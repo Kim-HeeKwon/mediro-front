@@ -483,6 +483,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         this._estimateService.saveEstimate(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((estimate: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(estimate);
                                 this._changeDetectorRef.markForCheck();
                             });

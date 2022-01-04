@@ -391,6 +391,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._estimateService.createEstimate(sendData)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((estimate: any) => {
+                            this._functionService.cfn_loadingBarClear();
                             this.alertMessage(estimate);
                             // Mark for check
                             this._changeDetectorRef.markForCheck();

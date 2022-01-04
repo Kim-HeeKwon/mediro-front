@@ -419,6 +419,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                         this._salesorderService.createSalesOrder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });

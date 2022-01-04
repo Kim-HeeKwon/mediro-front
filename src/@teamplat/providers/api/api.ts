@@ -1,8 +1,8 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, Optional} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'environments/environment';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
 
 /**
@@ -71,7 +71,7 @@ export class Api {
 
     postLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
 
         if (!reqOpts) {
@@ -98,9 +98,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
 
         return req;
     }
@@ -168,7 +166,7 @@ export class Api {
 
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
         if (!reqOpts) {
             reqOpts = {
@@ -194,9 +192,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
         return req;
     }
 
@@ -232,7 +228,7 @@ export class Api {
 
     postListChgUrlLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
         if (!reqOpts) {
             reqOpts = {
@@ -258,9 +254,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        req.pipe().subscribe(()  => {
-            loading.close();
-        })
+        //loading.close();
         return req;
     }
 
@@ -296,7 +290,7 @@ export class Api {
 
     postObjectListLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
         if (!reqOpts) {
             reqOpts = {
@@ -322,10 +316,9 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
 
+
+        //loading.close();
         return req;
     }
 
@@ -394,7 +387,7 @@ export class Api {
 
     postWithPageLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
         if (!reqOpts) {
             reqOpts = {
@@ -420,9 +413,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
 
         return req;
     }
@@ -529,7 +520,7 @@ export class Api {
 
     apiPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
 
         const arrayOfArraysData = [{
@@ -552,9 +543,7 @@ export class Api {
                     'Authorization': 'Bearer ' + body.accessToken,
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
         return req;
     }
 
@@ -585,7 +574,7 @@ export class Api {
 
     apiListPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
         const arrayOfArraysData = [{
             'sessionDtctCd': 'korea',
@@ -607,9 +596,7 @@ export class Api {
                     'Authorization': 'Bearer ' + body.accessToken,
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
         return req;
     }
 
@@ -644,7 +631,7 @@ export class Api {
 
     apiDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
+            id: 'loadingBar'
         });
 
         const arrayOfArraysData = [{
@@ -671,9 +658,7 @@ export class Api {
                     'ds_session': JSON.stringify(arrayOfArraysData),
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+        //loading.close();
         return req;
     }
 
@@ -707,17 +692,17 @@ export class Api {
     }
 
     apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
-        const loading = this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loding-bar-matdialog'
-        });
+            const loading = this._matDialog.open(CommonLoadingBarComponent, {
+                id: 'loadingBar'
+            });
 
-        const arrayOfArraysData = [{
-            'sessionDtctCd': 'korea',
-            'sessionSupplier': 'Mediro',
-            'sessionOwnrgCd': 'Mediro',
-            'sessionUserIp': '0.0.0.0',
-            'sessionUserId': localStorage.getItem('id'),
-            'mId': localStorage.getItem('mId')
+            const arrayOfArraysData = [{
+                'sessionDtctCd': 'korea',
+                'sessionSupplier': 'Mediro',
+                'sessionOwnrgCd': 'Mediro',
+                'sessionUserIp': '0.0.0.0',
+                'sessionUserId': localStorage.getItem('id'),
+                'mId': localStorage.getItem('mId')
         }];
 
         const req = this.http.delete(this.url + '/' + endpoint
@@ -735,9 +720,8 @@ export class Api {
                     'ds_session': JSON.stringify(arrayOfArraysData),
                 }
             });
-        req.pipe().subscribe(() => {
-            loading.close();
-        });
+
+        //loading.close();
         return req;
     }
 

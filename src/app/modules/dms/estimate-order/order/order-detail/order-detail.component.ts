@@ -463,6 +463,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             this._orderService.orderDetailConfirm(sendData)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((order: any) => {
+                    this._functionService.cfn_loadingBarClear();
                     this.alertMessage(order);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
@@ -570,6 +571,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._orderService.saveOrder(rows)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((order: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this.alertMessage(order);
                                 this._changeDetectorRef.markForCheck();
                             });

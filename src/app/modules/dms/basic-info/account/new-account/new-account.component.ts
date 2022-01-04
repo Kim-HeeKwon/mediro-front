@@ -19,6 +19,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
 import {postcode} from '../../../../../../assets/js/postCode';
 import {geodata} from '../../../../../../assets/js/geoCode';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 declare let daum: any;
 
@@ -52,6 +53,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
     filterList: string[];
 
     constructor(
+        private _functionService: FunctionService,
         public matDialogRef: MatDialogRef<NewAccountComponent>,
         public _matDialogPopup: MatDialog,
         private _renderer: Renderer2,
@@ -126,7 +128,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             popupUdi.afterClosed().subscribe((result) => {
                 if(result){
-                    console.log(result);
                     this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
                     this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
                     this.selectedAccountForm.patchValue({'descr': result.companyName});
@@ -181,7 +182,6 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
-                    console.log(result);
                     this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
                     this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
                     this.selectedAccountForm.patchValue({'descr': result.companyName});
@@ -253,6 +253,9 @@ export class NewAccountComponent implements OnInit, OnDestroy
             this.showAlert = false;
             this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
+
+                this._functionService.cfn_loadingBarClear();
+
                 this.alertMessage(newAccount);
 
                 // Mark for check
