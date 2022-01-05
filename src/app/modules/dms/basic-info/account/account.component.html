@@ -170,15 +170,15 @@
                                 <!-- Actions -->
                                 <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0">-->
                                 <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+<!--                                    <button-->
+<!--                                        class="mediro-btn-custom"-->
+<!--                                        mat-stroked-button-->
+<!--                                        [color]="'primary'"-->
+<!--                                        (click)="excelExport()">-->
+<!--                                        <img src="assets/images/excel/excel_upload.png">-->
+<!--                                    </button>-->
                                     <button
                                         class="mediro-btn-custom"
-                                        mat-stroked-button
-                                        [color]="'primary'"
-                                        (click)="excelExport()">
-                                        <img src="assets/images/excel/excel_upload.png">
-                                    </button>
-                                    <button
-                                        class="ml-2 mediro-btn-custom"
                                         mat-stroked-button
                                         [color]="'primary'"
                                         (click)="excelExport()">
@@ -216,7 +216,7 @@
                             [length]="pagenation === null ? 0 : pagenation.length"
                             [pageIndex]="pagenation === null ? 0 : pagenation.page"
                             [pageSize]="pagenation === null ? 0 : pagenation.size"
-                            [pageSizeOptions]="[20, 40, 60, 80, 100]"
+                            [pageSizeOptions]="[40, 60, 80, 100, 120]"
                             (page)="pageEvent($event)"
                             [showFirstLastButtons]="true"></mat-paginator>
                     </div>

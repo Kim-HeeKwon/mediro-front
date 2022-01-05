@@ -111,15 +111,21 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'},
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'},
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: values,
                 labels: lables,
                 lookupDisplay: true,
@@ -131,15 +137,21 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '100',
                 styleName: 'right-cell-text',
                 header: {text: '보유', styleName: 'center-cell-text'},
-                numberFormat: '#,##0'
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '입고일자', styleName: 'center-cell-text'}
+                , header: {text: '입고일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간', styleName: 'center-cell-text'}
+                , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
 
@@ -236,7 +248,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._acceptableService.getHeader(0, 20, 'accountNm', 'desc', this.searchForm.getRawValue());
+        const rtn = this._acceptableService.getHeader(0, 40, 'accountNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

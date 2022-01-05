@@ -27,7 +27,7 @@ export class OutboundDetailResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._outboundService.getDetail()
+                //this._outboundService.getDetail()
             ]).then(
                 () => {
                     // @ts-ignore

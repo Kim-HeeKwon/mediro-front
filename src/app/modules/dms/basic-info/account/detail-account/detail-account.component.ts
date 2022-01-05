@@ -325,5 +325,4 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
     {
         this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
-
 }

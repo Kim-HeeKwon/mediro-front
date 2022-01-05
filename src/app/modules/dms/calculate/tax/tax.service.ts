@@ -82,7 +82,7 @@ export class TaxService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'invoice', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'invoice', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Promise<{ invoiceHeaderPagenation: InvoiceHeaderPagenation; invoiceHeader: InvoiceHeader[] }> {
 
         const searchParam = {};

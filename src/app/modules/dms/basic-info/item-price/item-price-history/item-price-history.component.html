@@ -86,6 +86,7 @@
                             <input
                                 matInput
                                 type = 'number'
+                                onfocus="this.select()"
                                 [placeholder]="'0'"
                                 [formControlName]="'unitPrice'">
                         </mat-form-field>
@@ -134,7 +135,7 @@
         [length]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.length"
         [pageIndex]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.page"
         [pageSize]="itemPriceHistoryPagenation === null ? 0 : itemPriceHistoryPagenation.size"
-        [pageSizeOptions]="[20, 100]"
+        [pageSizeOptions]="[40, 60, 80, 100, 120]"
         (page)="pageEvent($event)"
         [showFirstLastButtons]="true"></mat-paginator>
 </div>

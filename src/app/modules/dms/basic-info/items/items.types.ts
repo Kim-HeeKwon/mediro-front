@@ -10,6 +10,7 @@ export interface InventoryItem
     unit: string;        //단위
     standard: string;    //규격
     supplier: string;    //공급사
+    manufacturer: string;    //제조사
     buyPrice: number;    //구매단가
     sellPrice: number;   //판매단가
     salesPrice: number;   //판매단가

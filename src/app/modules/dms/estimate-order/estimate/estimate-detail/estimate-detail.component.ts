@@ -16,7 +16,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
     Estimate,
     EstimateDetail,
-    EstimateDetailPagenation
+    EstimateDetailPagenation, EstimateHeaderPagenation
 } from '../estimate.types';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
@@ -134,11 +134,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
 
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
+            console.log(this._activatedRoute.snapshot.paramMap['params']);
             this.estimateHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._estimateService.getDetail(0, 20, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
+            this._estimateService.getDetail(0, 40, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
         }
 
         const valuesItemGrades = [];
@@ -183,19 +184,27 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -203,22 +212,30 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '견적금액', styleName: 'center-cell-text'}
+                , header: {text: '견적금액', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider
@@ -501,7 +518,9 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this.backPage();
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.reData();
         }
     }
 
@@ -590,10 +609,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     addRow(): void {
         let effectiveDate = '';
-        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+        if(this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+            this.estimateHeaderForm.getRawValue().effectiveDate === ''||
+            this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate.value === undefined){
+            effectiveDate = '';
         }else{
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
         }
@@ -647,15 +668,48 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._changeDetectorRef.markForCheck();
 
         let effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
-        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+        if(this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+            this.estimateHeaderForm.getRawValue().effectiveDate === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate.value === undefined){
+            effectiveDate = '';
         }else{
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
         }
 
         this._realGridsService.gfn_AllDataSetRow(this.gridList, this.estimateDetailDataProvider, 'effectiveDate', effectiveDate);
+
+    }
+
+    //데이터 재 로딩
+    reData(): void {
+
+        const searchForm = {
+            qtNo:  this.estimateHeaderForm.getRawValue().qtNo
+        };
+        const header = this._estimateService.getHeader(0, 1, '', this.orderBy, searchForm);
+        header.then((ex) => {
+            if(ex.estimateHeader.length === 1){
+                this.estimateHeaderForm.patchValue(
+                    ex.estimateHeader[0]
+                );
+                this._changeDetectorRef.markForCheck();
+            }
+        }).then((ex) => {
+            this._estimateService.getDetail(0, 40, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
+
+            this.setGridData();
+
+            this._estimateService.estimateDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((estimateDetailPagenation: EstimateDetailPagenation) => {
+                    // Update the pagination
+                    this.estimateDetailPagenation = estimateDetailPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
 
     }
 }

@@ -86,7 +86,7 @@ export class StockService{
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ stockPagenation: StockPagenation; stock: Stock[] }> {
 
         const searchParam = {};
@@ -153,7 +153,7 @@ export class StockService{
      *
      * @returns
      */
-    getStockHistory(page: number = 0, size: number = 10, sort: string = 'seq', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getStockHistory(page: number = 0, size: number = 40, sort: string = 'seq', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Observable<{ stockHistoryPagenation: StockHistoryPagenation; stockHistory: StockHistory[] }> {
 
         const searchParam = {};

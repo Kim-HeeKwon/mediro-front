@@ -1,5 +1,5 @@
 import {
-    ChangeDetectionStrategy,
+    ChangeDetectionStrategy, ChangeDetectorRef,
     Component,
     ElementRef, Inject,
     OnDestroy,
@@ -8,7 +8,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {fuseAnimations} from '../../../../../../@teamplat/animations';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
@@ -21,6 +21,7 @@ import {takeUntil} from 'rxjs/operators';
 import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/confirmation';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector       : 'dms-app-items-detail',
@@ -54,6 +55,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
         @Inject(MAT_DIALOG_DATA) public data: any,
         public matDialogRef: MatDialogRef<DetailItemsComponent>,
         private _formBuilder: FormBuilder,
+        public _matDialogPopup: MatDialog,
+        private _changeDetectorRef: ChangeDetectorRef,
         private _itemService: ItemsService,
         private _renderer: Renderer2,
         private _codeStore: CodeStore,
@@ -86,7 +89,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             category: [''], // 카테고리
             unit: [''], // 단위
             standard: [''], // 규격
-            supplier: [{value:'',disabled:true}], // 공급사
+            supplier: [{value:''}], // 공급사
+            manufacturer: [''], // 제조사
             taxGbn: [''], // 거래유형
             buyPrice: [''], // 매입단가
             salesPrice: [''], // 매출단가
@@ -168,6 +172,59 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
     closeDaumPopup(): void
     {
         this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
+    }
+
+    supplierSearch(): void
+    {
+        if (!this.isMobile) {
+
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '공급처 조회',
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.selectedItemsForm.patchValue({'supplier': result.accountNm});
+                        this._changeDetectorRef.markForCheck();
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '공급처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.selectedItemsForm.patchValue({'supplier': result.accountNm});
+                    }
+                });
+        }
     }
 
 }

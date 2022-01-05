@@ -15,6 +15,8 @@ import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector       : 'dms-new-item',
@@ -75,6 +77,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             unit: [], // 단위
             standard: [''], // 규격
             supplier: [''], // 공급사
+            manufacturer: [''], // 제조사
             buyPrice: [, [Validators.required]], // 매입단가
             salesPrice: [, [Validators.required]], // 매출단가
             entpName: [], // 업체명
@@ -88,7 +91,55 @@ export class NewItemComponent implements OnInit, OnDestroy
 
     supplierSearch(): void
     {
-        console.log('clisk');
+        if (!this.isMobile) {
+
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '공급처 조회',
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.selectedItemForm.patchValue({'supplier': result.accountNm});
+                        this._changeDetectorRef.markForCheck();
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '공급처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.selectedItemForm.patchValue({'supplier': result.accountNm});
+                    }
+                });
+        }
     }
 
 
@@ -117,7 +168,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
-                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'manufacturer': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;
                 }
@@ -150,7 +201,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
-                    this.selectedItemForm.patchValue({'supplier': result.entpName});
+                    this.selectedItemForm.patchValue({'manufacturer': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
                     this.is_edit = true;
                 }

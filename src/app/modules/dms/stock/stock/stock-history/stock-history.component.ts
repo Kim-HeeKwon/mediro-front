@@ -225,6 +225,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectStockHistory(): void {
+        this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.stockHistoryForm.getRawValue());
         this.stockHistorys$ = this._stockService.stockHistorys$;
         this._stockService.stockHistorys$
             .pipe(takeUntil(this._unsubscribeAll))

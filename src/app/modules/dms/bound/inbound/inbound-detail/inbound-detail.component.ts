@@ -137,7 +137,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._inboundService.getDetail(0, 20, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
+            this._inboundService.getDetail(0, 40, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._inBoundDetailPagenator._intl.itemsPerPageLabel = '';
@@ -164,19 +164,27 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -185,43 +193,61 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '입고예정수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'ibQty', fieldName: 'ibQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '입고수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '미입고수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '단가', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'totalAmt', fieldName: 'totalAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간', styleName: 'center-cell-text'}
+                , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'lot3', fieldName: 'lot3', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '제조사 lot', styleName: 'center-cell-text'}
+                , header: {text: '제조사 lot', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'lot4', fieldName: 'lot4', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: 'UDI No.', styleName: 'center-cell-text'}
+                , header: {text: 'UDI No.', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider
@@ -335,6 +361,27 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibQty'){
+                const that = this;
+                setTimeout(() =>{
+                    const ibQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'ibQty');
+                    const ibExpQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'ibExpQty');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.inBoundDetailDataProvider,
+                        itemIndex,
+                        'qty',
+                        ibExpQty - ibQty);
+                },100);
+            }
+        });
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -447,7 +494,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this.backPage();
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.reData();
         }
     }
 
@@ -578,8 +627,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         let inBoundSetData;
         let inBoundDataFilter;
         let udiCheckData;
-        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
+        const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
 
+        if(rows.length < 1){
+            this._functionService.cfn_alert('변경된 내용이 없습니다.');
+            return false;
+        }
         // inBoundData = rows.filter((detail: any) => detail.ibQty > 0)
         //     .map((param: any) => param);
 
@@ -588,7 +641,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         inBoundSetData = rows.filter((detail: any) =>
             (detail.ibExpqty <= detail.ibqty))
             .map((param: any) => param);
-
 
         inBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
             .map((param: any) => param);
@@ -626,6 +678,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         if (result !== undefined) {
                             // eslint-disable-next-line @typescript-eslint/prefer-for-of
                             for (let i = 0; i < result.length; i++) {
+                                const qty = result[i].ibQty;
+                                result[i].ibQty = result[i].qty;
+                                result[i].qty = qty;
                                 inBoundDataFilter.push(result[i]);
                             }
 
@@ -643,10 +698,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                             });
                             //lot 셋팅
                             inBoundDataFilter.forEach((inBound: any) => {
-                                inBound.ibQty = inBound.qty;
                                 inBound.lot4 = inBound.udiCode;
                             });
-                            inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.qty > 0).map((param: any) => param);
+                            inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.ibQty > 0).map((param: any) => param);
                             conf.afterClosed()
                                 .pipe(takeUntil(this._unsubscribeAll))
                                 .subscribe((rtn) => {
@@ -717,10 +771,40 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((inBound: any) => {
                     this._functionService.cfn_loadingBarClear();
-                    this._functionService.cfn_alertCheckMessage(inBound);
+                    this.alertMessage(inBound);
+                    //this._functionService.cfn_alertCheckMessage(inBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
         }
+    }
+
+    //데이터 재 로딩
+    reData(): void {
+        const searchForm = {
+            ibNo:  this.inBoundHeaderForm.getRawValue().ibNo
+        };
+        const header = this._inboundService.getHeader(0, 1, '', this.orderBy, searchForm);
+        header.then((ex) => {
+            if(ex.inBoundHeader.length === 1){
+                this.inBoundHeaderForm.patchValue(
+                    ex.inBoundHeader[0]
+                );
+                this._changeDetectorRef.markForCheck();
+            }
+        }).then((ex) =>{
+            this._inboundService.getDetail(0, 40, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
+
+            this.setGridData();
+            this._inboundService.inBoundDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((inBoundDetailPagenation: InBoundDetailPagenation) => {
+                    // Update the pagination
+                    this.inBoundDetailPagenation = inBoundDetailPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
+
     }
 }

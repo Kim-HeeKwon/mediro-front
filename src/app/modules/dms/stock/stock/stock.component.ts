@@ -387,7 +387,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._stockService.getStockHistoryById(grid.getValues(clickData.dataRow).itemCd)
                         .subscribe((stock) => {
                             this.selectedStock = stock;
-                            this._stockService.getStockHistory(0, 10, 'seq', 'desc', this.selectedStock);
+                            //this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.selectedStock);
 
                             // Mark for check
                             this._changeDetectorRef.markForCheck();
@@ -441,7 +441,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._stockService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        const rtn = this._stockService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
@@ -466,7 +466,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stock', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 

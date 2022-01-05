@@ -134,7 +134,8 @@
                                                 <mat-label>납품처</mat-label>
                                                 <input
                                                     matInput
-                                                    [formControlName]="'dlvAccountNm'">
+                                                    [formControlName]="'dlvAccountNm'"
+                                                    (click)="openDlvAccountSearch()">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
                                                 <mat-label>납품주소</mat-label>
@@ -227,7 +228,7 @@
                 [length]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.length"
                 [pageIndex]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.page"
                 [pageSize]="outBoundDetailPagenation === null ? 0 : outBoundDetailPagenation.size"
-                [pageSizeOptions]="[20, 40, 60, 80, 100]"
+                [pageSizeOptions]="[40, 60, 80, 100, 120]"
                 (page)="pageEvent($event)"
                 [showFirstLastButtons]="true"></mat-paginator>
         </div>

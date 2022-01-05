@@ -384,7 +384,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._estimateService.getHeader(0, 20, 'qtNo', 'desc', this.searchForm.getRawValue());
+        const rtn = this._estimateService.getHeader(0, 40, 'qtNo', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

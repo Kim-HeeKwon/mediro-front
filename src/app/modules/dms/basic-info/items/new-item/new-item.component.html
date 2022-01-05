@@ -75,23 +75,40 @@
                                 [attr.disabled]="is_edit?'':false">
                         </mat-form-field>
                     </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-1/2 mediro-modal-button">
+                    <div class="sm:col-span-1">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>공급사</mat-label>
                             <input
                                 matInput
+                                (click)="supplierSearch()"
                                 [formControlName]="'supplier'">
                         </mat-form-field>
-                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <button
-                            class="w-2/5 mediro-btn-custom"
-                            mat-flat-button
-                            [color]="'accent'"
-                            (click)="supplierSearch()"
-                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}">
-                            검색
-                        </button>
+<!--                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+<!--                        <button-->
+<!--                            class="w-2/5 mediro-btn-custom"-->
+<!--                            mat-flat-button-->
+<!--                            [color]="'accent'"-->
+<!--                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}">-->
+<!--                            검색-->
+<!--                        </button>-->
                     </div>
+                    <div class="sm:col-span-1">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>제조사</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'manufacturer'">
+                        </mat-form-field>
+                        <!--                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+                        <!--                        <button-->
+                        <!--                            class="w-2/5 mediro-btn-custom"-->
+                        <!--                            mat-flat-button-->
+                        <!--                            [color]="'accent'"-->
+                        <!--                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}">-->
+                        <!--                            검색-->
+                        <!--                        </button>-->
+                    </div>
+
                 </div>
                 <div class="grid grid-cols-4 sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
                     <div class="col-span-2 sm:col-span-1">

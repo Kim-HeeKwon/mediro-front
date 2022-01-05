@@ -161,7 +161,7 @@ export class OutboundService{
      *
      * @returns
      */
-    getDetail(page: number = 0, size: number = 20, sort: string = 'obLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getDetail(page: number = 0, size: number = 40, sort: string = 'obLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ outBoundDetailPagenation: OutBoundDetailPagenation; outBoundDetail: OutBoundDetail[] }> {
 
         const searchParam = {};

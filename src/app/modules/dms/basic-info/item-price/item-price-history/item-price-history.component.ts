@@ -331,7 +331,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
     selectItemPrice(): void {
 
-        this._itemPriceService.getHistory(0, 20, 'addDate', 'asc', this.itemPriceHistoryForm.getRawValue());
+        this._itemPriceService.getHistory(0, 40, 'seq', 'desc', this.itemPriceHistoryForm.getRawValue());
 
         this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
         this._itemPriceService.itemPriceHistorys$
@@ -348,6 +348,6 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     //페이징
     pageEvent($event: PageEvent): void {
 
-        this._itemPriceService.getHistory(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.itemPriceHistoryForm.getRawValue());
+        this._itemPriceService.getHistory(this._paginator.pageIndex, this._paginator.pageSize, 'seq', this.orderBy, this.itemPriceHistoryForm.getRawValue());
     }
 }

@@ -185,13 +185,13 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '공급처 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '공급처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -332,7 +332,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._inBoundService.getHeader(0, 20, 'ibNo', 'desc', this.searchForm.getRawValue());
+        const rtn = this._inBoundService.getHeader(0, 40, 'ibNo', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

@@ -110,6 +110,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         data.detail.forEach((detail: any) => {
             detail.udiCode = '';
             detail.qty = detail.ibQty;
+            detail.ibQty = detail.ibExpQty - detail.qty;
         });
         this.inBoundData = data.detail;
         this._commonScanService.setData(this.inBoundData);

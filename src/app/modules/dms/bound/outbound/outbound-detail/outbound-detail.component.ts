@@ -27,6 +27,8 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from '../outbound.types';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
+import {InBoundDetailPagenation} from "../../inbound/inbound.types";
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -116,13 +118,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             obNo: [{value: '', disabled: true}],   // 출고번호
             account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
-            address: [{value: '', disabled: true}, [Validators.required]],   // 거래처 주소
+            address: [{value: ''}],   // 거래처 주소
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
-            dlvAccount: [{value: '', disabled: true}],   // 납품처
-            dlvAccountNm: [{value: '', disabled: true}],   // 납품처
-            dlvAddress: [{value: '', disabled: true}],   // 납품처 주소
-            dlvDate: [{value: '', disabled: true}, [Validators.required]],//납품일자
+            dlvAccount: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAddress: [{value: ''}],   // 납품처 주소
+            dlvDate: [{value: ''}, [Validators.required]],//납품일자
             obCreDate: [{value: '', disabled: true}],//작성일
             obDate: [{value: '', disabled: true}], //출고일
             remarkHeader: [''], //비고
@@ -134,7 +136,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._outboundService.getDetail(0, 20, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
+            this._outboundService.getDetail(0, 40, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
         }
 
         //페이지 라벨
@@ -162,19 +164,27 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -183,21 +193,29 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             {
                 name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '출고대상수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
-            },
-            {
-                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '잔량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'obQty', fieldName: 'obQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '출고수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '미출고수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider
@@ -247,6 +265,27 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const validationList = ['itemCd'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
 
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if(this.outBoundDetailDataProvider.getOrgFieldName(field) === 'obQty'){
+                const that = this;
+                setTimeout(() =>{
+                    const obQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.outBoundDetailDataProvider,
+                        itemIndex,'obQty');
+                    const obExpQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.outBoundDetailDataProvider,
+                        itemIndex,'obExpQty');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.outBoundDetailDataProvider,
+                        itemIndex,
+                        'qty',
+                        obExpQty - obQty);
+                },100);
+            }
+        });
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
@@ -257,7 +296,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
-                    dataCell.dataColumn.fieldName === 'obQty') {
+                    dataCell.dataColumn.fieldName === 'obQty' ||
+                    dataCell.dataColumn.fieldName === 'qty') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -269,7 +309,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
-                    dataCell.dataColumn.fieldName === 'obQty') {
+                    dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
                     return {editable: false};
@@ -279,7 +319,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
 
             if (
-                dataCell.dataColumn.fieldName === 'obQty') {
+                dataCell.dataColumn.fieldName === 'qty') {
                 return {editable: false};
             }
         });
@@ -319,6 +359,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .subscribe((outboundDetail: any) => {
                 // Update the counts
                 if (outboundDetail !== null) {
+                    outboundDetail.forEach((param) => {
+                        param.obQty = param.obExpQty - param.qty;
+                    });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.outBoundDetailDataProvider, outboundDetail);
                 }
 
@@ -394,7 +437,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this.backPage();
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.reData();
         }
     }
 
@@ -521,9 +566,15 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let outBoundData;
         let outBoundDataFilter;
         let udiCheckData;
+        let outBoundSetData;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
 
-        outBoundData = rows.filter((detail: any) => (detail.qty > 0 && detail.qty !== '0'))
+        // outBoundData = rows.filter((detail: any) => (detail.obQty > 0 && detail.obQty !== '0'))
+        //     .map((param: any) => param);
+        outBoundData = rows;
+
+        outBoundSetData = rows.filter((detail: any) =>
+            (detail.obExpqty < detail.obqty))
             .map((param: any) => param);
 
         outBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
@@ -532,13 +583,17 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
             .map((param: any) => param);
 
+        if (outBoundSetData.length > 0) {
+            this._functionService.cfn_alert('출고 수량이 초과됬습니다.');
+            return false;
+        }
+
         if (outBoundData.length < 1) {
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
             return false;
         } else {
             //일반출고, 폐기, 가납출고, 반품출고
             if (obType === '1' || obType === '3' || obType === '5' || obType === '6') {
-                console.log(obType);
                 if (udiCheckData.length > 0) {
                     //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
                     //입력 수량 그대로 가져오기
@@ -557,6 +612,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                             if (result !== undefined) {
                                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                                 for (let i = 0; i < result.length; i++) {
+                                    const qty = result[i].obQty;
+                                    result[i].obQty = result[i].qty;
+                                    result[i].qty = qty;
                                     outBoundDataFilter.push(result[i]);
                                 }
                                 this.outBoundCall(outBoundDataFilter);
@@ -589,11 +647,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
         });
         outBoundData.forEach((outBound: any) => {
-            outBound.qty = outBound.qty;
             outBound.lot4 = outBound.udiCode;
         });
-        outBoundData = outBoundData.filter((outBound: any) => outBound.qty > 0).map((param: any) => param);
-
+        outBoundData = outBoundData.filter((outBound: any) => outBound.obQty > 0).map((param: any) => param);
         confirmation.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
@@ -614,9 +670,93 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((outBound: any) => {
                     this._functionService.cfn_loadingBarClear();
-                    this._functionService.cfn_alertCheckMessage(outBound);
+                    this.alertMessage(outBound);
+                    //this._functionService.cfn_alertCheckMessage(outBound);
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
+                });
+        }
+    }
+
+    //데이터 재 로딩
+    reData(): void {
+        const searchForm = {
+            obNo:  this.outBoundHeaderForm.getRawValue().obNo
+        };
+        const header = this._outboundService.getHeader(0, 1, '', this.orderBy, searchForm);
+        header.then((ex) => {
+            if(ex.outBoundHeader.length === 1){
+                this.outBoundHeaderForm.patchValue(
+                    ex.outBoundHeader[0]
+                );
+                this._changeDetectorRef.markForCheck();
+            }
+        }).then((ex) =>{
+            this._outboundService.getDetail(0, 40, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
+
+            this.setGridData();
+            this._outboundService.outBoundDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((outBoundDetailPagenation: OutBoundDetailPagenation) => {
+                    // Update the pagination
+                    if (outBoundDetailPagenation !== null) {
+                        this.outBoundDetailPagenation = outBoundDetailPagenation;
+                    }
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
+    }
+
+    openDlvAccountSearch(): void {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_DLVACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.outBoundHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.outBoundHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
                 });
         }
     }

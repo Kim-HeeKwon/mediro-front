@@ -54,6 +54,11 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'status', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
+        {fieldName: 'address', dataType: ValueType.TEXT},
+        {fieldName: 'dlvAccount', dataType: ValueType.TEXT},
+        {fieldName: 'dlvAccountNm', dataType: ValueType.TEXT},
+        {fieldName: 'dlvAddress', dataType: ValueType.TEXT},
+        {fieldName: 'dlvDate', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
         {fieldName: 'soAmt', dataType: ValueType.NUMBER},
         {fieldName: 'obNo', dataType: ValueType.TEXT},
@@ -63,7 +68,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
         {fieldName: 'custBusinessName', dataType: ValueType.TEXT},
         {fieldName: 'representName', dataType: ValueType.TEXT},
-        {fieldName: 'address', dataType: ValueType.TEXT},
         {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'businessCategory', dataType: ValueType.TEXT},
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
@@ -189,6 +193,30 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '거래처 주소', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'dlvAccountNm', fieldName: 'dlvAccountNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '납품처 명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'dlvAddress', fieldName: 'dlvAddress', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '납품주소', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'dlvDate', fieldName: 'dlvDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '납품 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -337,7 +365,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._salesorderService.getHeader(0, 20, 'soNo', 'desc', this.searchForm.getRawValue());
+        const rtn = this._salesorderService.getHeader(0, 40, 'soNo', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

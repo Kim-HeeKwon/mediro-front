@@ -139,7 +139,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._orderService.getDetail(0, 20, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
+            this._orderService.getDetail(0, 40, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._orderDetailPagenator._intl.itemsPerPageLabel = '';
@@ -172,19 +172,27 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -193,17 +201,23 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '기발주량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '보유재고량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '발주 요청량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             // {
             //     name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
@@ -213,21 +227,29 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'poQty', fieldName: 'poQty', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '실제 발주량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매입단가', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'poAmt', fieldName: 'poAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '발주금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider
@@ -666,7 +688,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this.backPage();
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.reData();
         }
     }
 
@@ -703,5 +727,34 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this._realGridsService.gfn_DelRow(this.gridList, this.orderDetailDataProvider);
+    }
+
+    //데이터 재 로딩
+    reData(): void {
+        const searchForm = {
+            poNo:  this.orderHeaderForm.getRawValue().poNo
+        };
+        const header = this._orderService.getHeader(0, 1, '', this.orderBy, searchForm);
+        header.then((ex) => {
+            if(ex.orderHeader.length === 1){
+                this.orderHeaderForm.patchValue(
+                    ex.orderHeader[0]
+                );
+                this._changeDetectorRef.markForCheck();
+            }
+        }).then((ex) => {
+            this._orderService.getDetail(0, 40, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
+
+            this.setGridData();
+
+            this._orderService.orderDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((orderDetailPagenation: OrderDetailPagenation) => {
+                    // Update the pagination
+                    this.orderDetailPagenation = orderDetailPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
     }
 }

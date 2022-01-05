@@ -80,6 +80,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
+        {fieldName: 'manufacturer', dataType: ValueType.TEXT},
         {fieldName: 'taxGbn', dataType: ValueType.TEXT},
         {fieldName: 'buyPrice', dataType: ValueType.NUMBER},
         {fieldName: 'salesPrice', dataType: ValueType.NUMBER}
@@ -227,6 +228,12 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '공급사', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'manufacturer', fieldName: 'manufacturer', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '제조사', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -380,7 +387,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      * SearchItem
      */
     searchItem(): void {
-        const rtn = this._itemService.getItems(0, 20, 'itemCd', 'desc', this.searchForm.getRawValue());
+        const rtn = this._itemService.getItems(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
         //this._router.navigate(['.'], {relativeTo: this._route, queryParams: this.searchForm.getRawValue()});
@@ -400,7 +407,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectHeader(): void {
-        const rtn = this._itemService.getItems(0, 20, 'itemNm', 'asc', this.searchForm.getRawValue());
+        const rtn = this._itemService.getItems(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
@@ -455,7 +462,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'items', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 

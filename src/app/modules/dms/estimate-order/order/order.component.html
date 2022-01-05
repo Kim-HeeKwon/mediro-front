@@ -62,7 +62,7 @@
                                     matInput
                                     [formControlName]="'accountNm'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'거래처명을 입력해주세요.'">
+                                    [placeholder]="'공급처 명을 입력해주세요.'">
                             </mat-form-field>
                         </div>
                         <div class="sm:col-span-4">
@@ -236,7 +236,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                <mat-label>거래처 명</mat-label>
+                                                <mat-label>공급처 명</mat-label>
                                                 <input
                                                     matInput
                                                     (window:onkeypress)="enter($event)"
@@ -323,7 +323,7 @@
                             [length]="orderHeaderPagenation === null ? 0 : orderHeaderPagenation.length"
                             [pageIndex]="orderHeaderPagenation === null ? 0 : orderHeaderPagenation.page"
                             [pageSize]="orderHeaderPagenation === null ? 0 : orderHeaderPagenation.size"
-                            [pageSizeOptions]="[20, 40, 60, 80, 100]"
+                            [pageSizeOptions]="[40, 60, 80, 100, 120]"
                             (page)="pageEvent($event)"
                             [showFirstLastButtons]="true"></mat-paginator>
                     </div>

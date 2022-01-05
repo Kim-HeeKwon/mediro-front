@@ -27,7 +27,7 @@ export class EstimateDetailResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._estimateService.getDetail()
+                //this._estimateService.getDetail()
             ]).then(
                 () => {
                     // @ts-ignore

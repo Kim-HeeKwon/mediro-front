@@ -436,7 +436,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
+        const rtn = this._billService.getHeader(0, 40, 'billing', 'desc', this.searchForm.getRawValue());
 
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -576,7 +576,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._billService.getHeader(0, 20, 'billing', 'desc', this.searchForm.getRawValue());
+        const rtn = this._billService.getHeader(0, 40, 'billing', 'desc', this.searchForm.getRawValue());
 
         //this.setGridData();
         this.selectCallBack(rtn);

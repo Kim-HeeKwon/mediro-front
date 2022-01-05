@@ -25,7 +25,8 @@ import {TeamPlatConfirmationService} from '../../../../../../@teamplat/services/
 import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {SalesOrder} from '../../../../admin/salesorder/salesorder/salesorder.types';
+import {SalesOrder} from '../../../../dms/salesorder/salesorder/salesorder.types';
+import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({
     selector: 'app-dms-salesorder-detail',
@@ -112,6 +113,11 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
+            address: [{value: ''}],   // 거래처 주소
+            dlvAccount: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAddress: [{value: ''}],   // 납품처 주소
+            dlvDate: [{value: ''}, [Validators.required]],//납품일자
             soAmt: [{value: '', disabled: true}],   // 주문금액
             obNo: [{value: '', disabled: true}],   // 출고번호
             soCreDate: [{value: '', disabled: true}],//주문 생성일자
@@ -125,7 +131,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this._salesorderService.getDetail(0, 20, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+            this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._salesorderDetailPagenator._intl.itemsPerPageLabel = '';
@@ -157,19 +163,27 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -178,31 +192,43 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '기발주량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '보유재고량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '요청수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매출단가', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'poAmt', fieldName: 'soAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '주문금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
 
@@ -481,14 +507,16 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._salesorderService.getDetail(this._salesorderDetailPagenator.pageIndex, this._salesorderDetailPagenator.pageSize, 'poLineNo', this.orderBy, this.salesorderHeaderForm.getRawValue());
+        this._salesorderService.getDetail(this._salesorderDetailPagenator.pageIndex, this._salesorderDetailPagenator.pageSize, 'soLineNo', this.orderBy, this.salesorderHeaderForm.getRawValue());
     }
 
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {
-            this.backPage();
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.reData();
         }
     }
 
@@ -505,6 +533,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 type: this.salesorderHeaderForm.controls['type'].value,
                 status: this.salesorderHeaderForm.controls['status'].value,
                 remarkHeader: this.salesorderHeaderForm.controls['remarkHeader'].value,
+                address: this.salesorderHeaderForm.controls['address'].value,
+                dlvAccount: this.salesorderHeaderForm.controls['dlvAccount'].value,
+                dlvAddress: this.salesorderHeaderForm.controls['dlvAddress'].value,
+                dlvDate: this.salesorderHeaderForm.controls['dlvDate'].value,
                 email: '',
                 itemCd: '',
                 itemGrade: '',
@@ -530,6 +562,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 sendData[i].soNo = this.salesorderHeaderForm.controls['soNo'].value;
                 sendData[i].type = this.salesorderHeaderForm.controls['type'].value;
                 sendData[i].status = this.salesorderHeaderForm.controls['status'].value;
+                sendData[i].address = this.salesorderHeaderForm.controls['address'].value;
+                sendData[i].dlvAccount = this.salesorderHeaderForm.controls['dlvAccount'].value;
+                sendData[i].dlvAddress = this.salesorderHeaderForm.controls['dlvAddress'].value;
+                sendData[i].dlvDate = this.salesorderHeaderForm.controls['dlvDate'].value;
                 sendData[i].remarkHeader = this.salesorderHeaderForm.controls['remarkHeader'].value;
             }
         }
@@ -561,7 +597,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._salesorderService.getDetail(0, 20, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+                    this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
 
                     this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
                     this._salesorderService.salesorderDetails$
@@ -582,5 +618,88 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         });
                 }
             });
+    }
+
+    //데이터 재 로딩
+    reData(): void {
+        const searchForm = {
+            soNo:  this.salesorderHeaderForm.getRawValue().soNo
+        };
+        const header = this._salesorderService.getHeader(0, 1, '', this.orderBy, searchForm);
+        header.then((ex) => {
+            if(ex.salesorderHeader.length === 1){
+                this.salesorderHeaderForm.patchValue(
+                    ex.salesorderHeader[0]
+                );
+                this._changeDetectorRef.markForCheck();
+            }
+        }).then((ex) => {
+            this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+
+            this.setGridData();
+
+            this._salesorderService.salesorderDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((salesorderDetailPagenation: SalesOrderDetailPagenation) => {
+                    // Update the pagination
+                    this.salesorderDetailPagenation = salesorderDetailPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
+
+    }
+
+    openDlvAccountSearch(): void {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_DLVACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.salesorderHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.salesorderHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.salesorderHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.salesorderHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        }
     }
 }

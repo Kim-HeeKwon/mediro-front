@@ -54,7 +54,7 @@ export class BillService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'billing', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'billing', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Promise<{billPagenation: BillPagenation; bill: Bill[] }> {
 
         const searchParam = {};

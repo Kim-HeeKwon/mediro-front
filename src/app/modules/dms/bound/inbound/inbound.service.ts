@@ -142,7 +142,7 @@ export class InboundService {
      *
      * @returns
      */
-    getDetail(page: number = 0, size: number = 20, sort: string = 'ibLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getDetail(page: number = 0, size: number = 40, sort: string = 'ibLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ inBoundDetailPagenation: InBoundDetailPagenation; inBoundDetail: InBoundDetail[] }> {
 
         const searchParam = {};

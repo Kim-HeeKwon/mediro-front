@@ -27,7 +27,7 @@ export class InboundDetailResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._inboundService.getDetail()
+                //this._inboundService.getDetail()
             ]).then(
                 () => {
                     // @ts-ignore

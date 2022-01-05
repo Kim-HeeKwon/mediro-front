@@ -113,7 +113,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             obNo: [{value: '', disabled: true}],   // 출고번호
             account: [{value: ''}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
-            address: [{value: ''}, [Validators.required]],   // 거래처 주소
+            address: [{value: ''}],   // 거래처 주소
             type: [{value: ''}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             dlvAccount: [{value: ''}],   // 납품처
@@ -151,19 +151,27 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -172,7 +180,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '출고대상수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             // {
             //     name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
@@ -181,7 +191,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             // },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider

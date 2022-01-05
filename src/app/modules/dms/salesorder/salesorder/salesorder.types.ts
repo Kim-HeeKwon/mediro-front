@@ -16,6 +16,11 @@ export interface SalesOrder
     unitPrice: number;
     type: string;               //유형
     status: string;             //상태
+    address?: string;            //주소
+    dlvAccount?: string;         //배송처
+    dlvAccountNm?: string;         //배송처
+    dlvAddress?: string;         //배송처 주소
+    dlvDate?: string;            //일자
     email: string;              //이메일
     soCreDate: string;          //주문생성일자
     soDate: string;             //주문일자
@@ -36,6 +41,11 @@ export class SalesOrderHeader
     soNo: string;               //주문번호
     type: string;               //유형
     status: string;             //상태
+    address: string;            //주소
+    dlvAccount: string;         //배송처
+    dlvAccountNm: string;         //배송처
+    dlvAddress: string;         //배송처 주소
+    dlvDate: string;            //일자
     email: string;              //이메일
     soCreDate: string;          //주문생성일자
     soDate: string;             //주문일자

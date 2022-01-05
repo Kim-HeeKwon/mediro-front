@@ -49,7 +49,7 @@ export class AcceptableService{
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'accountNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ acceptablePagenation: AcceptablePagenation; acceptable: Acceptable[] }> {
 
         const searchParam = {};

@@ -477,6 +477,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._managesService.deleteSupplyInfo(checkValues)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((manage: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this._functionService.cfn_alertCheckMessage(manage);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();

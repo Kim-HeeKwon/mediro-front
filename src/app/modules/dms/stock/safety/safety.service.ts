@@ -50,7 +50,7 @@ export class SafetyService{
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ safetyPagenation: SafetyPagenation; safety: Safety[] }> {
 
         const searchParam = {};

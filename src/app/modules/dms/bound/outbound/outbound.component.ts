@@ -18,7 +18,6 @@ import * as moment from 'moment';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from './outbound.types';
-import {InBound} from "../inbound/inbound.types";
 
 @Component({
     selector: 'dms-outbound',
@@ -276,7 +275,6 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    console.log(grid.getValues(clickData.dataRow));
                     this._router.navigate(['bound/outbound/outbound-detail', grid.getValues(clickData.dataRow)]);
                 }
             }
@@ -342,7 +340,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._outBoundService.getHeader(0, 20, 'obNo', 'desc', this.searchForm.getRawValue());
+        const rtn = this._outBoundService.getHeader(0, 40, 'obNo', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

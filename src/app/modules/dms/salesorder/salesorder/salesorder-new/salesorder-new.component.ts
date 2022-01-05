@@ -122,6 +122,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             soNo: [{value: '', disabled: true}],   // 주문번호
             account: [{value: ''}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
+            address: [{value: ''}],   // 거래처 주소
+            dlvAccount: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAddress: [{value: ''}],   // 납품처 주소
+            dlvDate: [{value: ''}, [Validators.required]],//납품일자
             type: [{value: ''}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             soAmt: [{value: '', disabled: true}],   // 주문금액
@@ -162,19 +167,27 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -183,31 +196,43 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             {
                 name: 'poReqQty', fieldName: 'poReqQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '기발주량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '보유재고량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '요청수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매출단가', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'poAmt', fieldName: 'soAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '주문금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
 
@@ -304,16 +329,26 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         if (this.estimateHeader !== undefined) {
             this.salesorderHeaderForm.patchValue({'account': this.estimateHeader.account});
             this.salesorderHeaderForm.patchValue({'accountNm': this.estimateHeader.accountNm});
+            this.salesorderHeaderForm.patchValue({'address': ''});
             this.salesorderHeaderForm.patchValue({'type': '1'});
             this.salesorderHeaderForm.patchValue({'status': 'N'});
             this.salesorderHeaderForm.patchValue({'obNo': ''});
             this.salesorderHeaderForm.patchValue({'remarkHeader': this.estimateHeader.remarkHeader});
+            this.salesorderHeaderForm.patchValue({'dlvAccount': ''});
+            this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
+            this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
+            this.salesorderHeaderForm.patchValue({'dlvDate': ''});
         } else {
             this.salesorderHeaderForm.patchValue({'account': ''});
+            this.salesorderHeaderForm.patchValue({'address': ''});
             this.salesorderHeaderForm.patchValue({'type': '1'});
             this.salesorderHeaderForm.patchValue({'status': 'N'});
             this.salesorderHeaderForm.patchValue({'obNo': ''});
             this.salesorderHeaderForm.patchValue({'remarkHeader': ''});
+            this.salesorderHeaderForm.patchValue({'dlvAccount': ''});
+            this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
+            this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
+            this.salesorderHeaderForm.patchValue({'dlvDate': ''});
         }
 
         if (this.estimateDetail !== undefined) {
@@ -443,9 +478,13 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         for (let i = 0; i < sendData.length; i++) {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             sendData[i].account = this.salesorderHeaderForm.controls['account'].value;
+            sendData[i].address = this.salesorderHeaderForm.controls['address'].value;
             sendData[i].soNo = this.salesorderHeaderForm.controls['soNo'].value;
             sendData[i].type = this.salesorderHeaderForm.controls['type'].value;
             sendData[i].status = this.salesorderHeaderForm.controls['status'].value;
+            sendData[i].dlvAccount = this.salesorderHeaderForm.controls['dlvAccount'].value;
+            sendData[i].dlvAddress = this.salesorderHeaderForm.controls['dlvAddress'].value;
+            sendData[i].dlvDate = this.salesorderHeaderForm.controls['dlvDate'].value;
             sendData[i].obNo = '';
             sendData[i].remarkHeader = this.salesorderHeaderForm.controls['remarkHeader'].value;
         }
@@ -483,6 +522,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                     if (result) {
                         this.salesorderHeaderForm.patchValue({'account': result.accountCd});
                         this.salesorderHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'address': result.address});
                         this.salesorderHeaderForm.patchValue({'email': result.email});
                         this._changeDetectorRef.markForCheck();
                     }
@@ -514,7 +554,61 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                         smallDialogSubscription.unsubscribe();
                         this.salesorderHeaderForm.patchValue({'account': result.accountCd});
                         this.salesorderHeaderForm.patchValue({'accountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'address': result.address});
                         this.salesorderHeaderForm.patchValue({'email': result.email});
+                    }
+                });
+        }
+    }
+
+    openDlvAccountSearch(): void {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_DLVACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.salesorderHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.salesorderHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'dlvAddress': result.address});
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '납품처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.salesorderHeaderForm.patchValue({'dlvAccount': result.accountCd});
+                        this.salesorderHeaderForm.patchValue({'dlvAccountNm': result.accountNm});
+                        this.salesorderHeaderForm.patchValue({'dlvAddress': result.address});
                     }
                 });
         }

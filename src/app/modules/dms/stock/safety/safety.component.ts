@@ -289,7 +289,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._safetyService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        const rtn = this._safetyService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

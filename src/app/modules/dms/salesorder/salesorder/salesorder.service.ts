@@ -122,7 +122,7 @@ export class SalesorderService {
      *
      * @returns
      */
-    getDetail(page: number = 0, size: number = 20, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getDetail(page: number = 0, size: number = 40, sort: string = 'soLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ salesorderDetailPagenation: SalesOrderDetailPagenation; salesorderDetail: SalesOrderDetail[] }> {
 
         const searchParam = {};

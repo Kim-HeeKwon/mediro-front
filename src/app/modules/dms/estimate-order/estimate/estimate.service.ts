@@ -79,7 +79,7 @@ export class EstimateService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 20, sort: string = 'qtNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'qtNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Promise<{ estimateHeaderPagenation: EstimateHeaderPagenation; estimateHeader: EstimateHeader[] }> {
 
         const searchParam = {};
@@ -163,7 +163,7 @@ export class EstimateService {
      *
      * @returns
      */
-    getDetail(page: number = 0, size: number = 20, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getDetail(page: number = 0, size: number = 40, sort: string = 'qtLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ estimateDetailPagenation: EstimateDetailPagenation; estimateDetail: EstimateDetail[] }> {
 
         const searchParam = {};

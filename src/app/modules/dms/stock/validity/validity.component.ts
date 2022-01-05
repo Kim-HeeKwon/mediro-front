@@ -268,7 +268,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._validityService.getHeader(0, 10, 'itemNm', 'desc', this.searchForm.getRawValue());
+        const rtn = this._validityService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

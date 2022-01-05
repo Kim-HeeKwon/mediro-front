@@ -347,7 +347,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._itemPriceService.getHeader(0, 20, 'itemNm', 'desc', this.searchForm.getRawValue());
+        const rtn = this._itemPriceService.getHeader(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
@@ -477,7 +477,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 

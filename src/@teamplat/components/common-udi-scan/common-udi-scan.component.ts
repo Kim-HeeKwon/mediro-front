@@ -107,6 +107,8 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
         this.suplyTypeCode = _utilService.commonValueFilter(_codeStore.getValue().data,'SUPLYTYPECODE',this.filterList);
         data.detail.forEach((detail: any) => {
             detail.udiCode = '';
+            detail.qty = detail.obQty;
+            detail.obQty = detail.obExpQty - detail.qty;
         });
         this.outBoundData = data.detail;
         this._commonScanService.setData(this.outBoundData);

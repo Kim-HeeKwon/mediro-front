@@ -139,7 +139,9 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'effectiveDate', fieldName: 'effectiveDate', type: 'date', width: '150', styleName: 'left-cell-text'
                 , header: {text: '견적가 적용일자', styleName: 'center-cell-text'}
-                , datetimeFormat: 'yyyy-MM-dd'
+                , datetimeFormat: 'yyyy-MM-dd', renderer: {
+                    showTooltip: true
+                }
                 , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
                 , editor: {
                     type: 'date',
@@ -165,19 +167,27 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'}
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
@@ -186,20 +196,29 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '수량', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '단가', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'qtAmt', fieldName: 'qtAmt', type: 'data', width: '120', styleName: 'right-cell-text'
                 , header: {text: '견적금액', styleName: 'center-cell-text'}
-                , numberFormat: '#,##0'},
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
         ];
         //그리드 Provider

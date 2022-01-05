@@ -28,7 +28,7 @@ export class OrderDetailResolvers implements Resolve<any> {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this._orderService.getDetail()
+                //this._orderService.getDetail()
             ]).then(
                 () => {
                     // @ts-ignore

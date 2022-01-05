@@ -374,14 +374,14 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectAccount(): void {
-        const rtn =this._accountService.getAccount(0, 20, 'account', 'asc', this.searchForm.getRawValue());
+        const rtn =this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'account', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -426,7 +426,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-        const rtn = this._accountService.getAccount(0, 20, 'account', 'desc', this.searchForm.getRawValue());
+        const rtn = this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }

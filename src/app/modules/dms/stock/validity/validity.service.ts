@@ -48,7 +48,7 @@ export class ValidityService{
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 40, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{validityPagenation: ValidityPagenation; validity: Validity[] }> {
 
         const searchParam = {};

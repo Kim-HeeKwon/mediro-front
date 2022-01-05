@@ -85,7 +85,7 @@
                                                     [formControlName]="'poNo'">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                                <mat-label>거래처 코드
+                                                <mat-label>공급처 코드
                                                     <mat-icon class="icon-size-3"
                                                               svgIcon="heroicons_solid:check-circle"></mat-icon>
                                                 </mat-label>
@@ -95,7 +95,7 @@
                                                     (click)="openAccountSearch()">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                                <mat-label>거래처 명
+                                                <mat-label>공급처 명
                                                     <mat-icon class="icon-size-3"
                                                               svgIcon="heroicons_solid:check-circle"></mat-icon>
                                                 </mat-label>
@@ -237,7 +237,7 @@
                 [length]="orderDetailPagenation === null ? 0 : orderDetailPagenation.length"
                 [pageIndex]="orderDetailPagenation === null ? 0 : orderDetailPagenation.page"
                 [pageSize]="orderDetailPagenation === null ? 0 : orderDetailPagenation.size"
-                [pageSizeOptions]="[20, 40, 60, 80, 100]"
+                [pageSizeOptions]="[40, 60, 80, 100, 120]"
                 [showFirstLastButtons]="true">
             </mat-paginator>
         </div>
