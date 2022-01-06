@@ -230,6 +230,13 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+                , datetimeFormat: 'yyyy-MM-dd'
+                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+                , editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM-dd',
+                    textReadOnly: true,
+                }
             },
             {
                 name: 'lot3', fieldName: 'lot3', type: 'data', width: '100', styleName: 'left-cell-text'

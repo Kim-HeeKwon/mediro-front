@@ -60,6 +60,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'stdCode', dataType: ValueType.TEXT},
         {fieldName: 'lotNo', dataType: ValueType.TEXT},
         {fieldName: 'manufYm', dataType: ValueType.TEXT},
+        {fieldName: 'useTmlmt', dataType: ValueType.TEXT},
         {fieldName: 'bcncCode', dataType: ValueType.TEXT},
         {fieldName: 'bcncEntpName', dataType: ValueType.TEXT},
         {fieldName: 'dvyfgEntpName', dataType: ValueType.TEXT},
@@ -212,6 +213,12 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'manufYm', fieldName: 'manufYm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '제조연월', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'useTmlmt', fieldName: 'useTmlmt', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '사용기한', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

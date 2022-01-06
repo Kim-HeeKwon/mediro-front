@@ -1,6 +1,6 @@
 {
     "name": "@teamplat/mediro",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "license": "https://themeforest.net/licenses/standard",
     "private": true,
     "scripts": {
@@ -47,7 +47,7 @@
         "mdb-reader": "^1.0.10",
         "moment": "2.29.1",
         "ng-apexcharts": "1.5.10",
-        "ng2-charts": "^3.0.5",
+        "ng2-charts": "^3.0.6",
         "ngx-cookie-service": "^12.0.3",
         "ngx-device-detector": "^2.2.1",
         "ngx-markdown": "12.0.1",
