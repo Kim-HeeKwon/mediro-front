@@ -1,4 +1,4 @@
-import {ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy} from '@angular/router';
+import {ActivatedRouteSnapshot, DetachedRouteHandle, NavigationEnd, Router, RouteReuseStrategy} from '@angular/router';
 
 interface RouteStorageObject {
     snapshot: ActivatedRouteSnapshot;
@@ -7,6 +7,10 @@ interface RouteStorageObject {
 export class TeamPlatReuseStrategy extends RouteReuseStrategy {
 
     private handlers: {[key: string]: DetachedRouteHandle} = {};
+
+    constructor() {
+        super();
+    }
 
     shouldDetach(route: ActivatedRouteSnapshot): boolean {
         if (!route.routeConfig || route.routeConfig.loadChildren) {

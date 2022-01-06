@@ -20,7 +20,7 @@ import {CustomReuseStrategy} from "../@teamplat/services/router-util/CustomReuse
 const routerConfig: ExtraOptions = {
     scrollPositionRestoration: 'enabled',
     preloadingStrategy       : PreloadAllModules,
-    useHash: environment.test
+    useHash: environment.test,
 };
 
 @NgModule({

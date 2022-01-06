@@ -1,6 +1,8 @@
 /* tslint:disable:max-line-length */
 import { FuseNavigationItem } from '@teamplat/components/navigation';
+import {environment} from "../../../../environments/environment.prod";
 
+export const version = environment;
 export const defaultNavigation: FuseNavigationItem[] = [
     /* {
          id      : 'user-interface',
