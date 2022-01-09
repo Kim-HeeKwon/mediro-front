@@ -11,6 +11,7 @@ import { Layout } from 'app/layout/layout.types';
 import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {DeviceDetectorService} from "ngx-device-detector";
+import {environment} from "../../environments/environment.prod";
 
 @Component({
     selector     : 'layout',
@@ -20,6 +21,7 @@ import {DeviceDetectorService} from "ngx-device-detector";
 })
 export class LayoutComponent implements OnInit, OnDestroy
 {
+    version: string = '1.0.0';
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );

@@ -13,5 +13,5 @@ export const environment = {
     paymentHookUrl: 'https://www.teammediro.com/teamPlatFw/v1/api/payment',
     tossClientKey: 'live_ck_Z0RnYX2w5320nO7eWWerNeyqApQE',
     test: false,
-    v: 'v=1.0;',
+    version: '1.0.1',
 };
