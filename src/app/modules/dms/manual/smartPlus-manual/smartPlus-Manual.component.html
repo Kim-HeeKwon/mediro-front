@@ -1,4 +1,119 @@
-<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+<div *ngIf="isMobile" class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-col divide-y border-t border-b">
+        <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+            <div class="sm:col-span-12">
+                <button
+                    class="ml-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [color]="'primary'"
+                    [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">자동발주 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button
+                    class="ml-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [color]="'primary'"
+                    [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">정기주문 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!safety"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="safetyBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">안전재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="safety"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="safetyBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">안전재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!validity"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="validityBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">유효기간 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="validity"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="validityBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:calendar'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">유효기간 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button
+                    class="ml-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [color]="'primary'"
+                    [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">장기재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!acceptable"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="acceptableBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">가납재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="acceptable"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="acceptableBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">가납재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
     <div class="flex w-full mt-8 sm:mt-0 pb-4">
         <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
             <div class="flex flex-col w-full">

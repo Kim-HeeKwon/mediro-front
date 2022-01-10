@@ -251,6 +251,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 
 .progress-outer{
+    float: left !important;
+    width: 74% !important;
     padding: 0px !important;
     margin: 3px 2% !important;
     border-radius: 0px !important;
@@ -269,23 +271,27 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     font-size: 10px !important;
     background-color: #3983DC !important;
 }
+.progress-float {
+    float: left !important;
+    margin: 3px 2% !important;
+}
 
 .h-full{
     height: 100% !important;
 }
 .border-green{
-    border: 1px solid #45AAB4;
+    border: 2px solid #45AAB4;
 }
 .border-green:hover{
-    border: 1px solid #45AAB4;
+    border: 2px solid #45AAB4;
     background: #45AAB4;
     color: #ffffff;
 }
 .border-red{
-    border: 1px solid #F36480;
+    border: 2px solid #F36480;
 }
 .border-red:hover{
-    border: 1px solid #F36480;
+    border: 2px solid #F36480;
     background: #F36480;
     color: #ffffff;
 }
@@ -298,24 +304,54 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     color: #ffffff;
 }
 .border-navy{
-    border: 1px solid #206491;
+    border: 2px solid #206491;
 }
 .border-navy:hover{
-    border: 1px solid #206491;
+    border: 2px solid #206491;
     background: #206491;
     color: #ffffff;
 }
 .border-orange{
-    border: 1px solid #FBB45C;
+    border: 2px solid #FBB45C;
 }
 .border-orange:hover{
-    border: 1px solid #FBB45C;
+    border: 2px solid #FBB45C;
     background: #FBB45C;
     color: #ffffff;
 }
 
 .rounded-1xl{
     border-radius: 8px !important;
+}
+
+@media (min-width: 200px) {
+    .rounded-1xll{
+        border-radius: 8px !important;
+    }
+}
+
+@media (min-width: 640px) {
+    .margin_auto {
+        margin: auto;
+    }
+    .chart_btn {
+        width: 70px;
+        margin: auto;
+        border-radius: 16px !important;
+    }
+    .chart_btn_span4 {
+        width: 140px;
+        margin: auto;
+        border-radius: 16px !important;
+    }
+    .chart_udi_btn {
+        border-radius: 16px !important;
+    }
+    .price_btn {
+        width: 40px;
+        height: 20px;
+        border-radius: 16px !important;
+    }
 }
 
 .mat-option-text{

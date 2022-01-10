@@ -1,4 +1,55 @@
-<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+<div *ngIf="isMobile" class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-col divide-y border-t border-b">
+        <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+            <div class="sm:col-span-12">
+                <button *ngIf="!manages"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">공급내역 보고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="manages"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">공급내역 보고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!status"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">공급내역 전송 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="status"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">공급내역 전송 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
     <div class="flex w-full mt-8 sm:mt-0 pb-4">
         <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
             <div class="flex flex-col w-full">

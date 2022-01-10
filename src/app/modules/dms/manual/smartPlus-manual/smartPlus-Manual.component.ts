@@ -4,6 +4,8 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
+import {DomSanitizer} from "@angular/platform-browser";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'smartPlus-Manual',
@@ -12,13 +14,17 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export class smartPlusManualComponent implements OnInit {
+export class smartPlusManualComponent {
     safety: boolean = false;
     validity: boolean = false;
     acceptable: boolean = false;
+    isMobile: boolean = false;
 
-    ngOnInit(): void {
+    constructor(public sanitizer: DomSanitizer,
+                private _deviceService: DeviceDetectorService,) {
+        this.isMobile = this._deviceService.isMobile();
     }
+
 
     safetyBtn(): void {
         if (this.safety) {

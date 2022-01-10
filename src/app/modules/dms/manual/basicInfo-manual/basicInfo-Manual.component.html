@@ -1,4 +1,174 @@
-<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+<div *ngIf="isMobile" class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-col divide-y border-t border-b">
+        <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+            <div class="sm:col-span-12">
+                <button *ngIf="!account"
+                    class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:library'"></mat-icon>
+                    <span class="ml-2 mr-1">거래처 관리</span>
+                </button>
+                <button *ngIf="account"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:library'"></mat-icon>
+                    <span class="ml-2 mr-1">거래처 관리</span>
+                </button>
+            </div>
+                <div class="sm:col-span-4" *ngIf="account">
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountLookUp()">
+                        <span class="ml-2 mr-1 mediro-span-custom">거래처 조회</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountCreat()">
+                        <span class="ml-2 mr-1 mediro-span-custom">거래처 신규 등록</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountUpdate()">
+                        <span class="ml-2 mr-1 mediro-span-custom">거래처 수정</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountDelete()">
+                        <span class="ml-2 mr-1 mediro-span-custom">거래처 삭제</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="accountNewUpdate()">
+                        <span class="ml-2 mr-1 mediro-span-custom">거래처 업데이트</span>
+                    </button>
+                </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!item"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 ml-4">품목 관리</span>
+                </button>
+                <button *ngIf="item"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:cube'"></mat-icon>
+                    <span class="ml-2 ml-4">품목 관리</span>
+                </button>
+            </div>
+                <div class="sm:col-span-4" *ngIf="item">
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                            (click)="itemLookUp()">
+                        <span class="ml-2 mr-1">품목 조회</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                            (click)="itemCreat()">
+                        <span class="ml-2 mr-1">품목 신규 등록</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemUpdate()">
+                        <span class="ml-2 mr-1">품목 수정</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemDelete()">
+                        <span class="ml-2 mr-1">품목 삭제</span>
+                    </button>
+                </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!itemPrice"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                    <span class="ml-2 ml-4">단가 관리</span>
+                </button>
+                <button *ngIf="itemPrice"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+                    <span class="ml-2 ml-4">단가 관리</span>
+                </button>
+            </div>
+                <div class="sm:col-span-4" *ngIf="itemPrice">
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceLookUp()">
+                        <span class="ml-2 mr-1">단가 조회</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceCreat()">
+                        <span class="ml-2 mr-1">단가 신규 등록</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceUpdate()">
+                        <span class="ml-2 mr-1">단가 수정</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
+                        (click)="itemPriceDelete()">
+                        <span class="ml-2 mr-1">단가 삭제</span>
+                    </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
     <div class="flex w-full mt-8 sm:mt-0 pb-4">
         <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
             <div class="flex flex-col w-full">
@@ -112,6 +282,6 @@
 </div>
 <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
     <div class="flex w-full mt-8 sm:mt-0 pb-4">
-        <iframe *ngIf="video" width="100%" height="500" [src]="url"></iframe>
+        <iframe *ngIf="video" width="100%" height="500" [src]="url" title="YouTube video player"frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-
+</div>

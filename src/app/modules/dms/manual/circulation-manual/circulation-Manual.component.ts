@@ -5,6 +5,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'circulation-Manual',
@@ -24,8 +25,11 @@ export class circulationManualComponent {
     stock: boolean = false;
     bill: boolean = false;
     tax: boolean = false;
+    isMobile: boolean = false;
 
-    constructor(public sanitizer: DomSanitizer) {
+    constructor(public sanitizer: DomSanitizer,
+    private _deviceService: DeviceDetectorService,) {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     estimateBtn(): void {
@@ -151,7 +155,7 @@ export class circulationManualComponent {
     estimateLookUp(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/158a97fb-6421-437e-951d-ac71579bda07/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8_%E1%84%8C%E1%85%A9%E1%84%92%E1%85%AC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072114Z&X-Amz-Expires=86400&X-Amz-Signature=52debf3d9dff579d28134309208eefcbcba028e673be83df842b6a92a85966a9&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%2520%25E1%2584%258C%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/A_5FoURCoEo');
     }
 
     estimateCreat(): void {

@@ -20,11 +20,12 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
-import {SessionStore} from "../../../../core/session/state/session.store";
-import {ApexOptions} from "ng-apexcharts";
+import {SessionStore} from '../../../../core/session/state/session.store';
+import {ApexOptions} from 'ng-apexcharts';
 import ApexCharts from 'apexcharts';
-import {Chart, ChartData, ChartOptions, ChartType} from "chart.js";
-
+import {
+    Chart,
+} from 'chart.js';
 @Component({
   selector: 'app-dashboards',
   templateUrl: './dashboards.component.html',
@@ -57,7 +58,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
   recallItems$: Observable<RecallItem[]>;
   pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
   isLoading: boolean = false;
-
+  isMobile: boolean = false;
+  ibInfonCnt: any;
+  ibInfopCnt: any;
+  ibInfopsCnt: any;
+  obInfonCnt: any;
+  obInfopCnt: any;
+  obInfopsCnt: any;
+  buy: any;
+  sal: any;
   chartUdiInfo: ApexOptions = {};
 
   racallTaleData: any = null;
@@ -84,10 +93,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
       private readonly breakpointObserver: BreakpointObserver
   ) {
       this.userName = _sessionStore.getValue().name;
+      this.isMobile = this._deviceService.isMobile();
   }
 
   ngOnInit(): void {
-
       this.ibInfo$ = this._dashboardsService.ibInfo$;
       this.obInfo$ = this._dashboardsService.obInfo$;
       this.qtInfo$ = this._dashboardsService.qtInfo$;
@@ -109,6 +118,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
               data.filter(option => option.subCd === 'PC').map((result: any) => {this.ibInfo.pcCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'SC').map((result: any) => {this.ibInfo.scCnt= result.totalCnt;});
           });
+
+      const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + (this.ibInfo.pCnt + this.ibInfo.sCnt);
+      const ibInfonCnt = this.ibInfo.nCnt / ibInfoCnt * 100;
+      const ibInfopCnt = this.ibInfo.pCnt / ibInfoCnt * 100;
+      const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
+
+      this.ibInfonCnt = Math.round(ibInfonCnt);
+      this.ibInfopCnt = Math.round(ibInfopCnt);
+      this.ibInfopsCnt = Math.round(ibInfopsCnt);
+
       //견적
       this.qtInfo$
           .pipe(takeUntil(this._unsubscribeAll))
@@ -131,6 +150,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
               data.filter(option => option.subCd === 'PC').map((result: any) => {this.obInfo.pcCnt= result.totalCnt;});
               data.filter(option => option.subCd === 'SC').map((result: any) => {this.obInfo.scCnt= result.totalCnt;});
           });
+
+      const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + (this.obInfo.pCnt + this.obInfo.sCnt);
+      const obInfonCnt = this.obInfo.nCnt / obInfoCnt * 100;
+      const obInfopCnt = this.obInfo.pCnt / obInfoCnt * 100;
+      const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
+
+      this.obInfonCnt = Math.round(obInfonCnt);
+      this.obInfopCnt = Math.round(obInfopCnt);
+      this.obInfopsCnt = Math.round(obInfopsCnt);
+
       //발주
       this.poInfo$
           .pipe(takeUntil(this._unsubscribeAll))
@@ -156,7 +185,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .subscribe((data: any) => {
               data.filter(option => option.subCd === 'TOTAL').map((result: any) => {this.billInfo.totalCnt= result.totalCnt;});
           });
-
 
       // getItems
       this.recallItems$ = this._dashboardsService.reallItems$;
@@ -202,7 +230,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
           .subscribe((data: any) => {
               this.billInfos = data;
               this.billChart(this.billInfos);
+              console.log(data[data.length - 2].totalAmt);
           });
+      this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
+      this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
       //udi정보
       this.udiInfo$
           .pipe(takeUntil(this._unsubscribeAll))
@@ -387,13 +418,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     borderWidth : 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverOffset: 4,}
+                    hoverOffset: 0,}
             ],
         };
         const doughnutChartOption = {
-            cutout: 40,
+            cutout: 25,
             plugins: {
                 legend: {
                     display: true,
@@ -419,9 +450,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + qt.cfCnt , width / 2.1, top + (height / 1.85));
+                ctx.fillText('' + qt.cfCnt , width / 2, top + (height / 1.85));
             }
         };
 
@@ -450,13 +481,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     backgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     hoverBackgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
                     borderWidth : 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverOffset: 4,}
+                    hoverOffset: 0,}
             ],
         };
         const doughnutChartOption = {
-            cutout: 40,
+            cutout: 25,
             plugins: {
                 legend: {
                     display: true,
@@ -482,9 +513,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + po.cfCnt , width / 2.1, top + (height / 1.85));
+                ctx.fillText('' + po.cfCnt , width / 2, top + (height / 1.85));
             }
         };
 
@@ -511,13 +542,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     backgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
                     hoverBackgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
                     borderWidth : 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4' , '#FBB45C' , '#F36480'],
-                    hoverOffset: 4,}
+                    hoverOffset: 0,}
             ],
         };
         const doughnutChartOption = {
-            cutout: 40,
+            cutout: 25,
             plugins: {
                 legend: {
                     display: true,
@@ -543,9 +574,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + so.sCnt, width / 2.1, top + (height / 1.85));
+                ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.85));
             }
         };
 
@@ -618,6 +649,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             options: {
                 plugins: {
                     legend: {
+                        display: false,
                         boxWidth: 0,
                         boxHeight: 0,
                         align: 'center',
@@ -682,7 +714,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 });
             }
         };
+
         const ctx = document.getElementById('udi_chart');
+
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
             plugins: [udiPlugin],
@@ -723,6 +757,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 labels: ['1등급','2등급','3등급','4등급']
             },
             options: {
+                responsive : false,
                 plugins: {
                     tooltip: true,
                     legend: {
@@ -751,7 +786,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 }
             }
         });
-
         const currDay = new Date();
         const year = currDay.getFullYear();
         const month = currDay.getMonth() + 1;
@@ -804,13 +838,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' ],
                     hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
                     borderWidth : 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
-                    hoverOffset: 4,}
+                    hoverOffset: 0,}
             ],
         };
         const doughnutChartOption = {
-            cutout: 35,
+            cutout: 25,
             plugins: {
                 legend: {
                     display: true,
@@ -835,7 +869,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
 
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('' + totalAvailQty , width / 2.0, top + (height / 1.85));
             }
@@ -854,7 +888,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         const stockPlugin = {
             id: 'plugin',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+            beforeDraws(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
                 chart.data.datasets.forEach((dataset, i) => {
@@ -877,6 +911,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 });
             }
         };
+
         const ctx2 = document.getElementById('stock2_chart');
         // @ts-ignore
         const mixedChart = new Chart(ctx2, {
@@ -904,7 +939,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             options: {
                 indexAxis: 'y',
                 plugins: {
-                    tooltip: true,
                     legend: {
                         display: false,
                         position: 'bottom',
