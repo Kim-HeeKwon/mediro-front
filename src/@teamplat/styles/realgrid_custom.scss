@@ -212,7 +212,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .red-font-color {
     color: #ff0000;
 }
-
+.text-25s{
+    font-size: 25px !important;
+}
 .text-17s{
     font-size: 17px !important;
 }
@@ -360,3 +362,23 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .mat-pseudo-checkbox-checked{
     background:#000000 !important;
 }
+
+.text-underline{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.text-line-through{
+    text-decoration: line-through;
+}
+//.mat-slide-toggle{
+//    height: 25px !important;
+//    width: 25px !important;
+//}
+//.mat-slide-toggle-bar {
+//    height: 25px !important;
+//}
+//.mat-slide-toggle-thumb {
+//    height: 25px !important;
+//    width: 25px !important;
+//}

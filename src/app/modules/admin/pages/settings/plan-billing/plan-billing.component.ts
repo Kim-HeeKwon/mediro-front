@@ -7,6 +7,9 @@ import {FuseAlertType} from '../../../../../../@teamplat/components/alert';
 import {environment} from 'environments/environment';
 
 import { loadTossPayments } from '@tosspayments/sdk';
+import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
+import {CodeStore} from "../../../../../core/common-code/state/code.store";
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 const clientKey = 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL';
 
 //import { setBill } from 'assets/js/billCode.js';
@@ -23,6 +26,9 @@ export class SettingsPlanBillingComponent implements OnInit
         type   : 'success',
         message: ''
     };
+    cardCompany: CommonCode[] = null;
+    payMethod: string = '';
+    payGrade: string = '';
     showAlert: boolean = false;
     yearlyBilling: boolean = false;
     planBillingForm: FormGroup;
@@ -36,9 +42,13 @@ export class SettingsPlanBillingComponent implements OnInit
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
         private _sessionStore: SessionStore,
+        private _functionService: FunctionService,
+        private _codeStore: CodeStore,
+        private _utilService: FuseUtilsService,
         private _common: Common
     )
     {
+        this.cardCompany = _utilService.commonValue(_codeStore.getValue().data, 'CARD_COMPANY');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -58,10 +68,16 @@ export class SettingsPlanBillingComponent implements OnInit
             cardNumber     : ['',[Validators.required]],
             cardExpiration : ['',[Validators.required]],
             cardCVC        : ['',[Validators.required]],
+            payGrade       : [{value:'',disabled:true},[Validators.required]],
+            yearUser       : [{value:'',disabled:true},[Validators.required]],
+            ownerType      : ['',[Validators.required]],
+            payMethod       : ['',[Validators.required]],
             cardCompany    : [''],
             cardPassword   : ['',[Validators.required]],
             yearPay        : ['']
         });
+        this.planBillingForm.patchValue({'yearUser': 0 + ''});
+        this.planBillingForm.patchValue({'payGrade': 'basic' + ''});
 
         // Get Customer Payment Info
         this.getBillingInfo();
@@ -70,23 +86,29 @@ export class SettingsPlanBillingComponent implements OnInit
         this.plans = [
             {
                 value  : 'basic',
-                label  : '기본서비스',
+                label  : '기본 사용료',
                 details: '유통관리를 고객을 위한 기본 서비스',
-                price  : '49000',
-                yearPrice : '490000'
+                price  : '48000',
+                yearPrice : '480000',
+                borderStyle : 'border-color: #E0E0E0',
+                color : 'color : #E0E0E0'
             },
             {
                 value  : 'premium',
-                label  : '프리미엄서비스',
+                label  : '프리미엄 사용료',
                 details: '유통관리 및 데이터 연동 기반 프리미엄 서비스',
-                price  : '99000',
-                yearPrice : '990000'
+                price  : '98000',
+                yearPrice : '980000',
+                borderStyle : 'border-color: #FFDE33',
+                color : 'color : #FFDE33'
             },
             {
                 value  : 'customize',
-                label  : '커스텀서비스',
+                label  : '커스텀 사용료',
                 details: '맞춤 고객을 위한 커스텀서비스',
-                price  : '00'
+                price  : '00',
+                borderStyle : 'border-color: #343C48',
+                color : 'color : #343C48'
             }
         ];
     }
@@ -108,9 +130,15 @@ export class SettingsPlanBillingComponent implements OnInit
 
     saveBillingInfo(): void
     {
-        console.log(this._sessionStore.getValue());
         this.showAlert = false;
+
+        if(this.planBillingForm.getRawValue().payGrade === 'customize'){
+            this._functionService.cfn_alert('커스텀 서비스는 문의 하여 주시기 바랍니다.');
+            return;
+        }
+
         if(!this.planBillingForm.invalid){
+
             this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
             this.planBillingForm.patchValue({'mId':this._sessionStore.getValue().businessNumber});
 
@@ -138,8 +166,6 @@ export class SettingsPlanBillingComponent implements OnInit
 
         this._common.sendData(param,'/v1/api/payment/get-payment-basic-info')
             .subscribe((responseData: any) => {
-                console.log('고객정보');
-                //console.log(responseData);
                 if(!this._common.gfn_isNull(responseData.data)){
                     this.planBillingForm.patchValue({'yearPay':responseData.data[0].yearPay});
                     this.planBillingForm.patchValue({'plan':responseData.data[0].plan});
@@ -149,6 +175,17 @@ export class SettingsPlanBillingComponent implements OnInit
                     this.planBillingForm.patchValue({'cardCVC':responseData.data[0].cardCVC});
                     this.planBillingForm.patchValue({'cardCompany':responseData.data[0].cardCompany});
                     this.planBillingForm.patchValue({'cardPassword':responseData.data[0].cardPassword});
+
+                    this.planBillingForm.patchValue({'yearUser':responseData.data[0].yearUser});
+                    this.planBillingForm.patchValue({'payMethod':responseData.data[0].payMethod});
+                    this.planBillingForm.patchValue({'payGrade':responseData.data[0].payGrade});
+                    this.planBillingForm.patchValue({'ownerType':responseData.data[0].ownerType});
+
+                    console.log(responseData.data[0].payMethod);
+                    this.payMethod = responseData.data[0].payMethod;
+                    this._changeDetectorRef.markForCheck();
+
+                    //this.yearlyBilling = responseData.data[0].yearUser === '0' ? false : true;
                 }
             });
     }
@@ -169,8 +206,8 @@ export class SettingsPlanBillingComponent implements OnInit
             }).catch( (err) => {
                 if (err.code === 'USER_CANCEL') {
                     // 취소 이벤트 처리
-                    alert('취소');
-                    alert(environment.paymentHookUrl);
+                    //alert('취소');
+                    //alert(environment.paymentHookUrl);
                 }
             });
         });
@@ -192,11 +229,39 @@ export class SettingsPlanBillingComponent implements OnInit
             }).catch( (err) => {
                 if (err.code === 'USER_CANCEL') {
                     // 취소 이벤트 처리
-                    alert('취소');
-                    alert(environment.paymentHookUrl);
+                    //alert('취소');
+                    //alert(environment.paymentHookUrl);
                 }
             });
         });
     }
 
+    yearlyBillingBind() {
+        if(this.yearlyBilling){
+            this.yearlyBilling = false;
+        }else{
+            this.yearlyBilling = true;
+        }
+        console.log(this.yearlyBilling);
+
+        this.planBillingForm.patchValue({'yearUser': (this.yearlyBilling ? 1 : 0) + ''});
+        //this.planBillingForm.patchValue({'payGrade': this.payGrade + ''});
+
+        this._changeDetectorRef.markForCheck();
+    }
+
+    selectType(type: string) {
+        this.payMethod = type;
+    }
+
+    planBind(value) {
+        this.payGrade = value;
+        //this.planBillingForm.patchValue({'yearUser': (this.yearlyBilling ? 1 : 0) + ''});
+        this.planBillingForm.patchValue({'payGrade': this.payGrade + ''});
+
+        this._changeDetectorRef.markForCheck();
+    }
+
+    customizeAS(): void{
+    }
 }

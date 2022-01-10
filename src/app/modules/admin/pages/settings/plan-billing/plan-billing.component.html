@@ -1,44 +1,67 @@
-<div class="w-full max-w-3xl">
+<div class="w-full">
+<!--    <div class="w-full max-w-3xl">-->
 
     <!-- Form -->
     <form [formGroup]="planBillingForm">
 
         <!-- Section -->
-        <div class="w-full">
-            <div class="text-xl">서비스 유형</div>
-            <div class="text-secondary">업그레이드 또는 다운드레이드 할 수 있습니다.</div>
+        <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
+            <!-- Plan -->
+            <div class="sm:col-span-1">
+                <fuse-alert
+                    [appearance]="'outline'"
+                    [type]="'basic'">
+                    <span>기본 사용료 월 48,000원</span>
+                </fuse-alert>
+            </div>
+            <div class="sm:col-span-1">
+                <fuse-alert
+                    [appearance]="'outline'"
+                    [type]="'basic'">
+                    <span>가입비</span><span class="text-line-through"> 30만원</span><span> 15만원</span>
+                </fuse-alert>
+            </div>
         </div>
+
         <div class="grid sm:grid-cols-3 gap-6 w-full mt-8">
             <!-- Plan -->
             <div class="sm:col-span-3">
                 <fuse-alert
                     [appearance]="'outline'"
-                    [type]="'info'">
-                    서비스 유형은 즉시 반영됩니다. 비용은 이번 달 부터 반영됩니다.
+                    [type]="'basic'">
+                    <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50% 할인</i> 적용, <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
                 </fuse-alert>
             </div>
             <div class="sm:col-span-3">
                 <div class="flex flex-col items-center">
                     <!-- Recurring selector -->
-                    <div class="flex items-center p-0.5 overflow-hidden bg-gray-200 dark:bg-gray-700">
-                        <button
-                            class="px-6"
-                            [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,
-                                'bg-transparent': !yearlyBilling}"
-                            mat-flat-button
-                            (click)="yearlyBilling = true"
-                            disableRipple>
-                            연 결제
-                        </button>
-                        <button
-                            class="px-6"
-                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,
-                                'bg-transparent': yearlyBilling}"
-                            mat-flat-button
-                            (click)="yearlyBilling = false"
-                            disableRipple>
-                            월 결제
-                        </button>
+                    <div class="flex items-center p-0.5 overflow-hidden">
+                        <span class="text-17s text-bold-600"
+                            [ngClass]="{'opacity-50' : yearlyBilling}">월 결제</span>
+                        <mat-slide-toggle class="ml-2 mr-2"
+                            (click)="yearlyBillingBind()"
+                            [color]="'primary'">
+                        </mat-slide-toggle>
+                        <span class="text-17s text-bold-600"
+                              [ngClass]="{'opacity-50' : !yearlyBilling}">연 결제</span>
+<!--                        <button-->
+<!--                            class="px-6"-->
+<!--                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,-->
+<!--                                'bg-transparent': yearlyBilling}"-->
+<!--                            mat-flat-button-->
+<!--                            (click)="yearlyBilling = false"-->
+<!--                            disableRipple>-->
+<!--                            월 결제-->
+<!--                        </button>-->
+<!--                        <button-->
+<!--                            class="px-6"-->
+<!--                            [ngClass]="{'bg-card pointer-events-none shadow': yearlyBilling,-->
+<!--                                'bg-transparent': !yearlyBilling}"-->
+<!--                            mat-flat-button-->
+<!--                            (click)="yearlyBilling = true"-->
+<!--                            disableRipple>-->
+<!--                            연 결제-->
+<!--                        </button>-->
                     </div>
                 </div>
             </div>
@@ -53,88 +76,100 @@
             <ng-container *ngFor="let plan of plans; trackBy: trackByFn">
                 <div
                     class="relative flex flex-col items-start justify-start p-6 rounded-md shadow cursor-pointer bg-card"
-                    [ngClass]="{'ring ring-inset ritrackByFnng-primary': planRadioGroup.value === plan.value}"
-                    (click)="planRadioGroup.value = plan.value">
+                    style="border-top: 16px solid;"
+                    [style]="plan.borderStyle"
+                    (click)="(planRadioGroup.value = plan.value) && planBind(plan.value)">
                     <ng-container *ngIf="planRadioGroup.value === plan.value">
                         <mat-icon
-                            class="absolute top-0 right-0 mt-3 mr-3 icon-size-7 text-primary"
+                            class="absolute top-0 right-0 mt-3 mr-3 icon-size-7"
+                            [style]="plan.color"
                             [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>
                     </ng-container>
                     <div class="font-medium">{{plan.label}}</div>
                     <div class="mt-1 whitespace-normal text-secondary">{{plan.details}}</div>
                     <div class="flex-auto"></div>
-                    <div class="mt-8 text-lg">
+                    <div class="mt-8 text-lg"
+                         style="margin: auto;">
                         <ng-container *ngIf="yearlyBilling">
-                            <span *ngIf="plan.price == '00'">
-                            별도협의</span>
-                            <span *ngIf="plan.price != '00'">{{plan.yearPrice | currency:'KRW':'symbol':'1.0'}}</span>
-                            <span class="text-secondary"> / 년</span>
+                            <button
+                                *ngIf="plan.price == '00'"
+                                mat-stroked-button
+                                [color]="'accent'"
+                                (click)="customizeAS()">
+                                <span class="text-17s text-bold-600 mr-2">문의하기</span>
+                                <mat-icon [svgIcon]="'chevron_right'"></mat-icon>
+                            </button>
+<!--                            <span *ngIf="plan.price == '00'">-->
+<!--                            별도협의</span>-->
+                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.yearPrice | currency:'KRW':'symbol':'1.0'}}</span>
+                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 년</span>
                         </ng-container>
                         <ng-container *ngIf="!yearlyBilling">
-                            <span *ngIf="plan.price == '00'">
-                            별도협의</span>
-                            <span *ngIf="plan.price != '00'">{{plan.price | currency:'KRW':'symbol':'1.0'}}</span>
-                            <span class="text-secondary"> / 월</span>
+                            <button
+                                *ngIf="plan.price == '00'"
+                                mat-stroked-button
+                                [color]="'accent'"
+                                (click)="customizeAS()">
+                                <span class="text-17s text-bold-600 mr-2">문의하기</span>
+                                <mat-icon [svgIcon]="'chevron_right'"></mat-icon>
+                            </button>
+<!--                            <span *ngIf="plan.price == '00'">-->
+<!--                            별도협의</span>-->
+                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.price | currency:'KRW':'symbol':'1.0'}}</span>
+                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 월</span>
                         </ng-container>
                     </div>
-                    <div class="flex flex-col mt-12">
-                        <div class="font-semibold">서비스 세부내용</div>
+                    <div class="flex flex-col mt-6 w-full">
+<!--                        <div class="font-semibold">서비스 세부내용</div>-->
+                        <div class="mt-4 mb-2 border-t"></div>
                         <div class="mt-4 space-y-2">
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">품목판매건수 <b>700건/월</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">품목판매건수 <b>1,500건/월</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">품목판매건수 <b>무제한</b></div>
                             </div>
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">공급내역보고 <b>100건/월</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">공급내역보고 <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">공급내역보고 <b>무제한</b></div>
                             </div>
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">전자세금계산서 <b>50건/월</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">전자세금계산서 <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">전자세금계산서 <b>무제한</b></div>
                             </div>
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">플랫폼 사용자 <b>3인</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">플랫폼 사용자 <b>7인</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">플랫폼 사용자 <b>무제한</b></div>
                             </div>
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
                             </div>
                             <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5 text-green-600"-->
+<!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
                                 <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
-                            </div>
-                            <div class="flex">
-                                <mat-icon
-                                    class="icon-size-5 text-green-600"
-                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                                <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">거래처 주문연동 <b>-</b></div>
-                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">거래처 주문연동  <b>사이트 3개</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">거래처 주문연동  <b>무제한</b></div>
                             </div>
                         </div>
                     </div>
@@ -142,140 +177,221 @@
             </ng-container>
         </div>
 
-        <!-- Divider -->
-        <div class="mt-12 mb-10 border-t"></div>
-
-        <!-- Section -->
-        <div class="w-full">
-            <div class="text-xl">카드 지불 정보 입력</div>
-            <div class="text-secondary">카드 정보를 입력하여 주세요.</div>
-        </div>
-        <fuse-alert class="mt-6"
-                    *ngIf="showAlert"
-                    [appearance]="'outline'"
-                    [type]="'error'">
-            {{alert.message}}
-        </fuse-alert>
-        <div class="grid grid-cols-4 gap-6 w-full mt-8">
-            <!-- Card holder -->
-            <div class="col-span-4">
+        <div class="grid grid-cols-3 gap-6 w-full mt-6">
+            <div class="col-span-1">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>성명(기업명)</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:user'"
-                        matPrefix></mat-icon>
-                    <input
-                        [formControlName]="'cardHolder'"
-                        matInput>
-                </mat-form-field>
-            </div>
-            <!-- Card number -->
-            <div class="col-span-4 sm:col-span-2">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>카드번호</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:credit-card'"
-                        matPrefix></mat-icon>
-                    <input
-                        [formControlName]="'cardNumber'"
-                        type="number"
-                        matInput>
-                </mat-form-field>
-            </div>
-            <!-- Card expiration -->
-            <div class="col-span-2 sm:col-span-1">
-                <mat-form-field
-                    class="fuse-mat-no-subscript w-full"
-                    [floatLabel]="'always'">
-                    <mat-label>유효기간(월/년)</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:calendar'"
-                        matPrefix></mat-icon>
-                    <input
-                        [formControlName]="'cardExpiration'"
-                        [placeholder]="'MM / YY'"
-                        matInput
-                        maxlength="4">
-                </mat-form-field>
-            </div>
-            <!-- Card CVC -->
-            <div class="col-span-2 sm:col-span-1">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>CVC</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:lock-closed'"
-                        matPrefix></mat-icon>
-                    <input
-                        [formControlName]="'cardCVC'"
-                        matInput>
-                </mat-form-field>
-            </div>
-            <!-- Country -->
-            <div class="col-span-4 sm:col-span-2">
-                <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>카드사</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:location-marker'"
-                        matPrefix></mat-icon>
-                    <mat-select [formControlName]="'cardCompany'">
-                        <mat-option [value]="''">카드사 선택</mat-option>
-                        <mat-option [value]="'sihan'">신한</mat-option>
-                        <mat-option [value]="'samsung'">삼성</mat-option>
-                        <mat-option [value]="'hyundai'">현대</mat-option>
-                        <mat-option [value]="'lotte'">롯데</mat-option>
-                        <mat-option [value]="'kiup'">기업</mat-option>
-                        <mat-option [value]="'hana'">하나</mat-option>
-                        <mat-option [value]="'sc'">SC제일
-                        </mat-option>
-                        <mat-option [value]="'woori'">우리</mat-option>
-                        <mat-option [value]="'kookmin'">국민</mat-option>
-                        <mat-option [value]="'nonghyub'">농협</mat-option>
-                        <mat-option [value]="'kakao'">카카오</mat-option>
+                    <mat-label>가입 서비스</mat-label>
+                    <mat-select [formControlName]="'payGrade'">
+                        <mat-option [value]="'basic'">기본</mat-option>
+                        <mat-option [value]="'premium'">프리미엄</mat-option>
+                        <mat-option [value]="'customize'">커스텀</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <!-- ZIP -->
-            <div class="col-span-4 sm:col-span-2">
+            <div class="col-span-1">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
-                    <mat-label>비밀번호(앞 두자리)</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:eye'"
-                        matPrefix></mat-icon>
-                    <input
-                        [formControlName]="'cardPassword'"
-                        matInput
-                        type="password"
-                        maxlength="2"
-                    >
+                    <mat-label>결제 기간</mat-label>
+                    <mat-select [formControlName]="'yearUser'">
+                        <mat-option [value]="'0'">월</mat-option>
+                        <mat-option [value]="'1'">연</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-span-1">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>결제 방식</mat-label>
+                    <mat-select [formControlName]="'payMethod'">
+                        <mat-option [value]="'CARD'" (click)="selectType('CARD')">신용카드</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
         </div>
 
         <!-- Divider -->
-        <div class="mt-11 mb-10 border-t"></div>
+        <div class="mt-6 mb-5 border-t"></div>
 
-        <!-- Actions -->
-        <div class="flex items-center justify-end">
-            <button
-                mat-stroked-button
-                type="button"
-                (click)="billEnterFee()">
-                가입비 결제
-            </button>
-            <button
-                class="ml-4"
-                mat-flat-button
-                type="button"
-                [color]="'primary'"
-                (click)="saveBillingInfo()">저장
-            </button>
-        </div>
+        <!-- Section -->
+<!--        <div class="w-full">-->
+<!--            <div class="text-xl">카드 지불 정보 입력</div>-->
+<!--            <div class="text-secondary">카드 정보를 입력하여 주세요.</div>-->
+<!--        </div>-->
+        <ng-container *ngIf="payMethod === 'CARD'">
+            <fuse-alert class="mt-6"
+                        *ngIf="showAlert"
+                        [appearance]="'outline'"
+                        [type]="'error'">
+                {{alert.message}}
+            </fuse-alert>
+            <div class="grid grid-cols-4 gap-6 w-full mt-6">
+                <!-- Card holder -->
+                <div class="col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>성명(기업명)</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:user'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'cardHolder'"
+                            matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>개인 / 법인</mat-label>
+                        <mat-select [formControlName]="'ownerType'">
+                            <mat-option [value]="'개인'">개인</mat-option>
+                            <mat-option [value]="'법인'">법인</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- Card number -->
+                <div class="col-span-4 sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>카드번호</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:credit-card'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'cardNumber'"
+                            type="number"
+                            matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Card expiration -->
+                <div class="col-span-2 sm:col-span-1">
+                    <mat-form-field
+                        class="fuse-mat-no-subscript w-full"
+                        [floatLabel]="'always'">
+                        <mat-label>유효기간(월/년)</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:calendar'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'cardExpiration'"
+                            [placeholder]="'MM / YY'"
+                            matInput
+                            maxlength="4">
+                    </mat-form-field>
+                </div>
+                <!-- Card CVC -->
+                <div class="col-span-2 sm:col-span-1">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>CVC</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:lock-closed'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'cardCVC'"
+                            matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Country -->
+                <div class="col-span-4 sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>카드사</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:location-marker'"
+                            matPrefix></mat-icon>
+                        <mat-select [formControlName]="'cardCompany'">
+                            <ng-container *ngFor="let cardCompany of cardCompany">
+                                <mat-option [value]="cardCompany.id">
+                                    {{cardCompany.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+<!--                    <mat-form-field class="fuse-mat-no-subscript w-full">-->
+<!--                        <mat-label>카드사</mat-label>-->
+<!--                        <mat-icon-->
+<!--                            class="icon-size-5"-->
+<!--                            [svgIcon]="'heroicons_solid:location-marker'"-->
+<!--                            matPrefix></mat-icon>-->
+<!--                        <mat-select [formControlName]="'cardCompany'">-->
+<!--                            <mat-option [value]="''">카드사 선택</mat-option>-->
+<!--                            <mat-option [value]="'sihan'">신한</mat-option>-->
+<!--                            <mat-option [value]="'samsung'">삼성</mat-option>-->
+<!--                            <mat-option [value]="'hyundai'">현대</mat-option>-->
+<!--                            <mat-option [value]="'lotte'">롯데</mat-option>-->
+<!--                            <mat-option [value]="'kiup'">기업</mat-option>-->
+<!--                            <mat-option [value]="'hana'">하나</mat-option>-->
+<!--                            <mat-option [value]="'sc'">SC제일-->
+<!--                            </mat-option>-->
+<!--                            <mat-option [value]="'woori'">우리</mat-option>-->
+<!--                            <mat-option [value]="'kookmin'">국민</mat-option>-->
+<!--                            <mat-option [value]="'nonghyub'">농협</mat-option>-->
+<!--                            <mat-option [value]="'kakao'">카카오</mat-option>-->
+<!--                        </mat-select>-->
+<!--                    </mat-form-field>-->
+                </div>
+                <!-- ZIP -->
+                <div class="col-span-4 sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>비밀번호(앞 두자리)</mat-label>
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:eye'"
+                            matPrefix></mat-icon>
+                        <input
+                            [formControlName]="'cardPassword'"
+                            matInput
+                            type="password"
+                            maxlength="2"
+                        >
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+
+            <!-- Divider -->
+            <!--        <div class="mt-11 mb-10 border-t"></div>-->
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end mt-6">
+                <!--            <button-->
+                <!--                mat-stroked-button-->
+                <!--                type="button"-->
+                <!--                (click)="billEnterFee()">-->
+                <!--                가입비 결제-->
+                <!--            </button>-->
+                <button
+                    class="ml-4"
+                    mat-flat-button
+                    type="button"
+                    [color]="'primary'"
+                    (click)="saveBillingInfo()">정기 서비스 신청
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="mt-6 mb-5 border-t" style="border-style: dotted"></div>
+
+            <div
+                class="overflow-x-auto sm:overflow-y-auto">
+                <p class="font-bold text-17s">
+                    정기 서비스 안내
+                </p>
+                <br>
+                <ul class="ml-3">
+                    <li>* 가입일로부터 무료 기간이 지나면 서비스 신청 금액(부가세 별도)으로 다음 결제일(매월 1일)에 자동 결제가 진행됩니다.</li>
+                    <li class="ml-2">자동 결제가 진행됩니다.</li>
+                    <li>* 가입 후 정기 서비스 신청을 통한 결제 유예 기간은 가입일로부터 7일이며, 7일 내에 결제</li>
+                    <li class="ml-2">정보를 업데이트 해주시면 서비스 사용이 재진행 됩니다.</li>
+                    <li>* 선택한 서비스의 기본 제공량이 초과되면 추가 사용료가 부과됩니다. </li>
+                    <li class="ml-3 text-10s">(품목 판매건수 80원/건, 공급내역보고 150원/건, 전자세금계산서 100원/건, 플랫폼 사용자 10,000원/인)</li>
+                    <li>* 연 결제를 하시면 월 사용료가 15% 할인된 금액으로 서비스를 이용할 수 있습니다.</li>
+                    <li>* 결제 수단 변경 및 정기 서비스 해지, 환불 등의 문의는 대표번호(031-377-1327)를</li>
+                    <li class="ml-2">이용해 주세요.</li>
+                    <li>* 정기 서비스 해지 후 사용 만료일이 끝난 시점에 재가입이 가능합니다.</li>
+                </ul>
+            </div>
+        </ng-container>
+
     </form>
 
 </div>
