@@ -93,7 +93,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _accountService: AccountService,
-                private readonly breakpointObserver: BreakpointObserver) {
+                private readonly breakpointObserver: BreakpointObserver)
+    {
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -282,7 +283,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             if (clickData.cellType === 'header') {
                 const rtn = this._accountService.getAccount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
-            };
+            }
+            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -374,7 +376,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectAccount(): void {
-        const rtn =this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
+        const rtn = this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
@@ -499,6 +501,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
     }
+
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
@@ -511,7 +514,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.account.length < 1){
+            if (ex.account.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });

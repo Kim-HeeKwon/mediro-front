@@ -26,233 +26,292 @@ import ApexCharts from 'apexcharts';
 import {
     Chart,
 } from 'chart.js';
+import {style} from "@angular/animations";
+
 @Component({
-  selector: 'app-dashboards',
-  templateUrl: './dashboards.component.html',
-  styleUrls: ['./dashboards.component.scss']
+    selector: 'app-dashboards',
+    templateUrl: './dashboards.component.html',
+    styleUrls: ['./dashboards.component.scss']
 })
-export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
+export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-  userName: string;
-  ibInfo$: Observable<DashboardInfo1>;
-  obInfo$: Observable<DashboardInfo1>;
-  qtInfo$: Observable<DashboardInfo1>;
-  poInfo$: Observable<DashboardInfo1>;
-  soInfo$: Observable<DashboardInfo1>;
-  udiInfo$: Observable<any>;
-  bill$: Observable<any>;
-  billInfo$: Observable<any>;
-  stockInfo$: Observable<any>;
-  stockInfos: any;
-  udiInfos: any;
-  billInfos: any;
-  udiLastDay: any;
-  ibInfo: IbInfo = {nCnt:0,cCnt:0,pCnt:0,sCnt:0,pcCnt:0,scCnt:0};
-  obInfo: ObInfo = {nCnt:0, cCnt:0, pCnt:0, sCnt:0, pcCnt:0, scCnt:0};
-  qtInfo: QtInfo = {nCnt:0, cCnt:0, sCnt:0, rsCnt:0, cfaCnt:0, cfCnt:0};
-  poInfo: PoInfo = {nCnt:0, cCnt:0, sCnt:0, pCnt:0, cfaCnt:0, cfCnt:0};
-  soInfo: SoInfo = {sCnt:0, cCnt:0, nCnt:0};
-  billInfo: BillInfo = {totalCnt:0};
-  recallItems$: Observable<RecallItem[]>;
-  pagination: DashboardsPagination = { length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0 };
-  isLoading: boolean = false;
-  isMobile: boolean = false;
-  ibInfonCnt: any;
-  ibInfopCnt: any;
-  ibInfopsCnt: any;
-  obInfonCnt: any;
-  obInfopCnt: any;
-  obInfopsCnt: any;
-  buy: any;
-  sal: any;
-  chartUdiInfo: ApexOptions = {};
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatSort) private _sort: MatSort;
+    userName: string;
+    ibInfo$: Observable<DashboardInfo1>;
+    obInfo$: Observable<DashboardInfo1>;
+    qtInfo$: Observable<DashboardInfo1>;
+    poInfo$: Observable<DashboardInfo1>;
+    soInfo$: Observable<DashboardInfo1>;
+    udiInfo$: Observable<any>;
+    bill$: Observable<any>;
+    billInfo$: Observable<any>;
+    stockInfo$: Observable<any>;
+    stockInfos: any;
+    udiInfos: any;
+    billInfos: any;
+    udiLastDay: any;
+    ibInfo: IbInfo = {nCnt: 0, cCnt: 0, pCnt: 0, sCnt: 0, pcCnt: 0, scCnt: 0};
+    obInfo: ObInfo = {nCnt: 0, cCnt: 0, pCnt: 0, sCnt: 0, pcCnt: 0, scCnt: 0};
+    qtInfo: QtInfo = {nCnt: 0, cCnt: 0, sCnt: 0, rsCnt: 0, cfaCnt: 0, cfCnt: 0};
+    poInfo: PoInfo = {nCnt: 0, cCnt: 0, sCnt: 0, pCnt: 0, cfaCnt: 0, cfCnt: 0};
+    soInfo: SoInfo = {sCnt: 0, cCnt: 0, nCnt: 0};
+    billInfo: BillInfo = {totalCnt: 0};
+    recallItems$: Observable<RecallItem[]>;
+    pagination: DashboardsPagination = {length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0};
+    isLoading: boolean = false;
+    isMobile: boolean = false;
+    ibInfonCnt: any;
+    ibInfopCnt: any;
+    ibInfopsCnt: any;
+    obInfonCnt: any;
+    obInfopCnt: any;
+    obInfopsCnt: any;
+    buy: any;
+    sal: any;
+    buybool: boolean = true;
+    salbool: boolean = true;
+    chartUdiInfo: ApexOptions = {};
 
-  racallTaleData: any = null;
+    racallTaleData: any = null;
 
-  reacllItemsCount: number = 0;
-  sumPoQty: number = 0;
-  sumAvailQty: number = 0;
-  sumPoAvailQty: number = 0;
-  sumAcceptableQty: number = 0;
-  sumUnusedQty: number = 0;
-  sumAcceptableUnusedQty: number = 0;
-  sumAll: number = 0;
+    reacllItemsCount: number = 0;
+    sumPoQty: number = 0;
+    sumAvailQty: number = 0;
+    sumPoAvailQty: number = 0;
+    sumAcceptableQty: number = 0;
+    sumUnusedQty: number = 0;
+    sumAcceptableUnusedQty: number = 0;
+    sumAll: number = 0;
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(
-      private _dashboardsService: DashboardsService,
-      private _changeDetectorRef: ChangeDetectorRef,
-      private _sessionStore: SessionStore,
-      private _codeStore: CodeStore,
-      private _utilService: FuseUtilsService,
-      private _deviceService: DeviceDetectorService,
-      private _router: Router,
-      private readonly breakpointObserver: BreakpointObserver
-  ) {
-      this.userName = _sessionStore.getValue().name;
-      this.isMobile = this._deviceService.isMobile();
-  }
+    constructor(
+        private _dashboardsService: DashboardsService,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _sessionStore: SessionStore,
+        private _codeStore: CodeStore,
+        private _utilService: FuseUtilsService,
+        private _deviceService: DeviceDetectorService,
+        private _router: Router,
+        private readonly breakpointObserver: BreakpointObserver
+    ) {
+        this.userName = _sessionStore.getValue().name;
+        this.isMobile = this._deviceService.isMobile();
+    }
 
-  ngOnInit(): void {
-      this.ibInfo$ = this._dashboardsService.ibInfo$;
-      this.obInfo$ = this._dashboardsService.obInfo$;
-      this.qtInfo$ = this._dashboardsService.qtInfo$;
-      this.poInfo$ = this._dashboardsService.poInfo$;
-      this.soInfo$ = this._dashboardsService.soInfo$;
-      this.billInfo$ = this._dashboardsService.billInfo$;
-      this.udiInfo$ = this._dashboardsService.udiInfo$;
-      this.stockInfo$ = this._dashboardsService.stockInfo$;
-      this.bill$ = this._dashboardsService.bill$;
+    ngOnInit(): void {
+        this.ibInfo$ = this._dashboardsService.ibInfo$;
+        this.obInfo$ = this._dashboardsService.obInfo$;
+        this.qtInfo$ = this._dashboardsService.qtInfo$;
+        this.poInfo$ = this._dashboardsService.poInfo$;
+        this.soInfo$ = this._dashboardsService.soInfo$;
+        this.billInfo$ = this._dashboardsService.billInfo$;
+        this.udiInfo$ = this._dashboardsService.udiInfo$;
+        this.stockInfo$ = this._dashboardsService.stockInfo$;
+        this.bill$ = this._dashboardsService.bill$;
 
-      //입고
-      this.ibInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'N').map((result: any) => {this.ibInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.ibInfo.cCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'P').map((result: any) => {this.ibInfo.pCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.ibInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'PC').map((result: any) => {this.ibInfo.pcCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'SC').map((result: any) => {this.ibInfo.scCnt= result.totalCnt;});
-          });
+        //입고
+        this.ibInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'N').map((result: any) => {
+                    this.ibInfo.nCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'C').map((result: any) => {
+                    this.ibInfo.cCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'P').map((result: any) => {
+                    this.ibInfo.pCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'S').map((result: any) => {
+                    this.ibInfo.sCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'PC').map((result: any) => {
+                    this.ibInfo.pcCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'SC').map((result: any) => {
+                    this.ibInfo.scCnt = result.totalCnt;
+                });
+            });
 
-      const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + (this.ibInfo.pCnt + this.ibInfo.sCnt);
-      const ibInfonCnt = this.ibInfo.nCnt / ibInfoCnt * 100;
-      const ibInfopCnt = this.ibInfo.pCnt / ibInfoCnt * 100;
-      const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
+        const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + (this.ibInfo.pCnt + this.ibInfo.sCnt);
+        const ibInfonCnt = this.ibInfo.nCnt / ibInfoCnt * 100;
+        const ibInfopCnt = this.ibInfo.pCnt / ibInfoCnt * 100;
+        const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
 
-      this.ibInfonCnt = Math.round(ibInfonCnt);
-      this.ibInfopCnt = Math.round(ibInfopCnt);
-      this.ibInfopsCnt = Math.round(ibInfopsCnt);
+        this.ibInfonCnt = Math.round(ibInfonCnt);
+        this.ibInfopCnt = Math.round(ibInfopCnt);
+        this.ibInfopsCnt = Math.round(ibInfopsCnt);
 
-      //견적
-      this.qtInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'N').map((result: any) => {this.qtInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.qtInfo.cCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.qtInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'RS').map((result: any) => {this.qtInfo.rsCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'CFA').map((result: any) => {this.qtInfo.cfaCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'CF').map((result: any) => {this.qtInfo.cfCnt= result.totalCnt;});
-          });
-      //출고
-      this.obInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'N').map((result: any) => {this.obInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.obInfo.cCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'P').map((result: any) => {this.obInfo.pCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.obInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'PC').map((result: any) => {this.obInfo.pcCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'SC').map((result: any) => {this.obInfo.scCnt= result.totalCnt;});
-          });
+        //견적
+        this.qtInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'N').map((result: any) => {
+                    this.qtInfo.nCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'C').map((result: any) => {
+                    this.qtInfo.cCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'S').map((result: any) => {
+                    this.qtInfo.sCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'RS').map((result: any) => {
+                    this.qtInfo.rsCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'CFA').map((result: any) => {
+                    this.qtInfo.cfaCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'CF').map((result: any) => {
+                    this.qtInfo.cfCnt = result.totalCnt;
+                });
+            });
+        //출고
+        this.obInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'N').map((result: any) => {
+                    this.obInfo.nCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'C').map((result: any) => {
+                    this.obInfo.cCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'P').map((result: any) => {
+                    this.obInfo.pCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'S').map((result: any) => {
+                    this.obInfo.sCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'PC').map((result: any) => {
+                    this.obInfo.pcCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'SC').map((result: any) => {
+                    this.obInfo.scCnt = result.totalCnt;
+                });
+            });
 
-      const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + (this.obInfo.pCnt + this.obInfo.sCnt);
-      const obInfonCnt = this.obInfo.nCnt / obInfoCnt * 100;
-      const obInfopCnt = this.obInfo.pCnt / obInfoCnt * 100;
-      const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
+        const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + (this.obInfo.pCnt + this.obInfo.sCnt);
+        const obInfonCnt = this.obInfo.nCnt / obInfoCnt * 100;
+        const obInfopCnt = this.obInfo.pCnt / obInfoCnt * 100;
+        const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
 
-      this.obInfonCnt = Math.round(obInfonCnt);
-      this.obInfopCnt = Math.round(obInfopCnt);
-      this.obInfopsCnt = Math.round(obInfopsCnt);
+        this.obInfonCnt = Math.round(obInfonCnt);
+        this.obInfopCnt = Math.round(obInfopCnt);
+        this.obInfopsCnt = Math.round(obInfopsCnt);
 
-      //발주
-      this.poInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'N').map((result: any) => {this.poInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.poInfo.cCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.poInfo.sCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'P').map((result: any) => {this.poInfo.pCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'CFA').map((result: any) => {this.poInfo.cfaCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'CF').map((result: any) => {this.poInfo.cfCnt= result.totalCnt;});
-          });
-      //주문
-      this.soInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'N').map((result: any) => {this.soInfo.nCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'C').map((result: any) => {this.soInfo.cCnt= result.totalCnt;});
-              data.filter(option => option.subCd === 'S').map((result: any) => {this.soInfo.sCnt= result.totalCnt;});
-          });
-      //정산
-      this.billInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              data.filter(option => option.subCd === 'TOTAL').map((result: any) => {this.billInfo.totalCnt= result.totalCnt;});
-          });
+        //발주
+        this.poInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'N').map((result: any) => {
+                    this.poInfo.nCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'C').map((result: any) => {
+                    this.poInfo.cCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'S').map((result: any) => {
+                    this.poInfo.sCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'P').map((result: any) => {
+                    this.poInfo.pCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'CFA').map((result: any) => {
+                    this.poInfo.cfaCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'CF').map((result: any) => {
+                    this.poInfo.cfCnt = result.totalCnt;
+                });
+            });
+        //주문
+        this.soInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'N').map((result: any) => {
+                    this.soInfo.nCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'C').map((result: any) => {
+                    this.soInfo.cCnt = result.totalCnt;
+                });
+                data.filter(option => option.subCd === 'S').map((result: any) => {
+                    this.soInfo.sCnt = result.totalCnt;
+                });
+            });
+        //정산
+        this.billInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                data.filter(option => option.subCd === 'TOTAL').map((result: any) => {
+                    this.billInfo.totalCnt = result.totalCnt;
+                });
+            });
 
-      // getItems
-      this.recallItems$ = this._dashboardsService.reallItems$;
+        // getItems
+        this.recallItems$ = this._dashboardsService.reallItems$;
 
-      this._dashboardsService.reallItems$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((items: any) => {
-              // Update the counts
-              if(items === null || items === 'null'){
-                  this.racallTaleData = null;
-                  this.reacllItemsCount = 0;
-              }else{
-                  this.racallTaleData = items;
-                  this.reacllItemsCount = items.rows.length;
-              }
+        this._dashboardsService.reallItems$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((items: any) => {
+                // Update the counts
+                if (items === null || items === 'null') {
+                    this.racallTaleData = null;
+                    this.reacllItemsCount = 0;
+                } else {
+                    this.racallTaleData = items;
+                    this.reacllItemsCount = items.rows.length;
+                }
 
-              // Mark for check
-              this._changeDetectorRef.markForCheck();
-          });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
-      // Get the pagination
-      this._dashboardsService.pagenation$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((pagination: DashboardsPagination) => {
-              // Update the pagination
-              //this.pagination = pagination;
-              if(pagination !== null){
-                  this.pagination = pagination;
-              }
-              // Mark for check
-              this._changeDetectorRef.markForCheck();
-          });
+        // Get the pagination
+        this._dashboardsService.pagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagination: DashboardsPagination) => {
+                // Update the pagination
+                //this.pagination = pagination;
+                if (pagination !== null) {
+                    this.pagination = pagination;
+                }
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
-      this._dashboardsService.getRecallItem();
+        this._dashboardsService.getRecallItem();
 
-      this.qtChart();
-      this.poChart();
-      this.soChart();
+        this.qtChart();
+        this.poChart();
+        this.soChart();
 
-      //정산정보
-      this.bill$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              this.billInfos = data;
-              this.billChart(this.billInfos);
-              console.log(data[data.length - 2].totalAmt);
-          });
-      this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
-      this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
-      //udi정보
-      this.udiInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
+        //정산정보
+        this.bill$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                this.billInfos = data;
+                this.billChart(this.billInfos);
+            });
+        this.buy = this.billInfos[this.billInfos.length - 2].totalAmt + '원';
+        this.sal = this.billInfos[this.billInfos.length - 1].totalAmt + '원';
+        //udi정보
+        this.udiInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
                 this.udiInfos = data;
                 this.udiChart(data);
                 //this._prepareChartData();
-      });
-      //재고정보
-      this.stockInfo$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((data: any) => {
-              this.stockInfos = data;
-              this.stockChart(data);
-              //this._prepareChartData();
-          });
+            });
+        //재고정보
+        this.stockInfo$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any) => {
+                this.stockInfos = data;
+                this.stockChart(data);
+                //this._prepareChartData();
+            });
 
-      this._changeDetectorRef.markForCheck();
-  }
+        this._changeDetectorRef.markForCheck();
+    }
 
     /**
      * Prepare the chart data from the data
@@ -364,8 +423,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    movePage(): void
-    {
+    movePage(): void {
         this._router.navigate(['/pages/settings']);
     }
 
@@ -382,11 +440,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             this._router.navigate(['/salesorder/salesorder', {status: obj.status}]);
         } else if (obj.gbn === 'IB') {
             this._router.navigate(['/bound/inbound', {status: obj.status}]);
-        }else if(obj.gbn === 'OB'){
+        } else if (obj.gbn === 'OB') {
             this._router.navigate(['/bound/outbound', {status: obj.status}]);
-        }else if(obj.gbn === 'BILL'){
+        } else if (obj.gbn === 'BILL') {
             this._router.navigate(['/calculate/bill', {status: obj.status}]);
-        }else if(obj.gbn === 'TAX'){
+        } else if (obj.gbn === 'TAX') {
             this._router.navigate(['/calculate/tax', {status: obj.status}]);
         }
 
@@ -411,16 +469,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             '미확정 : ' + this.qtInfo.cfaCnt,
             '견적확정 : ' + this.qtInfo.cfCnt];
 
-        const doughnutChartData =  {
+        const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ this.qtInfo.nCnt, this.qtInfo.sCnt, this.qtInfo.rsCnt ,this.qtInfo.cfaCnt , this.qtInfo.cfCnt ],
-                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    borderWidth : 1,
+                {
+                    data: [this.qtInfo.nCnt, this.qtInfo.sCnt, this.qtInfo.rsCnt, this.qtInfo.cfaCnt, this.qtInfo.cfCnt],
+                    backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverOffset: 0,}
+                    hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverOffset: 0,
+                }
             ],
         };
         const doughnutChartOption = {
@@ -430,8 +490,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 12},
-                        textAlign : 'right'
+                        font: {weight: 'bold', size: 12},
+                        textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
                     position: 'right'
@@ -444,7 +504,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
 
                 ctx.fillStyle = '#3983DC';
@@ -452,7 +512,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + qt.cfCnt , width / 2, top + (height / 1.85));
+                ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
             }
         };
 
@@ -474,16 +534,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             '미확정 : ' + this.poInfo.cfaCnt,
             '발주확정 : ' + this.poInfo.cfCnt];
 
-        const doughnutChartData =  {
+        const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ this.poInfo.nCnt, this.poInfo.sCnt , this.poInfo.cfaCnt , this.poInfo.cfCnt ],
-                    backgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverBackgroundColor : ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    borderWidth : 1,
+                {
+                    data: [this.poInfo.nCnt, this.poInfo.sCnt, this.poInfo.cfaCnt, this.poInfo.cfCnt],
+                    backgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverBackgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#206491' , '#FBB45C' , '#F36480' , '#BDBDBD'],
-                    hoverOffset: 0,}
+                    hoverBorderColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverOffset: 0,
+                }
             ],
         };
         const doughnutChartOption = {
@@ -493,8 +555,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 12},
-                        textAlign : 'right'
+                        font: {weight: 'bold', size: 12},
+                        textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
                     position: 'right'
@@ -507,7 +569,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
 
                 ctx.fillStyle = '#3983DC';
@@ -515,7 +577,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + po.cfCnt , width / 2, top + (height / 1.85));
+                ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.85));
             }
         };
 
@@ -535,16 +597,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             '주문취소 : ' + this.soInfo.cCnt,
             '등록완료 : ' + this.soInfo.sCnt,];
 
-        const doughnutChartData =  {
+        const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [ this.soInfo.nCnt, this.soInfo.cCnt, this.soInfo.sCnt],
-                    backgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
-                    hoverBackgroundColor : ['#45AAB4' , '#FBB45C' , '#F36480'],
-                    borderWidth : 1,
+                {
+                    data: [this.soInfo.nCnt, this.soInfo.cCnt, this.soInfo.sCnt],
+                    backgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
+                    hoverBackgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
+                    borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#45AAB4' , '#FBB45C' , '#F36480'],
-                    hoverOffset: 0,}
+                    hoverBorderColor: ['#45AAB4', '#FBB45C', '#F36480'],
+                    hoverOffset: 0,
+                }
             ],
         };
         const doughnutChartOption = {
@@ -554,8 +618,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 12},
-                        textAlign : 'right'
+                        font: {weight: 'bold', size: 12},
+                        textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
                     position: 'right'
@@ -568,7 +632,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
 
                 ctx.fillStyle = '#3983DC';
@@ -593,6 +657,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
     priceToString(price): number {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
+
     billChart(billInfos: any) {
 
         const buyPrice = [];
@@ -620,25 +685,25 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     pointBackgroundColor: '#3983DC',
                     hoverBackgroundColor: '#3983DC',
                     backgroundColor: '#3983DC',
-                    hoverBorderColor : '#3983DC',
-                    pointBorderColor : '#3983DC',
-                    pointHoverBackgroundColor :'#3983DC',
+                    hoverBorderColor: '#3983DC',
+                    pointBorderColor: '#3983DC',
+                    pointHoverBackgroundColor: '#3983DC',
                     pointHoverBorderColor: '#3983DC',
                     borderWidth: 1,
                     pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
-                },{
+                }, {
                     type: 'line',
-                    label: '매출     ' + this.priceToString(billInfos[billInfos.length -1].totalAmt) + ' 원',
+                    label: '매출     ' + this.priceToString(billInfos[billInfos.length - 1].totalAmt) + ' 원',
                     data: salesPrice,
                     fill: false,
                     borderColor: '#45AAB4',
                     pointBackgroundColor: '#45AAB4',
                     hoverBackgroundColor: '#45AAB4',
                     backgroundColor: '#45AAB4',
-                    hoverBorderColor : '#45AAB4',
-                    pointBorderColor : '#45AAB4',
-                    pointHoverBackgroundColor :'#45AAB4',
+                    hoverBorderColor: '#45AAB4',
+                    pointBorderColor: '#45AAB4',
+                    pointHoverBackgroundColor: '#45AAB4',
                     pointHoverBorderColor: '#45AAB4',
                     borderWidth: 1,
                     pointBorderWidth: 0.1,
@@ -674,6 +739,34 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 }
             }
         });
+        document.getElementById('1').addEventListener('click', () => {
+            if(!this.buybool) {
+                mixedChart.hide(0);
+            }else {
+                mixedChart.show(0);
+            }
+        });
+        document.getElementById('2').addEventListener('click', () => {
+            if(!this.salbool) {
+                mixedChart.hide(1);
+            }else {
+                mixedChart.show(1);
+            }
+        });
+    }
+    billbuy(): void {
+        if(this.buybool) {
+            this.buybool = false;
+        }else {
+            this.buybool = true;
+        }
+    }
+    billsal(): void {
+        if(this.salbool) {
+            this.salbool = false;
+        } else {
+            this.salbool = true;
+        }
     }
 
     udiChart(data: any) {
@@ -693,22 +786,22 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 chart.data.datasets.forEach((dataset, i) => {
                     const meta = chart.getDatasetMeta(i);
-                    if(!meta.hidden){
+                    if (!meta.hidden) {
                         meta.data.forEach((element, index) => {
-                           ctx.fillStyle = '#000000';
-                           const fontSize = 15;
-                           const fontStyle = 'normal';
-                           const fontFamily = '';
-                           ctx.font = '15px';
-                           const dataString = dataset.data[index].toString();
-                           ctx.textAlign = 'center';
-                           ctx.textBaseline = 'middle';
-                           const position = element.tooltipPosition();
-                           const padding = 5;
-                           ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                            ctx.fillStyle = '#000000';
+                            const fontSize = 15;
+                            const fontStyle = 'normal';
+                            const fontFamily = '';
+                            ctx.font = '15px';
+                            const dataString = dataset.data[index].toString();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            const position = element.tooltipPosition();
+                            const padding = 5;
+                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
                         });
                     }
                 });
@@ -730,14 +823,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     pointBackgroundColor: '#206491',
                     hoverBackgroundColor: '#206491',
                     backgroundColor: '#206491',
-                    hoverBorderColor : '#206491',
-                    pointBorderColor : '#206491',
-                    pointHoverBackgroundColor :'#206491',
+                    hoverBorderColor: '#206491',
+                    pointBorderColor: '#206491',
+                    pointHoverBackgroundColor: '#206491',
                     pointHoverBorderColor: '#206491',
                     borderWidth: 1,
                     pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
-                },{
+                }, {
                     type: 'bar',
                     label: '당월등록',
                     data: nowCnt,
@@ -746,18 +839,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     pointBackgroundColor: '#45AAB4',
                     hoverBackgroundColor: '#45AAB4',
                     backgroundColor: '#45AAB4',
-                    hoverBorderColor : '#45AAB4',
-                    pointBorderColor : '#45AAB4',
-                    pointHoverBackgroundColor :'#45AAB4',
+                    hoverBorderColor: '#45AAB4',
+                    pointBorderColor: '#45AAB4',
+                    pointHoverBackgroundColor: '#45AAB4',
                     pointHoverBorderColor: '#45AAB4',
                     borderWidth: 1,
                     pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }],
-                labels: ['1등급','2등급','3등급','4등급']
+                labels: ['1등급', '2등급', '3등급', '4등급']
             },
             options: {
-                responsive : false,
+                responsive: false,
                 plugins: {
                     tooltip: true,
                     legend: {
@@ -795,9 +888,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
         const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
 
-        if(diffDays === 0){
+        if (diffDays === 0) {
             this.udiLastDay = 'D-day';
-        }else{
+        } else {
             this.udiLastDay = 'D-' + diffDays;
         }
     }
@@ -812,35 +905,37 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
         let use = 0;
         let unUse = 0;
         data.forEach((item) => {
-           use += item.poQty;
-           use += item.availQty;
-           unUse += item.acceptableQty;
-           unUse += item.unusedQty;
-           this.sumPoQty += item.poQty;
-           this.sumAvailQty += item.availQty;
-           this.sumPoAvailQty += item.poQty;
-           this.sumPoAvailQty += item.availQty;
-           this.sumAcceptableQty += item.acceptableQty;
-           this.sumUnusedQty += item.unusedQty;
-           this.sumAcceptableUnusedQty += item.acceptableQty;
-           this.sumAcceptableUnusedQty += item.unusedQty;
-           this.sumAll += item.poQty;
-           this.sumAll += item.availQty;
-           this.sumAll += item.acceptableQty;
-           this.sumAll += item.unusedQty;
+            use += item.poQty;
+            use += item.availQty;
+            unUse += item.acceptableQty;
+            unUse += item.unusedQty;
+            this.sumPoQty += item.poQty;
+            this.sumAvailQty += item.availQty;
+            this.sumPoAvailQty += item.poQty;
+            this.sumPoAvailQty += item.availQty;
+            this.sumAcceptableQty += item.acceptableQty;
+            this.sumUnusedQty += item.unusedQty;
+            this.sumAcceptableUnusedQty += item.acceptableQty;
+            this.sumAcceptableUnusedQty += item.unusedQty;
+            this.sumAll += item.poQty;
+            this.sumAll += item.availQty;
+            this.sumAll += item.acceptableQty;
+            this.sumAll += item.unusedQty;
         });
         const totalAvailQty = data[0].availQty + data[1].availQty + data[2].availQty + data[3].availQty;
 
-        const doughnutChartData =  {
+        const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
-                { data: [data[0].availQty, data[1].availQty, data[2].availQty, data[3].availQty ],
-                    backgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480' ],
-                    hoverBackgroundColor : ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
-                    borderWidth : 1,
+                {
+                    data: [data[0].availQty, data[1].availQty, data[2].availQty, data[3].availQty],
+                    backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
+                    hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
+                    borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#45AAB4' , '#206491' , '#FBB45C' , '#F36480'],
-                    hoverOffset: 0,}
+                    hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
+                    hoverOffset: 0,
+                }
             ],
         };
         const doughnutChartOption = {
@@ -850,8 +945,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight : 'bold', size: 12},
-                        textAlign : 'right'
+                        font: {weight: 'bold', size: 12},
+                        textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
                     position: 'right'
@@ -863,7 +958,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
 
                 ctx.fillStyle = '#3983DC';
@@ -871,7 +966,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
 
                 ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + totalAvailQty , width / 2.0, top + (height / 1.85));
+                ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.85));
             }
         };
 
@@ -890,10 +985,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
             beforeDraws(chart: Chart, args: { cancelable: true }): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx , chartArea: {top, right, bottom, left, width, height}} = chart;
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 chart.data.datasets.forEach((dataset, i) => {
                     const meta = chart.getDatasetMeta(i);
-                    if(!meta.hidden){
+                    if (!meta.hidden) {
                         meta.data.forEach((element, index) => {
                             ctx.fillStyle = '#000000';
                             const fontSize = 15;
@@ -920,16 +1015,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 datasets: [{
                     type: 'bar',
                     axis: 'y',
-                    data: [use , unUse],
+                    data: [use, unUse],
                     fill: false,
-                    borderColor: ['#3983DC','#BDBDBD'],
-                    pointBackgroundColor: ['#3983DC','#BDBDBD'],
-                    hoverBackgroundColor: ['#3983DC','#BDBDBD'],
-                    backgroundColor: ['#3983DC','#BDBDBD'],
-                    hoverBorderColor : ['#3983DC','#BDBDBD'],
-                    pointBorderColor : ['#3983DC','#BDBDBD'],
-                    pointHoverBackgroundColor :['#3983DC','#BDBDBD'],
-                    pointHoverBorderColor: ['#3983DC' ,'#BDBDBD'],
+                    borderColor: ['#3983DC', '#BDBDBD'],
+                    pointBackgroundColor: ['#3983DC', '#BDBDBD'],
+                    hoverBackgroundColor: ['#3983DC', '#BDBDBD'],
+                    backgroundColor: ['#3983DC', '#BDBDBD'],
+                    hoverBorderColor: ['#3983DC', '#BDBDBD'],
+                    pointBorderColor: ['#3983DC', '#BDBDBD'],
+                    pointHoverBackgroundColor: ['#3983DC', '#BDBDBD'],
+                    pointHoverBorderColor: ['#3983DC', '#BDBDBD'],
                     borderWidth: 1,
                     pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
@@ -941,14 +1036,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                 plugins: {
                     legend: {
                         display: false,
-                        position: 'bottom',
+                        position: 'left',
                         boxWidth: 0,
                         boxHeight: 0,
-                        align: 'center',
+                        align: 'start',
                     }
                 },
                 scales: {
                     x: {
+                        display: false,
                         ticks: {
                             font: {
                                 size: 8,
@@ -956,10 +1052,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit,OnDestroy {
                         }
                     },
                     y: {
-                        display: false,
                         ticks: {
                             font: {
-                                size: 0,
+                                size: 8,
                             }
                         }
                     }

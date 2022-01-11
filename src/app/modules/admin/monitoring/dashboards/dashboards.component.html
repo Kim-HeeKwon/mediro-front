@@ -91,7 +91,7 @@
                     <!--                        </div>-->
                     <!--                    </div>-->
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 margin_auto">
+                        <div class="flex-auto grid grid-cols-4 gap-2 margin_auto" style="margin-top: 38px">
                             <!-- 작성 -->
                             <div
                                 class="col-span-2 shadow flex flex-col items-center justify-center rounded-1xll chart_btn border-green"
@@ -154,7 +154,7 @@
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-blue-600 dark:text-blue-600">신규</div>-->
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2">
+                        <div class="flex-auto grid grid-cols-4 gap-2" style="margin-top: 38px">
                             <!-- 작성 -->
                             <div
                                 class="col-span-4 shadow flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-green"
@@ -245,7 +245,7 @@
                         </canvas>
                     </div>
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2">
+                        <div class="flex-auto grid grid-cols-4 gap-2" style="margin-top: 38px">
                             <!-- 주문등록 -->
                             <div
                                 class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-green"
@@ -590,9 +590,23 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mt-6 h-full">
-                    <div class="flex-auto grid grid-cols-8 gap-2 margin_auto">
-                        <div class="col-span-5 flex flex-col items-center justify-center rounded-1xll price_btn border-navy">매입</div>
-                        <div class="col-span-1 flex flex-col items-center justify-center rounded-1xll price_btn border-navy">매출</div>
+                    <div class="flex-auto grid grid-cols-3 gap-2 w-full">
+                        <div class="col-span-1 flex flex-col items-center justify-center rounded-1xll price_btn"
+                        id="1" (click)="billbuy()" [ngClass]="{'price_true_color': !buybool,
+                                    'price_false_color': buybool}">매입
+                        </div>
+                        <div class="col-span-1"></div>
+                        <div class="col-span-1 flex flex-col items-center justify-center rounded-1xll price_btn"
+                        id="2" (click)="billsal()" [ngClass]="{'price_true_color': !salbool,
+                                    'price_false_color': salbool}">매출
+                        </div>
+                    </div>
+                    <div class="flex-auto grid grid-cols-3 gap-2 w-full">
+                        <div class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">{{this.buy}}
+                        </div>
+                        <div class="col-span-1"></div>
+                        <div class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">{{this.sal}}
+                        </div>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">-->
                     <!--                        <div>{{soInfo.nCnt}}</div>-->

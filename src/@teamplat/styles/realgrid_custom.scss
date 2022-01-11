@@ -350,10 +350,26 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
         border-radius: 16px !important;
     }
     .price_btn {
-        width: 40px;
+        border: 1px solid #cbd5e1;
+        width: 50px;
         height: 20px;
-        border-radius: 16px !important;
+        border-radius: 3px !important;
+        font-size: 7px !important;
+        font-weight: bolder;
+        background: #ffffff;
     }
+    .price_btn:hover {
+        background: #3982db;
+        color: white;
+    }
+}
+.price_true_color {
+    background: #3982db;
+    color: white;
+}
+.price_false_color {
+    background: #ffffff;
+    color: black;
 }
 
 .mat-option-text{
