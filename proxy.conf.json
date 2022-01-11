@@ -4,3 +4,10 @@
         "secure":false
     }
 }
+
+//{
+//    "/":{
+//        "target":"http://localhost:8096/teamPlatFw",
+//        "secure":false
+//    }
+//}

@@ -13,8 +13,9 @@ export const environment = {
     serverUrl: '',
     //serverTaxUrl: '',
     serverTaxUrl: 'http://localhost:8097/teamPlatBill/',
-    paymentHookUrl: 'https://www.teammediro.com/teamPlatFw/v1/api/payment',
-    tossClientKey: 'test_ck_jZ61JOxRQVExR2ne2v23W0X9bAqw',
+    //paymentHookUrl: 'https://www.teammediro.com/teamPlatFw/v1/api/payment',
+    paymentHookUrl: 'https://localhost:8096/teamPlatFw/v1/api/payment',
+    tossClientKey: 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL',
     test: true
 };
 
