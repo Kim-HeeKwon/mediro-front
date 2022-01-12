@@ -11,7 +11,7 @@ export const environment = {
     //serverUrl: 'https://www.teammediro.com/teamPlatFw/',
     //serverTaxUrl: 'https://www.teammediro.com/teamPlatBill/',
     paymentHookUrl: 'https://www.teammediro.com/teamPlatFw/v1/api/payment',
-    tossClientKey: 'live_ck_Z0RnYX2w5320nO7eWWerNeyqApQE',
+    tossClientKey: 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL',
     test: false,
     version: '1.0.1',
 };
