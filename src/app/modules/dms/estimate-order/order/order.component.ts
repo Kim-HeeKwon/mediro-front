@@ -48,6 +48,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'poNo', dataType: ValueType.TEXT},
         {fieldName: 'poCreDate', dataType: ValueType.TEXT},
         {fieldName: 'poDate', dataType: ValueType.TEXT},
+        {fieldName: 'ibNo', dataType: ValueType.TEXT},
         {fieldName: 'type', dataType: ValueType.TEXT},
         {fieldName: 'status', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
@@ -152,6 +153,13 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'poDate', fieldName: 'poDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '발주 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
+                }
+            },
+            {
+                name: 'ibNo', fieldName: 'ibNo', type: 'data', width: '150', styleName: 'center-cell-text'
+                , header: {text: '입고번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true,
+                    type: 'button'
                 }
             },
             {

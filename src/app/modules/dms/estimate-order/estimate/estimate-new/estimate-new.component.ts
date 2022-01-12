@@ -117,7 +117,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
             deliveryDate: [{value: ''}], //납기일자
-            effectiveDate: [{value: ''}], //견적가 적용일자
+            effectiveDate: [{value: ''}, [Validators.required]], //견적가 적용일자
             email: [], //이메일
             remarkHeader: [''], //비고
             active: [false]  // cell상태
@@ -152,7 +152,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -195,14 +195,14 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '수량', styleName: 'center-cell-text'}
+                , header: {text: '수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -216,7 +216,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

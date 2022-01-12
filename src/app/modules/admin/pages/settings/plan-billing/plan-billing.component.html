@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full max-w-3xl">
 <!--    <div class="w-full max-w-3xl">-->
 
     <!-- Form -->
@@ -11,39 +11,41 @@
                 <fuse-alert
                     [appearance]="'outline'"
                     [type]="'basic'">
-                    <span>기본 사용료 월 48,000원</span>
+                    <span>가입비</span><span class="text-line-through"> 30만원</span><span> 15만원 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
                 </fuse-alert>
             </div>
             <div class="sm:col-span-1">
                 <fuse-alert
                     [appearance]="'outline'"
                     [type]="'basic'">
-                    <span>가입비</span><span class="text-line-through"> 30만원</span><span> 15만원</span>
+                    <span>기본 사용료 월 48,000원</span>
                 </fuse-alert>
             </div>
+
         </div>
 
         <div class="grid sm:grid-cols-3 gap-6 w-full mt-8">
             <!-- Plan -->
-            <div class="sm:col-span-3">
-                <fuse-alert
-                    [appearance]="'outline'"
-                    [type]="'basic'">
-                    <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50% 할인</i> 적용, <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
-                </fuse-alert>
-            </div>
+<!--            <div class="sm:col-span-3">-->
+<!--                <fuse-alert-->
+<!--                    [appearance]="'outline'"-->
+<!--                    [type]="'basic'">-->
+<!--                    <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50% 할인</i> 적용, <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>-->
+<!--                </fuse-alert>-->
+<!--            </div>-->
             <div class="sm:col-span-3">
                 <div class="flex flex-col items-center">
                     <!-- Recurring selector -->
                     <div class="flex items-center p-0.5 overflow-hidden">
-                        <span class="text-17s text-bold-600"
+                        <span class="text-25s text-bold-600"
                             [ngClass]="{'opacity-50' : yearlyBilling}">월 결제</span>
                         <mat-slide-toggle class="ml-2 mr-2"
                             (click)="yearlyBillingBind()"
                             [color]="'primary'">
                         </mat-slide-toggle>
-                        <span class="text-17s text-bold-600"
+                        <span class="text-25s text-bold-600"
                               [ngClass]="{'opacity-50' : !yearlyBilling}">연 결제</span>
+                        <span class="text-17s text-bold-600 ml-2 p-1" style="background-color: #D0E0FF; color: #276EED; border-radius: 4px;"> ~ 17% 할인 </span>
 <!--                        <button-->
 <!--                            class="px-6"-->
 <!--                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,-->
@@ -85,13 +87,19 @@
                             [style]="plan.color"
                             [svgIcon]="'heroicons_solid:check-circle'"></mat-icon>
                     </ng-container>
-                    <div class="font-medium">{{plan.label}}</div>
-                    <div class="mt-1 whitespace-normal text-secondary">{{plan.details}}</div>
+                    <div class="font-medium text-20s text-bold-600">{{plan.title}}</div>
+                    <div class="flex flex-col mt-2 w-full">
+                        <!--                        <div class="font-semibold">서비스 세부내용</div>-->
+                        <div class="mt-4 mb-4 border-t"></div>
+                    </div>
+                    <div class="font-medium text-12s">{{plan.label}}</div>
+                    <div class="mt-1 whitespace-normal text-secondary text-12s">{{plan.details}}</div>
                     <div class="flex-auto"></div>
-                    <div class="mt-8 text-lg"
-                         style="margin: auto;">
+                    <div class="mt-4 text-lg"
+                         style="margin: auto; text-align: center;">
                         <ng-container *ngIf="yearlyBilling">
                             <button
+                                class="mb-2"
                                 *ngIf="plan.price == '00'"
                                 mat-stroked-button
                                 [color]="'accent'"
@@ -101,11 +109,17 @@
                             </button>
 <!--                            <span *ngIf="plan.price == '00'">-->
 <!--                            별도협의</span>-->
-                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.yearPrice | currency:'KRW':'symbol':'1.0'}}</span>
-                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 년</span>
+                            <span *ngIf="plan.price != '00'" class="mr-2 text-17s red-font-color text-bold-600">{{plan.sale}}</span>
+                            <span *ngIf="plan.price != '00'" class="text-20s text-secondary text-line-through">{{plan.price | number}}원</span>
+                            <br>
+                            <span *ngIf="plan.price != '00'" class="text-35s text-bold-600">{{plan.salePrice | number}}원</span>
+                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 월</span>
+<!--                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.yearPrice | currency:'KRW':'symbol':'1.0'}}</span>-->
+<!--                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 년</span>-->
                         </ng-container>
                         <ng-container *ngIf="!yearlyBilling">
                             <button
+                                class="mb-2"
                                 *ngIf="plan.price == '00'"
                                 mat-stroked-button
                                 [color]="'accent'"
@@ -115,7 +129,7 @@
                             </button>
 <!--                            <span *ngIf="plan.price == '00'">-->
 <!--                            별도협의</span>-->
-                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.price | currency:'KRW':'symbol':'1.0'}}</span>
+                            <span *ngIf="plan.price != '00'" class="text-35s text-bold-600">{{plan.price |number}}원</span>
                             <span *ngIf="plan.price != '00'" class="text-secondary"> / 월</span>
                         </ng-container>
                     </div>
@@ -129,23 +143,23 @@
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">품목판매건수 <b>700건/월</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">품목판매건수 <b>1,500건/월</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">품목판매건수 <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">품목판매건수 <b style="color:#276EED">무제한</b></div>
                             </div>
                             <div class="flex">
 <!--                                <mat-icon-->
 <!--                                    class="icon-size-5 text-green-600"-->
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">공급내역보고 <b>100건/월</b></div>
-                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">공급내역보고 <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">공급내역보고 <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">공급내역보고 <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">공급내역보고 <b style="color:#276EED">무제한</b></div>
                             </div>
                             <div class="flex">
 <!--                                <mat-icon-->
 <!--                                    class="icon-size-5 text-green-600"-->
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">전자세금계산서 <b>50건/월</b></div>
-                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">전자세금계산서 <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">전자세금계산서 <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">전자세금계산서 <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">전자세금계산서 <b style="color:#276EED">무제한</b></div>
                             </div>
                             <div class="flex">
 <!--                                <mat-icon-->
@@ -153,23 +167,23 @@
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
                                 <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">플랫폼 사용자 <b>3인</b></div>
                                 <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">플랫폼 사용자 <b>7인</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">플랫폼 사용자 <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">플랫폼 사용자 <b style="color:#276EED">무제한</b></div>
                             </div>
                             <div class="flex">
 <!--                                <mat-icon-->
 <!--                                    class="icon-size-5 text-green-600"-->
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
-                                <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">이메일 자동발송 <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">이메일 자동발송 <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">이메일 자동발송 <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">이메일 자동발송 <b style="color:#276EED">무제한</b></div>
                             </div>
                             <div class="flex">
 <!--                                <mat-icon-->
 <!--                                    class="icon-size-5 text-green-600"-->
 <!--                                    [svgIcon]="'heroicons_solid:check'"></mat-icon>-->
-                                <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
-                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">알림톡(카카오톡) <b>무제한</b></div>
+                                <div *ngIf="plan.value == 'basic'" class="ml-2 leading-5">알림톡(카카오톡) <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'premium'" class="ml-2 leading-5">알림톡(카카오톡) <b style="color:#276EED">무제한</b></div>
+                                <div *ngIf="plan.value == 'customize'" class="ml-2 leading-5">알림톡(카카오톡) <b style="color:#276EED">무제한</b></div>
                             </div>
                         </div>
                     </div>

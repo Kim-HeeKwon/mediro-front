@@ -146,7 +146,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this.salesorderDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -205,14 +205,14 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '요청수량', styleName: 'center-cell-text'}
+                , header: {text: '요청수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '매출단가', styleName: 'center-cell-text'}
+                , header: {text: '매출단가', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -226,7 +226,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

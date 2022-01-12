@@ -165,6 +165,13 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'obNo', fieldName: 'obNo', type: 'data', width: '150', styleName: 'center-cell-text'
+                , header: {text: '출고번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true,
+                    type: 'button'
+                }
+            },
+            {
                 name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
@@ -226,13 +233,6 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
-            },
-            {
-                name: 'obNo', fieldName: 'obNo', type: 'data', width: '150', styleName: 'center-cell-text'
-                , header: {text: '출고번호', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true,
-                    type: 'button'
-                }
             },
             {
                 name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '400', styleName: 'left-cell-text'

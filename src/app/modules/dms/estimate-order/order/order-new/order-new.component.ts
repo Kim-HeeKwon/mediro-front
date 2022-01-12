@@ -148,7 +148,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.orderDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -207,14 +207,14 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'reqQty', fieldName: 'reqQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '발주요청수량', styleName: 'center-cell-text'}
+                , header: {text: '발주요청수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '매입단가', styleName: 'center-cell-text'}
+                , header: {text: '매입단가', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -228,7 +228,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

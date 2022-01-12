@@ -155,7 +155,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.inBoundDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -195,7 +195,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '입고예정수량', styleName: 'center-cell-text'}
+                , header: {text: '입고예정수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -207,7 +207,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             // },
             {
                 name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text'}
+                , header: {text: '단가', styleName: 'center-cell-text blue-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -221,25 +221,25 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '유효기간', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'lot3', fieldName: 'lot3', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '제조사 lot', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '제조사 lot', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'lot4', fieldName: 'lot4', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: 'UDI No.', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: 'UDI No.', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

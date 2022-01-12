@@ -24,6 +24,7 @@ export interface Order
     poAmt: number;              //발주금액
     remarkHeader: string;       //비고
     remarkDetail: string;
+    ibNo?: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;
@@ -57,10 +58,12 @@ export class OrderHeader
     businessCategory?: string;// 종목
     phoneNumber?: string;// 전화번호
     fax?: string;// 팩스번호
+    ibNo: string;               //입고번호
 
-    constructor(email: string = '',remarkHeader: string = ''){
+    constructor(email: string = '',ibNo: string = '', remarkHeader: string = ''){
         this.email = email;
         this.remarkHeader = remarkHeader;
+        this.ibNo = ibNo;
     }
 }
 export interface OrderDetail

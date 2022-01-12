@@ -139,7 +139,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.outBoundDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'}
+                , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'}
                 , renderer: 'itemGrdPopup'
                 , popUpObject:
                     {
@@ -179,7 +179,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '출고대상수량', styleName: 'center-cell-text'}
+                , header: {text: '출고대상수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -191,7 +191,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             // },
             {
                 name: 'remarkDetail', fieldName: 'remarkDetail', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

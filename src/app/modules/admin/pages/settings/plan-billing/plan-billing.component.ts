@@ -71,7 +71,7 @@ export class SettingsPlanBillingComponent implements OnInit
         // Create the form
         this.planBillingForm = this._formBuilder.group({
             mId            : [''],
-            plan           : ['basic',[Validators.required]],
+            plan           : ['premium',[Validators.required]],
             cardHolder     : ['',[Validators.required]],
             cardNumber     : ['',[Validators.required]],
             cardExpiration : ['',[Validators.required]],
@@ -85,7 +85,7 @@ export class SettingsPlanBillingComponent implements OnInit
             yearPay        : ['']
         });
         this.planBillingForm.patchValue({'yearUser': 0 + ''});
-        this.planBillingForm.patchValue({'payGrade': 'basic' + ''});
+        this.planBillingForm.patchValue({'payGrade': 'premium' + ''});
 
         // Get Customer Payment Info
         this.getBillingInfo();
@@ -94,24 +94,31 @@ export class SettingsPlanBillingComponent implements OnInit
         this.plans = [
             {
                 value  : 'basic',
+                title  : 'BASIC',
                 label  : '기본 사용료',
                 details: '유통관리를 고객을 위한 기본 서비스',
+                salePrice : '40000',
+                sale : '-17%',
                 price  : '48000',
-                yearPrice : '480000',
+                yearPrice : '490000',
                 borderStyle : 'border-color: #E0E0E0',
                 color : 'color : #E0E0E0'
             },
             {
                 value  : 'premium',
+                title  : 'PREMIUM',
                 label  : '프리미엄 사용료',
                 details: '유통관리 및 데이터 연동 기반 프리미엄 서비스',
+                sale : '-15%',
+                salePrice : '82500',
                 price  : '98000',
-                yearPrice : '980000',
+                yearPrice : '990000',
                 borderStyle : 'border-color: #FFDE33',
                 color : 'color : #FFDE33'
             },
             {
                 value  : 'customize',
+                title  : 'CUSTOMIZE',
                 label  : '커스텀 사용료',
                 details: '맞춤 고객을 위한 커스텀서비스',
                 price  : '00',
