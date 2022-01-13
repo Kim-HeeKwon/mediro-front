@@ -18,6 +18,7 @@ import {SalesorderService} from './salesorder.service';
 import * as moment from 'moment';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {SalesOrder} from '../../../admin/salesorder/salesorder/salesorder.types';
+import {OutboundService} from "../../bound/outbound/outbound.service";
 
 @Component({
     selector: 'dms-salesorder',
@@ -81,6 +82,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         public _matDialogPopup: MatDialog,
         private _router: Router,
         private _formBuilder: FormBuilder,
+        private _outBoundService: OutboundService,
         private _salesorderService: SalesorderService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _functionService: FunctionService,
@@ -294,6 +296,24 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
                 this.orderBy = 'asc';
             }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellItemClicked = (grid, index, clickData) => {
+
+            console.log(clickData.value);
+            const searchParam = {
+                obNo: clickData.value
+            };
+            const rtn = this._outBoundService.getHeader(0, 1, 'obNo', 'desc', searchParam);
+            rtn.then((ex) => {
+                console.log(ex);
+                if(ex.outBoundHeader.length > 0){
+                    this._router.navigate(['bound/outbound/outbound-detail', ex.outBoundHeader[0]]);
+                }else{
+                    this._functionService.cfn_alert('출고 정보가 존재하지 않습니다.');
+                }
+            });
         };
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

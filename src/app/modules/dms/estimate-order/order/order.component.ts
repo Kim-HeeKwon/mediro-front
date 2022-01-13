@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {Order} from './order.types';
+ import {InboundService} from "../../bound/inbound/inbound.service";
 
 @Component({
     selector: 'dms-order',
@@ -73,6 +74,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _router: Router,
                 private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
+                private _inBoundService: InboundService,
                 private _orderService: OrderService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _codeStore: CodeStore,
@@ -276,6 +278,22 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._router.navigate(['estimate-order/order/order-detail', grid.getValues(clickData.dataRow)]);
                 }
             }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellItemClicked = (grid, index, clickData) => {
+
+            const searchParam = {
+                ibNo: clickData.value
+            };
+            const rtn = this._inBoundService.getHeader(0, 1, 'ibNo', 'desc', searchParam);
+            rtn.then((ex) => {
+               if(ex.inBoundHeader.length > 0){
+                   this._router.navigate(['bound/inbound/inbound-detail', ex.inBoundHeader[0]]);
+               }else{
+                   this._functionService.cfn_alert('출고 정보가 존재하지 않습니다.');
+               }
+            });
         };
 
         //페이지 라벨
