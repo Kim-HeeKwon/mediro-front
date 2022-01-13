@@ -60,6 +60,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'dlvAccountNm', dataType: ValueType.TEXT},
         {fieldName: 'dlvAddress', dataType: ValueType.TEXT},
         {fieldName: 'dlvDate', dataType: ValueType.TEXT},
+        {fieldName: 'obAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkHeader', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -208,6 +209,13 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '납품 일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+            },
+            {
+                name: 'obAmt', fieldName: 'obAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '금액', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
             },
             {
                 name: 'remarkHeader', fieldName: 'remarkHeader', type: 'data', width: '300', styleName: 'left-cell-text'

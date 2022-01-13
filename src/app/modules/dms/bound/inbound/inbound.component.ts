@@ -63,6 +63,7 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'supplierNm', dataType: ValueType.TEXT},
+        {fieldName: 'ibAmt', dataType: ValueType.NUMBER},
         {fieldName: 'poNo', dataType: ValueType.TEXT},
         {fieldName: 'remarkHeader', dataType: ValueType.TEXT},
     ];
@@ -194,6 +195,13 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '공급처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+            },
+            {
+                name: 'ibAmt', fieldName: 'ibAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '금액', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
             },
             {
                 name: 'poNo', fieldName: 'poNo', type: 'data', width: '120', styleName: 'left-cell-text'

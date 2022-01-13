@@ -6,6 +6,7 @@ export interface Order
     poLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     standard: string;
     unit: string;
     itemGrade: string;
@@ -73,6 +74,7 @@ export interface OrderDetail
     poLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     standard: string;
     unit: string;
     itemGrade: string;

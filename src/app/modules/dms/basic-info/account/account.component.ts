@@ -505,6 +505,19 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
+            ex.account.forEach((data) => {
+               if(data.phoneNumber === 0){
+                   data.phoneNumber = '';
+               }else{
+                   data.phoneNumber = '0' + data.phoneNumber;
+               }
+               if(data.fax === 0){
+                   data.fax = '';
+               }else{
+                   data.fax = '0' + data.fax;
+               }
+            });
+
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, ex.account);
             this._accountService.pagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -520,4 +533,32 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    phoneFomatter(num,type?): string{
+
+        let formatNum = '';
+        if(num.length === 11){
+            if(type===0){
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+            }else{
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
+        }else if(num.length===8){
+            formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
+        }else{
+            if(num.indexOf('02') === 0){
+                if(type === 0){
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+                }else{
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+                }
+            }else{
+                if(type === 0){
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+                }else{
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+            }
+        }
+        return formatNum;
+    }
 }

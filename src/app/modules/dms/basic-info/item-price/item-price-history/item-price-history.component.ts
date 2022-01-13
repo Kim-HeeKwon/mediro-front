@@ -88,6 +88,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this.itemPriceHistoryForm = this._formBuilder.group({
             itemCd: [{value: ''}, [Validators.required]], // 품목코드
             itemNm: [{value: ''}, [Validators.required]], // 품목명
+            refItemNm: [''], // 품목명
             account: [{value: ''}, [Validators.required]], // 거래처 코드
             accountNm: [{value: ''}, [Validators.required]], // 거래처 명
             type: [{value: ''}, [Validators.required]],   // 유형
@@ -290,40 +291,45 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         itemPrice['itemCd'] = this.itemPriceHistoryForm.controls['itemCd'].value;
         itemPrice['type'] = this.itemPriceHistoryForm.controls['type'].value;
         itemPrice['unitPrice'] = this.itemPriceHistoryForm.controls['unitPrice'].value;
+        itemPrice['refItemNm'] = this.itemPriceHistoryForm.controls['refItemNm'].value;
         itemPrice['effectiveDate'] = this.itemPriceHistoryForm.controls['effectiveDate'].value;
 
         itemPriceArray.push(itemPrice);
-
-        const confirmation = this._teamPlatConfirmationService.open({
-            title: '',
-            message: '저장하시겠습니까?',
-            actions: {
-                confirm: {
-                    label: '확인'
-                },
-                cancel: {
-                    label: '닫기'
-                }
-            }
-        });
-
-        confirmation.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if (result) {
-                    this._itemPriceService.updateItemPrice(itemPriceArray)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((itemPriceHistory: any) => {
-
-                            this._functionService.cfn_loadingBarClear();
-
-                            this._functionService.cfn_alertCheckMessage(itemPriceHistory);
-                            this.selectItemPrice();
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+        if(!this.itemPriceHistoryForm.invalid){
+            const confirmation = this._teamPlatConfirmationService.open({
+                title: '',
+                message: '저장하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
                 }
             });
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this._itemPriceService.updateItemPrice(itemPriceArray)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((itemPriceHistory: any) => {
+
+                                this._functionService.cfn_loadingBarClear();
+
+                                this._functionService.cfn_alertCheckMessage(itemPriceHistory);
+                                this.selectItemPrice();
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+                    }
+                });
+        }else{
+            this._functionService.cfn_alert('품목, 거래처, 유형, 단가, 적용일자를 입력해주세요.');
+        }
+
 
         // Mark for check
         this._changeDetectorRef.markForCheck();

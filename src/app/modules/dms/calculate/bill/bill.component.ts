@@ -69,6 +69,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'toAccountNm', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -203,6 +204,12 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'refItemNm', fieldName: 'refItemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '고객 품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

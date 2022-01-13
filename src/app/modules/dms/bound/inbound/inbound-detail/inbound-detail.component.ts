@@ -128,6 +128,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             ibCreDate: [{value: '', disabled: true}],//작성일
             ibDate: [{value: '', disabled: true}], //입고일
             remarkHeader: [''], //비고
+            ibAmt: [{value: '', disabled: true}],   // 금액
             poNo: [{value: '', disabled: true}],   // 발주번호
             active: [false]  // cell상태
         });
@@ -159,7 +160,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
-                            'standard:standard|unit:unit|itemGrade:itemGrade'
+                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:buyPrice',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -344,8 +349,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 return {editable: false};
             }
         });
+        // eslint-disable-next-line max-len
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.inBoundHeaderForm);
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+
             if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibExpQty' ||
                 this.inBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
                 const that = this;
@@ -365,11 +373,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                         ibExpQty * unitPrice);
                 },100);
             }
-        });
-        // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+
             if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibQty'){
                 const that = this;
                 setTimeout(() =>{

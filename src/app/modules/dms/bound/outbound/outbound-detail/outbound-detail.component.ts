@@ -70,6 +70,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'obLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -79,6 +80,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'obQty', dataType: ValueType.NUMBER},
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+        {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -128,6 +130,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             obCreDate: [{value: '', disabled: true}],//작성일
             obDate: [{value: '', disabled: true}], //출고일
             remarkHeader: [''], //비고
+            obAmt: [{value: '', disabled: true}],   // 금액
             active: [false]  // cell상태
         });
 
@@ -158,13 +161,23 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
-                            'standard:standard|unit:unit|itemGrade:itemGrade'
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|refItemNm:refItemNm|' +
+                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'refItemNm', fieldName: 'refItemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '고객 품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -207,6 +220,20 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '미출고수량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '단가', styleName: 'center-cell-text blue-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'totalAmt', fieldName: 'totalAmt', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -267,6 +294,27 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+
+            if(this.outBoundDetailDataProvider.getOrgFieldName(field) === 'obExpQty' ||
+                this.outBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
+                const that = this;
+                setTimeout(() =>{
+                    const ibExpQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.outBoundDetailDataProvider,
+                        itemIndex,'obExpQty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.outBoundDetailDataProvider,
+                        itemIndex,'unitPrice');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.outBoundDetailDataProvider,
+                        itemIndex,
+                        'totalAmt',
+                        ibExpQty * unitPrice);
+                },100);
+            }
+
             if(this.outBoundDetailDataProvider.getOrgFieldName(field) === 'obQty'){
                 const that = this;
                 setTimeout(() =>{
@@ -293,9 +341,11 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             if (dataCell.item.rowState === 'created') {
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
+                    dataCell.dataColumn.fieldName === 'totalAmt' ||
                     dataCell.dataColumn.fieldName === 'obQty' ||
                     dataCell.dataColumn.fieldName === 'qty') {
                     return {editable: false};
@@ -306,9 +356,11 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 //console.log(dataCell.dataColumn.renderer);
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
+                    dataCell.dataColumn.fieldName === 'totalAmt' ||
                     dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
@@ -319,12 +371,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
 
             if (
-                dataCell.dataColumn.fieldName === 'qty') {
+                dataCell.dataColumn.fieldName === 'qty' ||
+                dataCell.dataColumn.fieldName === 'refItemNm') {
                 return {editable: false};
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.outBoundDetailDataProvider, this.outBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.outBoundDetailDataProvider, this.outBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.outBoundHeaderForm);
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {

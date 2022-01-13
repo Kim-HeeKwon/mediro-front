@@ -70,6 +70,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'qtLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -158,7 +159,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|standard:standard|unit:unit|itemGrade:itemGrade',
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|refItemNm:refItemNm|' +
+                            'standard:standard|unit:unit|itemGrade:itemGrade|qtPrice:salesPrice',
                         where : [{
                             key: 'account',
                             replace : 'account:=:#{account}'
@@ -168,6 +170,12 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'refItemNm', fieldName: 'refItemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '고객 품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -276,6 +284,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             //console.log(dataCell.item.rowState); // 추가 , 삭제, 수정 변경시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'refItemNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade' ||
@@ -377,7 +386,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (!this.estimateHeaderForm.invalid) {
 
-            const rows = this._realGridsService.gfn_GetRows(this.gridList, this.estimateDetailDataProvider);
+            const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.estimateDetailDataProvider);
 
             let detailCheck = false;
 

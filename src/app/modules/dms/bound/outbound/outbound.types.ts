@@ -13,13 +13,17 @@ export interface OutBound
     dlvDate: string;            //일자
     obCreDate: string;          //출고생성일자
     obDate: string;             //출고일자
+    obAmt?: number;
     remarkHeader: string;       //비고
     obLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     obExpQty: number;
     qty: number;
     obQty: number;
+    unitPrice?: number;
+    totalAmt?: number;
     remarkDetail: string;
     udiYn: string;
     udiCode?: string;
@@ -57,10 +61,13 @@ export interface OutBoundDetail
     obLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     status: string;
     obExpQty: number;
     qty: number;
     obQty: number;
+    unitPrice?: number;
+    totalAmt?: number;
     udiYn: string;
     udiCode?: string;
     suplyContStdmt?: string;

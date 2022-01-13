@@ -418,7 +418,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (!this.orderHeaderForm.invalid) {
-            let rows = this._realGridsService.gfn_GetRows(this.gridList, this.orderDetailDataProvider);
+            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.orderDetailDataProvider);
 
             let detailCheck = false;
 

@@ -1,4 +1,4 @@
-<div class="w-full max-w-3xl" style="margin: auto;">
+<div class="w-full max-w-3xl">
 <!--    <div class="w-full max-w-3xl">-->
 
     <!-- Form -->
@@ -7,20 +7,21 @@
         <!-- Section -->
         <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
             <!-- Plan -->
-            <div class="sm:col-span-1">
+            <div class="sm:col-span-2">
                 <fuse-alert
                     [appearance]="'outline'"
                     [type]="'basic'">
-                    <span>가입비</span><span class="text-line-through"> 30만원</span><span> 15만원 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
+                    <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50%할인</i>(</span><span class="text-line-through">30만원</span><span> → 15만원)적용 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
+<!--                    <span>오픈 이벤트 가입비</span>50% 할인<span class="text-line-through"> 30만원</span><span> 15만원 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>-->
                 </fuse-alert>
             </div>
-            <div class="sm:col-span-1">
-                <fuse-alert
-                    [appearance]="'outline'"
-                    [type]="'basic'">
-                    <span>기본 사용료 월 48,000원</span>
-                </fuse-alert>
-            </div>
+<!--            <div class="sm:col-span-1">-->
+<!--                <fuse-alert-->
+<!--                    [appearance]="'outline'"-->
+<!--                    [type]="'basic'">-->
+<!--                    <span>기본 사용료 월 48,000원</span>-->
+<!--                </fuse-alert>-->
+<!--            </div>-->
 
         </div>
 
@@ -45,7 +46,7 @@
                         </mat-slide-toggle>
                         <span class="text-25s text-bold-600"
                               [ngClass]="{'opacity-50' : !yearlyBilling}">연 결제</span>
-                        <span class="text-17s text-bold-600 ml-2 p-1" style="background-color: #D0E0FF; color: #276EED; border-radius: 4px;"> ~ 17% 할인 </span>
+                        <span class="text-17s text-bold-600 ml-2 p-1" style="background-color: #D0E0FF; color: #276EED; border-radius: 4px;"> ~ 15% 할인 </span>
 <!--                        <button-->
 <!--                            class="px-6"-->
 <!--                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,-->

@@ -6,6 +6,7 @@ export interface Estimate
     qtLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     standard: string;
     unit: string;
     itemGrade: string;
@@ -75,6 +76,7 @@ export interface EstimateDetail
     qtLineNo: number;
     itemCd: string;
     itemNm: string;
+    refItemNm?: string;
     standard: string;
     unit: string;
     qty: number;

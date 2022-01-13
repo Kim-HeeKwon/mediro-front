@@ -161,7 +161,18 @@
                                                        matInput
                                                        [formControlName]="'obDate'">
                                             </mat-form-field>
-                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>금액</mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:currency-dollar'"
+                                                    matPrefix></mat-icon>
+                                                <input class="text-right"
+                                                       type="number"
+                                                       matInput
+                                                       [formControlName]="'obAmt'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
                                                 <mat-label>비고</mat-label>
                                                 <mat-icon
                                                     class="icon-size-5"

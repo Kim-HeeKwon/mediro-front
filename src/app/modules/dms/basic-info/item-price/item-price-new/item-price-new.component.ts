@@ -68,6 +68,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
         this.selectedItemPriceForm = this._formBuilder.group({
             itemCd: ['', [Validators.required]], // 품목코드
             itemNm: [{value:'', disabled:true}], // 품목명
+            refItemNm: [''], // 품목명
             account: ['', [Validators.required]], // 거래처
             accountNm: [{value:'', disabled:true}], // 거래처명
             type: ['', [Validators.required]], // 유형
@@ -215,7 +216,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
-            this._itemPriceService.getHeader(0,20,'itemNm','desc','');
+            this._itemPriceService.getHeader(0,40,'addDate','desc','');
         }
     }
 

@@ -5,6 +5,7 @@ export interface ItemPrice
     account: string;            //거래처
     accountNm: string;          //거래처명
     itemCd: string;             //품목코드
+    refItemNm?: string;
     itemNm: string;             //품목명
     standard: string;           //규격
     unit: string;               //단위

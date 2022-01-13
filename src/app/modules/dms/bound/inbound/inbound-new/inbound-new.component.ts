@@ -138,6 +138,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             ibCreDate: [{value: '', disabled: true}],//작성일
             ibDate: [{value: '', disabled: true}], //입고일
             remarkHeader: [''], //비고
+            ibAmt: [{value: '', disabled: true}],   // 금액
             poNo: [{value: '', disabled: true}],   // 발주번호
             active: [false]  // cell상태
         });
@@ -162,7 +163,11 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
-                            'standard:standard|unit:unit|itemGrade:itemGrade'
+                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:buyPrice',
+                        where : [{
+                            key: 'account',
+                            replace : 'account:=:#{account}'
+                        }]
                     }
             },
             {
@@ -330,7 +335,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
         // eslint-disable-next-line max-len
-        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
+        this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.inBoundHeaderForm);
         this.inBoundDetails$ = this._inboundService.inBoundDetails$;
 
         if (this.inBoundHeaders !== undefined) {
@@ -438,7 +443,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (!this.inBoundHeaderForm.invalid) {
 
-            let rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
+            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
 
             let detailCheck = false;
 
