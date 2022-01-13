@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {NgChartsModule} from "ng2-charts";
 import {ProgressBarModule} from "angular-progress-bar";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 const dashboardsRoutes: Route[] = [
     {
@@ -38,7 +39,8 @@ const dashboardsRoutes: Route[] = [
         MatButtonModule,
         NgApexchartsModule,
         NgChartsModule,
-        ProgressBarModule
+        ProgressBarModule,
+        MatSlideToggleModule
     ]
 })
 export class DashboardsModule { }

@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="chart_css">
+                    <div class="chart_css margin_top-38">
                         <canvas id="qt_chart" baseChart>
                         </canvas>
                     </div>
@@ -91,11 +91,10 @@
                     <!--                        </div>-->
                     <!--                    </div>-->
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 margin_auto" style="margin-top: 38px">
+                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
                             <!-- 작성 -->
-                            <div
-                                class="col-span-2 shadow flex flex-col items-center justify-center rounded-1xll chart_btn border-green"
-                                (click)="goPage({gbn: 'QT' , status: 'N'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"
+                                 (click)="goPage({gbn: 'QT' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     작성 {{qtInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -103,9 +102,8 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 요청 -->
-                            <div
-                                class="col-span-2 shadow flex flex-col items-center justify-center rounded-1xll chart_btn border-navy"
-                                (click)="goPage({gbn: 'QT' , status: 'S'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'QT' , status: 'S'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     요청 {{qtInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -113,19 +111,17 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 재견적 -->
-                            <div
-                                class="col-span-2 shadow flex flex-col items-center justify-center rounded-1xll chart_btn border-orange"
-                                (click)="goPage({gbn: 'QT' , status: 'QR'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"
+                                 (click)="goPage({gbn: 'QT' , status: 'QR'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
-                                    재견적요청 {{qtInfo.rsCnt}}</div>
+                                    재요청 {{qtInfo.rsCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{qtInfo.rsCnt}}-->
                                 <!--                                </div>-->
                             </div>
                             <!-- 미확정 -->
-                            <div
-                                class="col-span-2 shadow flex flex-col items-center justify-center rounded-1xll chart_btn border-red"
-                                (click)="goPage({gbn: 'QT' , status: 'CFA'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'QT' , status: 'CFA'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     미확정 {{qtInfo.cfaCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -145,7 +141,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="chart_css">
+                    <div class="chart_css margin_top-38">
                         <canvas id="po_chart" baseChart>
                         </canvas>
                     </div>
@@ -154,11 +150,10 @@
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-blue-600 dark:text-blue-600">신규</div>-->
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2" style="margin-top: 38px">
+                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
                             <!-- 작성 -->
-                            <div
-                                class="col-span-4 shadow flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-green"
-                                (click)="goPage({gbn: 'PO' , status: 'N'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
+                                 (click)="goPage({gbn: 'PO' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     작성 {{poInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -180,9 +175,8 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-                            <div
-                                class="col-span-4 shadow flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-red"
-                                (click)="goPage({gbn: 'PO' , status: 'CFA'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'PO' , status: 'CFA'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     미확정 {{poInfo.cfaCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -240,16 +234,15 @@
                     <!--                        <div>{{soInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-red-500 dark:text-red-500">작성</div>-->
-                    <div class="chart_css">
+                    <div class="chart_css margin_top-38">
                         <canvas id="so_chart" baseChart>
                         </canvas>
                     </div>
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2" style="margin-top: 38px">
+                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
                             <!-- 주문등록 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-green"
-                                (click)="goPage({gbn: 'SO' , status: 'N'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
+                                 (click)="goPage({gbn: 'SO' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     주문접수 {{soInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -257,9 +250,8 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 등록완료 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-red"
-                                (click)="goPage({gbn: 'SO' , status: 'S'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'SO' , status: 'S'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     등록완료 {{soInfo.sCnt}}</div>
                                 <!--<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
@@ -332,11 +324,10 @@
                         </progress-bar>
                     </div>
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9 margin_auto">
+                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9">
                             <!-- 입고 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_btn border-navy"
-                                (click)="goPage({gbn: 'IB' , status: 'N'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'IB' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     입고접수 {{ibInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -344,9 +335,8 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 부분입고 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_btn border-navy"
-                                (click)="goPage({gbn: 'IB' , status: 'P'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'IB' , status: 'P'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     작업중 {{ibInfo.pCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -361,9 +351,8 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-red"
-                                (click)="goPage({gbn: 'IB' , status: 'P,S'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'IB' , status: 'P,S'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-10s text-bold-600">
                                     미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -449,11 +438,10 @@
                         </progress-bar>
                     </div>
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9 margin_auto">
+                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9">
                             <!-- 출고접수 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_btn border-navy"
-                                (click)="goPage({gbn: 'OB' , status: 'N'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'OB' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     출고접수 {{obInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -461,9 +449,8 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 작업중 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_btn border-navy"
-                                (click)="goPage({gbn: 'OB' , status: 'P'})">
+                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'OB' , status: 'P'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     작업중 {{obInfo.pCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -478,9 +465,8 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-red"
-                                (click)="goPage({gbn: 'OB' , status: 'P,S'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'OB' , status: 'P,S'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     미확정 {{obInfo.pCnt + obInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -590,28 +576,33 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mt-6 h-full">
-                    <div class="flex-auto grid grid-cols-3 gap-2 w-full">
-                        <div class="col-span-1 flex flex-col items-center justify-center rounded-1xll price_btn"
-                        id="1" (click)="billbuy()" [ngClass]="{'price_true_color': !buybool,
-                                    'price_false_color': buybool}">매입
-                        </div>
-                        <div class="col-span-1"></div>
-                        <div class="col-span-1 flex flex-col items-center justify-center rounded-1xll price_btn"
-                        id="2" (click)="billsal()" [ngClass]="{'price_true_color': !salbool,
-                                    'price_false_color': salbool}">매출
-                        </div>
-                    </div>
-                    <div class="flex-auto grid grid-cols-3 gap-2 w-full">
-                        <div class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">{{this.buy}}
-                        </div>
-                        <div class="col-span-1"></div>
-                        <div class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">{{this.sal}}
-                        </div>
-                    </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">-->
                     <!--                        <div>{{soInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-red-500 dark:text-red-500">작성</div>-->
+                    <div class="flex flex-col items-center">
+                        <!-- Recurring selector -->
+                        <div class="flex items-center p-0.5 overflow-hidden">
+                        <span class="text-10s text-bold-600"
+                              [ngClass]="{'opacity-50' : billop}">매출</span>
+                            <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
+                                              (click)="biiOption()"
+                                              color="#3982DB">
+                            </mat-slide-toggle>
+                            <span class="text-10s text-bold-600"
+                                  [ngClass]="{'opacity-50' : !billop}">매입</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div *ngIf="buybool"
+                             class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                            {{this.buy}}
+                        </div>
+                        <div *ngIf="salbool"
+                             class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                            {{this.sal}}
+                        </div>
+                    </div>
                     <div class="chart_css h-full">
                         <canvas class="" id="bill_chart" baseChart height="230">
                         </canvas>
@@ -619,9 +610,8 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 gap-2">
                             <!-- 실적집계 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-navy"
-                                (click)="goPage({gbn: 'BILL' , status: 'ALL'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-navy"
+                                 (click)="goPage({gbn: 'BILL' , status: 'ALL'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     실적집계 {{billInfo.totalCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
@@ -629,9 +619,8 @@
                                 <!--                                </div>-->
                             </div>
                             <!-- 계산서미발행 -->
-                            <div
-                                class="col-span-4 flex flex-col items-center justify-center rounded-1xll chart_btn_span4 border-red"
-                                (click)="goPage({gbn: 'TAX' , status: 'ALL'})">
+                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
+                                 (click)="goPage({gbn: 'TAX' , status: 'ALL'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
                                     계산서미발행 {{billInfo.totalCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->

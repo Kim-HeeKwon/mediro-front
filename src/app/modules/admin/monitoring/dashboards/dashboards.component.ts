@@ -23,10 +23,9 @@ import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
 import ApexCharts from 'apexcharts';
-import {
-    Chart,
-} from 'chart.js';
-import {style} from "@angular/animations";
+import {Chart} from 'chart.js';
+import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
+import {Element} from "chart.js/types/element";
 
 @Component({
     selector: 'app-dashboards',
@@ -61,6 +60,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     pagination: DashboardsPagination = {length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0};
     isLoading: boolean = false;
     isMobile: boolean = false;
+    billop: boolean = false;
     ibInfonCnt: any;
     ibInfopCnt: any;
     ibInfopsCnt: any;
@@ -69,7 +69,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     obInfopsCnt: any;
     buy: any;
     sal: any;
-    buybool: boolean = true;
+    buybool: boolean = false;
     salbool: boolean = true;
     chartUdiInfo: ApexOptions = {};
 
@@ -465,7 +465,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const doughnutChartLabels = [
             '작성 : ' + this.qtInfo.nCnt,
             '요청 : ' + this.qtInfo.sCnt,
-            '재견적요청 : ' + this.qtInfo.rsCnt,
+            '재요청 : ' + this.qtInfo.rsCnt,
             '미확정 : ' + this.qtInfo.cfaCnt,
             '견적확정 : ' + this.qtInfo.cfCnt];
 
@@ -477,14 +477,21 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     borderWidth: 1,
-                    hoverBorderWidth: 1,
+                    hoverBorderWidth: 3,
                     hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverOffset: 0,
+                    hoverOffset: 4,
                 }
             ],
         };
+
         const doughnutChartOption = {
-            cutout: 25,
+            cutout: (ctx: Context) => {
+                if (this.isMobile) {
+                    return 45;
+                } else {
+                    return 25;
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
@@ -497,6 +504,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
+            onHover: (ctx: Context) => {
+                const {chartArea: {top, right, bottom, left, width, height}} = ctx.chart;
+                ctx.chart.ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
+                console.log(ctx.dataset);
+            }
         };
         const qt = this.qtInfo;
         const doughnutChartPlugin = {
@@ -506,10 +518,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
-
                 ctx.fillStyle = '#3983DC';
-                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
-
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
@@ -542,14 +551,21 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     hoverBackgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     borderWidth: 1,
-                    hoverBorderWidth: 1,
+                    hoverBorderWidth: 3,
                     hoverBorderColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverOffset: 0,
+                    hoverOffset: 4,
                 }
             ],
         };
+
         const doughnutChartOption = {
-            cutout: 25,
+            cutout: (ctx: Context) => {
+                if (this.isMobile) {
+                    return 45;
+                } else {
+                    return 25;
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
@@ -605,14 +621,20 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
                     hoverBackgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
                     borderWidth: 1,
-                    hoverBorderWidth: 1,
+                    hoverBorderWidth: 3,
                     hoverBorderColor: ['#45AAB4', '#FBB45C', '#F36480'],
-                    hoverOffset: 0,
+                    hoverOffset: 4,
                 }
             ],
         };
         const doughnutChartOption = {
-            cutout: 25,
+            cutout: (ctx: Context) => {
+                if (this.isMobile) {
+                    return 45;
+                } else {
+                    return 25;
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
@@ -681,6 +703,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     label: '매입     ' + this.priceToString(billInfos[billInfos.length - 2].totalAmt) + ' 원',
                     data: buyPrice,
                     fill: false,
+                    hidden: true,
                     borderColor: '#3983DC',
                     pointBackgroundColor: '#3983DC',
                     hoverBackgroundColor: '#3983DC',
@@ -739,33 +762,32 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         });
-        document.getElementById('1').addEventListener('click', () => {
-            if(!this.buybool) {
+        document.getElementById('billbuy').addEventListener('click', () => {
+            if (!this.buybool) {
                 mixedChart.hide(0);
-            }else {
+            } else {
                 mixedChart.show(0);
             }
         });
-        document.getElementById('2').addEventListener('click', () => {
-            if(!this.salbool) {
+        document.getElementById('billbuy').addEventListener('click', () => {
+            if (!this.salbool) {
                 mixedChart.hide(1);
-            }else {
+            } else {
                 mixedChart.show(1);
             }
         });
     }
+
     billbuy(): void {
-        if(this.buybool) {
-            this.buybool = false;
-        }else {
+        if (!this.buybool) {
             this.buybool = true;
-        }
-    }
-    billsal(): void {
-        if(this.salbool) {
-            this.salbool = false;
         } else {
+            this.buybool = false;
+        }
+        if (!this.salbool) {
             this.salbool = true;
+        } else {
+            this.salbool = false;
         }
     }
 
@@ -781,121 +803,143 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             nowCnt.push(param.totalCnt);
             return param;
         });
-        const udiPlugin = {
-            id: 'plugin',
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
-                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                chart.data.datasets.forEach((dataset, i) => {
-                    const meta = chart.getDatasetMeta(i);
-                    if (!meta.hidden) {
-                        meta.data.forEach((element, index) => {
-                            ctx.fillStyle = '#000000';
-                            const fontSize = 15;
-                            const fontStyle = 'normal';
-                            const fontFamily = '';
-                            ctx.font = '15px';
-                            const dataString = dataset.data[index].toString();
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            const position = element.tooltipPosition();
-                            const padding = 5;
-                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-                        });
-                    }
-                });
-            }
-        };
+        // const udiPlugin = {
+        //     id: 'plugin',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         chart.data.datasets.forEach((dataset, i) => {
+        //             const meta = chart.getDatasetMeta(i);
+        //             if (!meta.hidden) {
+        //                 meta.data.forEach((element, index) => {
+        //                     ctx.fillStyle = '#000000';
+        //                     const fontSize = 15;
+        //                     const fontStyle = 'normal';
+        //                     const fontFamily = '';
+        //                     ctx.font = '15px';
+        //                     const dataString = dataset.data[index].toString();
+        //                     ctx.textAlign = 'center';
+        //                     ctx.textBaseline = 'middle';
+        //                     const position = element.tooltipPosition();
+        //                     const padding = 5;
+        //                     ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+        //                 });
+        //             }
+        //         });
+        //     }
+        // };
 
         const ctx = document.getElementById('udi_chart');
 
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
-            plugins: [udiPlugin],
-            data: {
-                datasets: [{
-                    type: 'bar',
-                    label: '전월보고',
-                    data: eveCnt,
-                    fill: false,
-                    borderColor: '#206491',
-                    pointBackgroundColor: '#206491',
-                    hoverBackgroundColor: '#206491',
-                    backgroundColor: '#206491',
-                    hoverBorderColor: '#206491',
-                    pointBorderColor: '#206491',
-                    pointHoverBackgroundColor: '#206491',
-                    pointHoverBorderColor: '#206491',
-                    borderWidth: 1,
-                    pointBorderWidth: 0.1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    label: '당월등록',
-                    data: nowCnt,
-                    fill: false,
-                    borderColor: '#45AAB4',
-                    pointBackgroundColor: '#45AAB4',
-                    hoverBackgroundColor: '#45AAB4',
-                    backgroundColor: '#45AAB4',
-                    hoverBorderColor: '#45AAB4',
-                    pointBorderColor: '#45AAB4',
-                    pointHoverBackgroundColor: '#45AAB4',
-                    pointHoverBorderColor: '#45AAB4',
-                    borderWidth: 1,
-                    pointBorderWidth: 0.1,
-                    hoverBorderWidth: 0.1,
-                }],
-                labels: ['1등급', '2등급', '3등급', '4등급']
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                    tooltip: true,
-                    legend: {
-                        position: 'bottom',
-                        boxWidth: 0,
-                        boxHeight: 0,
-                        align: 'center',
-                    }
+                plugins: [ChartDataLabels],
+                data: {
+                    datasets: [{
+                        type: 'bar',
+                        label: '전월보고',
+                        data: eveCnt,
+                        fill: false,
+                        borderColor: '#206491',
+                        pointBackgroundColor: '#206491',
+                        hoverBackgroundColor: '#206491',
+                        backgroundColor: '#206491',
+                        hoverBorderColor: '#206491',
+                        pointBorderColor: '#206491',
+                        pointHoverBackgroundColor: '#206491',
+                        pointHoverBorderColor: '#206491',
+                        borderWidth: 1,
+                        pointBorderWidth: 0.1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        label: '당월등록',
+                        data: nowCnt,
+                        fill: false,
+                        borderColor: '#45AAB4',
+                        pointBackgroundColor: '#45AAB4',
+                        hoverBackgroundColor: '#45AAB4',
+                        backgroundColor: '#45AAB4',
+                        hoverBorderColor: '#45AAB4',
+                        pointBorderColor: '#45AAB4',
+                        pointHoverBackgroundColor: '#45AAB4',
+                        pointHoverBorderColor: '#45AAB4',
+                        borderWidth: 1,
+                        pointBorderWidth: 0.1,
+                        hoverBorderWidth: 0.1,
+                    }],
+                    labels: ['1등급', '2등급', '3등급', '4등급']
                 },
-                scales: {
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 8,
+                options: {
+                    responsive: false,
+                    plugins: {
+                        datalabels: {
+                            color: '#000000',
+                            display: (ctx: Context) => {
+                                if (ctx.dataset.data[ctx.dataIndex] < 1) {
+                                    return false;
+                                }
                             }
-                        }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            boxWidth: 0,
+                            boxHeight: 0,
+                            align: 'center',
+                        },
                     },
-                    y: {
-                        display: false,
-                        ticks: {
-                            font: {
-                                size: 0,
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 8,
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: 8,
+                                }
                             }
                         }
                     }
                 }
             }
-        });
-        const currDay = new Date();
-        const year = currDay.getFullYear();
-        const month = currDay.getMonth() + 1;
-        const date = new Date(year, month, 0);
-        const day = date.getDate();
-        const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
+        );
+        const
+            currDay = new Date();
+        const
+            year = currDay.getFullYear();
+        const
+            month = currDay.getMonth() + 1;
+        const
+            date = new Date(year, month, 0);
+        const
+            day = date.getDate();
+        const
+            lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
 
-        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+        const
+            diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
 
-        if (diffDays === 0) {
-            this.udiLastDay = 'D-day';
+        if (diffDays
+
+            ===
+            0
+        ) {
+            this
+                .udiLastDay = 'D-day';
         } else {
             this.udiLastDay = 'D-' + diffDays;
         }
     }
 
-    stockChart(data: any) {
+    stockChart(data
+                   :
+                   any
+    ) {
         const doughnutChartLabels = [
             '1등급 : ' + data[0].availQty,
             '2등급 : ' + data[1].availQty,
@@ -932,14 +976,20 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
                     hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
                     borderWidth: 1,
-                    hoverBorderWidth: 1,
+                    hoverBorderWidth: 3,
                     hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
-                    hoverOffset: 0,
+                    hoverOffset: 4,
                 }
             ],
         };
         const doughnutChartOption = {
-            cutout: 25,
+            cutout: (ctx: Context) => {
+                if (this.isMobile) {
+                    return 45;
+                } else {
+                    return 25;
+                }
+            },
             plugins: {
                 legend: {
                     display: true,
@@ -1010,7 +1060,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const ctx2 = document.getElementById('stock2_chart');
         // @ts-ignore
         const mixedChart = new Chart(ctx2, {
-            plugins: [stockPlugin],
+            plugins: [ChartDataLabels],
             data: {
                 datasets: [{
                     type: 'bar',
@@ -1034,6 +1084,20 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             options: {
                 indexAxis: 'y',
                 plugins: {
+                    datalabels: {
+                        color: '#000000',
+                        align: (ctx: Context) => {
+                            if (ctx.dataset.data[ctx.dataIndex] < 1000) {
+                                return 'right';
+                            }
+                        },
+                        anchor: (ctx: Context) => {
+                            if (ctx.dataset.data[ctx.dataIndex] < 1000) {
+                                return 'end';
+                            }
+                        },
+                        borderWidth: 2,
+                    },
                     legend: {
                         display: false,
                         position: 'left',
@@ -1062,4 +1126,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
     }
+
+    biiOption() {
+        if (this.billop) {
+            this.billop = false;
+        } else {
+            this.billop = true;
+        }
+        //this.planBillingForm.patchValue({'payGrade': this.payGrade + ''});
+
+        this._changeDetectorRef.markForCheck();
+    }
 }
+

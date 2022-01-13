@@ -212,23 +212,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .red-font-color {
     color: #ff0000;
 }
-.blue-font-color {
-    color: #005bc1;
-}
 .text-25s{
     font-size: 25px !important;
-}
-.text-30s{
-    font-size: 30px !important;
-}
-.text-35s{
-    font-size: 35px !important;
-}
-.text-40s{
-    font-size: 40px !important;
-}
-.text-20s{
-    font-size: 20px !important;
 }
 .text-17s{
     font-size: 17px !important;
@@ -365,26 +350,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
         border-radius: 16px !important;
     }
     .price_btn {
-        border: 1px solid #cbd5e1;
-        width: 50px;
+        width: 40px;
         height: 20px;
-        border-radius: 3px !important;
-        font-size: 7px !important;
-        font-weight: bolder;
-        background: #ffffff;
+        border-radius: 16px !important;
     }
-    .price_btn:hover {
-        background: #3982db;
-        color: white;
-    }
-}
-.price_true_color {
-    background: #3982db;
-    color: white;
-}
-.price_false_color {
-    background: #ffffff;
-    color: black;
 }
 
 .mat-option-text{
@@ -401,6 +370,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .text-line-through{
     text-decoration: line-through;
+}
+
+.margin_top-38 {
+    margin-top: 12.5px;
 }
 //.mat-slide-toggle{
 //    height: 25px !important;
