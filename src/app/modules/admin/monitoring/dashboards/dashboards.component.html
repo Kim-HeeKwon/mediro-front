@@ -244,7 +244,7 @@
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
                                  (click)="goPage({gbn: 'SO' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
-                                    주문접수 {{soInfo.nCnt}}</div>
+                                    접수 {{soInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{soInfo.nCnt}}-->
                                 <!--                                </div>-->
@@ -253,7 +253,7 @@
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'SO' , status: 'S'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
-                                    등록완료 {{soInfo.sCnt}}</div>
+                                    등록 {{soInfo.sCnt}}</div>
                                 <!--<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{soInfo.sCnt}}
                                 </div>-->
@@ -329,7 +329,7 @@
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'IB' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
-                                    입고접수 {{ibInfo.nCnt}}</div>
+                                    접수 {{ibInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{ibInfo.nCnt}}-->
                                 <!--                                </div>-->
@@ -443,7 +443,7 @@
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'OB' , status: 'N'})">
                                 <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
-                                    출고접수 {{obInfo.nCnt}}</div>
+                                    접수 {{obInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{obInfo.nCnt}}-->
                                 <!--                                </div>-->
@@ -584,13 +584,13 @@
                         <!-- Recurring selector -->
                         <div class="flex items-center p-0.5 overflow-hidden">
                         <span class="text-10s text-bold-600"
-                              [ngClass]="{'opacity-50' : billop}">매출</span>
+                              [ngClass]="{'opacity-50' : billop}">매입</span>
                             <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
                                               (click)="biiOption()"
-                                              color="#3982DB">
+                                              [color]="'warn'">
                             </mat-slide-toggle>
                             <span class="text-10s text-bold-600"
-                                  [ngClass]="{'opacity-50' : !billop}">매입</span>
+                                  [ngClass]="{'opacity-50' : !billop}">매출</span>
                         </div>
                     </div>
                     <div class="flex flex-col items-center">

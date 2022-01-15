@@ -22,10 +22,9 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
-import ApexCharts from 'apexcharts';
-import {Chart} from 'chart.js';
+import {Chart, ChartEvent} from 'chart.js';
 import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
-import {Element} from "chart.js/types/element";
+import {createMouseEvent} from "@angular/cdk/testing/testbed/fake-events";
 
 @Component({
     selector: 'app-dashboards',
@@ -69,8 +68,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     obInfopsCnt: any;
     buy: any;
     sal: any;
-    buybool: boolean = false;
-    salbool: boolean = true;
+    buybool: boolean = true;
+    salbool: boolean = false;
     chartUdiInfo: ApexOptions = {};
 
     racallTaleData: any = null;
@@ -460,6 +459,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
+
     qtChart() {
 
         const doughnutChartLabels = [
@@ -467,8 +467,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             '요청 : ' + this.qtInfo.sCnt,
             '재요청 : ' + this.qtInfo.rsCnt,
             '미확정 : ' + this.qtInfo.cfaCnt,
-            '견적확정 : ' + this.qtInfo.cfCnt];
-
+            '확정 : ' + this.qtInfo.cfCnt];
         const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
@@ -477,13 +476,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     borderWidth: 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverOffset: 4,
+                    hoverOffset: 1,
                 }
             ],
         };
-
+        let qtHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -504,24 +503,50 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
-            onHover: (ctx: Context) => {
-                const {chartArea: {top, right, bottom, left, width, height}} = ctx.chart;
-                ctx.chart.ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
-                console.log(ctx.dataset);
-            }
-        };
-        const qt = this.qtInfo;
-        const doughnutChartPlugin = {
-            id: 'plugin',
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
+            onHover: (event, activeElements, chart: Chart) => {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                ctx.save();
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
+                if(event.type !== 'mousemove') {
+                    qtHover = true;
+                }
+                if (activeElements.length > 0) {
+                    if (activeElements[0].index === 0) {
+                        qtHover = false;
+                        ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 1) {
+                        qtHover = false;
+                        ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 2) {
+                        qtHover = false;
+                        ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 3) {
+                        qtHover = false;
+                        ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 4) {
+                        qtHover = false;
+                        ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.85));
+                    }
+                } else {
+                    qtHover = true;
+                }
+            }
+        };
+        const qt = this.qtInfo;
+        const max = qt.nCnt + qt.sCnt + qt.rsCnt + qt.cfaCnt + qt.cfCnt;
+        const doughnutChartPlugin = {
+            id: 'plugin',
+            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+            beforeDraw(chart: Chart, args: { cancelable: true }, activeElements): boolean | void {
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.fillStyle = '#3983DC';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.textAlign = 'center';
+                if(qtHover) {
+                    ctx.fillText('' + max, width / 2, top + (height / 1.85));
+                }
             }
         };
 
@@ -539,9 +564,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     poChart() {
         const doughnutChartLabels = [
             '작성 : ' + this.poInfo.nCnt,
-            '발주서 발송 : ' + this.poInfo.sCnt,
+            '발송 : ' + this.poInfo.sCnt,
             '미확정 : ' + this.poInfo.cfaCnt,
-            '발주확정 : ' + this.poInfo.cfCnt];
+            '확정 : ' + this.poInfo.cfCnt];
 
         const doughnutChartData = {
             labels: doughnutChartLabels,
@@ -551,13 +576,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     hoverBackgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
                     borderWidth: 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverOffset: 4,
+                    hoverOffset: 1,
                 }
             ],
         };
-
+        let poHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -573,13 +598,40 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         boxWidth: 0,
                         font: {weight: 'bold', size: 12},
                         textAlign: 'right'
-                        // color: 'rgb(255, 99, 132)'
                     },
                     position: 'right'
                 },
             },
+            onHover: (event, activeElements, chart: Chart) => {
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+                ctx.fillStyle = '#3983DC';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.textAlign = 'center';
+                if(event.type !== 'mousemove') {
+                    poHover = true;
+                }
+                if (activeElements.length > 0) {
+                    if (activeElements[0].index === 0) {
+                        poHover = false;
+                        ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 1) {
+                        poHover = false;
+                        ctx.fillText('' + po.sCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 2) {
+                        poHover = false;
+                        ctx.fillText('' + po.cfaCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 3) {
+                        poHover = false;
+                        ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.85));
+                    }
+                } else {
+                    poHover = true;
+                }
+            }
         };
         const po = this.poInfo;
+        const max = po.nCnt + po.sCnt + po.cfaCnt + po.cfCnt;
         const doughnutChartPlugin = {
             id: 'plugin',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
@@ -587,13 +639,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
-
                 ctx.fillStyle = '#3983DC';
-                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
-
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.85));
+                if(poHover) {
+                    ctx.fillText('' + max, width / 2, top + (height / 1.85));
+                }
             }
         };
 
@@ -609,9 +660,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     soChart() {
         const doughnutChartLabels = [
-            '주문접수 : ' + this.soInfo.nCnt,
-            '주문취소 : ' + this.soInfo.cCnt,
-            '등록완료 : ' + this.soInfo.sCnt,];
+            '접수 : ' + this.soInfo.nCnt,
+            '취소 : ' + this.soInfo.cCnt,
+            '등록 : ' + this.soInfo.sCnt,];
 
         const doughnutChartData = {
             labels: doughnutChartLabels,
@@ -621,12 +672,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
                     hoverBackgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
                     borderWidth: 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4', '#FBB45C', '#F36480'],
-                    hoverOffset: 4,
+                    hoverOffset: 1,
                 }
             ],
         };
+        let soHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -647,8 +699,33 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
+            onHover: (event, activeElements, chart: Chart) => {
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+                ctx.fillStyle = '#3983DC';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.textAlign = 'center';
+                if(event.type !== 'mousemove') {
+                    soHover = true;
+                }
+                if (activeElements.length > 0) {
+                    if (activeElements[0].index === 0) {
+                        soHover = false;
+                        ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 1) {
+                        soHover = false;
+                        ctx.fillText('' + so.cCnt, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 2) {
+                        soHover = false;
+                        ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.85));
+                    }
+                } else {
+                    soHover = true;
+                }
+            }
         };
         const so = this.soInfo;
+        const max = so.nCnt + so.cCnt + so.sCnt;
         const doughnutChartPlugin = {
             id: 'plugin',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
@@ -656,13 +733,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
-
                 ctx.fillStyle = '#3983DC';
-                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
-
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.85));
+                if(soHover) {
+                    ctx.fillText('' + max, width / 2, top + (height / 1.85));
+                }
             }
         };
 
@@ -703,7 +779,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     label: '매입     ' + this.priceToString(billInfos[billInfos.length - 2].totalAmt) + ' 원',
                     data: buyPrice,
                     fill: false,
-                    hidden: true,
                     borderColor: '#3983DC',
                     pointBackgroundColor: '#3983DC',
                     hoverBackgroundColor: '#3983DC',
@@ -720,6 +795,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     label: '매출     ' + this.priceToString(billInfos[billInfos.length - 1].totalAmt) + ' 원',
                     data: salesPrice,
                     fill: false,
+                    hidden: true,
                     borderColor: '#45AAB4',
                     pointBackgroundColor: '#45AAB4',
                     hoverBackgroundColor: '#45AAB4',
@@ -880,7 +956,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 if (ctx.dataset.data[ctx.dataIndex] < 1) {
                                     return false;
                                 }
-                            }
+                            },
+                            font: {weight: 'bolder', size: 12},
                         },
                         legend: {
                             position: 'bottom',
@@ -976,12 +1053,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
                     hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
                     borderWidth: 1,
-                    hoverBorderWidth: 3,
+                    hoverBorderWidth: 1,
                     hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480'],
-                    hoverOffset: 4,
+                    hoverOffset: 1,
                 }
             ],
         };
+        let doughnut = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -1002,6 +1080,33 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
+            onHover: (event, activeElements, chart: Chart) => {
+                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+                ctx.save();
+                ctx.fillStyle = '#3983DC';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.textAlign = 'center';
+                if(event.type !== 'mousemove') {
+                    doughnut = true;
+                }
+                if (activeElements.length > 0) {
+                    if (activeElements[0].index === 0) {
+                        doughnut = false;
+                        ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 1) {
+                        doughnut = false;
+                        ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 2) {
+                        doughnut = false;
+                        ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.85));
+                    } else if (activeElements[0].index === 3) {
+                        doughnut = false;
+                        ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.85));
+                    }
+                } else {
+                    doughnut = true;
+                }
+            }
         };
         const doughnutChartPlugin = {
             id: 'plugin',
@@ -1010,13 +1115,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
-
                 ctx.fillStyle = '#3983DC';
-                // ctx.fillRect(width / 2, top + (height / 2) , 10, 10);
-
                 ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.85));
+                if(doughnut) {
+                    ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.85));
+                }
             }
         };
 
@@ -1096,6 +1200,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 return 'end';
                             }
                         },
+                        font: {weight: 'bolder', size: 12},
                         borderWidth: 2,
                     },
                     legend: {
