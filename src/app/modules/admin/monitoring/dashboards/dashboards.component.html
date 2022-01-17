@@ -303,23 +303,23 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
-                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-12s">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s w-full text-bold-600" style="padding-top: 17px;">
                         <div>
-                            <span class="mr-1">진행상태</span>
+                            <span class="mr-4">진행상태</span>
                         </div>
                     </div>
-                    <div class="flex flex-col items-center w-full" style="height: 65%;">
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                    <div class="flex flex-col items-center w-full" style="height: 60%;">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <span class="progress-float">접수: </span>
                             <progress-bar [progress]="ibInfonCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
                         </div>
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <span class="progress-float">작업: </span>
                             <progress-bar [progress]="ibInfopCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
                         </div>
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <span class="progress-float">입고: </span>
                             <progress-bar [progress]="ibInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
@@ -418,28 +418,28 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
-                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-12s">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s text-bold-600 w-full" style="padding-top: 17px;">
                         <div>
-                            <span class="mr-1">진행상태</span>
+                            <span class="mr-4">진행상태</span>
                         </div>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">-->
                     <!--                        <div>{{ibInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-amber-500 dark:text-amber-500">신규</div>-->
-                    <div class="flex flex-col items-center w-full" style="height: 65%;">
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                    <div class="flex flex-col items-center w-full" style="height: 60%;">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <!--                        <span>접수</span>-->
                             <span class="progress-float">접수: </span>
                             <progress-bar [progress]="obInfonCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
                         </div>
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <span class="progress-float">작업: </span>
                             <progress-bar [progress]="obInfopCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
                         </div>
-                        <div class="text-lg font-medium text-13s w-full p-2">
+                        <div class="text-lg font-medium text-13s text-bold-600 w-full p-2">
                             <span class="progress-float">출고: </span>
                             <progress-bar [progress]="obInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
                             </progress-bar>
@@ -604,11 +604,11 @@
                         </div>
                         <div class="flex flex-col items-center">
                             <div *ngIf="buybool"
-                                 class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                                 class="col-span-1 flex flex-col items-center justify-center text-13s text-bold-600">
                                 {{this.buy}}
                             </div>
                             <div *ngIf="salbool"
-                                 class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                                 class="col-span-1 flex flex-col items-center justify-center text-13s text-bold-600">
                                 {{this.sal}}
                             </div>
                         </div>
@@ -813,13 +813,13 @@
                             <canvas class="" id="stock_chart" baseChart height="100">
                             </canvas>
                         </div>
-                        <div class="chart_css w-full h-full" style="margin-top: -20px;">
+                        <div class="chart_css w-full h-full" style="margin-top: -38px;">
                             <canvas class="" id="stock2_chart" baseChart width="100" height="35">
                             </canvas>
                         </div>
                     </div>
                     <!-- Overview -->
-                    <div class="w-full" style="text-align: center; margin: auto;"
+                    <div class="w-full" style="text-align: center; margin: auto; height: 100%;"
                          [ngClass]="{'flex flex-col col-span-4 text-12s': !isMobile,
                                     'flex flex-col col-span-6 text-12s': isMobile}">
                         <table border="2" style="border: 2px solid #ffffff; width: max-content" style="width: 100%;"
