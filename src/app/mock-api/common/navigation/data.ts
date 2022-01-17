@@ -165,6 +165,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/udi/manages'
             },
             {
+                id   : 'udi.manages-email',
+                title: '공급내역 이메일 전송',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/manages-email'
+            },
+            {
                 id   : 'udi.status',
                 title: '통합시스템 전송내역',
                 type : 'basic',

@@ -174,6 +174,7 @@ export const appRoutes: Route[] = [
                     // manages
                     //{path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/admin/udi/manages/manages.module').then(m => m.ManagesModule)},
                     {path: 'manages', data: {key: 'manages'}, loadChildren: () => import('app/modules/dms/udi/manages/manages.module').then(m => m.ManagesModule)},
+                    {path: 'manages-email', data: {key: 'manages-email'}, loadChildren: () => import('app/modules/dms/udi/manages-email/manages-email.module').then(m => m.ManagesEmailModule)},
                     // status
                     //{path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/admin/udi/status/status.module').then(m => m.StatusModule)},
                     {path: 'status', data: {key: 'status'}, loadChildren: () => import('app/modules/dms/udi/status/status.module').then(m => m.StatusModule)},
