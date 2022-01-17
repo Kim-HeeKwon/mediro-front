@@ -473,11 +473,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             datasets: [
                 {
                     data: [this.qtInfo.nCnt, this.qtInfo.sCnt, this.qtInfo.rsCnt, this.qtInfo.cfaCnt, this.qtInfo.cfCnt],
-                    backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    backgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#3983DC'],
+                    hoverBackgroundColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#3983DC'],
                     borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverBorderColor: ['#45AAB4', '#206491', '#FBB45C', '#F36480', '#3983DC'],
                     hoverOffset: 1,
                 }
             ],
@@ -488,7 +488,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isMobile) {
                     return 45;
                 } else {
-                    return 25;
+                    return 50;
                 }
             },
             plugins: {
@@ -496,7 +496,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight: 'bold', size: 12},
+                        font: {weight: 'bold', size: 13},
                         textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -506,7 +506,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             onHover: (event, activeElements, chart: Chart) => {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     qtHover = true;
@@ -542,7 +542,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(qtHover) {
                     ctx.fillText('' + max, width / 2, top + (height / 1.85));
@@ -573,11 +573,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             datasets: [
                 {
                     data: [this.poInfo.nCnt, this.poInfo.sCnt, this.poInfo.cfaCnt, this.poInfo.cfCnt],
-                    backgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
-                    hoverBackgroundColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    backgroundColor: ['#206491', '#FBB45C', '#F36480', '#3983DC'],
+                    hoverBackgroundColor: ['#206491', '#FBB45C', '#F36480', '#3983DC'],
                     borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#206491', '#FBB45C', '#F36480', '#BDBDBD'],
+                    hoverBorderColor: ['#206491', '#FBB45C', '#F36480', '#3983DC'],
                     hoverOffset: 1,
                 }
             ],
@@ -588,7 +588,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isMobile) {
                     return 45;
                 } else {
-                    return 25;
+                    return 50;
                 }
             },
             plugins: {
@@ -596,7 +596,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight: 'bold', size: 12},
+                        font: {weight: 'bold', size: 13},
                         textAlign: 'right'
                     },
                     position: 'right'
@@ -606,7 +606,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     poHover = true;
@@ -640,7 +640,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(poHover) {
                     ctx.fillText('' + max, width / 2, top + (height / 1.85));
@@ -669,11 +669,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             datasets: [
                 {
                     data: [this.soInfo.nCnt, this.soInfo.cCnt, this.soInfo.sCnt],
-                    backgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
-                    hoverBackgroundColor: ['#45AAB4', '#FBB45C', '#F36480'],
+                    backgroundColor: ['#45AAB4', '#FBB45C', '#3983DC'],
+                    hoverBackgroundColor: ['#45AAB4', '#FBB45C', '#3983DC'],
                     borderWidth: 1,
                     hoverBorderWidth: 1,
-                    hoverBorderColor: ['#45AAB4', '#FBB45C', '#F36480'],
+                    hoverBorderColor: ['#45AAB4', '#FBB45C', '#3983DC'],
                     hoverOffset: 1,
                 }
             ],
@@ -684,7 +684,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isMobile) {
                     return 45;
                 } else {
-                    return 25;
+                    return 50;
                 }
             },
             plugins: {
@@ -692,7 +692,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight: 'bold', size: 12},
+                        font: {weight: 'bold', size: 13},
                         textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -703,7 +703,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     soHover = true;
@@ -734,7 +734,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(soHover) {
                     ctx.fillText('' + max, width / 2, top + (height / 1.85));
@@ -1065,7 +1065,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.isMobile) {
                     return 45;
                 } else {
-                    return 25;
+                    return 43;
                 }
             },
             plugins: {
@@ -1073,7 +1073,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight: 'bold', size: 12},
+                        font: {weight: 'bold', size: 13},
                         textAlign: 'right'
                         // color: 'rgb(255, 99, 132)'
                     },
@@ -1084,7 +1084,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     doughnut = true;
@@ -1116,7 +1116,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(doughnut) {
                     ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.85));

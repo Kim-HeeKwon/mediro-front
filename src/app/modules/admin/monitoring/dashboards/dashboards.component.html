@@ -46,18 +46,22 @@
     <!-- Main -->
     <div class="flex-auto mt-6 mx-2 sm:mt-6 sm:mx-2">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0">
+        <div class="grid grid-cols-2 sm:grid-cols-6 md:grid-cols-6 gap-2 w-full min-w-0" style="height: 100%;">
+            <div
+                class="flex flex-col sm:col-span-6 flex-auto">
+
+            </div>
             <!-- 견적 -->
             <div
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                <div class="flex flex-col items-center mt-4" style="height: 10%;">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>견적</div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="chart_css margin_top-38">
-                        <canvas id="qt_chart" baseChart>
+                <div class="flex flex-col items-center mb-4" style="height: 90%;">
+                    <div class="chart_css" style="height: 70%;">
+                        <canvas class="" id="qt_chart" baseChart>
                         </canvas>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-300">-->
@@ -90,12 +94,12 @@
                     <!--                            <div class="text-sm mt-1 text-center text-secondary">취소</div>-->
                     <!--                        </div>-->
                     <!--                    </div>-->
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 작성 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"
                                  (click)="goPage({gbn: 'QT' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     작성 {{qtInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{qtInfo.nCnt}}-->
@@ -104,7 +108,7 @@
                             <!-- 요청 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'QT' , status: 'S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     요청 {{qtInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{qtInfo.sCnt}}-->
@@ -113,7 +117,7 @@
                             <!-- 재견적 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"
                                  (click)="goPage({gbn: 'QT' , status: 'QR'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     재요청 {{qtInfo.rsCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{qtInfo.rsCnt}}-->
@@ -122,7 +126,7 @@
                             <!-- 미확정 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'QT' , status: 'CFA'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     미확정 {{qtInfo.cfaCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{qtInfo.cfaCnt}}-->
@@ -134,27 +138,27 @@
             </div>
             <!-- 발주 -->
             <div
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                <div class="flex flex-col items-center mt-4" style="height: 10%;">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>발주</div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="chart_css margin_top-38">
-                        <canvas id="po_chart" baseChart>
+                <div class="flex flex-col items-center mb-4" style="height: 90%;">
+                    <div class="chart_css" style="height: 70%;">
+                        <canvas class="" id="po_chart" baseChart>
                         </canvas>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-600">-->
                     <!--                        <div>{{poInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-blue-600 dark:text-blue-600">신규</div>-->
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 작성 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
                                  (click)="goPage({gbn: 'PO' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     작성 {{poInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{poInfo.nCnt}}-->
@@ -177,7 +181,7 @@
                             <!-- 미확정 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'PO' , status: 'CFA'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     미확정 {{poInfo.cfaCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{poInfo.cfaCnt}}-->
@@ -223,27 +227,27 @@
             <!--            </div>-->
             <!-- 주문 -->
             <div
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                <div class="flex flex-col items-center mt-4" style="height: 10%;">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>주문</div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">-->
                     <!--                        <div>{{soInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-red-500 dark:text-red-500">작성</div>-->
-                    <div class="chart_css margin_top-38">
-                        <canvas id="so_chart" baseChart>
+                    <div class="chart_css" style="height: 70%;">
+                        <canvas class="" id="so_chart" baseChart>
                         </canvas>
                     </div>
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 margin_top-38">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 주문등록 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
                                  (click)="goPage({gbn: 'SO' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     접수 {{soInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{soInfo.nCnt}}-->
@@ -252,7 +256,7 @@
                             <!-- 등록완료 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'SO' , status: 'S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     등록 {{soInfo.sCnt}}</div>
                                 <!--<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
                                     {{soInfo.sCnt}}
@@ -292,43 +296,45 @@
             <!--            </div>-->
             <!-- 입고 -->
             <div
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                <div class="flex flex-col items-center mt-4" style="height: 10%;">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>입고</div>
                     </div>
                 </div>
-                <div class="flex flex-row flex-shrink-0 items-center mt-6 ml-2 text-12s">
-                    <div>
-                        <span class="mr-1">진행상태</span>
+                <div class="flex flex-col items-center mb-4" style="height: 90%;">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-12s">
+                        <div>
+                            <span class="mr-1">진행상태</span>
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col items-center h-full">
+                    <div class="flex flex-col items-center w-full" style="height: 65%;">
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <span class="progress-float">접수: </span>
+                            <progress-bar [progress]="ibInfonCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <span class="progress-float">작업: </span>
+                            <progress-bar [progress]="ibInfopCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <span class="progress-float">입고: </span>
+                            <progress-bar [progress]="ibInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
+                    </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">-->
                     <!--                        <div>{{ibInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-amber-500 dark:text-amber-500">신규</div>-->
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <span class="progress-float">접수: </span>
-                        <progress-bar [progress]="ibInfonCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
-                    </div>
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <span class="progress-float">작업: </span>
-                        <progress-bar [progress]="ibInfopCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
-                    </div>
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <span class="progress-float">입고: </span>
-                        <progress-bar [progress]="ibInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 입고 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'IB' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     접수 {{ibInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{ibInfo.nCnt}}-->
@@ -337,7 +343,7 @@
                             <!-- 부분입고 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'IB' , status: 'P'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     작업중 {{ibInfo.pCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{ibInfo.pCnt}}-->
@@ -353,7 +359,7 @@
                             <!-- 미확정 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'IB' , status: 'P,S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-10s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{ibInfo.pCnt + ibInfo.sCnt}}-->
@@ -405,44 +411,46 @@
             <!--            </div>-->
             <!-- 출고 -->
             <div
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
-                <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                <div class="flex flex-col items-center mt-4" style="height: 10%;">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>출고</div>
                     </div>
                 </div>
-                <div class="flex flex-row flex-shrink-0 items-center mt-6 ml-2 text-12s">
-                    <div>
-                        <span class="mr-1">진행상태</span>
+                <div class="flex flex-col items-center mb-4" style="height: 90%;">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-12s">
+                        <div>
+                            <span class="mr-1">진행상태</span>
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col items-center h-full">
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">-->
                     <!--                        <div>{{ibInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-amber-500 dark:text-amber-500">신규</div>-->
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <!--                        <span>접수</span>-->
-                        <span class="progress-float">접수: </span>
-                        <progress-bar [progress]="obInfonCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
+                    <div class="flex flex-col items-center w-full" style="height: 65%;">
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <!--                        <span>접수</span>-->
+                            <span class="progress-float">접수: </span>
+                            <progress-bar [progress]="obInfonCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <span class="progress-float">작업: </span>
+                            <progress-bar [progress]="obInfopCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
+                        <div class="text-lg font-medium text-13s w-full p-2">
+                            <span class="progress-float">출고: </span>
+                            <progress-bar [progress]="obInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
+                            </progress-bar>
+                        </div>
                     </div>
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <span class="progress-float">작업: </span>
-                        <progress-bar [progress]="obInfopCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
-                    </div>
-                    <div class="text-lg font-medium text-12s w-full mt-2 h-full">
-                        <span class="progress-float">출고: </span>
-                        <progress-bar [progress]="obInfopsCnt" [color-degraded]="{'0': '#084B8A'}">
-                        </progress-bar>
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2 mt-9">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 출고접수 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'OB' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     접수 {{obInfo.nCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{obInfo.nCnt}}-->
@@ -451,7 +459,7 @@
                             <!-- 작업중 -->
                             <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'OB' , status: 'P'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     작업중 {{obInfo.pCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{obInfo.pCnt}}-->
@@ -467,7 +475,7 @@
                             <!-- 미확정 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'OB' , status: 'P,S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     미확정 {{obInfo.pCnt + obInfo.sCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{obInfo.pCnt + obInfo.sCnt}}-->
@@ -571,48 +579,50 @@
             <div
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
                 <div class="flex flex-col items-center mt-4">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>정산</div>
                     </div>
                 </div>
-                <div class="flex flex-col items-center mt-6 h-full">
+                <div class="flex flex-col items-center h-full mb-4" style="margin-top: 0.7rem !important;">
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">-->
                     <!--                        <div>{{soInfo.nCnt}}</div>-->
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-red-500 dark:text-red-500">작성</div>-->
-                    <div class="flex flex-col items-center">
-                        <!-- Recurring selector -->
-                        <div class="flex items-center p-0.5 overflow-hidden">
-                        <span class="text-10s text-bold-600"
+                    <div class="flex flex-col items-center" style="height: 20%;">
+                        <div class="flex flex-col items-center">
+                            <!-- Recurring selector -->
+                            <div class="flex items-center p-0.5 overflow-hidden">
+                        <span class="text-13s text-bold-600"
                               [ngClass]="{'opacity-50' : billop}">매입</span>
-                            <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
-                                              (click)="biiOption()"
-                                              [color]="'warn'">
-                            </mat-slide-toggle>
-                            <span class="text-10s text-bold-600"
-                                  [ngClass]="{'opacity-50' : !billop}">매출</span>
+                                <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
+                                                  (click)="biiOption()"
+                                                  [color]="'warn'">
+                                </mat-slide-toggle>
+                                <span class="text-13s text-bold-600"
+                                      [ngClass]="{'opacity-50' : !billop}">매출</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div *ngIf="buybool"
+                                 class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                                {{this.buy}}
+                            </div>
+                            <div *ngIf="salbool"
+                                 class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
+                                {{this.sal}}
+                            </div>
                         </div>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <div *ngIf="buybool"
-                             class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
-                            {{this.buy}}
-                        </div>
-                        <div *ngIf="salbool"
-                             class="col-span-1 flex flex-col items-center justify-center text-10s text-bold-600">
-                            {{this.sal}}
-                        </div>
-                    </div>
-                    <div class="chart_css h-full">
-                        <canvas class="" id="bill_chart" baseChart height="230">
+                    <div class="chart_css" style="height: 50%;">
+                        <canvas class="" id="bill_chart" baseChart height="190">
                         </canvas>
                     </div>
-                    <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-4 gap-2">
+                    <div class="flex flex-col w-full" style="height: 30%;">
+                        <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 실적집계 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-navy"
                                  (click)="goPage({gbn: 'BILL' , status: 'ALL'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     실적집계 {{billInfo.totalCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{billInfo.totalCnt}}-->
@@ -621,7 +631,7 @@
                             <!-- 계산서미발행 -->
                             <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
                                  (click)="goPage({gbn: 'TAX' , status: 'ALL'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-11s text-bold-600">
+                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
                                     계산서미발행 {{billInfo.totalCnt}}</div>
                                 <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
                                 <!--                                    {{billInfo.totalCnt}}-->
@@ -676,7 +686,7 @@
             <div
                 class="sm:col-span-3 md:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>공급내역 보고</div>
                     </div>
                 </div>
@@ -697,7 +707,7 @@
                     <div class="flex flex-col flex-auto col-span-3">
                         <div class="font-medium text-secondary"></div>
                         <div class="chart_css h-full">
-                            <canvas class="" id="udi_chart" baseChart width="310" height="174">
+                            <canvas class="w-full h-full" id="udi_chart" baseChart width="310" height="174">
                             </canvas>
                         </div>
                         <!--                        <div class="flex flex-col flex-auto">-->
@@ -726,8 +736,8 @@
                             <!-- 임시등록 -->
                             <div
                                 class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">임시등록</div>
-                                <div class="leading-none tracking-tight text-11s text-bold-600 mb-1">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">임시등록</div>
+                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
                                     0
                                 </div>
                             </div>
@@ -735,22 +745,22 @@
                             <div
                                 class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">
                                 <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">월보고</div>
-                                <div class="leading-none tracking-tight text-11s text-bold-600 mb-1">
+                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
                                     {{udiLastDay}}
                                 </div>
                             </div>
                             <!-- 반품 -->
                             <div
                                 class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-red">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">반품</div>
-                                <div class="leading-none tracking-tight text-11s text-bold-600 mb-1">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">반품</div>
+                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
                                 </div>
                             </div>
                             <!-- 보고목록 -->
                             <div
                                 class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">보고목록</div>
-                                <div class="leading-none tracking-tight text-11s text-bold-600 mb-1">
+                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">보고목록</div>
+                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
                                 </div>
                             </div>
                         </div>
@@ -791,7 +801,7 @@
             <!--재고-->
             <div class="sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
                 <div class="flex flex-col items-center mt-2">
-                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-17s text-bold-600">
+                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>재고</div>
                     </div>
                 </div>
@@ -809,7 +819,7 @@
                         </div>
                     </div>
                     <!-- Overview -->
-                    <div style="text-align: center;"
+                    <div class="w-full" style="text-align: center; margin: auto;"
                          [ngClass]="{'flex flex-col col-span-4 text-12s': !isMobile,
                                     'flex flex-col col-span-6 text-12s': isMobile}">
                         <table border="2" style="border: 2px solid #ffffff; width: max-content" style="width: 100%;"
