@@ -74,6 +74,24 @@
                                     [placeholder]="'출고번호를 입력해주세요.'">
                             </mat-form-field>
                         </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'itemCd'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'품목코드를 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'itemNm'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'품목명를 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
                     </div>
                 </form>
                 <!-- Actions -->
@@ -240,6 +258,22 @@
                                                     matInput
                                                     (window:onkeypress)="enter($event)"
                                                     [formControlName]="'obNo'"
+                                                    [autocomplete]="'off'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                <mat-label>품목코드</mat-label>
+                                                <input
+                                                    matInput
+                                                    (window:onkeypress)="enter($event)"
+                                                    [formControlName]="'itemCd'"
+                                                    [autocomplete]="'off'">
+                                            </mat-form-field>
+                                            <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                <mat-label>품목명</mat-label>
+                                                <input
+                                                    matInput
+                                                    (window:onkeypress)="enter($event)"
+                                                    [formControlName]="'itemNm'"
                                                     [autocomplete]="'off'">
                                             </mat-form-field>
                                         </div>

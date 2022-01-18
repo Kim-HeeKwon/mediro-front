@@ -97,41 +97,65 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 작성 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"
-                                 (click)="goPage({gbn: 'QT' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    작성 {{qtInfo.nCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{qtInfo.nCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-2 border-green"
+                                mat-raised-button
+                                [color]="'basic'"
+                                (click)="goPage({gbn: 'QT' , status: 'N'})">
+                                <span class="text-13s text-bold-600">작성 {{qtInfo.nCnt}}</span>
+                            </button>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'QT' , status: 'N'})">
+                                <span class="text-13s text-bold-600">요청 {{qtInfo.sCnt}}</span>
+                            </button>
+                            <button class="col-span-2 border-orange"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'QT' , status: 'QR'})">
+                                <span class="text-13s text-bold-600">재요청 {{qtInfo.rsCnt}}</span>
+                            </button>
+                            <button class="col-span-2 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'QT' , status: 'CFA'})">
+                                <span class="text-13s text-bold-600">미확정 {{qtInfo.cfaCnt}}</span>
+                            </button>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"-->
+<!--                                 (click)="goPage({gbn: 'QT' , status: 'N'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    작성 {{qtInfo.nCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{qtInfo.nCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 요청 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'QT' , status: 'S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    요청 {{qtInfo.sCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{qtInfo.sCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+<!--                                 (click)="goPage({gbn: 'QT' , status: 'S'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    요청 {{qtInfo.sCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{qtInfo.sCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 재견적 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"
-                                 (click)="goPage({gbn: 'QT' , status: 'QR'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    재요청 {{qtInfo.rsCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{qtInfo.rsCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"-->
+<!--                                 (click)="goPage({gbn: 'QT' , status: 'QR'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    재요청 {{qtInfo.rsCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{qtInfo.rsCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 미확정 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'QT' , status: 'CFA'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    미확정 {{qtInfo.cfaCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{qtInfo.cfaCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"-->
+<!--                                 (click)="goPage({gbn: 'QT' , status: 'CFA'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    미확정 {{qtInfo.cfaCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{qtInfo.cfaCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -156,14 +180,26 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 작성 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
-                                 (click)="goPage({gbn: 'PO' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    작성 {{poInfo.nCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{poInfo.nCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-4 border-green"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'PO' , status: 'N'})">
+                                <span class="text-13s text-bold-600">작성 {{poInfo.nCnt}}</span>
+                            </button>
+                            <button class="col-span-4 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'PO' , status: 'CFA'})">
+                                <span class="text-13s text-bold-600">미확정 {{poInfo.cfaCnt}}</span>
+                            </button>
+<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
+<!--                                 (click)="goPage({gbn: 'PO' , status: 'N'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    작성 {{poInfo.nCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{poInfo.nCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 임시저장 -->
                             <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">-->
                             <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>-->
@@ -179,14 +215,14 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'PO' , status: 'CFA'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    미확정 {{poInfo.cfaCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{poInfo.cfaCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+<!--                                 (click)="goPage({gbn: 'PO' , status: 'CFA'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    미확정 {{poInfo.cfaCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{poInfo.cfaCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -245,23 +281,35 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 주문등록 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"
-                                 (click)="goPage({gbn: 'SO' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    접수 {{soInfo.nCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{soInfo.nCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-4 border-green"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'SO' , status: 'N'})">
+                                <span class="text-13s text-bold-600">접수 {{soInfo.nCnt}}</span>
+                            </button>
+                            <button class="col-span-4 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'SO' , status: 'S'})">
+                                <span class="text-13s text-bold-600">등록 {{soInfo.sCnt}}</span>
+                            </button>
+<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
+<!--                                 (click)="goPage({gbn: 'SO' , status: 'N'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    접수 {{soInfo.nCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{soInfo.nCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 등록완료 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'SO' , status: 'S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    등록 {{soInfo.sCnt}}</div>
-                                <!--<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">
-                                    {{soInfo.sCnt}}
-                                </div>-->
-                            </div>
+<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+<!--                                 (click)="goPage({gbn: 'SO' , status: 'S'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    등록 {{soInfo.sCnt}}</div>-->
+<!--                                &lt;!&ndash;<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+<!--                                    {{soInfo.sCnt}}-->
+<!--                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -332,23 +380,41 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 입고 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'IB' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    접수 {{ibInfo.nCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{ibInfo.nCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'IB' , status: 'N'})">
+                                <span class="text-13s text-bold-600">접수 {{ibInfo.nCnt}}</span>
+                            </button>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'IB' , status: 'P'})">
+                                <span class="text-13s text-bold-600">작업중 {{ibInfo.pCnt}}</span>
+                            </button>
+                            <button class="col-span-4 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'IB' , status: 'P,S'})">
+                                <span class="text-13s text-bold-600">미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</span>
+                            </button>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+<!--                                 (click)="goPage({gbn: 'IB' , status: 'N'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    접수 {{ibInfo.nCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{ibInfo.nCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 부분입고 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'IB' , status: 'P'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    작업중 {{ibInfo.pCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{ibInfo.pCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+<!--                                 (click)="goPage({gbn: 'IB' , status: 'P'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    작업중 {{ibInfo.pCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{ibInfo.pCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                             <!-- 확정 -->
                             <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
                             <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">입고취소</div>-->
@@ -357,14 +423,14 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'IB' , status: 'P,S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{ibInfo.pCnt + ibInfo.sCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+<!--                                 (click)="goPage({gbn: 'IB' , status: 'P,S'})">-->
+<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+<!--                                    미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>-->
+<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                    {{ibInfo.pCnt + ibInfo.sCnt}}&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>

@@ -93,6 +93,8 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             account: [''],
             accountNm: [''],
             obNo: [''],
+            itemCd: [''],
+            itemNm: [''],
             range: [{
                 start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -108,6 +110,8 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 account: [''],
                 accountNm: [''],
                 obNo: [''],
+                itemCd: [''],
+                itemNm: [''],
                 range: [{
                     start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
                     end: moment().utc(false).startOf('day').toISOString()
