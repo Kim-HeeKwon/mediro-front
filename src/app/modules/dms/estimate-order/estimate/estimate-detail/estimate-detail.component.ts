@@ -135,7 +135,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
 
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
-            console.log(this._activatedRoute.snapshot.paramMap['params']);
             this.estimateHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );

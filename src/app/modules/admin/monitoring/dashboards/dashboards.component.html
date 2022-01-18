@@ -98,9 +98,9 @@
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 작성 -->
                             <button class="col-span-2 border-green"
-                                mat-raised-button
-                                [color]="'basic'"
-                                (click)="goPage({gbn: 'QT' , status: 'N'})">
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'QT' , status: 'N'})">
                                 <span class="text-13s text-bold-600">작성 {{qtInfo.nCnt}}</span>
                             </button>
                             <button class="col-span-2 border-navy"
@@ -121,41 +121,41 @@
                                     (click)="goPage({gbn: 'QT' , status: 'CFA'})">
                                 <span class="text-13s text-bold-600">미확정 {{qtInfo.cfaCnt}}</span>
                             </button>
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"-->
-<!--                                 (click)="goPage({gbn: 'QT' , status: 'N'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    작성 {{qtInfo.nCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{qtInfo.nCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-green"-->
+                            <!--                                 (click)="goPage({gbn: 'QT' , status: 'N'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    작성 {{qtInfo.nCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{qtInfo.nCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 요청 -->
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
-<!--                                 (click)="goPage({gbn: 'QT' , status: 'S'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    요청 {{qtInfo.sCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{qtInfo.sCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+                            <!--                                 (click)="goPage({gbn: 'QT' , status: 'S'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    요청 {{qtInfo.sCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{qtInfo.sCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 재견적 -->
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"-->
-<!--                                 (click)="goPage({gbn: 'QT' , status: 'QR'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    재요청 {{qtInfo.rsCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{qtInfo.rsCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange"-->
+                            <!--                                 (click)="goPage({gbn: 'QT' , status: 'QR'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    재요청 {{qtInfo.rsCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{qtInfo.rsCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 미확정 -->
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"-->
-<!--                                 (click)="goPage({gbn: 'QT' , status: 'CFA'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    미확정 {{qtInfo.cfaCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{qtInfo.cfaCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-red"-->
+                            <!--                                 (click)="goPage({gbn: 'QT' , status: 'CFA'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    미확정 {{qtInfo.cfaCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{qtInfo.cfaCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -192,14 +192,14 @@
                                     (click)="goPage({gbn: 'PO' , status: 'CFA'})">
                                 <span class="text-13s text-bold-600">미확정 {{poInfo.cfaCnt}}</span>
                             </button>
-<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
-<!--                                 (click)="goPage({gbn: 'PO' , status: 'N'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    작성 {{poInfo.nCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{poInfo.nCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
+                            <!--                                 (click)="goPage({gbn: 'PO' , status: 'N'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    작성 {{poInfo.nCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{poInfo.nCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 임시저장 -->
                             <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy">-->
                             <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">임시저장</div>-->
@@ -215,14 +215,14 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
-<!--                                 (click)="goPage({gbn: 'PO' , status: 'CFA'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    미확정 {{poInfo.cfaCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{poInfo.cfaCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+                            <!--                                 (click)="goPage({gbn: 'PO' , status: 'CFA'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    미확정 {{poInfo.cfaCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{poInfo.cfaCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -293,23 +293,23 @@
                                     (click)="goPage({gbn: 'SO' , status: 'S'})">
                                 <span class="text-13s text-bold-600">등록 {{soInfo.sCnt}}</span>
                             </button>
-<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
-<!--                                 (click)="goPage({gbn: 'SO' , status: 'N'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    접수 {{soInfo.nCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{soInfo.nCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-green"-->
+                            <!--                                 (click)="goPage({gbn: 'SO' , status: 'N'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    접수 {{soInfo.nCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{soInfo.nCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 등록완료 -->
-<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
-<!--                                 (click)="goPage({gbn: 'SO' , status: 'S'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    등록 {{soInfo.sCnt}}</div>-->
-<!--                                &lt;!&ndash;<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-<!--                                    {{soInfo.sCnt}}-->
-<!--                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+                            <!--                                 (click)="goPage({gbn: 'SO' , status: 'S'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    등록 {{soInfo.sCnt}}</div>-->
+                            <!--                                &lt;!&ndash;<div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
+                            <!--                                    {{soInfo.sCnt}}-->
+                            <!--                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -351,7 +351,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
-                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s w-full text-bold-600" style="padding-top: 17px;">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s w-full text-bold-600"
+                         style="padding-top: 17px;">
                         <div>
                             <span class="mr-4">진행상태</span>
                         </div>
@@ -398,23 +399,23 @@
                                     (click)="goPage({gbn: 'IB' , status: 'P,S'})">
                                 <span class="text-13s text-bold-600">미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</span>
                             </button>
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
-<!--                                 (click)="goPage({gbn: 'IB' , status: 'N'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    접수 {{ibInfo.nCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{ibInfo.nCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+                            <!--                                 (click)="goPage({gbn: 'IB' , status: 'N'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    접수 {{ibInfo.nCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{ibInfo.nCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 부분입고 -->
-<!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
-<!--                                 (click)="goPage({gbn: 'IB' , status: 'P'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    작업중 {{ibInfo.pCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{ibInfo.pCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"-->
+                            <!--                                 (click)="goPage({gbn: 'IB' , status: 'P'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    작업중 {{ibInfo.pCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{ibInfo.pCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                             <!-- 확정 -->
                             <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
                             <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">입고취소</div>-->
@@ -423,14 +424,14 @@
                             <!--                                </div>-->
                             <!--                            </div>-->
                             <!-- 미확정 -->
-<!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
-<!--                                 (click)="goPage({gbn: 'IB' , status: 'P,S'})">-->
-<!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
-<!--                                    미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>-->
-<!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                    {{ibInfo.pCnt + ibInfo.sCnt}}&ndash;&gt;-->
-<!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"-->
+                            <!--                                 (click)="goPage({gbn: 'IB' , status: 'P,S'})">-->
+                            <!--                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">-->
+                            <!--                                    미확정 {{ibInfo.pCnt + ibInfo.sCnt}}</div>-->
+                            <!--                                &lt;!&ndash;                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                    {{ibInfo.pCnt + ibInfo.sCnt}}&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;                                </div>&ndash;&gt;-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -484,7 +485,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
-                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s text-bold-600 w-full" style="padding-top: 17px;">
+                    <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s text-bold-600 w-full"
+                         style="padding-top: 17px;">
                         <div>
                             <span class="mr-4">진행상태</span>
                         </div>
@@ -514,39 +516,24 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 출고접수 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'OB' , status: 'N'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    접수 {{obInfo.nCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{obInfo.nCnt}}-->
-                                <!--                                </div>-->
-                            </div>
-                            <!-- 작업중 -->
-                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'OB' , status: 'P'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    작업중 {{obInfo.pCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{obInfo.pCnt}}-->
-                                <!--                                </div>-->
-                            </div>
-                            <!-- 출고취소 -->
-                            <!--                            <div class="col-span-2 flex flex-col items-center justify-center rounded-1xl border-orange">-->
-                            <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-10s text-bold-600">출고취소</div>-->
-                            <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                            <!--                                    {{obInfo.cCnt}}-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
-                            <!-- 미확정 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'OB' , status: 'P,S'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    미확정 {{obInfo.pCnt + obInfo.sCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{obInfo.pCnt + obInfo.sCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'OB' , status: 'N'})">
+                                <span class="text-13s text-bold-600">접수 {{obInfo.nCnt}}</span>
+                            </button>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'OB' , status: 'P'})">
+                                <span class="text-13s text-bold-600">작업중 {{obInfo.pCnt}}</span>
+                            </button>
+                            <button class="col-span-4 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'OB' , status: 'P,S'})">
+                                <span class="text-13s text-bold-600">미확정 {{obInfo.pCnt + obInfo.sCnt}}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -662,7 +649,8 @@
                               [ngClass]="{'opacity-50' : billop}">매입</span>
                                 <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
                                                   (click)="biiOption()"
-                                                  [color]="'warn'">
+                                                  [color]="'warn'"
+                                                  [checked]="true">
                                 </mat-slide-toggle>
                                 <span class="text-13s text-bold-600"
                                       [ngClass]="{'opacity-50' : !billop}">매출</span>
@@ -686,23 +674,18 @@
                     <div class="flex flex-col w-full" style="height: 30%;">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4">
                             <!-- 실적집계 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-navy"
-                                 (click)="goPage({gbn: 'BILL' , status: 'ALL'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    실적집계 {{billInfo.totalCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{billInfo.totalCnt}}-->
-                                <!--                                </div>-->
-                            </div>
-                            <!-- 계산서미발행 -->
-                            <div class="col-span-4 flex flex-col items-center justify-center rounded-1xl border-red"
-                                 (click)="goPage({gbn: 'TAX' , status: 'ALL'})">
-                                <div class="pt-2 pb-2 text-sm sm:text-lg font-medium text-13s text-bold-600">
-                                    계산서미발행 {{billInfo.totalCnt}}</div>
-                                <!--                                <div class="leading-none tracking-tight text-10s text-bold-600 mb-1">-->
-                                <!--                                    {{billInfo.totalCnt}}-->
-                                <!--                                </div>-->
-                            </div>
+                            <button class="col-span-4 border-green"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'BILL' , status: 'ALL'})">
+                                <span class="text-13s text-bold-600">  실적집계 {{billInfo.totalCnt}}</span>
+                            </button>
+                            <button class="col-span-4 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'TAX' , status: 'ALL'})">
+                                <span class="text-13s text-bold-600">  계산서미발행 {{billInfo.totalCnt}}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -800,35 +783,55 @@
                         <div class="font-medium text-secondary"></div>
                         <div class="flex-auto grid grid-cols-4 gap-6">
                             <!-- 임시등록 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-orange">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">임시등록</div>
-                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
-                                    0
-                                </div>
-                            </div>
-                            <!-- 월보고 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">월보고</div>
-                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
-                                    {{udiLastDay}}
-                                </div>
-                            </div>
-                            <!-- 반품 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-red">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">반품</div>
-                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
-                                </div>
-                            </div>
-                            <!-- 보고목록 -->
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">
-                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">보고목록</div>
-                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">
-                                </div>
-                            </div>
+                            <button class="col-span-2 border-green"
+                                    mat-raised-button
+                                    [color]="'basic'">
+                                <span class="text-13s text-bold-600">임시등록 <br>0</span>
+                            </button>
+                            <button class="col-span-2 border-navy"
+                                    mat-raised-button
+                                    [color]="'basic'">
+                                <span class="text-13s text-bold-600">월보고 <br>{{udiLastDay}}</span>
+                            </button>
+                            <button class="col-span-2 border-orange"
+                                    mat-raised-button
+                                    [color]="'basic'">
+                                <span class="text-13s text-bold-600">반품</span>
+                            </button>
+                            <button class="col-span-2 border-red"
+                                    mat-raised-button
+                                    [color]="'basic'">
+                                <span class="text-13s text-bold-600">보고목록</span>
+                            </button>
+<!--                            <div-->
+<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-orange">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">임시등록</div>-->
+<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+<!--                                    0-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; 월보고 &ndash;&gt;-->
+<!--                            <div-->
+<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">월보고</div>-->
+<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+<!--                                    {{udiLastDay}}-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; 반품 &ndash;&gt;-->
+<!--                            <div-->
+<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-red">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">반품</div>-->
+<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; 보고목록 &ndash;&gt;-->
+<!--                            <div-->
+<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
+<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">보고목록</div>-->
+<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                         <!--                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">-->
                         <!--                            &lt;!&ndash; 성공 &ndash;&gt;-->

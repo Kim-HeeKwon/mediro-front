@@ -27,8 +27,9 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from '../outbound.types';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
-import {InBoundDetailPagenation} from "../../inbound/inbound.types";
-import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
+import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
+import {TradingHeaderData} from '../../../../../../@teamplat/components/common-report/common-trading/common-trading.types';
+import {CommonTradingComponent} from '../../../../../../@teamplat/components/common-report/common-trading/common-trading.component';
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -43,6 +44,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     isLoading: boolean = false;
     isMobile: boolean = false;
     orderBy: any = 'asc';
+    tradingHeaderData: TradingHeaderData = new TradingHeaderData();
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -444,6 +446,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._realGridsService.gfn_Destory(this.gridList, this.outBoundDetailDataProvider);
     }
 
+
     addRow(): boolean {
 
         const obStatus = this.outBoundHeaderForm.controls['status'].value;
@@ -500,6 +503,59 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._router.navigate(['bound/outbound']);
     }
 
+    reportOutbound(): void {
+        const outboundDetailData = [];
+        let index = 0;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
+        rows.forEach((data: any) => {
+            index++;
+            outboundDetailData.push({
+                no: index,
+                itemNm: data.itemNm,
+                standard: data.standard,
+                unit: data.unit,
+                itemGrade: data.itemGrade,
+                qty: data.qty,
+                unitPrice: data.unitPrice,
+                totalAmt: data.totalAmt,
+                taxAmt: 0,
+                remark: data.remarkDetail,
+            });
+        });
+        this.tradingHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
+        this.tradingHeaderData.date = this.outBoundHeaderForm.getRawValue().obCreDate;
+        this.tradingHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
+        this.tradingHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
+        this.tradingHeaderData.deliveryAddress = '';
+        this.tradingHeaderData.custBusinessNumber = '0';
+        this.tradingHeaderData.custBusinessName = '0';
+        this.tradingHeaderData.representName = '0';
+        this.tradingHeaderData.businessCondition = '0';
+        this.tradingHeaderData.businessCategory = '0';
+        this.tradingHeaderData.phoneNumber = '0' + '0';
+        this.tradingHeaderData.fax = '0' + '0';
+        this.tradingHeaderData.toAccountNm = '0';
+        this.tradingHeaderData.deliveryDate = '0';
+
+        const popup = this._matDialogPopup.open(CommonTradingComponent, {
+            data: {
+                divisionText: '거래명세',
+                division: 'OUTBOUND',
+                header: this.tradingHeaderData,
+                body: outboundDetailData,
+                tail: '',
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
     outBoundSave(): void {
         const status = this.outBoundHeaderForm.controls['status'].value;
         //신규가 아니면 불가능
@@ -515,7 +571,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.outBoundDetailDataProvider);
 
-            let detailCheck = false;
+            const detailCheck = false;
 
             // if(this.outBoundHeaderForm.untouched){
             //     this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');

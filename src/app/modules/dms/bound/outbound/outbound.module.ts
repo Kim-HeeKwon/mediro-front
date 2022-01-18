@@ -2,7 +2,7 @@ import {Route, RouterModule} from "@angular/router";
 import {OutboundComponent} from "./outbound.component";
 import {OutboundResolver} from "./outbound.resolvers";
 import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
+import {CommonModule, CurrencyPipe} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -67,6 +67,7 @@ const outboundRoutes: Route[] = [
         OutboundDetailComponent,
         OutboundNewComponent
     ],
+    providers :[CurrencyPipe],
     imports: [
         CommonModule,
         RouterModule.forChild(outboundRoutes),

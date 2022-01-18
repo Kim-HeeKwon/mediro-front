@@ -1,0 +1,189 @@
+<!--<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">-->
+<div class="flex flex-col flex-auto md:w-380 md:min-w-380 -m-6">
+    <!-- Header -->
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <!--<div class="flex-row text-4xl font-extrabold tracking-tight">양식 테스트</div>-->
+
+        <button
+            class="previous-button"
+            printSectionId="printPage"
+            ngxPrint
+            mat-icon-button
+            tabindex="1">
+            프린트
+        </button>
+        <button
+            mat-icon-button
+            (click)="_matDialogRef.close()"
+            [tabIndex]="-1">X
+        </button>
+    </div>
+    <br>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+        <!--        &lt;!&ndash; Date &ndash;&gt;-->
+        <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [matDatepicker]="picker1">-->
+        <!--                <mat-datepicker-toggle-->
+        <!--                    matSuffix-->
+        <!--                    [for]="picker1"></mat-datepicker-toggle>-->
+        <!--                <mat-datepicker #picker1></mat-datepicker>-->
+        <!--            </mat-form-field>-->
+        <!--            <div class=""> - </div>-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-28">-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [matDatepicker]="picker2">-->
+        <!--                <mat-datepicker-toggle-->
+        <!--                    matSuffix-->
+        <!--                    [for]="picker2"></mat-datepicker-toggle>-->
+        <!--                <mat-datepicker #picker2></mat-datepicker>-->
+        <!--            </mat-form-field>-->
+        <!--        </div>-->
+        <!--        &lt;!&ndash; Actions &ndash;&gt;-->
+        <!--        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">-->
+        <!--            &lt;!&ndash; Search &ndash;&gt;-->
+        <!--            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50">-->
+        <!--                <mat-icon-->
+        <!--                    matPrefix-->
+        <!--                    [svgIcon]="'heroicons_outline:search'"></mat-icon>-->
+        <!--                <input-->
+        <!--                    matInput-->
+        <!--                    [formControl]="searchInputControl"-->
+        <!--                    [autocomplete]="'off'"-->
+        <!--                    [placeholder]="'상품검색'">-->
+        <!--            </mat-form-field>-->
+        <!--            &lt;!&ndash; Add product button &ndash;&gt;-->
+        <!--            <button-->
+        <!--                class="ml-4"-->
+        <!--                mat-flat-button-->
+        <!--                [color]="'primary'">-->
+        <!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+        <!--                <span class="ml-2 mr-1">조회</span>-->
+        <!--            </button>-->
+        <!--            <button-->
+        <!--                class="ml-4"-->
+        <!--                mat-flat-button-->
+        <!--                [color]="'accent'">-->
+        <!--                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+        <!--                <span class="ml-2 mr-1">신규등록</span>-->
+        <!--            </button>-->
+        <!--        </div>-->
+    </div>
+
+    <div style="padding: 2em" id="printPage">
+        <div style="width:1000px; text-align: center;">
+            <div style="font-size: 32px; text-decoration: underline; font-weight: bold;">{{headerText}}</div>
+            <div style="font-size: 14px; text-align: left;">[ {{headerText}} ]<span></span></div>
+            <div style="font-size: 14px; text-align: left;">{{divisionText}}번호 : {{tradingHeaderData.no}}<span></span></div>
+        </div>
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
+            <tbody>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; width: 43%;" colspan="4" rowspan="5">
+                    <div style="text-align:right; font-size: large; padding-right: 2em;">{{tradingHeaderData.toAccountNm}} 귀하</div>
+                    <div style="text-align:left; padding-left: 2em;">발행일자 : {{tradingHeaderData.date}}</div>
+                    <br><br><br>
+                    <div style="text-align:left; padding-left: 2em;">아래와 같이 공급합니다.</div>
+                </td>
+                <td width="25" style="border: solid 1px; background-color: lightgray;" colspan="1" rowspan="5">
+                    <div style="text-align:center;font-weight: bold;">공</div>
+
+                    <div style="text-align:center;font-weight: bold;">급</div>
+
+                    <div style="text-align:center;font-weight: bold;">받</div>
+
+                    <div style="text-align:center;font-weight: bold;">는</div>
+
+                    <div style="text-align:center;font-weight: bold;">자</div>
+                </td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">등록번호</td>
+                <td style="border: solid 1px;text-align: center;" colspan="9">0</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">상 &nbsp;&nbsp;&nbsp;&nbsp; 호</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">{{tradingHeaderData.custBusinessName}}</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">대표자명</td>
+                <td style="border: solid 1px;text-align: center;">{{tradingHeaderData.representName}}</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">주 &nbsp;&nbsp;&nbsp;&nbsp; 소</td>
+                <td style="border: solid 1px;text-align: center;" colspan="9">{{tradingHeaderData.address}}</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">업 &nbsp;&nbsp;&nbsp;&nbsp; 태</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">{{tradingHeaderData.businessCondition}}</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">종 &nbsp;&nbsp;&nbsp;&nbsp; 목</td>
+                <td style="border: solid 1px;text-align: center;">{{tradingHeaderData.businessCategory}}</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">전화번호</td>
+                <td style="border: solid 1px;text-align: center;" colspan="2">0</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">팩스번호</td>
+                <td style="border: solid 1px;text-align: center;">0</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px;text-align: center;font-weight: bold;" colspan="10">합&nbsp;&nbsp;계&nbsp;&nbsp;금&nbsp;&nbsp;액&nbsp;&nbsp;:&nbsp;&nbsp;원&nbsp;&nbsp;정&nbsp;&nbsp;(&nbsp;&nbsp;&#8361;&nbsp;&nbsp;{{this.priceToString(totalAmt)}}&nbsp;&nbsp;)</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
+            <tr style="background-color: lightgray; text-align: center; font-weight: bold; height: 40px;">
+                <td style="border: solid 1px">순번</td>
+                <td style="border: solid 1px">품목</td>
+                <td style="border: solid 1px">규격</td>
+                <td style="border: solid 1px">단위</td>
+                <td style="border: solid 1px">수량</td>
+                <td style="border: solid 1px">단가</td>
+                <td style="border: solid 1px">공급가액</td>
+<!--                <td style="border: solid 1px">세액</td>-->
+                <td style="border: solid 1px">비고</td>
+            </tr>
+            <tbody *ngFor="let row of detail; let i=dataIndex;">
+
+            <tr style="text-align: center; height: 40px;">
+                <td style="border: solid 1px">{{row.no}}</td>
+                <td style="border: solid 1px;">{{row.itemNm}}</td>
+                <td style="border: solid 1px;">{{row.standard}}</td>
+                <td style="border: solid 1px;">{{row.unit}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.qty)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.unitPrice)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.totalAmt)}}</td>
+<!--                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(0)}}</td>-->
+                <td style="border: solid 1px;padding-left: 2px;">{{row.remark}}</td>
+            </tr>
+            </tbody>
+            <tr style="text-align: center; height: 40px;">
+                <td style="border: solid 1px; background-color: lightgray; font-weight: bold;" colspan="4">합 &nbsp;&nbsp;&nbsp;&nbsp; 계</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(qty)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(unitPrice)}}</td>
+                <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(totalAmt)}}</td>
+                <td style="border: solid 1px"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
+            <tbody>
+            <tr style="text-align: center; padding:5px; height: 40px;">
+                <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납기일자</td>
+                <td style="border: solid 1px; padding:5px;" colspan="3">{{tradingHeaderData.deliveryDate}}</td>
+                <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납품장소</td>
+                <td style="border: solid 1px; padding:5px;" colspan="3">{{tradingHeaderData.deliveryAddress}}</td>
+            </tr>
+            <tr style="text-align: center; height: 40px;">
+                <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">비고</td>
+                <td style="border: solid 1px" colspan="7">{{tradingHeaderData.remark}} </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
