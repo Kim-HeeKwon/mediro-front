@@ -191,6 +191,14 @@ export class ManagesService {
         );
     }*/
 
+
+    sendEmail(manages: Manages[]): Observable<{ manages: Manages[] }> {
+
+        return this._common.sendListDataLoading(manages, 'v1/api/udi/supply-info/sendEmail').pipe(
+            switchMap((response: any) => of(response))
+        );
+    }
+
     deleteSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
 
         return this._common.sendListDataLoading(manages, 'v1/api/udi/supply-info/delete').pipe(

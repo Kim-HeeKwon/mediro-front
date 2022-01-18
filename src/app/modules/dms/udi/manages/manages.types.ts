@@ -43,6 +43,7 @@ export interface Manages
     suplyUntpc?: string; 	//공급단가(VAT포함, 원)
     suplyAmt?: string; 	//공급금액(VAT포함, 원)
     remark?: string; 	//비고
+    file?: [];
 }
 
 export interface ManagesPagenation

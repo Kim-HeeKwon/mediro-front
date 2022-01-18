@@ -28,8 +28,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from '../outbound.types';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
-import {TradingHeaderData} from '../../../../../../@teamplat/components/common-report/common-trading/common-trading.types';
-import {CommonTradingComponent} from '../../../../../../@teamplat/components/common-report/common-trading/common-trading.component';
+import {ReportHeaderData} from "../../../../../../@teamplat/components/common-bill/common-bill.types";
+import {CommonBillComponent} from "../../../../../../@teamplat/components/common-bill";
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -44,7 +44,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     isLoading: boolean = false;
     isMobile: boolean = false;
     orderBy: any = 'asc';
-    tradingHeaderData: TradingHeaderData = new TradingHeaderData();
+    reportHeaderData: ReportHeaderData = new ReportHeaderData();
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -133,6 +133,15 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             obDate: [{value: '', disabled: true}], //출고일
             remarkHeader: [''], //비고
             obAmt: [{value: '', disabled: true}],   // 금액
+            toAccountNm: [''],
+            deliveryDate: [''],
+            custBusinessNumber: [''],// 사업자 등록번호
+            custBusinessName: [''],//상호
+            representName: [''],//성명
+            businessCondition: [''],// 업태
+            businessCategory: [''],// 종목
+            phoneNumber: [''],// 전화번호
+            fax: [''],// 팩스번호
             active: [false]  // cell상태
         });
 
@@ -522,26 +531,26 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 remark: data.remarkDetail,
             });
         });
-        this.tradingHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
-        this.tradingHeaderData.date = this.outBoundHeaderForm.getRawValue().obCreDate;
-        this.tradingHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
-        this.tradingHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
-        this.tradingHeaderData.deliveryAddress = '';
-        this.tradingHeaderData.custBusinessNumber = '0';
-        this.tradingHeaderData.custBusinessName = '0';
-        this.tradingHeaderData.representName = '0';
-        this.tradingHeaderData.businessCondition = '0';
-        this.tradingHeaderData.businessCategory = '0';
-        this.tradingHeaderData.phoneNumber = '0' + '0';
-        this.tradingHeaderData.fax = '0' + '0';
-        this.tradingHeaderData.toAccountNm = '0';
-        this.tradingHeaderData.deliveryDate = '0';
+        this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
+        this.reportHeaderData.date = this.outBoundHeaderForm.getRawValue().obCreDate;
+        this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress;
+        this.reportHeaderData.custBusinessNumber = this.outBoundHeaderForm.getRawValue().custBusinessNumber;
+        this.reportHeaderData.custBusinessName = this.outBoundHeaderForm.getRawValue().custBusinessName;
+        this.reportHeaderData.representName = this.outBoundHeaderForm.getRawValue().representName;
+        this.reportHeaderData.businessCondition = this.outBoundHeaderForm.getRawValue().businessCondition;
+        this.reportHeaderData.businessCategory = this.outBoundHeaderForm.getRawValue().businessCategory;
+        this.reportHeaderData.phoneNumber = '0' + this.outBoundHeaderForm.getRawValue().phoneNumber;
+        this.reportHeaderData.fax = '0' + this.outBoundHeaderForm.getRawValue().fax;
+        this.reportHeaderData.toAccountNm = this.outBoundHeaderForm.getRawValue().toAccountNm;
+        this.reportHeaderData.deliveryDate = this.outBoundHeaderForm.getRawValue().dlvDate;
 
-        const popup = this._matDialogPopup.open(CommonTradingComponent, {
+        const popup = this._matDialogPopup.open(CommonBillComponent, {
             data: {
                 divisionText: '거래명세',
                 division: 'OUTBOUND',
-                header: this.tradingHeaderData,
+                header: this.reportHeaderData,
                 body: outboundDetailData,
                 tail: '',
             },

@@ -1,30 +1,29 @@
-import {CommonTradingComponent} from "./common-trading.component";
+import {NgModule} from "@angular/core";
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 import {CommonModule} from "@angular/common";
-import {NgModule} from "@angular/core";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
-import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatRippleModule} from "@angular/material/core";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import {MatRippleModule} from "@angular/material/core";
 import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatTableModule} from "@angular/material/table";
 import {NgxPrintModule} from "ngx-print";
-import {SharedModule} from "../../../../app/shared/shared.module";
 import {MatDialogModule} from "@angular/material/dialog";
-
+import {SharedModule} from "../../../app/shared/shared.module";
+import {CommonBillComponent} from "./common-bill.component";
 
 @NgModule({
     declarations: [
-        CommonTradingComponent
+        CommonBillComponent
     ],
-    imports: [
+    imports     : [
         NgxDatatableModule,
         CommonModule,
         MatButtonModule,
@@ -44,10 +43,10 @@ import {MatDialogModule} from "@angular/material/dialog";
         MatDialogModule,
         SharedModule,
     ],
-    exports: [
-        CommonTradingComponent
-    ],
+    exports     : [
+        CommonBillComponent
+    ]
 })
-export class CommonTradingModule
+export class CommonBillModule
 {
 }

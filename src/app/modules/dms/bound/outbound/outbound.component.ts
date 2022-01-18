@@ -62,6 +62,15 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'dlvDate', dataType: ValueType.TEXT},
         {fieldName: 'obAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkHeader', dataType: ValueType.TEXT},
+        {fieldName: 'toAccountNm', dataType: ValueType.TEXT},
+        {fieldName: 'deliveryDate', dataType: ValueType.TEXT},
+        {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
+        {fieldName: 'custBusinessName', dataType: ValueType.TEXT},
+        {fieldName: 'representName', dataType: ValueType.TEXT},
+        {fieldName: 'businessCondition', dataType: ValueType.TEXT},
+        {fieldName: 'businessCategory', dataType: ValueType.TEXT},
+        {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
+        {fieldName: 'fax', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 

@@ -42,11 +42,12 @@
                             [ngClass]="{'opacity-50' : yearlyBilling}">월 결제</span>
                         <mat-slide-toggle class="ml-2 mr-2"
                             (click)="yearlyBillingBind()"
+                            [checked]="true"
                             [color]="'primary'">
                         </mat-slide-toggle>
                         <span class="text-25s text-bold-600"
                               [ngClass]="{'opacity-50' : !yearlyBilling}">연 결제</span>
-                        <span class="text-17s text-bold-600 ml-2 p-1" style="background-color: #D0E0FF; color: #276EED; border-radius: 4px;"> ~ 15% 할인 </span>
+                        <span class="text-17s text-bold-600 ml-2 p-1" [style]="salesStyle"> ~ 15% 할인 </span>
 <!--                        <button-->
 <!--                            class="px-6"-->
 <!--                            [ngClass]="{'bg-card pointer-events-none shadow': !yearlyBilling,-->

@@ -1,29 +1,30 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     Inject,
-    OnDestroy,
+    OnDestroy, OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import {fuseAnimations} from '../../../animations';
+import {fuseAnimations} from '../../animations';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TradingHeaderData} from './common-trading.types';
 import {Subject} from 'rxjs';
-import {FuseUtilsService} from '../../../services/utils';
+import {FuseUtilsService} from '../../services/utils';
 import {FormBuilder} from '@angular/forms';
-import {CommonPopupService} from '../../common-popup/common-popup.service';
-import {PopupStore} from '../../../../app/core/common-popup/state/popup.store';
+import {CommonPopupService} from '../common-popup/common-popup.service';
+import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 
 @Component({
     selector: 'app-common-trading',
-    templateUrl: 'common-trading.component.html',
-    styleUrls: ['common-trading.component.scss'],
+    templateUrl: './common-trading.component.html',
+    styleUrls: ['./common-trading.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations     : fuseAnimations
 })
-export class CommonTradingComponent implements OnDestroy {
+export class CommonTradingComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     headerText: string = '';
     divisionText: string = '';
@@ -87,7 +88,14 @@ export class CommonTradingComponent implements OnDestroy {
 
 
             }
+
+            console.log(this.detail);
         }
+    }
+    ngOnInit(): void {
+    }
+    ngAfterViewInit(): void {
+
     }
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions

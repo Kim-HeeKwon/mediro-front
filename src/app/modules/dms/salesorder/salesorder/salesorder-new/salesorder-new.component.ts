@@ -385,6 +385,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                         });
                     });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.salesorderDetailDataProvider, salesorderDetail);
+                    for (let i = 0; i < this.salesorderDetailDataProvider.getRowCount(); i++) {
+
+                        this.salesorderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
                     this._changeDetectorRef.markForCheck();
                 });
         }

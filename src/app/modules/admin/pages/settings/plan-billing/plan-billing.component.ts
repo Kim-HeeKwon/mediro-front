@@ -36,6 +36,8 @@ export class SettingsPlanBillingComponent implements OnInit
     payGrade: string = '';
     showAlert: boolean = false;
     yearlyBilling: boolean = false;
+    change: boolean = false;
+    salesStyle = 'background-color: #D0E0FF; color: #276EED; border-radius: 4px;';
     planBillingForm: FormGroup;
     plans: any[];
     enterFee: number = 100;
@@ -84,7 +86,8 @@ export class SettingsPlanBillingComponent implements OnInit
             cardPassword   : ['',[Validators.required]],
             yearPay        : ['']
         });
-        this.planBillingForm.patchValue({'yearUser': 0 + ''});
+        this.planBillingForm.patchValue({'yearUser': 1 + ''});
+        this.yearlyBilling = true;
         this.planBillingForm.patchValue({'payGrade': 'premium' + ''});
 
         // Get Customer Payment Info
@@ -311,10 +314,11 @@ export class SettingsPlanBillingComponent implements OnInit
     yearlyBillingBind() {
         if(this.yearlyBilling){
             this.yearlyBilling = false;
+            this.salesStyle = 'background-color: #F0F0F0; color: #BABABA; border-radius: 4px;';
         }else{
             this.yearlyBilling = true;
+            this.salesStyle = 'background-color: #D0E0FF; color: #276EED; border-radius: 4px;';
         }
-        console.log(this.yearlyBilling);
 
         this.planBillingForm.patchValue({'yearUser': (this.yearlyBilling ? 1 : 0) + ''});
         //this.planBillingForm.patchValue({'payGrade': this.payGrade + ''});

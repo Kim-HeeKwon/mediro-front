@@ -178,6 +178,7 @@ export class Api {
             'sessionSupplier': 'Mediro',
             'sessionOwnrgCd': 'Mediro',
             'sessionUserIp': '0.0.0.0',
+            'sessionBusinessName': localStorage.getItem('businessName'),
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];

@@ -458,9 +458,10 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].effectiveDateH = this.estimateHeaderForm.controls['effectiveDate'].value;
             }
 
-            if(this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+            if(this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+                this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().deliveryDate.value === null ||
                 this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
-                this.estimateHeaderForm.getRawValue().deliveryDate === null ||
                 this.estimateHeaderForm.getRawValue().deliveryDate === ''){
                 sendData[i].deliveryDate = '';
             }else{

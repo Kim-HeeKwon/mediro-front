@@ -366,6 +366,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                     });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderDetailDataProvider, orderDetail);
+                    for (let i = 0; i < this.orderDetailDataProvider.getRowCount(); i++) {
+
+                        this.orderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
                     this._changeDetectorRef.markForCheck();
                 });
         }

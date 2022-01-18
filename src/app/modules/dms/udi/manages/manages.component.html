@@ -73,16 +73,16 @@
                             <span class="ml-2 mr-1">보고 / 재보고</span>
                         </button>
                     </div>
-<!--                    <div class="col-span-12">-->
-<!--                        <button-->
-<!--                            class="ml-3"-->
-<!--                            mat-stroked-button-->
-<!--                            [color]="'accent'"-->
-<!--                            [ngStyle]="{'width': '94%'}"-->
-<!--                            (click)="suplyCreate()">-->
-<!--                            <span class="ml-2 mr-1">추가</span>-->
-<!--                        </button>-->
-<!--                    </div>-->
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="suplyCreate()">
+                            <span class="ml-2 mr-1">추가</span>
+                        </button>
+                    </div>
                     <div class="col-span-12">
                         <button
                             class="ml-3"
@@ -91,6 +91,16 @@
                             [ngStyle]="{'width': '94%'}"
                             (click)="suplyDelete()">
                             <span class="ml-2 mr-1">삭제</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="suplyEmail()">
+                            <span class="ml-2 mr-1">이메일 전송</span>
                         </button>
                     </div>
 
@@ -223,19 +233,26 @@
                                     (click)="suplyUpdate()">
                                     <span class="ml-2 mr-1">수정</span>
                                 </button>-->
-<!--                                <button-->
-<!--                                    class="ml-2 mediro-btn-custom"-->
-<!--                                    mat-stroked-button-->
-<!--                                    [color]="'accent'"-->
-<!--                                    (click)="suplyCreate()">-->
-<!--                                    <span class="ml-2 mr-1">추가</span>-->
-<!--                                </button>-->
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="suplyCreate()">
+                                    <span class="ml-2 mr-1">추가</span>
+                                </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'accent'"
                                     (click)="suplyDelete()">
                                     <span class="ml-2 mr-1">삭제</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="suplyEmail()">
+                                    <span class="ml-2 mr-1">이메일 전송</span>
                                 </button>
                             </div>
                         </div>

@@ -449,6 +449,50 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    suplyEmail() {
+        const checkValues = this._realGridsService.gfn_GetRows(this.gridList, this.managesDataProvider);
+        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+            title: '',
+            message: '전송하시겠습니까?',
+            icon: this._formBuilder.group({
+                show: true,
+                name: 'heroicons_outline:check-circle',
+                color: 'accent'
+            }),
+            actions: this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show: true,
+                    label: '전송',
+                    color: 'accent'
+                }),
+                cancel: this._formBuilder.group({
+                    show: true,
+                    label: '닫기'
+                })
+            }),
+            dismissible: true
+        }).value);
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._managesService.sendEmail(checkValues)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((manage: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this._functionService.cfn_alertCheckMessage(manage);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                            this.select();
+                        });
+                }
+            });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyDelete() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.managesDataProvider);
         if (checkValues.length < 1) {
