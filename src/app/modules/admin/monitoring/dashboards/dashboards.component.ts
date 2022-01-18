@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {merge, Observable, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
 import {
     BillInfo,
     DashboardInfo1,
@@ -22,9 +22,8 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
-import {Chart, ChartEvent} from 'chart.js';
+import {Chart} from 'chart.js';
 import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
-import {createMouseEvent} from "@angular/cdk/testing/testbed/fake-events";
 
 @Component({
     selector: 'app-dashboards',
@@ -492,6 +491,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
+                tooltip: {
+                    xAlign: 'right',
+                    callbacks: {
+                        label: (ctx: Context) => {
+                            return ctx.chart.data.labels[ctx.dataIndex] || '';
+                        }
+                    }
+                },
                 legend: {
                     display: true,
                     labels: {
@@ -506,7 +513,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             onHover: (event, activeElements, chart: Chart) => {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     qtHover = true;
@@ -533,6 +540,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         ctx.fillText('확정', width / 2, top + (height / 2));
                         ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
                     }
+                } else {
+                    qtHover = true;
                 }
             }
         };
@@ -545,7 +554,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(qtHover) {
                     //ctx.fillText('' + max, width / 2, top + (height / 1.85));
@@ -597,6 +606,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (ctx: Context) => {
+                            return ctx.chart.data.labels[ctx.dataIndex] || '';
+                        }
+                    }
+                },
                 legend: {
                     display: true,
                     labels: {
@@ -612,7 +628,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     poHover = true;
@@ -650,7 +666,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(poHover) {
                     ctx.fillText('작성' , width / 2, top + (height / 2));
@@ -699,6 +715,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (ctx: Context) => {
+                            return ctx.chart.data.labels[ctx.dataIndex] || '';
+                        }
+                    }
+                },
                 legend: {
                     display: true,
                     labels: {
@@ -714,7 +737,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     soHover = true;
@@ -748,7 +771,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(soHover) {
                     ctx.fillText('접수' , width / 2, top + (height / 2));
@@ -942,9 +965,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         pointBorderColor: '#206491',
                         pointHoverBackgroundColor: '#206491',
                         pointHoverBorderColor: '#206491',
-                        borderWidth: 1,
-                        pointBorderWidth: 0.1,
-                        hoverBorderWidth: 0.1,
+                        borderWidth: 0,
+                        pointBorderWidth: 0.3,
+                        hoverBorderWidth: 0.3,
                     }, {
                         type: 'bar',
                         label: '당월등록',
@@ -958,30 +981,35 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         pointBorderColor: '#45AAB4',
                         pointHoverBackgroundColor: '#45AAB4',
                         pointHoverBorderColor: '#45AAB4',
-                        borderWidth: 1,
+                        borderWidth: 0,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
                     }],
                     labels: ['1등급', '2등급', '3등급', '4등급']
                 },
                 options: {
-                    responsive: false,
                     plugins: {
                         datalabels: {
-                            color: '#000000',
+                            color: '#ffffff',
                             display: (ctx: Context) => {
                                 if (ctx.dataset.data[ctx.dataIndex] < 1) {
                                     return false;
                                 }
                             },
-                            font: {weight:'bold', size: 10},
+                            font: {weight:'bold', size: 11},
                         },
                         legend: {
+                            labels: {
+                                boxWidth: 10,
+                                padding: 20,
+                                font: {weight: 'bold', size: 10},
+                                color: '#000000'
+                            },
                             position: 'bottom',
                             boxWidth: 0,
                             boxHeight: 0,
                             align: 'center',
-                            font: {size: 13},
+                            font: {size: 8, weight: 'bold'},
                             color: '#000000'
                         },
                     },
@@ -989,12 +1017,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         x: {
                             ticks: {
                                 font: {
-                                    size: 12,
+                                    size: 8,
+                                    weight: 'bold'
                                 },
                                 color: '#000000'
                             }
                         },
                         y: {
+                            display: false,
                             ticks: {
                                 font: {
                                     size: 12,
@@ -1087,6 +1117,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (ctx: Context) => {
+                            return ctx.chart.data.labels[ctx.dataIndex] || '';
+                        }
+                    }
+                },
                 legend: {
                     display: true,
                     labels: {
@@ -1102,7 +1139,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(event.type !== 'mousemove') {
                     doughnut = true;
@@ -1110,16 +1147,20 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (activeElements.length > 0) {
                     if (activeElements[0].index === 0) {
                         doughnut = false;
-                        ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.85));
+                        ctx.fillText('1등급' , width / 2, top + (height / 2));
+                        ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         doughnut = false;
-                        ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.85));
+                        ctx.fillText('2등급' , width / 2, top + (height / 2));
+                        ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         doughnut = false;
-                        ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.85));
+                        ctx.fillText('3등급' , width / 2, top + (height / 2));
+                        ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 3) {
                         doughnut = false;
-                        ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.85));
+                        ctx.fillText('4등급' , width / 2, top + (height / 2));
+                        ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
                     }
                 } else {
                     doughnut = true;
@@ -1134,10 +1175,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '30px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(doughnut) {
-                    ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.85));
+                    ctx.fillText('합계' , width / 2, top + (height / 2));
+                    ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.65));
                 }
             }
         };

@@ -288,12 +288,11 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .progress-inner{
     border-radius: 0px !important;
-    //font-size: 10px !important;
+    font-size: 9px !important;
     text-align: center !important;
     height: 100% !important;
-    //padding-top: 3px !important;
+    padding-top: 6px !important;
     //line-height: 15px;
-    font-size: 13px !important;
     background-color: #3983DC !important;
 }
 .progress-float {
@@ -301,7 +300,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     float: left !important;
     margin: 8px 0% !important;
 }
-
+.progress-outer {
+    height: 80% !important;
+}
 .h-full{
     height: 100% !important;
 }
@@ -401,6 +402,13 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .margin_top-38 {
     margin-top: 12.5px;
+}
+.one-btn {
+    width: 60px;
+    height: 60px !important;
+    border-radius: 50% !important;
+    min-height: 60px !important;
+    min-width: 60px !important;
 }
 //.mat-slide-toggle{
 //    height: 25px !important;

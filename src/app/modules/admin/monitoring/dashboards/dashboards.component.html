@@ -61,7 +61,7 @@
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <div class="chart_css" style="height: 70%;">
-                        <canvas class="" id="qt_chart" baseChart>
+                        <canvas style="margin-top: -15px" id="qt_chart" baseChart>
                         </canvas>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-300">-->
@@ -170,7 +170,7 @@
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <div class="chart_css" style="height: 70%;">
-                        <canvas class="" id="po_chart" baseChart>
+                        <canvas style="margin-top: -15px" id="po_chart" baseChart>
                         </canvas>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-600">-->
@@ -275,7 +275,7 @@
                     <!--                    </div>-->
                     <!--                    <div class="text-lg font-medium text-red-500 dark:text-red-500">작성</div>-->
                     <div class="chart_css" style="height: 70%;">
-                        <canvas class="" id="so_chart" baseChart>
+                        <canvas style="margin-top: -15px" id="so_chart" baseChart>
                         </canvas>
                     </div>
                     <div class="flex flex-col w-full" style="height: 30%;">
@@ -353,7 +353,7 @@
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s w-full text-bold-600"
                          style="padding-top: 17px;">
-                        <div>
+                        <div style="margin-left: 4px">
                             <span class="mr-4">진행상태</span>
                         </div>
                     </div>
@@ -487,7 +487,7 @@
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <div class="flex flex-row flex-shrink-0 items-center ml-2 text-13s text-bold-600 w-full"
                          style="padding-top: 17px;">
-                        <div>
+                        <div style="margin-left: 4px">
                             <span class="mr-4">진행상태</span>
                         </div>
                     </div>
@@ -646,23 +646,23 @@
                             <!-- Recurring selector -->
                             <div class="flex items-center p-0.5 overflow-hidden">
                         <span class="text-13s text-bold-600"
-                              [ngClass]="{'opacity-50' : billop}">매입</span>
+                              [ngClass]="{'opacity-50' : !billop}">매입</span>
                                 <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
                                                   (click)="biiOption()"
                                                   [color]="'warn'"
                                                   [checked]="true">
                                 </mat-slide-toggle>
                                 <span class="text-13s text-bold-600"
-                                      [ngClass]="{'opacity-50' : !billop}">매출</span>
+                                      [ngClass]="{'opacity-50' : billop}">매출</span>
                             </div>
                         </div>
                         <div class="flex flex-col items-center">
                             <div *ngIf="buybool"
-                                 class="col-span-1 flex flex-col items-center justify-center text-13s text-bold-600">
+                                 class="col-span-1 flex flex-col items-center justify-center text-17s text-bold-600">
                                 {{this.buy}}
                             </div>
                             <div *ngIf="salbool"
-                                 class="col-span-1 flex flex-col items-center justify-center text-13s text-bold-600">
+                                 class="col-span-1 flex flex-col items-center justify-center text-17s text-bold-600">
                                 {{this.sal}}
                             </div>
                         </div>
@@ -783,22 +783,22 @@
                         <div class="font-medium text-secondary"></div>
                         <div class="flex-auto grid grid-cols-4 gap-6">
                             <!-- 임시등록 -->
-                            <button class="col-span-2 border-green"
+                            <button class="col-span-2 border-green one-btn"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">임시등록 <br>0</span>
                             </button>
-                            <button class="col-span-2 border-navy"
+                            <button class="col-span-2 border-navy one-btn"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">월보고 <br>{{udiLastDay}}</span>
                             </button>
-                            <button class="col-span-2 border-orange"
+                            <button class="col-span-2 border-orange one-btn"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">반품</span>
                             </button>
-                            <button class="col-span-2 border-red"
+                            <button class="col-span-2 border-red one-btn"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">보고목록</span>
@@ -874,7 +874,7 @@
                         <div>재고</div>
                     </div>
                 </div>
-                <div class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer">
+                <div class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer" style="margin-top: 35px!important;">
                     <!-- New vs. Closed -->
                     <div [ngClass]="{'flex flex-col flex-auto col-span-2': !isMobile,
                                     'flex flex-col flex-auto col-span-6': isMobile}">
