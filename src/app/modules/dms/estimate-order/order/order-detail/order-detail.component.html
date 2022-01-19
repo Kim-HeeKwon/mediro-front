@@ -120,7 +120,20 @@
                                                     </ng-container>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
+                                                <mat-label>휴대 전화
+                                                    <mat-icon class="icon-size-3"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:phone'"
+                                                    matPrefix></mat-icon>
+                                                <input type="text"
+                                                       matInput
+                                                       [formControlName]="'cellPhoneNumber'">
+                                            </mat-form-field>
+                                            <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
                                                 <mat-label>이메일<mat-icon class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <mat-icon
                                                     class="icon-size-5"

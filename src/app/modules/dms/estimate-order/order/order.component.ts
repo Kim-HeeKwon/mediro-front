@@ -55,6 +55,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
+        {fieldName: 'cellPhoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'poAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkHeader', dataType: ValueType.TEXT},
         {fieldName: 'toAccountNm', dataType: ValueType.TEXT},
@@ -600,6 +601,14 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
+
+            ex.orderHeader.forEach((data) => {
+                if(data.cellPhoneNumber === 0){
+                    data.cellPhoneNumber = '';
+                }else{
+                    data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                }
+            });
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.orderHeaderDataProvider, ex.orderHeader);
             this._orderService.orderHeaderPagenation$

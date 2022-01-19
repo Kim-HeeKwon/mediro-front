@@ -33,6 +33,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
+    emailForm: FormGroup;
     manages$: Observable<Manages[]>;
     managesPagenation: ManagesPagenation = {length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0};
 
@@ -136,6 +137,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             bcncName: [''],
             offset: [1],
             limit: [100],
+        });
+        this.emailForm = this._formBuilder.group({
+            recevicrEmail: ['']
         });
 
         const valuesSuplyFlagCode = [];

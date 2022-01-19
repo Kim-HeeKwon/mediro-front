@@ -131,6 +131,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             poDate: [{value: '', disabled: true}], //발주일자
             deliveryDate: [{value: ''}], //납기일자
             email: [], //이메일
+            cellPhoneNumber: [], //휴대전화
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -484,6 +485,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].type = this.orderHeaderForm.controls['type'].value;
             sendData[i].status = this.orderHeaderForm.controls['status'].value;
             sendData[i].email = this.orderHeaderForm.controls['email'].value;
+            sendData[i].cellPhoneNumber = this.orderHeaderForm.controls['cellPhoneNumber'].value;
             sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
 
             if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
@@ -530,6 +532,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.orderHeaderForm.patchValue({'account': result.accountCd});
                         this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
                         this.orderHeaderForm.patchValue({'email': result.email});
+                        this.orderHeaderForm.patchValue({'cellPhoneNumber': result.cellPhoneNumber});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -581,6 +584,13 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
             popup.afterClosed().subscribe((result) => {
                 if (result) {
+                    result.header.forEach((data) => {
+                        if(data.cellPhoneNumber === 0){
+                            data.cellPhoneNumber = '';
+                        }else{
+                            data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                        }
+                    });
                     this.orderHeaderForm.patchValue(
                         result.header[0]
                     );

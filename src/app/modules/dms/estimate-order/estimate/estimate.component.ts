@@ -63,6 +63,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'poCreate', dataType: ValueType.TEXT},
         {fieldName: 'soCreate', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
+        {fieldName: 'cellPhoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
         {fieldName: 'soNo', dataType: ValueType.TEXT},
         {fieldName: 'remarkHeader', dataType: ValueType.TEXT},
@@ -750,6 +751,14 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
+
+            ex.estimateHeader.forEach((data) => {
+                if(data.cellPhoneNumber === 0){
+                    data.cellPhoneNumber = '';
+                }else{
+                    data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                }
+            });
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.estimateHeaderDataProvider, ex.estimateHeader);
             this._estimateService.estimateHeaderPagenation$

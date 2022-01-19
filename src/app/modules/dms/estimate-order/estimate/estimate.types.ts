@@ -17,6 +17,7 @@ export interface Estimate
     type: string;               //유형
     status: string;             //상태
     email: string;              //이메일
+    cellPhoneNumber: string;    //휴대전화
     qtCreDate: string;          //견적생성일자
     qtDate: string;             //견적일자
     qtAmt: number;              //견적금액
@@ -40,6 +41,7 @@ export class EstimateHeader
     type: string;               //유형
     status: string;             //상태
     email: string;              //이메일
+    cellPhoneNumber: string;    //휴대전화
     qtCreDate: string;          //견적생성일자
     qtDate: string;             //견적일자
     qtAmt: number;              //견적금액

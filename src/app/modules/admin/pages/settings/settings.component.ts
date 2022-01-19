@@ -81,6 +81,12 @@ export class SettingsComponent implements OnInit, OnDestroy
                 title      : '결제',
                 description: '결제 정보 관리'
             },
+            {
+                id         : 'kakaoNotificationTalk',
+                icon       : 'question_answer',
+                title      : '알림톡 설정',
+                description: '알림톡 설정 관리'
+            },
         ];
 
         // Subscribe to media changes

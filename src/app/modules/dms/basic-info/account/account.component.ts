@@ -78,6 +78,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'custBusinessName', dataType: ValueType.TEXT},
         {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
+        {fieldName: 'cellPhoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'fax', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
     ];
@@ -208,7 +209,19 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '전화번호', styleName: 'center-cell-text'},
+                header: {text: '대표전화', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'cellPhoneNumber',
+                fieldName: 'cellPhoneNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '휴대전화', styleName: 'center-cell-text'},
                 placeHolder: '',
                 renderer: {
                     showTooltip: true
@@ -516,6 +529,11 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                }else{
                    data.fax = '0' + data.fax;
                }
+                if(data.cellPhoneNumber === 0){
+                    data.cellPhoneNumber = '';
+                }else{
+                    data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                }
             });
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, ex.account);

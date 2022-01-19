@@ -120,6 +120,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             poCreDate: [{value: '', disabled: true}],//발주 생성일자
             poDate: [{value: '', disabled: true}], //발주일자
             email: [],//이메일
+            cellPhoneNumber: [''],//휴대전화
             remarkHeader: [''], //비고
             toAccountNm: [''],
             deliveryDate: [''],
@@ -616,9 +617,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         if(sendData.length === 0){
 
             let deliveryDate = '';
-            if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
+            if(this.orderHeaderForm.getRawValue().deliveryDate === null ||
+                this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
                 this.orderHeaderForm.getRawValue().deliveryDate === undefined ||
-                this.orderHeaderForm.getRawValue().deliveryDate === null ||
                 this.orderHeaderForm.getRawValue().deliveryDate === ''){
             }else{
                 deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
@@ -630,6 +631,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: this.orderHeaderForm.controls['type'].value,
                 status: this.orderHeaderForm.controls['status'].value,
                 email: this.orderHeaderForm.controls['email'].value,
+                cellPhoneNumber: this.orderHeaderForm.controls['cellPhoneNumber'].value,
                 remarkHeader: this.orderHeaderForm.controls['remarkHeader'].value,
                 deliveryDate: deliveryDate,
                 itemCd: '',
@@ -657,6 +659,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].type = this.orderHeaderForm.controls['type'].value;
                 sendData[i].status = this.orderHeaderForm.controls['status'].value;
                 sendData[i].email = this.orderHeaderForm.controls['email'].value;
+                sendData[i].cellPhoneNumber = this.orderHeaderForm.controls['cellPhoneNumber'].value;
                 sendData[i].remarkHeader = this.orderHeaderForm.controls['remarkHeader'].value;
 
                 if(this.orderHeaderForm.getRawValue().deliveryDate.value === '' ||
@@ -737,6 +740,14 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         const header = this._orderService.getHeader(0, 1, '', this.orderBy, searchForm);
         header.then((ex) => {
             if(ex.orderHeader.length === 1){
+                ex.orderHeader.forEach((data) => {
+                    // @ts-ignore
+                    if(data.cellPhoneNumber === 0){
+                        data.cellPhoneNumber = '';
+                    }else{
+                        data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                    }
+                });
                 this.orderHeaderForm.patchValue(
                     ex.orderHeader[0]
                 );

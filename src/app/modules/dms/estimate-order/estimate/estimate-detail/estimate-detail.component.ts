@@ -119,6 +119,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             effectiveDate: [{value: ''}, [Validators.required]], //견적가 적용일자
             deliveryDate: [{value: ''}],
             email: [''],//이메일
+            cellPhoneNumber: [''],//휴대전화
             remarkHeader: [''], //비고
             toAccountNm: [''],
             custBusinessNumber: [''],// 사업자 등록번호
@@ -550,9 +551,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
 
             let deliveryDate = '';
-            if(this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
-                this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
+            if(
                 this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+                this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
                 this.estimateHeaderForm.getRawValue().deliveryDate === ''){
             }else{
                 deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
@@ -564,6 +566,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 type: this.estimateHeaderForm.controls['type'].value,
                 status: this.estimateHeaderForm.controls['status'].value,
                 email: this.estimateHeaderForm.controls['email'].value,
+                cellPhoneNumber: this.estimateHeaderForm.controls['cellPhoneNumber'].value,
                 remarkHeader: this.estimateHeaderForm.controls['remarkHeader'].value,
                 effectiveDateH: effectiveDate,
                 deliveryDate: deliveryDate,
@@ -592,6 +595,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 sendData[i].type = this.estimateHeaderForm.controls['type'].value;
                 sendData[i].status = this.estimateHeaderForm.controls['status'].value;
                 sendData[i].email = this.estimateHeaderForm.controls['email'].value;
+                sendData[i].cellPhoneNumber = this.estimateHeaderForm.controls['cellPhoneNumber'].value;
                 sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
 
                 if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
@@ -700,6 +704,15 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const header = this._estimateService.getHeader(0, 1, '', this.orderBy, searchForm);
         header.then((ex) => {
             if(ex.estimateHeader.length === 1){
+                ex.estimateHeader.forEach((data) => {
+                    // @ts-ignore
+                    if(data.cellPhoneNumber === 0){
+                        data.cellPhoneNumber = '';
+                    }else{
+                        data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                    }
+                });
+
                 this.estimateHeaderForm.patchValue(
                     ex.estimateHeader[0]
                 );

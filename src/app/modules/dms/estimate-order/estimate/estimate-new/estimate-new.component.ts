@@ -120,6 +120,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             deliveryDate: [{value: ''}], //납기일자
             effectiveDate: [{value: ''}, [Validators.required]], //견적가 적용일자
             email: [], //이메일
+            cellPhoneNumber: [], //휴대전화
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -447,6 +448,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].status = this.estimateHeaderForm.controls['status'].value;
             sendData[i].soNo = '';
             sendData[i].email = this.estimateHeaderForm.controls['email'].value;
+            sendData[i].cellPhoneNumber = this.estimateHeaderForm.controls['cellPhoneNumber'].value;
             sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
 
             if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
@@ -503,6 +505,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.estimateHeaderForm.patchValue({'account': result.accountCd});
                         this.estimateHeaderForm.patchValue({'accountNm': result.accountNm});
                         this.estimateHeaderForm.patchValue({'email': result.email});
+                        this.estimateHeaderForm.patchValue({'cellPhoneNumber': result.cellPhoneNumber});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -552,6 +555,14 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
             popup.afterClosed().subscribe((result) => {
                 if (result) {
+                    result.header.forEach((data) => {
+                        if(data.cellPhoneNumber === 0){
+                            data.cellPhoneNumber = '';
+                        }else{
+                            data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+                        }
+                    });
+
                     this.estimateHeaderForm.patchValue(
                         result.header[0]
                     );

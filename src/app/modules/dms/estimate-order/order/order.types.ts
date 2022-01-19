@@ -19,6 +19,7 @@ export interface Order
     type: string;               //유형
     status: string;             //상태
     email: string;              //이메일
+    cellPhoneNumber: string;    //휴대전화
     poCreDate: string;          //발주생성일자
     poDate: string;             //발주일자
     deliveryDate?: string;          //납기일자
@@ -40,6 +41,7 @@ export class OrderHeader
     type: string;               //유형
     status: string;             //상태
     email: string;              //이메일
+    cellPhoneNumber: string;    //휴대전화
     poCreDate: string;          //발주생성일자
     poDate: string;             //발주일자
     poAmt: number;              //발주금액

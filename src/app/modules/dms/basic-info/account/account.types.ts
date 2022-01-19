@@ -11,6 +11,7 @@ export interface AccountData
     businessCategory: string;   //종목
     address: string;            //주소
     phoneNumber: string;        //대표 전화
+    cellPhoneNumber: string;    //휴대 전화
     fax: string;                //팩스
     email: string;              //이메일
     addDate?: string;
