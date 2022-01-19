@@ -462,11 +462,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     qtChart() {
 
         const doughnutChartLabels = [
-            '작성 : ' + this.qtInfo.nCnt,
-            '요청 : ' + this.qtInfo.sCnt,
-            '재요청 : ' + this.qtInfo.rsCnt,
-            '미확정 : ' + this.qtInfo.cfaCnt,
-            '확정 : ' + this.qtInfo.cfCnt];
+            '작성',
+            '요청',
+            '재요청',
+            '미확정',
+            '확정'];
         const doughnutChartData = {
             labels: doughnutChartLabels,
             datasets: [
@@ -493,16 +493,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             plugins: {
                 tooltip: {
                     xAlign: 'right',
-                    callbacks: {
-                        label: (ctx: Context) => {
-                            return ctx.chart.data.labels[ctx.dataIndex] || '';
-                        }
-                    }
+                    yAlign: 'top'
                 },
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 0,
+                        boxWidth: 8,
                         font: {weight: 'bold', size: 13},
                         textAlign: 'left',
                         color: '#000000'
@@ -513,31 +509,33 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             onHover: (event, activeElements, chart: Chart) => {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(event.type !== 'mousemove') {
+                if (event.type !== 'mousemove') {
                     qtHover = true;
                 }
                 if (activeElements.length > 0) {
+                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
                     if (activeElements[0].index === 0) {
                         qtHover = false;
-                        ctx.fillText('작성', width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         qtHover = false;
-                        ctx.fillText('요청', width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         qtHover = false;
-                        ctx.fillText('재요청', width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 3) {
                         qtHover = false;
-                        ctx.fillText('미확정', width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 4) {
                         qtHover = false;
-                        ctx.fillText('확정', width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
                     }
                 } else {
@@ -556,10 +554,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(qtHover) {
+                if (qtHover) {
                     //ctx.fillText('' + max, width / 2, top + (height / 1.85));
-                    ctx.fillText('작성' , width / 2, top + (height / 2));
-                    ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
+                    ctx.fillText('합계', width / 2, top + (height / 2));
+                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
                 }
             }
         };
@@ -577,10 +575,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     poChart() {
         const doughnutChartLabels = [
-            '작성 : ' + this.poInfo.nCnt,
-            '발송 : ' + this.poInfo.sCnt,
-            '미확정 : ' + this.poInfo.cfaCnt,
-            '확정 : ' + this.poInfo.cfCnt];
+            '작성',
+            '발송',
+            '미확정',
+            '확정'];
 
         const doughnutChartData = {
             labels: doughnutChartLabels,
@@ -607,16 +605,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             plugins: {
                 tooltip: {
-                    callbacks: {
-                        label: (ctx: Context) => {
-                            return ctx.chart.data.labels[ctx.dataIndex] || '';
-                        }
-                    }
+                    xAlign: 'right',
+                    yAlign: 'top'
                 },
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 0,
+                        boxWidth: 8,
                         font: {weight: 'bold', size: 13},
                         textAlign: 'left',
                         color: '#000000'
@@ -628,27 +623,29 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(event.type !== 'mousemove') {
+                if (event.type !== 'mousemove') {
                     poHover = true;
                 }
                 if (activeElements.length > 0) {
+                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
                     if (activeElements[0].index === 0) {
                         poHover = false;
-                        ctx.fillText('작성' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         poHover = false;
-                        ctx.fillText('발송' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + po.sCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         poHover = false;
-                        ctx.fillText('미확정' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + po.cfaCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 3) {
                         poHover = false;
-                        ctx.fillText('확정' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.65));
                     }
                 } else {
@@ -668,9 +665,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(poHover) {
-                    ctx.fillText('작성' , width / 2, top + (height / 2));
-                    ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.65));
+                if (poHover) {
+                    ctx.fillText('합계', width / 2, top + (height / 2));
+                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
                 }
             }
         };
@@ -687,9 +684,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     soChart() {
         const doughnutChartLabels = [
-            '접수 : ' + this.soInfo.nCnt,
-            '취소 : ' + this.soInfo.cCnt,
-            '등록 : ' + this.soInfo.sCnt,];
+            '접수',
+            '취소',
+            '등록'];
 
         const doughnutChartData = {
             labels: doughnutChartLabels,
@@ -716,16 +713,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             plugins: {
                 tooltip: {
-                    callbacks: {
-                        label: (ctx: Context) => {
-                            return ctx.chart.data.labels[ctx.dataIndex] || '';
-                        }
-                    }
+                    xAlign: 'right',
+                    yAlign: 'top'
                 },
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 0,
+                        boxWidth: 8,
                         font: {weight: 'bold', size: 13},
                         textAlign: 'left',
                         color: '#000000'
@@ -737,23 +731,25 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(event.type !== 'mousemove') {
+                if (event.type !== 'mousemove') {
                     soHover = true;
                 }
                 if (activeElements.length > 0) {
+                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
                     if (activeElements[0].index === 0) {
                         soHover = false;
-                        ctx.fillText('접수' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         soHover = false;
-                        ctx.fillText('취소' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + so.cCnt, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         soHover = false;
-                        ctx.fillText('등록' , width / 2, top + (height / 2));
+                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.65));
                     }
                 } else {
@@ -773,9 +769,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(soHover) {
-                    ctx.fillText('접수' , width / 2, top + (height / 2));
-                    ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.65));
+                if (soHover) {
+                    ctx.fillText('합계', width / 2, top + (height / 2));
+                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
                 }
             }
         };
@@ -996,7 +992,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                                     return false;
                                 }
                             },
-                            font: {weight:'bold', size: 11},
+                            font: {weight: 'bold', size: 11},
                         },
                         legend: {
                             labels: {
@@ -1121,7 +1117,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     callbacks: {
                         label: (ctx: Context) => {
                             return ctx.chart.data.labels[ctx.dataIndex] || '';
-                        }
+                        },
+                        xAlign: 'right',
+                        yAlign: 'bottom'
                     }
                 },
                 legend: {
@@ -1139,27 +1137,28 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(event.type !== 'mousemove') {
+                if (event.type !== 'mousemove') {
                     doughnut = true;
                 }
                 if (activeElements.length > 0) {
+                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                    ctx.fillText(activeElements[0].index + 1 + '등급', width / 2, top + (height / 2.2));
                     if (activeElements[0].index === 0) {
                         doughnut = false;
-                        ctx.fillText('1등급' , width / 2, top + (height / 2));
+                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         doughnut = false;
-                        ctx.fillText('2등급' , width / 2, top + (height / 2));
+                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         doughnut = false;
-                        ctx.fillText('3등급' , width / 2, top + (height / 2));
+                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 3) {
                         doughnut = false;
-                        ctx.fillText('4등급' , width / 2, top + (height / 2));
+                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
                     }
                 } else {
@@ -1177,8 +1176,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if(doughnut) {
-                    ctx.fillText('합계' , width / 2, top + (height / 2));
+                if (doughnut) {
+                    ctx.fillText('합계', width / 2, top + (height / 2));
                     ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.65));
                 }
             }
