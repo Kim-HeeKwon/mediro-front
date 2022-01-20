@@ -162,7 +162,7 @@
                 </div>
             </div>
             <!-- 발주 -->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
@@ -263,7 +263,7 @@
             <!--                </div>-->
             <!--            </div>-->
             <!-- 주문 -->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
@@ -344,7 +344,7 @@
             <!--                </div>-->
             <!--            </div>-->
             <!-- 입고 -->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
@@ -478,7 +478,7 @@
             <!--                </div>-->
             <!--            </div>-->
             <!-- 출고 -->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
@@ -630,7 +630,7 @@
             <!--                    </div>-->
             <!--                </div>-->
             <!--            </div>-->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
                 <div class="flex flex-col items-center mt-4">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
@@ -660,11 +660,11 @@
                         <div class="flex flex-col items-center">
                             <div *ngIf="buybool"
                                  class="col-span-1 flex flex-col items-center justify-center text-17s text-bold-600">
-                                {{this.buy}}
+                                {{this.priceToString(this.buy)}}
                             </div>
                             <div *ngIf="salbool"
                                  class="col-span-1 flex flex-col items-center justify-center text-17s text-bold-600">
-                                {{this.sal}}
+                                {{this.priceToString(this.sal)}}
                             </div>
                         </div>
                     </div>
@@ -733,7 +733,7 @@
             <!--            </div>-->
 
             <!-- 공급내역 보고 -->
-            <div
+            <div [ngClass]="{'mt-2': isMobile}"
                 class="sm:col-span-3 md:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
                 <div class="flex flex-col items-center mt-2">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
