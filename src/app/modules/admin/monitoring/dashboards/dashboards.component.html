@@ -107,7 +107,7 @@
                             <button class="col-span-2 border-navy"
                                     mat-raised-button
                                     [color]="'basic'"
-                                    (click)="goPage({gbn: 'QT' , status: 'N'})">
+                                    (click)="goPage({gbn: 'QT' , status: 'S'})">
                                 <span class="text-13s text-bold-600">요청 {{qtInfo.sCnt}}</span>
                             </button>
                             <button class="col-span-2 border-orange"
@@ -788,7 +788,8 @@
                             <button [ngClass]="{'col-span-1 border-green one-btn': isMobile,
                                     'col-span-2 border-green one-btn': !isMobile}"
                                     mat-raised-button
-                                    [color]="'basic'">
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'UDI' , status: ''})">
                                 <span class="text-13s text-bold-600">임시등록 <br>0</span>
                             </button>
                             <button [ngClass]="{'col-span-1 border-navy one-btn': isMobile,
@@ -800,13 +801,15 @@
                             <button [ngClass]="{'col-span-1 border-orange one-btn': isMobile,
                                     'col-span-2 border-orange one-btn': !isMobile}"
                                     mat-raised-button
-                                    [color]="'basic'">
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'UDI_RTN' , status: ''})">
                                 <span class="text-13s text-bold-600">반품</span>
                             </button>
                             <button [ngClass]="{'col-span-1 border-red one-btn': isMobile,
                                     'col-span-2 border-red one-btn': !isMobile}"
                                     mat-raised-button
-                                    [color]="'basic'">
+                                    [color]="'basic'"
+                                    (click)="goPage({gbn: 'UDI' , status: ''})">
                                 <span class="text-13s text-bold-600">보고목록</span>
                             </button>
 <!--                            <div-->

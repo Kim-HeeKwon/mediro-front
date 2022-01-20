@@ -159,7 +159,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: 'UDI 공급내역보고',
+                title: '식약처 공급내역보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
@@ -581,7 +581,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         children: [
             {
                 id   : 'udi.manages',
-                title: 'UDI 공급내역보고',
+                title: '식약처 공급내역보고',
                 type : 'basic',
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'

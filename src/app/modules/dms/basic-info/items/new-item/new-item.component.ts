@@ -226,7 +226,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
-            this._itemService.getItems(0,10,'itemCd','asc','');
+            this._itemService.getItems(0,40,'addDate','desc','');
         }
     }
 

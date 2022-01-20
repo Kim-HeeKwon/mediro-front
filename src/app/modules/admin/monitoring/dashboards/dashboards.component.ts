@@ -444,6 +444,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this._router.navigate(['/calculate/bill', {status: obj.status}]);
         } else if (obj.gbn === 'TAX') {
             this._router.navigate(['/calculate/tax', {status: obj.status}]);
+        }else if(obj.gbn === 'UDI'){
+            this._router.navigate(['/udi/manages']);
+        }else if(obj.gbn === 'UDI_RTN'){
+            this._router.navigate(['/bound/inbound']);
         }
 
 

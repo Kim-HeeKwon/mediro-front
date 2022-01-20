@@ -27,6 +27,7 @@ import {SalesorderService} from '../salesorder.service';
 import {takeUntil} from 'rxjs/operators';
 import {SalesOrder} from '../salesorder.types';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-salesorder-new',
@@ -393,6 +394,12 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                     this._changeDetectorRef.markForCheck();
                 });
         }
+
+        const now = new Date();
+        const dlvDate = formatDate(new Date(now.setDate(now.getDate() + 7)), 'yyyy-MM-dd', 'en');
+
+        this.salesorderHeaderForm.patchValue({dlvDate: dlvDate});
+        this._changeDetectorRef.markForCheck();
     }
 
     ngAfterViewInit(): void {
