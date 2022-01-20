@@ -484,7 +484,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let qtHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                return 42;
+                if (this.isMobile) {
+                    return 70;
+                } else {
+                    return 42;
+                }
             },
             plugins: {
                 tooltip: {
@@ -548,10 +552,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (qtHover) {
-                    //ctx.fillText('' + max, width / 2, top + (height / 1.85));
                     ctx.fillText('합계', width / 2, top + (height / 2));
                     ctx.fillText('' + max, width / 2, top + (height / 1.65));
                 }
@@ -593,7 +596,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let poHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                return 42;
+                if (this.isMobile) {
+                    return 70;
+                } else {
+                    return 42;
+                }
             },
             plugins: {
                 tooltip: {
@@ -655,7 +662,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (poHover) {
                     ctx.fillText('합계', width / 2, top + (height / 2));
@@ -697,7 +704,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let soHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                return 42;
+                if (this.isMobile) {
+                    return 70;
+                } else {
+                    return 42;
+                }
             },
             plugins: {
                 tooltip: {
@@ -755,7 +766,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (soHover) {
                     ctx.fillText('합계', width / 2, top + (height / 2));
@@ -1098,7 +1109,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let doughnut = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                return 35;
+                if (this.isMobile) {
+                    return 70;
+                } else {
+                    return 35;
+                }
             },
             plugins: {
                 tooltip: {
@@ -1134,19 +1149,19 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     ctx.fillText(activeElements[0].index + 1 + '등급', width / 2, top + (height / 2.2));
                     if (activeElements[0].index === 0) {
                         doughnut = false;
-                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 1) {
                         doughnut = false;
-                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 2) {
                         doughnut = false;
-                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
                     } else if (activeElements[0].index === 3) {
                         doughnut = false;
-                        ctx.font = '22px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                         ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
                     }
                 } else {
@@ -1162,7 +1177,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (doughnut) {
                     ctx.fillText('합계', width / 2, top + (height / 2));

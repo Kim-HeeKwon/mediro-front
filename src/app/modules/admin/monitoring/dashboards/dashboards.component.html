@@ -46,7 +46,8 @@
     <!-- Main -->
     <div class="flex-auto mt-6 mx-2 sm:mt-6 sm:mx-2">
 
-        <div class="grid grid-cols-2 sm:grid-cols-6 md:grid-cols-6 gap-2 w-full min-w-0" style="height: 100%;">
+        <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0': isMobile,
+                                    'grid grid-cols-2 sm:grid-cols-6 md:grid-cols-6 gap-2 w-full min-w-0': !isMobile}">
             <div
                 class="flex flex-col sm:col-span-6 flex-auto">
 
@@ -61,7 +62,7 @@
                 </div>
                 <div class="flex flex-col items-center mb-4" style="height: 90%;">
                     <div class="chart_css" style="height: 70%;">
-                        <canvas style="margin-top: -15px" id="qt_chart" baseChart width="190.4px" height="178px">
+                        <canvas style="margin-top: -15px" id="qt_chart" baseChart>
                         </canvas>
                     </div>
                     <!--                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-300">-->
@@ -753,7 +754,8 @@
                 </div>
                 <div class="grid grid-cols-5 lg:grid-cols-5 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer">
                     <!-- New vs. Closed -->
-                    <div class="flex flex-col flex-auto col-span-3">
+                    <div [ngClass]="{'flex flex-col flex-auto col-span-6': isMobile,
+                                    'flex flex-col flex-auto col-span-3': !isMobile}">
                         <div class="font-medium text-secondary"></div>
                         <div class="chart_css h-full">
                             <canvas class="w-full h-full" id="udi_chart" baseChart width="310" height="174">
@@ -781,24 +783,28 @@
                     <div [ngClass]="{'flex flex-col p-6 col-span-6': isMobile,
                                     'flex flex-col p-6 col-span-2': !isMobile}">
                         <div class="font-medium text-secondary"></div>
-                        <div class="flex-auto grid grid-cols-4 gap-2">
+                        <div class="flex-auto grid grid-cols-4 gap-6">
                             <!-- 임시등록 -->
-                            <button class="col-span-2 border-green one-btn"
+                            <button [ngClass]="{'col-span-1 border-green one-btn': isMobile,
+                                    'col-span-2 border-green one-btn': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">임시등록 <br>0</span>
                             </button>
-                            <button class="col-span-2 border-navy one-btn"
+                            <button [ngClass]="{'col-span-1 border-navy one-btn': isMobile,
+                                    'col-span-2 border-navy one-btn': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">월보고 <br>{{udiLastDay}}</span>
                             </button>
-                            <button class="col-span-2 border-orange one-btn"
+                            <button [ngClass]="{'col-span-1 border-orange one-btn': isMobile,
+                                    'col-span-2 border-orange one-btn': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">반품</span>
                             </button>
-                            <button class="col-span-2 border-red one-btn"
+                            <button [ngClass]="{'col-span-1 border-red one-btn': isMobile,
+                                    'col-span-2 border-red one-btn': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">보고목록</span>
