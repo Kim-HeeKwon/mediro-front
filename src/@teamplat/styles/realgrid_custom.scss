@@ -314,16 +314,16 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .border-green:hover{
     border: 2px solid #45AAB4;
-    background: #45AAB4;
-    color: #ffffff;
+    background: #45AAB4 !important;
+    color: #ffffff !important;
 }
 .border-red{
     border: 2px solid #F36480;
 }
 .border-red:hover{
     border: 2px solid #F36480;
-    background: #F36480;
-    color: #ffffff;
+    background: #F36480 !important;
+    color: #ffffff !important;
 }
 .border-yellow{
     border: 1px solid yellow;
@@ -338,16 +338,16 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .border-navy:hover{
     border: 2px solid #206491;
-    background: #206491;
-    color: #ffffff;
+    background: #206491 !important;
+    color: #ffffff !important;
 }
 .border-orange{
     border: 2px solid #FBB45C;
 }
 .border-orange:hover{
     border: 2px solid #FBB45C;
-    background: #FBB45C;
-    color: #ffffff;
+    background: #FBB45C !important;
+    color: #ffffff !important;
 }
 
 .rounded-1xl{
@@ -404,10 +404,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     margin-top: 12.5px;
 }
 .one-btn {
-    width: 60px;
-    height: 60px !important;
-    border-radius: 50% !important;
-    min-height: 60px !important;
+    width: 60px !important;
+    border-radius: 25% !important;
     min-width: 60px !important;
 }
 //.mat-slide-toggle{

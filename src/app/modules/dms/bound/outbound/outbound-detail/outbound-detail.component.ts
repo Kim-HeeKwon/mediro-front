@@ -28,8 +28,8 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {OutBound} from '../outbound.types';
 import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/common-udi-scan';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
-import {ReportHeaderData} from "../../../../../../@teamplat/components/common-bill/common-bill.types";
-import {CommonBillComponent} from "../../../../../../@teamplat/components/common-bill";
+import {ReportHeaderData} from '../../../../../../@teamplat/components/common-bill/common-bill.types';
+import {CommonBillComponent} from '../../../../../../@teamplat/components/common-bill';
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -516,6 +516,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const outboundDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
+        console.log(rows);
         rows.forEach((data: any) => {
             index++;
             outboundDetailData.push({
@@ -524,11 +525,12 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
-                qty: data.qty,
+                qty: data.obQty,
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,
                 remark: data.remarkDetail,
+                tax: data.totalAmt / 10
             });
         });
         this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;

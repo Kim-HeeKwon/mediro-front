@@ -484,11 +484,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let qtHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                if (this.isMobile) {
-                    return 45;
-                } else {
-                    return 50;
-                }
+                return 42;
             },
             plugins: {
                 tooltip: {
@@ -498,8 +494,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 8,
-                        font: {weight: 'bold', size: 13},
+                        boxWidth: 7,
+                        font: {weight: 'bold', size: 11},
                         textAlign: 'left',
                         color: '#000000'
                     },
@@ -597,11 +593,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let poHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                if (this.isMobile) {
-                    return 45;
-                } else {
-                    return 50;
-                }
+                return 42;
             },
             plugins: {
                 tooltip: {
@@ -611,8 +603,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 8,
-                        font: {weight: 'bold', size: 13},
+                        boxWidth: 7,
+                        font: {weight: 'bold', size: 11},
                         textAlign: 'left',
                         color: '#000000'
                     },
@@ -684,9 +676,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     soChart() {
         const doughnutChartLabels = [
-            '접수',
-            '취소',
-            '등록'];
+            '접수 ',
+            '취소 ',
+            '등록 '];
 
         const doughnutChartData = {
             labels: doughnutChartLabels,
@@ -705,11 +697,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let soHover = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                if (this.isMobile) {
-                    return 45;
-                } else {
-                    return 50;
-                }
+                return 42;
             },
             plugins: {
                 tooltip: {
@@ -719,8 +707,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 legend: {
                     display: true,
                     labels: {
-                        boxWidth: 8,
-                        font: {weight: 'bold', size: 13},
+                        boxWidth: 7,
+                        font: {weight: 'bold', size: 11},
                         textAlign: 'left',
                         color: '#000000'
                     },
@@ -846,6 +834,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             options: {
                 plugins: {
+                    tooltip: {
+                        xAlign: 'right',
+                        yAlign: 'top'
+                    },
                     legend: {
                         display: false,
                         boxWidth: 0,
@@ -1106,11 +1098,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let doughnut = true;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
-                if (this.isMobile) {
-                    return 45;
-                } else {
-                    return 43;
-                }
+                return 35;
             },
             plugins: {
                 tooltip: {
@@ -1126,7 +1114,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     display: true,
                     labels: {
                         boxWidth: 0,
-                        font: {weight: 'bold', size: 13},
+                        font: {weight: 'bold', size: 11},
                         textAlign: 'left',
                         color: '#000000'
                     },

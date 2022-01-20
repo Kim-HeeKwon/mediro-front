@@ -33,6 +33,8 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
     unitPrice: number = 0;
     totalAmt: number = 0;
     taxAmt: number = 0;
+    totalTax: number = 0;
+    totalPrice: number = 0;
     reportHeaderData: ReportHeaderData = new ReportHeaderData();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
@@ -66,7 +68,9 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.unitPrice += reportDetail.unitPrice;
                 this.totalAmt += reportDetail.totalAmt;
                 this.taxAmt += reportDetail.taxAmt;
+                this.totalTax += reportDetail.tax;
             });
+            this.totalPrice = this.totalAmt +  this.totalTax;
 
             if(this.detail.length < 20){
                 let idx = this.detail.length;
@@ -77,6 +81,7 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                         itemNm: '',
                         no: idx+1,
                         qty: '',
+                        tax: '',
                         remark: '',
                         standard: '',
                         taxAmt: '',
