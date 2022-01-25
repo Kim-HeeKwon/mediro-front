@@ -370,7 +370,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
+        // this.setGridData();
 
         // Get the pagenation
         this._itemService.pagenation$

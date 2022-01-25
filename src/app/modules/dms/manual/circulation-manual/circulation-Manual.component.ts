@@ -161,91 +161,91 @@ export class circulationManualComponent {
     estimateCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c1c25a43-963a-40e3-9f6c-d1a1b39acf18/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8_%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072150Z&X-Amz-Expires=86400&X-Amz-Signature=755ec521e7d4a23cf442f5d111917968dabb2c9a579dddcdeaad2eac52c90ba4&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%2520%25E1%2584%258C%25E1%2585%25A1%25E1%2586%25A8%25E1%2584%2589%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/NMvS7hxaAQ8');
     }
 
     estimateUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/88f11a16-722e-4069-a387-6fae461cbd14/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8_%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072221Z&X-Amz-Expires=86400&X-Amz-Signature=bb98b8303e38ec059bd3b1f60c087210bd61e5d6f586a6626f3218402db528ad&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%2520%25E1%2584%2589%25E1%2585%25AE%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/QOoD_nyUvXs');
     }
 
     estimateDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c90aa1a8-053f-41c1-9806-72c2dfb285b2/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8_%E1%84%8E%E1%85%B1%E1%84%89%E1%85%A9.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072256Z&X-Amz-Expires=86400&X-Amz-Signature=58e0370b3c0672f8e0ff6d60f38a66c9c3bb930e9c24f7b0d8a9475d0ee3a1ba&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%2520%25E1%2584%258E%25E1%2585%25B1%25E1%2584%2589%25E1%2585%25A9.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/TkkGfbgAe7s');
     }
 
     estimateSend(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/ba3abd0b-9d2d-43c4-bf04-b99d47836ae9/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8%E1%84%89%E1%85%A5_%E1%84%87%E1%85%A1%E1%86%AF%E1%84%89%E1%85%A9%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072433Z&X-Amz-Expires=86400&X-Amz-Signature=5c5e6fd6bb282ae4175a6111a5ef9648acec0fbe18a570632b6191370ecf18cc&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%25E1%2584%2589%25E1%2585%25A5%2520%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%2589%25E1%2585%25A9%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/kVEDl-Hx78U');
     }
 
     estimateConfirmed(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5008d87b-3e3b-4062-b1f8-0729cbb5c47e/%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8_%E1%84%92%E1%85%AA%E1%86%A8%E1%84%8C%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072536Z&X-Amz-Expires=86400&X-Amz-Signature=20960f152cef864cc5ab8938f923d01bce7ae2d52975113f37dd5439840f8e44&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2580%25E1%2585%25A7%25E1%2586%25AB%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25A8%2520%25E1%2584%2592%25E1%2585%25AA%25E1%2586%25A8%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/cUl7XpwFioU');
     }
 
     orderLookUp(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0e89f8cb-3446-4c92-80fa-9581b4e40268/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE_%E1%84%8C%E1%85%A9%E1%84%92%E1%85%AC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072754Z&X-Amz-Expires=86400&X-Amz-Signature=30aece58a81edab8df097a704ce3d38d99e78ff66cc1128ffff7019a1cd4377b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%2520%25E1%2584%258C%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Rk_UPetcCkc');
     }
 
     orderCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e84084d9-8544-4de0-bfd8-e3791ed3a330/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE_%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072818Z&X-Amz-Expires=86400&X-Amz-Signature=10dfb39b07c94b053abe9b06b0196d6099bda4dc20cb04c51792412e5403ff03&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%2520%25E1%2584%258C%25E1%2585%25A1%25E1%2586%25A8%25E1%2584%2589%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Rf0ocaW-OXA');
     }
 
     orderUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5d0e9137-52c1-46c5-9fbf-b023ce45bcc8/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE_%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072847Z&X-Amz-Expires=86400&X-Amz-Signature=f864c5a3452c6275d289b1ff0cc05744de5bb1a265db072ce9698becee915a36&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%2520%25E1%2584%2589%25E1%2585%25AE%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/6s3sA3VWj_k');
     }
 
     orderDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/ae95ce04-69ce-4c00-a5b3-5278d9b3b69b/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE_%E1%84%8E%E1%85%B1%E1%84%89%E1%85%A9.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T072922Z&X-Amz-Expires=86400&X-Amz-Signature=c5c1f89a7460e8a61aec39cf6f994e87b610ac07cc378cee852fab098cb2ce9b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%2520%25E1%2584%258E%25E1%2585%25B1%25E1%2584%2589%25E1%2585%25A9.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/yvfoZwe-HN8');
     }
 
     orderSend(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/05551595-5e0e-4ab4-94c6-e8f99a2f20ca/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A5_%E1%84%87%E1%85%A1%E1%86%AF%E1%84%89%E1%85%A9%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073002Z&X-Amz-Expires=86400&X-Amz-Signature=4e1d108e323d04d58f197d2b679ffe06802eb7a2eb74f3138b34a99448945460&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2589%25E1%2585%25A5%2520%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%2589%25E1%2585%25A9%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/FPeCjUY-g28');
     }
 
     orderConfirmed(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2a05c09a-b7c4-4b05-a172-47eefc7c8565/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE%E1%84%89%E1%85%A5_%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%AE.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073028Z&X-Amz-Expires=86400&X-Amz-Signature=ecfc0170b80f3b1b4389f968b1d8422b3714093b161ba3333c0f052ba1f1573b&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2589%25E1%2585%25A5%2520%25E1%2584%2587%25E1%2585%25A1%25E1%2586%25AF%25E1%2584%258C%25E1%2585%25AE.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/f1PkWYsLZrc');
     }
 
     salesorderLookUp(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a806c098-a8f0-49f3-add0-6ac31d596af6/%E1%84%8C%E1%85%AE%E1%84%86%E1%85%AE%E1%86%AB_%E1%84%8C%E1%85%A9%E1%84%92%E1%85%AC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073235Z&X-Amz-Expires=86400&X-Amz-Signature=6a178e4fc1d62a2ce1abc1d624eac7828f3c5728c6187f225bb2c00b75e40e23&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2586%25E1%2585%25AE%25E1%2586%25AB%2520%25E1%2584%258C%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/niu-pTopEK8');
     }
 
     salesorderCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4cc94c1c-6f88-46c5-a6f9-f5cdedbf7e37/%E1%84%8C%E1%85%AE%E1%84%86%E1%85%AE%E1%86%AB_%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073304Z&X-Amz-Expires=86400&X-Amz-Signature=4c504c00f80934cc58ed0877c52470e56bdcb644b370781bc78327b86911eaa0&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2586%25E1%2585%25AE%25E1%2586%25AB%2520%25E1%2584%258C%25E1%2585%25A1%25E1%2586%25A8%25E1%2584%2589%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/-gXVOAldjBM');
     }
 
     salesorderUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/56d8ca46-bee0-4124-a6dc-d11986a0fff3/%E1%84%8C%E1%85%AE%E1%84%86%E1%85%AE%E1%86%AB_%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073333Z&X-Amz-Expires=86400&X-Amz-Signature=f79e54367d6589fb362884cb3714eecda175356fb75a8d0596b836250b3ba02a&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2586%25E1%2585%25AE%25E1%2586%25AB%2520%25E1%2584%2589%25E1%2585%25AE%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/0adABotdj40');
     }
 
     salesorderDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/073f77fb-d053-443b-8f1f-406f1afa9d4d/%E1%84%8C%E1%85%AE%E1%84%86%E1%85%AE%E1%86%AB_%E1%84%8E%E1%85%B1%E1%84%89%E1%85%A9.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T073358Z&X-Amz-Expires=86400&X-Amz-Signature=a93f383ed436a5f5fecacd099af29f5f8a04c2ad1f6ab90bc3668af0427a9fd3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25AE%25E1%2584%2586%25E1%2585%25AE%25E1%2586%25AB%2520%25E1%2584%258E%25E1%2585%25B1%25E1%2584%2589%25E1%2585%25A9.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Xc2n0qEjZiM');
     }
 
     salesorderRefund(): void {

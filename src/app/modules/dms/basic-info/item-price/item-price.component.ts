@@ -345,7 +345,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         };
 
-        this.setGridData();
+        // this.setGridData();
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
         this._itemPriceService.itemPricePagenation$

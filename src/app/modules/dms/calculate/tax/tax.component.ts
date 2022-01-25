@@ -1,25 +1,25 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {merge, Observable, Subject} from "rxjs";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {InvoiceDetail, InvoiceHeader, InvoiceHeaderPagenation} from "./tax.types";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {TaxService} from "./tax.service";
-import {Common} from "../../../../../@teamplat/providers/common/common";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {SessionStore} from "../../../../core/session/state/session.store";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
-import {DeviceDetectorService} from "ngx-device-detector";
-import * as moment from "moment";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {environment} from "../../../../../environments/environment";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {merge, Observable, Subject} from 'rxjs';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import {InvoiceDetail, InvoiceHeader, InvoiceHeaderPagenation} from './tax.types';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {TaxService} from './tax.service';
+import {Common} from '../../../../../@teamplat/providers/common/common';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {SessionStore} from '../../../../core/session/state/session.store';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import * as moment from 'moment';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
     selector: 'dms-tax',

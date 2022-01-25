@@ -351,7 +351,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
+        // this.setGridData();
 
         // Get the pagenation
         this._accountService.pagenation$

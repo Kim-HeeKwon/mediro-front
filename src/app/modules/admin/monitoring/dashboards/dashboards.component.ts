@@ -22,7 +22,7 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
-import {Chart} from 'chart.js';
+import {Chart, ChartEvent} from 'chart.js';
 import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
 
 @Component({
@@ -444,9 +444,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this._router.navigate(['/calculate/bill', {status: obj.status}]);
         } else if (obj.gbn === 'TAX') {
             this._router.navigate(['/calculate/tax', {status: obj.status}]);
-        }else if(obj.gbn === 'UDI'){
+        } else if (obj.gbn === 'UDI') {
             this._router.navigate(['/udi/manages']);
-        }else if(obj.gbn === 'UDI_RTN'){
+        } else if (obj.gbn === 'UDI_RTN') {
             this._router.navigate(['/bound/inbound']);
         }
 
@@ -497,7 +497,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             plugins: {
                 tooltip: {
                     xAlign: 'right',
-                    yAlign: 'top'
+                    yAlign: 'top',
                 },
                 legend: {
                     display: true,
@@ -510,42 +510,42 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
-            onHover: (event, activeElements, chart: Chart) => {
-                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                ctx.fillStyle = '#3983DC';
-                ctx.textAlign = 'center';
-                if (event.type !== 'mousemove') {
-                    qtHover = true;
-                }
-                if (activeElements.length > 0) {
-                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
-                    if (activeElements[0].index === 0) {
-                        qtHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
-                    } else if (activeElements[0].index === 1) {
-                        qtHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.65));
-                    } else if (activeElements[0].index === 2) {
-                        qtHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.65));
-                    } else if (activeElements[0].index === 3) {
-                        qtHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.65));
-                    } else if (activeElements[0].index === 4) {
-                        qtHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
-                    }
-                } else {
-                    qtHover = true;
-                }
-            }
+            // onHover: (event, activeElements, chart: Chart) => {
+            //     const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+            //     ctx.fillStyle = '#3983DC';
+            //     ctx.textAlign = 'center';
+            //     if (event.type !== 'mousemove') {
+            //         qtHover = true;
+            //     }
+            //     if (activeElements.length > 0) {
+            //         ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            //         ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
+            //         if (activeElements[0].index === 0) {
+            //             qtHover = false;
+            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //             ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
+            //         } else if (activeElements[0].index === 1) {
+            //             qtHover = false;
+            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //             ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.65));
+            //         } else if (activeElements[0].index === 2) {
+            //             qtHover = false;
+            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //             ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.65));
+            //         } else if (activeElements[0].index === 3) {
+            //             qtHover = false;
+            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //             ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.65));
+            //         } else if (activeElements[0].index === 4) {
+            //             qtHover = false;
+            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+            //             ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
+            //         }
+            //     } else {
+            //         qtHover = true;
+            //     }
+            // }
         };
         const qt = this.qtInfo;
         const max = qt.nCnt + qt.sCnt + qt.rsCnt + qt.cfaCnt + qt.cfCnt;
@@ -555,7 +555,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             beforeDraw(chart: Chart, args: { cancelable: true }, activeElements): boolean | void {
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                ctx.fillStyle = '#3983DC';
+                ctx.fillStyle = '#215694';
                 ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (qtHover) {
@@ -564,6 +564,28 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         };
+        const ho = {
+            id: 'ho',
+            beforeEvent(chart, args, pluginOptions) {
+                const event = args.event;
+                if (event.type === 'touchmove') {
+                    console.log('touch');
+                }
+                if(event.type === 'touchstart') {
+                    console.log('touchs');
+                }
+                if(event.type === 'mouseout') {
+                    console.log('mouseout');
+                }
+                if(event.type === 'click') {
+                    pluginOptions.
+                    console.log('click');
+                }
+                if(event.type === 'mousemove') {
+                    console.log('mousemove');
+                }
+            }
+        }
 
         const ctx = document.getElementById('qt_chart');
         // @ts-ignore
@@ -571,7 +593,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
-            plugins: [doughnutChartPlugin],
+            plugins: [doughnutChartPlugin, ho],
         });
     }
 
@@ -789,11 +811,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    priceToString(price): number {
+    priceToString(price)
+        :
+        number {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    billChart(billInfos: any) {
+    billChart(billInfos
+                  :
+                  any
+    ) {
 
         const buyPrice = [];
         const salesPrice = [];
@@ -897,8 +924,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    billbuy(): void {
-        if (!this.buybool) {
+    billbuy()
+        :
+        void {
+        if (!
+            this.buybool
+        ) {
             this.buybool = true;
         } else {
             this.buybool = false;
@@ -910,7 +941,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    udiChart(data: any) {
+    udiChart(data
+                 :
+                 any
+    ) {
 
         const eveCnt = [];
         const nowCnt = [];
@@ -1067,7 +1101,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    stockChart(data: any) {
+    stockChart(data
+                   :
+                   any
+    ) {
         const doughnutChartLabels = [
             '1등급 : ' + data[0].availQty,
             '2등급 : ' + data[1].availQty,
@@ -1312,5 +1349,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this._changeDetectorRef.markForCheck();
     }
+
 }
 
