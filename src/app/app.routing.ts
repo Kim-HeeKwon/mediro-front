@@ -169,6 +169,11 @@ export const appRoutes: Route[] = [
             //         {path: 'realgrid', loadChildren: () => import('app/modules/admin/realgrid/realgrid/realgrid.module').then(m => m.RealgridModule)},
             //         {path: 'realgridHD', loadChildren: () => import('app/modules/admin/realgrid/header-detail/header-detail.module').then(m => m.HeaderDetailModule)},
             //     ]},
+            // deposit-withdrawal
+            {path: 'deposit-withdrawal', children: [
+                    {path: 'deposit', data: {key: 'deposit'}, loadChildren: () => import('app/modules/dms/deposit-withdrawal/deposit/deposit.module').then(m => m.DepositModule)},
+                    {path: 'withdrawal', data: {key: 'withdrawal'}, loadChildren: () => import('app/modules/dms/deposit-withdrawal/withdrawal/withdrawal.module').then(m => m.WithdrawalModule)},
+                ]},
             // udi
             {path: 'udi', children: [
                     // manages

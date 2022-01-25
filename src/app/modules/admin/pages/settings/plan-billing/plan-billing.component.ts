@@ -97,7 +97,7 @@ export class SettingsPlanBillingComponent implements OnInit
         this.plans = [
             {
                 value  : 'basic',
-                title  : 'BASIC',
+                title  : '기본',
                 label  : '기본 사용료',
                 details: '유통관리를 고객을 위한 기본 서비스',
                 salePrice : '41000',
@@ -109,7 +109,7 @@ export class SettingsPlanBillingComponent implements OnInit
             },
             {
                 value  : 'premium',
-                title  : 'PREMIUM',
+                title  : '프리미엄',
                 label  : '프리미엄 사용료',
                 details: '유통관리 및 데이터 연동 기반 프리미엄 서비스',
                 sale : '-15%',
@@ -121,7 +121,7 @@ export class SettingsPlanBillingComponent implements OnInit
             },
             {
                 value  : 'customize',
-                title  : 'CUSTOMIZE',
+                title  : '커스텀',
                 label  : '커스텀 사용료',
                 details: '맞춤 고객을 위한 커스텀서비스',
                 price  : '00',

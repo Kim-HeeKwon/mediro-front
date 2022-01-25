@@ -149,6 +149,27 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:archive',
                 link : '/calculate/tax'
             },
+            {
+                id   : 'deposit-withdrawal.deposit',
+                title: '입금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/deposit'
+            },
+            {
+                id   : 'deposit-withdrawal.withdrawal',
+                title: '출금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/withdrawal'
+            },
+            {
+                id   : 'deposit-withdrawal.incomeOutcome',
+                title: '매입/매출 원장',
+                type : 'basic',
+                icon : 'credit_score',
+                link : '/pages/error/500'
+            },
         ]
     },
     {

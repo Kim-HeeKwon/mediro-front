@@ -539,7 +539,6 @@ export class FuseRealGridService {
     // 팝업 버튼 hide
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     gfn_PopUpBtnHide(id: string) {
-
         const grd = document.getElementsByClassName(id);
         for(let i=0; i<grd.length; i++){
             grd.item(i).classList.add('mediro_display_none');
