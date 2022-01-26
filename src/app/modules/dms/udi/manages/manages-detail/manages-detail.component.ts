@@ -330,6 +330,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                         this._managesService.updateSupplyInfo(sendData)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((manage: any) => {
+                                this._functionService.cfn_loadingBarClear();
                                 this._functionService.cfn_alertCheckMessage(manage);
 
                                 this._managesService.getHeader(0,100,'','asc',this.selectedForm.getRawValue());

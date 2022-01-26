@@ -22,8 +22,9 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
-import {Chart, ChartEvent} from 'chart.js';
+import {ActiveElement, Chart, ChartEvent} from 'chart.js';
 import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
+import {EmptyObject} from "chart.js/types/basic";
 
 @Component({
     selector: 'app-dashboards',
@@ -485,7 +486,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             ],
         };
-        let qtHover = true;
+        let nCnt = true;
+        let sCnt = false;
+        let rsCnt = false;
+        let cfaCnt = false;
+        let cfCnt = false;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -495,10 +500,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
-                tooltip: {
-                    xAlign: 'right',
-                    yAlign: 'top',
-                },
+                tooltip: false,
                 legend: {
                     display: true,
                     labels: {
@@ -510,82 +512,102 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     position: 'right'
                 },
             },
-            // onHover: (event, activeElements, chart: Chart) => {
-            //     const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-            //     ctx.fillStyle = '#3983DC';
-            //     ctx.textAlign = 'center';
-            //     if (event.type !== 'mousemove') {
-            //         qtHover = true;
-            //     }
-            //     if (activeElements.length > 0) {
-            //         ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            //         ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
-            //         if (activeElements[0].index === 0) {
-            //             qtHover = false;
-            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //             ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
-            //         } else if (activeElements[0].index === 1) {
-            //             qtHover = false;
-            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //             ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.65));
-            //         } else if (activeElements[0].index === 2) {
-            //             qtHover = false;
-            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //             ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.65));
-            //         } else if (activeElements[0].index === 3) {
-            //             qtHover = false;
-            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //             ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.65));
-            //         } else if (activeElements[0].index === 4) {
-            //             qtHover = false;
-            //             ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-            //             ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
-            //         }
-            //     } else {
-            //         qtHover = true;
-            //     }
-            // }
+            onHover: (event, activeElements, chart: Chart) => {
+                if (event.type === 'mouseout') {
+                    nCnt = true;
+                    sCnt = false;
+                    rsCnt = false;
+                    cfaCnt = false;
+                    cfCnt = false;
+                }
+                if (activeElements.length > 0) {
+                    if (activeElements[0].index === 0) {
+                        nCnt = true;
+                        sCnt = false;
+                        rsCnt = false;
+                        cfaCnt = false;
+                        cfCnt = false;
+                    } else if (activeElements[0].index === 1) {
+                        nCnt = false;
+                        sCnt = true;
+                        rsCnt = false;
+                        cfaCnt = false;
+                        cfCnt = false;
+                    } else if (activeElements[0].index === 2) {
+                        nCnt = false;
+                        sCnt = false;
+                        rsCnt = true;
+                        cfaCnt = false;
+                        cfCnt = false;
+                    } else if (activeElements[0].index === 3) {
+                        nCnt = false;
+                        sCnt = false;
+                        rsCnt = false;
+                        cfaCnt = true;
+                        cfCnt = false;
+                    } else if (activeElements[0].index === 4) {
+                        nCnt = false;
+                        sCnt = false;
+                        rsCnt = false;
+                        cfaCnt = false;
+                        cfCnt = true;
+                    }
+                } else {
+                    nCnt = true;
+                    sCnt = false;
+                    rsCnt = false;
+                    cfaCnt = false;
+                    cfCnt = false;
+                }
+            }
         };
         const qt = this.qtInfo;
         const max = qt.nCnt + qt.sCnt + qt.rsCnt + qt.cfaCnt + qt.cfCnt;
-        const doughnutChartPlugin = {
-            id: 'plugin',
+        // const doughnutChartPlugin = {
+        //     id: 'plugin',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     beforeDraw(chart: Chart, args: { cancelable: true }, activeElements): boolean | void {
+        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         ctx.fillStyle = '#215694';
+        //         ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+        //         ctx.textAlign = 'center';
+        //         if (qtHover) {
+        //             ctx.fillText('작성', width / 2, top + (height / 2));
+        //             ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
+        //         }
+        //     }
+        // };
+        const hover = {
+            id: 'hover',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }, activeElements): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
+            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false) {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                ctx.fillStyle = '#215694';
+                ctx.fillStyle = '#3983DC';
                 ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if (qtHover) {
-                    ctx.fillText('합계', width / 2, top + (height / 2));
-                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
+                if (nCnt) {
+                    ctx.fillText('작성', width / 2, top + (height / 2));
+                    ctx.fillText('' + qt.nCnt, width / 2, top + (height / 1.65));
+                }
+                if (sCnt) {
+                    ctx.fillText('요청', width / 2, top + (height / 2));
+                    ctx.fillText('' + qt.sCnt, width / 2, top + (height / 1.65));
+                }
+                if (rsCnt) {
+                    ctx.fillText('재요청', width / 2, top + (height / 2));
+                    ctx.fillText('' + qt.rsCnt, width / 2, top + (height / 1.65));
+                }
+                if (cfaCnt) {
+                    ctx.fillText('미확정', width / 2, top + (height / 2));
+                    ctx.fillText('' + qt.cfaCnt, width / 2, top + (height / 1.65));
+                }
+                if (cfCnt) {
+                    ctx.fillText('확정', width / 2, top + (height / 2));
+                    ctx.fillText('' + qt.cfCnt, width / 2, top + (height / 1.65));
                 }
             }
         };
-        const ho = {
-            id: 'ho',
-            beforeEvent(chart, args, pluginOptions) {
-                const event = args.event;
-                if (event.type === 'touchmove') {
-                    console.log('touch');
-                }
-                if(event.type === 'touchstart') {
-                    console.log('touchs');
-                }
-                if(event.type === 'mouseout') {
-                    console.log('mouseout');
-                }
-                if(event.type === 'click') {
-                    pluginOptions.
-                    console.log('click');
-                }
-                if(event.type === 'mousemove') {
-                    console.log('mousemove');
-                }
-            }
-        }
 
         const ctx = document.getElementById('qt_chart');
         // @ts-ignore
@@ -593,7 +615,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
-            plugins: [doughnutChartPlugin, ho],
+            plugins: [hover],
         });
     }
 
@@ -619,7 +641,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             ],
         };
-        let poHover = true;
+        let nCnt = true;
+        let sCnt = false;
+        let cfaCnt = false;
+        let cfCnt = false;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -629,10 +654,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
-                tooltip: {
-                    xAlign: 'right',
-                    yAlign: 'top'
-                },
+                tooltip: false,
                 legend: {
                     display: true,
                     labels: {
@@ -645,57 +667,88 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             onHover: (event, activeElements, chart: Chart) => {
-                const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-                ctx.save();
-                ctx.fillStyle = '#3983DC';
-                ctx.textAlign = 'center';
-                if (event.type !== 'mousemove') {
-                    poHover = true;
+                if (event.type === 'mouseout') {
+                    nCnt = true;
+                    sCnt = false;
+                    cfaCnt = false;
+                    cfCnt = false;
                 }
                 if (activeElements.length > 0) {
-                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
                     if (activeElements[0].index === 0) {
-                        poHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.65));
+                        nCnt = true;
+                        sCnt = false;
+                        cfaCnt = false;
+                        cfCnt = false;
                     } else if (activeElements[0].index === 1) {
-                        poHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + po.sCnt, width / 2, top + (height / 1.65));
+                        nCnt = false;
+                        sCnt = true;
+                        cfaCnt = false;
+                        cfCnt = false;
                     } else if (activeElements[0].index === 2) {
-                        poHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + po.cfaCnt, width / 2, top + (height / 1.65));
+                        nCnt = false;
+                        sCnt = false;
+                        cfaCnt = true;
+                        cfCnt = false;
                     } else if (activeElements[0].index === 3) {
-                        poHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.65));
+                        nCnt = false;
+                        sCnt = false;
+                        cfaCnt = false;
+                        cfCnt = true;
                     }
                 } else {
-                    poHover = true;
+                    nCnt = true;
+                    sCnt = false;
+                    cfaCnt = false;
+                    cfCnt = false;
                 }
             }
         };
         const po = this.poInfo;
         const max = po.nCnt + po.sCnt + po.cfaCnt + po.cfCnt;
-        const doughnutChartPlugin = {
-            id: 'plugin',
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
+        // const doughnutChartPlugin = {
+        //     id: 'plugin',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         ctx.save();
+        //         ctx.fillStyle = '#3983DC';
+        //         ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+        //         ctx.textAlign = 'center';
+        //         if (poHover) {
+        //             ctx.fillText('작성', width / 2, top + (height / 2));
+        //             ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.65));
+        //         }
+        //     }
+        // };
+        const hover = {
+            id: 'hover',
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false) {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if (poHover) {
-                    ctx.fillText('합계', width / 2, top + (height / 2));
-                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
+                if (nCnt) {
+                    ctx.fillText('작성', width / 2, top + (height / 2));
+                    ctx.fillText('' + po.nCnt, width / 2, top + (height / 1.65));
+                }
+                if (sCnt) {
+                    ctx.fillText('발송', width / 2, top + (height / 2));
+                    ctx.fillText('' + po.sCnt, width / 2, top + (height / 1.65));
+                }
+                if (cfaCnt) {
+                    ctx.fillText('미확정', width / 2, top + (height / 2));
+                    ctx.fillText('' + po.cfaCnt, width / 2, top + (height / 1.65));
+                }
+                if (cfCnt) {
+                    ctx.fillText('확정', width / 2, top + (height / 2));
+                    ctx.fillText('' + po.cfCnt, width / 2, top + (height / 1.65));
                 }
             }
         };
+
 
         const ctx = document.getElementById('po_chart');
         // @ts-ignore
@@ -703,7 +756,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
-            plugins: [doughnutChartPlugin],
+            plugins: [hover],
         });
     }
 
@@ -727,7 +780,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             ],
         };
-        let soHover = true;
+        let nCnt = true;
+        let cCnt = false;
+        let sCnt = false;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -737,10 +792,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
-                tooltip: {
-                    xAlign: 'right',
-                    yAlign: 'top'
-                },
+                tooltip: false,
                 legend: {
                     display: true,
                     labels: {
@@ -757,46 +809,70 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
                 ctx.textAlign = 'center';
-                if (event.type !== 'mousemove') {
-                    soHover = true;
+                if (event.type === 'mouseout') {
+                    nCnt = true;
+                    cCnt = false;
+                    sCnt = false;
                 }
                 if (activeElements.length > 0) {
-                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    ctx.fillText(<string>chart.data.labels[activeElements[0].index], width / 2, top + (height / 2.3));
                     if (activeElements[0].index === 0) {
-                        soHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.65));
+                        nCnt = true;
+                        cCnt = false;
+                        sCnt = false;
                     } else if (activeElements[0].index === 1) {
-                        soHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + so.cCnt, width / 2, top + (height / 1.65));
+                        nCnt = false;
+                        cCnt = true;
+                        sCnt = false;
                     } else if (activeElements[0].index === 2) {
-                        soHover = false;
-                        ctx.font = '25px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.65));
+                        nCnt = false;
+                        cCnt = false;
+                        sCnt = true;
                     }
                 } else {
-                    soHover = true;
+                    nCnt = true;
+                    cCnt = false;
+                    sCnt = false;
                 }
             }
         };
         const so = this.soInfo;
         const max = so.nCnt + so.cCnt + so.sCnt;
-        const doughnutChartPlugin = {
-            id: 'plugin',
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
+        // const doughnutChartPlugin = {
+        //     id: 'plugin',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         ctx.save();
+        //         ctx.fillStyle = '#3983DC';
+        //         ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+        //         ctx.textAlign = 'center';
+        //         if (soHover) {
+        //             ctx.fillText('접수', width / 2, top + (height / 2));
+        //             ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.65));
+        //         }
+        //     }
+        // };
+        const hover = {
+            id: 'hover',
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false) {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if (soHover) {
-                    ctx.fillText('합계', width / 2, top + (height / 2));
-                    ctx.fillText('' + max, width / 2, top + (height / 1.65));
+                if (nCnt) {
+                    ctx.fillText('접수', width / 2, top + (height / 2));
+                    ctx.fillText('' + so.nCnt, width / 2, top + (height / 1.65));
+                }
+                if (cCnt) {
+                    ctx.fillText('취소', width / 2, top + (height / 2));
+                    ctx.fillText('' + so.cCnt, width / 2, top + (height / 1.65));
+                }
+                if (sCnt) {
+                    ctx.fillText('등록', width / 2, top + (height / 2));
+                    ctx.fillText('' + so.sCnt, width / 2, top + (height / 1.65));
                 }
             }
         };
@@ -807,7 +883,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
-            plugins: [doughnutChartPlugin],
+            plugins: [hover],
         });
     }
 
@@ -1147,7 +1223,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             ],
         };
-        let doughnut = true;
+        let availQty0 = true;
+        let availQty1 = false;
+        let availQty2 = false;
+        let availQty3 = false;
+        let availQty4 = false;
         const doughnutChartOption = {
             cutout: (ctx: Context) => {
                 if (this.isMobile) {
@@ -1157,15 +1237,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: (ctx: Context) => {
-                            return ctx.chart.data.labels[ctx.dataIndex] || '';
-                        },
-                        xAlign: 'right',
-                        yAlign: 'bottom'
-                    }
-                },
+                tooltip: false,
                 legend: {
                     display: true,
                     labels: {
@@ -1182,47 +1254,93 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
                 ctx.textAlign = 'center';
-                if (event.type !== 'mousemove') {
-                    doughnut = true;
+                if (event.type === 'mouseout') {
+                    availQty0 = true;
+                    availQty1 = false;
+                    availQty2 = false;
+                    availQty3 = false;
+                    availQty4 = false;
                 }
                 if (activeElements.length > 0) {
-                    ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                    ctx.fillText(activeElements[0].index + 1 + '등급', width / 2, top + (height / 2.2));
                     if (activeElements[0].index === 0) {
-                        doughnut = false;
-                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
+                        availQty0 = false;
+                        availQty1 = true;
+                        availQty2 = false;
+                        availQty3 = false;
+                        availQty4 = false;
                     } else if (activeElements[0].index === 1) {
-                        doughnut = false;
-                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
+                        availQty0 = false;
+                        availQty1 = false;
+                        availQty2 = true;
+                        availQty3 = false;
+                        availQty4 = false;
                     } else if (activeElements[0].index === 2) {
-                        doughnut = false;
-                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
+                        availQty0 = false;
+                        availQty1 = false;
+                        availQty2 = false;
+                        availQty3 = true;
+                        availQty4 = false;
                     } else if (activeElements[0].index === 3) {
-                        doughnut = false;
-                        ctx.font = '20px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
-                        ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
+                        availQty0 = false;
+                        availQty1 = false;
+                        availQty2 = false;
+                        availQty3 = false;
+                        availQty4 = true;
                     }
                 } else {
-                    doughnut = true;
+                    availQty0 = true;
+                    availQty1 = false;
+                    availQty2 = false;
+                    availQty3 = false;
+                    availQty4 = false;
                 }
             }
         };
-        const doughnutChartPlugin = {
-            id: 'plugin',
-            // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
-                // eslint-disable-next-line @typescript-eslint/no-shadow
+        // const doughnutChartPlugin = {
+        //     id: 'plugin',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     beforeDraw(chart: Chart, args: { cancelable: true }): boolean | void {
+        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         ctx.save();
+        //         ctx.fillStyle = '#3983DC';
+        //         ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+        //         ctx.textAlign = 'center';
+        //         if (doughnut) {
+        //             ctx.fillText('합계', width / 2, top + (height / 2));
+        //             ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.65));
+        //         }
+        //     }
+        // };
+
+        const hover = {
+            id: 'hover',
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false) {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '15px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                if (doughnut) {
+                if (availQty0) {
                     ctx.fillText('합계', width / 2, top + (height / 2));
                     ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.65));
+                }
+                if (availQty1) {
+                    ctx.fillText('1등급', width / 2, top + (height / 2));
+                    ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
+                }
+                if (availQty2) {
+                    ctx.fillText('2등급', width / 2, top + (height / 2));
+                    ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
+                }
+                if (availQty3) {
+                    ctx.fillText('3등급', width / 2, top + (height / 2));
+                    ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
+                }
+                if (availQty4) {
+                    ctx.fillText('4등급', width / 2, top + (height / 2));
+                    ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
                 }
             }
         };
@@ -1233,7 +1351,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
-            plugins: [doughnutChartPlugin],
+            plugins: [hover],
         });
 
 

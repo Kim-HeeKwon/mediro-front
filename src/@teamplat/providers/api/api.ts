@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {environment} from 'environments/environment';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
+import {Router} from "@angular/router";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
@@ -16,7 +17,8 @@ export class Api {
     private urlBill: string;
 
     constructor(public http: HttpClient,
-                public _matDialog: MatDialog,) {
+                public _matDialog: MatDialog,
+                private _router: Router,) {
         this.url = environment.serverUrl;
         this.urlBill = environment.serverTaxUrl;
     }
@@ -403,6 +405,8 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
+        this.backLogin(arrayOfArraysData[0].mId);
+        console.log(arrayOfArraysData[0].mId);
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
@@ -732,5 +736,12 @@ export class Api {
 
     patch(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         return this.http.patch(this.url + '/' + endpoint, body, reqOpts);
+    }
+
+    backLogin(mbId: any): void {
+        if(mbId === null) {
+            this._router.navigate(['/sign-out']);
+            this._matDialog.closeAll();
+        }
     }
 }

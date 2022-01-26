@@ -53,7 +53,7 @@
                     <div class="sm:col-span-2">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>조정 수량 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-label>조정 수량 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
                                 type = 'number'
@@ -63,7 +63,7 @@
                     <div class="sm:col-span-4">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>사유 <mat-icon  class="icon-size-3" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-label>사유 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <mat-select [formControlName]="'adjType'" [attr.disabled]="is_edit?'':false">
                                 <ng-container *ngFor="let adjType of adjTypes">
                                     <mat-option [value]="adjType.id">

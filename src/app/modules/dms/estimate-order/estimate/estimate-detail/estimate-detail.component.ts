@@ -58,6 +58,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
     orderBy: any = 'asc';
+    price: any = '';
     reportHeaderData: ReportHeaderData = new ReportHeaderData();
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -112,7 +113,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
-            qtAmt: [{value: '', disabled: true}],   // 견적금액
+            qtAmt: [{value: '', disabled: true}],    // 견적금액
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
@@ -532,6 +533,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_alert('정상적으로 처리되었습니다.');
             this.reData();
         }
+    }
+
+    priceToString(price): number {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     /* 트랜잭션 전 data Set

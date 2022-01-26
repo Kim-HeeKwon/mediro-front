@@ -176,6 +176,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result) {
+                        this._functionService.cfn_loadingBarClear();
                         this.invoiceCall(this.detailList, 'INVOICE');
                     }
                 });
@@ -214,6 +215,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result) {
+                        this._functionService.cfn_loadingBarClear();
                         this.invoiceCall(this.detailList, 'SAVE');
                     }
                 });
