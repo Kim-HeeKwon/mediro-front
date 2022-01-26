@@ -135,6 +135,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
             },
+        ]
+    },
+    {
+        id: 'monitoring',
+        title: '정산관리',
+        type: 'collapsable',
+        icon: 'heroicons_outline:archive',
+        children: [
             {
                 id   : 'calculate.bill',
                 title: '정산 및 마감',
@@ -164,11 +172,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/deposit-withdrawal/withdrawal'
             },
             {
-                id   : 'deposit-withdrawal.incomeOutcome',
-                title: '매입/매출 원장',
+                id   : 'deposit-withdrawal.income-outcome',
+                title: '거래처별 원장 관리',
                 type : 'basic',
                 icon : 'credit_score',
-                link : '/pages/error/500'
+                link : '/deposit-withdrawal/income-outcome'
             },
         ]
     },

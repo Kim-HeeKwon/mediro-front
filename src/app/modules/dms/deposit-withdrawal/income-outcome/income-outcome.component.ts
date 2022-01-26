@@ -1,0 +1,552 @@
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Observable, Subject} from "rxjs";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {MatPaginator} from "@angular/material/paginator";
+import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
+import {MatDialog} from "@angular/material/dialog";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
+import {FunctionService} from "../../../../../@teamplat/services/function";
+import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CodeStore} from "../../../../core/common-code/state/code.store";
+import {DeviceDetectorService} from "ngx-device-detector";
+import * as moment from "moment";
+import RealGrid, {DataFieldObject, ValueType} from "realgrid";
+import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
+import {IncomeOutcomeService} from "./income-outcome.service";
+import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
+
+@Component({
+    selector: 'app-dms-income-outcome',
+    templateUrl: './income-outcome.component.html',
+    styleUrls: ['./income-outcome.component.scss']
+})
+
+export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit {
+    isLoading: boolean = false;
+    isSearchForm: boolean = false;
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
+    searchForm: FormGroup;
+    @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
+    drawerMode: 'over' | 'side' = 'over';
+    orderBy: any = 'asc';
+    drawerOpened: boolean = false;
+    isMobile: boolean = false;
+    // @ts-ignore
+    gridList: RealGrid.GridView;
+    // @ts-ignore
+    incomeOutcomeDataProvider: RealGrid.LocalDataProvider;
+    incomeOutcomeColumns: Columns[];
+
+    // @ts-ignore
+    incomeOutcomeFields: DataFieldObject[] = [
+        {fieldName: 'route', dataType: ValueType.TEXT},
+        {fieldName: 'date', dataType: ValueType.TEXT},
+        {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'invoice', dataType: ValueType.TEXT},
+        {fieldName: 'inComeAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'outComeAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'cashD', dataType: ValueType.NUMBER},
+        {fieldName: 'noteD', dataType: ValueType.NUMBER},
+        {fieldName: 'etcD', dataType: ValueType.NUMBER},
+        {fieldName: 'cashW', dataType: ValueType.NUMBER},
+        {fieldName: 'noteW', dataType: ValueType.NUMBER},
+        {fieldName: 'etcW', dataType: ValueType.NUMBER},
+        {fieldName: 'balance', dataType: ValueType.NUMBER},
+    ];
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    constructor(
+        private _realGridsService: FuseRealGridService,
+        private _matDialog: MatDialog,
+        private _incomeOutcomeService: IncomeOutcomeService,
+        private _formBuilder: FormBuilder,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
+        private _functionService: FunctionService,
+        private _utilService: FuseUtilsService,
+        private _codeStore: CodeStore,
+        public _matDialogPopup: MatDialog,
+        private _deviceService: DeviceDetectorService,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private readonly breakpointObserver: BreakpointObserver) {
+        this.isMobile = this._deviceService.isMobile();
+    }
+
+    ngAfterViewInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+        this._realGridsService.gfn_Destory(this.gridList, this.incomeOutcomeDataProvider);
+    }
+
+    ngOnInit(): void {
+        // 검색 Form 생성
+        this.searchForm = this._formBuilder.group({
+            account: [''],
+            accountNm: [''],
+            range: [{
+                start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                end: moment().utc(false).startOf('day').toISOString()
+            }],
+            start: [],
+            end: []
+        });
+
+        const columnLayout = [
+            'date',
+            'itemNm',
+            'invoice',
+            {
+                name: 'comeAmt',
+                direction: 'horizontal',
+                items: [
+                    'outComeAmt',
+                    'inComeAmt',
+                ],
+                header: {
+                    text: '매출/매입',
+                }
+            },
+            {
+                name: 'withdrawal',
+                direction: 'horizontal',
+                items: [
+                    'cashW',
+                    // 'noteW',
+                    'etcW',
+                ],
+                header: {
+                    text: '출금',
+                }
+            },
+            {
+                name: 'deposit',
+                direction: 'horizontal',
+                items: [
+                    'cashD',
+                    // 'noteD',
+                    'etcD',
+                ],
+                header: {
+                    text: '입금',
+                }
+            },
+            'balance',
+        ];
+
+        //그리드 컬럼
+        this.incomeOutcomeColumns = [
+            {
+                name: 'date', fieldName: 'date', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '거래일', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '제품명', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'invoice', fieldName: 'invoice', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '문서번호', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }, footer: {
+                    text: '합계',
+                }
+            },
+            {
+                name: 'inComeAmt', fieldName: 'inComeAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '매입', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0'
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'outComeAmt', fieldName: 'outComeAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '매출', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0'
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'cashD', fieldName: 'cashD', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '현금', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0'
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            // {
+            //     name: 'noteD', fieldName: 'noteD', type: 'data', width: '120', styleName: 'right-cell-text'
+            //     , header: {text: '어음', styleName: 'center-cell-text'}
+            //     , footer: {
+            //         text: '',
+            //         expression: 'sum',
+            //     }
+            //     , numberFormat : '#,##0', renderer:{
+            //         showTooltip:true
+            //     }
+            // },
+            {
+                name: 'etcD', fieldName: 'etcD', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '기타', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0',
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'cashW', fieldName: 'cashW', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '현금', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0'
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            // {
+            //     name: 'noteW', fieldName: 'noteW', type: 'data', width: '120', styleName: 'right-cell-text'
+            //     , header: {text: '어음', styleName: 'center-cell-text'}
+            //     , footer: {
+            //         text: '',
+            //         expression: 'sum',
+            //         numberFormat : '#,##0'
+            //     }
+            //     , numberFormat : '#,##0', renderer:{
+            //         showTooltip:true
+            //     }
+            // },
+            {
+                name: 'etcW', fieldName: 'etcW', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '기타', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0',
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'balance', fieldName: 'balance', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '잔액', styleName: 'center-cell-text'}
+                , footer: {
+                    text: '',
+                }
+                , numberFormat : '#,##0', renderer:{
+                    showTooltip:true
+                }
+            },
+
+        ];
+
+        this.incomeOutcomeDataProvider = this._realGridsService.gfn_CreateDataProvider();
+
+        const gridListOption = {
+            stateBar: false,
+            checkBar: true,
+            footers: true,
+        };
+
+        this.incomeOutcomeDataProvider.setOptions({
+            softDeleting: false,
+            deleteCreated: false
+        });
+
+        this.gridList = this._realGridsService.gfn_CreateGrid(
+            this.incomeOutcomeDataProvider,
+            'incomeoutcome',
+            this.incomeOutcomeColumns,
+            this.incomeOutcomeFields,
+            gridListOption,
+            columnLayout);
+
+        this.gridList.setEditOptions({
+            readOnly: true,
+            insertable: false,
+            appendable: false,
+            editable: false,
+            deletable: false,
+            checkable: true,
+            softDeleting: false,
+        });
+
+        this.gridList.deleteSelection(true);
+        this.gridList.setDisplayOptions({liveScroll: false,});
+        this.gridList.setPasteOptions({enabled: false,});
+
+        const data = [{
+            date: '2021-05-30',
+            itemNm: '실린지 외 2품목',
+            invoice: '11111-000002',
+            outComeAmt: 1000000,
+            inComeAmt: '',
+            cashD: '',
+            noteD: '',
+            etcD: '',
+            cashW: '',
+            noteW: '',
+            etcW: '',
+            balance: 1000000,
+        },{
+            route: 'after',
+            date: '2021-05-27',
+            itemNm: '현금',
+            invoice: '',
+            outComeAmt: '',
+            inComeAmt: '',
+            cashD: '',
+            noteD: '',
+            etcD: '',
+            cashW: 200000,
+            noteW: '',
+            etcW: '',
+            balance: 0,
+        },{
+            route: 'after',
+            date: '2021-05-05',
+            itemNm: '현금',
+            invoice: '',
+            outComeAmt: '',
+            inComeAmt: '',
+            cashD: '',
+            noteD: '',
+            etcD: '',
+            cashW: 100000,
+            noteW: '',
+            etcW: '',
+            balance: 200000,
+        },{
+            route: 'after',
+            date: '2021-05-01',
+            itemNm: '실린지 외 2품목',
+            invoice: '11111-000001',
+            outComeAmt: '',
+            inComeAmt: 300000,
+            cashD: '',
+            noteD: '',
+            etcD: '',
+            cashW: '',
+            noteW: '',
+            etcW: '',
+            balance: -300000,
+        },{
+            route: 'before',
+            date: '2021-04-30',
+            itemNm: '전기이월',
+            invoice: '',
+            outComeAmt: '',
+            inComeAmt: '',
+            cashD: '',
+            noteD: '',
+            etcD: '',
+            cashW: '',
+            noteW: '',
+            etcW: '',
+            balance: '0',
+        },];
+
+        this.gridList.setRowStyleCallback((grid, item, fixed) => {
+            const ret = {
+                styleName: ''
+            };
+            const route = grid.getValue(item.index, 'route');
+            if (route === 'before') {
+                ret.styleName = 'whiteSmoke-color';
+                return ret;
+            }
+        });
+
+        this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
+
+        this._changeDetectorRef.markForCheck();
+    }
+
+    selectHeader(){
+
+    }
+
+    searchFormClick(): void {
+        if (this.isSearchForm) {
+            this.isSearchForm = false;
+        } else {
+            this.isSearchForm = true;
+        }
+    }
+
+    enter(event): void {
+        if (event.keyCode === 13) {
+            this.selectHeader();
+        }
+    }
+
+
+
+    excelExport(): void {
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '원장 목록');
+    }
+
+    po() {
+
+        const columnLayout = [
+            'date',
+            'itemNm',
+            'invoice',
+            'inComeAmt',
+            {
+                name: 'withdrawal',
+                direction: 'horizontal',
+                items: [
+                    'cashW',
+                    // 'noteW',
+                    'etcW',
+                ],
+                header: {
+                    text: '출금',
+                }
+            },
+            'balance',
+        ];
+        if(columnLayout){
+            this.gridList.setColumnLayout(columnLayout);
+        }
+    }
+    so() {
+        const columnLayout = [
+            'date',
+            'itemNm',
+            'invoice',
+            'outComeAmt',
+            {
+                name: 'deposit',
+                direction: 'horizontal',
+                items: [
+                    'cashD',
+                    // 'noteD',
+                    'etcD',
+                ],
+                header: {
+                    text: '입금',
+                }
+            },
+            'balance',
+        ];
+        if(columnLayout){
+            this.gridList.setColumnLayout(columnLayout);
+        }
+    }
+    all() {
+
+        const columnLayout = [
+            'date',
+            'itemNm',
+            'invoice',
+            {
+                name: 'comeAmt',
+                direction: 'horizontal',
+                items: [
+                    'outComeAmt',
+                    'inComeAmt',
+                ],
+                header: {
+                    text: '매출/매입',
+                }
+            },
+            {
+                name: 'withdrawal',
+                direction: 'horizontal',
+                items: [
+                    'cashW',
+                    // 'noteW',
+                    'etcW',
+                ],
+                header: {
+                    text: '출금',
+                }
+            },
+            {
+                name: 'deposit',
+                direction: 'horizontal',
+                items: [
+                    'cashD',
+                    // 'noteD',
+                    'etcD',
+                ],
+                header: {
+                    text: '입금',
+                }
+            },
+            'balance',
+        ];
+        if(columnLayout){
+            this.gridList.setColumnLayout(columnLayout);
+        }
+    }
+
+    incomeOutcome() {
+
+        if (!this.isMobile) {
+            const d = this._matDialog.open(IncomeOutcomeDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+
+                },
+            });
+            d.afterClosed().subscribe(() => {
+            });
+        } else {
+            const d = this._matDialog.open(IncomeOutcomeDetailComponent, {
+                data: {
+
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+}

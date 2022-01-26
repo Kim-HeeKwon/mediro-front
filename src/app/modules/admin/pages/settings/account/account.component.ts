@@ -5,6 +5,7 @@ import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {Crypto} from '@teamplat/providers/common/crypto';
 import {Common} from '@teamplat/providers/common/common';
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector       : 'settings-account',
@@ -18,6 +19,8 @@ export class SettingsAccountComponent implements OnInit
     userForm: FormGroup;
 
     userType: CommonCode[] = [];
+    udiSupplyAutoYn: CommonCode[] = [];
+    udiSupplyAutoDt: CommonCode[] = [];
     isEdit: boolean = true;
 
     isAdmin: boolean = false;
@@ -27,6 +30,7 @@ export class SettingsAccountComponent implements OnInit
     constructor(
         private _sessionStore: SessionStore,
         private _codeStore: CodeStore,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _cryptoJson: Crypto,
         private _common: Common,
@@ -34,6 +38,8 @@ export class SettingsAccountComponent implements OnInit
     )
     {
         this.userType = _utilService.commonValue(_codeStore.getValue().data,'USER_GROUP');
+        this.udiSupplyAutoYn = _utilService.commonValue(_codeStore.getValue().data,'YN_FLAG');
+        this.udiSupplyAutoDt = _utilService.commonValue(_codeStore.getValue().data,'UDI_SUP_DATE');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -68,10 +74,13 @@ export class SettingsAccountComponent implements OnInit
             phone:  [ '0' + this._sessionStore.getValue().phone],
             udiClientId: [this._sessionStore.getValue().udiClientId],
             udiClientSecret: [],
+            udiSupplyAutoYn: [this._sessionStore.getValue().udiSupplyAutoYn],
+            udiSupplyAutoDt: [this._sessionStore.getValue().udiSupplyAutoDt],
             passphrase: [],
             salt: [],
             iv: []
         });
+        console.log(this._sessionStore.getValue().udiSupplyAutoDt);
         if(this._sessionStore.getValue().userType === 'UG10'){
             this.isAdmin = true;
         }
@@ -98,7 +107,29 @@ export class SettingsAccountComponent implements OnInit
         this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-user-info')
             .subscribe((response: any) => {
                this.userForm.patchValue({udiClientSecret:''});
+               console.log(response.data);
                this._sessionStore.update(response.data);
             });
+    }
+
+
+    saveUdiInfo(): void {
+
+        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-udi-info')
+            .subscribe((response: any) => {
+                this.alertMessage(response);
+            });
+    }
+
+
+    alertMessage(param: any): void {
+        console.log(param);
+        if (param.status !== 'SUCCESS') {
+            this._functionService.cfn_alert(param.msg);
+        } else {
+            //this.backPage();
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this._sessionStore.update(param.data);
+        }
     }
 }

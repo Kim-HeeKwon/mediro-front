@@ -110,4 +110,20 @@ export class DepositService {
             ))
         );
     }
+
+
+    closeDeposit(deposits: Deposit[]): Observable<Deposit>
+    {
+        return this.deposits$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(deposits, 'v1/api/depositWithdrawal/deposit/close-Deposit').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

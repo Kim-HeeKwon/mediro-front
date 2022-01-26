@@ -8,6 +8,7 @@ export class Columns{
     width?: string;
     styles?: object;
     header?: object;
+    footer?: object;
     button?: string;
     styleCallback?: object;
     renderer?: any;

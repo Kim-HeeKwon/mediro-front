@@ -40,6 +40,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
     withdrawalPagenation: WithdrawalPagenation | null = null;
     searchForm: FormGroup;
     type: CommonCode[] = null;
+    ynFlag: CommonCode[] = null;
 
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -88,6 +89,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
         this.type = _utilService.commonValue(_codeStore.getValue().data, 'DW_TYPE');
+        this.ynFlag = _utilService.commonValue(_codeStore.getValue().data, 'YN_FLAG');
     }
     ngOnInit(): void {
         // 검색 Form 생성
@@ -103,6 +105,19 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         const valuesType = [];
         const lablesType = [];
 
+        this.type.forEach((param: any) => {
+            valuesType.push(param.id);
+            lablesType.push(param.name);
+        });
+
+        const valuesFlag = [];
+        const lablesFlag = [];
+
+        this.ynFlag.forEach((param: any) => {
+            valuesFlag.push(param.id);
+            lablesFlag.push(param.name);
+        });
+
         //그리드 컬럼
         this.withdrawalColumns = [
             // {
@@ -111,6 +126,13 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             //         showTooltip: true
             //     }
             // },
+            {
+                name: 'withdrawalFlag', fieldName: 'withdrawalFlag', type: 'data', width: '80', styleName: 'center-cell-text',
+                header: {text: '마감', styleName: 'center-cell-text'},
+                values: valuesFlag,
+                labels: lablesFlag,
+                lookupDisplay: true,
+            },
             {
                 name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 코드', styleName: 'center-cell-text red-font-color'}
@@ -166,12 +188,12 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 }
             },
-            {
-                name: 'note', fieldName: 'note', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: 'Note.', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
+            // {
+            //     name: 'note', fieldName: 'note', type: 'data', width: '150', styleName: 'left-cell-text'
+            //     , header: {text: 'Note.', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
                 name: 'remark', fieldName: 'remark', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
@@ -231,7 +253,8 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             if (dataCell.item.rowState === 'created') {
                 if (dataCell.dataColumn.fieldName === 'withdrawal'||
                     dataCell.dataColumn.fieldName === 'account'||
-                    dataCell.dataColumn.fieldName === 'accountNm') {
+                    dataCell.dataColumn.fieldName === 'accountNm'||
+                    dataCell.dataColumn.fieldName === 'depositFlag') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -239,7 +262,8 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             }else{
                 if (dataCell.dataColumn.fieldName === 'withdrawal'||
                     dataCell.dataColumn.fieldName === 'account'||
-                    dataCell.dataColumn.fieldName === 'accountNm') {
+                    dataCell.dataColumn.fieldName === 'accountNm'||
+                    dataCell.dataColumn.fieldName === 'depositFlag') {
                     return {editable: false};
                 } else {
                     return {editable: true};
@@ -365,7 +389,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         const date = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
 
         const values = [
-            '', '', '', '', '', '', '', '', '', date, 0, '', '', '', '', '', '', '', '', '', '', ''
+            '', 'N', '', '', '', '', '', '', '', date, 0, '', '', '', '', '', '', '', '', '', '', ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.withdrawalDataProvider, values);
@@ -378,6 +402,14 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         }
+        checkValues.forEach((r) => {
+            if(r.depositFlag === 'Y'){
+
+                this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
+                this.selectHeader();
+                return;
+            }
+        });
 
         this._realGridsService.gfn_DelRow(this.gridList, this.withdrawalDataProvider);
     }
@@ -395,6 +427,13 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
             detailCheck = true;
         }
+        rows.forEach((r) => {
+            if(r.depositFlag === 'Y'){
+
+                this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
+                detailCheck = true;
+            }
+        });
         if (detailCheck) {
             return;
         }
@@ -437,5 +476,49 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert('정상적으로 처리되었습니다.');
             this.selectHeader();
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    closeWithdrawal(){
+        let rows = this._realGridsService.gfn_GetCheckRows(this.gridList, this.withdrawalDataProvider);
+
+        let detailCheck = false;
+
+        if (rows.length === 0) {
+            this._functionService.cfn_alert('선택된 행이 존재하지 않습니다.');
+            detailCheck = true;
+        }
+        if (detailCheck) {
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '마감하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._withdrawalService.closeWithdrawal(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((deposit: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(deposit);
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
     }
 }

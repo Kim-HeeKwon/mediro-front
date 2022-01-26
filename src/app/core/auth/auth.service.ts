@@ -228,6 +228,7 @@ export class AuthService
         localStorage.removeItem('email');
         localStorage.removeItem('mId');
         localStorage.removeItem('id');
+        localStorage.removeItem('businessName');
 
         // Set the authenticated flag to false
         this._authenticated = false;

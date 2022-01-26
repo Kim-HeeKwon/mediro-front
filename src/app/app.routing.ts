@@ -173,6 +173,7 @@ export const appRoutes: Route[] = [
             {path: 'deposit-withdrawal', children: [
                     {path: 'deposit', data: {key: 'deposit'}, loadChildren: () => import('app/modules/dms/deposit-withdrawal/deposit/deposit.module').then(m => m.DepositModule)},
                     {path: 'withdrawal', data: {key: 'withdrawal'}, loadChildren: () => import('app/modules/dms/deposit-withdrawal/withdrawal/withdrawal.module').then(m => m.WithdrawalModule)},
+                    {path: 'income-outcome', data: {key: 'income-outcome'}, loadChildren: () => import('app/modules/dms/deposit-withdrawal/income-outcome/income-outcome.module').then(m => m.IncomeOutcomeModule)},
                 ]},
             // udi
             {path: 'udi', children: [

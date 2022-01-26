@@ -20,6 +20,8 @@ export interface User
     imgPath?: string;
     udiClientSecret?: string;
     udiClientId?: string;
+    udiSupplyAutoYn?: string;
+    udiSupplyAutoDt?: string;
     initYn?: string;
     udiInfoYn?: string;
     popBillId?: string;

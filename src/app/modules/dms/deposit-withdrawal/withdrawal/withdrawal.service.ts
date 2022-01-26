@@ -112,4 +112,19 @@ export class WithdrawalService {
             ))
         );
     }
+
+    closeWithdrawal(withdrawals: Withdrawal[]): Observable<Withdrawal>
+    {
+        return this.withdrawals$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(withdrawals, 'v1/api/depositWithdrawal/withdrawal/close-Withdrawal').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }
