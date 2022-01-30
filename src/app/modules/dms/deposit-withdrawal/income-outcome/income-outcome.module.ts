@@ -33,6 +33,7 @@ import {AngularSplitModule} from "angular-split";
 import {IncomeOutcomeComponent} from "./income-outcome.component";
 import {IncomeOutcomeResolvers} from "./income-outcome.resolvers";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 const incomeOutcomeRoutes: Route[] = [
     {
@@ -82,6 +83,7 @@ const incomeOutcomeRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        MatButtonToggleModule,
     ],
 })
 export class IncomeOutcomeModule { }

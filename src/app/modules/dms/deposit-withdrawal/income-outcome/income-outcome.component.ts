@@ -7,7 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 import {FunctionService} from "../../../../../@teamplat/services/function";
-import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
 import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {DeviceDetectorService} from "ngx-device-detector";
 import * as moment from "moment";
@@ -39,6 +39,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     // @ts-ignore
     incomeOutcomeDataProvider: RealGrid.LocalDataProvider;
     incomeOutcomeColumns: Columns[];
+    year: CommonCode[] = null;
 
     // @ts-ignore
     incomeOutcomeFields: DataFieldObject[] = [
@@ -72,6 +73,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
+        this.year = _utilService.commonValue(_codeStore.getValue().data, 'YEAR');
     }
 
     ngAfterViewInit(): void {
@@ -86,7 +88,11 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
     ngOnInit(): void {
         // 검색 Form 생성
+        const today = new Date();
+        const YYYY = today.getFullYear();
+        // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
+            year: [YYYY + ''],
             account: [''],
             accountNm: [''],
             range: [{

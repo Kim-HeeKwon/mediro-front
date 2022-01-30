@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import {StockService} from "../../../stock/stock/stock.service";
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {FuseUtilsService} from "../../../../../../@teamplat/services/utils";
@@ -9,6 +8,9 @@ import * as moment from "moment";
 import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
 import {Subject} from "rxjs";
+import {IncomeOutcomeService} from "../income-outcome.service";
+import {takeUntil} from "rxjs/operators";
+import {InBoundHeaderPagenation} from "../../../bound/inbound/inbound.types";
 
 @Component({
     selector: 'dms-stock-income-outcome-detail',
@@ -36,7 +38,7 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _realGridsService: FuseRealGridService,
-        private _stockService: StockService,
+        private _incomeOutcomeService: IncomeOutcomeService,
         public matDialogRef: MatDialogRef<IncomeOutcomeDetailComponent>,
         private _codeStore: CodeStore,
         private _formBuilder: FormBuilder,
@@ -135,23 +137,13 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
     }
 
     selectHeader(){
+        const rtn = this._incomeOutcomeService.getDetail(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
 
-        const data = [{
-            accountNm: 'A 거래처',
-            rbalance: 1000000,
-            sbalance: 300000,
-        },{
-            accountNm: 'B 거래처',
-            rbalance: 0,
-            sbalance: 5000000,
-        },{
-            accountNm: 'C 거래처',
-            rbalance: 300000,
-            sbalance: 240000,
-        }];
+        rtn.then((ex) => {
 
-        this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
-        this._changeDetectorRef.markForCheck();
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeDetail);
+
+        });
     }
 
     excelExport(): void {
