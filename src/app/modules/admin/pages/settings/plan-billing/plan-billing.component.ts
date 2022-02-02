@@ -146,6 +146,59 @@ export class SettingsPlanBillingComponent implements OnInit
         return item.id || index;
     }
 
+    join(): void
+    {
+        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+            title: '',
+            message: '가입하시겠습니까?',
+            icon: this._formBuilder.group({
+                show: true,
+                name: 'heroicons_outline:check',
+                color: 'primary'
+            }),
+            actions: this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show: true,
+                    label: '가입',
+                    color: 'accent'
+                }),
+                cancel: this._formBuilder.group({
+                    show: true,
+                    label: '닫기'
+                })
+            }),
+            dismissible: true
+        }).value);
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    loadTossPayments(environment.tossClientKey).then((tossPayments) => {
+                        tossPayments.requestPayment('카드', {
+                            amount: 100,
+                            orderId: this._sessionStore.getValue().businessNumber + '_' + '1',
+                            orderName: '메디로 가입비',
+                            customerName: this._sessionStore.getValue().businessName,
+                            successUrl: environment.paymentHookUrl + '/success',
+                            failUrl: environment.paymentHookUrl + '/fail',
+                        }).catch( (err) => {
+                            console.log(err);
+                            if (err.code === 'USER_CANCEL') {
+                                //this._router.navigateByUrl('/monitoring/dashboards');
+                                // 취소 이벤트 처리
+                                //alert('취소');
+                                //alert(environment.paymentHookUrl);
+                            }
+                        });
+                    });
+                }else {
+                }
+            });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
     saveBillingInfo(): void
     {
         this.showAlert = false;
@@ -193,24 +246,24 @@ export class SettingsPlanBillingComponent implements OnInit
                                 if(responseData.data !== null){
                                     const orderInfo = responseData.data[0];
 
-                                    loadTossPayments(environment.tossClientKey).then((tossPayments) => {
-                                        tossPayments.requestPayment('카드', {
-                                            amount: 100,
-                                            orderId: this._sessionStore.getValue().businessNumber + orderInfo.serial,
-                                            orderName: '메디로 가입비',
-                                            customerName: this._sessionStore.getValue().businessName,
-                                            successUrl: environment.paymentHookUrl + '/success',
-                                            failUrl: environment.paymentHookUrl + '/fail',
-                                        }).catch( (err) => {
-                                            console.log(err);
-                                            if (err.code === 'USER_CANCEL') {
-                                                //this._router.navigateByUrl('/monitoring/dashboards');
-                                                // 취소 이벤트 처리
-                                                //alert('취소');
-                                                //alert(environment.paymentHookUrl);
-                                            }
-                                        });
-                                    });
+                                    // loadTossPayments(environment.tossClientKey).then((tossPayments) => {
+                                    //     tossPayments.requestPayment('카드', {
+                                    //         amount: 100,
+                                    //         orderId: this._sessionStore.getValue().businessNumber + orderInfo.serial,
+                                    //         orderName: '메디로 가입비',
+                                    //         customerName: this._sessionStore.getValue().businessName,
+                                    //         successUrl: environment.paymentHookUrl + '/success',
+                                    //         failUrl: environment.paymentHookUrl + '/fail',
+                                    //     }).catch( (err) => {
+                                    //         console.log(err);
+                                    //         if (err.code === 'USER_CANCEL') {
+                                    //             //this._router.navigateByUrl('/monitoring/dashboards');
+                                    //             // 취소 이벤트 처리
+                                    //             //alert('취소');
+                                    //             //alert(environment.paymentHookUrl);
+                                    //         }
+                                    //     });
+                                    // });
                                 }
 
                             });

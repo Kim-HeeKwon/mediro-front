@@ -29,6 +29,7 @@
                             <fuse-date-range class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4"
                                              [formControlName]="'range'"
                                              [dateFormat]="'ll'"
+                                             [range]="_range"
                                              [timeRange]="false"
                                              [rangeHidden]="true"
                                              [timeFormat]="'12'"></fuse-date-range>
@@ -187,18 +188,18 @@
                                             </mat-form-field>
                                             <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group"
                                                 style="width: 50%;margin-top: 29px;margin-bottom: 8px;">
-                                                <mat-button-toggle (click)="selectHeader()">1</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">2</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">3</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">4</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">5</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">6</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">7</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">8</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">9</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">10</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">11</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectHeader()">12</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(1)">1</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(2)">2</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(3)">3</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(4)">4</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(5)">5</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(6)">6</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(7)">7</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(8)">8</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(9)">9</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(10)">10</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(11)">11</mat-button-toggle>
+                                                <mat-button-toggle (click)="selectDate(12)">12</mat-button-toggle>
                                             </mat-button-toggle-group>
                                         </div>
 

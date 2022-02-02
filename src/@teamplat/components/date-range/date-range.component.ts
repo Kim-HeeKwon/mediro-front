@@ -312,6 +312,8 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
 
         // Reset the programmatic change status
         this._programmaticChange = false;
+
+        this._changeDetectorRef.markForCheck();
     }
 
     get range(): any

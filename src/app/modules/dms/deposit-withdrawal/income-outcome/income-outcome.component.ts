@@ -15,6 +15,7 @@ import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
 import {IncomeOutcomeService} from "./income-outcome.service";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
+import {Moment} from "moment";
 
 @Component({
     selector: 'app-dms-income-outcome',
@@ -44,7 +45,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     // @ts-ignore
     incomeOutcomeFields: DataFieldObject[] = [
         {fieldName: 'route', dataType: ValueType.TEXT},
-        {fieldName: 'date', dataType: ValueType.TEXT},
+        {fieldName: 'writeDate', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'invoice', dataType: ValueType.TEXT},
         {fieldName: 'inComeAmt', dataType: ValueType.NUMBER},
@@ -58,6 +59,10 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         {fieldName: 'balance', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    _range: { start: any | null; end: any | null } = {
+        start: null,
+        end  : null
+    };
 
     constructor(
         private _realGridsService: FuseRealGridService,
@@ -103,8 +108,13 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             end: []
         });
 
+        this._range = {
+            start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+            end: moment().utc(false).startOf('day').toISOString()
+        };
+
         const columnLayout = [
-            'date',
+            'writeDate',
             'itemNm',
             'invoice',
             {
@@ -148,7 +158,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         //그리드 컬럼
         this.incomeOutcomeColumns = [
             {
-                name: 'date', fieldName: 'date', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '거래일', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
@@ -395,13 +405,39 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
 
-        this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
+        //this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
 
         this._changeDetectorRef.markForCheck();
     }
 
     selectHeader(){
 
+        this.searchSetValue();
+        const rtn = this._incomeOutcomeService.getHeader(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
+
+        rtn.then((ex) => {
+
+            ex.incomeOutcomeHeader.push(
+                {
+                    route: 'before',
+                    writeDate: '2021-04-30',
+                    itemNm: '전기이월',
+                    invoice: '',
+                    outComeAmt: '',
+                    inComeAmt: '',
+                    cashD: '',
+                    noteD: '',
+                    etcD: '',
+                    cashW: '',
+                    noteW: '',
+                    etcW: '',
+                    balance: '0',
+                }
+            );
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeHeader);
+
+        });
     }
 
     searchFormClick(): void {
@@ -554,5 +590,22 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 smallDialogSubscription.unsubscribe();
             });
         }
+    }
+
+    selectDate(m: number) {
+
+        const year = this.searchForm.getRawValue().year;
+        const lastDate = new Date(year, m, 0).getDate();
+        const startDay = year + '-' + m + '-' + '1';
+        const endDay = year + '-' + m + '-' + lastDate;
+        this._range.start = startDay;
+        this._range.end = endDay;
+        this._changeDetectorRef.markForCheck();
+    }
+
+    searchSetValue(): void {
+        this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
+        this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
+        console.log(this.searchForm.getRawValue().range);
     }
 }

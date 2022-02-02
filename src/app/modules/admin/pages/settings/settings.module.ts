@@ -25,6 +25,7 @@ import {NewTeamComponent} from "./team/new-team/new-team/new-team.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule} from "@angular/common";
 import {SettingsUserGuideComponent} from "./userGuide/userGuide.component";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import {SettingsUserGuideComponent} from "./userGuide/userGuide.component";
         MatDialogModule,
         FuseAlertModule,
         SharedModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTabsModule
     ]
 })
 export class SettingsModule
