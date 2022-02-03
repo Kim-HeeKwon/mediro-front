@@ -27,7 +27,8 @@
                             <mat-label>거래처 코드</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'account'">
+                                [formControlName]="'account'"
+                                (click)="openAccountSearch()">
                         </mat-form-field>
                     </div>
                     <div class="sm:col-span-2">

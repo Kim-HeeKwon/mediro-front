@@ -441,6 +441,12 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
         });
     }
+    yearCha(): void {
+        this._range = {
+            end: moment().utc(false).startOf('day').toISOString(),
+            start  : moment().utc(false).add(-2, 'month').endOf('month').toISOString()
+        };
+    }
 
     searchFormClick(): void {
         if (this.isSearchForm) {
@@ -594,16 +600,23 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
 
-    selectDate(m: number) {
-
-        const year = this.searchForm.getRawValue().year;
-        const lastDate = new Date(year, m, 0).getDate();
-        const startDay = year + '-' + m + '-' + '1';
-        const endDay = year + '-' + m + '-' + lastDate;
-        this._range.start = startDay;
-        this._range.end = endDay;
-        this._changeDetectorRef.markForCheck();
-    }
+    // selectDate(m: number) {
+    //
+    //     console.log(this.searchForm.getRawValue().year);
+    //     const year = this.searchForm.getRawValue().year;
+    //     const lastDate = new Date(year, m, 0).getDate();
+    //     const startDay = year + '-' + m + '-' + '1';
+    //     const endDay = year + '-' + m + '-' + lastDate;
+    //     this._range = {
+    //         end: moment().utc(false).startOf('day').toISOString(),
+    //         start  : moment().utc(false).add(-2, 'month').endOf('month').toISOString()
+    //     };
+    //     // this._range.start = startDay;
+    //     // this._range.end = endDay;
+    //     console.log(startDay);
+    //     console.log(endDay);
+    //     this._changeDetectorRef.markForCheck();
+    // }
 
     searchSetValue(): void {
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});

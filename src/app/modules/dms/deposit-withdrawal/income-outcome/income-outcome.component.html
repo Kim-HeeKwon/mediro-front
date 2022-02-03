@@ -174,33 +174,34 @@
                                                     [dateFormat]="'ll'"
                                                     [timeRange]="false"
                                                     [rangeHidden]="true"
+                                                    [rangemon]="false"
                                                     [timeFormat]="'12'"></fuse-date-range>
                                             </form>
-                                            <mat-form-field class="flex fuse-mat-dense fuse-mat-no-subscript pr-2 ml-4" style="margin-top: 5px;">
-                                                <mat-label></mat-label>
-                                                <mat-select [formControlName]="'year'">
-                                                    <ng-container *ngFor="let year of year">
-                                                        <mat-option [value]="year.id">
-                                                            {{year.name}}
-                                                        </mat-option>
-                                                    </ng-container>
-                                                </mat-select>
-                                            </mat-form-field>
-                                            <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group"
-                                                style="width: 50%;margin-top: 29px;margin-bottom: 8px;">
-                                                <mat-button-toggle (click)="selectDate(1)">1</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(2)">2</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(3)">3</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(4)">4</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(5)">5</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(6)">6</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(7)">7</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(8)">8</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(9)">9</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(10)">10</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(11)">11</mat-button-toggle>
-                                                <mat-button-toggle (click)="selectDate(12)">12</mat-button-toggle>
-                                            </mat-button-toggle-group>
+<!--                                            <mat-form-field class="flex fuse-mat-dense fuse-mat-no-subscript pr-2 ml-4" style="margin-top: 5px;">-->
+<!--                                                <mat-label></mat-label>-->
+<!--                                                <mat-select [formControlName]="'year'">-->
+<!--                                                    <ng-container *ngFor="let year of year">-->
+<!--                                                        <mat-option [value]="year.id">-->
+<!--                                                            {{year.name}}-->
+<!--                                                        </mat-option>-->
+<!--                                                    </ng-container>-->
+<!--                                                </mat-select>-->
+<!--                                            </mat-form-field>-->
+<!--                                            <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group"-->
+<!--                                                style="width: 50%;margin-top: 29px;margin-bottom: 8px;">-->
+<!--                                                <mat-button-toggle (click)="selectDate(1)">1</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(2)">2</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(3)">3</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(4)">4</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(5)">5</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(6)">6</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(7)">7</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(8)">8</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(9)">9</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(10)">10</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(11)">11</mat-button-toggle>-->
+<!--                                                <mat-button-toggle (click)="selectDate(12)">12</mat-button-toggle>-->
+<!--                                            </mat-button-toggle-group>-->
                                         </div>
 
                                     </form>

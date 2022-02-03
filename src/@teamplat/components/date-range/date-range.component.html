@@ -28,14 +28,44 @@
 <div [hidden]="rangeHidden">
     <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group">
         <mat-button-toggle (click)="clickDate('today')">오늘</mat-button-toggle>
-        <mat-button-toggle (click)="clickDate('week')" >1주</mat-button-toggle>
+        <mat-button-toggle (click)="clickDate('week')">1주</mat-button-toggle>
         <mat-button-toggle (click)="clickDate('1mon')">1개월</mat-button-toggle>
         <mat-button-toggle (click)="clickDate('3mon')">3개월</mat-button-toggle>
         <mat-button-toggle (click)="clickDate('6mon')">6개월</mat-button-toggle>
-<!--        <mat-button-toggle (click)="clickDate('1year')">1년</mat-button-toggle>-->
+        <!--        <mat-button-toggle (click)="clickDate('1year')">1년</mat-button-toggle>-->
     </mat-button-toggle-group>
 </div>
-
+<div [hidden]="rangemon">
+    <mat-form-field class="flex fuse-mat-dense fuse-mat-no-subscript pr-2 ml-4"
+                    style="margin-top: -21px;">
+        <mat-label></mat-label>
+        <mat-select [formControlName]="'year'">
+            <ng-container *ngFor="let year of year">
+                <mat-option (click)="selectYear(year.id)" [value]="year.id">
+                    {{year.name}}
+                </mat-option>
+            </ng-container>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div [hidden]="rangemon">
+    <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group"
+                             aria-label="Date Button Group"
+                             style="height: 30px;">
+        <mat-button-toggle (click)="selectDate(1)">1</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(2)">2</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(3)">3</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(4)">4</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(5)">5</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(6)">6</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(7)">7</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(8)">8</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(9)">9</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(10)">10</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(11)">11</mat-button-toggle>
+        <mat-button-toggle (click)="selectDate(12)">12</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
 <ng-template #pickerPanel>
 
     <!-- Start -->
