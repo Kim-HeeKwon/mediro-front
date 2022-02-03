@@ -16,6 +16,8 @@ import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types
 import {IncomeOutcomeService} from "./income-outcome.service";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
 import {Moment} from "moment";
+import {CommonPopupItemsComponent} from "../../../../../@teamplat/components/common-popup-items";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector: 'app-dms-income-outcome',
@@ -405,7 +407,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
 
-        //this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
+        this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
 
         this._changeDetectorRef.markForCheck();
     }
@@ -463,7 +465,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     po() {
 
         const columnLayout = [
-            'date',
+            'writeDate',
             'itemNm',
             'invoice',
             'inComeAmt',
@@ -487,7 +489,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     so() {
         const columnLayout = [
-            'date',
+            'writeDate',
             'itemNm',
             'invoice',
             'outComeAmt',
@@ -512,7 +514,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     all() {
 
         const columnLayout = [
-            'date',
+            'writeDate',
             'itemNm',
             'invoice',
             {
@@ -607,5 +609,57 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
         console.log(this.searchForm.getRawValue().range);
+    }
+
+    openAccountSearch(): void {
+        if (!this.isMobile) {
+
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회',
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this.searchForm.patchValue({'account': result.accountCd});
+                        this.searchForm.patchValue({'accountNm': result.accountNm});
+                        this._changeDetectorRef.markForCheck();
+                    }
+                });
+        } else {
+            const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
+                data: {
+                    popup: 'P$_ACCOUNT',
+                    headerText: '거래처 조회'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popup.updateSize('calc(100vw - 10px)', '');
+                }
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        smallDialogSubscription.unsubscribe();
+                        this.searchForm.patchValue({'account': result.accountCd});
+                        this.searchForm.patchValue({'accountNm': result.accountNm});
+                    }
+                });
+        }
     }
 }

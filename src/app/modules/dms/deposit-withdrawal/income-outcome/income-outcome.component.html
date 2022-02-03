@@ -143,9 +143,9 @@
                                                 <mat-label>거래처 코드</mat-label>
                                                 <input
                                                     matInput
-                                                    (window:onkeypress)="enter($event)"
                                                     [formControlName]="'account'"
-                                                    [autocomplete]="'off'">
+                                                    [autocomplete]="'off'"
+                                                    (click)="openAccountSearch()">
                                             </mat-form-field>
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>거래처 명</mat-label>
