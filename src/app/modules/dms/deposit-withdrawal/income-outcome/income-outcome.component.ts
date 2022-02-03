@@ -59,6 +59,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         {fieldName: 'noteW', dataType: ValueType.NUMBER},
         {fieldName: 'etcW', dataType: ValueType.NUMBER},
         {fieldName: 'balance', dataType: ValueType.NUMBER},
+        {fieldName: 'm', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     _range: { start: any | null; end: any | null } = {
@@ -97,6 +98,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         // 검색 Form 생성
         const today = new Date();
         const YYYY = today.getFullYear();
+        console.log(YYYY);
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             year: [YYYY + ''],
@@ -119,6 +121,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
+            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',
@@ -180,6 +183,13 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                     showTooltip:true
                 }, footer: {
                     text: '합계',
+                }
+            },
+            {
+                name: 'm', fieldName: 'm', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '월계', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
                 }
             },
             {
@@ -303,6 +313,8 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             deleteCreated: false
         });
 
+        const gridListGroup = ['m'];
+
         this.gridList = this._realGridsService.gfn_CreateGrid(
             this.incomeOutcomeDataProvider,
             'incomeoutcome',
@@ -407,7 +419,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
 
-        this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
+        //this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
 
         this._changeDetectorRef.markForCheck();
     }
@@ -419,23 +431,23 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
         rtn.then((ex) => {
 
-            ex.incomeOutcomeHeader.push(
-                {
-                    route: 'before',
-                    writeDate: '2021-04-30',
-                    itemNm: '전기이월',
-                    invoice: '',
-                    outComeAmt: '',
-                    inComeAmt: '',
-                    cashD: '',
-                    noteD: '',
-                    etcD: '',
-                    cashW: '',
-                    noteW: '',
-                    etcW: '',
-                    balance: '0',
-                }
-            );
+            // ex.incomeOutcomeHeader.push(
+            //     {
+            //         route: 'before',
+            //         writeDate: '2021-04-30',
+            //         itemNm: '전기이월',
+            //         invoice: '',
+            //         outComeAmt: '',
+            //         inComeAmt: '',
+            //         cashD: '',
+            //         noteD: '',
+            //         etcD: '',
+            //         cashW: '',
+            //         noteW: '',
+            //         etcW: '',
+            //         balance: '0',
+            //     }
+            // );
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeHeader);
 

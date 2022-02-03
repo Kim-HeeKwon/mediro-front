@@ -17,6 +17,7 @@ export interface IncomeOutcomeHeader
     noteW?: string;
     etcW?: string;
     balance?: string;
+    m?: string;
 }
 export interface IncomeOutcomeDetail
 {
