@@ -7,8 +7,14 @@ export interface Validity
     itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위
-    lot2?: string;              //유효기간일자
-    validity?: string;          //유효기간
+    lot1?: string;              //입고일자
+    lot2?: string;              //유효기간
+    retentionPeriod?: string;   //보유기간
+    averageHolding?: string;    //평균보유
+    imminentType?: string;      //임박유형
+    imminentStatus?: string;      //임박상태
+    imminentPeriod?: string;      //임박기간
+    validity?: string;          //유효기간(계산)
     qty: number;                //현재고
     availQty: number;           //가용재고
 }

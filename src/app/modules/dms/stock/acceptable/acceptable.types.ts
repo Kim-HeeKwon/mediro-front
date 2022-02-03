@@ -11,6 +11,10 @@ export interface Acceptable
     unit: string;               //단위
     ibDate?: string;             //입고일자
     validity?: string;          //유효기간
+    thirty?: number;
+    thirtyBysixty?: number;
+    sixtyByninety?: number;
+    ninety?: number;
     availQty: number;           //보유
 }
 

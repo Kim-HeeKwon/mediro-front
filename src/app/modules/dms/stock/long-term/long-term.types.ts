@@ -1,5 +1,4 @@
-export interface Safety
-{
+export interface LongTerm{
     no?: number;
     mId: string;                //회원사
     itemCd: string;             //품목코드
@@ -7,16 +6,15 @@ export interface Safety
     itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위
-    safetyQty: number;          //안전재고 수량
-    safety?: string;
-    safetyType?: string;
-    safetyStatus?: string;
-    availQty: number;           //보유
-    poQty: number;              //발주대상수량
+    lot1?: string;              //입고일자
+    retentionPeriod?: string;   //보유기간
+    averageHolding?: string;    //평균보유
+    longTermType?: string;      //유형
+    longTermStatus?: string;      //상태
+    qty: number;                //현재고
+    availQty: number;           //가용재고
 }
-
-
-export interface SafetyPagenation
+export interface LongTermPagenation
 {
     length: number;
     size: number;

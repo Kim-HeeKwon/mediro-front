@@ -254,8 +254,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'smart-plus.status',
                 title: '장기재고',
                 type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                icon : 'receipt_long',
+                link : '/stock/long-term'
             },
             {
                 id      : 'stock.acceptable',
@@ -662,8 +662,8 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 id   : 'smart-plus.status',
                 title: '장기재고',
                 type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                icon : 'receipt_long',
+                link : '/stock/long-term'
             },
             {
                 id   : 'stock.acceptable',

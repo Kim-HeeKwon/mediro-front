@@ -1,25 +1,25 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {merge, Observable, Subject} from 'rxjs';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {Validity, ValidityPagenation} from './validity.types';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
-import {CodeStore} from '../../../../core/common-code/state/code.store';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {DeviceDetectorService} from 'ngx-device-detector';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {ValidityService} from './validity.service';
-import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
-import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
-import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {merge, Observable, Subject} from "rxjs";
+import {LongTerm, LongTermPagenation} from "./long-term.types";
+import RealGrid, {DataFieldObject, ValueType} from "realgrid";
+import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
+import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
+import {NavigationEnd, Router} from "@angular/router";
 import {FunctionService} from "../../../../../@teamplat/services/function";
+import {CodeStore} from "../../../../core/common-code/state/code.store";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {LongTermService} from "./long-term.service";
+import {map, switchMap, takeUntil} from "rxjs/operators";
 
 @Component({
-    selector: 'dms-app-validity',
-    templateUrl: './validity.component.html',
-    styleUrls: ['./validity.component.scss']
+    selector: 'dms-app-long-term',
+    templateUrl: './long-term.component.html',
+    styleUrls: ['./long-term.component.scss']
 })
-export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -28,44 +28,33 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     isMobile: boolean = false;
     navigationSubscription: any;
     searchForm: FormGroup;
-    validity: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
-    validitys$: Observable<Validity[]>;
-    validityPagenation: ValidityPagenation | null = null;
+    longTerms$: Observable<LongTerm[]>;
+    longTermPagenation: LongTermPagenation | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    searchCondition: CommonCode[] = [
-        {
-            id: '100',
-            name: '품목 명'
-        }];
-
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
-    validityDataProvider: RealGrid.LocalDataProvider;
-    validityColumns: Columns[];
+    longTermDataProvider: RealGrid.LocalDataProvider;
+    longTermColumns: Columns[];
     // @ts-ignore
-    validityFields: DataFieldObject[] = [
+    longTermFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'lot1', dataType: ValueType.TEXT},
-        {fieldName: 'lot2', dataType: ValueType.TEXT},
         {fieldName: 'retentionPeriod', dataType: ValueType.TEXT},
         {fieldName: 'averageHolding', dataType: ValueType.TEXT},
-        {fieldName: 'imminentType', dataType: ValueType.TEXT},
-        {fieldName: 'imminentStatus', dataType: ValueType.TEXT},
-        {fieldName: 'imminentPeriod', dataType: ValueType.TEXT},
-        {fieldName: 'validity', dataType: ValueType.NUMBER},
+        {fieldName: 'longTermType', dataType: ValueType.TEXT},
+        {fieldName: 'longTermStatus', dataType: ValueType.TEXT},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER}
     ];
-
     constructor(
         private _realGridsService: FuseRealGridService,
-        private _validityService: ValidityService,
+        private _longTermService: LongTermService,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
         private _router: Router,
@@ -73,7 +62,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         private _functionService: FunctionService,
         private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,) {
-        this.validity = _utilService.commonValue(_codeStore.getValue().data, 'INV_VALIDITY');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
@@ -83,14 +71,13 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.isMobile = this._deviceService.isMobile();
     }
-
     ngAfterViewInit(): void {
         // Get products if sort or page changes
         merge(this._paginator.page).pipe(
             switchMap(() => {
                 this.isLoading = true;
                 // eslint-disable-next-line max-len
-                return this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+                return this._longTermService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
             }),
             map(() => {
                 this.isLoading = false;
@@ -102,7 +89,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-        this._realGridsService.gfn_Destory(this.gridList, this.validityDataProvider);
+        this._realGridsService.gfn_Destory(this.gridList, this.longTermDataProvider);
     }
 
     ngOnInit(): void {
@@ -115,14 +102,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            type: ['ALL'],
-            validity: ['ALL'],
             itemNm: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
 
-        this.validityColumns = [
+        this.longTermColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'},
@@ -207,23 +192,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 },
             },
             {
-                name: 'lot2',
-                fieldName: 'lot2',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '유효기간', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-            },
-            {
                 name: 'retentionPeriod',
                 fieldName: 'retentionPeriod',
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-               header: {text: '보유기간', styleName: 'center-cell-text'},
+                header: {text: '보유기간', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 },
@@ -240,47 +214,30 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             //     },
             // },
             {
-                name: 'imminentType',
-                fieldName: 'imminentType',
+                name: 'longTermType',
+                fieldName: 'longTermType',
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '임박유형', styleName: 'center-cell-text'},
+                header: {text: '관리유형', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 },
             },
             {
-                name: 'imminentStatus',
-                fieldName: 'imminentStatus',
+                name: 'longTermStatus',
+                fieldName: 'longTermStatus',
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '임박상태', styleName: 'center-cell-text'},
+                header: {text: '재고상태', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 },
             },
-            {
-                name: 'imminentPeriod',
-                fieldName: 'imminentPeriod',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '임박기간', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-            },
-            // {
-            //     name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'right-cell-text'
-            //     , header: {text: '유효기간', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
-            //         showTooltip: true
-            //     },
-            // },
         ];
 
-        this.validityDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.longTermDataProvider = this._realGridsService.gfn_CreateDataProvider();
 
         const gridListOption = {
             stateBar: false,
@@ -288,16 +245,16 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             footers: false,
         };
 
-        this.validityDataProvider.setOptions({
+        this.longTermDataProvider.setOptions({
             softDeleting: false,
             deleteCreated: false
         });
 
         this.gridList = this._realGridsService.gfn_CreateGrid(
-            this.validityDataProvider,
-            'validity',
-            this.validityColumns,
-            this.validityFields,
+            this.longTermDataProvider,
+            'longTerm',
+            this.longTermColumns,
+            this.longTermFields,
             gridListOption);
 
         this.gridList.setEditOptions({
@@ -317,7 +274,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._longTermService.getHeader(this.longTermPagenation.page, this.longTermPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
             }
             ;
@@ -332,30 +289,21 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         this._paginator._intl.itemsPerPageLabel = '';
         this.selectHeader();
         this._changeDetectorRef.markForCheck();
-        // this.setGridData();
-        //
-        // this._validityService.validityPagenation$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((validityPagenation: ValidityPagenation) => {
-        //         this.validityPagenation = validityPagenation;
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
     }
 
     selectHeader(): void {
-        const rtn = this._validityService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
+        const rtn = this._longTermService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
     }
 
     setGridData(): void {
-        this.validitys$ = this._validityService.validitys$;
-        this._validityService.validitys$
+        this.longTerms$ = this._longTermService.longTerms$;
+        this._longTermService.longTerms$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((validity: any) => {
-                if (validity !== null) {
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, validity);
+            .subscribe((longTerm: any) => {
+                if (longTerm !== null) {
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.longTermDataProvider, longTerm);
                 }
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -364,12 +312,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._longTermService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '유효기간 목록');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '장기재고 목록');
     }
 
     enter(event): void {
@@ -381,16 +329,16 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
-            this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDataProvider, ex.validity);
-            this._validityService.validityPagenation$
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.longTermDataProvider, ex.longTerm);
+            this._longTermService.longTermPagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((validityPagenation: ValidityPagenation) => {
+                .subscribe((longTermPagenation: LongTermPagenation) => {
                     // Update the pagination
-                    this.validityPagenation = validityPagenation;
+                    this.longTermPagenation = longTermPagenation;
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.validity.length < 1){
+            if(ex.longTerm.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });
@@ -399,4 +347,5 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     setting(): void{
 
     }
+
 }
