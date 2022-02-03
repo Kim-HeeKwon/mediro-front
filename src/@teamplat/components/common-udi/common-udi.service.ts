@@ -77,7 +77,6 @@ export class CommonUdiService{
             this._common.sendDataWithPageNationLoading(searchParam, pageParam, 'v1/api/udi/' + search.mediroUrl)
                 .pipe(retry(2))
                 .subscribe((response: any) => {
-                    console.log(response);
                     this._functionService.cfn_loadingBarClear();
                     if(response.status === 'SUCCESS'){
                         this._status.next(response);

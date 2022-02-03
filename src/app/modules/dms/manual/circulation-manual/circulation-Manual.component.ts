@@ -342,13 +342,13 @@ export class circulationManualComponent {
     stockRecordLookUp(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/49b2d031-8c9d-4b20-8da0-8c4ab04d6930/%E1%84%8C%E1%85%A2%E1%84%80%E1%85%A9_%E1%84%8B%E1%85%B5%E1%84%85%E1%85%A7%E1%86%A8%E1%84%8C%E1%85%A9%E1%84%92%E1%85%AC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T075720Z&X-Amz-Expires=86400&X-Amz-Signature=42053ada055272408119a9ed86cc8c667f2f4ea619dd3a2769ff0203f9a76245&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25A2%25E1%2584%2580%25E1%2585%25A9%2520%25E1%2584%258B%25E1%2585%25B5%25E1%2584%2585%25E1%2585%25A7%25E1%2586%25A8%25E1%2584%258C%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/1baUta6r8jA');
     }
 
     billLookUp(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e088dc3d-0f01-42fd-b167-1945267f7f6f/%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%89%E1%85%A1%E1%86%AB_%E1%84%86%E1%85%B5%E1%86%BE_%E1%84%86%E1%85%A1%E1%84%80%E1%85%A1%E1%86%B7_%E1%84%8C%E1%85%A9%E1%84%92%E1%85%AC.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220103T075828Z&X-Amz-Expires=86400&X-Amz-Signature=ec87b68cdc9a738bd1baf4963e4c56d0bb6a64c6750cad042b7b38645ef220a7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25E1%2584%258C%25E1%2585%25A5%25E1%2586%25BC%25E1%2584%2589%25E1%2585%25A1%25E1%2586%25AB%2520%25E1%2584%2586%25E1%2585%25B5%25E1%2586%25BE%2520%25E1%2584%2586%25E1%2585%25A1%25E1%2584%2580%25E1%2585%25A1%25E1%2586%25B7%2520%25E1%2584%258C%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AC.mp4%22&x-id=GetObject');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/85TFhHoErJw');
     }
 
 

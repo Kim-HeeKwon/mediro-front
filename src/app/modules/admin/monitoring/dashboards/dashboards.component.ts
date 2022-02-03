@@ -620,6 +620,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
+
     poChart() {
         const doughnutChartLabels = [
             '작성',

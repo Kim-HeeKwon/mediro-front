@@ -1,10 +1,12 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of, Subject, timer} from 'rxjs';
 import {environment} from 'environments/environment';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {finalize, takeUntil, takeWhile, tap} from "rxjs/operators";
+import {SessionStore} from "../../../app/core/session/state/session.store";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
@@ -15,10 +17,13 @@ export class Api {
 
     private url: string;
     private urlBill: string;
+    private _authenticated: boolean = false;
 
     constructor(public http: HttpClient,
                 public _matDialog: MatDialog,
-                private _router: Router,) {
+                private _activatedRoute: ActivatedRoute,
+                private _router: Router,
+                private _sessionStore: SessionStore,) {
         this.url = environment.serverUrl;
         this.urlBill = environment.serverTaxUrl;
     }
@@ -405,8 +410,6 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-        this.backLogin(arrayOfArraysData[0].mId);
-        console.log(arrayOfArraysData[0].mId);
 
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
@@ -418,7 +421,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
-        //loading.close();
+        this.backLogin(arrayOfArraysData[0].mId);
 
         return req;
     }
@@ -697,17 +700,17 @@ export class Api {
     }
 
     apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
-            const loading = this._matDialog.open(CommonLoadingBarComponent, {
-                id: 'loadingBar'
-            });
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loadingBar'
+        });
 
-            const arrayOfArraysData = [{
-                'sessionDtctCd': 'korea',
-                'sessionSupplier': 'Mediro',
-                'sessionOwnrgCd': 'Mediro',
-                'sessionUserIp': '0.0.0.0',
-                'sessionUserId': localStorage.getItem('id'),
-                'mId': localStorage.getItem('mId')
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
         }];
 
         const req = this.http.delete(this.url + '/' + endpoint
@@ -739,9 +742,27 @@ export class Api {
     }
 
     backLogin(mbId: any): void {
-        if(mbId === null) {
-            this._router.navigate(['/sign-out']);
-            this._matDialog.closeAll();
+        if (mbId === null) {
+            this.signOut().subscribe(()=> {
+                // this._router.navigateByUrl('/signed-in');
+                window.location.reload();
+                this._matDialog.closeAll();
+            });
         }
+    }
+
+    signOut(): Observable<any> {
+        // Remove the access token from the local storage
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('email');
+        localStorage.removeItem('mId');
+        localStorage.removeItem('id');
+        localStorage.removeItem('businessName');
+
+        // Set the authenticated flag to false
+        this._authenticated = false;
+
+        // Return the observable
+        return of(true);
     }
 }

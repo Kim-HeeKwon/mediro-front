@@ -326,7 +326,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
-        this.setGridData();
+        // this.setGridData();
 
         this._managesService.managesPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
