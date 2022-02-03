@@ -163,21 +163,23 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         //그리드 컬럼
         this.incomeOutcomeColumns = [
             {
-                name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '거래일', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '제품명', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
+                },groupFooter: {
+                    text: '월계'
                 }
             },
             {
-                name: 'invoice', fieldName: 'invoice', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'invoice', fieldName: 'invoice', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '문서번호', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
@@ -186,50 +188,59 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'm', fieldName: 'm', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '월계', styleName: 'center-cell-text'},
+                name: 'm', fieldName: 'm', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '월', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'inComeAmt', fieldName: 'inComeAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'inComeAmt', fieldName: 'inComeAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매입', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0'
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'outComeAmt', fieldName: 'outComeAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'outComeAmt', fieldName: 'outComeAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매출', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0'
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'cashD', fieldName: 'cashD', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'cashD', fieldName: 'cashD', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '현금', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0'
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             // {
-            //     name: 'noteD', fieldName: 'noteD', type: 'data', width: '120', styleName: 'right-cell-text'
+            //     name: 'noteD', fieldName: 'noteD', type: 'data', width: '100', styleName: 'right-cell-text'
             //     , header: {text: '어음', styleName: 'center-cell-text'}
             //     , footer: {
             //         text: '',
@@ -240,31 +251,37 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             //     }
             // },
             {
-                name: 'etcD', fieldName: 'etcD', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'etcD', fieldName: 'etcD', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '기타', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0',
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'cashW', fieldName: 'cashW', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'cashW', fieldName: 'cashW', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '현금', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0'
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             // {
-            //     name: 'noteW', fieldName: 'noteW', type: 'data', width: '120', styleName: 'right-cell-text'
+            //     name: 'noteW', fieldName: 'noteW', type: 'data', width: '100', styleName: 'right-cell-text'
             //     , header: {text: '어음', styleName: 'center-cell-text'}
             //     , footer: {
             //         text: '',
@@ -276,22 +293,28 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             //     }
             // },
             {
-                name: 'etcW', fieldName: 'etcW', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'etcW', fieldName: 'etcW', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '기타', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                     expression: 'sum',
                     numberFormat : '#,##0',
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
                 }
             },
             {
-                name: 'balance', fieldName: 'balance', type: 'data', width: '120', styleName: 'right-cell-text'
+                name: 'balance', fieldName: 'balance', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '잔액', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
+                },groupFooter: {
+                    expression: 'sum',
+                    numberFormat: '#,##0',
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true
@@ -321,7 +344,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             this.incomeOutcomeColumns,
             this.incomeOutcomeFields,
             gridListOption,
-            columnLayout);
+            columnLayout,gridListGroup);
 
         this.gridList.setEditOptions({
             readOnly: true,
@@ -418,7 +441,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 return ret;
             }
         });
-
         //this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, data);
 
         this._changeDetectorRef.markForCheck();

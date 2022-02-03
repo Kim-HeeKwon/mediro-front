@@ -9,6 +9,7 @@ export class Columns{
     styles?: object;
     header?: object;
     footer?: object;
+    groupFooter?: object;
     button?: string;
     styleCallback?: object;
     renderer?: any;

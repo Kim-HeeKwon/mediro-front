@@ -51,6 +51,9 @@ export class FuseRealGridService {
         if(group){
             gridView.groupPanel.visible = false;
             gridView.groupBy(group);
+            gridView.setRowGroup({
+                mergeMode: true,
+            });
         }
         gridView.displayOptions.emptyMessage = '표시할 데이터가 없습니다.';
 
@@ -118,6 +121,7 @@ export class FuseRealGridService {
         gridView.sortingOptions.handleVisibility = 'always';
         //컬럼 move
         gridView.displayOptions.columnMovable = true;
+
         return gridView;
     }
 
