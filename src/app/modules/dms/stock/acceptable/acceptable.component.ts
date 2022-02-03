@@ -13,7 +13,6 @@ import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {AcceptableService} from './acceptable.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
-import {ValidityPagenation} from "../validity/validity.types";
 import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
@@ -51,6 +50,10 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'ibDate', dataType: ValueType.TEXT},
         {fieldName: 'validity', dataType: ValueType.TEXT},
+        {fieldName: 'thirty', dataType: ValueType.NUMBER},
+        {fieldName: 'thirtyBysixty', dataType: ValueType.NUMBER},
+        {fieldName: 'sixtyByninety', dataType: ValueType.NUMBER},
+        {fieldName: 'ninety', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -83,40 +86,65 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             itemNm: [''],
         });
+
+        const columnLayout = [
+            'account',
+            'accountNm',
+            'itemCd',
+            'itemNm',
+            'standard',
+            'unit',
+            'itemGrade',
+            {
+                name: 'acceptable',
+                direction: 'horizontal',
+                items: [
+                    'thirty',
+                    'thirtyBysixty',
+                    'sixtyByninety',
+                    'ninety',
+                    'availQty',
+                ],
+                header: {
+                    text: '가납 기간 및 재고수량',
+                }
+            },
+        ];
+
         //그리드 컬럼
         this.acceptableColumns = [
             {
-                name: 'account', fieldName: 'account', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -131,28 +159,72 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 lookupDisplay: true,
             },
             {
-                name: 'availQty',
-                fieldName: 'availQty',
+                name: 'thirty',
+                fieldName: 'thirty',
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '보유', styleName: 'center-cell-text'},
+                header: {text: '~30일', styleName: 'center-cell-text'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '입고일자', styleName: 'center-cell-text'}, renderer: {
+                name: 'thirtyBysixty',
+                fieldName: 'thirtyBysixty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '31~60일', styleName: 'center-cell-text'},
+                numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
+                name: 'sixtyByninety',
+                fieldName: 'sixtyByninety',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '61~90일', styleName: 'center-cell-text'},
+                numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
+            {
+                name: 'ninety',
+                fieldName: 'ninety',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '91일~', styleName: 'center-cell-text'},
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'availQty',
+                fieldName: 'availQty',
+                type: 'data',
+                width: '100',
+                styleName: 'right-cell-text',
+                header: {text: '합계', styleName: 'center-cell-text'},
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            // {
+            //     name: 'ibDate', fieldName: 'ibDate', type: 'data', width: '100', styleName: 'left-cell-text'
+            //     , header: {text: '입고일자', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
+            // {
+            //     name: 'validity', fieldName: 'validity', type: 'data', width: '100', styleName: 'left-cell-text'
+            //     , header: {text: '유효기간', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
         ];
 
         this.acceptableDataProvider = this._realGridsService.gfn_CreateDataProvider();
@@ -173,7 +245,8 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             'acceptable',
             this.acceptableColumns,
             this.acceptableFields,
-            gridListOption);
+            gridListOption,
+            columnLayout);
 
         this.gridList.setEditOptions({
             readOnly: true,
@@ -206,14 +279,16 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-        this._acceptableService.acceptablePagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((acceptablePagenation: AcceptablePagenation) => {
-                this.acceptablePagenation = acceptablePagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        // this._acceptableService.acceptablePagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((acceptablePagenation: AcceptablePagenation) => {
+        //         this.acceptablePagenation = acceptablePagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {
@@ -285,5 +360,9 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });
+    }
+
+    setting(): void{
+
     }
 }

@@ -51,6 +51,9 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'safetyQty', dataType: ValueType.NUMBER},
+        {fieldName: 'safety', dataType: ValueType.TEXT},
+        {fieldName: 'safetyType', dataType: ValueType.TEXT},
+        {fieldName: 'safetyStatus', dataType: ValueType.TEXT},
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
         {fieldName: 'poQty', dataType: ValueType.NUMBER},
     ];
@@ -90,25 +93,25 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.safetyColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -134,10 +137,37 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'safety', fieldName: 'safety', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '안전재고율', styleName: 'center-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'safetyType', fieldName: 'safetyType', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '관리유형', styleName: 'center-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'safetyStatus', fieldName: 'safetyStatus', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '상태', styleName: 'center-cell-text'},
+                values: values,
+                labels: lables,
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'availQty',
                 fieldName: 'availQty',
                 type: 'data',
-                width: '120',
+                width: '100',
                 styleName: 'right-cell-text',
                 header: {text: '보유', styleName: 'center-cell-text'},
                 numberFormat: '#,##0', renderer: {
@@ -247,14 +277,16 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.setGridData();
-        this._safetyService.safetyPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((safetyPagenation: SafetyPagenation) => {
-                this.safetyPagenation = safetyPagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this.selectHeader();
+        this._changeDetectorRef.markForCheck();
+        // this.setGridData();
+        // this._safetyService.safetyPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((safetyPagenation: SafetyPagenation) => {
+        //         this.safetyPagenation = safetyPagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {

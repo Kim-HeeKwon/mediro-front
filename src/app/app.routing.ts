@@ -149,6 +149,7 @@ export const appRoutes: Route[] = [
                     {path: 'validity', data: {key: 'validity'}, loadChildren: () => import('app/modules/dms/stock/validity/validity.module').then(m => m.ValidityModule)},
                     {path: 'safety', data: {key: 'safety'}, loadChildren: () => import('app/modules/dms/stock/safety/safety.module').then(m => m.SafetyModule)},
                     {path: 'acceptable', data: {key: 'acceptable'}, loadChildren: () => import('app/modules/dms/stock/acceptable/acceptable.module').then(m => m.AcceptableModule)},
+                    {path: 'long-term', data: {key: 'long-term'}, loadChildren: () => import('app/modules/dms/stock/long-term/long-term.module').then(m => m.LongTermModule)},
 
                 ]},
             /*{path: 'bill', children: [
