@@ -798,7 +798,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         if(year === null || year === undefined) {
             year = new Date().getFullYear();
         }
-        const lastDate = new Date(2022, m, 0).getDate();
+        const lastDate = new Date(year, m, 0).getDate();
         const startDay = year + '-' + m + '-' + '1';
         const endDay = year + '-' + m + '-' + lastDate;
         this.range = {

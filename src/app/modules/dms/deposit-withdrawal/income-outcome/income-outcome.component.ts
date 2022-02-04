@@ -27,6 +27,7 @@ import {takeUntil} from "rxjs/operators";
 export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isSearchForm: boolean = false;
+    accountCheck: boolean = false;
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -94,6 +95,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     ngOnInit(): void {
+        console.log(this.accountCheck);
         // 검색 Form 생성
         const today = new Date();
         const YYYY = today.getFullYear();
@@ -450,88 +452,91 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     selectHeader(type?: string){
+        if(this.accountCheck === true) {
+            if(type === undefined){
+                type = 'all';
+                const columnLayout = [
+                    'writeDate',
+                    'itemNm',
+                    'invoice',
+                    'm',
+                    {
+                        name: 'comeAmt',
+                        direction: 'horizontal',
+                        items: [
+                            'outComeAmt',
+                            'inComeAmt',
+                        ],
+                        header: {
+                            text: '매출/매입',
+                        }
+                    },
+                    {
+                        name: 'withdrawal',
+                        direction: 'horizontal',
+                        items: [
+                            'cashW',
+                            // 'noteW',
+                            'etcW',
+                        ],
+                        header: {
+                            text: '출금',
+                        }
+                    },
+                    {
+                        name: 'deposit',
+                        direction: 'horizontal',
+                        items: [
+                            'cashD',
+                            // 'noteD',
+                            'etcD',
+                        ],
+                        header: {
+                            text: '입금',
+                        }
+                    },
+                    'balance',
+                ];
+                if(columnLayout){
+                    this.gridList.setColumnLayout(columnLayout);
 
-        if(type === undefined){
-            type = 'all';
-            const columnLayout = [
-                'writeDate',
-                'itemNm',
-                'invoice',
-                'm',
-                {
-                    name: 'comeAmt',
-                    direction: 'horizontal',
-                    items: [
-                        'outComeAmt',
-                        'inComeAmt',
-                    ],
-                    header: {
-                        text: '매출/매입',
-                    }
-                },
-                {
-                    name: 'withdrawal',
-                    direction: 'horizontal',
-                    items: [
-                        'cashW',
-                        // 'noteW',
-                        'etcW',
-                    ],
-                    header: {
-                        text: '출금',
-                    }
-                },
-                {
-                    name: 'deposit',
-                    direction: 'horizontal',
-                    items: [
-                        'cashD',
-                        // 'noteD',
-                        'etcD',
-                    ],
-                    header: {
-                        text: '입금',
-                    }
-                },
-                'balance',
-            ];
-            if(columnLayout){
-                this.gridList.setColumnLayout(columnLayout);
-
-                // this.gridList.groupPanel.visible = false;
-                // this.gridList.groupBy(['m']);
-                // this.gridList.setRowGroup({
-                //     mergeMode: true,
-                // });
+                    // this.gridList.groupPanel.visible = false;
+                    // this.gridList.groupBy(['m']);
+                    // this.gridList.setRowGroup({
+                    //     mergeMode: true,
+                    // });
+                }
             }
+            this.searchForm.patchValue({'type': type});
+            this.searchSetValue();
+            const rtn = this._incomeOutcomeService.getHeader(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
+
+            rtn.then((ex) => {
+
+                // ex.incomeOutcomeHeader.push(
+                //     {
+                //         route: 'before',
+                //         writeDate: '2021-04-30',
+                //         itemNm: '전기이월',
+                //         invoice: '',
+                //         outComeAmt: '',
+                //         inComeAmt: '',
+                //         cashD: '',
+                //         noteD: '',
+                //         etcD: '',
+                //         cashW: '',
+                //         noteW: '',
+                //         etcW: '',
+                //         balance: '0',
+                //     }
+                // );
+
+                this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeHeader);
+
+            });
+        } else {
+            this._functionService.cfn_alert('거래처 코드를 먼저 조회 해주세요.');
         }
-        this.searchForm.patchValue({'type': type});
-        this.searchSetValue();
-        const rtn = this._incomeOutcomeService.getHeader(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
-
-        rtn.then((ex) => {
-
-            // ex.incomeOutcomeHeader.push(
-            //     {
-            //         route: 'before',
-            //         writeDate: '2021-04-30',
-            //         itemNm: '전기이월',
-            //         invoice: '',
-            //         outComeAmt: '',
-            //         inComeAmt: '',
-            //         cashD: '',
-            //         noteD: '',
-            //         etcD: '',
-            //         cashW: '',
-            //         noteW: '',
-            //         etcW: '',
-            //         balance: '0',
-            //     }
-            // );
-
-            this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeHeader);
-
-        });
     }
     yearCha(): void {
         this._range = {
@@ -759,6 +764,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
+                        this.accountCheck = true;
                         this.searchForm.patchValue({'account': result.accountCd});
                         this.searchForm.patchValue({'accountNm': result.accountNm});
                         this._changeDetectorRef.markForCheck();
@@ -786,6 +792,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
+                        this.accountCheck = true;
                         smallDialogSubscription.unsubscribe();
                         this.searchForm.patchValue({'account': result.accountCd});
                         this.searchForm.patchValue({'accountNm': result.accountNm});
