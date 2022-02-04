@@ -27,7 +27,6 @@ import {takeUntil} from "rxjs/operators";
 export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isSearchForm: boolean = false;
-    accountCheck: boolean = false;
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -37,6 +36,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     orderBy: any = 'asc';
     drawerOpened: boolean = false;
     isMobile: boolean = false;
+    accountCheck: boolean = false;
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
@@ -454,7 +454,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                     'writeDate',
                     'itemNm',
                     'invoice',
-                    'm',
                     {
                         name: 'comeAmt',
                         direction: 'horizontal',
@@ -530,7 +529,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
             });
         } else {
-            this._functionService.cfn_alert('거래처 코드를 먼저 조회 해주세요.');
+            this._functionService.cfn_alert('거래처 코드를 먼저 조회 해주세요');
         }
     }
     yearCha(): void {
