@@ -195,17 +195,17 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 },
             },
-            {
-                name: 'lot1',
-                fieldName: 'lot1',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '입고일자', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-            },
+            // {
+            //     name: 'lot1',
+            //     fieldName: 'lot1',
+            //     type: 'data',
+            //     width: '100',
+            //     styleName: 'left-cell-text',
+            //     header: {text: '입고일자', styleName: 'center-cell-text'},
+            //     renderer: {
+            //         showTooltip: true
+            //     },
+            // },
             {
                 name: 'lot2',
                 fieldName: 'lot2',
@@ -217,17 +217,17 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 },
             },
-            {
-                name: 'retentionPeriod',
-                fieldName: 'retentionPeriod',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-               header: {text: '보유기간', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-            },
+            // {
+            //     name: 'retentionPeriod',
+            //     fieldName: 'retentionPeriod',
+            //     type: 'data',
+            //     width: '100',
+            //     styleName: 'left-cell-text',
+            //    header: {text: '보유기간', styleName: 'center-cell-text'},
+            //     renderer: {
+            //         showTooltip: true
+            //     },
+            // },
             // {
             //     name: 'averageHolding',
             //     fieldName: 'averageHolding',
