@@ -98,22 +98,22 @@
                                           class="flex flex-col w-full">
                                         <div class="flex flex-col w-full">
                                             <div class="flex w-4/4">
-                                                <form
-                                                    [formGroup]="searchForm">
-                                                    <mat-form-field
-                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"
-                                                        style="width: 174px">
-                                                        <mat-label class="mediro-ft-label">유형</mat-label>
-                                                        <mat-select (ngModelChange)="selectHeader()"
-                                                                    [formControlName]="'validity'">
-                                                            <ng-container *ngFor="let validity of validity">
-                                                                <mat-option [value]="validity.id">
-                                                                    {{validity.name}}
-                                                                </mat-option>
-                                                            </ng-container>
-                                                        </mat-select>
-                                                    </mat-form-field>
-                                                </form>
+<!--                                                <form-->
+<!--                                                    [formGroup]="searchForm">-->
+<!--                                                    <mat-form-field-->
+<!--                                                        class="ml-2 fuse-mat-dense fuse-mat-no-subscript min-w-28 pr-2"-->
+<!--                                                        style="width: 174px">-->
+<!--                                                        <mat-label class="mediro-ft-label">유형</mat-label>-->
+<!--                                                        <mat-select (ngModelChange)="selectHeader()"-->
+<!--                                                                    [formControlName]="'validity'">-->
+<!--                                                            <ng-container *ngFor="let validity of validity">-->
+<!--                                                                <mat-option [value]="validity.id">-->
+<!--                                                                    {{validity.name}}-->
+<!--                                                                </mat-option>-->
+<!--                                                            </ng-container>-->
+<!--                                                        </mat-select>-->
+<!--                                                    </mat-form-field>-->
+<!--                                                </form>-->
                                                 <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                     <mat-label class="mediro-ft-label">품목 명</mat-label>
                                                     <input

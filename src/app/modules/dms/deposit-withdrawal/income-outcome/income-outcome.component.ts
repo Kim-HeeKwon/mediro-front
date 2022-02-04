@@ -103,6 +103,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             year: [YYYY + ''],
             account: [''],
             accountNm: [''],
+            type: ['all'],
             range: [{
                 start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
                 end: moment().utc(false).startOf('day').toISOString()
@@ -343,7 +344,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             this.incomeOutcomeColumns,
             this.incomeOutcomeFields,
             gridListOption,
-            columnLayout,gridListGroup);
+            columnLayout);
 
         this.gridList.setEditOptions({
             readOnly: true,
@@ -445,8 +446,63 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         this._changeDetectorRef.markForCheck();
     }
 
-    selectHeader(){
+    selectHeader(type?: string){
 
+        if(type === undefined){
+            type = 'all';
+            const columnLayout = [
+                'writeDate',
+                'itemNm',
+                'invoice',
+                'm',
+                {
+                    name: 'comeAmt',
+                    direction: 'horizontal',
+                    items: [
+                        'outComeAmt',
+                        'inComeAmt',
+                    ],
+                    header: {
+                        text: '매출/매입',
+                    }
+                },
+                {
+                    name: 'withdrawal',
+                    direction: 'horizontal',
+                    items: [
+                        'cashW',
+                        // 'noteW',
+                        'etcW',
+                    ],
+                    header: {
+                        text: '출금',
+                    }
+                },
+                {
+                    name: 'deposit',
+                    direction: 'horizontal',
+                    items: [
+                        'cashD',
+                        // 'noteD',
+                        'etcD',
+                    ],
+                    header: {
+                        text: '입금',
+                    }
+                },
+                'balance',
+            ];
+            if(columnLayout){
+                this.gridList.setColumnLayout(columnLayout);
+
+                // this.gridList.groupPanel.visible = false;
+                // this.gridList.groupBy(['m']);
+                // this.gridList.setRowGroup({
+                //     mergeMode: true,
+                // });
+            }
+        }
+        this.searchForm.patchValue({'type': type});
         this.searchSetValue();
         const rtn = this._incomeOutcomeService.getHeader(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
 
@@ -491,7 +547,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
     enter(event): void {
         if (event.keyCode === 13) {
-            this.selectHeader();
+            this.selectHeader('all');
         }
     }
 
@@ -508,6 +564,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'inComeAmt',
+            'm',
             {
                 name: 'withdrawal',
                 direction: 'horizontal',
@@ -524,7 +581,15 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         ];
         if(columnLayout){
             this.gridList.setColumnLayout(columnLayout);
+
+            // this.gridList.groupPanel.visible = false;
+            // this.gridList.groupBy(['m']);
+            // this.gridList.setRowGroup({
+            //     mergeMode: true,
+            // });
         }
+
+        this.selectHeader('po');
     }
     so() {
         const columnLayout = [
@@ -532,6 +597,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'outComeAmt',
+            'm',
             {
                 name: 'deposit',
                 direction: 'horizontal',
@@ -548,7 +614,15 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         ];
         if(columnLayout){
             this.gridList.setColumnLayout(columnLayout);
+
+            // this.gridList.groupPanel.visible = false;
+            // this.gridList.groupBy(['m']);
+            // this.gridList.setRowGroup({
+            //     mergeMode: true,
+            // });
         }
+
+        this.selectHeader('so');
     }
     all() {
 
@@ -556,6 +630,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
+            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',
@@ -595,7 +670,15 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         ];
         if(columnLayout){
             this.gridList.setColumnLayout(columnLayout);
+
+            // this.gridList.groupPanel.visible = false;
+            // this.gridList.groupBy(['m']);
+            // this.gridList.setRowGroup({
+            //     mergeMode: true,
+            // });
         }
+
+        this.selectHeader('all');
     }
 
     incomeOutcome() {
@@ -654,7 +737,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     searchSetValue(): void {
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
-        console.log(this.searchForm.getRawValue().range);
     }
 
     openAccountSearch(): void {
@@ -707,5 +789,9 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                     }
                 });
         }
+    }
+
+    baseAmount() {
+
     }
 }

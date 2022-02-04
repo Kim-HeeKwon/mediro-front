@@ -232,6 +232,14 @@
                                     class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
                                     mat-flat-button
                                     [color]="'primary'"
+                                    (click)="baseAmount()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
+                                    <span class="ml-2 mr-1">기초 금액 저장</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom mediro-btn-custom-background-color"
+                                    mat-flat-button
+                                    [color]="'primary'"
                                     (click)="incomeOutcome()">
                                     <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
                                     <span class="ml-2 mr-1">거래처별 원장 조회</span>
