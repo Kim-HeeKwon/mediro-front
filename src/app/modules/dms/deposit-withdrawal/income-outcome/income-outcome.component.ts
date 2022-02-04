@@ -45,6 +45,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // @ts-ignore
     incomeOutcomeFields: DataFieldObject[] = [
+        {fieldName: 'line', dataType: ValueType.TEXT},
         {fieldName: 'route', dataType: ValueType.TEXT},
         {fieldName: 'writeDate', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
@@ -124,7 +125,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
-            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',
@@ -188,13 +188,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                     showTooltip:true
                 }, footer: {
                     text: '합계',
-                }
-            },
-            {
-                name: 'm', fieldName: 'm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '월', styleName: 'center-cell-text'},
-                renderer:{
-                    showTooltip:true
                 }
             },
             {
@@ -438,9 +431,12 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             const ret = {
                 styleName: ''
             };
-            const route = grid.getValue(item.index, 'route');
-            if (route === 'before') {
-                ret.styleName = 'whiteSmoke-color';
+            const route = grid.getValue(item.index, 'line');
+            if (route === '2') {
+                ret.styleName = 'yellow-color';
+                return ret;
+            }else if(route === '0') {
+                ret.styleName = 'yellowgreen-color';
                 return ret;
             }
         });
@@ -457,7 +453,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 'writeDate',
                 'itemNm',
                 'invoice',
-                'm',
                 {
                     name: 'comeAmt',
                     direction: 'horizontal',
@@ -567,7 +562,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'inComeAmt',
-            'm',
             {
                 name: 'withdrawal',
                 direction: 'horizontal',
@@ -600,7 +594,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'outComeAmt',
-            'm',
             {
                 name: 'deposit',
                 direction: 'horizontal',
@@ -633,7 +626,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
-            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',

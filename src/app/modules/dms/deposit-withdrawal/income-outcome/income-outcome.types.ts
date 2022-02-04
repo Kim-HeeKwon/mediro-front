@@ -1,6 +1,7 @@
 export interface IncomeOutcomeHeader
 {
     no?: number;
+    line?: string;
     mId?: string;                //회원사
     account?: string;            //거래처
     accountNm?: string;            //거래처
