@@ -97,7 +97,10 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         // 검색 Form 생성
         const today = new Date();
         const YYYY = today.getFullYear();
-        console.log(YYYY);
+        const mon = today.getMonth() + 1;
+        const lastDate = new Date(YYYY, mon, 0).getDate();
+        const startDay = YYYY + '-' + mon + '-' + '1';
+        const endDay = YYYY + '-' + mon + '-' + lastDate;
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             year: [YYYY + ''],
@@ -105,8 +108,8 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             accountNm: [''],
             type: ['all'],
             range: [{
-                start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: startDay,
+                end: endDay
             }],
             start: [],
             end: []

@@ -56,6 +56,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     private _timeRange: boolean;
     private _rangeHidden: boolean;
     private _rangeMon: boolean;
+    private _picker: boolean = true;
     private readonly _timeRegExp: RegExp = new RegExp('^(0[0-9]|1[0-9]|2[0-4]|[0-9]):([0-5][0-9])(A|(?:AM)|P|(?:PM))?$', 'i');
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -137,6 +138,22 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     get timeFormat(): string
     {
         return this._timeFormat;
+    }
+
+    @Input()
+    set picker(value: boolean)
+    {
+        // Return if the values are the same
+        if (value)
+        {
+            this._picker = true;
+        }else{
+            this._picker = false;
+        }
+    }
+    get picker(): boolean
+    {
+        return this._picker;
     }
 
     /**
@@ -435,57 +452,57 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
      */
     openPickerPanel(): void
     {
+        if(this.picker === true) {
+            const overlayRef = this._overlay.create({
+                panelClass      : 'fuse-date-range-panel',
+                backdropClass   : '',
+                hasBackdrop     : true,
+                scrollStrategy  : this._overlay.scrollStrategies.reposition(),
+                positionStrategy: this._overlay.position()
+                    .flexibleConnectedTo(this._pickerPanelOrigin)
+                    .withPositions([
+                        {
+                            originX : 'start',
+                            originY : 'bottom',
+                            overlayX: 'start',
+                            overlayY: 'top',
+                            offsetY : 8
+                        },
+                        {
+                            originX : 'start',
+                            originY : 'top',
+                            overlayX: 'start',
+                            overlayY: 'bottom',
+                            offsetY : -8
+                        }
+                    ])
+            });
 
-        // Create the overlay
-        const overlayRef = this._overlay.create({
-            panelClass      : 'fuse-date-range-panel',
-            backdropClass   : '',
-            hasBackdrop     : true,
-            scrollStrategy  : this._overlay.scrollStrategies.reposition(),
-            positionStrategy: this._overlay.position()
-                .flexibleConnectedTo(this._pickerPanelOrigin)
-                .withPositions([
-                    {
-                        originX : 'start',
-                        originY : 'bottom',
-                        overlayX: 'start',
-                        overlayY: 'top',
-                        offsetY : 8
-                    },
-                    {
-                        originX : 'start',
-                        originY : 'top',
-                        overlayX: 'start',
-                        overlayY: 'bottom',
-                        offsetY : -8
-                    }
-                ])
-        });
+            // Create a portal from the template
+            const templatePortal = new TemplatePortal(this._pickerPanel, this._viewContainerRef);
 
-        // Create a portal from the template
-        const templatePortal = new TemplatePortal(this._pickerPanel, this._viewContainerRef);
+            // On backdrop click
+            overlayRef.backdropClick().subscribe(() => {
 
-        // On backdrop click
-        overlayRef.backdropClick().subscribe(() => {
+                // If template portal exists and attached...
+                if ( templatePortal && templatePortal.isAttached )
+                {
+                    // Detach it
+                    templatePortal.detach();
+                }
 
-            // If template portal exists and attached...
-            if ( templatePortal && templatePortal.isAttached )
-            {
-                // Detach it
-                templatePortal.detach();
-            }
+                // If overlay exists and attached...
+                if ( overlayRef && overlayRef.hasAttached() )
+                {
+                    // Detach it
+                    overlayRef.detach();
+                    overlayRef.dispose();
+                }
+            });
 
-            // If overlay exists and attached...
-            if ( overlayRef && overlayRef.hasAttached() )
-            {
-                // Detach it
-                overlayRef.detach();
-                overlayRef.dispose();
-            }
-        });
-
-        // Attach the portal to the overlay
-        overlayRef.attach(templatePortal);
+            // Attach the portal to the overlay
+            overlayRef.attach(templatePortal);
+        }
     }
 
     /**
@@ -743,10 +760,9 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         // Set the default range  //디폴트 시간 설정 start를 일주일로 end를 현재 날짜로
         this._programmaticChange = true;
         this.range = {
-            start: moment().add(-7, 'day').endOf('day').toISOString(),
-            end  : moment().startOf('day').toISOString()
-        };
-
+                start: moment().add(-7, 'day').endOf('day').toISOString(),
+                end  : moment().startOf('day').toISOString()
+            };
         // Set the default time range
         this._programmaticChange = true;
         this.timeRange = true;
@@ -791,6 +807,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         };
         this._changeDetectorRef.markForCheck();
     }
+
     selectYear(y: any): void {
         this.yearDate = y;
         let mon = this.monDate;
@@ -804,6 +821,80 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
             start: startDay,
             end: endDay
         };
+    }
+    selectDateYear(date: string): void {
+        const today = new Date();
+        const y = today.getFullYear();
+        if(date === '1/4') {
+            const m = 1;
+            const lastDate = new Date(y, m+2, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+2) + '-' + lastDate;
+                this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '2/4') {
+            const m = 4;
+            const lastDate = new Date(y, m+2, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '3/4') {
+            const m = 7;
+            const lastDate = new Date(y, m+2, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '4/4') {
+            const m = 10;
+            const lastDate = new Date(y, m+2, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '상반기') {
+            const m = 1;
+            const lastDate = new Date(y, m+5, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+5) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '하반기') {
+            const m = 7;
+            const lastDate = new Date(y, m+5, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+5) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
+        if(date === '년') {
+            const m = 1;
+            const lastDate = new Date(y, m+11, 0).getDate();
+            const startDay = y + '-' + m + '-' + '1';
+            const endDay = y + '-' + (m+11) + '-' + lastDate;
+            this.range = {
+                start: startDay,
+                end: endDay
+            };
+        }
     }
 
 }

@@ -94,7 +94,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -126,7 +126,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post('' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -156,7 +156,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -189,7 +189,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -219,7 +219,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post('' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -251,6 +251,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
+        this.backLogin(arrayOfArraysData[0].mId);
 
         const req = this.http.post('' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
@@ -281,7 +282,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -313,7 +314,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -346,7 +347,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_pageNation=[' + JSON.stringify(body2) + ']&'
             + 'ds_session=' + JSON.stringify(arrayOfArraysData) + '&'
             + 'ds_excelJson=[' + JSON.stringify(excelJson) + ']'
@@ -378,7 +379,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -441,7 +442,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post('' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -482,7 +483,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -512,7 +513,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         return this.http.put(this.url + '/' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -539,7 +540,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.put(this.url + '/' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -565,7 +566,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         return this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -592,7 +593,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
@@ -619,7 +620,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         //this.toBody = 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData))
         return this.http.delete(this.url + '/' + endpoint
             , {
@@ -650,7 +651,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         //this.toBody = 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData))
         const req = this.http.delete(this.url + '/' + endpoint
             , {
@@ -680,7 +681,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         //this.toBody = 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData))
         return this.http.delete(this.url + '/' + endpoint
             , {
@@ -712,7 +713,7 @@ export class Api {
             'sessionUserId': localStorage.getItem('id'),
             'mId': localStorage.getItem('mId')
         }];
-
+        this.backLogin(arrayOfArraysData[0].mId);
         const req = this.http.delete(this.url + '/' + endpoint
             , {
                 headers: {
@@ -745,6 +746,7 @@ export class Api {
         if (mbId === null) {
             this.signOut().subscribe(()=> {
                 // this._router.navigateByUrl('/signed-in');
+                console.log('api 사용');
                 window.location.reload();
                 this._matDialog.closeAll();
             });

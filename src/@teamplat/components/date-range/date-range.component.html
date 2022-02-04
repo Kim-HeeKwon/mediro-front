@@ -52,21 +52,30 @@
     </form>
 </div>
 <div [hidden]="rangemon">
-    <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group"
-                             aria-label="Date Button Group"
-                             style="height: 30px;">
-        <mat-button-toggle (click)="selectDate(1)">1</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(2)">2</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(3)">3</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(4)">4</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(5)">5</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(6)">6</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(7)">7</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(8)">8</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(9)">9</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(10)">10</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(11)">11</mat-button-toggle>
-        <mat-button-toggle (click)="selectDate(12)">12</mat-button-toggle>
+    <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group">
+        <mat-button-toggle class="group-btn" (click)="selectDate(1)">1</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(2)">2</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(3)">3</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(4)">4</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(5)">5</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(6)">6</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(7)">7</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(8)">8</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(9)">9</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(10)">10</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(11)">11</mat-button-toggle>
+        <mat-button-toggle class="group-btn" (click)="selectDate(12)">12</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+<div [hidden]="rangemon">
+    <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group" aria-label="Date Button Group">
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('1/4')">1/4</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('2/4')">2/4</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('3/4')">3/4</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('4/4')">4/4</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('상반기')">상반기</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('하반기')">하반기</mat-button-toggle>
+        <mat-button-toggle class="group-btn-sub" (click)="selectDateYear('년')">년</mat-button-toggle>
     </mat-button-toggle-group>
 </div>
 <ng-template #pickerPanel>

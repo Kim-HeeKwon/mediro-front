@@ -135,7 +135,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             start: [],
             end: [],
         });
-        console.log(this.searchForm);
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
             && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
             this.searchForm = this._formBuilder.group({

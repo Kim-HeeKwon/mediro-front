@@ -32,7 +32,6 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
 import {formatDate} from "@angular/common";
-
 @Component({
     selector: 'app-dms-estimate-detail',
     templateUrl: './estimate-detail.component.html',
@@ -52,8 +51,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     type: CommonCode[] = null;
     status: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
+    qtAmts: any = null;
     filterList: string[];
     minDate: string;
+    minqtAtm: number;
     estimateHeaderForm: FormGroup;
     estimateDetailPagenation: EstimateDetailPagenation | null = null;
     estimateDetails$ = new Observable<EstimateDetail[]>();
@@ -101,6 +102,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'QT_STATUS', this.filterList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        // this.qtAmts = _utilService.commonValueFilter()
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -113,7 +115,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
-            qtAmt: [{value: '', disabled: true}],    // 견적금액
+            qtAmt: [{value: '', disabled: true},],    // 견적금액
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
             qtDate: [{value: '', disabled: true}], //견적일자
@@ -135,7 +137,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
         const now = new Date();
         this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
-
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
             this.estimateHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
@@ -150,7 +151,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             valuesItemGrades.push(param.id);
             lablesItemGrades.push(param.name);
         });
-
         //페이지 라벨
         this._estimateDetailPagenator._intl.itemsPerPageLabel = '';
         //그리드 컬럼
@@ -372,7 +372,6 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         };
 
         this.setGridData();
-
         this._estimateService.estimateDetailPagenation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((estimateDetailPagenation: EstimateDetailPagenation) => {
