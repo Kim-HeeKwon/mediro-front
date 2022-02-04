@@ -766,6 +766,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
+                        this.accountCheck = true;
                         this.searchForm.patchValue({'account': result.accountCd});
                         this.searchForm.patchValue({'accountNm': result.accountNm});
                         this._changeDetectorRef.markForCheck();
