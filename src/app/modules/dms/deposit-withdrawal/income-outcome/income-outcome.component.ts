@@ -46,6 +46,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // @ts-ignore
     incomeOutcomeFields: DataFieldObject[] = [
+        {fieldName: 'line', dataType: ValueType.TEXT},
         {fieldName: 'route', dataType: ValueType.TEXT},
         {fieldName: 'writeDate', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
@@ -95,7 +96,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     ngOnInit(): void {
-        console.log(this.accountCheck);
         // 검색 Form 생성
         const today = new Date();
         const YYYY = today.getFullYear();
@@ -126,7 +126,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
-            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',
@@ -440,9 +439,12 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             const ret = {
                 styleName: ''
             };
-            const route = grid.getValue(item.index, 'route');
-            if (route === 'before') {
-                ret.styleName = 'whiteSmoke-color';
+            const route = grid.getValue(item.index, 'line');
+            if (route === '2') {
+                ret.styleName = 'yellow-color';
+                return ret;
+            }else if(route === '0') {
+                ret.styleName = 'yellowgreen-color';
                 return ret;
             }
         });
@@ -764,7 +766,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        this.accountCheck = true;
                         this.searchForm.patchValue({'account': result.accountCd});
                         this.searchForm.patchValue({'accountNm': result.accountNm});
                         this._changeDetectorRef.markForCheck();
