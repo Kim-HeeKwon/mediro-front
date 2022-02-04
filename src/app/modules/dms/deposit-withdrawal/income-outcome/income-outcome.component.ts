@@ -192,13 +192,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'm', fieldName: 'm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '월', styleName: 'center-cell-text'},
-                renderer:{
-                    showTooltip:true
-                }
-            },
-            {
                 name: 'inComeAmt', fieldName: 'inComeAmt', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '매입', styleName: 'center-cell-text'}
                 , footer: {
@@ -574,7 +567,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'inComeAmt',
-            'm',
             {
                 name: 'withdrawal',
                 direction: 'horizontal',
@@ -607,7 +599,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'itemNm',
             'invoice',
             'outComeAmt',
-            'm',
             {
                 name: 'deposit',
                 direction: 'horizontal',
@@ -640,7 +631,6 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             'writeDate',
             'itemNm',
             'invoice',
-            'm',
             {
                 name: 'comeAmt',
                 direction: 'horizontal',
