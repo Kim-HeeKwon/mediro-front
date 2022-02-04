@@ -36,17 +36,20 @@
     </mat-button-toggle-group>
 </div>
 <div [hidden]="rangemon">
-    <mat-form-field class="flex fuse-mat-dense fuse-mat-no-subscript pr-2 ml-4"
-                    style="margin-top: -21px;">
-        <mat-label></mat-label>
-        <mat-select [formControlName]="'year'">
-            <ng-container *ngFor="let year of year">
-                <mat-option (click)="selectYear(year.id)" [value]="year.id">
-                    {{year.name}}
-                </mat-option>
-            </ng-container>
-        </mat-select>
-    </mat-form-field>
+    <form
+        [formGroup]="searchForm">
+        <mat-form-field class="flex fuse-mat-dense fuse-mat-no-subscript pr-2 ml-4"
+                        style="margin-top: -21px;">
+            <mat-label></mat-label>
+            <mat-select [formControlName]="'year'">
+                <ng-container *ngFor="let year of year">
+                    <mat-option (click)="selectYear(year.id)" [value]="year.id">
+                        {{year.name}}
+                    </mat-option>
+                </ng-container>
+            </mat-select>
+        </mat-form-field>
+    </form>
 </div>
 <div [hidden]="rangemon">
     <mat-button-toggle-group class="mediro-group-btn" name="Date Button Group"

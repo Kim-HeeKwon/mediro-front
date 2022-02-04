@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, HostBinding, Input, OnDestroy, OnInit, Output, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
 import { Overlay } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { MatCalendarCellCssClasses, MatMonthView } from '@angular/material/datepicker';
@@ -37,6 +37,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         month1: null,
         month2: null
     };
+    searchForm: FormGroup;
     year: CommonCode[] = null;
     setWhichDate: 'start' | 'end' = 'start';
     startTimeFormControl: FormControl;
@@ -70,6 +71,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
         private _viewContainerRef: ViewContainerRef,
+        private _formBuilder: FormBuilder,
          private _deviceService: DeviceDetectorService
     )
     {
@@ -403,6 +405,11 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
      */
     ngOnInit(): void
     {
+        const today = new Date();
+        const YYYY = today.getFullYear();
+        this.searchForm = this._formBuilder.group({
+           year: [YYYY + ''],
+        });
     }
 
     /**

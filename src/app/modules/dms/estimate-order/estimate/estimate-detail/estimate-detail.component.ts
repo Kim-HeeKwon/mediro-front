@@ -131,7 +131,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             businessCategory: [''],// 종목
             phoneNumber: [''],// 전화번호
             fax: [''],// 팩스번호
-            active: [false]  // cell상태
+            active: [false]  // cell
         });
         const now = new Date();
         this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');

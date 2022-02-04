@@ -15,7 +15,6 @@ import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
 import {IncomeOutcomeService} from "./income-outcome.service";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
-import {Moment} from "moment";
 import {CommonPopupItemsComponent} from "../../../../../@teamplat/components/common-popup-items";
 import {takeUntil} from "rxjs/operators";
 
