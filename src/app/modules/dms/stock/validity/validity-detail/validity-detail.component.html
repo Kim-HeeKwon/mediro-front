@@ -1,0 +1,83 @@
+
+<div class="flex flex-col flex-auto md:w-180 md:min-w-160 -m-6">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <!-- Header -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">유효기간 임박 설정</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="searchForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>품목 코드</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemCd'"
+                                (click)="openItemSearch()">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>품목 명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemNm'">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-4 px-8 mediro-backcolor-custom">
+        <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+            <button
+                class="mediro-btn-custom"
+                mat-stroked-button
+                [color]="'primary'"
+                (click)="excelExport()">
+                <img src="assets/images/excel/excel_down.png">
+            </button>
+        </div>
+        <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+            <button
+                class="mediro-btn-custom"
+                mat-flat-button
+                [color]="'accent'"
+                (click)="selectHeader()">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                <span class="ml-2 mr-1">불러오기</span>
+            </button>
+            <button
+                class="ml-2 mediro-btn-custom"
+                mat-stroked-button
+                [color]="'accent'"
+                (click)="setting()">
+                <mat-icon [svgIcon]="'settings'"></mat-icon>
+                <span class="ml-2 mr-1">임박설정</span>
+            </button>
+        </div>
+    </div>
+    <div
+        style="height: 300px;"
+        class="realgrid"
+        id="validityDetail">
+    </div>
+</div>

@@ -13,6 +13,9 @@ import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {LongTermService} from "./long-term.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
+import {LongTermDetailComponent} from "./long-term-detail/long-term-detail.component";
+import {MatDialog} from "@angular/material/dialog";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 
 @Component({
     selector: 'dms-app-long-term',
@@ -20,6 +23,9 @@ import {map, switchMap, takeUntil} from "rxjs/operators";
     styleUrls: ['./long-term.component.scss']
 })
 export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -58,10 +64,12 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
         private _router: Router,
+        private _matDialog: MatDialog,
         private _changeDetectorRef: ChangeDetectorRef,
         private _functionService: FunctionService,
         private _codeStore: CodeStore,
-        private _deviceService: DeviceDetectorService,) {
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver)  {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
@@ -345,7 +353,37 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setting(): void{
+        if (!this.isMobile) {
+            const d = this._matDialog.open(LongTermDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
 
+                },
+            });
+            d.afterClosed().subscribe(() => {
+            });
+        } else {
+            const d = this._matDialog.open(LongTermDetailComponent, {
+                data: {
+
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
 }

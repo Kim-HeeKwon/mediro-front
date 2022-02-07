@@ -13,6 +13,10 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {FunctionService} from "../../../../../@teamplat/services/function";
+import {IncomeOutcomeDetailComponent} from "../../deposit-withdrawal/income-outcome/income-outcome-detail/income-outcome-detail.component";
+import {MatDialog} from "@angular/material/dialog";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {ValidityDetailComponent} from "./validity-detail/validity-detail.component";
 
 @Component({
     selector: 'dms-app-validity',
@@ -20,6 +24,9 @@ import {FunctionService} from "../../../../../@teamplat/services/function";
     styleUrls: ['./validity.component.scss']
 })
 export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
@@ -68,11 +75,13 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         private _validityService: ValidityService,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
+        private _matDialog: MatDialog,
         private _router: Router,
         private _changeDetectorRef: ChangeDetectorRef,
         private _functionService: FunctionService,
         private _codeStore: CodeStore,
-        private _deviceService: DeviceDetectorService,) {
+        private _deviceService: DeviceDetectorService,
+        private readonly breakpointObserver: BreakpointObserver) {
         this.validity = _utilService.commonValue(_codeStore.getValue().data, 'INV_VALIDITY');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
@@ -397,6 +406,36 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setting(): void{
+        if (!this.isMobile) {
+            const d = this._matDialog.open(ValidityDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
 
+                },
+            });
+            d.afterClosed().subscribe(() => {
+            });
+        } else {
+            const d = this._matDialog.open(ValidityDetailComponent, {
+                data: {
+
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

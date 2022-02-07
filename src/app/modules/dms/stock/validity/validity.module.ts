@@ -27,6 +27,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {ValidityComponent} from './validity.component';
 import {ValidityResolvers} from './validity.resolvers';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
+import {ValidityDetailComponent} from './validity-detail/validity-detail.component';
 
 const validityRoutes: Route[] = [
     {
@@ -40,7 +41,8 @@ const validityRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        ValidityComponent
+        ValidityComponent,
+        ValidityDetailComponent
     ],
     imports: [
         CommonModule,

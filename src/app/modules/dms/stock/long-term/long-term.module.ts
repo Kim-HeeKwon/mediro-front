@@ -27,6 +27,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {LongTermComponent} from "./long-term.component";
 import {LongTermResolvers} from "./long-term.resolvers";
+import {LongTermDetailComponent} from "./long-term-detail/long-term-detail.component";
 
 const longTermRoutes: Route[] = [
     {
@@ -40,7 +41,8 @@ const longTermRoutes: Route[] = [
 
 @NgModule({
     declarations: [
-        LongTermComponent
+        LongTermComponent,
+        LongTermDetailComponent
     ],
     imports: [
         CommonModule,

@@ -680,7 +680,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
         this.selectHeader('all');
     }
 
-    incomeOutcome() {
+    incomeOutcome(): void {
 
         if (!this.isMobile) {
             const d = this._matDialog.open(IncomeOutcomeDetailComponent, {

@@ -4,7 +4,6 @@ import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import * as moment from "moment";
 import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
 import {Observable, Subject} from "rxjs";
@@ -147,7 +146,7 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
         this._changeDetectorRef.markForCheck();
     }
 
-    selectHeader(){
+    selectHeader(): void {
         const rtn = this._incomeOutcomeService.getDetail(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
 
         rtn.then((ex) => {
