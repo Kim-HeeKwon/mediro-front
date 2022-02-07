@@ -1,71 +1,71 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {ValidityService} from "../validity.service";
-import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {merge, Observable, Subject} from "rxjs";
-import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
-import {CodeStore} from "../../../../../core/common-code/state/code.store";
+import {Observable, Subject} from "rxjs";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import RealGrid, {DataFieldObject, ValueType} from "realgrid";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
+import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {MatPaginator} from "@angular/material/paginator";
-import {ValidityDetailPagenation} from "../validity.types";
+import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
+import {AcceptableService} from "../acceptable.service";
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 import {takeUntil} from "rxjs/operators";
+import {AcceptableDetailPagenation} from "../acceptable.types";
+import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
+import {MatPaginator} from "@angular/material/paginator";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+
 @Component({
-    selector: 'dms-stock-validity-detail',
-    templateUrl: 'validity-detail.component.html',
-    styleUrls: ['validity-detail.component.scss'],
+    selector: 'dms-stock-acceptable-detail',
+    templateUrl: 'acceptable-detail.component.html',
+    styleUrls: ['acceptable-detail.component.scss'],
 })
-export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit {
-    orderBy: any = 'desc';
+export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
-    validityDetailPagenation: ValidityDetailPagenation | null = null;
+    orderBy: any = 'desc';
+    acceptableDetailPagenation: AcceptableDetailPagenation | null = null;
+    isLoading: boolean = false;
+    isMobile: boolean = false;
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-    isLoading: boolean = false;
-    isMobile: boolean = false;
-    searchForm: FormGroup;
     itemGrades: CommonCode[] = null;
-    validityType: CommonCode[] = null;
+    acceptableType: CommonCode[] = null;
+    searchForm: FormGroup;
     // @ts-ignore
     gridList: RealGrid.GridView;
     // @ts-ignore
-    validityDetailDataProvider: RealGrid.LocalDataProvider;
-    validityDetailColumns: Columns[];
+    acceptableDetailDataProvider: RealGrid.LocalDataProvider;
+    acceptableDetailColumns: Columns[];
     // @ts-ignore
-    validityDetailFields: DataFieldObject[] = [
+    acceptableDetailFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
-        {fieldName: 'validityType', dataType: ValueType.TEXT}
+        {fieldName: 'acceptableType', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public matDialogRef: MatDialogRef<ValidityDetailComponent>,
         private _realGridsService: FuseRealGridService,
-        private _utilService: FuseUtilsService,
-        private _codeStore: CodeStore,
-        public _matDialogPopup: MatDialog,
-        private _deviceService: DeviceDetectorService,
+        private _acceptableService: AcceptableService,
+        public matDialogRef: MatDialogRef<AcceptableDetailComponent>,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _functionService: FunctionService,
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _validityService: ValidityService,
+        private _codeStore: CodeStore,
+        public _matDialogPopup: MatDialog,
         private _formBuilder: FormBuilder,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
+        private _deviceService: DeviceDetectorService,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private readonly breakpointObserver: BreakpointObserver,
+        private _utilService: FuseUtilsService) {
         this.isMobile = this._deviceService.isMobile();
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
-        this.validityType = _utilService.commonValue(_codeStore.getValue().data, 'VALIDITY_TYPE');
+        this.acceptableType = _utilService.commonValue(_codeStore.getValue().data, 'ACCEPTABLE_TYPE');
     }
     ngAfterViewInit(): void {
     }
@@ -74,17 +74,15 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-        this._realGridsService.gfn_Destory(this.gridList, this.validityDetailDataProvider);
+        this._realGridsService.gfn_Destory(this.gridList, this.acceptableDetailDataProvider);
     }
 
     ngOnInit(): void {
-
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            itemCd: [''], // 품목코드
-            itemNm: [''], // 품목명,
+            itemCd: [''],
+            itemNm: [''],
         });
-
         const values = [];
         const lables = [];
         this.itemGrades.forEach((param: any) => {
@@ -93,53 +91,40 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
         const valueTypes = [];
         const lableTypes = [];
-        this.validityType.forEach((param: any) => {
+        this.acceptableType.forEach((param: any) => {
             valueTypes.push(param.id);
             lableTypes.push(param.name);
         });
 
         //그리드 컬럼
-        this.validityDetailColumns = [
+        this.acceptableDetailColumns = [
             {
                 name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '품목코드', styleName: 'center-cell-text'},
-                renderer: {
+                , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '품목명', styleName: 'center-cell-text'},
-                renderer: {
+                , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'standard',
-                fieldName: 'standard',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '규격', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                },
+                }
             },
             {
-                name: 'unit',
-                fieldName: 'unit',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '단위', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                },
+                }
             },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'},
-                renderer: {
+                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 },
                 values: values,
@@ -147,18 +132,17 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 lookupDisplay: true,
             },
             {
-                name: 'validityType', fieldName: 'validityType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '임박유형', styleName: 'center-cell-text'},
+                name: 'acceptableType', fieldName: 'acceptableType', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '가납기간 설정', styleName: 'center-cell-text'},
                 values: valueTypes,
                 labels: lableTypes,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.validityType), renderer: {
+                editor: this._realGridsService.gfn_ComboBox(this.acceptableType), renderer: {
                     showTooltip: true
                 }
-            }
+            },
         ];
-
-        this.validityDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
+        this.acceptableDetailDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
@@ -168,11 +152,12 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         };
 
         this.gridList = this._realGridsService.gfn_CreateGrid(
-            this.validityDetailDataProvider,
-            'validityDetail',
-            this.validityDetailColumns,
-            this.validityDetailFields,
-            gridListOption);
+            this.acceptableDetailDataProvider,
+            'acceptableDetail',
+            this.acceptableDetailColumns,
+            this.acceptableDetailFields,
+            gridListOption,
+        );
 
         //그리드 옵션
         this.gridList.setEditOptions({
@@ -201,7 +186,6 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.editOptions.validateOnEdited = true;
         this._realGridsService.gfn_EditGrid(this.gridList);
 
-
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
@@ -212,11 +196,10 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 return {editable: false};
             }
         });
-
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._validityService.getDetail(this.validityDetailPagenation.page, this.validityDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._acceptableService.getDetail(this.acceptableDetailPagenation.page, this.acceptableDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
             }
             ;
@@ -233,17 +216,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._changeDetectorRef.markForCheck();
     }
 
-    excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '유효기간 임박 설정 목록');
-    }
-
-    selectHeader(): void {
-        const rtn = this._validityService.getDetail(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
-        this.selectCallBack(rtn);
-    }
-
-    openItemSearch(): void
-    {
+    openItemSearch() {
         if (!this.isMobile) {
 
             const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {
@@ -294,8 +267,33 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 });
         }
     }
-    saveValidity(): void {
-        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.validityDetailDataProvider);
+
+    excelExport() {
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '가납재고 설정 목록');
+    }
+
+    selectHeader() {
+        const rtn = this._acceptableService.getDetail(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.acceptableDetailDataProvider, ex.acceptableDetail);
+            this._acceptableService.acceptableDetailPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((acceptableDetailPagenation: AcceptableDetailPagenation) => {
+                    // Update the pagination
+                    this.acceptableDetailPagenation = acceptableDetailPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        });
+    }
+
+    saveAcceptable() {
+        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.acceptableDetailDataProvider);
 
         let detailCheck = false;
 
@@ -324,7 +322,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._validityService.saveValidity(rows)
+                    this._acceptableService.saveAcceptable(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((stock: any) => {
                             this._functionService.cfn_loadingBarClear();
@@ -338,7 +336,6 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._changeDetectorRef.markForCheck();
     }
 
-
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
@@ -347,20 +344,5 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_alert('정상적으로 처리되었습니다.');
             this.selectHeader();
         }
-    }
-
-    selectCallBack(rtn: any): void {
-        rtn.then((ex) => {
-
-            this._realGridsService.gfn_DataSetGrid(this.gridList, this.validityDetailDataProvider, ex.validityDetail);
-            this._validityService.validityDetailPagenation$
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((validityDetailPagenation: ValidityDetailPagenation) => {
-                    // Update the pagination
-                    this.validityDetailPagenation = validityDetailPagenation;
-                    // Mark for check
-                    this._changeDetectorRef.markForCheck();
-                });
-        });
     }
 }

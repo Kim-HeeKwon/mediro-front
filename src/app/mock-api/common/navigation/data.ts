@@ -81,7 +81,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: '애널리틱스',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             }
         ]
     },
@@ -227,14 +227,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: '자동발주',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             },
             {
                 id   : 'smart-plus.status',
                 title: '정기주문',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             },
             {
                 id      : 'stock.safety',
@@ -532,7 +532,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 title: '애널리틱스',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             }
         ]
     },
@@ -635,14 +635,14 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 title: '자동발주',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             },
             {
                 id   : 'smart-plus.status',
                 title: '정기주문',
                 type : 'basic',
                 icon : 'heroicons_outline:desktop-computer',
-                link : '/pages/error/500'
+                link : ''
             },
             {
                 id   : 'stock.safety',

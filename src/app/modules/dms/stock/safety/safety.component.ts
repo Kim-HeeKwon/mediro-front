@@ -36,6 +36,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     searchForm: FormGroup;
     itemGrades: CommonCode[] = [];
     invYn: CommonCode[] = [];
+    safetyType: CommonCode[] = [];
 
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -73,6 +74,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly breakpointObserver: BreakpointObserver) {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
         this.invYn = _utilService.commonValue(_codeStore.getValue().data, 'INV_YN');
+        this.safetyType = _utilService.commonValue(_codeStore.getValue().data, 'SAFETY_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -82,6 +84,12 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.itemGrades.forEach((param: any) => {
             values.push(param.id);
             lables.push(param.name);
+        });
+        const valueTypes = [];
+        const lableTypes = [];
+        this.safetyType.forEach((param: any) => {
+            valueTypes.push(param.id);
+            lableTypes.push(param.name);
         });
 
         // 검색 Form 생성
@@ -139,8 +147,6 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'safety', fieldName: 'safety', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '안전재고율', styleName: 'center-cell-text'},
-                values: values,
-                labels: lables,
                 lookupDisplay: true, renderer: {
                     showTooltip: true
                 }
@@ -148,18 +154,16 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'safetyType', fieldName: 'safetyType', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '관리유형', styleName: 'center-cell-text'},
-                values: values,
-                labels: lables,
+                values: valueTypes,
+                labels: lableTypes,
+                editor: this._realGridsService.gfn_ComboBox(this.safetyType),
                 lookupDisplay: true, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'safetyStatus', fieldName: 'safetyStatus', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '상태', styleName: 'center-cell-text'},
-                values: values,
-                labels: lables,
-                lookupDisplay: true, renderer: {
+                header: {text: '상태', styleName: 'center-cell-text'},renderer: {
                     showTooltip: true
                 }
             },
@@ -235,31 +239,60 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : '', editable: false};
+            const safetyStatus = grid.getValue(dataCell.index.itemIndex, 'safetyStatus');
 
+            if(safetyStatus === '부족'){
+                if (dataCell.dataColumn.fieldName === 'safetyStatus') {
+                    ret.styleName = 'center-cell-text red-cell-color';
+                    return ret;
+                }
+            }else if(safetyStatus === '임박'){
+                if (dataCell.dataColumn.fieldName === 'safetyStatus') {
+                    ret.styleName = 'center-cell-text orange-cell-color';
+                    return ret;
+                }
+            }else if(safetyStatus === '주의'){
+                if (dataCell.dataColumn.fieldName === 'safetyStatus') {
+                    ret.styleName = 'center-cell-text yellow-cell-color';
+                    return ret;
+                }
+            }else if(safetyStatus === '양호'){
+                if (dataCell.dataColumn.fieldName === 'safetyStatus') {
+                    ret.styleName = 'center-cell-text yellowgreen-cell-color';
+                    return ret;
+                }
+            }
             //추가시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade' ||
+                dataCell.dataColumn.fieldName === 'safety' ||
+                dataCell.dataColumn.fieldName === 'safetyStatus' ||
                 dataCell.dataColumn.fieldName === 'availQty') {
-                return {editable: false};
-            } else {
-                return {editable: true};
-            }
-        });
 
-        this.gridList.setRowStyleCallback((grid, item, fixed) => {
-            const ret = {
-                styleName: ''
-            };
-            const safetyQty = grid.getValue(item.index, 'safetyQty');
-            const availQty = grid.getValue(item.index, 'availQty');
-            if (safetyQty > availQty) {
-                ret.styleName = 'red-color';
+                return ret;
+            } else {
+                ret.editable= true;
                 return ret;
             }
+
+
         });
+
+        // this.gridList.setRowStyleCallback((grid, item, fixed) => {
+        //     const ret = {
+        //         styleName: ''
+        //     };
+        //     const safetyQty = grid.getValue(item.index, 'safetyQty');
+        //     const availQty = grid.getValue(item.index, 'availQty');
+        //     if (safetyQty > availQty) {
+        //         ret.styleName = 'red-color';
+        //         return ret;
+        //     }
+        // });
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {

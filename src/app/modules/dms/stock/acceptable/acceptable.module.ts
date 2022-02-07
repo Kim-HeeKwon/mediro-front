@@ -31,6 +31,7 @@ import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help"
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 import {AcceptableComponent} from "./acceptable.component";
 import {AcceptableResolvers} from "./acceptable.resolvers";
+import {AcceptableDetailComponent} from "./acceptable-detail/acceptable-detail.component";
 
 const acceptableRoutes: Route[] = [
     {
@@ -45,6 +46,7 @@ const acceptableRoutes: Route[] = [
 @NgModule({
     declarations: [
         AcceptableComponent,
+        AcceptableDetailComponent,
     ],
     imports: [
         CommonModule,

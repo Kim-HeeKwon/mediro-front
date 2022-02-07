@@ -14,6 +14,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {AcceptableService} from './acceptable.service';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {FunctionService} from "../../../../../@teamplat/services/function";
+import {AcceptableDetailComponent} from "./acceptable-detail/acceptable-detail.component";
 
 @Component({
     selector: 'dms-app-acceptable',
@@ -50,6 +51,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'ibDate', dataType: ValueType.TEXT},
         {fieldName: 'validity', dataType: ValueType.TEXT},
+        {fieldName: 'acceptableType', dataType: ValueType.TEXT},
         {fieldName: 'thirty', dataType: ValueType.NUMBER},
         {fieldName: 'thirtyBysixty', dataType: ValueType.NUMBER},
         {fieldName: 'sixtyByninety', dataType: ValueType.NUMBER},
@@ -276,6 +278,32 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         };
 
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : ''};
+            const acceptableType = grid.getValue(dataCell.index.itemIndex, 'acceptableType');
+            if(Number(acceptableType) === 30){
+                if (dataCell.dataColumn.fieldName === 'thirtyBysixty' ||
+                    dataCell.dataColumn.fieldName === 'sixtyByninety' ||
+                    dataCell.dataColumn.fieldName === 'ninety') {
+                    ret.styleName = 'right-cell-text orange-cell-color';
+                    return ret;
+                }
+            }else if(Number(acceptableType) === 60){
+                if (dataCell.dataColumn.fieldName === 'sixtyByninety' ||
+                    dataCell.dataColumn.fieldName === 'ninety') {
+
+                    ret.styleName = 'right-cell-text orange-cell-color';
+                    return ret;
+                }
+            }else if(Number(acceptableType) === 90){
+                if (dataCell.dataColumn.fieldName === 'ninety') {
+                    ret.styleName = 'right-cell-text orange-cell-color';
+                    return ret;
+                }
+            }
+
+        });
+
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
@@ -364,5 +392,38 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     setting(): void{
 
+        if (!this.isMobile) {
+            const d = this._matDialog.open(AcceptableDetailComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+
+                },
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectHeader();
+            });
+        } else {
+            const d = this._matDialog.open(AcceptableDetailComponent, {
+                data: {
+
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectHeader();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

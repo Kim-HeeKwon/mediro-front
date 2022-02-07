@@ -7,7 +7,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">유효기간 임박 설정</div>
+        <div class="text-lg font-medium">가납재고 설정</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -62,30 +62,32 @@
                 (click)="selectHeader()">
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
                 <span class="ml-2 mr-1">불러오기</span>
             </button>
             <button
-                class="ml-2 mediro-btn-custom"
-                mat-stroked-button
+                class="mediro-btn-custom ml-2"
+                mat-flat-button
                 [color]="'accent'"
-                (click)="saveValidity()">
-                <mat-icon [svgIcon]="'settings'"></mat-icon>
-                <span class="ml-2 mr-1">임박설정</span>
+                (click)="saveAcceptable()">
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                <span class="ml-2 mr-1">설정</span>
             </button>
         </div>
     </div>
     <div
         style="height: 300px;"
         class="realgrid"
-        id="validityDetail">
+        id="acceptableDetail">
     </div>
     <mat-paginator
         class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
         [ngClass]="{'pointer-events-none': isLoading}"
-        [length]="validityDetailPagenation === null ? 0 : validityDetailPagenation.length"
-        [pageIndex]="validityDetailPagenation === null ? 0 : validityDetailPagenation.page"
-        [pageSize]="validityDetailPagenation === null ? 0 : validityDetailPagenation.size"
+        [length]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.length"
+        [pageIndex]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.page"
+        [pageSize]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.size"
         [pageSizeOptions]="[40, 60, 80, 100, 120]"
         [showFirstLastButtons]="true"></mat-paginator>
 </div>

@@ -14,7 +14,28 @@ export interface LongTerm{
     qty: number;                //현재고
     availQty: number;           //가용재고
 }
+
+export interface LongTermDetail{
+    no?: number;
+    mId: string;                //회원사
+    itemCd: string;             //품목코드
+    itemNm: string;             //품목명
+    itemGrade: string;          //품목등급
+    standard: string;           //규격
+    unit: string;               //단위
+    longTermType?: string;      //유형
+}
 export interface LongTermPagenation
+{
+    length: number;
+    size: number;
+    page: number;
+    lastPage: number;
+    startIndex: number;
+    endIndex: number;
+}
+
+export interface LongTermDetailPagenation
 {
     length: number;
     size: number;

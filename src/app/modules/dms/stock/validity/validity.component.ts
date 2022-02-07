@@ -13,7 +13,6 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {FunctionService} from "../../../../../@teamplat/services/function";
-import {IncomeOutcomeDetailComponent} from "../../deposit-withdrawal/income-outcome/income-outcome-detail/income-outcome-detail.component";
 import {MatDialog} from "@angular/material/dialog";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {ValidityDetailComponent} from "./validity-detail/validity-detail.component";
@@ -36,6 +35,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     navigationSubscription: any;
     searchForm: FormGroup;
     validity: CommonCode[] = null;
+    validityType: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
     validitys$: Observable<Validity[]>;
     validityPagenation: ValidityPagenation | null = null;
@@ -84,6 +84,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly breakpointObserver: BreakpointObserver) {
         this.validity = _utilService.commonValue(_codeStore.getValue().data, 'INV_VALIDITY');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        this.validityType = _utilService.commonValue(_codeStore.getValue().data, 'VALIDITY_TYPE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
             // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
@@ -120,6 +121,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.itemGrades.forEach((param: any) => {
             values.push(param.id);
             lables.push(param.name);
+        });
+        const valueTypes = [];
+        const lableTypes = [];
+        this.validityType.forEach((param: any) => {
+            valueTypes.push(param.id);
+            lableTypes.push(param.name);
         });
 
         // 검색 Form 생성
@@ -258,6 +265,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 renderer: {
                     showTooltip: true
                 },
+                values: valueTypes,
+                labels: lableTypes,
+                lookupDisplay: true,
             },
             {
                 name: 'imminentStatus',
@@ -322,6 +332,34 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
+
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : ''};
+            const imminentStatus = grid.getValue(dataCell.index.itemIndex, 'imminentStatus');
+
+            if(imminentStatus === '위험'){
+                if (dataCell.dataColumn.fieldName === 'imminentStatus') {
+                    ret.styleName = 'center-cell-text red-cell-color';
+                    return ret;
+                }
+            }else if(imminentStatus === '상'){
+                if (dataCell.dataColumn.fieldName === 'imminentStatus') {
+                    ret.styleName = 'center-cell-text orange-cell-color';
+                    return ret;
+                }
+            }else if(imminentStatus === '중'){
+                if (dataCell.dataColumn.fieldName === 'imminentStatus') {
+                    ret.styleName = 'center-cell-text yellow-cell-color';
+                    return ret;
+                }
+            }else if(imminentStatus === '하'){
+                if (dataCell.dataColumn.fieldName === 'imminentStatus') {
+                    ret.styleName = 'center-cell-text yellowgreen-cell-color';
+                    return ret;
+                }
+            }
+
+        });
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -415,6 +453,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 },
             });
             d.afterClosed().subscribe(() => {
+                this.selectHeader();
             });
         } else {
             const d = this._matDialog.open(ValidityDetailComponent, {
@@ -434,6 +473,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
             d.afterClosed().subscribe(() => {
+                this.selectHeader();
                 smallDialogSubscription.unsubscribe();
             });
         }

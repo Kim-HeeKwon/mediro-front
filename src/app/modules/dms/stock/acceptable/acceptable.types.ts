@@ -11,6 +11,7 @@ export interface Acceptable
     unit: string;               //단위
     ibDate?: string;             //입고일자
     validity?: string;          //유효기간
+    acceptableType?: string;
     thirty?: number;
     thirtyBysixty?: number;
     sixtyByninety?: number;
@@ -18,8 +19,32 @@ export interface Acceptable
     availQty: number;           //보유
 }
 
+export interface AcceptableDetail
+{
+    no?: number;
+    mId: string;                //회원사
+    itemCd: string;             //품목코드
+    itemNm: string;             //품목명
+    itemGrade: string;          //품목등급
+    standard: string;           //규격
+    unit: string;               //단위
+    acceptableType: string;
+    addDate: string;
+}
+
 
 export interface AcceptablePagenation
+{
+    length: number;
+    size: number;
+    page: number;
+    lastPage: number;
+    startIndex: number;
+    endIndex: number;
+}
+
+
+export interface AcceptableDetailPagenation
 {
     length: number;
     size: number;

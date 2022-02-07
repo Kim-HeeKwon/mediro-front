@@ -35,6 +35,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
     navigationSubscription: any;
     searchForm: FormGroup;
     itemGrades: CommonCode[] = null;
+    longTermType: CommonCode[] = null;
     longTerms$: Observable<LongTerm[]>;
     longTermPagenation: LongTermPagenation | null = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -71,6 +72,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver)  {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        this.longTermType = _utilService.commonValue(_codeStore.getValue().data, 'LONGTERM_TYPE');
         this.navigationSubscription = this._router.events.subscribe((e: any) => {
             // RELOAD로 설정했기때문에 동일한 라우트로 요청이 되더라도
             // 네비게이션 이벤트가 발생한다. 우리는 이 네비게이션 이벤트를 구독하면 된다.
@@ -101,6 +103,14 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+
+        // 검색 Form 생성
+        this.searchForm = this._formBuilder.group({
+            itemNm: [''],
+            searchCondition: ['100'],
+            searchText: [''],
+        });
+
         const values = [];
         const lables = [];
         this.itemGrades.forEach((param: any) => {
@@ -108,11 +118,11 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
             lables.push(param.name);
         });
 
-        // 검색 Form 생성
-        this.searchForm = this._formBuilder.group({
-            itemNm: [''],
-            searchCondition: ['100'],
-            searchText: [''],
+        const valueTypes = [];
+        const lableTypes = [];
+        this.longTermType.forEach((param: any) => {
+            valueTypes.push(param.id);
+            lableTypes.push(param.name);
         });
 
         this.longTermColumns = [
@@ -231,6 +241,9 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 renderer: {
                     showTooltip: true
                 },
+                values: valueTypes,
+                labels: lableTypes,
+                lookupDisplay: true,
             },
             {
                 name: 'longTermStatus',
@@ -278,6 +291,34 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
+
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : ''};
+            const longTermStatus = grid.getValue(dataCell.index.itemIndex, 'longTermStatus');
+
+            if(longTermStatus === '악성'){
+                if (dataCell.dataColumn.fieldName === 'longTermStatus') {
+                    ret.styleName = 'center-cell-text red-cell-color';
+                    return ret;
+                }
+            }else if(longTermStatus === '장기화'){
+                if (dataCell.dataColumn.fieldName === 'longTermStatus') {
+                    ret.styleName = 'center-cell-text orange-cell-color';
+                    return ret;
+                }
+            }else if(longTermStatus === '주의'){
+                if (dataCell.dataColumn.fieldName === 'longTermStatus') {
+                    ret.styleName = 'center-cell-text yellow-cell-color';
+                    return ret;
+                }
+            }else if(longTermStatus === '양호'){
+                if (dataCell.dataColumn.fieldName === 'longTermStatus') {
+                    ret.styleName = 'center-cell-text';
+                    return ret;
+                }
+            }
+
+        });
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -362,6 +403,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 },
             });
             d.afterClosed().subscribe(() => {
+                this.selectHeader();
             });
         } else {
             const d = this._matDialog.open(LongTermDetailComponent, {
@@ -381,6 +423,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
             d.afterClosed().subscribe(() => {
+                this.selectHeader();
                 smallDialogSubscription.unsubscribe();
             });
         }
