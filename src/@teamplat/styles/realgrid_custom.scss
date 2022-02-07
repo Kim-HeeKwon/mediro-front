@@ -319,21 +319,37 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .h-90{
     height: 90% !important;
 }
+.border-blue {
+    background: #3982db !important;
+    border: 2px solid #3982db;
+    color: #ffffff !important;
+}
+
+.border-blue:hover {
+    border: 2px solid #3982db;
+    background: #3982db !important;
+    color: #000000 !important;
+}
+
 .border-green{
+    background: #45AAB4 !important;
     border: 2px solid #45AAB4;
+    color: #ffffff !important;
 }
 .border-green:hover{
     border: 2px solid #45AAB4;
     background: #45AAB4 !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 .border-red{
     border: 2px solid #F36480;
+    background: #F36480 !important;
+    color: #ffffff !important;
 }
 .border-red:hover{
     border: 2px solid #F36480;
     background: #F36480 !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 .border-yellow{
     border: 1px solid yellow;
@@ -345,19 +361,23 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .border-navy{
     border: 2px solid #206491;
+    background: #206491 !important;
+    color: #ffffff !important;
 }
 .border-navy:hover{
     border: 2px solid #206491;
     background: #206491 !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 .border-orange{
     border: 2px solid #FBB45C;
+    background: #FBB45C !important;
+    color: #ffffff !important;
 }
 .border-orange:hover{
     border: 2px solid #FBB45C;
     background: #FBB45C !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
 .rounded-1xl{

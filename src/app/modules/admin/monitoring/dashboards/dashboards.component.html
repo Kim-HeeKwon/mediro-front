@@ -781,32 +781,32 @@
                     </div>
                     <!-- Overview -->
                     <div [ngClass]="{'flex flex-col p-6 col-span-6': isMobile,
-                                    'flex flex-col p-6 col-span-2': !isMobile}">
+                                    'flex flex-col p-4 col-span-2': !isMobile}">
                         <div class="font-medium text-secondary"></div>
                         <div class="flex-auto grid grid-cols-4 gap-4">
                             <!-- 임시등록 -->
-                            <button [ngClass]="{'col-span-1 border-green one-btn': isMobile,
-                                    'col-span-2 border-green one-btn': !isMobile}"
+                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                                    'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI' , status: ''})">
                                 <span class="text-13s text-bold-600">임시등록 <br>0</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-navy one-btn': isMobile,
-                                    'col-span-2 border-navy one-btn': !isMobile}"
+                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                                    'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">월보고 <br>{{udiLastDay}}</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-orange one-btn': isMobile,
-                                    'col-span-2 border-orange one-btn': !isMobile}"
+                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                                    'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI_RTN' , status: ''})">
                                 <span class="text-13s text-bold-600">반품</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-red one-btn': isMobile,
-                                    'col-span-2 border-red one-btn': !isMobile}"
+                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                                    'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI' , status: ''})">
