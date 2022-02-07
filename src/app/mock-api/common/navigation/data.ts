@@ -143,6 +143,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: '정산관리',
         type: 'collapsable',
         icon: 'heroicons_outline:archive',
+        tag: '3',
         children: [
             {
                 id   : 'calculate.bill',
@@ -163,21 +164,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: '입금관리',
                 type : 'basic',
                 icon : 'monetization_on',
-                link : '/deposit-withdrawal/deposit'
+                link : '/deposit-withdrawal/deposit',
+                tag: 'New'
             },
             {
                 id   : 'deposit-withdrawal.withdrawal',
                 title: '출금관리',
                 type : 'basic',
                 icon : 'monetization_on',
-                link : '/deposit-withdrawal/withdrawal'
+                link : '/deposit-withdrawal/withdrawal',
+                tag: 'New'
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
-                title: '거래처별 원장 관리',
+                title: '원장 관리',
                 type : 'basic',
                 icon : 'credit_score',
-                link : '/deposit-withdrawal/income-outcome'
+                link : '/deposit-withdrawal/income-outcome',
+                tag: 'New'
             },
         ]
     },
@@ -222,6 +226,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title   : '스마트플러스',
         type    : 'collapsable',
         icon    : 'playlist_add',
+        tag: '4',
         children: [
             // {
             //     id   : 'smart-plus.manages',
@@ -637,6 +642,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         title   : '스마트플러스',
         type    : 'collapsable',
         icon    : 'playlist_add',
+        tag: '4',
         children: [
             // {
             //     id   : 'smart-plus.manages',
