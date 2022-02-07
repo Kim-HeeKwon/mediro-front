@@ -76,13 +76,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:presentation-chart-bar',
                 link : '/monitoring/dashboards'
             },
-            {
-                id   : 'analytics.dashboards',
-                title: '애널리틱스',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            }
+            // {
+            //     id   : 'analytics.dashboards',
+            //     title: '애널리틱스',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // }
         ]
     },
     {
@@ -222,47 +223,53 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'collapsable',
         icon    : 'playlist_add',
         children: [
-            {
-                id   : 'smart-plus.manages',
-                title: '자동발주',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            },
-            {
-                id   : 'smart-plus.status',
-                title: '정기주문',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            },
+            // {
+            //     id   : 'smart-plus.manages',
+            //     title: '자동발주',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
+            // {
+            //     id   : 'smart-plus.status',
+            //     title: '정기주문',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
             {
                 id      : 'stock.safety',
                 title   : '안전재고',
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
-                link    : '/stock/safety'
+                link    : '/stock/safety',
+                tag: 'New'
             },
             {
                 id   : 'stock.validity',
                 title: '유효기간',
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
-                link : '/stock/validity'
+                link : '/stock/validity',
+                tag: 'New'
             },
             {
                 id   : 'smart-plus.status',
                 title: '장기재고',
                 type : 'basic',
                 icon : 'receipt_long',
-                link : '/stock/long-term'
+                link : '/stock/long-term',
+                tag: 'New'
             },
             {
                 id      : 'stock.acceptable',
                 title   : '가납재고',
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
-                link    : '/stock/acceptable'
+                link    : '/stock/acceptable',
+                tag: 'New'
             },
         ]
     },
@@ -527,13 +534,14 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:presentation-chart-bar',
                 link : '/monitoring/dashboards'
             },
-            {
-                id   : 'analytics.dashboards',
-                title: '애널리틱스',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            }
+            // {
+            //     id   : 'analytics.dashboards',
+            //     title: '애널리틱스',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // }
         ]
     },
     {
@@ -630,47 +638,53 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         type    : 'collapsable',
         icon    : 'playlist_add',
         children: [
-            {
-                id   : 'smart-plus.manages',
-                title: '자동발주',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            },
-            {
-                id   : 'smart-plus.status',
-                title: '정기주문',
-                type : 'basic',
-                icon : 'heroicons_outline:desktop-computer',
-                link : ''
-            },
+            // {
+            //     id   : 'smart-plus.manages',
+            //     title: '자동발주',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
+            // {
+            //     id   : 'smart-plus.status',
+            //     title: '정기주문',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
             {
                 id   : 'stock.safety',
                 title: '안전재고',
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
-                link : '/stock/safety'
+                link : '/stock/safety',
+                tag: 'New'
             },
             {
                 id   : 'stock.validity',
                 title: '유효기간',
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
-                link : '/stock/validity'
+                link : '/stock/validity',
+                tag: 'New'
             },
             {
                 id   : 'smart-plus.status',
                 title: '장기재고',
                 type : 'basic',
                 icon : 'receipt_long',
-                link : '/stock/long-term'
+                link : '/stock/long-term',
+                tag: 'New'
             },
             {
                 id   : 'stock.acceptable',
                 title: '가납재고',
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
-                link : '/stock/acceptable'
+                link : '/stock/acceptable',
+                tag: 'New'
             }
         ]
     },
