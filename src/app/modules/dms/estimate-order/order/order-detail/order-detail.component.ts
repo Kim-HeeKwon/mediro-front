@@ -139,6 +139,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             this.orderHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
+            this.orderHeaderForm.patchValue({'poAmt' :
+                    this.priceToString(this._activatedRoute.snapshot.paramMap['params'].poAmt)});
 
             this._orderService.getDetail(0, 40, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
         }
@@ -767,5 +769,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 });
         });
+    }
+
+    priceToString(price): string {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 }

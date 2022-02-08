@@ -131,6 +131,8 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             this.salesorderHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
+            this.salesorderHeaderForm.patchValue({'soAmt' :
+                    this.priceToString(this._activatedRoute.snapshot.paramMap['params'].soAmt)});
 
             this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
         }
@@ -711,5 +713,9 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                     }
                 });
         }
+    }
+
+    priceToString(price): string {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 }

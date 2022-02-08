@@ -140,8 +140,17 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
 
         this.ibInfonCnt = Math.round(ibInfonCnt);
+        if(isNaN(this.ibInfonCnt)) {
+            this.ibInfonCnt = 0;
+        }
         this.ibInfopCnt = Math.round(ibInfopCnt);
+        if(isNaN(this.ibInfopCnt)) {
+            this.ibInfopCnt = 0;
+        }
         this.ibInfopsCnt = Math.round(ibInfopsCnt);
+        if(isNaN(this.ibInfopsCnt)) {
+            this.ibInfopsCnt = 0;
+        }
 
         //견적
         this.qtInfo$
@@ -194,10 +203,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const obInfonCnt = this.obInfo.nCnt / obInfoCnt * 100;
         const obInfopCnt = this.obInfo.pCnt / obInfoCnt * 100;
         const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
-
         this.obInfonCnt = Math.round(obInfonCnt);
+        if(isNaN(this.obInfonCnt)) {
+            this.obInfonCnt = 0;
+        }
         this.obInfopCnt = Math.round(obInfopCnt);
+        if(isNaN(this.obInfopCnt)) {
+            this.obInfopCnt = 0;
+        }
         this.obInfopsCnt = Math.round(obInfopsCnt);
+        if(isNaN(this.obInfopsCnt)) {
+            this.obInfopsCnt = 0;
+        }
 
         //발주
         this.poInfo$

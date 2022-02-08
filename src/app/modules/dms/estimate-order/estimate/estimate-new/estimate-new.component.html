@@ -142,6 +142,7 @@
                                                     matPrefix></mat-icon>
                                                 <input type="text"
                                                        matInput
+                                                       (keyup)="onC(this)"
                                                        [formControlName]="'cellPhoneNumber'">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-1 mediro-form-field-custom">

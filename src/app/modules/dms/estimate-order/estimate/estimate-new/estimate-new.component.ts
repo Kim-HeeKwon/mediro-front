@@ -626,4 +626,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_AllDataSetRow(this.gridList, this.estimateDetailDataProvider, 'effectiveDate', effectiveDate);
 
     }
+
+    onC(val): void {
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 }

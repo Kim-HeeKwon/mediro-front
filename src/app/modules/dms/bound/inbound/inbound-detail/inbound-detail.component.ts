@@ -137,6 +137,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             this.inBoundHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
+            this.inBoundHeaderForm.patchValue({'ibAmt' :
+            this.priceToString(this._activatedRoute.snapshot.paramMap['params'].ibAmt)});
 
             this._inboundService.getDetail(0, 40, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
         }
@@ -817,5 +819,9 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 });
         });
 
+    }
+
+    priceToString(price): string {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 }
