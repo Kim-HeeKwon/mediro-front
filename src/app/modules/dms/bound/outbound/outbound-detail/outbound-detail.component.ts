@@ -716,8 +716,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
             return false;
         } else {
-            //일반출고, 폐기, 가납출고, 반품출고
-            if (obType === '1' || obType === '3' || obType === '5' || obType === '6') {
+            //일반출고, 폐기, 가납출고
+            if (obType === '1' || obType === '3' || obType === '5') {
                 if (udiCheckData.length > 0) {
                     //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
                     //입력 수량 그대로 가져오기
