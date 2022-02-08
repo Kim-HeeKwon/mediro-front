@@ -212,7 +212,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 , footer: {
                     text: '',
                     expression: 'sum',
-                    numberFormat : '#,##0'
+                    numberFormat : '#,##0',
                 },groupFooter: {
                     expression: 'sum',
                     numberFormat: '#,##0',
@@ -527,9 +527,83 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
                 this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeHeader);
 
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('inComeAmt').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+
+                    let inComeAmt = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            inComeAmt += Number(e.inComeAmt);
+                        };
+                    });
+
+                    return inComeAmt;
+                });
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('outComeAmt').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+
+                    let outComeAmt = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            outComeAmt += Number(e.outComeAmt);
+                        };
+                    });
+
+                    return outComeAmt;
+                });
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('cashW').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+                    let cashW = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            cashW += Number(e.cashW);
+                        };
+                    });
+
+                    return cashW;
+                });
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('etcW').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+                    let etcW = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            etcW += Number(e.etcW);
+                        };
+                    });
+
+                    return etcW;
+                });
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('cashD').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+                    let cashD = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            cashD += Number(e.cashD);
+                        };
+                    });
+
+                    return cashD;
+                });
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList.columnByName('etcD').footer.valueCallback = ((grid, column, footerIndex, columnFooter, value) => {
+                    let etcD = 0;
+                    ex.incomeOutcomeHeader.forEach((e) => {
+                        if(e.line === '1'){
+                            etcD += Number(e.etcD);
+                        };
+                    });
+
+                    return etcD;
+                });
+
+
             });
         } else {
-            this._functionService.cfn_alert('거래처 코드를 먼저 조회 해주세요');
+            this._functionService.cfn_alert('거래처를 먼저 조회 해주세요');
         }
     }
     yearCha(): void {
@@ -556,6 +630,24 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
     excelExport(): void {
+        const documentTitle = { //제목
+                message: '리얼그리드 제목1',
+                visible: true,
+                spaceTop: 1,
+                spaceBottom: 0,
+                height: 60,
+                styleName: 'documentStyle'
+            };
+        const documentSubtitle = { //부제
+                message: '작성자 : 리얼그리드',
+                작성일 : '',
+                visible: true,
+                height: 60
+            };
+        const documentTail = { //꼬릿말
+                message: '리얼그리드 꼬릿말',
+                visible: true
+            };
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '원장 목록');
     }
 

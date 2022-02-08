@@ -261,13 +261,20 @@ export class DepositComponent implements OnInit, OnDestroy, AfterViewInit {
                     return {editable: true};
                 }
             }else{
-                if (dataCell.dataColumn.fieldName === 'deposit'||
-                    dataCell.dataColumn.fieldName === 'account'||
-                    dataCell.dataColumn.fieldName === 'accountNm'||
-                    dataCell.dataColumn.fieldName === 'depositFlag') {
+
+                const depositFlag = grid.getValue(dataCell.index.itemIndex, 'depositFlag');
+                if(depositFlag === 'Y'){
                     return {editable: false};
-                } else {
-                    return {editable: true};
+                }else{
+
+                    if (dataCell.dataColumn.fieldName === 'deposit'||
+                        dataCell.dataColumn.fieldName === 'account'||
+                        dataCell.dataColumn.fieldName === 'accountNm'||
+                        dataCell.dataColumn.fieldName === 'depositFlag') {
+                        return {editable: false};
+                    } else {
+                        return {editable: true};
+                    }
                 }
             }
         });

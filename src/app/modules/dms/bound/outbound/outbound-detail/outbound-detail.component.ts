@@ -145,10 +145,14 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             active: [false]  // cell상태
         });
 
+
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)) {
             this.outBoundHeaderForm.patchValue(
                 this._activatedRoute.snapshot.paramMap['params']
             );
+
+            this.outBoundHeaderForm.patchValue({'obAmt' :
+                this.priceToString(this._activatedRoute.snapshot.paramMap['params'].obAmt)});
 
             this._outboundService.getDetail(0, 40, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
         }
@@ -879,5 +883,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     }
                 });
         }
+    }
+
+    priceToString(price): string {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 }

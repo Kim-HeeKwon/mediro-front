@@ -254,19 +254,26 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (dataCell.dataColumn.fieldName === 'withdrawal'||
                     dataCell.dataColumn.fieldName === 'account'||
                     dataCell.dataColumn.fieldName === 'accountNm'||
-                    dataCell.dataColumn.fieldName === 'depositFlag') {
+                    dataCell.dataColumn.fieldName === 'withdrawalFlag') {
                     return {editable: false};
                 } else {
                     return {editable: true};
                 }
             }else{
-                if (dataCell.dataColumn.fieldName === 'withdrawal'||
-                    dataCell.dataColumn.fieldName === 'account'||
-                    dataCell.dataColumn.fieldName === 'accountNm'||
-                    dataCell.dataColumn.fieldName === 'depositFlag') {
+
+                const withdrawalFlag = grid.getValue(dataCell.index.itemIndex, 'withdrawalFlag');
+                if(withdrawalFlag === 'Y'){
                     return {editable: false};
-                } else {
-                    return {editable: true};
+                }else{
+
+                    if (dataCell.dataColumn.fieldName === 'deposit'||
+                        dataCell.dataColumn.fieldName === 'account'||
+                        dataCell.dataColumn.fieldName === 'accountNm'||
+                        dataCell.dataColumn.fieldName === 'withdrawalFlag') {
+                        return {editable: false};
+                    } else {
+                        return {editable: true};
+                    }
                 }
             }
 
@@ -377,7 +384,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.deposit.length < 1){
+            if(ex.withdrawal.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });
@@ -403,7 +410,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         checkValues.forEach((r) => {
-            if(r.depositFlag === 'Y'){
+            if(r.withdrawalFlag === 'Y'){
 
                 this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
                 this.selectHeader();
@@ -428,7 +435,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
             detailCheck = true;
         }
         rows.forEach((r) => {
-            if(r.depositFlag === 'Y'){
+            if(r.withdrawalFlag === 'Y'){
 
                 this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
                 detailCheck = true;

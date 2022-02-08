@@ -159,6 +159,31 @@ export class ManagesReportComponent implements OnInit, OnDestroy, AfterViewInit
         this.searchForm.patchValue({'startSuplyContStdmt': year + start});
         this.searchForm.patchValue({'endSuplyContStdmt': year + end});
         this._managesService.getSuplyReport(0,12,'','asc',this.searchForm.getRawValue());
+
+        this._managesService.suplyReports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((suplyReports: any) => {
+                // Update the counts
+                if(suplyReports !== null){
+                    this.suplyReportsCount = suplyReports.length;
+                }
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+
+        // Get the pagenation
+        this._managesService.suplyReportsPagenation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((pagenation: SuplyReportPagenation) => {
+                // Update the pagination
+                this.suplyReportsPagenation = pagenation;
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        this._changeDetectorRef.markForCheck();
     }
 
     /**

@@ -165,7 +165,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/deposit',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'deposit-withdrawal.withdrawal',
@@ -173,7 +173,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/withdrawal',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
@@ -181,7 +181,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'credit_score',
                 link : '/deposit-withdrawal/income-outcome',
-                tag: 'New'
+                tag: 'N'
             },
         ]
     },
@@ -212,13 +212,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
             },
-            {
-                id   : 'udi.manage-sample',
-                title: '공급내역 맛보기',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/manageSample'
-            },
+            // {
+            //     id   : 'udi.manage-sample',
+            //     title: '공급내역 맛보기',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:identification',
+            //     link : '/udi/manageSample'
+            // },
         ]
     },
     {
@@ -250,7 +250,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/safety',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'stock.validity',
@@ -258,7 +258,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
                 link : '/stock/validity',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'smart-plus.status',
@@ -266,7 +266,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'receipt_long',
                 link : '/stock/long-term',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id      : 'stock.acceptable',
@@ -274,7 +274,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/acceptable',
-                tag: 'New'
+                tag: 'N'
             },
         ]
     },
@@ -666,7 +666,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/safety',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'stock.validity',
@@ -674,7 +674,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
                 link : '/stock/validity',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'smart-plus.status',
@@ -682,7 +682,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'receipt_long',
                 link : '/stock/long-term',
-                tag: 'New'
+                tag: 'N'
             },
             {
                 id   : 'stock.acceptable',
@@ -690,7 +690,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/acceptable',
-                tag: 'New'
+                tag: 'N'
             }
         ]
     },

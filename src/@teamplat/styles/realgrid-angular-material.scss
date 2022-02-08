@@ -229,7 +229,10 @@
 //}
 
 .mat-tab-label-container{
-    background: #10172A !important;
+    //background: #10172A !important;
+}
+.mat-tab-labels{
+    border-bottom: 2px solid #10172A;
 }
 .icon-red {
     color: red;

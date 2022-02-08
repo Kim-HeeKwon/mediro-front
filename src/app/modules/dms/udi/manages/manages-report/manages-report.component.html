@@ -146,6 +146,14 @@
                                     <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
                                     <span class="ml-2 mr-1">보고</span>
                                 </button>
+                                <button
+                                    class="mediro-btn-custom"
+                                    style="padding: 0px 25px;"
+                                    *ngIf="report.reportStatus === '처리중'"
+                                    mat-raised-button
+                                    color="accent">
+                                    <span class="ml-2 mr-1">처리중</span>
+                                </button>
                             </td>
                         </ng-container>
                         <tr
