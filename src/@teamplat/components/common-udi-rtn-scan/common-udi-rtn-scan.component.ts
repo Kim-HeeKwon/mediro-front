@@ -264,7 +264,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     cellClick(element, column: TableConfig, i) {
         if(column.dataField === 'udiCode'){
-            this.openScanPopup(element,column,i);
+            //this.openScanPopup(element,column,i);
         }
     }
 
@@ -364,7 +364,12 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         return combo;
     }
 
-    udiScan(elementElement, column: TableConfig, i, $event: KeyboardEvent): void {
+    udiScan(element, elementElement, column: TableConfig, i, $event: KeyboardEvent): void {
+        const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        if(check_kor.test(elementElement)){
+            this._functionService.cfn_alert('한글은 입력할 수 없습니다.');
+            return;
+        }
         let nextIndex = 0;
         nextIndex = i + 1;
         if(nextIndex < this.inboundDetailsCount){

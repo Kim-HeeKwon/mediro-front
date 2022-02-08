@@ -238,6 +238,25 @@ export class FuseRealGridService {
             compatibility: true,
             showColumns: showColumns,
             hideColumns: hideColumns,
+            // documentTitle : { //제목
+            //     message: '리얼그리드 제목1',
+            //     visible: true,
+            //     spaceTop: 1,
+            //     spaceBottom: 0,
+            //     height: 60,
+            //     styleName: 'documentStyle'
+            // },
+            // documentSubtitle : { //부제
+            //     message: '작성자 : 리얼그리드',
+            //     작성일 : '',
+            //     visible: true,
+            //     height: 60
+            // },
+            // documentTail : { //꼬릿말
+            //     message: '리얼그리드 꼬릿말',
+            //     visible: true,
+            //     height: 60
+            // },
             applyDynamicStyles: true,
             sheetName: fileName,
             progressMessage: '엑셀 Export중입니다.',

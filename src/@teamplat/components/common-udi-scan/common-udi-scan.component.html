@@ -263,7 +263,7 @@
                                    [style]="column.style"
                                    [type]="column.type"
                                    [required]="true"
-                                   (keydown.enter)="udiScan(element[column.dataField], column , i, $event)"
+                                   (keydown.enter)="udiScan(element, element[column.dataField], column , i, $event)"
                                    [(ngModel)]="element[column.dataField]"
                                    [value]="element[column.dataField]">
                             <mat-select *ngIf="column.combo"
