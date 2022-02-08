@@ -247,4 +247,22 @@ export class ManagesService {
     setInitList(): void{
         this._suplyReports.next(null);
     }
+
+    /**
+     * save
+     */
+    report(suplyReports: SuplyReport[]): Observable<SuplyReport>
+    {
+        return this._suplyReports.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(suplyReports, 'v1/api/udi/supply-info/report').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

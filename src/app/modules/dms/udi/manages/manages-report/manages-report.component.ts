@@ -173,6 +173,44 @@ export class ManagesReportComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyReport(report) {
-        console.log(report);
+        report = [report];
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '보고하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._managesService.report(report)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((r: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(r);
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+
+    alertMessage(param: any): void {
+        if (param.status !== 'SUCCESS') {
+            this._functionService.cfn_alert(param.msg);
+        } else {
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.select();
+        }
     }
 }

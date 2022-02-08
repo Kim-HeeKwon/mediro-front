@@ -128,6 +128,7 @@
                             </th>
                             <td mat-cell *matCellDef="let report;">
                                 <button
+                                    class="mediro-btn-custom"
                                     *ngIf="report.reportStatus === '보고'"
                                     mat-raised-button
                                     color="warn"
@@ -136,6 +137,7 @@
                                     <span class="ml-2 mr-1">재보고</span>
                                 </button>
                                 <button
+                                    class="mediro-btn-custom"
                                     style="padding: 0px 25px;"
                                     *ngIf="report.reportStatus === '미보고'"
                                     mat-raised-button

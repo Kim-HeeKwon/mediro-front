@@ -177,7 +177,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
-                title: '원장 관리',
+                title: '원장관리',
                 type : 'basic',
                 icon : 'credit_score',
                 link : '/deposit-withdrawal/income-outcome',
