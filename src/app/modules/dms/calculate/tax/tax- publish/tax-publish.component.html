@@ -20,10 +20,9 @@
         </button>
     </div>
     <div class="flex">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full min-w-0 m-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full min-w-0 m-3">
                 <div
-                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card"
-                    [ngClass]="{'ring ring-inset ritrackByFnng-primary': ''}"
+                    class="flex flex-col sm:col-span-1 flex-auto m-2 p-4 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card ring-hover"
                     (click)="smartBill()">
                     <div class="flex items-start p-1 justify-between">
                     </div>
@@ -38,8 +37,7 @@
                     </div>
                 </div>
             <div
-                class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card"
-                [ngClass]="{'ring ring-inset ritrackByFnng-primary': ''}"
+                class="flex flex-col sm:col-span-1 flex-auto m-2 p-4 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card ring-hover"
                 (click)="trusBill()">
                 <div class="flex items-start p-1 justify-between">
                 </div>
@@ -54,8 +52,7 @@
                 </div>
             </div>
             <div
-                class="flex flex-col sm:col-span-1 flex-auto m-2 p-8 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card"
-                [ngClass]="{'ring ring-inset ritrackByFnng-primary': ''}"
+                class="flex flex-col sm:col-span-1 flex-auto m-2 p-4 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card ring-hover"
                 (click)="barobill()">
                 <div class="flex items-start p-1 justify-between">
                 </div>
@@ -69,7 +66,21 @@
                     </div>
                 </div>
             </div>
+            <div
+                class="flex flex-col sm:col-span-1 flex-auto m-2 p-4 bg-card shadow rounded-md overflow-hidden cursor-pointer mediro-bg-card ring-hover"
+                (click)="sendBill()">
+                <div class="flex items-start p-1 justify-between">
+                </div>
+                <div class="flex items-start p-1 justify-between">
+                    <div class="text-lg font-extrabold tracking-tight leading-6 truncate mediro-ft-label font-medium">&nbsp;센드빌</div>
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label"></div>
+                </div>
+                <div class="flex items-start p-1 justify-between">
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label"></div>
+                    <div class="text-lg font-medium tracking-tight leading-6 truncate mediro-ft-label">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
