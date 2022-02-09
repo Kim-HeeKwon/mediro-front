@@ -251,6 +251,14 @@
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'accent'"
+                                    (click)="publish()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                    <span class="ml-1 mr-1">계산서 발행 링크</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
                                     (click)="invoice()">
                                     <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
                                     <span class="ml-1 mr-1">발행</span>

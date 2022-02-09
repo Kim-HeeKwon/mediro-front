@@ -31,6 +31,7 @@ import {FuseDateRangeModule} from "../../../../../@teamplat/components/date-rang
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
+import {TaxPublishComponent} from "./tax- publish/tax-publish.component";
 
 const taxRoutes: Route[] = [
     {
@@ -45,6 +46,7 @@ const taxRoutes: Route[] = [
 @NgModule({
     declarations: [
         TaxComponent,
+        TaxPublishComponent
     ],
     imports: [
         CommonModule,

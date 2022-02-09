@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
+import {TaxPublishComponent} from "./tax- publish/tax-publish.component";
 
 @Component({
     selector: 'dms-tax',
@@ -670,6 +671,38 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                     window.open(param.data[0].url, '상세 정보(' + invoiceHeader.invoice + ')','top=50,left=200,width=1100,height=700');
                 }
             });
+    }
+    publish(): void {
+
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(TaxPublishComponent, {
+                data: {
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed().subscribe((result) => {
+            });
+        } else {
+            const d = this._matDialogPopup.open(TaxPublishComponent, {
+                data: {
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+            });
+        }
     }
 
     selectCallBack(rtn: any): void {
