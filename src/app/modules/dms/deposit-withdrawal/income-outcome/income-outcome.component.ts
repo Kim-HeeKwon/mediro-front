@@ -174,7 +174,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '제품명', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
@@ -183,7 +183,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'invoice', fieldName: 'invoice', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'invoice', fieldName: 'invoice', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '문서번호', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
@@ -305,7 +305,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'balance', fieldName: 'balance', type: 'data', width: '100', styleName: 'right-cell-text'
+                name: 'balance', fieldName: 'balance', type: 'data', width: '150', styleName: 'right-cell-text'
                 , header: {text: '잔액', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
