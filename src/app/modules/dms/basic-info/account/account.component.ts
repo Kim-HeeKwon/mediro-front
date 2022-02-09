@@ -81,6 +81,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'cellPhoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'fax', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
+        {fieldName: 'taxEmail', dataType: ValueType.TEXT},
     ];
 
     constructor(private _realGridsService: FuseRealGridService,
@@ -243,9 +244,20 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'email',
                 fieldName: 'email',
                 type: 'data',
-                width: '100',
+                width: '150',
                 styleName: 'left-cell-text',
                 header: {text: '이메일', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'taxEmail',
+                fieldName: 'taxEmail',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '세금계산서 이메일', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }

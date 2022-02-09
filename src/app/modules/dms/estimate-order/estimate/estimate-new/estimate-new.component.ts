@@ -415,16 +415,18 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             confirmation.afterClosed()
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
-                    const sendData = this.headerDataSet(rows);
+                    if (result) {
+                        const sendData = this.headerDataSet(rows);
 
-                    this._estimateService.createEstimate(sendData)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((estimate: any) => {
-                            this._functionService.cfn_loadingBarClear();
-                            this.alertMessage(estimate);
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+                        this._estimateService.createEstimate(sendData)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((estimate: any) => {
+                                this._functionService.cfn_loadingBarClear();
+                                this.alertMessage(estimate);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+                    }
                 });
             // Mark for check
             this._changeDetectorRef.markForCheck();

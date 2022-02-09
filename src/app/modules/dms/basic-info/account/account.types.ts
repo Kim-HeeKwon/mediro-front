@@ -14,6 +14,7 @@ export interface AccountData
     cellPhoneNumber: string;    //휴대 전화
     fax: string;                //팩스
     email: string;              //이메일
+    taxEmail: string;           //이메일
     addDate?: string;
     addUser?: string;
     updDate?: string;

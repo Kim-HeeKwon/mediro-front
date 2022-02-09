@@ -109,6 +109,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             cellPhoneNumber: [''],
             fax: [''],
             email: [''],
+            taxEmail: [''],
             active: [false]  // cell상태
         });
 

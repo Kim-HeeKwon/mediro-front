@@ -96,6 +96,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             cellPhoneNumber: [''],
             fax: [''],
             email: [''],
+            taxEmail: [''],
             active: [false]  // cell상태
         });
 
