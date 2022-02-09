@@ -43,6 +43,7 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
     );
     selection = new SelectionModel<any>(true, []);
     isLoading: boolean = false;
+    mydata: string = null;
     searchForm: FormGroup;
     outboundDetailsCount: number = 0;
     outBoundDetails$ = new Observable<OutBoundDetails[]>();
@@ -371,14 +372,20 @@ export class CommonUdiScanComponent implements OnInit, OnDestroy, AfterViewInit 
 
     udiScan(element, elementElement, column: TableConfig, i, $event: KeyboardEvent): void {
         const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-        if(check_kor.test(elementElement)){
-            this._functionService.cfn_alert('한글은 입력할 수 없습니다.');
-            return;
-        }
         let nextIndex = 0;
         nextIndex = i + 1;
+        if(check_kor.test(elementElement)){
+            this._functionService.cfn_alert('한글은 입력할 수 없습니다.');
+            this.onChangeValue($event,true);
+            return;
+        }
         if(nextIndex < this.outboundDetailsCount){
             document.getElementById(column.dataField + '_' + (nextIndex)).focus();
+        }
+    }
+    onChangeValue($event, check?: boolean): void {
+        if(check === true) {
+            $event.target.value = this.mydata;
         }
     }
 }

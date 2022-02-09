@@ -79,6 +79,7 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
     ];
     headerText: string = '공급내역 보고';
     inBoundData: any;
+    mydata: string = null;
     isMobile: boolean = false;
     suplyTypeCode: CommonCode[] = null;
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -368,12 +369,18 @@ export class CommonUdiRtnScanComponent implements OnInit, OnDestroy, AfterViewIn
         const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         if(check_kor.test(elementElement)){
             this._functionService.cfn_alert('한글은 입력할 수 없습니다.');
+            this.onChangeValue($event,true);
             return;
         }
         let nextIndex = 0;
         nextIndex = i + 1;
         if(nextIndex < this.inboundDetailsCount){
             document.getElementById(column.dataField + '_' + (nextIndex)).focus();
+        }
+    }
+    onChangeValue($event, check?: boolean): void {
+        if(check === true) {
+            $event.target.value = this.mydata;
         }
     }
 
