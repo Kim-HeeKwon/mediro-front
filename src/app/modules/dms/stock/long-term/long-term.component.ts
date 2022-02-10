@@ -237,7 +237,13 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '관리유형', styleName: 'center-cell-text'},
+                header: {
+                    text: '관리유형',
+                    styleName: 'center-cell-text blue-font-color',
+                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                                                    'help_outline\n' +
+                                                    '</span>',
+                    values: { 'headerText':'관리유형' }},
                 renderer: {
                     showTooltip: true
                 },
@@ -251,7 +257,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '재고상태', styleName: 'center-cell-text'},
+                header: {text: '재고상태', styleName: 'center-cell-text blue-font-color'},
                 renderer: {
                     showTooltip: true
                 },

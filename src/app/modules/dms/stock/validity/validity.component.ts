@@ -256,12 +256,30 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             //     },
             // },
             {
+                name: 'imminentPeriod',
+                fieldName: 'imminentPeriod',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '임박기간', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                },
+            },
+            {
                 name: 'imminentType',
                 fieldName: 'imminentType',
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '임박유형', styleName: 'center-cell-text'},
+                header: {
+                    text: '임박유형',
+                    styleName: 'center-cell-text blue-font-color',
+                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                                                            'help_outline\n' +
+                                                            '</span>',
+                    values: { 'headerText':'임박유형' }
+                },
                 renderer: {
                     showTooltip: true
                 },
@@ -275,18 +293,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text',
-                header: {text: '임박상태', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                },
-            },
-            {
-                name: 'imminentPeriod',
-                fieldName: 'imminentPeriod',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text',
-                header: {text: '임박기간', styleName: 'center-cell-text'},
+                header: {text: '임박상태', styleName: 'center-cell-text blue-font-color'},
                 renderer: {
                     showTooltip: true
                 },

@@ -34,6 +34,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
     acceptablePagenation: AcceptablePagenation | null = null;
     searchForm: FormGroup;
     itemGrades: CommonCode[] = [];
+    acceptableType: CommonCode[] = [];
 
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -72,6 +73,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly breakpointObserver: BreakpointObserver) {
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        this.acceptableType = _utilService.commonValue(_codeStore.getValue().data, 'ACCEPTABLE_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -82,6 +84,12 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             values.push(param.id);
             lables.push(param.name);
         });
+        const valueTypes = [];
+        const lableTypes = [];
+        this.acceptableType.forEach((param: any) => {
+            valueTypes.push(param.id);
+            lableTypes.push(param.name);
+        });
 
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
@@ -90,13 +98,14 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         const columnLayout = [
-            'account',
+            //'account',
             'accountNm',
-            'itemCd',
+            //'itemCd',
             'itemNm',
             'standard',
             'unit',
             'itemGrade',
+            'acceptableType',
             {
                 name: 'acceptable',
                 direction: 'horizontal',
@@ -109,6 +118,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ],
                 header: {
                     text: '가납 기간 및 재고수량',
+                    styleName: 'blue-font-color',
                 }
             },
         ];
@@ -161,12 +171,21 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 lookupDisplay: true,
             },
             {
+                name: 'acceptableType', fieldName: 'acceptableType', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: 'Alert 유형', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
+                values: valueTypes,
+                labels: lableTypes,
+                lookupDisplay: true,
+            },
+            {
                 name: 'thirty',
                 fieldName: 'thirty',
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '~30일', styleName: 'center-cell-text'},
+                header: {text: '~30일', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -177,7 +196,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '31~60일', styleName: 'center-cell-text'},
+                header: {text: '31~60일', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -188,7 +207,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '61~90일', styleName: 'center-cell-text'},
+                header: {text: '61~90일', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -199,7 +218,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '91일~', styleName: 'center-cell-text'},
+                header: {text: '91일~', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -210,7 +229,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 type: 'data',
                 width: '100',
                 styleName: 'right-cell-text',
-                header: {text: '합계', styleName: 'center-cell-text'},
+                header: {text: '합계', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }

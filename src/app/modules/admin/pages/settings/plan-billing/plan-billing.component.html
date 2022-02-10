@@ -181,11 +181,11 @@
                                     </button>
                                     <!--                            <span *ngIf="plan.price == '00'">-->
                                     <!--                            별도협의</span>-->
-                                    <span *ngIf="plan.price != '00'" class="mr-2 text-17s red-font-color text-bold-600">{{plan.sale}}</span>
-                                    <span *ngIf="plan.price != '00'" class="text-20s text-secondary text-line-through">{{plan.price | number}}원</span>
-                                    <br>
-                                    <span *ngIf="plan.price != '00'" class="text-35s text-bold-600">{{plan.salePrice | number}}원</span>
-                                    <span *ngIf="plan.price != '00'" class="text-secondary"> / 월</span>
+<!--                                    <span *ngIf="plan.price != '00'" class="mr-2 text-17s red-font-color text-bold-600">{{plan.sale}}</span>-->
+<!--                                    <span *ngIf="plan.price != '00'" class="text-20s text-secondary text-line-through">{{plan.price | number}}원</span>-->
+<!--                                    <br>-->
+                                    <span *ngIf="plan.price != '00'" class="text-30s text-bold-600">{{plan.salePrice | number}}원</span>
+                                    <span *ngIf="plan.price != '00'" class="text-secondary"> / 년</span>
                                     <!--                            <span *ngIf="plan.price != '00'" class="text-25s text-bold-600">{{plan.yearPrice | currency:'KRW':'symbol':'1.0'}}</span>-->
                                     <!--                            <span *ngIf="plan.price != '00'" class="text-secondary"> / 년</span>-->
                                 </ng-container>
@@ -201,7 +201,7 @@
                                     </button>
                                     <!--                            <span *ngIf="plan.price == '00'">-->
                                     <!--                            별도협의</span>-->
-                                    <span *ngIf="plan.price != '00'" class="text-35s text-bold-600">{{plan.price |number}}원</span>
+                                    <span *ngIf="plan.price != '00'" class="text-30s text-bold-600">{{plan.price |number}}원</span>
                                     <span *ngIf="plan.price != '00'" class="text-secondary"> / 월</span>
                                 </ng-container>
                             </div>

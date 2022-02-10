@@ -99,40 +99,40 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
         //그리드 컬럼
         this.acceptableDetailColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
+            // {
+            //     name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
+            //     , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
+            // {
+            //     name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
+            //     , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
+            // {
+            //     name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
+            //     header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     },
+            //     values: values,
+            //     labels: lables,
+            //     lookupDisplay: true,
+            // },
             {
-                name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                },
-                values: values,
-                labels: lables,
-                lookupDisplay: true,
-            },
-            {
-                name: 'acceptableType', fieldName: 'acceptableType', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'acceptableType', fieldName: 'acceptableType', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '가납기간 설정', styleName: 'center-cell-text'},
                 values: valueTypes,
                 labels: lableTypes,

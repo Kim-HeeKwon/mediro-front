@@ -7,7 +7,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">장기재고 유형 설정</div>
+        <div class="text-lg font-medium">장기재고 관리유형 설정</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -71,7 +71,7 @@
                 [color]="'accent'"
                 (click)="saveLongTerm()">
                 <mat-icon [svgIcon]="'settings'"></mat-icon>
-                <span class="ml-2 mr-1">설정</span>
+                <span class="ml-2 mr-1">관리유형 설정</span>
             </button>
         </div>
     </div>
