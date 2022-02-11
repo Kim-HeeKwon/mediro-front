@@ -316,7 +316,6 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
-
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {

@@ -12,11 +12,12 @@ import {ValidityService} from './validity.service';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {MatDialog} from "@angular/material/dialog";
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {ValidityDetailComponent} from "./validity-detail/validity-detail.component";
-
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {MatDialog} from '@angular/material/dialog';
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {ValidityDetailComponent} from './validity-detail/validity-detail.component';
+import {matTooltipAnimations, MatTooltipModule} from '@angular/material/tooltip';
+import {TooltipPosition} from '@angular/material/tooltip';
 @Component({
     selector: 'dms-app-validity',
     templateUrl: './validity.component.html',
@@ -318,7 +319,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             softDeleting: false,
             deleteCreated: false
         });
-
         this.gridList = this._realGridsService.gfn_CreateGrid(
             this.validityDataProvider,
             'validity',
@@ -335,11 +335,9 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             checkable: true,
             softDeleting: false,
         });
-
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
-
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             const ret = {styleName : ''};
             const imminentStatus = grid.getValue(dataCell.index.itemIndex, 'imminentStatus');
@@ -371,8 +369,11 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                this.gridList.columnByName('imminentType').sortable = false;
+                if(clickData.column !== 'imminentType'){
+                    const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {
@@ -381,7 +382,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.orderBy = 'asc';
             }
         };
-
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
         this.selectHeader();

@@ -143,7 +143,7 @@ export class SettingsTaxComponent implements OnInit
 
         const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
             title      : '',
-            message    : '가입하시겠습니까?',
+            message    : '등록하시겠습니까?',
             icon       : this._formBuilder.group({
                 show : true,
                 name : 'heroicons_outline:user-circle',
@@ -152,7 +152,7 @@ export class SettingsTaxComponent implements OnInit
             actions    : this._formBuilder.group({
                 confirm: this._formBuilder.group({
                     show : true,
-                    label: '가입',
+                    label: '등록',
                     color: 'accent'
                 }),
                 cancel : this._formBuilder.group({
