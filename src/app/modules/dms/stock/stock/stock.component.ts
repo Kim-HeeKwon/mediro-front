@@ -65,6 +65,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
+        {fieldName: 'supplierNm', dataType: ValueType.TEXT},
         {fieldName: 'poQty', dataType: ValueType.NUMBER},
         {fieldName: 'availQty', dataType: ValueType.NUMBER},
         {fieldName: 'acceptableQty', dataType: ValueType.NUMBER},
@@ -108,6 +109,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             itemNm: [''],
             itemGrade: ['ALL'],
             supplier: [''],
+            supplierNm: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
@@ -117,7 +119,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             'standard',
             'unit',
             'itemGrade',
-            'supplier',
+            'supplierNm',
             {
                 name: 'stockGroup',
                 direction: 'horizontal',
@@ -204,7 +206,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                  }
             },
             {
-                name: 'supplier', fieldName: 'supplier', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'supplierNm', fieldName: 'supplierNm', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '공급처', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true

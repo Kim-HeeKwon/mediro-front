@@ -15,7 +15,7 @@ import {takeUntil} from "rxjs/operators";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {LongTermDetailPagenation} from "../long-term.types";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 
 @Component({
     selector: 'dms-stock-long-term-detail',
@@ -367,5 +367,11 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     this._changeDetectorRef.markForCheck();
                 });
         });
+    }
+
+    //페이징
+    pageEvent($event: PageEvent): void {
+        const rtn = this._longTermService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 }

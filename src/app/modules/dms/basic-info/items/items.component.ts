@@ -80,6 +80,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
+        {fieldName: 'supplierNm', dataType: ValueType.TEXT},
         {fieldName: 'manufacturer', dataType: ValueType.TEXT},
         {fieldName: 'taxGbn', dataType: ValueType.TEXT},
         {fieldName: 'buyPrice', dataType: ValueType.NUMBER},
@@ -225,8 +226,14 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                     showTooltip: true
                 }
             },
+            // {
+            //     name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
+            //     , header: {text: '공급사', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
-                name: 'supplier', fieldName: 'supplier', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'supplierNm', fieldName: 'supplierNm', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '공급사', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -433,12 +440,16 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     createItem(): void {
         if (!this.isMobile) {
-            this._matDialog.open(NewItemComponent, {
+            const d = this._matDialog.open(NewItemComponent, {
                 autoFocus: false,
                 disableClose: true,
                 data: {
                     note: {}
                 },
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
             });
         } else {
             const d = this._matDialog.open(NewItemComponent, {
@@ -455,6 +466,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
             d.afterClosed().subscribe(() => {
+                this.searchItem();
                 smallDialogSubscription.unsubscribe();
             });
         }

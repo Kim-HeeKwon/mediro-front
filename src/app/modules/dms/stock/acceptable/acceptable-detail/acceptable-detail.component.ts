@@ -13,7 +13,7 @@ import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/
 import {takeUntil} from "rxjs/operators";
 import {AcceptableDetailPagenation} from "../acceptable.types";
 import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 
@@ -344,5 +344,11 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
             this._functionService.cfn_alert('정상적으로 처리되었습니다.');
             this.selectHeader();
         }
+    }
+
+    //페이징
+    pageEvent($event: PageEvent): void {
+        const rtn = this._acceptableService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 }

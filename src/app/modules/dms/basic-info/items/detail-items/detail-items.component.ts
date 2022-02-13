@@ -90,6 +90,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             unit: [''], // 단위
             standard: [''], // 규격
             supplier: [{value:''}], // 공급사
+            supplierNm: [{value:'',disabled:true}], // 공급사 명
             manufacturer: [''], // 제조사
             taxGbn: [''], // 거래유형
             buyPrice: [''], // 매입단가
@@ -97,6 +98,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             active: [false]  // cell상태
         });
 
+        this.selectedItemsForm.controls.supplierNm.disable();
 
         if(this.selectedItem !== null){
             this.selectedItemsForm.patchValue(
@@ -192,7 +194,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        this.selectedItemsForm.patchValue({'supplier': result.accountNm});
+                        this.selectedItemsForm.patchValue({'supplier': result.accountCd});
+                        this.selectedItemsForm.patchValue({'supplierNm': result.accountNm});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -221,7 +224,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
                 .subscribe((result) => {
                     if (result) {
                         smallDialogSubscription.unsubscribe();
-                        this.selectedItemsForm.patchValue({'supplier': result.accountNm});
+                        this.selectedItemsForm.patchValue({'supplier': result.accountCd});
+                        this.selectedItemsForm.patchValue({'supplierNm': result.accountNm});
                     }
                 });
         }

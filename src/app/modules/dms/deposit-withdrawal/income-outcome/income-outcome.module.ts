@@ -34,6 +34,7 @@ import {IncomeOutcomeComponent} from "./income-outcome.component";
 import {IncomeOutcomeResolvers} from "./income-outcome.resolvers";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {IncomeOutcomeBasicComponent} from "./income-outcome-basic/income-outcome-basic.component";
 
 const incomeOutcomeRoutes: Route[] = [
     {
@@ -49,6 +50,7 @@ const incomeOutcomeRoutes: Route[] = [
     declarations: [
         IncomeOutcomeComponent,
         IncomeOutcomeDetailComponent,
+        IncomeOutcomeBasicComponent,
     ],
     providers :[CurrencyPipe],
     imports: [

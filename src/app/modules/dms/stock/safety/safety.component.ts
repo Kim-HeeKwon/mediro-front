@@ -48,6 +48,8 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     safetyFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'supplier', dataType: ValueType.TEXT},
+        {fieldName: 'supplierNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -113,6 +115,12 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'supplierNm', fieldName: 'supplierNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '공급처', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
@@ -134,40 +142,6 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'safetyQty',
-                fieldName: 'safetyQty',
-                type: 'data',
-                width: '120',
-                styleName: 'right-cell-text',
-                header: {text: '안전재고수량', styleName: 'center-cell-text'},
-                numberFormat: '#,##0', renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'safety', fieldName: 'safety', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '안전재고율', styleName: 'center-cell-text'},
-                lookupDisplay: true, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'safetyType', fieldName: 'safetyType', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '관리유형', styleName: 'center-cell-text'},
-                values: valueTypes,
-                labels: lableTypes,
-                editor: this._realGridsService.gfn_ComboBox(this.safetyType),
-                lookupDisplay: true, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'safetyStatus', fieldName: 'safetyStatus', type: 'data', width: '100', styleName: 'left-cell-text',
-                header: {text: '상태', styleName: 'center-cell-text'},renderer: {
-                    showTooltip: true
-                }
-            },
-            {
                 name: 'availQty',
                 fieldName: 'availQty',
                 type: 'data',
@@ -179,12 +153,50 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'safetyType', fieldName: 'safetyType', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '관리유형', styleName: 'center-cell-text red-font-color',
+                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                        'help_outline\n' +
+                        '</span>',
+                    values: { 'headerText':'관리유형' }},
+                values: valueTypes,
+                labels: lableTypes,
+                editor: this._realGridsService.gfn_ComboBox(this.safetyType),
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'safetyQty',
+                fieldName: 'safetyQty',
+                type: 'data',
+                width: '120',
+                styleName: 'right-cell-text',
+                header: {text: '안전재고수량', styleName: 'center-cell-text red-font-color'},
+                numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'safety', fieldName: 'safety', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '안전재고율', styleName: 'center-cell-text blue-font-color'},
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'safetyStatus', fieldName: 'safetyStatus', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '상태', styleName: 'center-cell-text blue-font-color'},renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'poQty',
                 fieldName: 'poQty',
                 type: 'data',
                 width: '120',
                 styleName: 'right-cell-text',
-                header: {text: '발주대상수량', styleName: 'center-cell-text'},
+                header: {text: '발주대상수량', styleName: 'center-cell-text blue-font-color'},
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -266,6 +278,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'supplierNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade' ||

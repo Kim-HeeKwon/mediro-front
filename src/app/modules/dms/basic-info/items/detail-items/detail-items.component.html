@@ -71,8 +71,7 @@
                     </div>
                 </div>
                 <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-
-                    <div class="sm:col-span-3">
+                    <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>공급사</mat-label>
                             <input
@@ -81,7 +80,15 @@
                                 [formControlName]="'supplier'">
                         </mat-form-field>
                     </div>
-                    <div class="sm:col-span-3">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>공급사 명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'supplierNm'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>제조사</mat-label>
                             <input

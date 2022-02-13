@@ -7,7 +7,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">가납재고 설정</div>
+        <div class="text-lg font-medium">거래처별 기초 금액</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -25,19 +25,19 @@
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목 코드</mat-label>
+                            <mat-label>거래처 코드</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'itemCd'"
-                                (click)="openItemSearch()">
+                                [formControlName]="'account'"
+                                (click)="openAccountSearch()">
                         </mat-form-field>
                     </div>
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목 명</mat-label>
+                            <mat-label>거래처 명</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'itemNm'">
+                                [formControlName]="'accountNm'">
                         </mat-form-field>
                     </div>
                 </div>
@@ -62,32 +62,30 @@
                 (click)="selectHeader()">
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
                 <span class="ml-2 mr-1">불러오기</span>
             </button>
             <button
-                class="mediro-btn-custom ml-2"
-                mat-flat-button
+                class="ml-2 mediro-btn-custom"
+                mat-stroked-button
                 [color]="'accent'"
-                (click)="saveAcceptable()">
-                <mat-icon
-                    class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
-                <span class="ml-2 mr-1">설정</span>
+                (click)="saveIncomeOutcomeBasic()">
+                <mat-icon [svgIcon]="'settings'"></mat-icon>
+                <span class="ml-2 mr-1">저장</span>
             </button>
         </div>
     </div>
     <div
         style="height: 300px;"
         class="realgrid"
-        id="acceptableDetail">
+        id="incomeOutcomeBasic">
     </div>
     <mat-paginator
         class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
         [ngClass]="{'pointer-events-none': isLoading}"
-        [length]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.length"
-        [pageIndex]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.page"
-        [pageSize]="acceptableDetailPagenation === null ? 0 : acceptableDetailPagenation.size"
+        [length]="incomeOutcomeBasicPagenation === null ? 0 : incomeOutcomeBasicPagenation.length"
+        [pageIndex]="incomeOutcomeBasicPagenation === null ? 0 : incomeOutcomeBasicPagenation.page"
+        [pageSize]="incomeOutcomeBasicPagenation === null ? 0 : incomeOutcomeBasicPagenation.size"
         [pageSizeOptions]="[40, 60, 80, 100, 120]"
         (page)="pageEvent($event)"
         [showFirstLastButtons]="true"></mat-paginator>

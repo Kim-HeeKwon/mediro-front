@@ -17,6 +17,7 @@ import {IncomeOutcomeService} from "./income-outcome.service";
 import {IncomeOutcomeDetailComponent} from "./income-outcome-detail/income-outcome-detail.component";
 import {CommonPopupItemsComponent} from "../../../../../@teamplat/components/common-popup-items";
 import {takeUntil} from "rxjs/operators";
+import {IncomeOutcomeBasicComponent} from "./income-outcome-basic/income-outcome-basic.component";
 
 @Component({
     selector: 'app-dms-income-outcome',
@@ -885,6 +886,38 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     baseAmount() {
+
+        if (!this.isMobile) {
+            const d = this._matDialog.open(IncomeOutcomeBasicComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+
+                },
+            });
+            d.afterClosed().subscribe(() => {
+            });
+        } else {
+            const d = this._matDialog.open(IncomeOutcomeBasicComponent, {
+                data: {
+
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
 
     }
 }

@@ -10,7 +10,7 @@ import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ValidityDetailPagenation} from "../validity.types";
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 import {takeUntil} from "rxjs/operators";
@@ -362,5 +362,11 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     this._changeDetectorRef.markForCheck();
                 });
         });
+    }
+
+    //페이징
+    pageEvent($event: PageEvent): void {
+        const rtn = this._validityService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 }

@@ -29,3 +29,25 @@ export interface IncomeOutcomeDetail
     rbalance: number;            //
     sbalance: number;            //
 }
+
+
+export interface IncomeOutcomeBasic
+{
+    no?: number;
+    mId: string;                //회원사
+    account: string;            //거래처
+    accountNm: string;            //거래처
+    balance: number;            //
+}
+
+
+export interface IncomeOutcomeBasicPagenation
+{
+    length: number;
+    size: number;
+    page: number;
+    lastPage: number;
+    startIndex: number;
+    endIndex: number;
+}
+

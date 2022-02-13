@@ -7,6 +7,8 @@ export interface Stock
     standard: string;           //규격
     unit: string;               //단위
     itemGrade: string;          //품목등급
+    supplier?: string;
+    supplierNm?: string;
     poQty: number;
     availQty: number;
     acceptableQty: number;

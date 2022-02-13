@@ -77,6 +77,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             unit: [], // 단위
             standard: [''], // 규격
             supplier: [''], // 공급사
+            supplierNm: [{value:'', disabled: true}], // 공급사 명
             manufacturer: [''], // 제조사
             buyPrice: [, [Validators.required]], // 매입단가
             salesPrice: [, [Validators.required]], // 매출단가
@@ -87,6 +88,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             udiDiCode: [], // udiDiCode
             active: [false]  // cell상태
         });
+        this.selectedItemForm.controls.supplierNm.disable();
     }
 
     supplierSearch(): void
@@ -107,7 +109,8 @@ export class NewItemComponent implements OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        this.selectedItemForm.patchValue({'supplier': result.accountNm});
+                        this.selectedItemForm.patchValue({'supplier': result.accountCd});
+                        this.selectedItemForm.patchValue({'supplierNm': result.accountNm});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -136,7 +139,8 @@ export class NewItemComponent implements OnInit, OnDestroy
                 .subscribe((result) => {
                     if (result) {
                         smallDialogSubscription.unsubscribe();
-                        this.selectedItemForm.patchValue({'supplier': result.accountNm});
+                        this.selectedItemForm.patchValue({'supplier': result.accountCd});
+                        this.selectedItemForm.patchValue({'supplierNm': result.accountNm});
                     }
                 });
         }
