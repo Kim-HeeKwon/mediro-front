@@ -17,6 +17,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {SharedModule} from '../../../app/shared/shared.module';
 import {CommonUdiComponent} from './common-udi.component';
 import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.module";
+import {FuseFindByKeyPipeModule} from "../../pipes/find-by-key";
+import {FuseAlertModule} from "../alert";
+import {FuseUserHelpModule} from "../user-help";
 
 @NgModule({
     declarations: [
@@ -39,6 +42,9 @@ import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.mo
         MatTableModule,
         MatDialogModule,
         SharedModule,
+        FuseFindByKeyPipeModule,
+        FuseAlertModule,
+        FuseUserHelpModule,
         CommonLoadingBarModule,
     ],
     exports     : [

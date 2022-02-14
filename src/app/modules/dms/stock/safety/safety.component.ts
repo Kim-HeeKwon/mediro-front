@@ -436,6 +436,46 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
 
     order(): void {
 
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.safetyDataProvider);
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('발주 대상을 선택해주세요.');
+            return;
+        } else {
+
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title: '',
+                message: '발주하시겠습니까?',
+                actions: {
+                    confirm: {
+                        label: '확인'
+                    },
+                    cancel: {
+                        label: '닫기'
+                    }
+                }
+            }).value);
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this._safetyService.order(checkValues)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((inBound: any) => {
+                                this._functionService.cfn_loadingBarClear();
+                                this._functionService.cfn_alertCheckMessage(inBound);
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                this.selectHeader();
+                            });
+                    } else {
+                        this.selectHeader();
+                    }
+                });
+        }
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
     }
 
 

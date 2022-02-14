@@ -175,7 +175,7 @@ export class CommonUdiComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectRow(row: any): void {
-        this._matDialogRef.close(row);
+        //this._matDialogRef.close(row);
     }
 
     select(): void{

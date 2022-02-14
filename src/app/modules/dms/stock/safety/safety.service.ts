@@ -100,4 +100,22 @@ export class SafetyService{
             ))
         );
     }
+
+    /**
+     * order
+     */
+    order(safetys: Safety[]): Observable<Safety>
+    {
+        return this.safetys$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(safetys, 'v1/api/basicInfo/safety/order').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

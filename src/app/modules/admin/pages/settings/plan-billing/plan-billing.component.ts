@@ -174,10 +174,23 @@ export class SettingsPlanBillingComponent implements OnInit
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
+                    const today = new Date();
+
+                    const year = today.getFullYear(); // 년도
+                    const month = today.getMonth() + 1;  // 월
+                    const date = today.getDate();  // 날짜
+                    const day = today.getDay();  // 요일
+                    const hours = today.getHours(); // 시
+                    const minutes = today.getMinutes();  // 분
+                    const seconds = today.getSeconds();  // 초
+
+                    let no = '';
+                    no += '' + year + month + date + hours + minutes + seconds;
+
                     loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                         tossPayments.requestPayment('카드', {
                             amount: 100,
-                            orderId: this._sessionStore.getValue().businessNumber + '_' + '1',
+                            orderId: this._sessionStore.getValue().businessNumber + '_' + no,
                             orderName: '메디로 가입비',
                             customerName: this._sessionStore.getValue().businessName,
                             successUrl: environment.paymentHookUrl + '/success',

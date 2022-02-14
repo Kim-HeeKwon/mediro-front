@@ -20,6 +20,7 @@ import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-
 import {postcode} from '../../../../../../assets/js/postCode';
 import {geodata} from '../../../../../../assets/js/geoCode';
 import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {CommonUdiAccountComponent} from "../../../../../../@teamplat/components/common-udi-account";
 
 declare let daum: any;
 
@@ -114,15 +115,8 @@ export class NewAccountComponent implements OnInit, OnDestroy
     accountSearch(): void
     {
         if(!this.isMobile){
-            const popupUdi =this._matDialogPopup.open(CommonUdiComponent, {
+            const popupUdi =this._matDialogPopup.open(CommonUdiAccountComponent, {
                 data: {
-                    headerText : '거래처 조회',
-                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
-                    code: 'UDI_BCNC',
-                    tail : false,
-                    mediroUrl : 'bcnc/company-info',
-                    tailKey : '',
                 },
                 autoFocus: false,
                 maxHeight: '80vh',
@@ -130,16 +124,13 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             popupUdi.afterClosed().subscribe((result) => {
                 if(result){
-                    this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
-                    this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
-                    this.selectedAccountForm.patchValue({'descr': result.companyName});
-                    this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
-                    this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
-                    this.selectedAccountForm.patchValue({'representName': result.bossName});
+                    this.selectedAccountForm.patchValue({'descr': result.entpName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.cobFlagCodeName});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.cobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.rprsntName});
                     this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
 
-                    const taxNo = Number((result.taxNo).replace(/-/g,''));
-                    const entpAddr = result.entpAddr.split(',');
+                    const entpAddr = result.entpAddrAll.split(',');
 
                     let address = '';
                     if(entpAddr[0] !== undefined){
@@ -154,20 +145,13 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
                     this.selectedAccountForm.patchValue({'address': address});
                     this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
-                    this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
-                    this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
+                    this.selectedAccountForm.patchValue({'account': result.unityCompanySeq});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.taxNo});
                 }
             });
         }else{
-            const d = this._matDialogPopup.open(CommonUdiComponent, {
+            const d = this._matDialogPopup.open(CommonUdiAccountComponent, {
                 data: {
-                    headerText : '거래처 조회',
-                    url : 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList : ['companyName', 'taxNo', 'cobFlagCode'],
-                    code: 'UDI_BCNC',
-                    tail : false,
-                    mediroUrl : 'bcnc/company-info',
-                    tailKey : '',
                 },
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
@@ -184,16 +168,14 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
-                    this.selectedAccountForm.patchValue({'udiAccount': result.bcncCode});
-                    this.selectedAccountForm.patchValue({'udiHptlSymbl': result.hptlSymbl});
-                    this.selectedAccountForm.patchValue({'descr': result.companyName});
-                    this.selectedAccountForm.patchValue({'businessCondition': result.bcncCobFlagCodeNm});
-                    this.selectedAccountForm.patchValue({'businessCategory': result.bcncCobDetailName});
-                    this.selectedAccountForm.patchValue({'representName': result.bossName});
+                    console.log(result);
+                    this.selectedAccountForm.patchValue({'descr': result.entpName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.cobFlagCodeName});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.cobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.rprsntName});
                     this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
 
-                    const taxNo = Number((result.taxNo).replace(/-/g,''));
-                    const entpAddr = result.entpAddr.split(',');
+                    const entpAddr = result.entpAddrAll.split(',');
 
                     let address = '';
                     if(entpAddr[0] !== undefined){
@@ -208,8 +190,8 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
                     this.selectedAccountForm.patchValue({'address': address});
                     this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
-                    this.selectedAccountForm.patchValue({'account': taxNo === 0 ? '' : taxNo});
-                    this.selectedAccountForm.patchValue({'custBusinessNumber': taxNo === 0 ? '' : taxNo});
+                    this.selectedAccountForm.patchValue({'account': result.unityCompanySeq});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.taxNo});
                 }
                 smallDialogSubscription.unsubscribe();
             });
@@ -253,7 +235,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
     {
         if(!this.selectedAccountForm.invalid){
             this.showAlert = false;
-            this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
+            //this.selectedAccountForm.patchValue({'account': this.selectedAccountForm.controls['custBusinessNumber'].value});
             this._accountService.createAccount(this.selectedAccountForm.getRawValue()).subscribe((newAccount: any) => {
 
                 this._functionService.cfn_loadingBarClear();

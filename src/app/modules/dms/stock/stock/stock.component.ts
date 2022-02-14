@@ -152,7 +152,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             'safetyQty',
-            {
+            /*{
                 name: 'long',
                 direction: 'horizontal',
                 items: [
@@ -162,7 +162,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {
                     text: '장기재고',
                 }
-            },
+            },*/
         ];
 
         //그리드 컬럼
