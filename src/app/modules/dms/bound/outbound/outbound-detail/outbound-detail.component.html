@@ -34,7 +34,7 @@
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:table'"></mat-icon>
-                        <span class="ml-2 mr-1 mediro-font-custom">미리보기</span>
+                        <span class="ml-2 mr-1 mediro-font-custom">거래명세서</span>
                     </button>
                 </div>
                 <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
@@ -225,6 +225,8 @@
                             <button
                                 class="ml-2 mediro-btn-custom"
                                 mat-stroked-button
+                                matTooltip="엑셀 내려받기"
+                                matTooltipPosition="right"
                                 [color]="'primary'"
                                 (click)="excelExport()">
                                 <img src="assets/images/excel/excel_down.png">

@@ -785,27 +785,27 @@
                         <div class="font-medium text-secondary"></div>
                         <div class="flex-auto grid grid-cols-4 gap-4">
                             <!-- 임시등록 -->
-                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                            <button [ngClass]="{'col-span-1 border-blue': isMobile,
                                     'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI' , status: ''})">
                                 <span class="text-13s text-bold-600">임시등록 <br>0</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                            <button [ngClass]="{'col-span-1 border-blue': isMobile,
                                     'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'">
                                 <span class="text-13s text-bold-600">월보고 <br>{{udiLastDay}}</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                            <button [ngClass]="{'col-span-1 border-blue': isMobile,
                                     'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI_RTN' , status: ''})">
                                 <span class="text-13s text-bold-600">반품</span>
                             </button>
-                            <button [ngClass]="{'col-span-1 border-blue one-btn': isMobile,
+                            <button [ngClass]="{'col-span-1 border-blue': isMobile,
                                     'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
