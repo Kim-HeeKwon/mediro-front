@@ -15,6 +15,12 @@ export interface AccountData
     fax: string;                //팩스
     email: string;              //이메일
     taxEmail: string;           //이메일
+
+    manager: string;    //담당자
+    managerCellPhoneNumber: string;    //담당자 번호
+    paymentTerms: string;    //결제조건
+    remark: string;    //비고
+
     addDate?: string;
     addUser?: string;
     updDate?: string;

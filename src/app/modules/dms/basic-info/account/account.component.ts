@@ -44,6 +44,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerOpened: boolean = false;
     searchForm: FormGroup;
     orderBy: any = 'asc';
+    paymentTerms: CommonCode[] = null;
     searchCondition: CommonCode[] = [
         {
             id: '100',
@@ -82,6 +83,10 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'fax', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
         {fieldName: 'taxEmail', dataType: ValueType.TEXT},
+        {fieldName: 'manager', dataType: ValueType.TEXT},
+        {fieldName: 'managerCellPhoneNumber', dataType: ValueType.TEXT},
+        {fieldName: 'paymentTerms', dataType: ValueType.TEXT},
+        {fieldName: 'remark', dataType: ValueType.TEXT},
     ];
 
     constructor(private _realGridsService: FuseRealGridService,
@@ -97,6 +102,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _accountService: AccountService,
                 private readonly breakpointObserver: BreakpointObserver)
     {
+        this.paymentTerms = _utilService.commonValue(_codeStore.getValue().data,'PAYMENT_TERMS');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -107,6 +113,13 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             account: [''],
             businessCondition: [''],
             businessCategory: ['']
+        });
+        const valuesPaymentTerms = [];
+        const lablesPaymentTerms = [];
+
+        this.paymentTerms.forEach((param: any) => {
+            valuesPaymentTerms.push(param.id);
+            lablesPaymentTerms.push(param.name);
         });
 
         //그리드 컬럼
@@ -262,6 +275,49 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 }
             },
+            {
+                name: 'paymentTerms', fieldName: 'paymentTerms', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '결제조건', styleName: 'center-cell-text'},
+                values: valuesPaymentTerms,
+                labels: lablesPaymentTerms,
+                lookupDisplay: true,
+            },
+            {
+                name: 'manager',
+                fieldName: 'manager',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '담당자', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'managerCellPhoneNumber',
+                fieldName: 'managerCellPhoneNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '담당자 번호', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'remark',
+                fieldName: 'remark',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
+                header: {text: '비고', styleName: 'center-cell-text'},
+                placeHolder: '',
+                renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
         //그리드 Provider
@@ -353,6 +409,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                             }
                         });
                         d.afterClosed().subscribe(() => {
+                            this.selectAccount();
                             smallDialogSubscription.unsubscribe();
                         });
                     }
@@ -419,12 +476,15 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     createAccount(): void {
         if (!this.isMobile) {
-            this._matDialog.open(NewAccountComponent, {
+            const d = this._matDialog.open(NewAccountComponent, {
                 autoFocus: false,
                 disableClose: true,
                 data: {
                     note: {}
                 },
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectAccount();
             });
         } else {
             const d = this._matDialog.open(NewAccountComponent, {
@@ -441,6 +501,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
             d.afterClosed().subscribe(() => {
+                this.selectAccount();
                 smallDialogSubscription.unsubscribe();
             });
         }
@@ -541,11 +602,17 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                }else{
                    data.fax = '0' + data.fax;
                }
-                if(data.cellPhoneNumber === 0){
-                    data.cellPhoneNumber = '';
-                }else{
-                    data.cellPhoneNumber = '0' + data.cellPhoneNumber;
-                }
+               if(data.cellPhoneNumber === 0){
+                   data.cellPhoneNumber = '';
+               }else{
+                   data.cellPhoneNumber = '0' + data.cellPhoneNumber;
+               }
+
+               if(data.managerCellPhoneNumber === 0){
+                   data.managerCellPhoneNumber = '';
+               }else{
+                   data.managerCellPhoneNumber = '0' + data.managerCellPhoneNumber;
+               }
             });
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.accountDataProvider, ex.account);
