@@ -599,6 +599,15 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cube',
                 link : '/stock/stock'
             },
+        ]
+    },
+    {
+        id: 'monitoring',
+        title: '정산관리',
+        type: 'collapsable',
+        icon: 'heroicons_outline:archive',
+        tag: '3',
+        children: [
             {
                 id   : 'calculate.bill',
                 title: '정산 및 마감',
@@ -613,12 +622,36 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:archive',
                 link : '/calculate/tax'
             },
+            {
+                id   : 'deposit-withdrawal.deposit',
+                title: '입금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/deposit',
+                tag: 'N'
+            },
+            {
+                id   : 'deposit-withdrawal.withdrawal',
+                title: '출금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/withdrawal',
+                tag: 'N'
+            },
+            {
+                id   : 'deposit-withdrawal.income-outcome',
+                title: '원장관리',
+                type : 'basic',
+                icon : 'credit_score',
+                link : '/deposit-withdrawal/income-outcome',
+                tag: 'N'
+            },
         ]
     },
     {
         id      : 'udi',
-        subtitle: '공급내역 보고',
-        type    : 'group',
+        title: '공급내역 보고',
+        type    : 'collapsable',
         icon    : 'insert_chart',
         children: [
             {
@@ -628,6 +661,13 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:identification',
                 link : '/udi/manages'
             },
+            // {
+            //     id   : 'udi.manages-email',
+            //     title: '공급내역 이메일 전송',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:identification',
+            //     link : '/udi/manages-email'
+            // },
             {
                 id   : 'udi.status',
                 title: '통합시스템 전송내역',
@@ -635,6 +675,13 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:identification',
                 link : '/udi/status'
             },
+            // {
+            //     id   : 'udi.manage-sample',
+            //     title: '공급내역 맛보기',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:identification',
+            //     link : '/udi/manageSample'
+            // },
         ]
     },
     {
