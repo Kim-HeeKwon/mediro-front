@@ -98,12 +98,10 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
 
     ngOnInit(): void {
         // 검색 Form 생성
-        const today = new Date();
-        const YYYY = today.getFullYear();
-        const mon = today.getMonth() + 1;
-        const lastDate = new Date(YYYY, mon, 0).getDate();
-        const startDay = YYYY + '-' + mon + '-' + '1';
-        const endDay = YYYY + '-' + mon + '-' + lastDate;
+        const date = new Date();
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        const YYYY = new Date().getFullYear();
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             year: [YYYY + ''],
@@ -111,8 +109,8 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
             accountNm: [''],
             type: ['all'],
             range: [{
-                start: startDay,
-                end: endDay
+                start: firstDay,
+                end: lastDay
             }],
             start: [],
             end: []

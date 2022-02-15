@@ -240,9 +240,12 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {
                     text: '관리유형',
                     styleName: 'center-cell-text blue-font-color',
-                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip">\n' +
+                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip-hover-longTerm">\n' +
                                                     'help_outline\n' +
-                                                    '<span class="tooltip-text tooltip-top">유형</span></span>',
+                                                    '<span class="tooltip-text-longTerm tooltip-longTerm">' +
+                        'A Type: ~3개월(양호), 3~6개월(주의), 6~12개월(장기화), 12개월~(악성)<br>' +
+                        'B Type: ~2개월(양호), 2~6개월(주의), 6~9개월(장기화), 9개월~(악성)<br>' +
+                        'C Type: ~1개월(양호), 1~3개월(주의), 3~6개월(장기화), 6개월~(악성)</span></span>',
                     values: { 'headerText':'관리유형' }},
                 renderer: {
                     showTooltip: true

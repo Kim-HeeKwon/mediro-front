@@ -466,26 +466,24 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     border-radius: 20% !important;
     min-width: 70px !important;
 }
-.tooltip {
+.tooltip-hover-safety {
     display: inline-block;
 }
 
-.tooltip-text {
+.tooltip-text-safety {
     display: none;
-    right: 225px;
-    top: 231px;
     position: fixed;
-    width: 120px;
-    max-width: 200px;
+    width: 350px;
+    margin-top: -65px;
+    margin-left: -169.3px;
     border: 1px solid;
     border-radius: 6px;
     padding: 5px;
-    font-size: 0.8em;
     z-index: 1;
     color: #4e545f;
     background: #e4e7eb;
 }
-.tooltip-top::after {
+.tooltip-safety::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -496,7 +494,71 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     border-color: black transparent transparent transparent;
 }
 
-.tooltip:hover .tooltip-text {
+.tooltip-hover-safety:hover .tooltip-text-safety {
+    display: block;
+}
+
+.tooltip-hover-validity {
+    display: inline-block;
+}
+
+.tooltip-text-validity {
+    display: none;
+    position: fixed;
+    width: 350px;
+    margin-top: -68px;
+    margin-left: -169.3px;
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 2;
+    color: #4e545f;
+    background: #e4e7eb;
+}
+.tooltip-validity::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip-hover-validity:hover .tooltip-text-validity {
+    display: block;
+}
+
+.tooltip-hover-longTerm {
+    display: inline-block;
+}
+
+.tooltip-text-longTerm {
+    display: none;
+    position: fixed;
+    width: 400px;
+    margin-top: -68px;
+    margin-left: -194.3px;
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 2;
+    color: #4e545f;
+    background: #e4e7eb;
+}
+.tooltip-longTerm::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip-hover-longTerm:hover .tooltip-text-longTerm {
     display: block;
 }
 //.mat-slide-toggle{

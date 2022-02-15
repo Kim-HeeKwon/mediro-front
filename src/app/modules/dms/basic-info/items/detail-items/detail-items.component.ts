@@ -65,7 +65,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
         private _utilService: FuseUtilsService,
         private readonly breakpointObserver: BreakpointObserver)
     {
-        this.taxGbn = _utilService.commonValue(_codeStore.getValue().data,'TAX_GBN');
+        this.taxGbn = _utilService.commonValueSearchFilter(_codeStore.getValue().data,'TAX_GBN', ['ALL']);
         this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
         this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');

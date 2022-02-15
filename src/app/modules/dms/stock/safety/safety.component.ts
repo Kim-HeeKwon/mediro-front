@@ -155,9 +155,11 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'safetyType', fieldName: 'safetyType', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '관리유형', styleName: 'center-cell-text red-font-color',
-                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                    template: '${headerText} <span class="material-icons text-13s text-bold-600 tooltip-hover-safety">\n' +
                         'help_outline\n' +
-                        '</span>',
+                        '<span class="tooltip-text-safety tooltip-safety text-12s">A Type: ~0%(부족), 0~10%(임박), 10~30%(주의), 30%~(양호)<br>' +
+                        'B Type: ~0%(부족), 0~15%(임박), 15~30%(주의), 30%~(양호)<br>' +
+                        'C Type: ~0%(부족), 0~20%(임박), 20~30%(주의), 30%~(양호)</span></span>',
                     values: { 'headerText':'관리유형' }},
                 values: valueTypes,
                 labels: lableTypes,

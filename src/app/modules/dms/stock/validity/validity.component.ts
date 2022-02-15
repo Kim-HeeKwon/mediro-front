@@ -274,9 +274,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {
                     text: '임박유형',
                     styleName: 'center-cell-text blue-font-color',
-                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip">\n' +
+                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip-hover-validity">\n' +
                                                             'help_outline\n' +
-                                                            '<span class="tooltip-text tooltip-top">유형</span></span>',
+                                                            '<span class="tooltip-text-validity tooltip-validity">\n' +
+                        'A Type: 3개월(위험), 6개월(상), 9개월(중), 12개월(하)<br>' +
+                        'B Type: 2개월(위험), 4개월(상), 6개월(중), 8개월(하)<br>' +
+                        'C Type: 1개월(위험), 2개월(상), 3개월(중), 4개월(하)</span></span>',
                     values: { 'headerText':'임박유형' },
                 },
                 values: valueTypes,
