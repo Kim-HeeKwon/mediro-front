@@ -17,6 +17,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {SharedModule} from "../../../app/shared/shared.module";
 import {CommonExcelComponent} from "./common-excel.component";
 import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.module";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import {CommonLoadingBarModule} from "../common-loding-bar/common-loading-bar.mo
         MatSortModule,
         MatSelectModule,
         MatSlideToggleModule,
+        MatTooltipModule,
         MatTableModule,
         MatDialogModule,
         SharedModule,
