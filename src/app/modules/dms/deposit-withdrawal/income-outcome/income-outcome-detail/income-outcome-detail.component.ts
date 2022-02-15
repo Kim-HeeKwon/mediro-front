@@ -34,6 +34,7 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
 
     // @ts-ignore
     incomeOutcomeFields: DataFieldObject[] = [
+        {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'route', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'rbalance', dataType: ValueType.NUMBER},
@@ -75,6 +76,12 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
 
         //그리드 컬럼
         this.incomeOutcomeColumns = [
+            {
+                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처명', styleName: 'center-cell-text'},

@@ -11,14 +11,19 @@ import {Common} from "../../providers/common/common";
 import {CommonExcelComponent} from "../../components/common-excel";
 import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
 import {replace} from "lodash-es";
+import {DeviceDetectorService} from "ngx-device-detector";
 @Injectable({
     providedIn: 'root'
 })
 export class FuseRealGridService {
+    isMobile: boolean = false;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     constructor(private _common: Common,
-                public _matDialogPopup: MatDialog,) {
+                public _matDialogPopup: MatDialog,
+                private _deviceService: DeviceDetectorService,)
+    {
+        this.isMobile = this._deviceService.isMobile();
     }
 
     // 그리드 생성 전 Provider 생성
@@ -73,8 +78,13 @@ export class FuseRealGridService {
         /**
          * 그리드 기본 설정
          */
-        gridView.header.height = 27;
-        gridView.displayOptions.rowHeight = 27;
+        if(this.isMobile) {
+            gridView.header.height = 40;
+            gridView.displayOptions.rowHeight = 40;
+        }else {
+            gridView.header.height = 27;
+            gridView.displayOptions.rowHeight = 27;
+        }
         //인디케이터 (NO)
         gridView.setRowIndicator({
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
@@ -511,7 +521,7 @@ export class FuseRealGridService {
                                             }
                                         });
                                 }else{
-                                    const popup =this._matDialogPopup.open(CommonPopupItemsComponent, {
+                                    const popup = _matDialogPopup.open(CommonPopupItemsComponent, {
                                         data: {
                                             popup : columns[i].popUpObject.popUpId,
                                             headerText : columns[i].popUpObject.popUpHeaderText,
