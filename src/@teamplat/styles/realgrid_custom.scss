@@ -472,7 +472,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .tooltip-text {
     display: none;
-    top: 235px;
+    right: 225px;
+    top: 231px;
     position: fixed;
     width: 120px;
     max-width: 200px;
@@ -488,9 +489,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     content: "";
     position: absolute;
     top: 100%;
-    left: 6%;
+    left: 50%;
     margin-left: -5px;
-    border-width: 5px;
+    border-width: 6px;
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
