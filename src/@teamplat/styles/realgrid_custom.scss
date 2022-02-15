@@ -466,6 +466,38 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     border-radius: 20% !important;
     min-width: 70px !important;
 }
+.tooltip {
+    display: inline-block;
+}
+
+.tooltip-text {
+    display: none;
+    top: 235px;
+    position: fixed;
+    width: 120px;
+    max-width: 200px;
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 5px;
+    font-size: 0.8em;
+    z-index: 1;
+    color: #4e545f;
+    background: #e4e7eb;
+}
+.tooltip-top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 6%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+    display: block;
+}
 //.mat-slide-toggle{
 //    height: 25px !important;
 //    width: 25px !important;

@@ -16,8 +16,6 @@ import {FunctionService} from '../../../../../@teamplat/services/function';
 import {MatDialog} from '@angular/material/dialog';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {ValidityDetailComponent} from './validity-detail/validity-detail.component';
-import {matTooltipAnimations, MatTooltipModule} from '@angular/material/tooltip';
-import {TooltipPosition} from '@angular/material/tooltip';
 @Component({
     selector: 'dms-app-validity',
     templateUrl: './validity.component.html',
@@ -276,13 +274,10 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {
                     text: '임박유형',
                     styleName: 'center-cell-text blue-font-color',
-                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip">\n' +
                                                             'help_outline\n' +
-                                                            '</span>',
-                    values: { 'headerText':'임박유형' }
-                },
-                renderer: {
-                    showTooltip: true
+                                                            '<span class="tooltip-text tooltip-top">유형</span></span>',
+                    values: { 'headerText':'임박유형' },
                 },
                 values: valueTypes,
                 labels: lableTypes,
@@ -365,7 +360,6 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
         });
-
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {

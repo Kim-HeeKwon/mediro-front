@@ -240,9 +240,9 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
                 header: {
                     text: '관리유형',
                     styleName: 'center-cell-text blue-font-color',
-                    template: '${headerText} <span class="material-icons text-13s text-bold-600">\n' +
+                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip">\n' +
                                                     'help_outline\n' +
-                                                    '</span>',
+                                                    '<span class="tooltip-text tooltip-top">유형</span></span>',
                     values: { 'headerText':'관리유형' }},
                 renderer: {
                     showTooltip: true
