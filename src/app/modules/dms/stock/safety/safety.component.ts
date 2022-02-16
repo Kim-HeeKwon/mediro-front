@@ -446,10 +446,10 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
 
             const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                 title: '',
-                message: '발주하시겠습니까?',
+                message: '발주를 생성 하시겠습니까?',
                 actions: {
                     confirm: {
-                        label: '확인'
+                        label: '생성'
                     },
                     cancel: {
                         label: '닫기'
@@ -468,10 +468,10 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._functionService.cfn_alertCheckMessage(inBound);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
-                                this.selectHeader();
+                                //this.selectHeader();
                             });
                     } else {
-                        this.selectHeader();
+                        //this.selectHeader();
                     }
                 });
         }

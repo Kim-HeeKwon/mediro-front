@@ -300,6 +300,7 @@ export class FuseRealGridService {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_GetCheckRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
+        gridView.commit();
         const rows = [];
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for(let i=0; i<gridView.getCheckedRows().length; i++){
