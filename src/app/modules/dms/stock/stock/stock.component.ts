@@ -22,7 +22,7 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
-import {FunctionService} from "../../../../../@teamplat/services/function";
+import {FunctionService} from '../../../../../@teamplat/services/function';
 
 @Component({
     selector: 'dms-app-stock',

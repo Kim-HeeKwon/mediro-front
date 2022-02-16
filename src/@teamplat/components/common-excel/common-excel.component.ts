@@ -6,24 +6,21 @@ import {
     OnDestroy,
     OnInit, ViewChild,
     ViewEncapsulation
-} from "@angular/core";
-import {fuseAnimations} from "../../animations";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FuseRealGridService} from "../../services/realgrid";
-import {FuseUtilsService} from "../../services/utils";
-import {FormBuilder} from "@angular/forms";
-import {CommonPopupItemsService} from "../common-popup-items/common-popup-items.service";
-import {PopupStore} from "../../../app/core/common-popup/state/popup.store";
-import {BehaviorSubject, Subject} from "rxjs";
-import RealGrid, {DataFieldObject, IndicatorValue, ValueType} from "realgrid";
-import {PopupPagenation} from "../common-popup-items/common-popup-items.types";
-import {MatPaginator} from "@angular/material/paginator";
+} from '@angular/core';
+import {fuseAnimations} from '../../animations';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FuseRealGridService} from '../../services/realgrid';
+import {FuseUtilsService} from '../../services/utils';
+import {FormBuilder} from '@angular/forms';
+import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
+import {Subject} from 'rxjs';
+import RealGrid, {IndicatorValue, ValueType} from 'realgrid';
+import {MatPaginator} from '@angular/material/paginator';
 import * as XLSX from 'xlsx';
-import {CommonExcelService} from "./common-excel.service";
-import {takeUntil} from "rxjs/operators";
-import {TeamPlatConfirmationService} from "../../services/confirmation";
-import {Estimate} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
-import {FunctionService} from "../../services/function";
+import {CommonExcelService} from './common-excel.service';
+import {takeUntil} from 'rxjs/operators';
+import {TeamPlatConfirmationService} from '../../services/confirmation';
+import {FunctionService} from '../../services/function';
 
 @Component({
     selector: 'app-common-excel',
@@ -238,7 +235,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                 workbook = XLSX.read(data, {type: 'binary'});
             }else{
                 // eslint-disable-next-line @typescript-eslint/no-shadow,@typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
-                const arr = function (data){
+                const arr = function(data){
                     // eslint-disable-next-line prefer-const
                     let o = ''; let l = 0; let w = 10240;
                     for(; l<data.byteLength / w; ++l){
@@ -269,7 +266,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                index++;
             });
 
-            let output = result['ds_excelJson'];
+            const output = result['ds_excelJson'];
             //output = output.replace(/<!\[CDATA\[(.*?)\]\]>/g,'$1');
 
             jsonObj = output;

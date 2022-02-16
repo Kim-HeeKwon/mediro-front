@@ -1338,27 +1338,27 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.save();
                 ctx.fillStyle = '#3983DC';
-                ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '10px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if (availQty0) {
                     ctx.fillText('합계', width / 2, top + (height / 2));
-                    ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.65));
+                    ctx.fillText('' + totalAvailQty, width / 2.0, top + (height / 1.73));
                 }
                 if (availQty1) {
                     ctx.fillText('1등급', width / 2, top + (height / 2));
-                    ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.65));
+                    ctx.fillText('' + data[0].availQty, width / 2, top + (height / 1.73));
                 }
                 if (availQty2) {
                     ctx.fillText('2등급', width / 2, top + (height / 2));
-                    ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.65));
+                    ctx.fillText('' + data[1].availQty, width / 2, top + (height / 1.73));
                 }
                 if (availQty3) {
                     ctx.fillText('3등급', width / 2, top + (height / 2));
-                    ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.65));
+                    ctx.fillText('' + data[2].availQty, width / 2, top + (height / 1.73));
                 }
                 if (availQty4) {
                     ctx.fillText('4등급', width / 2, top + (height / 2));
-                    ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.65));
+                    ctx.fillText('' + data[3].availQty, width / 2, top + (height / 1.73));
                 }
             }
         };

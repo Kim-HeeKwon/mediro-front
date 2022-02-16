@@ -16,6 +16,7 @@ import {FunctionService} from '../../../../../@teamplat/services/function';
 import {MatDialog} from '@angular/material/dialog';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {ValidityDetailComponent} from './validity-detail/validity-detail.component';
+
 @Component({
     selector: 'dms-app-validity',
     templateUrl: './validity.component.html',
@@ -275,12 +276,12 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                     text: '임박유형',
                     styleName: 'center-cell-text blue-font-color',
                     template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip-hover-validity">\n' +
-                                                            'help_outline\n' +
-                                                            '<span class="tooltip-text-validity tooltip-validity">\n' +
+                        'help_outline\n' +
+                        '<span class="tooltip-text-validity tooltip-validity">\n' +
                         'A Type: 3개월(위험), 6개월(상), 9개월(중), 12개월(하)<br>' +
                         'B Type: 2개월(위험), 4개월(상), 6개월(중), 8개월(하)<br>' +
                         'C Type: 1개월(위험), 2개월(상), 3개월(중), 4개월(하)</span></span>',
-                    values: { 'headerText':'임박유형' },
+                    values: {'headerText': '임박유형'},
                 },
                 values: valueTypes,
                 labels: lableTypes,
@@ -337,25 +338,25 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.setDisplayOptions({liveScroll: false,});
         this.gridList.setPasteOptions({enabled: false,});
         this.gridList.setCellStyleCallback((grid, dataCell) => {
-            const ret = {styleName : ''};
+            const ret = {styleName: ''};
             const imminentStatus = grid.getValue(dataCell.index.itemIndex, 'imminentStatus');
 
-            if(imminentStatus === '위험'){
+            if (imminentStatus === '위험') {
                 if (dataCell.dataColumn.fieldName === 'imminentStatus') {
                     ret.styleName = 'center-cell-text red-cell-color';
                     return ret;
                 }
-            }else if(imminentStatus === '상'){
+            } else if (imminentStatus === '상') {
                 if (dataCell.dataColumn.fieldName === 'imminentStatus') {
                     ret.styleName = 'center-cell-text orange-cell-color';
                     return ret;
                 }
-            }else if(imminentStatus === '중'){
+            } else if (imminentStatus === '중') {
                 if (dataCell.dataColumn.fieldName === 'imminentStatus') {
                     ret.styleName = 'center-cell-text yellow-cell-color';
                     return ret;
                 }
-            }else if(imminentStatus === '하'){
+            } else if (imminentStatus === '하') {
                 if (dataCell.dataColumn.fieldName === 'imminentStatus') {
                     ret.styleName = 'center-cell-text yellowgreen-cell-color';
                     return ret;
@@ -366,11 +367,8 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                this.gridList.columnByName('imminentType').sortable = false;
-                if(clickData.column !== 'imminentType'){
-                    const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                    this.selectCallBack(rtn);
-                }
+                const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             }
             ;
             if (this.orderBy === 'asc') {
@@ -441,29 +439,25 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.validity.length < 1){
+            if (ex.validity.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
         });
     }
 
-    setting(): void{
+    setting(): void {
         if (!this.isMobile) {
             const d = this._matDialog.open(ValidityDetailComponent, {
                 autoFocus: false,
                 disableClose: true,
-                data: {
-
-                },
+                data: {},
             });
             d.afterClosed().subscribe(() => {
                 this.selectHeader();
             });
         } else {
             const d = this._matDialog.open(ValidityDetailComponent, {
-                data: {
-
-                },
+                data: {},
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',
