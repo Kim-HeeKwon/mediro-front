@@ -26,3 +26,8 @@ export interface User
     udiInfoYn?: string;
     popBillId?: string;
 }
+export interface UserExperience
+{
+    email: string;
+
+}

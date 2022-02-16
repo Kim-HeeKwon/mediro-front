@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import {catchError, share, switchMap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {catchError, map, share, switchMap, take} from 'rxjs/operators';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { Common } from '@teamplat/providers/common/common';
 import { Crypto } from '@teamplat/providers/common/crypto';
 import { Api } from '@teamplat/providers/api/api';
-import { User } from '../user/user.model';
+import {User, UserExperience} from '../user/user.model';
 import { SessionStore } from '../session/state/session.store';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthService
 {
     private _authenticated: boolean = false;
     private _user: User;
-
+    private _userExperiences: BehaviorSubject<UserExperience[]> = new BehaviorSubject(null);
     /**
      * Constructor
      */
@@ -400,5 +400,31 @@ export class AuthService
     generateRandom(min, max) {
         const ranNum = Math.floor(Math.random() * (max - min + 1)) + min;
         return ranNum;
+    }
+
+    /**
+     * Getter for products
+     */
+    get userExperiences$(): Observable<UserExperience[]>
+    {
+        return this._userExperiences.asObservable();
+    }
+    /**
+     * Create
+     */
+    userExperience(userExperience: UserExperience): Observable<UserExperience>
+    {
+        return this.userExperiences$.pipe(
+            take(1),
+            switchMap(products => this._common.sendData(userExperience, 'v1/api/auth/user-experinece').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                        // Update the products with the new product
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }

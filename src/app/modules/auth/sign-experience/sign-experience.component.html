@@ -1,0 +1,199 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/3 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <!-- Logo -->
+            <div class="w-26">
+                <img src="assets/images/logo/mediro_work.png">
+            </div>
+
+            <!-- Title -->
+            <div>
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">처음 오셨군요!</div>
+                <div class="flex items-baseline mt-2 font-extrabold text-1xl">
+                    <div>몇 가지 정보 입력이 필요합니다.</div>
+<!--                    <a-->
+<!--                        class="ml-1 text-primary-500 hover:underline"-->
+<!--                        [routerLink]="['/sign-in']">로그인-->
+<!--                    </a>-->
+                </div>
+            </div>
+
+            <!-- Alert -->
+            <fuse-alert
+                class="mt-8 -mb-4"
+                *ngIf="showAlert"
+                [appearance]="'outline'"
+                [showIcon]="false"
+                [type]="alert.type"
+                [@shake]="alert.type === 'error'">
+                {{alert.message}}
+            </fuse-alert>
+
+            <!-- Sign Up form -->
+            <form
+                *ngIf="showStep1"
+                class="mt-8"
+                [formGroup]="signExperienceForm">
+
+                <!-- 이메일 -->
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full">
+                    <div style="width: 70px;"
+                        class="text-secondary"
+                        matPrefix>
+                        이메일
+                    </div>
+                    <input
+                        id="email"
+                        matInput
+                        [formControlName]="'email'">
+                    <mat-error *ngIf="signExperienceForm.get('email').hasError('required')">
+                        이메일을 입력해 주세요.
+                    </mat-error>
+                    <mat-error *ngIf="signExperienceForm.get('email').hasError('email')">
+                        올바른 이메일 형식이 아닙니다.
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- 회사명 -->
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full mt-4">
+                    <div style="width: 70px;"
+                        class="text-secondary"
+                        matPrefix>
+                        회사명
+                    </div>
+                    <input
+                        id="company-confirm"
+                        matInput
+                        [formControlName]="'company'">
+                </mat-form-field>
+
+                <!-- 이름 -->
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full mt-4">
+                    <div style="width: 70px;"
+                        class="text-secondary"
+                        matPrefix>
+                        이름
+                    </div>
+                    <input
+                        id="name"
+                        matInput
+                        [formControlName]="'name'">
+                    <mat-error *ngIf="signExperienceForm.get('name').hasError('required')">
+                        가입자 이름을 입력해 주세요.
+                    </mat-error>
+                </mat-form-field>
+
+
+                <!-- 휴대폰 번호 -->
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full mt-4">
+                    <div style="width: 70px;"
+                        class="text-secondary"
+                        matPrefix>
+                        휴대폰 번호
+                    </div>
+                    <input
+                        id="phone"
+                        matInput
+                        type="number"
+                        [formControlName]="'phone'">
+                    <mat-error *ngIf="signExperienceForm.get('phone').hasError('required')">
+                        휴대폰 번호를 입력해 주세요. ex) 01012345678
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="fuse-mat-no-subscript fuse-mat-emphasized-affix w-full mt-4">
+                    <div style="width: 70px;"
+                        class="text-secondary"
+                        matPrefix>
+                        인지경로
+                    </div>
+<!--                    <mat-icon-->
+<!--                        class="icon-size-5"-->
+<!--                        [svgIcon]="'heroicons_solid:location-marker'"-->
+<!--                        matPrefix></mat-icon>-->
+                    <mat-select [formControlName]="'select'">
+                        <mat-option [value]="'none'">선택해주세요.</mat-option>
+                        <mat-option [value]="'인터넷 검색 광고'">인터넷 검색 광고</mat-option>
+                        <mat-option [value]="'지인의 소개'">지인의 소개</mat-option>
+                        <mat-option [value]="'이전에 사용경험이 있음'">이전에 사용경험이 있음</mat-option>
+                        <mat-option [value]="'지식인/지식Q&A'">지식인/지식Q&A</mat-option>
+                        <mat-option [value]="'블로그, 카페'">블로그, 카페</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="inline-flex items-end w-full mt-4">
+                    <mat-checkbox
+                        [color]="'primary'"
+                        [formControlName]="'agreements'">
+                        <span>개인정보 수집에 동의함 (필수)</span>
+                        <a
+                            class="ml-1 text-primary-500 hover:underline"
+                            (click)="checkPrivacy()"
+                            [routerLink]="['./']">내용보기
+                        </a>
+                    </mat-checkbox>
+                </div>
+
+                <!-- Submit button -->
+                <button
+                    class="fuse-mat-button-large w-full mt-6"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="signExperienceForm.disabled"
+                    (click)="experience()">
+                    <span *ngIf="!signExperienceForm.disabled">
+                        확인
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="signExperienceForm.disabled"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+
+                <div class="inline-flex items-end w-full mt-2 text-10s" style="color: #AFB8C3">
+                    <span>Copyright Teamplat Inc. All Rights Reserved</span>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-2/3 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+        <!-- Background - @formatter:off -->
+        <!-- Rings -->
+        <svg class="absolute inset-0 pointer-events-none"
+             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                <circle r="234" cx="196" cy="23"></circle>
+                <circle r="234" cx="790" cy="491"></circle>
+            </g>
+        </svg>
+        <!-- Dots -->
+        <svg class="absolute -top-16 -right-16 text-gray-700"
+             viewBox="0 0 220 192" width="220" height="192" fill="none">
+            <defs>
+                <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
+                </pattern>
+            </defs>
+            <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+        </svg>
+        <!-- @formatter:on -->
+        <!-- Content -->
+        <div class="z-10 relative w-full max-w-2xl">
+            <div class="text-4xl font-bold leading-none text-gray-100">
+                <div>의료기기 판매점 전용 유통관리 프로그램</div>
+                <!--                <div>메디로</div>-->
+                <div class="mt-2 w-50">
+                    <img src="assets/images/logo/mediro_work_white_logo.png">
+                </div>
+            </div>
+            <div class="mt-2 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                판매점 유통 업무 온라인 처리, 간편한 식약처 공급내역 보고
+            </div>
+            <div class="mt-1 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                2개월 무료체험해 보시고 결정하세요.
+            </div>
+        </div>
+    </div>
+</div>

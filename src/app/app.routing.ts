@@ -52,6 +52,20 @@ export const appRoutes: Route[] = [
         ]
     },
 
+
+    {
+        path: '',
+        //canActivate: [NoAuthGuard],
+        //canActivateChild: [NoAuthGuard],
+        component: LayoutComponent,
+        data: {
+            layout: 'empty'
+        },
+        children: [
+            {path: 'experience', loadChildren: () => import('app/modules/auth/sign-experience/sign-experience.module').then(m => m.SignExperienceModule)},
+        ]
+    },
+
     // Auth routes for authenticated users
     {
         path: '',

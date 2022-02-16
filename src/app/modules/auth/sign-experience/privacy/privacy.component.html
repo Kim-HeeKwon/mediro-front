@@ -1,0 +1,33 @@
+<div class="flex flex-col flex-auto md:w-280 md:min-w-280 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">개인정보 처리방침</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="m-8">
+        <p class="font-bold">
+            (주)팀플랫은 정보통신망 이용촉진 및 정보보호 등에 관한 법률, 개인정보보호법, 통신비밀보호법, 전기통신사업법에 의거한 개인정보처리방침을 정하여 이용자 권익 보호에 최선을 다하고 있습니다.
+        </p>
+        <br>
+        <ul class="ml-3">
+            <li>
+                * 수집 항목 - 이메일, 전화번호, 이름, 휴대폰 번호, 인지 경로
+            </li>
+            <li>
+                * 수집목적 - 고객 관리
+            </li>
+            <li>
+                * 보유 및 이용기간 - 매년 1월 1일 기준으로 과거 1개년 이전 정보 자동 삭제 처리
+            </li>
+        </ul>
+        <br>
+        <p class="font-bold">위 사항에 대한 동의가 없는 경우 회사에서 제공하는 서비스를 신청하거나 가입하는 것이 불가능 할 수 있습니다.</p>
+    </div>
+</div>
