@@ -17,7 +17,8 @@
 <!--                    class="w-22"-->
 <!--                    src="assets/images/logo/work_logo.jpeg">-->
                 <img
-                    class="w-22"
+                    (click)="logoClick()"
+                    class="w-22 cursor-pointer"
                     src="assets/images/logo/mediro_work.png">
             </div>
         </div>
@@ -142,7 +143,8 @@
             <!--<language></language>-->
             <fuse-fullscreen></fuse-fullscreen>
             <!--<search [appearance]="'bar'"></search>-->
-            <shortcuts [shortcuts]="data.shortcuts"></shortcuts>
+<!--            <shortcuts [shortcuts]="data.shortcuts"></shortcuts>-->
+            <links></links>
         </div>
     </div>
 

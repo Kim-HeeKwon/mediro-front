@@ -6,73 +6,6 @@
 
         <mat-tab-group class="flex flex-co w-full flex-auto overflow-hidden"
                        [color]="'accent'">
-            <mat-tab label="가입">
-                <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
-                    <!-- Plan -->
-                    <div class="sm:col-span-2">
-                        <fuse-alert
-                            [appearance]="'outline'"
-                            [type]="'basic'">
-                            <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50%할인</i>(</span><span class="text-line-through">30만원</span><span> → 15만원)적용 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
-                            <!--                    <span>오픈 이벤트 가입비</span>50% 할인<span class="text-line-through"> 30만원</span><span> 15만원 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>-->
-                        </fuse-alert>
-                    </div>
-                </div>
-                <!-- Actions -->
-                <div class="flex items-center justify-end mt-6">
-                    <!--            <button-->
-                    <!--                mat-stroked-button-->
-                    <!--                type="button"-->
-                    <!--                (click)="billEnterFee()">-->
-                    <!--                가입비 결제-->
-                    <!--            </button>-->
-                    <button
-                        class="ml-4"
-                        mat-flat-button
-                        type="button"
-                        [color]="'primary'"
-                        (click)="join()">가입
-                    </button>
-                </div>
-
-                <!-- Divider -->
-                <div class="mt-6 mb-5 border-t" style="border-style: dotted"></div>
-
-                <div class="grid grid-cols-4 gap-6 w-full">
-<!--                    <div-->
-<!--                        class="col-span-2 sm:col-span-2">-->
-<!--                        <p class="font-bold text-17s">-->
-<!--                            정기 서비스 안내-->
-<!--                        </p>-->
-<!--                        <br>-->
-<!--                        <ul class="ml-3">-->
-<!--                            <li>* 가입일로부터 무료 기간이 지나면 서비스 신청 금액(부가세 별도)으로 다음 결제일(매월 1일)에 자동 결제가 진행됩니다.</li>-->
-<!--                            <li>* 가입 후 정기 서비스 신청을 통한 결제 유예 기간은 가입일로부터 7일이며, 7일 내에 결제 정보를 업데이트 해주시면 서비스 사용이 재진행 됩니다.</li>-->
-<!--                            <li>* 선택한 서비스의 기본 제공량이 초과되면 추가 사용료가 부과됩니다. </li>-->
-<!--                            <li class="ml-3 text-10s">(품목 판매건수 80원/건, 공급내역보고 150원/건, 전자세금계산서 100원/건, 플랫폼 사용자 10,000원/인)</li>-->
-<!--                            <li>* 연 결제를 하시면 월 사용료가 15% 할인된 금액으로 서비스를 이용할 수 있습니다.</li>-->
-<!--                            <li>* 결제 수단 변경 및 정기 서비스 해지, 환불 등의 문의는 대표번호(031-377-1327)를 이용해 주세요.</li>-->
-<!--                            <li>* 정기 서비스 해지 후 사용 만료일이 끝난 시점에 재가입이 가능합니다.</li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-                    <div
-                        class="col-span-4 sm:col-span-2">
-                        <p class="font-bold text-17s">
-
-                        </p>
-                        <br>
-                        <ul class="ml-3">
-                            <li class="text-13s text-bold-600">주식회사 팀플랫</li>
-                            <li class="text-12s">본사 : 경기도 화성시 636-3, 메가비즈타워 C동 808호</li>
-                            <li class="text-12s">서울 오피스 : 서울특별시 강남구 강남대로 94길 28, 406호</li>
-                            <li class="text-12s">대표자 : 김환진</li>
-                            <li class="text-12s">대표번호 : 031-377-1327</li>
-                            <li class="text-12s">이메일 : tp_official@team-plat.com</li>
-                            <li class="text-12s">사업자등록번호 : 707-86-02194 | 통신판매업신고 : 2022-화성동탄-0172</li>
-                        </ul>
-                    </div>
-                </div>
-            </mat-tab>
             <mat-tab label="정기 서비스 신청">
                 <!-- Section -->
                 <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
@@ -459,7 +392,7 @@
 
                     <div class="grid grid-cols-4 gap-6 w-full">
                         <div
-                            class="col-span-2 sm:col-span-2">
+                            class="col-span-4 sm:col-span-4">
                             <p class="font-bold text-17s">
                                 정기 서비스 안내
                             </p>
@@ -475,7 +408,7 @@
                             </ul>
                         </div>
                         <div
-                            class="col-span-2 sm:col-span-2">
+                            class="col-span-4 sm:col-span-4">
                             <p class="font-bold text-17s">
 
                             </p>
@@ -493,6 +426,73 @@
                     </div>
 
                 </ng-container>
+            </mat-tab>
+            <mat-tab label="가입">
+                <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
+                    <!-- Plan -->
+                    <div class="sm:col-span-2">
+                        <fuse-alert
+                            [appearance]="'outline'"
+                            [type]="'basic'">
+                            <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50%할인</i>(</span><span class="text-line-through">30만원</span><span> → 15만원)적용 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
+                            <!--                    <span>오픈 이벤트 가입비</span>50% 할인<span class="text-line-through"> 30만원</span><span> 15만원 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>-->
+                        </fuse-alert>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center justify-end mt-6">
+                    <!--            <button-->
+                    <!--                mat-stroked-button-->
+                    <!--                type="button"-->
+                    <!--                (click)="billEnterFee()">-->
+                    <!--                가입비 결제-->
+                    <!--            </button>-->
+                    <button
+                        class="ml-4"
+                        mat-flat-button
+                        type="button"
+                        [color]="'primary'"
+                        (click)="join()">가입
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <div class="mt-6 mb-5 border-t" style="border-style: dotted"></div>
+
+                <div class="grid grid-cols-4 gap-6 w-full">
+                    <!--                    <div-->
+                    <!--                        class="col-span-2 sm:col-span-2">-->
+                    <!--                        <p class="font-bold text-17s">-->
+                    <!--                            정기 서비스 안내-->
+                    <!--                        </p>-->
+                    <!--                        <br>-->
+                    <!--                        <ul class="ml-3">-->
+                    <!--                            <li>* 가입일로부터 무료 기간이 지나면 서비스 신청 금액(부가세 별도)으로 다음 결제일(매월 1일)에 자동 결제가 진행됩니다.</li>-->
+                    <!--                            <li>* 가입 후 정기 서비스 신청을 통한 결제 유예 기간은 가입일로부터 7일이며, 7일 내에 결제 정보를 업데이트 해주시면 서비스 사용이 재진행 됩니다.</li>-->
+                    <!--                            <li>* 선택한 서비스의 기본 제공량이 초과되면 추가 사용료가 부과됩니다. </li>-->
+                    <!--                            <li class="ml-3 text-10s">(품목 판매건수 80원/건, 공급내역보고 150원/건, 전자세금계산서 100원/건, 플랫폼 사용자 10,000원/인)</li>-->
+                    <!--                            <li>* 연 결제를 하시면 월 사용료가 15% 할인된 금액으로 서비스를 이용할 수 있습니다.</li>-->
+                    <!--                            <li>* 결제 수단 변경 및 정기 서비스 해지, 환불 등의 문의는 대표번호(031-377-1327)를 이용해 주세요.</li>-->
+                    <!--                            <li>* 정기 서비스 해지 후 사용 만료일이 끝난 시점에 재가입이 가능합니다.</li>-->
+                    <!--                        </ul>-->
+                    <!--                    </div>-->
+                    <div
+                        class="col-span-4 sm:col-span-2">
+                        <p class="font-bold text-17s">
+
+                        </p>
+                        <br>
+                        <ul class="ml-3">
+                            <li class="text-13s text-bold-600">주식회사 팀플랫</li>
+                            <li class="text-12s">본사 : 경기도 화성시 636-3, 메가비즈타워 C동 808호</li>
+                            <li class="text-12s">서울 오피스 : 서울특별시 강남구 강남대로 94길 28, 406호</li>
+                            <li class="text-12s">대표자 : 김환진</li>
+                            <li class="text-12s">대표번호 : 031-377-1327</li>
+                            <li class="text-12s">이메일 : tp_official@team-plat.com</li>
+                            <li class="text-12s">사업자등록번호 : 707-86-02194 | 통신판매업신고 : 2022-화성동탄-0172</li>
+                        </ul>
+                    </div>
+                </div>
             </mat-tab>
         </mat-tab-group>
 

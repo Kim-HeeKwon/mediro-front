@@ -1,0 +1,58 @@
+<!-- Shortcuts toggle -->
+<button
+    mat-icon-button
+    (click)="openPanel()"
+    #linkOrigin>
+    <mat-icon [svgIcon]="'heroicons_outline:bookmark'"></mat-icon>
+</button>
+
+<!-- Shortcuts panel -->
+<ng-template #linkPanel>
+    <div class="fixed inset-0 sm:static sm:inset-auto flex flex-col sm:min-w-60 sm:w-60 sm:rounded-2xl overflow-hidden shadow-lg">
+
+        <!-- Header -->
+        <div class="flex flex-shrink-0 items-center py-4 pr-4 pl-6 text-on-primary" style="background: #10172A">
+            <div class="sm:hidden -ml-1 mr-3">
+                <button
+                    mat-icon-button
+                    (click)="closePanel()">
+                    <mat-icon
+                        class="icon-size-5 text-current"
+                        [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                </button>
+            </div>
+            <div class="text-lg font-medium leading-10">사이드 맵</div>
+        </div>
+        <div class="relative flex flex-col flex-auto sm:max-h-120 -mb-px overflow-y-auto bg-card">
+
+            <!-- View mode -->
+            <!-- Shortcuts -->
+            <div class="grid grid-cols-4 grid-flow-row">
+                <!-- Shortcut -->
+                <ng-container *ngFor="let links of links; trackBy: trackByFn">
+                    <div class="relative group flex col-span-4 overflow-hidden bg-card border-r border-b even:border-r-0 hover:bg-gray-50 dark:hover:bg-black dark:hover:bg-opacity-5 cursor-pointer"
+                            (click)="linkCall(links)">
+                        <!-- Normal links -->
+                        <a
+                            class="flex flex-col items-center justify-center w-full h-full py-6 no-underline"
+                            [ngClass]="'pointer-events-none'">
+                            <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+                        </a>
+                        <!-- Link content template -->
+                        <ng-template #linkContent>
+                            <div class="relative flex flex-shrink-0 items-center justify-center w-12 h-12 mb-3 rounded-full bg-gray-100 dark:bg-gray-700">
+                                <mat-icon
+                                    class="absolute z-20 icon-size-5"
+                                    [svgIcon]="links.icon"></mat-icon>
+                            </div>
+                            <div class="font-medium text-center">{{links.title}}</div>
+                            <div class="text-md text-center text-10s">{{links.subTitle}}</div>
+                        </ng-template>
+                    </div>
+                </ng-container>
+
+            </div>
+
+        </div>
+    </div>
+</ng-template>

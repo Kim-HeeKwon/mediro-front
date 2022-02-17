@@ -110,4 +110,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
             navigation.toggle();
         }
     }
+
+    logoClick() {
+        console.log('sss');
+        this._router.navigateByUrl('monitoring/dashboards');
+    }
 }
