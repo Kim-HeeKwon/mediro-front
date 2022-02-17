@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    OnInit,
+    Renderer2,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {SessionStore} from '../../../../../core/session/state/session.store';
 import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
@@ -6,6 +14,8 @@ import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {Crypto} from '@teamplat/providers/common/crypto';
 import {Common} from '@teamplat/providers/common/common';
 import {FunctionService} from  '../../../../../../@teamplat/services/function';
+import {postcode} from "../../../../../../assets/js/postCode";
+import {geodata} from "../../../../../../assets/js/geoCode";
 
 @Component({
     selector       : 'settings-account',
@@ -15,6 +25,7 @@ import {FunctionService} from  '../../../../../../@teamplat/services/function';
 })
 export class SettingsAccountComponent implements OnInit
 {
+    @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     accountForm: FormGroup;
     userForm: FormGroup;
 
@@ -34,6 +45,7 @@ export class SettingsAccountComponent implements OnInit
         private _utilService: FuseUtilsService,
         private _cryptoJson: Crypto,
         private _common: Common,
+        private _renderer: Renderer2,
         private _formBuilder: FormBuilder
     )
     {
@@ -78,12 +90,37 @@ export class SettingsAccountComponent implements OnInit
             udiSupplyAutoDt: [this._sessionStore.getValue().udiSupplyAutoDt],
             passphrase: [],
             salt: [],
-            iv: []
+            iv: [],
+            representName: [],
+            address: [],
+            addressX: [],
+            addressY: [],
+            addressZoneNo: [],
+            businessCondition: [],
+            businessCategory: [],
+            phoneNumber: [],
+            fax: [],
         });
-        console.log(this._sessionStore.getValue().udiSupplyAutoDt);
+        //console.log(this._sessionStore.getValue().udiSupplyAutoDt);
         if(this._sessionStore.getValue().userType === 'UG10'){
             this.isAdmin = true;
         }
+
+        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-info-detail')
+            .subscribe((response: any) => {
+                if(response.data[0].phoneNumber === 0){
+                    response.data[0].phoneNumber = '';
+                }else{
+                    response.data[0].phoneNumber = '0' + response.data[0].phoneNumber;
+                }
+                if(response.data[0].fax === 0){
+                    response.data[0].fax = '';
+                }else{
+                    response.data[0].fax = '0' + response.data[0].fax;
+                }
+
+                this.userForm.patchValue(response.data[0]);
+            });
     }
 
     saveAccountInfo(): void {
@@ -106,9 +143,13 @@ export class SettingsAccountComponent implements OnInit
 
         this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-user-info')
             .subscribe((response: any) => {
-               this.userForm.patchValue({udiClientSecret:''});
-               console.log(response.data);
-               this._sessionStore.update(response.data);
+                this.userForm.patchValue({udiClientSecret:''});
+                this._sessionStore.update(response.data);
+            });
+
+
+        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-user-info-detail')
+            .subscribe((response: any) => {
             });
     }
 
@@ -131,5 +172,23 @@ export class SettingsAccountComponent implements OnInit
             this._functionService.cfn_alert('정상적으로 처리되었습니다.');
             this._sessionStore.update(param.data);
         }
+    }
+
+    openDaumPopup(): void
+    {
+        let geoValue;
+        postcode(this._renderer, this.popup.nativeElement, (data: any) => {
+            geodata(data.address, (result: any) => {
+                this.userForm.patchValue({'address': result.road_address.address_name});
+                this.userForm.patchValue({'addressX': result.road_address.x});
+                this.userForm.patchValue({'addressY': result.road_address.y});
+                this.userForm.patchValue({'addressZoneNo': result.road_address.zone_no});
+            });
+        });
+    }
+
+    closeDaumPopup(): void
+    {
+        this._renderer.setStyle(this.popup.nativeElement, 'display', 'none');
     }
 }

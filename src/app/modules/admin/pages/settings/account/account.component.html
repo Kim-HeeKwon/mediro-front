@@ -109,6 +109,65 @@
                         matInput>
                 </mat-form-field>
             </div>
+            <!-- Title -->
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>대표자명</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'representName'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>주소</mat-label>
+                    <input
+                        (click)="openDaumPopup()"
+                        [formControlName]="'address'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>업태</mat-label>
+                    <input
+                        [formControlName]="'businessCondition'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>종목</mat-label>
+                    <input
+                        [formControlName]="'businessCategory'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>대표전화</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:phone'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'phoneNumber'"
+                        type = number
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2" *ngIf="isAdmin">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>팩스</mat-label>
+                    <input
+                        [formControlName]="'fax'"
+                        type = number
+                        matInput>
+                </mat-form-field>
+            </div>
             <!-- About -->
 <!--            <div class="sm:col-span-4">-->
 <!--                <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">-->
@@ -218,5 +277,9 @@
             </button>
         </div>
     </form>
+
+    <div #daum_popup style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+        <img (click)="closeDaumPopup()" src="//t1.daumcdn.net/postcode/resource/images/close.png" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1;width: 6%;" />
+    </div>
 
 </div>
