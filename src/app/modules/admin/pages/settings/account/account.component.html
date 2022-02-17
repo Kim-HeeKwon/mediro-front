@@ -8,7 +8,7 @@
             <div class="text-xl">프로필</div>
             <div class="text-secondary">회원님의 프로필 정보입니다. 다른 사람이 볼 수 있으니 주의해 주세요.</div>
         </div>
-        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+        <div style="display: grid !important;" class="sm:grid-cols-4 gap-6 w-full mt-8">
             <!-- Name -->
             <div class="sm:col-span-2">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -132,7 +132,7 @@
             <div class="text-secondary">공급내역 보고를 위한 식약처 공급내역 보고 사이트의 아이디와 시크릿키를 입력해주세요.</div>
             <div class="text-secondary">* 아이디와 시크릿키는 암호화되어 저장되므로 안심하세요. </div>
         </div>
-        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8" *ngIf="isAdmin">
+        <div style="display: grid !important;" class="sm:grid-cols-4 gap-6 w-full mt-8" *ngIf="isAdmin">
             <!-- Email -->
             <div class="sm:col-span-2">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
@@ -160,7 +160,7 @@
                         matInput>
                 </mat-form-field>
             </div>
-        </div><div class="grid sm:grid-cols-5 gap-6 w-full mt-8" *ngIf="isAdmin">
+        </div><div style="display: grid !important;" class="sm:grid-cols-5 gap-6 w-full mt-8" *ngIf="isAdmin">
         <div class="sm:col-span-2">
             <mat-form-field class="fuse-mat-no-subscript w-full">
                 <mat-label>공급내역 보고 자동 여부</mat-label>

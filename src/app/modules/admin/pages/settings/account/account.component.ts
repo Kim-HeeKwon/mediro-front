@@ -5,7 +5,7 @@ import {CommonCode, FuseUtilsService} from '@teamplat/services/utils';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {Crypto} from '@teamplat/providers/common/crypto';
 import {Common} from '@teamplat/providers/common/common';
-import {FunctionService} from "../../../../../../@teamplat/services/function";
+import {FunctionService} from  '../../../../../../@teamplat/services/function';
 
 @Component({
     selector       : 'settings-account',
