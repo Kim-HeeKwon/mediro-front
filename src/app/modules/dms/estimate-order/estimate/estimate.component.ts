@@ -406,13 +406,13 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status === 'S') {
-                    this._functionService.cfn_alert('이미 발송했습니다. 견적번호 : ' + checkValues[i].qtNo);
+                    this._functionService.cfn_alert('이미 발송했습니다. <br> 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
                 }
 
                 if (checkValues[i].status === 'CF' || checkValues[i].status === 'C') {
-                    this._functionService.cfn_alert('발송할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    this._functionService.cfn_alert('확정 또는 취소 상태는 발송할 수 없습니다. <br> 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
                 }
@@ -485,7 +485,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status === 'CF' || checkValues[i].status === 'N' || checkValues[i].status === 'C') {
-                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    this._functionService.cfn_alert('확정대기 또는 요청 상태에서만 가능합니다. <br> 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
                 }
@@ -546,7 +546,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 견적번호 : ' + checkValues[i].qtNo);
+                    this._functionService.cfn_alert('작성 상태에서만 취소할 수 있습니다. <br> 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
                 }

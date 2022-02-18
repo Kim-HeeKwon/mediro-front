@@ -633,7 +633,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         const ibType = this.inBoundHeaderForm.controls['type'].value;
         if (ibStatus !== 'N' && ibStatus !== 'P' && ibStatus !== 'S') {
-            this._functionService.cfn_alert('입고할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정, 작업 중, 작업 완료 상태에서만 입고가 가능합니다.');
             return false;
         }
         let inBoundData;

@@ -26,6 +26,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {CommonModule} from "@angular/common";
 import {SettingsUserGuideComponent} from "./userGuide/userGuide.component";
 import {MatTabsModule} from "@angular/material/tabs";
+import {ApplyContractComponent} from "./plan-billing/apply-contract/apply-contract.component";
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import {MatTabsModule} from "@angular/material/tabs";
         SettingsTeamComponent,
         SettingsTaxComponent,
         SettingsUserGuideComponent,
-        NewTeamComponent
+        NewTeamComponent,
+        ApplyContractComponent,
     ],
     imports: [
         CommonModule,

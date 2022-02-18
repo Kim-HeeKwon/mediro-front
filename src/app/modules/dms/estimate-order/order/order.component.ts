@@ -378,13 +378,13 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status === 'S') {
-                    this._functionService.cfn_alert('이미 발송했습니다. 발주번호 : ' + checkValues[i].poNo);
+                    this._functionService.cfn_alert('이미 발송했습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
                 if (checkValues[i].status === 'CF' || checkValues[i].status === 'P' || checkValues[i].status === 'C' ||
                     checkValues[i].status === 'CFA') {
-                    this._functionService.cfn_alert('발송할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
+                    this._functionService.cfn_alert('생성 상태에서만 발송할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
@@ -455,7 +455,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'S' && checkValues[i].status !== 'P'&&
                     checkValues[i].status !== 'CFA') {
-                    this._functionService.cfn_alert('발주할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
+                    this._functionService.cfn_alert('확정대기 또는 발주서 발송 상태에서만 발주 할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
@@ -515,7 +515,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 발주번호 : ' + checkValues[i].poNo);
+                    this._functionService.cfn_alert('생성 상태에서만 취소할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }

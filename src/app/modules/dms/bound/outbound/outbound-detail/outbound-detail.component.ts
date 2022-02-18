@@ -683,7 +683,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const obStatus = this.outBoundHeaderForm.controls['status'].value;
         const obType = this.outBoundHeaderForm.controls['type'].value;
         if (obStatus !== 'N' && obStatus !== 'P') {
-            this._functionService.cfn_alert('출고할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정, 작업 중, 작업 완료 상태에서만 출고가 가능합니다.');
             return false;
         }
 

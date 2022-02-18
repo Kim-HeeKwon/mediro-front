@@ -1,0 +1,149 @@
+<div class="flex flex-col flex-auto md:w-180 md:min-w-180 sm:w-full sm:min-w-full -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <div class="text-lg font-medium">계약 신청서</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="userForm">
+            <div class="mb-4">
+
+                <div class="flex w-full">
+
+                    <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                        <div class="sm:col-span-6 mt-2">
+                            <div class="text-13s text-bold-600">계 약 일</div>
+                        </div>
+                        <mat-form-field class="sm:col-span-6 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                계약일
+                            </div>
+                            <input
+                                matInput
+                                type="date"
+                                [formControlName]="'contractData'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                        <div class="sm:col-span-6 mt-2">
+                            <div class="text-13s text-bold-600">계약업체 정보</div>
+                        </div>
+                        <mat-form-field class="sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                업체명
+                            </div>
+                            <input
+                                matInput
+                                [formControlName]="'company'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                        <mat-form-field class="sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                담당자 이름/직급
+                            </div>
+                            <input
+                                matInput
+                                [formControlName]="'manager'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                        <mat-form-field class="sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                담당자 이메일
+                            </div>
+                            <input
+                                matInput
+                                [formControlName]="'managerEmail'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                        <mat-form-field class="sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                담당자 연락처
+                            </div>
+                            <input
+                                matInput
+                                [formControlName]="'managerPhone'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                        <div class="sm:col-span-6 mt-2">
+                            <div class="text-13s text-bold-600">메디로 워크 정보</div>
+                        </div>
+                        <mat-form-field class="sm:col-span-2 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                가입 서비스
+                            </div>
+                            <mat-select [formControlName]="'payGrade'"
+                                    (ngModelChange)="payGradeChange()">
+                                <mat-option [value]="'basic'">기본</mat-option>
+                                <mat-option [value]="'premium'">프리미엄</mat-option>
+                                <mat-option [value]="'customize'">커스텀</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="sm:col-span-2 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                월/년
+                            </div>
+                            <mat-select [formControlName]="'yearUser'">
+                                <mat-option [value]="'0'">월</mat-option>
+                                <mat-option [value]="'1'">년</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="sm:col-span-2 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+                            <div class="text-secondary"
+                                 matPrefix>
+                                금액
+                            </div>
+                            <input class="text-right"
+                                   type="text"
+                                   matInput
+                                   [formControlName]="'amt'"
+                                   [attr.disabled]="is_editAmt?'':false">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex items-center justify-between mt-4">
+                <!-- Close -->
+                <button
+                    mat-flat-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <!-- Save -->
+                <button
+                    mat-flat-button
+                    [color]="'accent'"
+                    (click)="applicationReception()">
+                    신청접수
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>

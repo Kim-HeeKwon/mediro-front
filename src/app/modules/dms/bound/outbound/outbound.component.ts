@@ -380,7 +380,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('취소할 수 없는 상태입니다. 출고번호 : ' + checkValues[i].obNo);
+                    this._functionService.cfn_alert('예정 상태에서만 취소할 수 있습니다. <br> 출고번호 : ' + checkValues[i].obNo);
                     check = false;
                     return false;
                 }
@@ -496,13 +496,13 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status === 'N' || checkValues[i].status === 'C') {
-                    this._functionService.cfn_alert('확정할 수 없는 상태입니다. 출고번호 : ' + checkValues[i].obNo);
+                    this._functionService.cfn_alert('출고 작업 중 또는 출고 작업 완료 상태에서만 확정할 수 있습니다. <br> 출고번호 : ' + checkValues[i].obNo);
                     check = false;
                     return false;
                 }
 
                 if (checkValues[i].status === 'PC' || checkValues[i].status === 'SC') {
-                    this._functionService.cfn_alert('이미 확정되었습니다. 출고번호 : ' + checkValues[i].obNo);
+                    this._functionService.cfn_alert('이미 확정되었습니다. <br> 출고번호 : ' + checkValues[i].obNo);
                     check = false;
                     return false;
                 }

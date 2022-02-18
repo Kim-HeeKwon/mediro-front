@@ -12,8 +12,12 @@ import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {takeUntil} from "rxjs/operators";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {ApplyContractComponent} from "./apply-contract/apply-contract.component";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 const clientKey = 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL';
 
 //import { setBill } from 'assets/js/billCode.js';
@@ -26,10 +30,15 @@ const clientKey = 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL';
 })
 export class SettingsPlanBillingComponent implements OnInit
 {
+    isMobile: boolean = false;
     alert: { type: FuseAlertType; message: string } = {
         type   : 'success',
         message: ''
     };
+
+    isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
+        Breakpoints.XSmall
+    );
     configForm: FormGroup;
     cardCompany: CommonCode[] = null;
     payMethod: string = '';
@@ -48,16 +57,20 @@ export class SettingsPlanBillingComponent implements OnInit
      */
     constructor(
         private _router: Router,
+        private _matDialog: MatDialog,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
         private _sessionStore: SessionStore,
         private _functionService: FunctionService,
+        private _deviceService: DeviceDetectorService,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
-        private _common: Common
+        private _common: Common,
+        private readonly breakpointObserver: BreakpointObserver
     )
     {
+        this.isMobile = this._deviceService.isMobile();
         this.cardCompany = _utilService.commonValue(_codeStore.getValue().data, 'CARD_COMPANY');
     }
 
@@ -435,6 +448,39 @@ export class SettingsPlanBillingComponent implements OnInit
                 dismissible: true
             });
             const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
+        }
+    }
+
+    ApplyContract() {
+
+        if (!this.isMobile) {
+
+            this._matDialog.open(ApplyContractComponent, {
+                autoFocus: false,
+                data     : {
+                    data: this.planBillingForm.getRawValue()
+                },
+                maxHeight: '90vh',
+                //width: '90vw',
+                disableClose: true
+            });
+        }else{
+
+            const p = this._matDialog.open(ApplyContractComponent, {
+                autoFocus: false,
+                data     : {
+                    data: this.planBillingForm.getRawValue()
+                },
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    p.updateSize('calc(100vw - 10px)', '');
+                }
+            });
         }
     }
 }
