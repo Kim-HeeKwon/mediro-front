@@ -62,10 +62,10 @@ export class ApplyContractComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.userForm = this._formBuilder.group({
-            contractData: ['', [Validators.required]],
+            contractDate: ['', [Validators.required]],
             businessName: [this._sessionStore.getValue().businessName, [Validators.required]],
             manager: ['', [Validators.required]],
-            managerEmail: ['', [Validators.required]],
+            managerEmail: ['', [Validators.required, Validators.email]],
             managerPhone: ['', [Validators.required]],
             payGrade: ['', [Validators.required]],
             yearUser: ['', [Validators.required]],
