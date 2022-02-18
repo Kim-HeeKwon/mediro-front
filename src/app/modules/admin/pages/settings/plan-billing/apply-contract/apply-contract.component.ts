@@ -17,6 +17,8 @@ import {CodeStore} from "../../../../../../core/common-code/state/code.store";
 import {Common} from "../../../../../../../@teamplat/providers/common/common";
 import {Crypto} from "../../../../../../../@teamplat/providers/common/crypto";
 import {FuseUtilsService} from "../../../../../../../@teamplat/services/utils";
+import {takeUntil} from "rxjs/operators";
+import {TeamPlatConfirmationService} from "../../../../../../../@teamplat/services/confirmation";
 
 @Component({
     selector       : 'apply-contract',
@@ -43,6 +45,7 @@ export class ApplyContractComponent implements OnInit, OnDestroy
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _sessionStore: SessionStore,
         private _codeStore: CodeStore,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _common: Common,
         public matDialogRef: MatDialogRef<ApplyContractComponent>,
         private _cryptoJson: Crypto,
@@ -130,10 +133,29 @@ export class ApplyContractComponent implements OnInit, OnDestroy
             this.showAlert = true;
             return;
         }
-        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-contract-update')
-            .subscribe((response: any) => {
+        const conf = this._teamPlatConfirmationService.open({
+            title: '신청',
+            message: '신청하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        conf.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((rtn) => {
+                if (rtn) {
 
-                this.matDialogRef.close();
+                    this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-contract-update')
+                        .subscribe((response: any) => {
+
+                            this.matDialogRef.close();
+                        });
+                }
             });
     }
 
