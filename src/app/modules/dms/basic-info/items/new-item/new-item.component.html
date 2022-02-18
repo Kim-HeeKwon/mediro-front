@@ -55,7 +55,7 @@
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>UDI 대상 유무 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <mat-select [formControlName]="'udiYn'" [attr.disabled]="is_edit?'':false">
+                            <mat-select [formControlName]="'udiYn'">
                                 <ng-container *ngFor="let udiYn of udiYn">
                                     <mat-option [value]="udiYn.id">
                                         {{udiYn.name}}
