@@ -60,7 +60,7 @@ export class ApplyContractComponent implements OnInit, OnDestroy
     {
         this.userForm = this._formBuilder.group({
             contractData: ['', [Validators.required]],
-            company: ['', [Validators.required]],
+            businessName: [this._sessionStore.getValue().businessName, [Validators.required]],
             manager: ['', [Validators.required]],
             managerEmail: ['', [Validators.required]],
             managerPhone: ['', [Validators.required]],
@@ -77,6 +77,14 @@ export class ApplyContractComponent implements OnInit, OnDestroy
             this.userForm.patchValue({'amt' : 0});
             this.userForm.controls['amt'].disable();
         }
+
+        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-contract')
+            .subscribe((response: any) => {
+
+                if(response.data.length > 0){
+                    this.userForm.patchValue(response.data[0]);
+                }
+            });
     }
 
     /**
@@ -122,9 +130,11 @@ export class ApplyContractComponent implements OnInit, OnDestroy
             this.showAlert = true;
             return;
         }
-        // this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-contract')
-        //     .subscribe((response: any) => {
-        //     });
+        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-contract-update')
+            .subscribe((response: any) => {
+
+                this.matDialogRef.close();
+            });
     }
 
     payGradeChange() {
