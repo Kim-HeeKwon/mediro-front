@@ -83,6 +83,16 @@ export class AuthService
         return localStorage.getItem('businessName') ?? '';
     }
 
+
+    set userGroup(id: string){
+        localStorage.setItem('userGroup', id);
+    }
+
+    get userGroup(): string
+    {
+        return localStorage.getItem('userGroup') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -153,6 +163,7 @@ export class AuthService
                 this.userMid = response.resultD.mid;
                 this.userId = response.resultD.id;
                 this.userBusinessName = response.resultD.businessName;
+                this.userGroup = response.resultD.userType;
 
                 response.resultD.mId = response.resultD.mid;
 
@@ -162,7 +173,7 @@ export class AuthService
                 this._userService.user = response.resultD;
 
                 //console.log('user Check!!');
-                console.log(response.resultD);
+                //console.log(response.resultD);
 
                 // Store the akita store
                 this._sessionStore.update(response.resultD);

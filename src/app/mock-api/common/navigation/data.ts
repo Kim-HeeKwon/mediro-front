@@ -466,6 +466,285 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'divider'
     },
 ];
+
+export const defaultNavigationAdmin: FuseNavigationItem[] = [
+];
+export const defaultNavigationTest: FuseNavigationItem[] = [
+    {
+        id      : 'monitoring',
+        title   : '대시보드',
+        type    : 'collapsable',
+        icon    : 'space_dashboard',
+        children: [
+            {
+                id   : 'monitoring.dashboards',
+                title: '모니터링',
+                type : 'basic',
+                icon : 'heroicons_outline:presentation-chart-bar',
+                link : '/monitoring/dashboards'
+            },
+            // {
+            //     id   : 'analytics.dashboards',
+            //     title: '애널리틱스',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // }
+        ]
+    },
+    {
+        id      : 'monitoring',
+        title   : '유통관리',
+        type    : 'collapsable',
+        icon    : 'local_shipping',
+        children: [
+            {
+                id   : 'estimate-order.estimate',
+                title: '견적 관리',
+                type : 'basic',
+                icon : 'heroicons_outline:pencil-alt',
+                link : '/estimate-order/estimate'
+            },
+            {
+                id      : 'estimate-order.order',
+                title   : '발주 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:pencil',
+                link    : '/estimate-order/order'
+            },
+            {
+                id      : 'salesorder.salesorder',
+                title   : '주문 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'heroicons_outline:pencil',
+                link    : '/salesorder/salesorder'
+            },
+            {
+                id   : 'bound.inbound',
+                title: '입고 관리',
+                type : 'basic',
+                icon : 'heroicons_outline:folder-add',
+                link : '/bound/inbound'
+            },
+            {
+                id   : 'bound.outbound',
+                title: '출고 관리',
+                type : 'basic',
+                icon : 'heroicons_outline:folder-remove',
+                link : '/bound/outbound'
+            },
+            {
+                id   : 'stock.stock',
+                title: '재고 관리',
+                type : 'basic',
+                icon : 'heroicons_outline:cube',
+                link : '/stock/stock'
+            },
+        ]
+    },
+    {
+        id: 'monitoring',
+        title: '정산관리',
+        type: 'collapsable',
+        icon: 'heroicons_outline:archive',
+        tag: '3',
+        children: [
+            {
+                id   : 'calculate.bill',
+                title: '정산 및 마감',
+                type : 'basic',
+                icon : 'heroicons_outline:archive',
+                link : '/calculate/bill'
+            },
+            {
+                id   : 'calculate.tax',
+                title: '계산서 발행',
+                type : 'basic',
+                icon : 'heroicons_outline:archive',
+                link : '/calculate/tax'
+            },
+            {
+                id   : 'deposit-withdrawal.deposit',
+                title: '입금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/deposit',
+                tag: 'N'
+            },
+            {
+                id   : 'deposit-withdrawal.withdrawal',
+                title: '출금관리',
+                type : 'basic',
+                icon : 'monetization_on',
+                link : '/deposit-withdrawal/withdrawal',
+                tag: 'N'
+            },
+            {
+                id   : 'deposit-withdrawal.income-outcome',
+                title: '원장관리',
+                type : 'basic',
+                icon : 'credit_score',
+                link : '/deposit-withdrawal/income-outcome',
+                tag: 'N'
+            },
+        ]
+    },
+    {
+        id      : 'udi',
+        title: '공급내역 보고',
+        type    : 'collapsable',
+        icon    : 'insert_chart',
+        children: [
+            {
+                id   : 'udi.manages',
+                title: '식약처 공급내역보고',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/manages'
+            },
+            // {
+            //     id   : 'udi.manages-email',
+            //     title: '공급내역 이메일 전송',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:identification',
+            //     link : '/udi/manages-email'
+            // },
+            {
+                id   : 'udi.status',
+                title: '통합시스템 전송내역',
+                type : 'basic',
+                icon : 'heroicons_outline:identification',
+                link : '/udi/status'
+            },
+            // {
+            //     id   : 'udi.manage-sample',
+            //     title: '공급내역 맛보기',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:identification',
+            //     link : '/udi/manageSample'
+            // },
+        ]
+    },
+    {
+        id      : 'smart-plus',
+        title   : '스마트플러스',
+        type    : 'collapsable',
+        icon    : 'playlist_add',
+        tag: '4',
+        children: [
+            // {
+            //     id   : 'smart-plus.manages',
+            //     title: '자동발주',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
+            // {
+            //     id   : 'smart-plus.status',
+            //     title: '정기주문',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:desktop-computer',
+            //     link : '',
+            //     tag: '개발중'
+            // },
+            {
+                id      : 'stock.safety',
+                title   : '안전재고',
+                type    : 'basic',
+                icon    : 'heroicons_outline:cube',
+                link    : '/stock/safety',
+                tag: 'N'
+            },
+            {
+                id   : 'stock.validity',
+                title: '유효기간',
+                type : 'basic',
+                icon : 'heroicons_outline:calendar',
+                link : '/stock/validity',
+                tag: 'N'
+            },
+            {
+                id   : 'smart-plus.status',
+                title: '장기재고',
+                type : 'basic',
+                icon : 'receipt_long',
+                link : '/stock/long-term',
+                tag: 'N'
+            },
+            {
+                id      : 'stock.acceptable',
+                title   : '가납재고',
+                type    : 'basic',
+                icon    : 'heroicons_outline:cube',
+                link    : '/stock/acceptable',
+                tag: 'N'
+            },
+        ]
+    },
+    // {
+    //     id      : 'basic-info',
+    //     title   : '기준정보',
+    //     type    : 'collapsable',
+    //     icon    : 'info',
+    //     children: [
+    //         {
+    //             id      : 'basic-info.account',
+    //             title   : '거래처관리',
+    //             subtitle: '',
+    //             type    : 'basic',
+    //             icon    : 'heroicons_outline:library',
+    //             link    : '/basic-info/account'
+    //         },
+    //         {
+    //             id      : 'basic-info.items',
+    //             title   : '품목관리',
+    //             subtitle: '',
+    //             type    : 'basic',
+    //             icon    : 'heroicons_outline:cube',
+    //             link    : '/basic-info/items'
+    //         },
+    //         {
+    //             id      : 'basic-info.item-price',
+    //             title   : '계약단가관리',
+    //             subtitle: '',
+    //             type    : 'basic',
+    //             icon    : 'heroicons_outline:currency-dollar',
+    //             link    : '/basic-info/item-price'
+    //         },
+    //     ]
+    // },
+    // {
+    //     id      : 'my-pages',
+    //     title   : '마이페이지',
+    //     subtitle: '부가기능 관리',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id   : 'my-pages.setting',
+    //             title: '마이페이지',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:cog',
+    //             link : '/pages/settings'
+    //         },
+    //         {
+    //             id   : 'manual.manual',
+    //             title: '매뉴얼',
+    //             type : 'basic',
+    //             icon : 'heroicons_outline:play',
+    //             link : '/manual/manual'
+    //         },
+    //     ]
+    // },
+    {
+        id  : 'divider-2',
+        type: 'divider'
+    },
+];
 export const defaultNavigationM: FuseNavigationItem[] = [
      // {
      //     id      : 'user-interface',

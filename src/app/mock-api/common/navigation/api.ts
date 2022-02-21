@@ -4,8 +4,8 @@ import { FuseNavigationItem } from '@teamplat/components/navigation';
 import { FuseMockApiService } from '@teamplat/lib/mock-api';
 import {
     compactNavigation,
-    defaultNavigation,
-    defaultNavigationM,
+    defaultNavigation, defaultNavigationAdmin,
+    defaultNavigationM, defaultNavigationTest,
     futuristicNavigation,
     horizontalNavigation
 } from 'app/mock-api/common/navigation/data';
@@ -26,6 +26,8 @@ export class NavigationMockApi
     private readonly _compactNavigation: FuseNavigationItem[] = compactNavigation;
     private readonly _defaultNavigation: FuseNavigationItem[] = defaultNavigation;
     private readonly _defaultNavigationM: FuseNavigationItem[] = defaultNavigationM;
+    private readonly _defaultNavigationAdmin: FuseNavigationItem[] = defaultNavigationAdmin;
+    private readonly _defaultNavigationTest: FuseNavigationItem[] = defaultNavigationTest;
     private readonly _futuristicNavigation: FuseNavigationItem[] = futuristicNavigation;
     private readonly _horizontalNavigation: FuseNavigationItem[] = horizontalNavigation;
 
@@ -87,29 +89,62 @@ export class NavigationMockApi
                     });
                 });
 
-                if(this.isMobile){
-                    // Return the response
+
+                const userId = localStorage.getItem('id');
+                const userGroup = localStorage.getItem('userGroup');
+
+                //console.log(userGroup);
+
+                if(userGroup === 'ADMIN'){
                     return [
                         200,
                         {
                             compact   : cloneDeep(this._compactNavigation),
-                            default   : cloneDeep(this._defaultNavigationM),
+                            default   : cloneDeep(this._defaultNavigationAdmin),
                             futuristic: cloneDeep(this._futuristicNavigation),
                             horizontal: cloneDeep(this._horizontalNavigation)
                         }
                     ];
                 }else{
-                    // Return the response
-                    return [
-                        200,
-                        {
-                            compact   : cloneDeep(this._compactNavigation),
-                            default   : cloneDeep(this._defaultNavigation),
-                            futuristic: cloneDeep(this._futuristicNavigation),
-                            horizontal: cloneDeep(this._horizontalNavigation)
+                    if(userId === 'test@naver.com'){
+                        return [
+                            200,
+                            {
+                                compact   : cloneDeep(this._compactNavigation),
+                                default   : cloneDeep(this._defaultNavigationTest),
+                                futuristic: cloneDeep(this._futuristicNavigation),
+                                horizontal: cloneDeep(this._horizontalNavigation)
+                            }
+                        ];
+                    }else{
+                        if(this.isMobile){
+                            // Return the response
+                            return [
+                                200,
+                                {
+                                    compact   : cloneDeep(this._compactNavigation),
+                                    default   : cloneDeep(this._defaultNavigationM),
+                                    futuristic: cloneDeep(this._futuristicNavigation),
+                                    horizontal: cloneDeep(this._horizontalNavigation)
+                                }
+                            ];
+                        }else{
+                            // Return the response
+                            return [
+                                200,
+                                {
+                                    compact   : cloneDeep(this._compactNavigation),
+                                    default   : cloneDeep(this._defaultNavigation),
+                                    futuristic: cloneDeep(this._futuristicNavigation),
+                                    horizontal: cloneDeep(this._horizontalNavigation)
+                                }
+                            ];
                         }
-                    ];
+                    }
                 }
+
+
+
 
                 // Return the response
                 // return [

@@ -94,28 +94,35 @@ export class AuthSignInComponent implements OnInit
                     this.cookieService.set( 'remeberMe', 'Y' );
                     this.cookieService.set( 'email', this.signInForm.value.email );
 
-                    //첫 로그인 유저 패스원드 강제 입력
-                    //console.log(this._sessionStore.getValue());
-                    if(response.resultD.paymentBasicInfoCnt < 1 ||
-                        response.resultD.paymentCardInfoCnt < 1){
-                        this._router.navigateByUrl('/pages/settings/plan-billing');
-                    }else{
-                        if(this._sessionStore.getValue().initYn === 'Y'){
-                            this._router.navigateByUrl('/pages/settings/security');
-                            //this._router.navigateByUrl('/monitoring/dashboards');
-                        }else{
-                            // Set the redirect url.
-                            // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                            // to the correct page after a successful sign in. This way, that url can be set via
-                            // routing file and we don't have to touch here.
-                            const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                    const id = localStorage.getItem('id');
+                    const userGroup = localStorage.getItem('userGroup');
 
-                            // Navigate to the redirect url
-                            this._router.navigateByUrl(redirectURL);
+                    if(userGroup === 'ADMIN'){
+                        this._router.navigateByUrl('/monitoring/dashboards');
+                    }else if(id === 'test@naver.com'){
+                        this._router.navigateByUrl('/monitoring/dashboards');
+                    }else{
+                        //첫 로그인 유저 패스원드 강제 입력
+                        //console.log(this._sessionStore.getValue());
+                        if(response.resultD.paymentBasicInfoCnt < 1 ||
+                            response.resultD.paymentCardInfoCnt < 1){
+                            this._router.navigateByUrl('/pages/settings/plan-billing');
+                        }else{
+                            if(this._sessionStore.getValue().initYn === 'Y'){
+                                this._router.navigateByUrl('/pages/settings/security');
+                                //this._router.navigateByUrl('/monitoring/dashboards');
+                            }else{
+                                // Set the redirect url.
+                                // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
+                                // to the correct page after a successful sign in. This way, that url can be set via
+                                // routing file and we don't have to touch here.
+                                const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+
+                                // Navigate to the redirect url
+                                this._router.navigateByUrl(redirectURL);
+                            }
                         }
                     }
-
-
 
                 },
                 (response) => {

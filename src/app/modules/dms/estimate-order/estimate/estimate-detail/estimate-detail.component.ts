@@ -477,9 +477,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         const status = this.estimateHeaderForm.controls['status'].value;
 
-        //확정은 불가능
-        if (status === 'CF') {
-            this._functionService.cfn_alert('저장 할 수 없습니다.');
+        if (status !== 'N') {
+            this._functionService.cfn_alert('작성 상태에서만 저장 가능합니다.');
             return;
         }
 
@@ -636,7 +635,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         return sendData;
     }
 
-    addRow(): void {
+    addRow(): boolean {
+        const qtStatus = this.estimateHeaderForm.controls['status'].value;
+        if (qtStatus !== 'N') {
+            this._functionService.cfn_alert('작성 상태에서 추가할 수 있습니다.');
+            return false;
+        }
         let effectiveDate = '';
         if (this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
@@ -655,9 +659,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     }
 
-    delRow(): void {
+    delRow(): boolean {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.estimateDetailDataProvider);
 
+        const qtStatus = this.estimateHeaderForm.controls['status'].value;
+        if (qtStatus !== 'N') {
+            this._functionService.cfn_alert('작성 상태에서 삭제할 수 있습니다.');
+            return false;
+        }
         if (checkValues.length < 1) {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;

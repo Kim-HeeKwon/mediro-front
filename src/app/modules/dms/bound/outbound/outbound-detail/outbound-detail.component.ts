@@ -464,7 +464,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         const obStatus = this.outBoundHeaderForm.controls['status'].value;
         if (obStatus !== 'N') {
-            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정 상태에서 추가할 수 있습니다.');
             return false;
         }
         const values = [
@@ -478,7 +478,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
         const obStatus = this.outBoundHeaderForm.controls['status'].value;
         if (obStatus !== 'N') {
-            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정 상태에서 삭제할 수 있습니다.');
             return false;
         }
 
@@ -538,7 +538,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             });
         });
         this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
-        this.reportHeaderData.date = this.outBoundHeaderForm.getRawValue().obCreDate;
+        this.reportHeaderData.date = this.outBoundHeaderForm.getRawValue().dlvDate;
         this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
         this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
         this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress;
@@ -575,7 +575,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const status = this.outBoundHeaderForm.controls['status'].value;
         //신규가 아니면 불가능
         if (status !== 'N') {
-            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            this._functionService.cfn_alert('예정 상태에서 저장할 수 있습니다.');
             return;
         }
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {

@@ -466,7 +466,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         if (ibStatus !== 'N') {
-            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정 상태에서 추가할 수 있습니다.');
             return false;
         }
         const values = [
@@ -480,7 +480,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
         const ibStatus = this.inBoundHeaderForm.controls['status'].value;
         if (ibStatus !== 'N') {
-            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+            this._functionService.cfn_alert('예정 상태에서 삭제할 수 있습니다.');
             return false;
         }
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.inBoundDetailDataProvider);
@@ -519,6 +519,11 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
     inBoundSave(): void {
         const status = this.inBoundHeaderForm.controls['status'].value;
+        //신규가 아니면 불가능
+        if (status !== 'N') {
+            this._functionService.cfn_alert('예정 상태에서 저장할 수 있습니다.');
+            return;
+        }
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
             return;
         }

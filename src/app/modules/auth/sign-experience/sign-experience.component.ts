@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation} from "@angular/core";
 import {fuseAnimations} from "../../../../@teamplat/animations";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {FuseAlertType} from "../../../../@teamplat/components/alert";
@@ -11,6 +11,8 @@ import {DeviceDetectorService} from "ngx-device-detector";
 import {CommonCode, FuseUtilsService} from "../../../../@teamplat/services/utils";
 import {CodeStore} from "../../../core/common-code/state/code.store";
 import {PrivacyComponent} from "../sign-experience/privacy/privacy.component";
+import {TeamPlatConfirmationService} from "../../../../@teamplat/services/confirmation";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector     : 'auth-sign-experience',
@@ -35,6 +37,7 @@ export class SignExperienceComponent implements OnInit
 
     isMobile: boolean = false;
 
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
     /**
      * Constructor
      */
@@ -43,6 +46,7 @@ export class SignExperienceComponent implements OnInit
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
         private _router: Router,
+        private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilService: FuseUtilsService,
         private _codeStore: CodeStore,
@@ -101,16 +105,49 @@ export class SignExperienceComponent implements OnInit
             return;
         }
 
-        this._authService.userExperience(this.signExperienceForm.getRawValue())
-            .subscribe((newAccount: any) => {
+        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+            title: '',
+            message: '정보 등록한 이메일로 <br> ID/PW 정보 확인하세요!',
+            icon: this._formBuilder.group({
+                show: true,
+                name: 'heroicons_outline:mail',
+                color: 'primary'
+            }),
+            actions: this._formBuilder.group({
+                confirm: this._formBuilder.group({
+                    show: true,
+                    label: '확인',
+                    color: 'accent'
+                }),
+                cancel: this._formBuilder.group({
+                    show: true,
+                    label: '닫기'
+                })
+            }),
+            dismissible: true
+        }).value);
 
-            this.alertMessage(newAccount);
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._authService.userExperience(this.signExperienceForm.getRawValue())
+                        .subscribe((newAccount: any) => {
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
-        // Hide the alert
-        this.showAlert = false;
+                            this.alertMessage(newAccount);
+
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                    // Hide the alert
+                    this.showAlert = false;
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+
+
     }
 
     alertMessage(param: any): void

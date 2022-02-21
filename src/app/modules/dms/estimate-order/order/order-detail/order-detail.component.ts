@@ -555,7 +555,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //신규가 아니면 불가능
         if (status !== 'N') {
-            this._functionService.cfn_alert('저장 할 수 없습니다.');
+            this._functionService.cfn_alert('생성 상태에서만 저장 가능합니다.');
             return;
         }
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
@@ -704,9 +704,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     addRow(): boolean {
-        const poStatus = this.orderHeaderForm.controls['status'].value;
-        if (poStatus !== 'N') {
-            this._functionService.cfn_alert('추가할 수 없는 상태입니다.');
+        const status = this.orderHeaderForm.controls['status'].value;
+        if (status !== 'N') {
+            this._functionService.cfn_alert('생성 상태에서 추가할 수 있습니다.');
             return false;
         }
         const values = [
@@ -718,9 +718,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     delRow(): boolean {
 
-        const poStatus = this.orderHeaderForm.controls['status'].value;
-        if (poStatus !== 'N') {
-            this._functionService.cfn_alert('삭제할 수 없는 상태입니다.');
+        const status = this.orderHeaderForm.controls['status'].value;
+        if (status !== 'N') {
+            this._functionService.cfn_alert('생성 상태에서 삭제할 수 있습니다.');
             return false;
         }
 
