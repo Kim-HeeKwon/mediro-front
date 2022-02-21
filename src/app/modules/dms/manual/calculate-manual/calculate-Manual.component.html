@@ -1,0 +1,392 @@
+<div *ngIf="isMobile" class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-col divide-y border-t border-b">
+        <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
+            <div class="sm:col-span-12">
+                <button *ngIf="!bill"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="billBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">정산 및 마감</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="bill"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="billBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">정산 및 마감</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="bill" class="sm:col-span-4" >
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>정산 및 마감 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>정산 마감</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>저장</span>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!tax"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="taxBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">계산서 발행</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="tax"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="taxBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">계산서 발행</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="tax" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>계산서 발행 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>발행</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>삭제</span>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!deposit"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="depositBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">입금 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="deposit"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="depositBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">입금 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="deposit" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>입금 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>입금 추가</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>입금 삭제</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>입금 마감</span>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!withdrawal"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="withdrawalBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">출금 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="withdrawal"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="withdrawalBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">출금 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="withdrawal" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>출금 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>출금 추가</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>출금 삭제</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>출금 마감</span>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!incomeoutcome"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="incomeoutcomeBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">원장 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="incomeoutcome"
+                        class="ml-3 mediro-btn-custom-background-color"
+                        [color]="'primary'"
+                        [ngStyle]="{'width': '94%'}"
+                        mat-flat-button (click)="incomeoutcomeBtn()">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">원장 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="incomeoutcome" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>거래처 원장 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>거래처별 원장 조(미수금, 미지급금)</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                        mat-flat-button>
+                    <span>기초 금액</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+    <div class="flex w-full mt-8 sm:mt-0 pb-4">
+        <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
+            <div class="flex flex-col w-full">
+                <div class="flex flex-col w-full">
+                    <div class="flex w-2/2 my-2">
+                        <button *ngIf="!bill" class="w-1/2 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="billBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">정산 및 마감</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                        </button>
+                        <button *ngIf="bill" class="w-1/2 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="billBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">정산 및 마감</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                        </button>
+                        <button *ngIf="!tax" class="w-1/2 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="taxBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">계산서 발행</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                        </button>
+                        <button *ngIf="tax" class="w-1/2 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="taxBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">계산서 발행</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="bill" class="flex w- 3/3 my-2">
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>정산 및 마감 조회</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>정산 마감</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>저장</span>
+                        </button>
+                    </div>
+                    <div *ngIf="tax" class="flex w- 3/3 my-2">
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>계산서 발행 조회</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>발행</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>삭제</span>
+                        </button>
+                    </div>
+                    <div class="flex w-3/3 my-2">
+                        <button *ngIf="!deposit" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="depositBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">입금 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                        </button>
+                        <button *ngIf="deposit" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="depositBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">입금 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                        </button>
+                        <button *ngIf="!withdrawal" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="withdrawalBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">출금 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                        </button>
+                        <button *ngIf="withdrawal" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="withdrawalBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">출금 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                        </button>
+                        <button *ngIf="!incomeoutcome" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="incomeoutcomeBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">원장 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                        </button>
+                        <button *ngIf="incomeoutcome" class="w-1/3 fuse-mat-dense fuse-mat-no-subscript pr-2"
+                                mat-flat-button (click)="incomeoutcomeBtn()">
+                            <mat-icon class="maual-icon"
+                                      [svgIcon]="'heroicons_outline:identification'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-span-custom">원장 관리</span>
+                            <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="deposit" class="flex w- 4/4 my-2">
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>입금 조회</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>입금 추가</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>입금 삭제</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>입금 마감</span>
+                        </button>
+                    </div>
+                    <div *ngIf="withdrawal" class="flex w- 4/4 my-2">
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>출금 조회</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>출금 추가</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>출금 삭제</span>
+                        </button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>출금 마감</span>
+                        </button>
+                    </div>
+                    <div *ngIf="incomeoutcome" class="flex w- 3/3 my-2">
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>거래처 원장 조회</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>거래처별 원장 조(미수금, 미지급금)</span>
+                        </button>
+                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button>
+                            <span>기초 금액</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
