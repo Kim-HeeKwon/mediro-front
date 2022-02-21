@@ -27,6 +27,7 @@ import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help"
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 import {ManagesReportComponent} from "./manages-report/manages-report.component";
 import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
+import {ManagesEmailComponent} from "./manages-email/manages-email.component";
 
 const managesRoutes: Route[] = [
     {
@@ -42,7 +43,8 @@ const managesRoutes: Route[] = [
     declarations: [
         ManagesComponent,
         ManagesReportComponent,
-        ManagesDetailComponent
+        ManagesDetailComponent,
+        ManagesEmailComponent
     ],
     imports: [
         CommonModule,

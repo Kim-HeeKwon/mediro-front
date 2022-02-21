@@ -564,6 +564,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.orderHeaderForm.patchValue({'account': result.accountCd});
                         this.orderHeaderForm.patchValue({'accountNm': result.accountNm});
                         this.orderHeaderForm.patchValue({'email': result.email});
+                        this.orderHeaderForm.patchValue({'cellPhoneNumber': result.cellPhoneNumber});
                     }
                 });
         }

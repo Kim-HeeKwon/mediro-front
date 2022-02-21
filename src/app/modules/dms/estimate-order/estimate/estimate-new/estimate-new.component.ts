@@ -537,6 +537,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.estimateHeaderForm.patchValue({'account': result.accountCd});
                         this.estimateHeaderForm.patchValue({'accountNm': result.accountNm});
                         this.estimateHeaderForm.patchValue({'email': result.email});
+                        this.estimateHeaderForm.patchValue({'cellPhoneNumber': result.cellPhoneNumber});
                     }
                 });
         }

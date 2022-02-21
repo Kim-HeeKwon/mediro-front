@@ -18,6 +18,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {ManagesReportComponent} from './manages-report/manages-report.component';
 import {ManagesDetailComponent} from './manages-detail/manages-detail.component';
 import {ManagesNewComponent} from './manages-new';
+import {ManagesEmailComponent} from "./manages-email/manages-email.component";
 
 @Component({
     selector: 'dms-manages',
@@ -454,46 +455,38 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyEmail() {
-        const checkValues = this._realGridsService.gfn_GetRows(this.gridList, this.managesDataProvider);
-        const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
-            title: '',
-            message: '전송하시겠습니까?',
-            icon: this._formBuilder.group({
-                show: true,
-                name: 'heroicons_outline:check-circle',
-                color: 'accent'
-            }),
-            actions: this._formBuilder.group({
-                confirm: this._formBuilder.group({
-                    show: true,
-                    label: '전송',
-                    color: 'accent'
-                }),
-                cancel: this._formBuilder.group({
-                    show: true,
-                    label: '닫기'
-                })
-            }),
-            dismissible: true
-        }).value);
+        const getRows = this._realGridsService.gfn_GetRows(this.gridList, this.managesDataProvider);
 
-        confirmation.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if (result) {
-                    this._managesService.sendEmail(checkValues)
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((manage: any) => {
-                            this._functionService.cfn_loadingBarClear();
-                            this._functionService.cfn_alertCheckMessage(manage);
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                            this.select();
-                        });
-                }
-            });
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
+        if (getRows.length < 1) {
+            this._functionService.cfn_alert('공급내역 보고 목록을 먼저 검색해주세요.');
+            return;
+        }else{
+            if (!this.isMobile) {
+                this._matDialog.open(ManagesEmailComponent, {
+                    autoFocus: false,
+                    maxHeight: '90vh',
+                    disableClose: true,
+                    data: {rows : getRows, searchForm : this.searchForm.getRawValue()},
+                });
+            } else {
+                const d = this._matDialog.open(ManagesEmailComponent, {
+                    autoFocus: false,
+                    width: 'calc(100% - 50px)',
+                    maxWidth: '100vw',
+                    maxHeight: '80vh',
+                    disableClose: true,
+                    data: {rows : getRows, searchForm : this.searchForm.getRawValue()},
+                });
+                const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                    if (size.matches) {
+                        d.updateSize('calc(100vw - 10px)', '');
+                    }
+                });
+                d.afterClosed().subscribe(() => {
+                    smallDialogSubscription.unsubscribe();
+                });
+            }
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

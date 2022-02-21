@@ -44,6 +44,10 @@ export interface Manages
     suplyAmt?: string; 	//공급금액(VAT포함, 원)
     remark?: string; 	//비고
     file?: [];
+
+    year?: string;
+    month?: string;
+    email?: string;
 }
 
 export interface ManagesPagenation
