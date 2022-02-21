@@ -82,15 +82,18 @@
                         <ng-container *ngSwitchCase="'circulation'">
                             <circulation-Manual></circulation-Manual>
                         </ng-container>
+                        <ng-container *ngSwitchCase="'calculate'">
+                            <calculate-Manual></calculate-Manual>
+                        </ng-container>
                         <ng-container *ngSwitchCase="'udi'">
                             <udi-Manual></udi-Manual>
                         </ng-container>
                         <ng-container *ngSwitchCase="'smartPlus'">
                             <smartPlus-Manual></smartPlus-Manual>
                         </ng-container>
-<!--                        <ng-container *ngSwitchCase="'etc'">-->
-<!--                            <etc-Manual></etc-Manual>-->
-<!--                        </ng-container>-->
+                        <ng-container *ngSwitchCase="'etc'">
+                            <etc-Manual></etc-Manual>
+                        </ng-container>
                     </ng-container>
                 </div>
             </div>

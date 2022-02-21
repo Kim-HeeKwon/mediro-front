@@ -23,8 +23,6 @@ export class circulationManualComponent {
     inbound: boolean = false;
     outbound: boolean = false;
     stock: boolean = false;
-    bill: boolean = false;
-    tax: boolean = false;
     isMobile: boolean = false;
 
     constructor(public sanitizer: DomSanitizer,
@@ -42,8 +40,6 @@ export class circulationManualComponent {
             this.inbound = false;
             this.outbound = false;
             this.stock = false;
-            this.bill = false;
-            this.tax = false;
         }
     }
 
@@ -57,8 +53,6 @@ export class circulationManualComponent {
             this.inbound = false;
             this.outbound = false;
             this.stock = false;
-            this.bill = false;
-            this.tax = false;
         }
     }
 
@@ -72,8 +66,6 @@ export class circulationManualComponent {
             this.inbound = false;
             this.outbound = false;
             this.stock = false;
-            this.bill = false;
-            this.tax = false;
         }
     }
 
@@ -87,8 +79,6 @@ export class circulationManualComponent {
             this.inbound = true;
             this.outbound = false;
             this.stock = false;
-            this.bill = false;
-            this.tax = false;
         }
     }
 
@@ -102,8 +92,6 @@ export class circulationManualComponent {
             this.inbound = false;
             this.outbound = true;
             this.stock = false;
-            this.bill = false;
-            this.tax = false;
         }
     }
 
@@ -117,38 +105,6 @@ export class circulationManualComponent {
             this.inbound = false;
             this.outbound = false;
             this.stock = true;
-            this.bill = false;
-            this.tax = false;
-        }
-    }
-
-    billBtn(): void {
-        if(this.bill) {
-            this.bill = false;
-        } else {
-            this.estimate = false;
-            this.order = false;
-            this.salesorder = false;
-            this.inbound = false;
-            this.outbound = false;
-            this.stock = false;
-            this.bill = true;
-            this.tax = false;
-        }
-    }
-
-    taxBtn(): void {
-        if(this.tax) {
-            this.tax = false;
-        } else {
-            this.estimate = false;
-            this.order = false;
-            this.salesorder = false;
-            this.inbound = false;
-            this.outbound = false;
-            this.stock = false;
-            this.bill = false;
-            this.tax = true;
         }
     }
 
@@ -343,12 +299,6 @@ export class circulationManualComponent {
         this.video = true;
         // eslint-disable-next-line max-len
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/1baUta6r8jA');
-    }
-
-    billLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/85TFhHoErJw');
     }
 
 

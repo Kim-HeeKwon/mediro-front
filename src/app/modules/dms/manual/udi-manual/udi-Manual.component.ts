@@ -17,7 +17,6 @@ import {DeviceDetectorService} from "ngx-device-detector";
 export class udiManualComponent{
     url: SafeResourceUrl;
     manages: boolean = false;
-    status: boolean = false;
     isMobile: boolean = false;
 
     constructor(public sanitizer: DomSanitizer,
@@ -25,4 +24,11 @@ export class udiManualComponent{
         this.isMobile = this._deviceService.isMobile();
     }
 
+    managesBtn(): void {
+        if(this.manages) {
+            this.manages = false;
+        } else {
+            this.manages = true;
+        }
+    }
 }

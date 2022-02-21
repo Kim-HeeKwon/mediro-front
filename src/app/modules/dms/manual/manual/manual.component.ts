@@ -50,6 +50,12 @@ export class manualComponent implements OnInit, OnDestroy {
                 description: '견적, 발주, 주문, 입고, 출고, 재고, 정산 및 마감, 계산서 발행 매뉴얼'
             },
             {
+                id         : 'calculate',
+                icon       : 'local_shipping',
+                title      : '정산 관리',
+                description: '정산 및 마감, 계산서, 입금, 출금, 원장 매뉴얼'
+            },
+            {
                 id         : 'udi',
                 icon       : 'insert_chart',
                 title      : '공급내역 보고',

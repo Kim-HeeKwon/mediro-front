@@ -18,6 +18,7 @@ export class smartPlusManualComponent {
     safety: boolean = false;
     validity: boolean = false;
     acceptable: boolean = false;
+    longterm: boolean = false;
     isMobile: boolean = false;
 
     constructor(public sanitizer: DomSanitizer,
@@ -33,6 +34,7 @@ export class smartPlusManualComponent {
             this.safety = true;
             this.validity = false;
             this.acceptable = false;
+            this.longterm = false;
         }
     }
 
@@ -43,6 +45,7 @@ export class smartPlusManualComponent {
             this.safety = false;
             this.validity = true;
             this.acceptable = false;
+            this.longterm = false;
         }
     }
 
@@ -53,6 +56,18 @@ export class smartPlusManualComponent {
             this.safety = false;
             this.validity = false;
             this.acceptable = true;
+            this.longterm = false;
+        }
+    }
+
+    longtermBtn(): void {
+        if (this.longterm) {
+            this.longterm = false;
+        } else {
+            this.safety = false;
+            this.validity = false;
+            this.acceptable = false;
+            this.longterm = true;
         }
     }
 
