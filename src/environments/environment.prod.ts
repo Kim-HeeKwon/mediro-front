@@ -15,5 +15,5 @@ export const environment = {
     tossClientKey: 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL',
     //tossClientKey: 'live_ck_Z0RnYX2w5320nO7eWWerNeyqApQE',
     test: false,
-    version: '1.0.1',
+    version: '1.0',
 };

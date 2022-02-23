@@ -9,6 +9,7 @@ import { FuseUtilsService } from '@teamplat/services/utils/utils.service';
 import { CookieService } from "ngx-cookie-service";
 import { Shortcut } from "../../../../../../app/layout/common/shortcuts/shortcuts.types";
 import {ShortcutsService} from "../../../../../../app/layout/common/shortcuts/shortcuts.service";
+import {environment} from "../../../../../../environments/environment";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
     @Input() item: FuseNavigationItem;
     @Input() name: string;
     shortCut: Shortcut = null;
+    version: any;
 
     isActiveMatchOptions: IsActiveMatchOptions;
     private _fuseVerticalNavigationComponent: FuseVerticalNavigationComponent;
@@ -43,6 +45,7 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
         // [routerLinkActiveOptions] because if it's "undefined" initially, the router
         // will throw an error and stop working.
         this.isActiveMatchOptions = this._fuseUtilsService.subsetMatchOptions;
+        this.version = environment.version;
     }
 
     // -----------------------------------------------------------------------------------------------------
