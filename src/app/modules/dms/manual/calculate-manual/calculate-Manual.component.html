@@ -23,23 +23,26 @@
                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                 </button>
             </div>
-            <div *ngIf="bill" class="sm:col-span-4" >
+            <div *ngIf="bill" class="sm:col-span-4">
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="billLookUp()">
                     <span>정산 및 마감 조회</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="billConfirmed()">
                     <span>정산 마감</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="billUpdate()">
                     <span>저장</span>
                 </button>
             </div>
@@ -69,19 +72,21 @@
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="taxLookUp()">
                     <span>계산서 발행 조회</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button>
                     <span>발행</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="taxDelet()">
                     <span>삭제</span>
                 </button>
             </div>
@@ -111,25 +116,29 @@
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="depositLookUp()">
                     <span>입금 조회</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="depositCreat()">
                     <span>입금 추가</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="depositDelet()">
                     <span>입금 삭제</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="depositConfirmed()">
                     <span>입금 마감</span>
                 </button>
             </div>
@@ -159,25 +168,29 @@
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="withdrawalLookUp()">
                     <span>출금 조회</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="withdrawalCreat()">
                     <span>출금 추가</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="withdrawalDelet()">
                     <span>출금 삭제</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="withdrawalConfirmed()">
                     <span>출금 마감</span>
                 </button>
             </div>
@@ -207,19 +220,22 @@
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
-                    <span>거래처 원장 조회</span>
+                    mat-flat-button
+                    (click)="incomeoutcomeLookUp()">
+                <span>거래처 원장 조회</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
-                    <span>거래처별 원장 조(미수금, 미지급금)</span>
+                    mat-flat-button
+                    (click)="incomeoutcomeTotalLookUp()">
+                    <span>거래처별 원장 조회(미수금, 미지급금)</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="incomeoutcomeTotal()">
                     <span>기초 금액</span>
                 </button>
             </div>
@@ -228,7 +244,8 @@
 </div>
 
 
-<div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+<div *ngIf="!isMobile"
+     class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
     <div class="flex w-full mt-8 sm:mt-0 pb-4">
         <div class="flex w-full p-4 bg-card shadow rounded-1xl overflow-hidden mediro-bg-card">
             <div class="flex flex-col w-full">
@@ -265,21 +282,25 @@
                     </div>
                     <div *ngIf="bill" class="flex w- 3/3 my-2">
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="billLookUp()">
                             <span>정산 및 마감 조회</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="billConfirmed()">
                             <span>정산 마감</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="billUpdate()">
                             <span>저장</span>
                         </button>
                     </div>
                     <div *ngIf="tax" class="flex w- 3/3 my-2">
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="taxLookUp()">
                             <span>계산서 발행 조회</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
@@ -287,7 +308,8 @@
                             <span>발행</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="taxDelet()">
                             <span>삭제</span>
                         </button>
                     </div>
@@ -337,56 +359,73 @@
                     </div>
                     <div *ngIf="deposit" class="flex w- 4/4 my-2">
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="depositLookUp()">
                             <span>입금 조회</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                        (click)="depositCreat()">
                             <span>입금 추가</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="depositDelet()">
                             <span>입금 삭제</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="depositConfirmed()">
                             <span>입금 마감</span>
                         </button>
                     </div>
                     <div *ngIf="withdrawal" class="flex w- 4/4 my-2">
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="withdrawalLookUp()">
                             <span>출금 조회</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="withdrawalCreat()">
                             <span>출금 추가</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="withdrawalDelet()">
                             <span>출금 삭제</span>
                         </button>
                         <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="withdrawalConfirmed()">
                             <span>출금 마감</span>
                         </button>
                     </div>
                     <div *ngIf="incomeoutcome" class="flex w- 3/3 my-2">
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="incomeoutcomeLookUp()">
                             <span>거래처 원장 조회</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
-                            <span>거래처별 원장 조(미수금, 미지급금)</span>
+                                mat-flat-button
+                                (click)="incomeoutcomeTotalLookUp()">
+                            <span>거래처별 원장 조회(미수금, 미지급금)</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="incomeoutcomeTotal()">
                             <span>기초 금액</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8 mediro-backcolor-custom">
+    <div class="flex w-full mt-8 sm:mt-0 pb-4">
+        <iframe *ngIf="video" width="100%" height="500" [src]="url"></iframe>
     </div>
 </div>
