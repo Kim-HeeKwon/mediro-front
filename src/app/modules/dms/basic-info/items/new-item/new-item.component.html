@@ -27,17 +27,24 @@
             [formGroup]="selectedItemForm">
             <div class="p-4 sm:p-4">
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>품목코드 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
                                 [formControlName]="'itemCd'"
-                                [attr.disabled]="is_edit?'':false"
-                                (click)="openItemSearch()">
+                                [attr.disabled]="is_edit?'':false">
                         </mat-form-field>
                     </div>
+                    <button
+                        class="sm:col-span-1 mediro-btn-custom"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="openItemSearch()"
+                        [ngStyle]="{'align-self': 'center','margin-top': '22px'}">
+                        검색
+                    </button>
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">

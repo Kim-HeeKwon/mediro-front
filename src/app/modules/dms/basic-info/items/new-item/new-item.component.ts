@@ -88,6 +88,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             udiDiCode: [], // udiDiCode
             active: [false]  // cell상태
         });
+        this.selectedItemForm.controls.itemCd.disable();
         this.selectedItemForm.controls.supplierNm.disable();
     }
 
