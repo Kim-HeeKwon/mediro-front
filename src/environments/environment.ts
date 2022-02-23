@@ -17,7 +17,8 @@ export const environment = {
     paymentHookUrl: 'https://localhost:8096/teamPlatFw/v1/api/payment',
     tossClientKey: 'test_ck_XjExPeJWYVQ20nbeAkpr49R5gvNL',
     //tossClientKey: 'live_ck_Z0RnYX2w5320nO7eWWerNeyqApQE',
-    test: true
+    test: true,
+    version: '1.0',
 };
 
 /*

@@ -537,8 +537,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 tax: data.totalAmt / 10
             });
         });
+
+        let obDate = '';
+        if(this.outBoundHeaderForm.getRawValue().obDate !== 'null'){
+            obDate = this.outBoundHeaderForm.getRawValue().obDate;
+        }
         this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
-        this.reportHeaderData.date = this.outBoundHeaderForm.getRawValue().dlvDate;
+        this.reportHeaderData.date = obDate;
         this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
         this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
         this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress;
