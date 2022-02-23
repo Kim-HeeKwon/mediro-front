@@ -67,6 +67,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
         {fieldName: 'custBusinessName', dataType: ValueType.TEXT},
         {fieldName: 'representName', dataType: ValueType.TEXT},
+        {fieldName: 'reportAddress', dataType: ValueType.TEXT},
         {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'businessCategory', dataType: ValueType.TEXT},
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},

@@ -448,6 +448,8 @@ export class SettingsPlanBillingComponent implements OnInit
                 dismissible: true
             });
             const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
+        }else{
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.','check-circle');
         }
     }
 

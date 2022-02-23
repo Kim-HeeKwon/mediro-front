@@ -25,6 +25,24 @@
         <form
             class="flex flex-col border-b"
             [formGroup]="userForm">
+            <div class="grid grid-cols-4 gap-6 w-full mb-2">
+                <div
+                    class="col-span-4 sm:col-span-4">
+                    <p class="font-bold text-17s">
+                        ※ 계약서 작성 절차
+                    </p>
+                    <br>
+                    <ul class="ml-3">
+                        <li>1STEP : 정보작성 후 “신청접수” 클릭</li>
+                        <li>2STEP : 신청자 이메일로 “모두사인” 계약서 전달</li>
+                        <li>3STEP : 신청자는 내용확인하고 사인하기</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t"></div>
+
             <div class="mb-4">
 
                 <div class="flex w-full">
@@ -127,6 +145,7 @@
 
                 </div>
             </div>
+
         </form>
         <ng-container>
             <div class="flex items-center justify-between mt-4">

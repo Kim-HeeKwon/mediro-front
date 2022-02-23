@@ -138,6 +138,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             custBusinessNumber: [''],// 사업자 등록번호
             custBusinessName: [''],//상호
             representName: [''],//성명
+            reportAddress: [''],
             businessCondition: [''],// 업태
             businessCategory: [''],// 종목
             phoneNumber: [''],// 전화번호
@@ -545,7 +546,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
         this.reportHeaderData.date = obDate;
         this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
-        this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().address;//주소
+        this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().reportAddress;//주소
         this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress;
         this.reportHeaderData.custBusinessNumber = this.outBoundHeaderForm.getRawValue().custBusinessNumber;
         this.reportHeaderData.custBusinessName = this.outBoundHeaderForm.getRawValue().custBusinessName;
