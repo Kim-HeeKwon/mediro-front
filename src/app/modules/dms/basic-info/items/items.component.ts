@@ -78,6 +78,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+        {fieldName: 'ediCode', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+        {fieldName: 'itemNoFullname', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'supplierNm', dataType: ValueType.TEXT},
@@ -214,6 +217,24 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
+                name: 'ediCode', fieldName: 'ediCode', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: 'EDI CODE', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'itemNoFullname', fieldName: 'itemNoFullname', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '품목허가번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'udiYn',
                 fieldName: 'udiYn',
                 type: 'data',
@@ -259,8 +280,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
-                name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '매입단가', styleName: 'center-cell-text'}
+                name: 'buyPrice', fieldName: 'buyPrice', type: 'number', width: '150', styleName: 'right-cell-text'
+                , header: {text: '매입단가(VAT포함)', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -269,9 +290,9 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: 'salesPrice',
                 fieldName: 'salesPrice',
                 type: 'number',
-                width: '100',
+                width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '매출단가', styleName: 'center-cell-text'}
+                header: {text: '매출단가(VAT포함)', styleName: 'center-cell-text'}
                 ,
                 numberFormat: '#,##0', renderer: {
                     showTooltip: true

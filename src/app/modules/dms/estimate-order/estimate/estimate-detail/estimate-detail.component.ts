@@ -238,8 +238,8 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 , numberFormat: '#,##0'
             },
             {
-                name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text red-font-color'}, renderer: {
+                name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: '단가(VAT포함)', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'

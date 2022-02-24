@@ -5,10 +5,13 @@ export interface InventoryItem
     itemNm: string;      //품목명
     grade: number;       //품목명
     itemGrade?: number;  //품목등급
-    udiYn?:string;       //UDI신고대상유무
+    udiYn?: string;       //UDI신고대상유무
     category?: string;   //카테고리
     unit: string;        //단위
     standard: string;    //규격
+    ediCode: string;
+    fomlInfo: string;
+    itemNoFullname: string;
     supplier: string;    //공급사
     supplierNm: string;    //공급사 명
     manufacturer: string;    //제조사

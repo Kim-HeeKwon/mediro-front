@@ -76,6 +76,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             category: [''], // 카테고리
             unit: [], // 단위
             standard: [''], // 규격
+            ediCode: [],
             supplier: [''], // 공급사
             supplierNm: [{value:'', disabled: true}], // 공급사 명
             manufacturer: [''], // 제조사
@@ -165,6 +166,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     if(result.modelId === ''){
                         result.modelId = result.medDevSeq;
                     }
+                    console.log(result);
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
@@ -198,6 +200,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     if(result.modelId === ''){
                         result.modelId = result.medDevSeq;
                     }
+                    console.log(result);
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});

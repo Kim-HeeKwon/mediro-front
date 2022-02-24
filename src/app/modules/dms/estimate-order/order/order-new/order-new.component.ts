@@ -214,8 +214,8 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '매입단가', styleName: 'center-cell-text red-font-color'}
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: '매입단가(VAT포함)', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }

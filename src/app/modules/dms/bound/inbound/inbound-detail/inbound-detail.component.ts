@@ -219,8 +219,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
-                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text blue-font-color'}
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: '단가(VAT포함)', styleName: 'center-cell-text blue-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }

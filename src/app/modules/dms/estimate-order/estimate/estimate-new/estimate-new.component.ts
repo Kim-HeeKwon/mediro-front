@@ -210,8 +210,8 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '120', styleName: 'right-cell-text'
-                , header: {text: '단가', styleName: 'center-cell-text red-font-color'}
+                name: 'qtPrice', fieldName: 'qtPrice', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: '단가(VAT포함)', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }

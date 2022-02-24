@@ -112,7 +112,7 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         if(num !== undefined){
             if(num.length === 11){
                 if(type===0){
-                    formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+                    formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
                 }else{
                     formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
                 }
@@ -121,13 +121,13 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
             }else{
                 if(num.indexOf('02') === 0){
                     if(type === 0){
-                        formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+                        formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
                     }else{
                         formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
                     }
                 }else{
                     if(type === 0){
-                        formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+                        formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
                     }else{
                         formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
                     }
@@ -142,7 +142,7 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
         try{
             if (num.length === 10) {
                 if (type === 0) {
-                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
                 } else {
                     formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
                 }

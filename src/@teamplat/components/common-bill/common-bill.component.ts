@@ -68,7 +68,7 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.unitPrice += reportDetail.unitPrice;
                 this.totalAmt += reportDetail.totalAmt;
                 this.taxAmt += reportDetail.taxAmt;
-                this.totalTax += reportDetail.tax;
+                // this.totalTax += reportDetail.tax;
             });
             this.totalPrice = this.totalAmt +  this.totalTax;
 
@@ -116,7 +116,7 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         let formatNum = '';
         if(num.length === 11){
             if(type===0){
-                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-****-$3');
+                formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
             }else{
                 formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
             }
@@ -125,13 +125,13 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         }else{
             if(num.indexOf('02') === 0){
                 if(type === 0){
-                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-****-$3');
+                    formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
                 }else{
                     formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
                 }
             }else{
                 if(type === 0){
-                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-***-$3');
+                    formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
                 }else{
                     formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
                 }
@@ -144,7 +144,7 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         try{
             if (num.length === 10) {
                 if (type === 0) {
-                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
                 } else {
                     formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
                 }

@@ -88,10 +88,13 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             udiYn: [{value:''}], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: [''], // 단위
+            ediCode: [],
             standard: [''], // 규격
             supplier: [{value:''}], // 공급사
             supplierNm: [{value:'',disabled:true}], // 공급사 명
             manufacturer: [''], // 제조사
+            fomlInfo: [], // 모델명
+            itemNoFullname: [], // 품목허가번호
             taxGbn: [''], // 거래유형
             buyPrice: [''], // 매입단가
             salesPrice: [''], // 매출단가
