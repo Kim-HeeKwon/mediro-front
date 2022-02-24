@@ -88,6 +88,7 @@ export interface OrderDetail
     unitPrice: number;
     poAmt: number;
     remarkDetail: string;
+    reportRemerk?: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;

@@ -74,6 +74,7 @@ export interface OutBoundDetail
     suplyTypeCode?: string;
     udiDiSeq?: string;
     remarkDetail: string;
+    reportRemerk?: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;

@@ -79,6 +79,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
         {fieldName: 'poAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+        {fieldName: 'reportRemark', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -513,7 +514,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 unitPrice: data.unitPrice,
                 totalAmt: data.poAmt,
                 taxAmt: 0,
-                remark: data.remarkDetail,
+                remark: data.reportRemark,
             });
         });
         this.reportHeaderData.no = this.orderHeaderForm.getRawValue().poNo;

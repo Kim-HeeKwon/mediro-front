@@ -84,6 +84,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
         {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
         {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+        {fieldName: 'reportRemark', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -521,7 +522,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         const outboundDetailData = [];
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
-        console.log(rows);
         rows.forEach((data: any) => {
             index++;
             outboundDetailData.push({
@@ -534,7 +534,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,
-                remark: data.remarkDetail,
+                remark: data.reportRemark,
                 tax: data.totalAmt / 10
             });
         });
