@@ -1,12 +1,13 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Injectable, Optional} from '@angular/core';
-import {Observable, of, Subject, timer} from 'rxjs';
+import {Observable, of, Subject, throwError, timer} from 'rxjs';
 import {environment} from 'environments/environment';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {finalize, takeUntil, takeWhile, tap} from "rxjs/operators";
+import {catchError, finalize, takeUntil, takeWhile, tap} from "rxjs/operators";
 import {SessionStore} from "../../../app/core/session/state/session.store";
+import {FunctionService} from "../../services/function";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
@@ -19,10 +20,13 @@ export class Api {
     private urlBill: string;
     private _authenticated: boolean = false;
 
+
+
     constructor(public http: HttpClient,
                 public _matDialog: MatDialog,
                 private _activatedRoute: ActivatedRoute,
                 private _router: Router,
+                private _functionService: FunctionService,
                 private _sessionStore: SessionStore,) {
         this.url = environment.serverUrl;
         this.urlBill = environment.serverTaxUrl;
@@ -105,6 +109,7 @@ export class Api {
                     'Accept-Language': 'ko-KR'
                 }
             });
+            //.pipe(catchError(this.handleError('error', this._functionService)));
         //loading.close();
 
         return req;
@@ -767,4 +772,18 @@ export class Api {
         // Return the observable
         return of(true);
     }
+
+    private handleError<T>(operation = 'error', f?: T, result?: T) {
+        return (error: any): Observable<T> => {
+
+            // @ts-ignore
+            f.cfn_loadingBarClear();
+            // @ts-ignore
+            f.cfn_alert('네트워크가 불안정 합니다. <br> 다시 시도하세요.');
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
+    }
+
 }

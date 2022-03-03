@@ -10,6 +10,7 @@ export interface InventoryItem
     unit: string;        //단위
     standard: string;    //규격
     ediCode: string;
+    rcperSalaryCode?: string;
     fomlInfo: string;
     itemNoFullname: string;
     supplier: string;    //공급사

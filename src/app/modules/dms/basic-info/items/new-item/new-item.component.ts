@@ -76,7 +76,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             category: [''], // 카테고리
             unit: [], // 단위
             standard: [''], // 규격
-            ediCode: [],
+            rcperSalaryCode: [''],
             supplier: [''], // 공급사
             supplierNm: [{value:'', disabled: true}], // 공급사 명
             manufacturer: [''], // 제조사
@@ -166,13 +166,13 @@ export class NewItemComponent implements OnInit, OnDestroy
                     if(result.modelId === ''){
                         result.modelId = result.medDevSeq;
                     }
-                    console.log(result);
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
                     this.selectedItemForm.patchValue({'entpName': result.entpName});
                     this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'rcperSalaryCode': result.rcperSalaryCode});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
@@ -200,13 +200,13 @@ export class NewItemComponent implements OnInit, OnDestroy
                     if(result.modelId === ''){
                         result.modelId = result.medDevSeq;
                     }
-                    console.log(result);
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
                     this.selectedItemForm.patchValue({'itemGrade': result.grade});
                     this.selectedItemForm.patchValue({'entpName': result.entpName});
                     this.selectedItemForm.patchValue({'fomlInfo': result.typeName});
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'rcperSalaryCode': result.rcperSalaryCode});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});

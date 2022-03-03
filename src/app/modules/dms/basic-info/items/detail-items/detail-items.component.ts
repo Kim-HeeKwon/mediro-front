@@ -88,7 +88,7 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             udiYn: [{value:''}], // UDI 신고 대상 유무
             category: [''], // 카테고리
             unit: [''], // 단위
-            ediCode: [],
+            rcperSalaryCode: [''],
             standard: [''], // 규격
             supplier: [{value:''}], // 공급사
             supplierNm: [{value:'',disabled:true}], // 공급사 명

@@ -52,7 +52,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     validatorsRequired: boolean = true;
     itemsCount: number = 0;
     displayedColumns: DisplayedColumn[] = [];
-    itemsTableColumns: string[] = ['entpName','itemName','itemNoFullname','brandName','typeName','udidiCode','grade'];
+    itemsTableColumns: string[] = ['entpName','itemName','itemNoFullname','brandName','typeName','udidiCode','grade','rcperSalaryCode'];
     clickedRows = new Set<any>();
     searchForm: FormGroup;
     pagination: ItemSearchPagination | null = null;

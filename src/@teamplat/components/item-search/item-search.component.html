@@ -298,6 +298,23 @@
                             </td>
                         </ng-container>
 
+                        <ng-container matColumnDef="rcperSalaryCode">
+                            <th
+                                class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                요양급여코드
+                            </th>
+                            <td
+                                class="pr-8 truncate"
+                                mat-cell
+                                *matCellDef="let product"
+                            >
+                                {{product.rcperSalaryCode}}
+                            </td>
+                        </ng-container>
                         <!-- item details row -->
                         <ng-container matColumnDef="itemDetails">
                             <td

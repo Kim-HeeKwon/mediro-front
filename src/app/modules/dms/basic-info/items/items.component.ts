@@ -78,7 +78,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
-        {fieldName: 'ediCode', dataType: ValueType.TEXT},
+        {fieldName: 'rcperSalaryCode', dataType: ValueType.TEXT},
         {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemNoFullname', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
@@ -217,8 +217,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
-                name: 'ediCode', fieldName: 'ediCode', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: 'EDI CODE', styleName: 'center-cell-text'}, renderer: {
+                name: 'rcperSalaryCode', fieldName: 'rcperSalaryCode', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '요양급여코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

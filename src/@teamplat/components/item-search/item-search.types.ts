@@ -7,6 +7,7 @@ export interface UdiItem
     typeName: string;             // 모델명
     brandName: string;            // 제품명
     itemNoFullname: string;       // 품목허가번호
+    rcperSalaryCode?: string;         //요양급여코드
     grade: number;                // 등급
     udidiCode?: string;            // UDI코드
     modelIndex: number;           // 품목인덱스
@@ -21,6 +22,7 @@ export interface  UdiSearchItem
     typeName?: string;               //모델명
     brandName?: string;              //제품명
     itemNoFullname?: string;         //품목허가번호
+    rcperSalaryCode?: string;         //요양급여코드
     grade?: number;                  //등급
     pageNum?: number;                //페이지
     searchYn?: boolean;               //서치유형

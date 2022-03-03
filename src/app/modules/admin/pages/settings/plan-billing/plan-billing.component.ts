@@ -163,7 +163,7 @@ export class SettingsPlanBillingComponent implements OnInit
     {
         const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
             title: '',
-            message: '가입하시겠습니까?',
+            message: '가입비결제 하시겠습니까?',
             icon: this._formBuilder.group({
                 show: true,
                 name: 'heroicons_outline:check',
@@ -172,7 +172,7 @@ export class SettingsPlanBillingComponent implements OnInit
             actions: this._formBuilder.group({
                 confirm: this._formBuilder.group({
                     show: true,
-                    label: '가입',
+                    label: '결제',
                     color: 'accent'
                 }),
                 cancel: this._formBuilder.group({
