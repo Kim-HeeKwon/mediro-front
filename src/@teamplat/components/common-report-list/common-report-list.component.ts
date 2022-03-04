@@ -67,11 +67,11 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
                     this.divisionText = '견적';
 
                     const searchParam = {
-                        mId: this.param.mid,
+                        mid: this.param.mid,
                         qtNo: this.param.no,
 
                     };
-                    const rtn = this._estimateService.getHeader(0, 20, 'qtNo', 'desc', searchParam);
+                    const rtn = this._estimateService.getHeaderReport(0, 20, 'qtNo', 'desc', searchParam);
 
                     rtn.then((ex) => {
 
@@ -152,10 +152,10 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
                     this.divisionText = '발주';
 
                     const searchParam = {
-                        mId: this.param.mid,
+                        mid: this.param.mid,
                         poNo: this.param.no,
                     };
-                    const rtn = this._orderService.getHeader(0, 20, 'poNo', 'desc', searchParam);
+                    const rtn = this._orderService.getHeaderReport(0, 20, 'poNo', 'desc', searchParam);
 
                     rtn.then((ex) => {
 

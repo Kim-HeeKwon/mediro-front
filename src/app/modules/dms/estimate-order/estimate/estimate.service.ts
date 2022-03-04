@@ -125,6 +125,52 @@ export class EstimateService {
      *
      * @returns
      */
+    getHeaderReport(page: number = 0, size: number = 40, sort: string = 'qtNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+        Promise<{ estimateHeaderPagenation: EstimateHeaderPagenation; estimateHeader: EstimateHeader[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+
+        if(searchParam['start'] === undefined){
+            if(searchParam['end'] === undefined){
+                searchParam['start'] = moment().utc(false).add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().utc(false).startOf('day').toISOString();
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/estimate/header-List-report')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._estimateHeaders.next(response.data);
+                        this._estimateHeaderPagenation.next(response.pageNation);
+                        resolve({estimateHeaderPagenation: response.pageNation , estimateHeader: response.data});
+                    }
+                }, reject);
+        });
+    }
+
+    /**
+     * Post getHeader
+     *
+     * @returns
+     */
     getDetailReport(page: number = 0, size: number = 1000, sort: string = 'lineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ estimateDetailPagenation: EstimateDetailPagenation; estimateDetail: EstimateDetail[] }> {
 
@@ -147,7 +193,7 @@ export class EstimateService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/estimate/detail-List')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/estimate/detail-List-report')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._estimateDetails.next(response.data);

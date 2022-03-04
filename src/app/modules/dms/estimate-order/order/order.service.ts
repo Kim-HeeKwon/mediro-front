@@ -121,6 +121,50 @@ export class OrderService {
     }
 
     /**
+     * Post getHeader
+     *
+     * @returns
+     */
+    getHeaderReport(page: number = 0, size: number = 20, sort: string = 'poNo', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+        Promise<{ orderHeaderPagenation: OrderHeaderPagenation; orderHeader: OrderHeader[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+        if(searchParam['start'] === undefined){
+            if(searchParam['end'] === undefined){
+                searchParam['start'] = moment().utc(false).add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().utc(false).startOf('day').toISOString();
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/header-List-report')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._orderHeaders.next(response.data);
+                        this._orderHeaderPagenation.next(response.pageNation);
+                        resolve({orderHeader: response.data, orderHeaderPagenation: response.pageNation});
+                    }
+                }, reject);
+        });
+    }
+
+    /**
      * Post getDetail
      *
      * @returns
@@ -147,7 +191,7 @@ export class OrderService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/detail-List')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/detail-List-report')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._orderDetails.next(response.data);
