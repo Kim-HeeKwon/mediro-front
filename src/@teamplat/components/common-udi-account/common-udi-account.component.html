@@ -40,6 +40,7 @@
                             <mat-label>업체명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
+                                (keypress)="enter($event)"
                                 [formControlName]="'entpName'">
                         </mat-form-field>
                     </div>

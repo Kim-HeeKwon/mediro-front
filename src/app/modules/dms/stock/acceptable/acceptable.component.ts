@@ -100,7 +100,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         const columnLayout = [
             //'account',
             'accountNm',
-            //'itemCd',
+            'itemCd',
             'itemNm',
             'standard',
             'unit',
@@ -138,7 +138,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }

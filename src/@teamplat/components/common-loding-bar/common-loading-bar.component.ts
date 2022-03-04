@@ -14,16 +14,12 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class CommonLoadingBarComponent implements OnInit{
 
     constructor(public dialogRef: MatDialogRef<CommonLoadingBarComponent>,
-                @Inject(MAT_DIALOG_DATA) public data: any
     )
     {
     }
 
     // eslint-disable-next-line @angular-eslint/contextual-lifecycle
     ngOnInit(): void {
-    }
-    close(){
-        this.dialogRef.close();
     }
 
 }
