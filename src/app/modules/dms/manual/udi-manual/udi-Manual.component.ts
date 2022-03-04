@@ -16,6 +16,7 @@ import {DeviceDetectorService} from "ngx-device-detector";
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export class udiManualComponent{
     url: SafeResourceUrl;
+    video: boolean = false;
     manages: boolean = false;
     isMobile: boolean = false;
 
@@ -31,4 +32,29 @@ export class udiManualComponent{
             this.manages = true;
         }
     }
+
+    udiCreat(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/LkAGeAj2i2k');
+    }
+
+    udiUpdate(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/APQLwwWh7tQ');
+    }
+
+    udiDelet(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/VmN7-Ri8QHE');
+    }
+
+    udiReport(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/wcZ4VlP4qZ4');
+    }
+
 }

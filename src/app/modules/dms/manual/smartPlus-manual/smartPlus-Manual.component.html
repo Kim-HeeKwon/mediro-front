@@ -49,6 +49,29 @@
                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                 </button>
             </div>
+            <div *ngIf="safety" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="safetyLookUp()">
+                    <span>안전재고 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="safetySetting()">
+                    <span>안전재고 관리유형 설정</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="safetyOrder()">
+                    <span>안전재고 발주</span>
+                </button>
+            </div>
             <div class="sm:col-span-12">
                 <button *ngIf="!validity"
                         class="ml-3 mediro-btn-custom-background-color"
@@ -73,8 +96,24 @@
                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                 </button>
             </div>
-            <div class="sm:col-span-12">
+            <div *ngIf="validity" class="sm:col-span-4">
                 <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="validityLookUp()">
+                    <span>유효기간 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="validitySetting()">
+                    <span>유효기간 임박유형 설정</span>
+                </button>
+            </div>
+            <div class="sm:col-span-12">
+                <button *ngIf="!longterm"
                     class="ml-3 mediro-btn-custom-background-color"
                     mat-raised-button
                     [color]="'primary'"
@@ -83,6 +122,32 @@
                               [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
                     <span class="ml-2 mr-1 mediro-span-custom">장기재고 관리</span>
                     <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
+                </button>
+                <button *ngIf="longterm"
+                    class="ml-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [color]="'primary'"
+                    [ngStyle]="{'width': '94%'}">
+                    <mat-icon class="maual-icon"
+                              [svgIcon]="'heroicons_outline:desktop-computer'"></mat-icon>
+                    <span class="ml-2 mr-1 mediro-span-custom">장기재고 관리</span>
+                    <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="longterm" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="longtermLookUp()">
+                    <span>장기재고 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="longtermSetting()">
+                    <span>장기재고 관리유형 설정</span>
                 </button>
             </div>
             <div class="sm:col-span-12">
@@ -107,6 +172,22 @@
                               [svgIcon]="'heroicons_outline:cube'"></mat-icon>
                     <span class="ml-2 mr-1 mediro-span-custom">가납재고 관리</span>
                     <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="acceptable" class="sm:col-span-4">
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="acceptableLookUp()">
+                    <span>가납재고 조회</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    [ngStyle]="{'width': '94%'}"
+                    mat-flat-button
+                    (click)="acceptableSetting()">
+                    <span>가납재고 Alert유형 설정</span>
                 </button>
             </div>
         </div>
@@ -150,15 +231,18 @@
                     </div>
                     <div *ngIf="safety" class="flex w- 3/3 my-2">
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="safetyLookUp()">
                             <span>안전재고 조회</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
-                            <span>안전재고 설정</span>
+                                mat-flat-button
+                                (click)="safetySetting()">
+                            <span>안전재고 관리유형 설정</span>
                         </button>
                         <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="safetyOrder()">
                             <span>발주</span>
                         </button>
                     </div>
@@ -208,36 +292,47 @@
                     </div>
                     <div *ngIf="validity" class="flex w- 2/2 my-2">
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="validityLookUp()">
                             <span>유효기간 조회</span>
                         </button>
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
-                            <span>임박유형 설정</span>
+                                mat-flat-button
+                                (click)="validitySetting()">
+                            <span>유효기간 임박유형 설정</span>
                         </button>
                     </div>
                     <div *ngIf="longterm" class="flex w- 2/2 my-2">
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="longtermLookUp()">
                             <span>장기재고 조회</span>
                         </button>
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
-                            <span>관리유형 설정</span>
+                                mat-flat-button
+                                (click)="longtermSetting()">
+                            <span>장기재고 관리유형 설정</span>
                         </button>
                     </div>
                     <div *ngIf="acceptable" class="flex w- 2/2 my-2">
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="acceptableLookUp()">
                             <span>가납재고 조회</span>
                         </button>
                         <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                                mat-flat-button
+                                (click)="acceptableSetting()">
                             <span>Alert 설정</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8">
+    <div class="flex w-full mt-8 sm:mt-0 pb-4">
+        <iframe *ngIf="video" width="100%" height="500" [src]="url"></iframe>
     </div>
 </div>

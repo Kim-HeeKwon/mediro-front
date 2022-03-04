@@ -27,31 +27,29 @@
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
-                    <span>공급내역 보고 조회</span>
-                </button>
-                <button
-                    class="ml-3 mb-3 mediro-btn-custom-background-color"
-                    [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="udiCreat()">
                     <span>공급내역 보고 등록</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="udiUpdate()">
                     <span>공급내역 보고 수정</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="udiDelet()">
                     <span>공급내역 보고 삭제</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     [ngStyle]="{'width': '94%'}"
-                        mat-flat-button>
+                    mat-flat-button
+                    (click)="udiReport()">
                     <span>공급내역 월 보고</span>
                 </button>
             </div>
@@ -80,30 +78,35 @@
                             <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                         </button>
                     </div>
-                    <div *ngIf="manages" class="flex w- 5/5 my-2">
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
-                            <span>공급내역 보고 조회</span>
-                        </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                    <div *ngIf="manages" class="flex w- 4/4 my-2">
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button
+                                (click)="udiCreat()">
                             <span>공급내역 보고 등록</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button
+                                (click)="udiUpdate()">
                             <span>공급내역 보고 수정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button
+                                (click)="udiDelet()">
                             <span>공급내역 보고 삭제</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
-                                mat-flat-button>
+                        <button class="w-1/4 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button
+                                (click)="udiReport()">
                             <span>공급내역 월 보고</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-8">
+    <div class="flex w-full mt-8 sm:mt-0 pb-4">
+        <iframe *ngIf="video" width="100%" height="500" [src]="url"></iframe>
     </div>
 </div>

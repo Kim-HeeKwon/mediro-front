@@ -4,7 +4,7 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
@@ -15,6 +15,8 @@ import {DeviceDetectorService} from "ngx-device-detector";
 })
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export class smartPlusManualComponent {
+    url: SafeResourceUrl;
+    video: boolean = false;
     safety: boolean = false;
     validity: boolean = false;
     acceptable: boolean = false;
@@ -71,4 +73,57 @@ export class smartPlusManualComponent {
         }
     }
 
+    safetyLookUp(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/YfCo2uSoxCo');
+    }
+
+    safetySetting(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/rg6U4U6OdI4');
+    }
+
+    safetyOrder(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/1rqJJD1dLxE');
+    }
+
+    validityLookUp(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/lx9eDMrFZCg');
+    }
+
+    validitySetting(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/pNXNopNE9dY');
+    }
+
+    longtermLookUp(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/d9GoxDmZMV0');
+    }
+
+    longtermSetting(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/YkQDtvXaTlU');
+    }
+
+    acceptableLookUp(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/0rybkGxF070');
+    }
+
+    acceptableSetting(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/0wNHwhKO3BY');
+    }
 }
