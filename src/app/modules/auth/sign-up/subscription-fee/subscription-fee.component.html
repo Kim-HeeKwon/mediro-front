@@ -1,0 +1,59 @@
+<div class="flex flex-col flex-auto md:w-180 md:min-w-180 sm:w-full sm:min-w-full -m-6">
+    <!-- Header -->
+    <div class="flex top-0 sticky flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary"
+         style="top: -25px !important;">
+        <div class="text-lg font-medium">가입비 결제</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="m-4">
+        <div class="grid sm:grid-cols-2 gap-6 w-full mt-8">
+            <!-- Plan -->
+            <div class="sm:col-span-2">
+                <fuse-alert
+                    [appearance]="'outline'"
+                    [type]="'basic'">
+                    <span>오픈 이벤트 가입비 <i class="text-underline text-17s">50%할인</i>(</span><span class="text-line-through">30만원</span><span> → 15만원)적용 <i class="text-underline text-17s">바코드 스캐너 무상</i> 제공</span>
+                </fuse-alert>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex items-center justify-end mt-6">
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+                (click)="subscriptionFee()">가입비 결제
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-6 mb-5 border-t" style="border-style: dotted"></div>
+
+        <div class="grid grid-cols-4 gap-6 w-full mb-6">
+            <div
+                class="col-span-4 sm:col-span-4">
+                <p class="font-bold text-17s">
+
+                </p>
+                <br>
+                <ul class="ml-3">
+                    <li class="text-13s text-bold-600">주식회사 팀플랫</li>
+                    <li class="text-12s">본사 : 경기도 화성시 636-3, 메가비즈타워 C동 808호</li>
+                    <li class="text-12s">서울 오피스 : 서울특별시 강남구 강남대로 94길 28, 406호</li>
+                    <li class="text-12s">대표자 : 김환진</li>
+                    <li class="text-12s">대표번호 : 031-377-1327</li>
+                    <li class="text-12s">이메일 : tp_official@team-plat.com</li>
+                    <li class="text-12s">사업자등록번호 : 707-86-02194 | 통신판매업신고 : 2022-화성동탄-0172</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

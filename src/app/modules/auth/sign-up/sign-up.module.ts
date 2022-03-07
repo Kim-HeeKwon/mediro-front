@@ -13,12 +13,14 @@ import { AuthSignUpComponent } from 'app/modules/auth/sign-up/sign-up.component'
 import { authSignupRoutes } from 'app/modules/auth/sign-up/sign-up.routing';
 import {TermOfServiceComponent} from './term-of-service/term-of-service.component';
 import {PrivacyComponent} from './privacy/privacy.component';
+import {SubscriptionFeeComponent} from "./subscription-fee/subscription-fee.component";
 
 @NgModule({
     declarations: [
         AuthSignUpComponent,
         TermOfServiceComponent,
-        PrivacyComponent
+        PrivacyComponent,
+        SubscriptionFeeComponent
     ],
     imports     : [
         RouterModule.forChild(authSignupRoutes),

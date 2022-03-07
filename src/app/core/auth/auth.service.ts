@@ -344,6 +344,19 @@ export class AuthService
     }
 
     /**
+     * 결제 확인
+     *
+     * @param 사업자번호
+     */
+    subscriptionFee(_businessNumber: number): Observable<any>
+    {
+        const param = {
+            businessNumber : _businessNumber
+        };
+        return this._api.get('v1/api/subscription-fee',param).pipe(share());
+    }
+
+    /**
      * checkBusinessNumber
      *
      * @param 사업자번호

@@ -430,7 +430,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 if (inboundDetail !== null) {
 
                     inboundDetail.forEach((param) => {
-                        param.ibQty = param.ibExpQty - param.qty;
+                        param.qty = param.ibExpQty - param.ibQty;
                     });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.inBoundDetailDataProvider, inboundDetail);
 

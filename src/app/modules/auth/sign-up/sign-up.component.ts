@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { fuseAnimations } from '@teamplat/animations';
 import { FuseAlertType } from '@teamplat/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
@@ -10,6 +10,7 @@ import {PrivacyComponent} from './privacy/privacy.component';
 import {Observable} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {TermOfServiceComponent} from "./term-of-service/term-of-service.component";
+import {SubscriptionFeeComponent} from "./subscription-fee/subscription-fee.component";
 
 @Component({
     selector     : 'auth-sign-up',
@@ -43,6 +44,7 @@ export class AuthSignUpComponent implements OnInit
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
         private _router: Router,
+        private _activatedRoute: ActivatedRoute,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver
     )
@@ -86,6 +88,12 @@ export class AuthSignUpComponent implements OnInit
                 handle        : ['insert'],
             }
         );
+        if(this._activatedRoute.snapshot.queryParams.check !== undefined){
+            if(this._activatedRoute.snapshot.queryParams.check !== 'fail'
+                && this._activatedRoute.snapshot.queryParams.businessNumber !== undefined){
+                this.signUpForm.patchValue(this._activatedRoute.snapshot.queryParams);
+            }
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -97,10 +105,42 @@ export class AuthSignUpComponent implements OnInit
      */
     signUp(): void
     {
+
+        // if(!this.isMobile){
+        //     this._matDialog.open(SubscriptionFeeComponent, {
+        //         autoFocus: false,
+        //         disableClose: true,
+        //         maxHeight: '80vh',
+        //         data     : {
+        //             data: this.signUpForm.getRawValue()
+        //         },
+        //     });
+        // }else{
+        //     const d = this._matDialog.open(SubscriptionFeeComponent, {
+        //         autoFocus: false,
+        //         width: 'calc(100% - 50px)',
+        //         maxWidth: '100vw',
+        //         maxHeight: '80vh',
+        //         data     : {
+        //             data: this.signUpForm.getRawValue()
+        //         },
+        //         disableClose: true
+        //     });
+        //     const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+        //         if (size.matches) {
+        //             d.updateSize('calc(100vw - 10px)','');
+        //         } else {
+        //             // d.updateSize('calc(100% - 50px)', '');
+        //         }
+        //     });
+        //     d.afterClosed().subscribe(() => {
+        //         smallDialogSubscription.unsubscribe();
+        //     });
+        // }
+        // return;
         // Do nothing if the form is invalid
         if ( this.signUpForm.invalid )
         {
-            console.log(this.signUpForm);
             if(this.signUpForm.controls.agreements.status === 'INVALID'){
                 this.alert = {
                     type   : 'error',
@@ -136,7 +176,6 @@ export class AuthSignUpComponent implements OnInit
                         // Hide the alert
                         this.showAlert = false;
 
-                        // Sign up
                         this._authService.signUpTemp(this.signUpForm.value)
                             .subscribe(
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -166,6 +205,82 @@ export class AuthSignUpComponent implements OnInit
                                     this.signUpNgForm.resetForm();
                                 }
                             );
+
+                        // // 결제 확인
+                        // this._authService.subscriptionFee(this.signUpForm.value.businessNumber)
+                        //     .subscribe(
+                        //         // eslint-disable-next-line @typescript-eslint/no-shadow
+                        //         (response) => {
+                        //             if(response.status !== 'success'){
+                        //                 console.log('실패');
+                        //                 if(!this.isMobile){
+                        //                     this._matDialog.open(SubscriptionFeeComponent, {
+                        //                         autoFocus: false,
+                        //                         disableClose: true,
+                        //                         maxHeight: '80vh',
+                        //                         data     : {
+                        //                             data: this.signUpForm.getRawValue()
+                        //                         },
+                        //                     });
+                        //                 }else{
+                        //                     const d = this._matDialog.open(SubscriptionFeeComponent, {
+                        //                         autoFocus: false,
+                        //                         width: 'calc(100% - 50px)',
+                        //                         maxWidth: '100vw',
+                        //                         maxHeight: '80vh',
+                        //                         data     : {
+                        //                             data: this.signUpForm.getRawValue()
+                        //                         },
+                        //                         disableClose: true
+                        //                     });
+                        //                     const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                        //                         if (size.matches) {
+                        //                             d.updateSize('calc(100vw - 10px)','');
+                        //                         } else {
+                        //                             // d.updateSize('calc(100% - 50px)', '');
+                        //                         }
+                        //                     });
+                        //                     d.afterClosed().subscribe(() => {
+                        //                         smallDialogSubscription.unsubscribe();
+                        //                     });
+                        //                 }
+                        //                 return;
+                        //             }else{
+                        //                 console.log('성공');
+                        //                 return;
+                        //                 // Sign up
+                        //                 this._authService.signUpTemp(this.signUpForm.value)
+                        //                     .subscribe(
+                        //                         // eslint-disable-next-line @typescript-eslint/no-shadow
+                        //                         (response) => {
+                        //                             if(response.status === 'SUCCESS'){
+                        //                                 this.showStep1 = false;
+                        //                                 this.showStep2 = true;
+                        //                                 this.signUpForm.enable();
+                        //                             }
+                        //                             // Navigate to the confirmation required page
+                        //                             // this._router.navigateByUrl('/confirmation-required');
+                        //                         },
+                        //                         // eslint-disable-next-line @typescript-eslint/no-shadow
+                        //                         (err) => {
+                        //                             // Set the alert
+                        //                             this.alert = {
+                        //                                 type   : 'error',
+                        //                                 message: '이미 가입한 사업자번호 입니다. 관리자에게 문의하여주세요.'
+                        //                             };
+                        //
+                        //                             // Show the alert
+                        //                             this.showAlert = true;
+                        //                             // Re-enable the form
+                        //                             this.signUpForm.enable();
+                        //
+                        //                             // Reset the form
+                        //                             this.signUpNgForm.resetForm();
+                        //                         }
+                        //                     );
+                        //
+                        //             }
+                        //         });
                     }
                 }
             );

@@ -163,7 +163,7 @@ export class SettingsPlanBillingComponent implements OnInit
     {
         const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
             title: '',
-            message: '가입비결제 하시겠습니까?',
+            message: '가입비 결제 하시겠습니까?',
             icon: this._formBuilder.group({
                 show: true,
                 name: 'heroicons_outline:check',
@@ -202,7 +202,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
                     loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                         tossPayments.requestPayment('카드', {
-                            amount: 100,
+                            amount: 150000,
                             orderId: this._sessionStore.getValue().businessNumber + '_' + no,
                             orderName: '메디로 가입비',
                             customerName: this._sessionStore.getValue().businessName,
