@@ -91,6 +91,8 @@ export class NewItemComponent implements OnInit, OnDestroy
         });
         this.selectedItemForm.controls.itemCd.disable();
         this.selectedItemForm.controls.supplierNm.disable();
+        this.selectedItemForm.controls.fomlInfo.disable();
+        this.selectedItemForm.controls.itemNoFullname.disable();
     }
 
     supplierSearch(): void

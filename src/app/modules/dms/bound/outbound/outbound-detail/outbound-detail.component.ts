@@ -30,6 +30,7 @@ import {CommonUdiScanComponent} from '../../../../../../@teamplat/components/com
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-bill/common-bill.types';
 import {CommonBillComponent} from '../../../../../../@teamplat/components/common-bill';
+import {OutboundScanComponent} from "../../../../../../@teamplat/components/outbound-scan";
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -77,6 +78,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
+        {fieldName: 'medDevItemSeq', dataType: ValueType.TEXT},
+        {fieldName: 'typeName', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
@@ -218,7 +221,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 values: valuesItemGrades,
                 labels: lablesItemGrades,
                 lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.status),
+                editor: this._realGridsService.gfn_ComboBox(this.itemGrades),
+            },
+            {
+                name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '100', styleName: 'center-cell-text'
+                , header: {text: '바코드 스캔 여부', styleName: 'center-cell-text text-8s'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
@@ -335,6 +344,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             if(this.outBoundDetailDataProvider.getOrgFieldName(field) === 'obQty'){
                 const that = this;
                 setTimeout(() =>{
+
                     const obQty = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList,
                         this.outBoundDetailDataProvider,
@@ -348,30 +358,34 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         itemIndex,
                         'qty',
                         obExpQty - obQty);
+
                 },100);
             }
         });
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : '', editable: false};
+            const obType = this.outBoundHeaderForm.getRawValue().type;
+            const udiYn = grid.getValue(dataCell.index.itemIndex, 'udiYn');
 
             //추가시
             if (dataCell.item.rowState === 'created') {
-                if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                if (dataCell.dataColumn.fieldName === 'udiYn' ||
+                    dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
                     dataCell.dataColumn.fieldName === 'totalAmt' ||
-                    dataCell.dataColumn.fieldName === 'obQty' ||
                     dataCell.dataColumn.fieldName === 'qty') {
-                    return {editable: false};
                 } else {
-                    return {editable: true};
+                    ret.editable= true;
                 }
             } else {
                 //console.log(dataCell.dataColumn.renderer);
-                if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                if (dataCell.dataColumn.fieldName === 'udiYn' ||
+                    dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
@@ -381,17 +395,39 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
-                    return {editable: false};
                 } else {
-                    return {editable: true};
+                    ret.editable= true;
                 }
             }
 
             if (
                 dataCell.dataColumn.fieldName === 'qty' ||
                 dataCell.dataColumn.fieldName === 'refItemNm') {
-                return {editable: false};
             }
+
+            if (obType === '1' || obType === '3' || obType === '5') {
+                if(udiYn === 'Y'){
+                    if (dataCell.dataColumn.fieldName === 'udiYn') {
+                        ret.styleName = 'center-cell-text green-color';
+                    }
+
+                    if (dataCell.dataColumn.fieldName === 'obQty'){
+                        ret.editable = false;
+                    }
+                }else {
+
+                    if (dataCell.dataColumn.fieldName === 'obQty'){
+                        ret.editable = true;
+                    }
+                }
+            }else {
+
+                if (dataCell.dataColumn.fieldName === 'obQty'){
+                    ret.editable = true;
+                }
+            }
+
+            return ret;
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.outBoundDetailDataProvider, this.outBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.outBoundHeaderForm);
@@ -430,7 +466,16 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Update the counts
                 if (outboundDetail !== null) {
                     outboundDetail.forEach((param) => {
-                        param.obQty = param.obExpQty - param.qty;
+                        const obType = this.outBoundHeaderForm.getRawValue().type;
+                        if (obType === '1' || obType === '3' || obType === '5') {
+                            if(param.udiYn === 'N'){
+                                param.obQty = param.obExpQty - param.qty;
+                            }else{
+                                param.qty = param.obExpQty - param.obQty;
+                            }
+                        }else{
+                            param.obQty = param.obExpQty - param.qty;
+                        }
                     });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.outBoundDetailDataProvider, outboundDetail);
                 }
@@ -697,69 +742,179 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let outBoundDataFilter;
         let udiCheckData;
         let outBoundSetData;
-        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
+        let rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
 
-        // outBoundData = rows.filter((detail: any) => (detail.obQty > 0 && detail.obQty !== '0'))
-        //     .map((param: any) => param);
-        outBoundData = rows;
-
+        //수정 후
         outBoundSetData = rows.filter((detail: any) =>
-            (detail.obExpqty < detail.obqty))
-            .map((param: any) => param);
-
-        outBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
-            .map((param: any) => param);
-
-        udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
+            (detail.obExpQty < detail.obQty))
             .map((param: any) => param);
 
         if (outBoundSetData.length > 0) {
-            this._functionService.cfn_alert('출고 수량이 초과됬습니다.');
+            this._functionService.cfn_alert('출고 수량이 초과됬습니다. <br> 품목코드 : ' + outBoundSetData[0].itemCd);
             return false;
         }
 
-        if (outBoundData.length < 1) {
-            this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
-            return false;
-        } else {
-            //일반출고, 폐기, 가납출고
-            if (obType === '1' || obType === '3' || obType === '5') {
-                if (udiCheckData.length > 0) {
-                    //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
-                    //입력 수량 그대로 가져오기
-                    //UDI 정보 INPUT 후 값 셋팅
+        let rowYs;
+        let rowNs;
 
-                    const popup = this._matDialogPopup.open(CommonUdiScanComponent, {
-                        data: {
-                            detail: udiCheckData
-                        },
+        rowYs = rows.filter((detail: any) => detail.qty > 0)
+            .map((param: any) => param);
+
+        rowYs = rows.filter((detail: any) => detail.udiYn === 'Y')
+            .map((param: any) => param);
+
+        rowNs = rows.filter((detail: any) => detail.obQty > 0)
+            .map((param: any) => param);
+
+        rowNs = rows.filter((detail: any) => detail.udiYn !== 'Y')
+            .map((param: any) => param);
+
+        //일반출고, 폐기, 가납출고
+        if (obType === '1' || obType === '3' || obType === '5') {
+
+            //리스트 중 하나라도 바코드 스캔 여부 Y
+            if(rowYs.length > 0){
+
+                if (!this.isMobile) {
+                    const d = this._matDialog.open(OutboundScanComponent, {
                         autoFocus: false,
+                        disableClose: true,
                         maxHeight: '90vh',
-                        disableClose: true
+                        data: {
+                            detail: rowYs,
+                            detailN: rowNs
+                        },
                     });
-                    popup.afterClosed().subscribe((result) => {
-                        if (result) {
-                            if (result !== undefined) {
-                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                                for (let i = 0; i < result.length; i++) {
-                                    const qty = result[i].obQty;
-                                    result[i].obQty = result[i].qty;
-                                    result[i].qty = qty;
-                                    outBoundDataFilter.push(result[i]);
-                                }
-                                this.outBoundCall(outBoundDataFilter);
-                            }
-                        }
+                    d.afterClosed().subscribe(() => {
+                        this.reData();
                     });
                 } else {
-                    this.outBoundCall(outBoundData);
+                    const d = this._matDialog.open(OutboundScanComponent, {
+                        data: {
+                            detail: rowYs,
+                            detailN: rowNs
+                        },
+                        autoFocus: false,
+                        width: 'calc(100% - 50px)',
+                        maxWidth: '100vw',
+                        maxHeight: '80vh',
+                        disableClose: true
+                    });
+                    const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                        if (size.matches) {
+                            d.updateSize('calc(100vw - 10px)', '');
+                        } else {
+                        }
+                    });
+                    d.afterClosed().subscribe(() => {
+                        this.reData();
+                        smallDialogSubscription.unsubscribe();
+                    });
                 }
-            } else {
-                this.outBoundCall(outBoundData);
+            }else{
+
+                //리스트 전부 바코드 스캔 여부 N
+                this.outBoundBarcodeN(rows);
             }
+        }else {
+
+            //리스트 전부 바코드 스캔 여부 N
+            this.outBoundBarcodeN(rows);
         }
+
+        // 수정 전
+        // outBoundData = rows;
+        //
+        // outBoundSetData = rows.filter((detail: any) =>
+        //     (detail.obExpqty < detail.obqty))
+        //     .map((param: any) => param);
+        //
+        // outBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
+        //     .map((param: any) => param);
+        //
+        // udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
+        //     .map((param: any) => param);
+        //
+        // if (outBoundSetData.length > 0) {
+        //     this._functionService.cfn_alert('출고 수량이 초과됬습니다.');
+        //     return false;
+        // }
+        //
+        // if (outBoundData.length < 1) {
+        //     this._functionService.cfn_alert('출고 수량이 존재하지 않습니다.');
+        //     return false;
+        // } else {
+        //     //일반출고, 폐기, 가납출고
+        //     if (obType === '1' || obType === '3' || obType === '5') {
+        //         if (udiCheckData.length > 0) {
+        //             //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+        //             //입력 수량 그대로 가져오기
+        //             //UDI 정보 INPUT 후 값 셋팅
+        //
+        //             const popup = this._matDialogPopup.open(CommonUdiScanComponent, {
+        //                 data: {
+        //                     detail: udiCheckData
+        //                 },
+        //                 autoFocus: false,
+        //                 maxHeight: '90vh',
+        //                 disableClose: true
+        //             });
+        //             popup.afterClosed().subscribe((result) => {
+        //                 if (result) {
+        //                     if (result !== undefined) {
+        //                         // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        //                         for (let i = 0; i < result.length; i++) {
+        //                             const qty = result[i].obQty;
+        //                             result[i].obQty = result[i].qty;
+        //                             result[i].qty = qty;
+        //                             outBoundDataFilter.push(result[i]);
+        //                         }
+        //                         this.outBoundCall(outBoundDataFilter);
+        //                     }
+        //                 }
+        //             });
+        //         } else {
+        //             this.outBoundCall(outBoundData);
+        //         }
+        //     } else {
+        //         this.outBoundCall(outBoundData);
+        //     }
+        // }
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    outBoundBarcodeN(outBoundData: OutBound[]){
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '출고',
+            message: '출고하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '출고'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        outBoundData = outBoundData.filter((outBound: any) => outBound.obQty > 0).map((param: any) => param);
+
+        const rows = this.headerDataSet(outBoundData);
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._outboundService.outBoundBarcodeN(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((outBound: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(outBound);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -893,5 +1048,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     priceToString(price): string {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    outboundScan() {
+
     }
 }

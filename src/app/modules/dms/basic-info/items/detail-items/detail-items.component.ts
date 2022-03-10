@@ -93,8 +93,8 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             supplier: [{value:''}], // 공급사
             supplierNm: [{value:'',disabled:true}], // 공급사 명
             manufacturer: [''], // 제조사
-            fomlInfo: [], // 모델명
-            itemNoFullname: [], // 품목허가번호
+            fomlInfo: [{value:'',disabled:true}], // 모델명
+            itemNoFullname: [{value:'',disabled:true}], // 품목허가번호
             taxGbn: [''], // 거래유형
             buyPrice: [''], // 매입단가
             salesPrice: [''], // 매출단가

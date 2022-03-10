@@ -1,15 +1,15 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, of} from "rxjs";
-import {Manages} from "./manages-new.types";
-import {HttpClient} from "@angular/common/http";
-import {Common} from "../../../../../../@teamplat/providers/common/common";
+import {BehaviorSubject, Observable} from "rxjs";
+import {Manages, OutBoundDetails} from "./outbound-scan.types";
 import {map, switchMap, take} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
+import {Common} from "../../providers/common/common";
 
 @Injectable({
     providedIn: 'root'
 })
-export class ManagesNewService {
-
+export class OutboundScanService{
+    private _outBoundDetails: BehaviorSubject<OutBoundDetails[]> = new BehaviorSubject(null);
     private _manages: BehaviorSubject<Manages[]> = new BehaviorSubject(null);
     /**
      * Constructor
@@ -17,6 +17,7 @@ export class ManagesNewService {
     constructor(private _httpClient: HttpClient,
                 private _common: Common) {
     }
+
     /**
      * Getter for headers
      */
@@ -43,13 +44,6 @@ export class ManagesNewService {
                     return result;
                 })
             ))
-        );
-    }
-
-    createSupplyInfo(manages: Manages[]): Observable<{manages: Manages[]}> {
-
-        return this._common.sendListDataLoading(manages, 'v1/api/udi/supply-info').pipe(
-            switchMap((response: any) => of(response))
         );
     }
 }

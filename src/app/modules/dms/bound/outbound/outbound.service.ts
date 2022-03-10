@@ -366,6 +366,41 @@ export class OutboundService{
             ))
         );
     }
+    /**
+     * outBound - barcode N
+     */
+    outBoundBarcodeN(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/outBound-barcode-n').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * outBound - barcode Y
+     */
+    outBoundBarcodeY(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/outBound-barcode-y').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 
     /**
      * Close

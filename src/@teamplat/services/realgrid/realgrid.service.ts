@@ -45,7 +45,7 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/member-ordering,@typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any, columnLayout?: any, group?: any): RealGrid.GridView{
+    gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any, columnLayout?: any, group?: any, displayOptions?: any): RealGrid.GridView{
         const gridView = new RealGrid.GridView(id);
         gridView.setDataSource(dataProvider);
         dataProvider.setFields(fields);
@@ -59,6 +59,9 @@ export class FuseRealGridService {
             gridView.setRowGroup({
                 mergeMode: true,
             });
+        }
+        if(displayOptions){
+            gridView.setDisplayOptions(displayOptions);
         }
         gridView.displayOptions.emptyMessage = '표시할 데이터가 없습니다.';
 
@@ -315,6 +318,7 @@ export class FuseRealGridService {
     gfn_GetRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
         let rows = [];
         gridView.commit();
+        gridView.clearCurrent();
         const current = gridView.getCurrent();
         const options = { datetimeFormat: 'yyyy-MM-dd' };
         if(dataProvider.getOutputRows(options, 0 , current.dataRow)){
@@ -618,5 +622,14 @@ export class FuseRealGridService {
         rtn = dataProvider.getValue(index, column);
         //dataProvider.setValue(index, column, value);
         return rtn;
+    }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_ClearSelection(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider) {
+
+        gridView.commit();
+        gridView.clearSelection();
+        gridView.clearCurrent();
     }
 }
