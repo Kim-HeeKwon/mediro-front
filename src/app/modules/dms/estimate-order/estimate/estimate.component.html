@@ -161,6 +161,9 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
+                                <app-process style="display: flex"
+                                    [dataTooltip]="'QT_STATUS'"
+                                    [dataFilter]="'C'"></app-process>
                             </div>
                             <!-- Loader -->
                             <div

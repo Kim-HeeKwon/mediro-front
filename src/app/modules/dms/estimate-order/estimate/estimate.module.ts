@@ -36,6 +36,7 @@ import {EstimateNewResolvers} from "./estimate-new/estimate-new.resolvers";
 import {EstimateDetailComponent} from "./estimate-detail/estimate-detail.component";
 import {EstimateDetailResolvers} from "./estimate-detail/estimate-detail.resolvers";
 import {AngularSplitModule} from "angular-split";
+import {CommonProcessModule} from "../../../../../@teamplat/components/common-process/common-process.module";
 
 const estimateRoutes: Route[] = [
     {
@@ -102,6 +103,7 @@ const estimateRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        CommonProcessModule,
     ],
 })
 export class EstimateModule { }
