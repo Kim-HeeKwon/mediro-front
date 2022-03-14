@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
-        <div class="text-lg font-medium">의료기기 품목 등록</div>
+        <div class="text-lg font-medium">품목 등록</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -37,14 +37,23 @@
                                 [attr.disabled]="is_edit?'':false">
                         </mat-form-field>
                     </div>
-                    <button
-                        class="sm:col-span-1 mediro-btn-custom"
-                        mat-flat-button
-                        [color]="'accent'"
-                        (click)="openItemSearch()"
-                        [ngStyle]="{'align-self': 'center','margin-top': '22px'}">
-                        검색
-                    </button>
+<!--                    <button-->
+<!--                        class="sm:col-span-1 mediro-btn-custom"-->
+<!--                        mat-flat-button-->
+<!--                        [color]="'accent'"-->
+<!--                        (click)="openItemSearch()"-->
+<!--                        [ngStyle]="{'align-self': 'center','margin-top': '22px'}">-->
+<!--                        검색-->
+<!--                    </button>-->
+                    <div class="sm:col-span-1">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>품목명 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'itemNm'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
@@ -73,15 +82,15 @@
                     </div>
                 </div>
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
-                    <div class="sm:col-span-1">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목명 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'itemNm'"
-                                [attr.disabled]="is_edit?'':false">
-                        </mat-form-field>
-                    </div>
+<!--                    <div class="sm:col-span-1">-->
+<!--                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">-->
+<!--                            <mat-label>품목명 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>-->
+<!--                            <input-->
+<!--                                matInput-->
+<!--                                [formControlName]="'itemNm'"-->
+<!--                                [attr.disabled]="is_edit?'':false">-->
+<!--                        </mat-form-field>-->
+<!--                    </div>-->
                     <div class="sm:col-span-1">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>공급사</mat-label>
@@ -98,16 +107,16 @@
                                 matInput
                                 [formControlName]="'supplierNm'">
                         </mat-form-field>
-<!--                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
-<!--                        <button-->
-<!--                            class="w-2/5 mediro-btn-custom"-->
-<!--                            mat-flat-button-->
-<!--                            [color]="'accent'"-->
-<!--                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}">-->
-<!--                            검색-->
-<!--                        </button>-->
+                        <!--                        <span class="use-mat-dense fuse-mat-no-subscript w-1/12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+                        <!--                        <button-->
+                        <!--                            class="w-2/5 mediro-btn-custom"-->
+                        <!--                            mat-flat-button-->
+                        <!--                            [color]="'accent'"-->
+                        <!--                            [ngStyle]="{'align-self': 'center','margin-top': '10px'}">-->
+                        <!--                            검색-->
+                        <!--                        </button>-->
                     </div>
-                    <div class="sm:col-span-1">
+                    <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>제조사</mat-label>
                             <input

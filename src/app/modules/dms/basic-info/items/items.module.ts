@@ -30,6 +30,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 import {CommonLoadingBarModule} from '../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
+import {NewItemsComponent} from "./new-items/new-items.component";
 
 const itemsRoutes: Route[] = [
     {
@@ -45,6 +46,7 @@ const itemsRoutes: Route[] = [
     declarations: [
         ItemsComponent,
         NewItemComponent,
+        NewItemsComponent,
         DetailItemsComponent
     ],
     imports: [

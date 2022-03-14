@@ -77,9 +77,20 @@
                             mat-raised-button
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="createItems()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">품목 등록</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3 mediro-btn-custom-background-color"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="createItem()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">신규</span>
+                            <span class="ml-2 mr-1">의료기기 품목 등록</span>
                         </button>
                     </div>
                 </div>
@@ -194,11 +205,21 @@
                                     class="ml-2 mediro-btn-custom mediro-custom-accent"
                                     mat-stroked-button
                                     [color]="'accent'"
+                                    (click)="createItems()">
+                                    <mat-icon
+                                        style="color: #3490DD !important;"
+                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                    <span class="ml-2 mr-1">품목 등록</span>
+                                </button><!-- Add product button -->
+                                <button
+                                    class="ml-2 mediro-btn-custom mediro-custom-accent"
+                                    mat-stroked-button
+                                    [color]="'accent'"
                                     (click)="createItem()">
                                     <mat-icon
                                         style="color: #3490DD !important;"
                                         [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                                    <span class="ml-2 mr-1">신규</span>
+                                    <span class="ml-2 mr-1">의료기기 품목 등록</span>
                                 </button>
                             </div>
                         </div>

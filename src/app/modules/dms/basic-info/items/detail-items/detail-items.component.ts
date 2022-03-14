@@ -119,12 +119,29 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
             .subscribe(
                 (param: any) => {
                     this._functionService.cfn_loadingBarClear();
-                    if(param.status === 'SUCCESS'){
-                        this.matDialogRef.close();
-                    }
+
+                    this.alertMessage(param);
+
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
 
                 },(response) => {
                 });
+    }
+
+    alertMessage(param: any): void
+    {
+        if(param.status !== 'SUCCESS'){
+            this.alert = {
+                type   : 'error',
+                message: param.msg
+            };
+            // Show the alert
+            this.showAlert = true;
+        }else{
+
+            this.matDialogRef.close();
+        }
     }
 
     /**
@@ -163,9 +180,11 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
                         .subscribe(
                             (param: any) => {
                                 this._functionService.cfn_loadingBarClear();
-                                if(param.status === 'SUCCESS'){
-                                    this.matDialogRef.close();
-                                }
+
+                                this.alertMessage(param);
+
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
 
                             },(response) => {
                             });

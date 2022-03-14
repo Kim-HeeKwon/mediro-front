@@ -26,6 +26,7 @@ import {MatSort} from '@angular/material/sort';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
 import {AccountPagenation} from "../account/account.types";
 import {FunctionService} from "../../../../../@teamplat/services/function";
+import {NewItemsComponent} from "./new-items/new-items.component";
 
 @Component({
     selector: 'dms-app-items',
@@ -454,6 +455,43 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     //엑셀 다운로드
     excelExport(): void {
         this._realGridsService.gfn_ExcelExportGrid(this.gridList, '픔목 내역');
+    }
+
+    /**
+     * Add a new note
+     */
+    createItems(): void {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(NewItemsComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    note: {}
+                },
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+            });
+        } else {
+            const d = this._matDialog.open(NewItemsComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     /**
