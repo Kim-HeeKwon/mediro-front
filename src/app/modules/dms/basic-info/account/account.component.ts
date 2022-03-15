@@ -70,6 +70,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     accountFields: DataFieldObject[] = [
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountType', dataType: ValueType.TEXT},
+        {fieldName: 'udiAccount', dataType: ValueType.TEXT},
+        // {fieldName: 'udiHptlSymbl', dataType: ValueType.TEXT},
+        // {fieldName: 'cobFlagType', dataType: ValueType.TEXT},
         {fieldName: 'descr', dataType: ValueType.TEXT},
         {fieldName: 'businessCondition', dataType: ValueType.TEXT},
         {fieldName: 'address', dataType: ValueType.TEXT},
@@ -131,7 +134,13 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'descr', fieldName: 'descr', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'udiAccount', fieldName: 'udiAccount', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: 'UDI 거래처 정보', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'descr', fieldName: 'descr', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }

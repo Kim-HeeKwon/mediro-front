@@ -365,6 +365,7 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
     gfn_GetEditRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider) {
         gridView.commit();
+        gridView.clearCurrent();
         const rtnList = [];
         const rows = dataProvider.getAllStateRows();
         if(rows){

@@ -468,6 +468,85 @@ export const defaultNavigation: FuseNavigationItem[] = [
 ];
 
 export const defaultNavigationAdmin: FuseNavigationItem[] = [
+    {
+        id      : 'adm',
+        title   : '사용자',
+        subtitle: '사용자 관리',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'user.user-experience',
+                title: 'SaaS 회원사목록',
+                type : 'basic',
+                icon : 'heroicons_outline:play',
+                link : '/pages/settings/500'
+            },
+        ]
+    },
+    {
+        id  : 'divider-2',
+        type: 'divider'
+    },
+    // {
+    //     id      : 'user-interface',
+    //     title   : 'User Interface',
+    //     subtitle: '개발자 참고',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:collection',
+    //     children: [
+    //         {
+    //                      id      : 'user-interface.icons',
+    //                      title   : 'Icons',
+    //                      type    : 'collapsable',
+    //                      icon    : 'heroicons_outline:lightning-bolt',
+    //                      children: [
+    //                          {
+    //                              id   : 'user-interface.icons.heroicons-outline',
+    //                              title: 'Heroicons Outline',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/heroicons-outline'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.heroicons-solid',
+    //                              title: 'Heroicons Solid',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/heroicons-solid'
+    //                          },
+    //         {
+    //                              id   : 'user-interface.icons.material-twotone',
+    //                              title: 'Material Twotone',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-twotone'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.material-outline',
+    //                              title: 'Material Outline',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-outline'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.material-solid',
+    //                              title: 'Material Solid',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-solid'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.iconsmind',
+    //                              title: 'Iconsmind',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/iconsmind'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.feather',
+    //                              title: 'Feather',
+    //                              type : 'basic',
+    //                             link : '/ui/icons/feather'
+    //                          }
+    //                      ]
+    //                  },
+    //    ]
+    // },
 ];
 export const defaultNavigationTest: FuseNavigationItem[] = [
     {

@@ -59,7 +59,6 @@ export class CommonUdiAccountService {
                 .subscribe((response: any) => {
                     this._functionService.cfn_loadingBarClear();
                     if(response.status === 'SUCCESS'){
-                        console.log(response.data);
                         this._getList.next(response.data);
                         this._pagenation.next(response.pageNation);
                         // @ts-ignore

@@ -95,9 +95,10 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             account: [{value:'',disabled:true}, [Validators.required]], // 거래처
             udiAccount: [''],
             udiHptlSymbl: [''],
+            cobFlagType: [''],
             descr: ['', [Validators.required]],   // 거래처 명
             accountType: [{value:'',disabled:true}, [Validators.required]],   // 유형
-            custBusinessNumber : [{value:''},[Validators.required]],
+            custBusinessNumber : [{value:''}],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],

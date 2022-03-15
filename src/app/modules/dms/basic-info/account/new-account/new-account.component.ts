@@ -83,9 +83,10 @@ export class NewAccountComponent implements OnInit, OnDestroy
             account: [{value:'',disabled:true}, [Validators.required]], // 거래처
             udiAccount: [''],
             udiHptlSymbl: [''],
+            cobFlagType: [''],
             descr: ['', [Validators.required]],   // 거래처 명
             accountType: [{value:'CUST',disabled:true}, [Validators.required]],   // 유형
-            custBusinessNumber : ['',[Validators.required]],
+            custBusinessNumber : [''],
             custBusinessName: [''],
             representName: [''],
             businessCondition: [''],
@@ -130,13 +131,13 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             popupUdi.afterClosed().subscribe((result) => {
                 if(result){
-                    this.selectedAccountForm.patchValue({'descr': result.entpName});
-                    this.selectedAccountForm.patchValue({'businessCondition': result.cobFlagCodeName});
-                    this.selectedAccountForm.patchValue({'businessCategory': result.cobDetailName});
-                    this.selectedAccountForm.patchValue({'representName': result.rprsntName});
-                    this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
+                    this.selectedAccountForm.patchValue({'descr': result.row.entpName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.row.cobFlagCodeName});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.row.cobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.row.rprsntName});
+                    this.selectedAccountForm.patchValue({'custBusinessName': result.row.companyName});
 
-                    const entpAddr = result.entpAddrAll.split(',');
+                    const entpAddr = result.row.entpAddrAll.split(',');
 
                     let address = '';
                     if(entpAddr[0] !== undefined){
@@ -151,8 +152,10 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
                     this.selectedAccountForm.patchValue({'address': address});
                     this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
-                    this.selectedAccountForm.patchValue({'account': result.unityCompanySeq});
-                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.taxNo});
+                    this.selectedAccountForm.patchValue({'account': result.row.unityCompanySeq});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.row.taxNo});
+                    const cobFlagCode = result.cobFlagCode;
+                    this.selectedAccountForm.patchValue({'cobFlagType': cobFlagCode});
                 }
             });
         }else{
@@ -174,14 +177,13 @@ export class NewAccountComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
-                    console.log(result);
-                    this.selectedAccountForm.patchValue({'descr': result.entpName});
-                    this.selectedAccountForm.patchValue({'businessCondition': result.cobFlagCodeName});
-                    this.selectedAccountForm.patchValue({'businessCategory': result.cobDetailName});
-                    this.selectedAccountForm.patchValue({'representName': result.rprsntName});
-                    this.selectedAccountForm.patchValue({'custBusinessName': result.companyName});
+                    this.selectedAccountForm.patchValue({'descr': result.row.entpName});
+                    this.selectedAccountForm.patchValue({'businessCondition': result.row.cobFlagCodeName});
+                    this.selectedAccountForm.patchValue({'businessCategory': result.row.cobDetailName});
+                    this.selectedAccountForm.patchValue({'representName': result.row.rprsntName});
+                    this.selectedAccountForm.patchValue({'custBusinessName': result.row.companyName});
 
-                    const entpAddr = result.entpAddrAll.split(',');
+                    const entpAddr = result.row.entpAddrAll.split(',');
 
                     let address = '';
                     if(entpAddr[0] !== undefined){
@@ -196,8 +198,10 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
                     this.selectedAccountForm.patchValue({'address': address});
                     this.selectedAccountForm.patchValue({'addressDetail': addressDetail});
-                    this.selectedAccountForm.patchValue({'account': result.unityCompanySeq});
-                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.taxNo});
+                    this.selectedAccountForm.patchValue({'account': result.row.unityCompanySeq});
+                    this.selectedAccountForm.patchValue({'custBusinessNumber': result.row.taxNo});
+                    const cobFlagCode = result.cobFlagCode;
+                    this.selectedAccountForm.patchValue({'cobFlagType': cobFlagCode});
                 }
                 smallDialogSubscription.unsubscribe();
             });
@@ -255,7 +259,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '사업자 번호와 거래처 명, 유형을 입력해주세요.'
+                message: '거래처 명, 유형을 입력해주세요.'
             };
             // Show the alert
             this.showAlert = true;

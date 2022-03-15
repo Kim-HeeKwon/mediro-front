@@ -27,6 +27,7 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {InBound} from '../inbound.types';
 import {CommonUdiRtnScanComponent} from '../../../../../../@teamplat/components/common-udi-rtn-scan';
+import {InboundScanComponent} from "../../../../../../@teamplat/components/inbound-scan";
 
 @Component({
     selector: 'app-dms-inbound-detail',
@@ -69,6 +70,8 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'udiYn', dataType: ValueType.TEXT},
+        {fieldName: 'medDevItemSeq', dataType: ValueType.TEXT},
+        {fieldName: 'typeName', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'ibExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
@@ -198,6 +201,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 editor: this._realGridsService.gfn_ComboBox(this.status),
             },
             {
+                name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '100', styleName: 'center-cell-text'
+                , header: {text: '바코드 스캔 여부', styleName: 'center-cell-text text-8s'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'ibExpQty', fieldName: 'ibExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '입고예정수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
@@ -314,6 +323,10 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
+            const ret = {styleName : '', editable: false};
+            const ibType = this.inBoundHeaderForm.getRawValue().type;
+            const udiYn = grid.getValue(dataCell.index.itemIndex, 'udiYn');
+
             //추가시
             if (dataCell.item.rowState === 'created') {
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
@@ -324,13 +337,13 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'totalAmt' ||
                     dataCell.dataColumn.fieldName === 'ibQty' ||
                     dataCell.dataColumn.fieldName === 'qty') {
-                    return {editable: false};
                 } else {
-                    return {editable: true};
+                    ret.editable= true;
                 }
             } else {
                 //console.log(dataCell.dataColumn.renderer);
-                if (dataCell.dataColumn.fieldName === 'itemCd' ||
+                if (dataCell.dataColumn.fieldName === 'udiYn' ||
+                    dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
@@ -339,17 +352,39 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                     dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
-                    return {editable: false};
                 } else {
-                    return {editable: true};
+                    ret.editable= true;
                 }
             }
 
             if (dataCell.dataColumn.fieldName === 'poReqQty' ||
                 dataCell.dataColumn.fieldName === 'invQty' ||
                 dataCell.dataColumn.fieldName === 'qty') {
-                return {editable: false};
             }
+
+            if (ibType === '2') {
+                if(udiYn === 'Y'){
+                    if (dataCell.dataColumn.fieldName === 'udiYn') {
+                        ret.styleName = 'center-cell-text green-color';
+                    }
+
+                    if (dataCell.dataColumn.fieldName === 'ibQty'){
+                        ret.editable = false;
+                    }
+                }else {
+
+                    if (dataCell.dataColumn.fieldName === 'ibQty'){
+                        ret.editable = true;
+                    }
+                }
+            }else {
+
+                if (dataCell.dataColumn.fieldName === 'ibQty'){
+                    ret.editable = true;
+                }
+            }
+
+            return ret;
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.inBoundHeaderForm);
@@ -430,8 +465,18 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 if (inboundDetail !== null) {
 
                     inboundDetail.forEach((param) => {
-                        param.qty = param.ibExpQty - param.ibQty;
+                        const ibType = this.inBoundHeaderForm.getRawValue().type;
+                        if (ibType === '2') {
+                            if(param.udiYn === 'N'){
+                                param.qty = param.ibExpQty - param.ibQty;
+                            }else{
+                                param.qty = param.ibExpQty - param.ibQty;
+                            }
+                        }else{
+                            param.qty = param.ibExpQty - param.ibQty;
+                        }
                     });
+
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.inBoundDetailDataProvider, inboundDetail);
 
                 }
@@ -645,136 +690,244 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         let inBoundSetData;
         let inBoundDataFilter;
         let udiCheckData;
-        const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.inBoundDetailDataProvider);
 
-        if(rows.length < 1){
-            this._functionService.cfn_alert('변경된 내용이 없습니다.');
-            return false;
-        }
-        // inBoundData = rows.filter((detail: any) => detail.ibQty > 0)
-        //     .map((param: any) => param);
-
-        inBoundData = rows;
-
-        inBoundSetData = rows.filter((detail: any) =>
-            (detail.ibExpqty <= detail.ibqty))
-            .map((param: any) => param);
-
-        inBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
-            .map((param: any) => param);
-
-        udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
-            .map((param: any) => param);
-
-        if (inBoundSetData.length > 0) {
-            this._functionService.cfn_alert('입고 수량이 초과됬습니다.');
-            return false;
-        }
-
-        // if (inBoundData.length < 1) {
-        //     this._functionService.cfn_alert('입력 수량이 존재하지 않습니다.');
+        // if(rows.length < 1){
+        //     this._functionService.cfn_alert('변경된 내용이 없습니다.');
         //     return false;
         // }
 
+        //수정 후
+        inBoundSetData = rows.filter((detail: any) =>
+            (detail.ibExpQty < detail.ibQty))
+            .map((param: any) => param);
+
+        if (inBoundSetData.length > 0) {
+            this._functionService.cfn_alert('입고 수량이 초과됬습니다. <br> 품목코드 : ' + inBoundSetData[0].itemCd);
+            return false;
+        }
+
+        let rowYs;
+        let rowNs;
+
+        rowYs = rows.filter((detail: any) => detail.qty > 0)
+            .map((param: any) => param);
+
+        rowYs = rows.filter((detail: any) => detail.udiYn === 'Y')
+            .map((param: any) => param);
+
+        rowNs = rows.filter((detail: any) => detail.ibQty > 0)
+            .map((param: any) => param);
+
+        rowNs = rows.filter((detail: any) => detail.udiYn !== 'Y')
+            .map((param: any) => param);
+
         //반품일 경우
         if (ibType === '2') {
-            if (udiCheckData.length > 0) {
-                //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
-                //입력 수량 그대로 가져오기
-                //UDI 정보 INPUT 후 값 셋팅
-                const popup = this._matDialogPopup.open(CommonUdiRtnScanComponent, {
-                    data: {
-                        detail: udiCheckData
-                    },
-                    autoFocus: false,
-                    maxHeight: '90vh',
-                    disableClose: true
-                });
 
-                popup.afterClosed().subscribe((result) => {
-                    if (result) {
-                        if (result !== undefined) {
-                            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                            for (let i = 0; i < result.length; i++) {
-                                const qty = result[i].ibQty;
-                                result[i].ibQty = result[i].qty;
-                                result[i].qty = qty;
-                                inBoundDataFilter.push(result[i]);
-                            }
-
-                            const conf = this._teamPlatConfirmationService.open({
-                                title: '입고',
-                                message: '입고하시겠습니까?',
-                                actions: {
-                                    confirm: {
-                                        label: '입고'
-                                    },
-                                    cancel: {
-                                        label: '닫기'
-                                    }
-                                }
-                            });
-                            //lot 셋팅
-                            inBoundDataFilter.forEach((inBound: any) => {
-                                inBound.lot4 = inBound.udiCode;
-                            });
-                            inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.ibQty > 0).map((param: any) => param);
-                            conf.afterClosed()
-                                .pipe(takeUntil(this._unsubscribeAll))
-                                .subscribe((rtn) => {
-                                    if (rtn) {
-                                        this.inBoundDetailConfirm(inBoundDataFilter);
-                                    }
-                                });
-                        }
-                    }
-                });
-            } else {
-                const confirmation = this._teamPlatConfirmationService.open({
-                    title: '입고',
-                    message: '입고하시겠습니까?',
-                    actions: {
-                        confirm: {
-                            label: '입고'
+            //리스트 중 하나라도 바코드 스캔 여부 Y
+            if(rowYs.length > 0){
+                if (!this.isMobile) {
+                    const d = this._matDialog.open(InboundScanComponent, {
+                        autoFocus: false,
+                        disableClose: true,
+                        maxHeight: '90vh',
+                        data: {
+                            detail: rowYs,
+                            detailN: rowNs
                         },
-                        cancel: {
-                            label: '닫기'
-                        }
-                    }
-                });
-                confirmation.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if (result) {
-                            this.inBoundDetailConfirm(inBoundData);
+                    });
+                    d.afterClosed().subscribe(() => {
+                        this.reData();
+                    });
+                } else {
+                    const d = this._matDialog.open(InboundScanComponent, {
+                        data: {
+                            detail: rowYs,
+                            detailN: rowNs
+                        },
+                        autoFocus: false,
+                        width: 'calc(100% - 50px)',
+                        maxWidth: '100vw',
+                        maxHeight: '80vh',
+                        disableClose: true
+                    });
+                    const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                        if (size.matches) {
+                            d.updateSize('calc(100vw - 10px)', '');
+                        } else {
                         }
                     });
-            }
-        } else {
-            const confirmation = this._teamPlatConfirmationService.open({
-                title: '입고',
-                message: '입고하시겠습니까?',
-                actions: {
-                    confirm: {
-                        label: '입고'
-                    },
-                    cancel: {
-                        label: '닫기'
-                    }
+                    d.afterClosed().subscribe(() => {
+                        this.reData();
+                        smallDialogSubscription.unsubscribe();
+                    });
                 }
-            });
-            confirmation.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if (result) {
-                        this.inBoundDetailConfirm(inBoundData);
-                    }
-                });
+            }else{
+                //리스트 전부 바코드 스캔 여부 N
+                this.inBoundBarcodeN(rows);
+            }
+
+        }else {
+
+            //리스트 전부 바코드 스캔 여부 N
+            this.inBoundBarcodeN(rows);
         }
+        //수정 전
+        // inBoundData = rows;
+        //
+        // inBoundSetData = rows.filter((detail: any) =>
+        //     (detail.ibExpqty <= detail.ibqty))
+        //     .map((param: any) => param);
+        //
+        // inBoundDataFilter = rows.filter((detail: any) => detail.udiYn !== 'Y')
+        //     .map((param: any) => param);
+        //
+        // udiCheckData = rows.filter((detail: any) => detail.udiYn === 'Y')
+        //     .map((param: any) => param);
+        //
+        // if (inBoundSetData.length > 0) {
+        //     this._functionService.cfn_alert('입고 수량이 초과됬습니다.');
+        //     return false;
+        // }
+        //
+        // // if (inBoundData.length < 1) {
+        // //     this._functionService.cfn_alert('입력 수량이 존재하지 않습니다.');
+        // //     return false;
+        // // }
+        //
+        // //반품일 경우
+        // if (ibType === '2') {
+        //     if (udiCheckData.length > 0) {
+        //         //UDI 체크 로우만 나오게 하고 , outBoundData 는 숨기기
+        //         //입력 수량 그대로 가져오기
+        //         //UDI 정보 INPUT 후 값 셋팅
+        //         const popup = this._matDialogPopup.open(CommonUdiRtnScanComponent, {
+        //             data: {
+        //                 detail: udiCheckData
+        //             },
+        //             autoFocus: false,
+        //             maxHeight: '90vh',
+        //             disableClose: true
+        //         });
+        //
+        //         popup.afterClosed().subscribe((result) => {
+        //             if (result) {
+        //                 if (result !== undefined) {
+        //                     // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        //                     for (let i = 0; i < result.length; i++) {
+        //                         const qty = result[i].ibQty;
+        //                         result[i].ibQty = result[i].qty;
+        //                         result[i].qty = qty;
+        //                         inBoundDataFilter.push(result[i]);
+        //                     }
+        //
+        //                     const conf = this._teamPlatConfirmationService.open({
+        //                         title: '입고',
+        //                         message: '입고하시겠습니까?',
+        //                         actions: {
+        //                             confirm: {
+        //                                 label: '입고'
+        //                             },
+        //                             cancel: {
+        //                                 label: '닫기'
+        //                             }
+        //                         }
+        //                     });
+        //                     //lot 셋팅
+        //                     inBoundDataFilter.forEach((inBound: any) => {
+        //                         inBound.lot4 = inBound.udiCode;
+        //                     });
+        //                     inBoundDataFilter = inBoundDataFilter.filter((inBound: any) => inBound.ibQty > 0).map((param: any) => param);
+        //                     conf.afterClosed()
+        //                         .pipe(takeUntil(this._unsubscribeAll))
+        //                         .subscribe((rtn) => {
+        //                             if (rtn) {
+        //                                 this.inBoundDetailConfirm(inBoundDataFilter);
+        //                             }
+        //                         });
+        //                 }
+        //             }
+        //         });
+        //     } else {
+        //         const confirmation = this._teamPlatConfirmationService.open({
+        //             title: '입고',
+        //             message: '입고하시겠습니까?',
+        //             actions: {
+        //                 confirm: {
+        //                     label: '입고'
+        //                 },
+        //                 cancel: {
+        //                     label: '닫기'
+        //                 }
+        //             }
+        //         });
+        //         confirmation.afterClosed()
+        //             .pipe(takeUntil(this._unsubscribeAll))
+        //             .subscribe((result) => {
+        //                 if (result) {
+        //                     this.inBoundDetailConfirm(inBoundData);
+        //                 }
+        //             });
+        //     }
+        // } else {
+        //     const confirmation = this._teamPlatConfirmationService.open({
+        //         title: '입고',
+        //         message: '입고하시겠습니까?',
+        //         actions: {
+        //             confirm: {
+        //                 label: '입고'
+        //             },
+        //             cancel: {
+        //                 label: '닫기'
+        //             }
+        //         }
+        //     });
+        //     confirmation.afterClosed()
+        //         .pipe(takeUntil(this._unsubscribeAll))
+        //         .subscribe((result) => {
+        //             if (result) {
+        //                 this.inBoundDetailConfirm(inBoundData);
+        //             }
+        //         });
+        // }
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
 
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    inBoundBarcodeN(inBoundData: InBound[]){
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '입고',
+            message: '입고하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '입고'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        // inBoundData = inBoundData.filter((inBound: any) => inBound.ibQty > 0).map((param: any) => param);
+
+        const rows = this.headerDataSet(inBoundData);
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._inboundService.inBoundBarcodeN(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((inBound: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(inBound);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
     }
 
     /* 입고 (상세)

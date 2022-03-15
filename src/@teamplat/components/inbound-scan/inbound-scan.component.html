@@ -1,0 +1,176 @@
+<div class="flex flex-col flex-auto md:w-240 md:min-w-240 -m-6">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <!-- Header -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">공급내역 보고 목록</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex flex-auto overflow-hidden m-4">
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden mediro-detail-form-custom">
+            <as-split direction="vertical">
+                <as-split-area [size]="40">
+                    <div class="flex flex-col sm:flex-row flex-0 justify-between pb-4 px-6 border-b">
+                        <form
+                            [formGroup]="searchForm">
+                            <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4">
+                                        <mat-select [formControlName]="'year'">
+                                            <ng-container *ngFor="let year of year">
+                                                <mat-option [value]="year.id">
+                                                    {{year.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4">
+                                        <mat-select [formControlName]="'month'">
+                                            <ng-container *ngFor="let month of month">
+                                                <mat-option [value]="month.id">
+                                                    {{month.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:col-span-4">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <button
+                                        class="w-full fuse-mat-dense fuse-mat-no-subscript mediro-btn-custom mediro-btn-custom-background-color"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        (click)="inBound()">
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                        <span class="ml-2 mr-1">입고</span>
+                                    </button>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <!--                                    <span class="ml-2 mr-1">바코드 포커스 설정</span>-->
+                                    <span class="text-13s text-bold-600 ml-6"
+                                          [ngClass]="{'opacity-50' : barcodeYn}">바코드</span>
+                                    <mat-slide-toggle class="ml-2 mr-2"
+                                                      (click)="focusSetting()"
+                                                      [checked]="false"
+                                                      [color]="'primary'">
+                                    </mat-slide-toggle>
+                                    <span class="text-13s text-bold-600"
+                                          [ngClass]="{'opacity-50' : !barcodeYn}">수량</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        style="height: 200px;"
+                        class="realgrid"
+                        id="gridList1">
+                    </div>
+                </as-split-area>
+                <as-split-area [size]="60">
+                    <div class="m-2">
+                        <form
+                            class="flex flex-col border-b"
+                            [formGroup]="searchForm">
+                            <!-- Alert -->
+                            <fuse-alert
+                                class="mt-2 mb-2 mr-2 ml-2"
+                                *ngIf="showAlert"
+                                [appearance]="'outline'"
+                                [showIcon]="false"
+                                [type]="alert.type"
+                                [@shake]="alert.type === 'error'">
+                                {{alert.message}}
+                            </fuse-alert>
+                            <div class="p-2 sm:p-2">
+                                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
+                                    <div class="sm:col-span-6">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>바코드 스캔</mat-label>
+                                            <input
+                                                #udiCode
+                                                matInput
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDiCode($event)"
+                                                [formControlName]="'udiCode'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>입력한 바코드</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'stdCode'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>GTIN</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'gtin'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>제조일자(11)</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'manufYm'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>유통기한(17)</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'useTmlmt'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>Lot No.(10)</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'lotNo'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>일련번호(21)</mat-label>
+                                            <input
+                                                matInput
+                                                [formControlName]="'itemSeq'">
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        style="height: 200px;"
+                        class="realgrid"
+                        id="gridList2">
+                    </div>
+                </as-split-area>
+            </as-split>
+        </div>
+    </div>
+
+</div>

@@ -4,6 +4,7 @@ export interface AccountData
     account: string;            //거래처 코드
     descr: string;              //거래처 명
     accountType: string;        //유형
+    cobFlagType: string;        //업종코드
     custBusinessNumber: string; //사업자 번호
     custBusinessName: string;   //사업자명
     representName: string;      //대표자명

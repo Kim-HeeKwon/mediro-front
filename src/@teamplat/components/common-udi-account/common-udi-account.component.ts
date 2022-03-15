@@ -55,6 +55,7 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
         {fieldName: 'closeDate', dataType: ValueType.TEXT},
         {fieldName: 'rprsntName', dataType: ValueType.TEXT},
         {fieldName: 'entpName', dataType: ValueType.TEXT},
+        {fieldName: 'cobFlagType', dataType: ValueType.TEXT},
         {fieldName: 'cobFlagCodeName', dataType: ValueType.TEXT},
         {fieldName: 'cobDetailName', dataType: ValueType.TEXT},
         {fieldName: 'entpAddrAll', dataType: ValueType.TEXT},
@@ -194,7 +195,10 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    this.matDialogRef.close(grid.getValues(clickData.dataRow));
+                    const obj = new Object();
+                    obj['row'] = grid.getValues(clickData.dataRow);
+                    obj['cobFlagCode'] = this.searchForm.getRawValue().cobFlagCode;
+                    this.matDialogRef.close(obj);
                 }
             }
         };
@@ -217,7 +221,6 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
-            console.log(ex.list);
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.list);
             this._commonUdiAccountService.pagenation$
                 .pipe(takeUntil(this._unsubscribeAll))

@@ -363,4 +363,40 @@ export class InboundService {
             })
         );
     }
+
+    /**
+     * inBound - barcode N
+     */
+    inBoundBarcodeN(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/inBound-barcode-n').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
+     * outBound - barcode Y
+     */
+    inBoundBarcodeY(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/inBound-barcode-y').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }
