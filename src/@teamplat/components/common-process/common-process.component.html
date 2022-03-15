@@ -1,5 +1,19 @@
+<!--<ng-container *ngFor="let process of process; let i=dataIndex">-->
+<!--    <div class="arrow-steps clearfix">-->
+<!--        <div class="step" [id]="process.id" (click)="clickStep(process.id)" [ngStyle]="{'border' : color()}" [ngClass]="{'lastStep' : process.id === this._dataColor}">-->
+<!--            <span class="text-bold-600 font">{{process.name}}</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div><mat-icon *ngIf="process.id !== this._dataColor"-->
+<!--                     [svgIcon]="'heroicons_solid:chevron-right'" style="cursor: pointer; margin-top: 6px;"></mat-icon></div>-->
+<!--</ng-container>-->
 <ng-container *ngFor="let process of process; let i=dataIndex">
     <div class="arrow-steps clearfix">
-        <div class="step"><span>{{process.name}}</span></div>
+        <div (click)="clickDate(process.id)" *ngIf="process.id !== this._dataColor" class="step" [id]="process.id">
+            <span class="text-bold-600 font">{{process.name}}</span>
+        </div>
+        <div *ngIf="process.id === this._dataColor" class="lastStep" [id]="process.id">
+            <span class="text-bold-600 font">{{process.name}}</span>
+        </div>
     </div>
 </ng-container>

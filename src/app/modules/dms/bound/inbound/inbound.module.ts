@@ -37,6 +37,7 @@ import {InboundNewComponent} from "./inbound-new/inbound-new.component";
 import {InboundNewResolvers} from "./inbound-new/inbound-new.resolvers";
 import {InboundDetailComponent} from "./inbound-detail/inbound-detail.component";
 import {InboundDetailResolvers} from "./inbound-detail/inbound-detail.resolvers";
+import {CommonProcessModule} from "../../../../../@teamplat/components/common-process/common-process.module";
 
 const inboundRoutes: Route[] = [
     {
@@ -100,6 +101,7 @@ const inboundRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        CommonProcessModule,
     ]
 })
 export class InboundModule { }

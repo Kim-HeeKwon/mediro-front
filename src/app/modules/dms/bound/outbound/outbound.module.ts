@@ -37,6 +37,7 @@ import {OutboundDetailResolvers} from "./outbound-detail/outbound-detail.resolve
 import {OutboundNewComponent} from "./outbound-new/outbound-new.component";
 import {OutboundNewResolvers} from "./outbound-new/outbound-new.resolvers";
 import {AngularSplitModule} from "angular-split";
+import {CommonProcessModule} from "../../../../../@teamplat/components/common-process/common-process.module";
 
 const outboundRoutes: Route[] = [
     {
@@ -101,6 +102,7 @@ const outboundRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        CommonProcessModule,
     ]
 })
 export class OutboundModule { }

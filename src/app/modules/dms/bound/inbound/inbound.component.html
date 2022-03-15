@@ -150,6 +150,10 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
+                                <app-process style="display: flex"
+                                             [data]="'IB_STATUS'"
+                                             [dataFilter]="'C'"
+                                             [dataColor]="'SC'"></app-process>
                             </div>
                             <!-- Loader -->
                             <div

@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, ViewEncapsulation} from "@angular/core";
 import {CommonCode, FuseUtilsService} from "../../services/utils";
 import {CodeStore} from "../../../app/core/common-code/state/code.store";
+import {EstimateService} from "../../../app/modules/dms/estimate-order/estimate/estimate.service";
+import {FormGroup} from "@angular/forms";
 
 
 @Component({
@@ -12,30 +14,46 @@ import {CodeStore} from "../../../app/core/common-code/state/code.store";
 })
 
 export class CommonProcessComponent implements OnInit {
+    searchForm: FormGroup;
     processInfo: CommonCode[] = null;
     process: any;
+    private _dataColor: string;
+    private _data: string;
     private _dataProcess: string;
     private _filterValue: string;
-    private _dataValue: string;
+
     constructor(
         private _utilService: FuseUtilsService,
-        private _codeStore: CodeStore) {
+        private _codeStore: CodeStore,) {
     }
 
     ngOnInit(): void {
         if (this._dataProcess !== undefined) {
             this.processInfo = this._utilService.commonValueSearchFilter(this._codeStore.getValue().data, this._dataProcess, ['ALL', this._filterValue]);
             this.process = this.processInfo;
-            // @ts-ignore
-            let a: boolean = true;
-            // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for (let i = 0; i < this.process.length; i++) {
-                if (a) {
-                    this.process[i].num = 1;
-                }
-            }
+        }
+
+    }
+
+    clickDate(id: any): void {
+        // console.log(id);
+        // this.status = id;
+    }
+
+    @Input()
+    set status(value)
+    {
+        if(!value)
+        {
+            return;
         }
     }
+
+    get status(): any
+    {
+        return this.status;
+    }
+
     @Input()
     set dataFilter(value: string)
     {
@@ -60,7 +78,7 @@ export class CommonProcessComponent implements OnInit {
     }
 
     @Input()
-    set dataTooltip(value: string)
+    set data(value: string)
     {
         // Return if the values are the same
         if ( this._dataProcess === value )
@@ -77,8 +95,31 @@ export class CommonProcessComponent implements OnInit {
         }
     }
 
-    get dataTooltip(): string
+    get data(): string
     {
-        return this.dataTooltip;
+        return this._data;
+    }
+
+    @Input()
+    set dataColor(value: string)
+    {
+        // Return if the values are the same
+        if ( this._dataColor === value )
+        {
+            return;
+        }
+
+        // Store the value
+        this._dataColor = value;
+
+        // If the time range turned off...
+        if ( !value )
+        {
+        }
+    }
+
+    get dataColor(): string
+    {
+        return this.data;
     }
 }

@@ -36,6 +36,7 @@ import {OrderNewComponent} from "./order-new/order-new.component";
 import {OrderNewResolvers} from "./order-new/order-new.resolvers";
 import {OrderDetailComponent} from "./order-detail/order-detail.component";
 import {OrderDetailResolvers} from "./order-detail/order-detail.resolvers";
+import {CommonProcessModule} from "../../../../../@teamplat/components/common-process/common-process.module";
 
 const orderRoutes: Route[] = [
     {
@@ -101,6 +102,7 @@ const orderRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        CommonProcessModule,
     ],
 })
 export class OrderModule {

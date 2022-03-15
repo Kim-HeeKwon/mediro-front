@@ -36,6 +36,7 @@ import {SalesorderNewResolvers} from "./salesorder-new/salesorder-new.resolvers"
 import {AngularSplitModule} from "angular-split";
 import {SalesorderDetailComponent} from "./salesorder-detail/salesorder-detail.component";
 import {SalesorderDetailResolvers} from "./salesorder-detail/salesorder-detail.resolvers";
+import {CommonProcessModule} from "../../../../../@teamplat/components/common-process/common-process.module";
 
 const salesorderRoutes: Route[] = [
     {
@@ -101,6 +102,7 @@ const salesorderRoutes: Route[] = [
         CommonTooltipModule,
         CommonLoadingBarModule,
         AngularSplitModule,
+        CommonProcessModule,
     ],
 })
 export class SalesorderModule { }

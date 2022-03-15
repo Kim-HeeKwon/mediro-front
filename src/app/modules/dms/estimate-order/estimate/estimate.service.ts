@@ -111,6 +111,7 @@ export class EstimateService {
         return new Promise((resolve, reject) => {
             this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/estimate/header-List')
                 .subscribe((response: any) => {
+                    console.log(response);
                     if (response.status === 'SUCCESS') {
                         this._estimateHeaders.next(response.data);
                         this._estimateHeaderPagenation.next(response.pageNation);
