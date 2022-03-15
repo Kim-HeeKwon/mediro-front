@@ -1,0 +1,121 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/3 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <!-- Logo -->
+            <div class="w-24" style="margin: auto;">
+                <img src="assets/images/logo/mediro_work.png">
+            </div>
+            <!-- Alert -->
+            <fuse-alert
+                class="mt-4 -mb-4"
+                *ngIf="showAlert"
+                [appearance]="'outline'"
+                [showIcon]="false"
+                [type]="alert.type"
+                [@shake]="alert.type === 'error'">
+                {{alert.message}}
+            </fuse-alert>
+
+            <!-- Sign in form -->
+            <form
+                class="mt-2"
+                [formGroup]="signInForm"
+                #signInNgForm="ngForm">
+
+                <!-- Email field -->
+                <mat-form-field class="w-full">
+                    <mat-label class="text-13s">이메일</mat-label>
+                    <input
+                        id="email"
+                        matInput
+                        [formControlName]="'email'">
+                    <mat-error *ngIf="signInForm.get('email').hasError('required')">
+                        이메일이 필요합니다.
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                        올바른 이메일 형식으로 입력해주세요.
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Password field -->
+                <mat-form-field class="w-full">
+                    <mat-label class="text-13s">비밀번호</mat-label>
+                    <input
+                        id="password"
+                        matInput
+                        type="password"
+                        [formControlName]="'password'"
+                        #passwordField>
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                        matSuffix>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                    </button>
+                    <mat-error>
+                        비밀번호가 정확하지 않습니다.
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Actions -->
+<!--                <div class="inline-flex items-end justify-between w-full mt-1.5">-->
+<!--                    <mat-checkbox-->
+<!--                        class="text-13s"-->
+<!--                        [color]="'accent'"-->
+<!--                        [formControlName]="'rememberMe'">-->
+<!--                        아이디 저장-->
+<!--                    </mat-checkbox>-->
+<!--                    &lt;!&ndash;                    <a&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        class="text-md font-medium text-primary-500 hover:underline"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        [routerLink]="['/forgot-password']">비밀번호를 잊어버리셨나요?&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    </a>&ndash;&gt;-->
+<!--                </div>-->
+
+                <!-- Submit button -->
+                <button
+                    style="background: #002740"
+                    class="fuse-mat-button-large w-full mt-6"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="signInForm.disabled"
+                    (click)="admSignIn()">
+                    <span *ngIf="!signInForm.disabled">
+                        관리자 로그인
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="signInForm.disabled"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-2/3 h-full p-16 lg:px-28 overflow-hidden sm:bg-card"
+         style="background-image: url('assets/images/background/mediro_background_split.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;">
+        <div class="z-10 relative w-full max-w-2xl pl-20">
+            <div class="text-4xl font-bold leading-none text-gray-100">
+                <div>의료기기 판매점 전용 유통관리 프로그램</div>
+                <!--                <div>메디로</div>-->
+                <div class="mt-2 w-50">
+                    <img src="assets/images/logo/mediro_work_white_logo.png">
+                </div>
+            </div>
+            <div class="mt-2 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                판매점 유통 업무 온라인 처리, 간편한 식약처 공급내역 보고
+            </div>
+            <div class="mt-1 text-lg tracking-tight leading-6 text-gray-400 text-13s">
+                2개월 무료체험해 보시고 결정하세요.
+            </div>
+        </div>
+    </div>
+</div>

@@ -220,47 +220,47 @@
                 </mat-form-field>
             </div>
         </div><div style="display: grid !important;" class="sm:grid-cols-5 gap-6 w-full mt-8" *ngIf="isAdmin">
-<!--        <div class="sm:col-span-2">-->
-<!--            <mat-form-field class="fuse-mat-no-subscript w-full">-->
-<!--                <mat-label>공급내역 보고 자동 여부</mat-label>-->
-<!--                &lt;!&ndash;                    <mat-icon&ndash;&gt;-->
-<!--                &lt;!&ndash;                        class="icon-size-5"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        [svgIcon]="'heroicons_solid:location-marker'"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        matPrefix></mat-icon>&ndash;&gt;-->
-<!--                <mat-select [formControlName]="'udiSupplyAutoYn'">-->
-<!--                    <ng-container *ngFor="let udiSupplyAutoYn of udiSupplyAutoYn">-->
-<!--                        <mat-option [value]="udiSupplyAutoYn.id">-->
-<!--                            {{udiSupplyAutoYn.name}}-->
-<!--                        </mat-option>-->
-<!--                    </ng-container>-->
-<!--                </mat-select>-->
-<!--            </mat-form-field>-->
-<!--        </div>-->
-<!--        <div class="sm:col-span-2">-->
-<!--            <mat-form-field class="fuse-mat-no-subscript w-full">-->
-<!--                <mat-label>공급내역 보고 일자</mat-label>-->
-<!--                &lt;!&ndash;                    <mat-icon&ndash;&gt;-->
-<!--                &lt;!&ndash;                        class="icon-size-5"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        [svgIcon]="'heroicons_solid:location-marker'"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        matPrefix></mat-icon>&ndash;&gt;-->
-<!--                <mat-select [formControlName]="'udiSupplyAutoDt'">-->
-<!--                    <ng-container *ngFor="let udiSupplyAutoDt of udiSupplyAutoDt">-->
-<!--                        <mat-option [value]="udiSupplyAutoDt.id">-->
-<!--                            {{udiSupplyAutoDt.name}}-->
-<!--                        </mat-option>-->
-<!--                    </ng-container>-->
-<!--                </mat-select>-->
-<!--            </mat-form-field>-->
-<!--        </div>-->
-<!--        <div class="sm:col-span-1">-->
-<!--            <button-->
-<!--                class="ml-4 mt-6"-->
-<!--                mat-flat-button-->
-<!--                type="button"-->
-<!--                (click)="saveUdiInfo()"-->
-<!--                [color]="'primary'">공급내역 보고 설정-->
-<!--            </button>-->
-<!--        </div>-->
+        <div class="sm:col-span-2">
+            <mat-form-field class="fuse-mat-no-subscript w-full">
+                <mat-label>공급내역 보고 자동 여부</mat-label>
+                <!--                    <mat-icon-->
+                <!--                        class="icon-size-5"-->
+                <!--                        [svgIcon]="'heroicons_solid:location-marker'"-->
+                <!--                        matPrefix></mat-icon>-->
+                <mat-select [formControlName]="'udiSupplyAutoYn'">
+                    <ng-container *ngFor="let udiSupplyAutoYn of udiSupplyAutoYn">
+                        <mat-option [value]="udiSupplyAutoYn.id">
+                            {{udiSupplyAutoYn.name}}
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="sm:col-span-2">
+            <mat-form-field class="fuse-mat-no-subscript w-full">
+                <mat-label>공급내역 보고 일자</mat-label>
+                <!--                    <mat-icon-->
+                <!--                        class="icon-size-5"-->
+                <!--                        [svgIcon]="'heroicons_solid:location-marker'"-->
+                <!--                        matPrefix></mat-icon>-->
+                <mat-select [formControlName]="'udiSupplyAutoDt'">
+                    <ng-container *ngFor="let udiSupplyAutoDt of udiSupplyAutoDt">
+                        <mat-option [value]="udiSupplyAutoDt.id">
+                            {{udiSupplyAutoDt.name}}
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="sm:col-span-1">
+            <button
+                class="ml-4 mt-6"
+                mat-flat-button
+                type="button"
+                (click)="saveUdiInfo()"
+                [color]="'primary'">공급내역 보고 설정
+            </button>
+        </div>
     </div>
 
         <!-- Divider -->
