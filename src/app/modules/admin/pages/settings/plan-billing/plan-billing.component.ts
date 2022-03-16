@@ -206,7 +206,14 @@ export class SettingsPlanBillingComponent implements OnInit
                             orderId: this._sessionStore.getValue().businessNumber + '_' + no,
                             orderName: '메디로 가입비',
                             customerName: this._sessionStore.getValue().businessName,
-                            successUrl: environment.paymentHookUrl + '/success',
+                            successUrl: environment.paymentHookUrl + '/success?' +
+                                'businessNumber=' + this._sessionStore.getValue().businessNumber + '&' +
+                                'email=' + '' + '&' +
+                                'name=' + '' + '&' +
+                                'password=' + '' + '&' +
+                                'phone=' + '' + '&' +
+                                'agreements=' + '' + '&' +
+                                'customerName=' + this._sessionStore.getValue().businessName + '',
                             failUrl: environment.paymentHookUrl + '/fail',
                         }).catch( (err) => {
                             console.log(err);
