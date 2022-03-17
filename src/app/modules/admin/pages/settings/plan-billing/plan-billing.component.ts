@@ -207,7 +207,7 @@ export class SettingsPlanBillingComponent implements OnInit
                         tossPayments.requestPayment('카드', {
                             amount: 165000,
                             orderId: this._sessionStore.getValue().businessNumber + '_' + no,
-                            orderName: '메디로 가입비',
+                            orderName: '메디로 가입비 (VAT 포함)',
                             customerName: this._sessionStore.getValue().businessName,
                             successUrl: environment.paymentHookUrl + '/success?' +
                                 'businessNumber=' + this._sessionStore.getValue().businessNumber + '&' +
