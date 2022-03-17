@@ -18,7 +18,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {ManagesReportComponent} from './manages-report/manages-report.component';
 import {ManagesDetailComponent} from './manages-detail/manages-detail.component';
 import {ManagesNewComponent} from './manages-new';
-import {ManagesEmailComponent} from "./manages-email/manages-email.component";
+import {ManagesEmailComponent} from './manages-email/manages-email.component';
 
 @Component({
     selector: 'dms-manages',
@@ -367,6 +367,13 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectCallBack(rtn);
     }
 
+    selectDelet(): void {
+        this.searchSetValue();
+        const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBackDelete(rtn);
+    }
+
 
     /**
      * After view init
@@ -460,13 +467,13 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         if (getRows.length < 1) {
             this._functionService.cfn_alert('공급내역 보고 목록을 먼저 검색해주세요.');
             return;
-        }else{
+        } else {
             if (!this.isMobile) {
                 this._matDialog.open(ManagesEmailComponent, {
                     autoFocus: false,
                     maxHeight: '90vh',
                     disableClose: true,
-                    data: {rows : getRows, searchForm : this.searchForm.getRawValue()},
+                    data: {rows: getRows, searchForm: this.searchForm.getRawValue()},
                 });
             } else {
                 const d = this._matDialog.open(ManagesEmailComponent, {
@@ -475,7 +482,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                     maxWidth: '100vw',
                     maxHeight: '80vh',
                     disableClose: true,
-                    data: {rows : getRows, searchForm : this.searchForm.getRawValue()},
+                    data: {rows: getRows, searchForm: this.searchForm.getRawValue()},
                 });
                 const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
                     if (size.matches) {
@@ -529,7 +536,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._functionService.cfn_alertCheckMessage(manage);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
-                                this.select();
+                                this.selectDelet();
                             });
                     }
                 });
@@ -601,7 +608,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
-
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.managesDataProvider, ex.manages);
             this._managesService.managesPagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
@@ -611,9 +617,23 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.manages.length < 1){
+            if (ex.manages.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+        });
+    }
+
+    selectCallBackDelete(rtn: any): void {
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.managesDataProvider, ex.manages);
+            this._managesService.managesPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((managesPagenation: ManagesPagenation) => {
+                    // Update the pagination
+                    this.managesPagenation = managesPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
         });
     }
 }

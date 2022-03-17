@@ -418,13 +418,19 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-
         this.isSearchForm = true;
         this.searchSetValue();
         const rtn = this._taxService.getHeader(0, 40, 'invoice', 'desc', this.searchForm.getRawValue());
-
         //this.setGridData();
         this.selectCallBack(rtn);
+    }
+
+    selectHeaderDelete(): void {
+        this.isSearchForm = true;
+        this.searchSetValue();
+        const rtn = this._taxService.getHeader(0, 40, 'invoice', 'desc', this.searchForm.getRawValue());
+        //this.setGridData();
+        this.selectCallBackDelete(rtn);
     }
 
     searchFormClick(): void {
@@ -633,7 +639,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             const confirmation = this._teamPlatConfirmationService.open(this._functionService.configForm.value);
         }else{
             this._functionService.cfn_alert('정상적으로 처리되었습니다.','check-circle');
-            this.selectHeader();
+            this.selectHeaderDelete();
         }
     }
 
@@ -720,6 +726,21 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             if(ex.invoiceHeader.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+        });
+    }
+
+    selectCallBackDelete(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.invoiceHeaderDataProvider, ex.invoiceHeader);
+            this._taxService.invoiceHeaderPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((invoiceHeaderPagenation: InvoiceHeaderPagenation) => {
+                    // Update the pagination
+                    this.invoiceHeaderPagenation = invoiceHeaderPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
         });
     }
 }
