@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {catchError, finalize, takeUntil, takeWhile, tap} from "rxjs/operators";
 import {SessionStore} from "../../../app/core/session/state/session.store";
 import {FunctionService} from "../../services/function";
+import {TeamPlatConfirmationService} from "../../services/confirmation";
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
@@ -20,10 +21,12 @@ export class Api {
     private urlBill: string;
     private _authenticated: boolean = false;
 
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
 
     constructor(public http: HttpClient,
                 public _matDialog: MatDialog,
+                private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _activatedRoute: ActivatedRoute,
                 private _router: Router,
                 private _functionService: FunctionService,
@@ -400,6 +403,10 @@ export class Api {
     }
 
     postWithPageLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     return of(false);
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -784,6 +791,42 @@ export class Api {
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
+    }
+
+    private freeCheck(): boolean{
+
+        let check = true;
+
+        if(this._sessionStore.getValue().freeYn !== undefined){
+            if(this._sessionStore.getValue().freeYn === 'N'){
+                check = false;
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title: '',
+                    message: '무료 서비스가 종료 되었습니다. <br> 정기 서비스를 신청해주세요.',
+                    actions: {
+                        confirm: {
+                            show : true,
+                            label: '정기 서비스 이동'
+                        },
+                        cancel : {
+                            show : false,
+                            label: '닫기'
+                        }
+                    }
+                });
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this._matDialog.closeAll();
+                            this._router.navigateByUrl('/pages/settings');
+                            // Show the alert
+                        }
+                    });
+            }
+        }
+        return check;
+
     }
 
 }
