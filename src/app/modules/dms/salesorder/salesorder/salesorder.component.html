@@ -150,12 +150,17 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
-                                <app-process style="display: flex"
+                                <app-process *ngIf="!isMobile" style="display: flex"
                                              [data]="'SO_STATUS'"
                                              [processFilter]="'C'"
                                              [processColor]="'N'"
                                              (searchProcess)="searchStatus($event)"></app-process>
                             </div>
+                            <app-process *ngIf="isMobile" style="display: flex; margin: auto; margin-bottom: 10px;"
+                                         [data]="'SO_STATUS'"
+                                         [processFilter]="'C'"
+                                         [processColor]="'N'"
+                                         (searchProcess)="searchStatus($event)"></app-process>
                             <!-- Loader -->
                             <div
                                 class="absolute inset-x-0 bottom-0"
