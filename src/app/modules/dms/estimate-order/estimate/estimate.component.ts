@@ -780,6 +780,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         this.statusProcess = val;
         if(this.statusProcess !== null) {
             this.searchForm.patchValue({'status': this.statusProcess});
+
         }
     }
 }

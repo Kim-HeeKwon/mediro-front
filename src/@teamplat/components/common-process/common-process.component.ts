@@ -25,8 +25,7 @@ export class CommonProcessComponent implements OnInit, OnDestroy {
     searchForm: FormGroup;
     processInfo: CommonCodeProcess[] = null;
     process: any;
-    count: number;
-    private _dataColor: string;
+    private _processColor: string;
     private _data: string;
     private _dataProcess: string;
     private _filterValue: string;
@@ -56,8 +55,8 @@ export class CommonProcessComponent implements OnInit, OnDestroy {
     }
 
 
-    clickDate(id: any): void {
-        this.searchData.emit(id);
+    clickProcess(id: any): void {
+        this.searchProcess.emit(id);
         const name = document.getElementById(id);
         for (let i = 0; i < this.processInfo.length; i++) {
             if (Number(name.innerHTML) >= this.process[i].count) {
@@ -72,15 +71,10 @@ export class CommonProcessComponent implements OnInit, OnDestroy {
     }
 
     @Output()
-    searchData = new EventEmitter<string>();
-
-
-    get status(): any {
-        return this.status;
-    }
+    searchProcess = new EventEmitter<string>();
 
     @Input()
-    set dataFilter(value: string) {
+    set processFilter(value: string) {
         // Return if the values are the same
         if (this._filterValue === value) {
             return;
@@ -94,8 +88,8 @@ export class CommonProcessComponent implements OnInit, OnDestroy {
         }
     }
 
-    get dataFilter(): string {
-        return this.dataFilter;
+    get processFilter(): string {
+        return this.processFilter;
     }
 
     @Input()
@@ -118,21 +112,21 @@ export class CommonProcessComponent implements OnInit, OnDestroy {
     }
 
     @Input()
-    set dataColor(value: string) {
+    set processColor(value: string) {
         // Return if the values are the same
-        if (this._dataColor === value) {
+        if (this._processColor === value) {
             return;
         }
 
         // Store the value
-        this._dataColor = value;
+        this._processColor = value;
 
         // If the time range turned off...
         if (!value) {
         }
     }
 
-    get dataColor(): string {
-        return this.data;
+    get processColor(): string {
+        return this.processColor;
     }
 }

@@ -164,9 +164,9 @@
                                 <form [formGroup]="searchForm">
                                     <app-process style="display: flex"
                                                  [data]="'QT_STATUS'"
-                                                 [dataFilter]="'C'"
-                                                 [dataColor]="'N'"
-                                                 (searchData)="searchStatus($event)"></app-process>
+                                                 [processFilter]="'C'"
+                                                 [processColor]="'N'"
+                                                 (searchProcess)="searchStatus($event)"></app-process>
                                 </form>
                             </div>
                             <!-- Loader -->

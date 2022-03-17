@@ -1,8 +1,8 @@
 <ng-container *ngFor="let process of process; let i=dataIndex">
     <div class="process-wrap">
         <div class="process-main">
-            <div [ngClass]="{'col-3' : process.id !== this._dataColor, 'col-3Color': process.color}">
-                <div class="process-step-cont" (click)="clickDate(process.id)">
+            <div [ngClass]="{'col-3' : process.id !== this._processColor, 'col-3Color': process.color}">
+                <div class="process-step-cont" (click)="clickProcess(process.id)">
                     <div class="process-step" [id]="process.id" [ngClass]="{'process-Color': process.color,'process-step' : !process.color}">{{process.count}}</div>
                     <span class="process-label">{{process.name}}</span>
                 </div>
