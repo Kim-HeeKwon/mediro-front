@@ -29,7 +29,9 @@ export class FunctionService implements OnInit, OnDestroy{
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_loadingBarClear(): void{
         this._matDialogRef = this._matDialog.getDialogById('loadingBar');
-        this._matDialogRef.close();
+        if(this._matDialogRef !== undefined){
+            this._matDialogRef.close();
+        }
     }
     // eslint-disable-next-line @angular-eslint/contextual-lifecycle
     ngOnInit(): void {

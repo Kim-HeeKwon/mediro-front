@@ -25,6 +25,9 @@ export interface User
     initYn?: string;
     udiInfoYn?: string;
     popBillId?: string;
+    freeYn?: string;
+    payYn?: string;
+    version?: string;
 }
 export interface UserExperience
 {

@@ -7,6 +7,7 @@ import { InitialData } from 'app/app.types';
 import { Api } from '../@teamplat/providers/api/api';
 import { CodeStore } from './core/common-code/state/code.store';
 import { PopupStore } from './core/common-popup/state/popup.store';
+import {SessionStore} from "./core/session/state/session.store";
 
 @Injectable({
     providedIn: 'root'
@@ -132,3 +133,45 @@ export class InitialCommonPopupDataResolver implements Resolve<any>
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+})
+export class InitialSysConfigDataResolver implements Resolve<any>
+{
+    /**
+     * Constructor
+     */
+    constructor(private _httpClient: HttpClient,
+                private _api: Api)
+    {
+    }
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+    {
+        const rtn = this.sysConfigFunction();
+
+        rtn.toPromise().then((ex) => {
+
+            const orgversion = localStorage.getItem('vesion');
+
+            if(orgversion !== ex.data.VAL){
+                window.location.reload();
+                localStorage.setItem('vesion', ex.data.VAL);
+            }
+        });
+        return rtn;
+    }
+
+    sysConfigFunction(): Observable<any>{
+        return this._api.post('/v1/api/common/sys-config/version', '').pipe(
+            switchMap((response: any) => {
+                //console.log(response);
+                if (response.status !== 'SUCCESS'){
+                    return throwError(response.message);
+                }
+
+                return of(response);
+            })
+        );
+    }
+}

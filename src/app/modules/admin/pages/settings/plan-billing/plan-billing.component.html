@@ -259,8 +259,8 @@
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                 <mat-label>개인 / 법인</mat-label>
                                 <mat-select [formControlName]="'ownerType'">
-                                    <mat-option [value]="'개인'">개인</mat-option>
-                                    <mat-option [value]="'법인'">법인</mat-option>
+                                    <mat-option [value]="'개인'" (click)="selectOwnerType('개인')">개인</mat-option>
+                                    <mat-option [value]="'법인'" (click)="selectOwnerType('법인')">법인</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -308,8 +308,24 @@
                                     matInput>
                             </mat-form-field>
                         </div>
+                        <!-- ZIP -->
+                        <div class="col-span-4 sm:col-span-4">
+                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                                <mat-label>{{customerBirthday}}</mat-label>
+<!--                                <mat-icon-->
+<!--                                    class="icon-size-5"-->
+<!--                                    [svgIcon]="'heroicons_solid:eye'"-->
+<!--                                    matPrefix></mat-icon>-->
+                                <input
+                                    [formControlName]="'customerBirthday'"
+                                    matInput
+                                    type="text"
+                                    maxlength="10"
+                                >
+                            </mat-form-field>
+                        </div>
                         <!-- Country -->
-                        <div class="col-span-4 sm:col-span-2">
+                        <div class="col-span-2 sm:col-span-2">
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                 <mat-label>카드사</mat-label>
                                 <mat-icon
@@ -347,8 +363,7 @@
                             <!--                        </mat-select>-->
                             <!--                    </mat-form-field>-->
                         </div>
-                        <!-- ZIP -->
-                        <div class="col-span-4 sm:col-span-2">
+                        <div class="col-span-2 sm:col-span-2">
                             <mat-form-field class="fuse-mat-no-subscript w-full">
                                 <mat-label>비밀번호(앞 두자리)</mat-label>
                                 <mat-icon

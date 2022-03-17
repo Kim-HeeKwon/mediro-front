@@ -35,6 +35,7 @@ export class SettingsPlanBillingComponent implements OnInit
         type   : 'success',
         message: ''
     };
+    customerBirthday: string = '생년월일 or 사업자번호';
 
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -97,6 +98,8 @@ export class SettingsPlanBillingComponent implements OnInit
             payMethod       : ['',[Validators.required]],
             cardCompany    : [''],
             cardPassword   : ['',[Validators.required]],
+            customerBirthday : ['', [Validators.required]],
+            basePrice : [''],
             yearPay        : ['']
         });
         this.planBillingForm.patchValue({'yearUser': 1 + ''});
@@ -202,7 +205,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
                     loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                         tossPayments.requestPayment('카드', {
-                            amount: 150000,
+                            amount: 165000,
                             orderId: this._sessionStore.getValue().businessNumber + '_' + no,
                             orderName: '메디로 가입비',
                             customerName: this._sessionStore.getValue().businessName,
@@ -245,6 +248,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
             this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
             this.planBillingForm.patchValue({'mId':this._sessionStore.getValue().businessNumber});
+            //console.log()
 
             const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                 title: '',
@@ -311,7 +315,7 @@ export class SettingsPlanBillingComponent implements OnInit
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '성명(기업명), 카드번호, 유효기간 , CVC, 카드비밀번호를 입력해주세요.'
+                message: '성명(기업명), 카드번호, 유효기간 , CVC, 카드비밀번호, 생년월일 or 사업자번호를 입력해주세요.'
             };
 
             // Show the alert
@@ -341,6 +345,17 @@ export class SettingsPlanBillingComponent implements OnInit
                     this.planBillingForm.patchValue({'payMethod':responseData.data[0].payMethod});
                     this.planBillingForm.patchValue({'payGrade':responseData.data[0].payGrade});
                     this.planBillingForm.patchValue({'ownerType':responseData.data[0].ownerType});
+                    this.planBillingForm.patchValue({'customerBirthday':responseData.data[0].customerBirthday});
+
+                    if(responseData.data[0].ownerType === '개인'){
+
+                        this.customerBirthday = '생년월일';
+                    }else if(responseData.data[0].ownerType === '법인'){
+
+                        this.customerBirthday = '사업자번호';
+                    }else{
+                        this.customerBirthday = '생년월일 or 사업자번호';
+                    }
 
                     console.log(responseData.data[0].payMethod);
                     this.payMethod = responseData.data[0].payMethod;
@@ -490,6 +505,17 @@ export class SettingsPlanBillingComponent implements OnInit
                     p.updateSize('calc(100vw - 10px)', '');
                 }
             });
+        }
+    }
+
+    selectOwnerType(ownerType: string) {
+
+        if(ownerType === '개인'){
+            this.customerBirthday = '생년월일';
+        }else if(ownerType === '법인'){
+            this.customerBirthday = '사업자번호';
+        }else{
+            this.customerBirthday = '생년월일 or 사업자번호';
         }
     }
 }

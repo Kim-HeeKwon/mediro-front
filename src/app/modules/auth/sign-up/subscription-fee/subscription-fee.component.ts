@@ -91,7 +91,7 @@ export class SubscriptionFeeComponent implements OnInit, OnDestroy {
 
                     loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                         tossPayments.requestPayment('카드', {
-                            amount: 150000,
+                            amount: 165000,
                             orderId: this.form.businessNumber + '_' + no,
                             orderName: '메디로 가입비',
                             customerName: this.form.company,

@@ -23,6 +23,9 @@ export function createInitialState(): User {
         imgPath: null,
         popBillId: null,
         businessName: null,
+        freeYn : null,
+        payYn : null,
+        version: null,
     };
 }
 

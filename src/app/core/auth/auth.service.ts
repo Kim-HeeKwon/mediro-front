@@ -93,6 +93,45 @@ export class AuthService
         return localStorage.getItem('userGroup') ?? '';
     }
 
+    /**
+     * 무료 서비스 여부
+     */
+    set freeYn(token: string)
+    {
+        localStorage.setItem('freeYn', token);
+    }
+
+    get freeYn(): string
+    {
+        return localStorage.getItem('freeYn') ?? '';
+    }
+
+    /**
+     * 정기결제 여부
+     */
+    set payYn(token: string)
+    {
+        localStorage.setItem('payYn', token);
+    }
+
+    get payYn(): string
+    {
+        return localStorage.getItem('payYn') ?? '';
+    }
+
+    /**
+     * 버전
+     */
+    set version(token: string)
+    {
+        localStorage.setItem('version', token);
+    }
+
+    get version(): string
+    {
+        return localStorage.getItem('version') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -164,6 +203,9 @@ export class AuthService
                 this.userId = response.resultD.id;
                 this.userBusinessName = response.resultD.businessName;
                 this.userGroup = response.resultD.userType;
+                this.freeYn = response.resultD.freeYn;
+                this.payYn = response.resultD.payYn;
+                this.version = response.resultD.version;
 
                 response.resultD.mId = response.resultD.mid;
 
