@@ -31,7 +31,7 @@ import {InBound} from './inbound.types';
     styleUrls: ['./inbound.component.scss'],
 })
 export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
-
+    statusProcess: string[];
     isLoading: boolean = false;
     isMobile: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
@@ -536,4 +536,10 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    searchStatus(val: any): void {
+        this.statusProcess = val;
+        if(this.statusProcess !== null) {
+            this.searchForm.patchValue({'status': [this.statusProcess]});
+        }
+    }
 }

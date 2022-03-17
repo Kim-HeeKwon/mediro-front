@@ -187,6 +187,13 @@ export interface CommonCode
     name: string;       //NAME
 }
 
+export interface CommonCodeProcess
+{
+    id: string;         //ID
+    name: string;       //NAME
+    count: number;
+    color: boolean;
+}
 
 export interface CommonPopup
 {

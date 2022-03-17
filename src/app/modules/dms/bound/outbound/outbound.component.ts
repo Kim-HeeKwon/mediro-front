@@ -26,6 +26,7 @@ import {OutBound} from './outbound.types';
 })
 
 export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
+    statusProcess: string[];
     isLoading: boolean = false;
     isMobile: boolean = false;
     drawerMode: 'over' | 'side' = 'over';
@@ -553,6 +554,13 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                     this.selectHeader();
                 });
+        }
+    }
+
+    searchStatus(val: any): void {
+        this.statusProcess = val;
+        if(this.statusProcess !== null) {
+            this.searchForm.patchValue({'status': [this.statusProcess]});
         }
     }
 }

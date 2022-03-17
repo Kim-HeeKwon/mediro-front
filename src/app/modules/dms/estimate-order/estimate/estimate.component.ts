@@ -32,6 +32,7 @@ import * as moment from 'moment';
 export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     isMobile: boolean = false;
+    statusProcess: string;
     drawerMode: 'over' | 'side' = 'over';
     drawerOpened: boolean = false;
     searchForm: FormGroup;
@@ -775,4 +776,10 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
+    searchStatus(val: string): void{
+        this.statusProcess = val;
+        if(this.statusProcess !== null) {
+            this.searchForm.patchValue({'status': this.statusProcess});
+        }
+    }
 }

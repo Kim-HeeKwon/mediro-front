@@ -1,8 +1,16 @@
-import {Component, Input, OnInit, ViewEncapsulation} from "@angular/core";
-import {CommonCode, FuseUtilsService} from "../../services/utils";
-import {CodeStore} from "../../../app/core/common-code/state/code.store";
-import {EstimateService} from "../../../app/modules/dms/estimate-order/estimate/estimate.service";
-import {FormGroup} from "@angular/forms";
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input, OnDestroy,
+    OnInit,
+    Output,
+    ViewEncapsulation
+} from '@angular/core';
+import {CommonCodeProcess, FuseUtilsService} from '../../services/utils';
+import {CodeStore} from '../../../app/core/common-code/state/code.store';
+import {FormGroup} from '@angular/forms';
+import {Subject} from "rxjs";
 
 
 @Component({
@@ -13,53 +21,68 @@ import {FormGroup} from "@angular/forms";
     exportAs: 'appProcess'
 })
 
-export class CommonProcessComponent implements OnInit {
+export class CommonProcessComponent implements OnInit, OnDestroy {
     searchForm: FormGroup;
-    processInfo: CommonCode[] = null;
+    processInfo: CommonCodeProcess[] = null;
     process: any;
+    count: number;
     private _dataColor: string;
     private _data: string;
     private _dataProcess: string;
     private _filterValue: string;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _utilService: FuseUtilsService,
         private _codeStore: CodeStore,) {
     }
 
+    ngOnDestroy(): void {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     ngOnInit(): void {
         if (this._dataProcess !== undefined) {
             this.processInfo = this._utilService.commonValueSearchFilter(this._codeStore.getValue().data, this._dataProcess, ['ALL', this._filterValue]);
+            for (let i = 0; i < this.processInfo.length; i++) {
+                this.processInfo[i].count = i + 1;
+                this.processInfo[i].color = false;
+            }
             this.process = this.processInfo;
         }
 
     }
 
-    clickDate(id: any): void {
-        // console.log(id);
-        // this.status = id;
-    }
 
-    @Input()
-    set status(value)
-    {
-        if(!value)
-        {
-            return;
+    clickDate(id: any): void {
+        this.searchData.emit(id);
+        const name = document.getElementById(id);
+        for (let i = 0; i < this.processInfo.length; i++) {
+            if (Number(name.innerHTML) >= this.process[i].count) {
+                this.process[i].color = true;
+            }
+            if (this.process[i].color) {
+                if (Number(name.innerHTML) < this.process[i].count) {
+                    this.process[i].color = false;
+                }
+            }
         }
     }
 
-    get status(): any
-    {
+    @Output()
+    searchData = new EventEmitter<string>();
+
+
+    get status(): any {
         return this.status;
     }
 
     @Input()
-    set dataFilter(value: string)
-    {
+    set dataFilter(value: string) {
         // Return if the values are the same
-        if ( this._filterValue === value )
-        {
+        if (this._filterValue === value) {
             return;
         }
 
@@ -67,22 +90,18 @@ export class CommonProcessComponent implements OnInit {
         this._filterValue = value;
 
         // If the time range turned off...
-        if ( !value )
-        {
+        if (!value) {
         }
     }
 
-    get dataFilter(): string
-    {
+    get dataFilter(): string {
         return this.dataFilter;
     }
 
     @Input()
-    set data(value: string)
-    {
+    set data(value: string) {
         // Return if the values are the same
-        if ( this._dataProcess === value )
-        {
+        if (this._dataProcess === value) {
             return;
         }
 
@@ -90,22 +109,18 @@ export class CommonProcessComponent implements OnInit {
         this._dataProcess = value;
 
         // If the time range turned off...
-        if ( !value )
-        {
+        if (!value) {
         }
     }
 
-    get data(): string
-    {
+    get data(): string {
         return this._data;
     }
 
     @Input()
-    set dataColor(value: string)
-    {
+    set dataColor(value: string) {
         // Return if the values are the same
-        if ( this._dataColor === value )
-        {
+        if (this._dataColor === value) {
             return;
         }
 
@@ -113,13 +128,11 @@ export class CommonProcessComponent implements OnInit {
         this._dataColor = value;
 
         // If the time range turned off...
-        if ( !value )
-        {
+        if (!value) {
         }
     }
 
-    get dataColor(): string
-    {
+    get dataColor(): string {
         return this.data;
     }
 }

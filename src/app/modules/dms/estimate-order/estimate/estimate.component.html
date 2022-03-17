@@ -162,10 +162,11 @@
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
                                 <form [formGroup]="searchForm">
-                                <app-process style="display: flex"
-                                             [data]="'QT_STATUS'"
-                                             [dataFilter]="'C'"
-                                             [dataColor]="'CF'"></app-process>
+                                    <app-process style="display: flex"
+                                                 [data]="'QT_STATUS'"
+                                                 [dataFilter]="'C'"
+                                                 [dataColor]="'N'"
+                                                 (searchData)="searchStatus($event)"></app-process>
                                 </form>
                             </div>
                             <!-- Loader -->
@@ -225,7 +226,7 @@
                                         <div *ngIf="isSearchForm" class="flex w-full">
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>유형</mat-label>
-                                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'type'">
+                                                <mat-select (selectionChange)="selectHeader()" [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
                                                         <mat-option [value]="type.id">
                                                             {{type.name}}
@@ -235,8 +236,7 @@
                                             </mat-form-field>
                                             <mat-form-field class="w-1/4 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>상태</mat-label>
-                                                <mat-select (ngModelChange)="selectHeader()"
-                                                            [formControlName]="'status'">
+                                                <mat-select (selectionChange)="selectHeader()" [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
                                                             {{status.name}}
