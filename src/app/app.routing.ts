@@ -137,7 +137,7 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
             initialCommonCodeData:InitialCommonCodeDataResolver,
             initialCommonPopupData:InitialCommonPopupDataResolver,
-            initialSysConfig:InitialSysConfigDataResolver
+            //initialSysConfig:InitialSysConfigDataResolver,
         },
         children   : [
             //

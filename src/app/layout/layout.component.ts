@@ -1,8 +1,8 @@
 import { Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import {combineLatest, Observable, Subject} from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import {combineLatest, Observable, of, Subject, throwError} from 'rxjs';
+import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
 import { FuseConfigService } from '@teamplat/services/config';
 import { FuseMediaWatcherService } from '@teamplat/services/media-watcher';
 import { FuseTailwindService } from '@teamplat/services/tailwind/tailwind.service';
@@ -12,6 +12,7 @@ import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {environment} from "../../environments/environment.prod";
+import {Api} from "../../@teamplat/providers/api/api";
 
 @Component({
     selector     : 'layout',
@@ -40,6 +41,7 @@ export class LayoutComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         @Inject(DOCUMENT) private _document: any,
         private _renderer2: Renderer2,
+        private _api: Api,
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
@@ -48,6 +50,26 @@ export class LayoutComponent implements OnInit, OnDestroy
         private _deviceService: DeviceDetectorService,
     )
     {
+
+        const rtn = this._api.post('/v1/api/common/sys-config/version', '').pipe(
+            switchMap((response: any) => {
+                //console.log(response);
+                if (response.status !== 'SUCCESS'){
+                    return throwError(response.message);
+                }
+
+                return of(response);
+            })
+        );
+        rtn.toPromise().then((ex) => {
+
+            const orgversion = localStorage.getItem('vesion');
+
+            if(orgversion !== ex.data.VAL){
+                window.location.reload();
+                localStorage.setItem('vesion', ex.data.VAL);
+            }
+        });
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -60,6 +82,7 @@ export class LayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
         // Get the themes
         this._fuseTailwindConfigService.tailwindConfig$.subscribe((config) => {
             this.themes = Object.entries(config.themes);
