@@ -66,10 +66,10 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
 
     ngOnInit(): void {
         this.selectedItemPriceForm = this._formBuilder.group({
-            itemCd: ['', [Validators.required]], // 품목코드
+            itemCd: [{value: '', disabled: true}, [Validators.required]], // 품목코드
             itemNm: [{value:'', disabled:true}], // 품목명
             refItemNm: [''], // 품목명
-            account: ['', [Validators.required]], // 거래처
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처
             accountNm: [{value:'', disabled:true}], // 거래처명
             type: ['', [Validators.required]], // 유형
             unitPrice: [0, [Validators.required]], // 단가

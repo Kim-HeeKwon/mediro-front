@@ -142,12 +142,15 @@
                                                     matInput
                                                     [formControlName]="'dlvAccount'">
                                             </mat-form-field>
-                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom fuse-mat-no-subscript fuse-mat-emphasized-affix">
                                                 <mat-label>납품처 <span class="text-10s text-bold-600" style="color: red;">* 공급받는 자와 납품장소가 다를경우 *</span></mat-label>
                                                 <input
                                                     matInput
-                                                    [formControlName]="'dlvAccountNm'"
-                                                    (click)="openDlvAccountSearch()">
+                                                    [formControlName]="'dlvAccountNm'">
+                                                <mat-icon matSuffix
+                                                          class="icon-size-5 cursor-pointer"
+                                                          svgIcon="search"
+                                                          (click)="openDlvAccountSearch()"></mat-icon>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
                                                 <mat-label>납품주소</mat-label>

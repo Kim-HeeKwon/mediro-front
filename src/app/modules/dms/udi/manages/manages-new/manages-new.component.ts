@@ -118,13 +118,13 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             bcncCobTypeName : [''],
             bcncCode : [{value: ''}],
             bcncEntpAddr : [{value: '',disabled:true}],
-            bcncEntpName : [{value: '',disabled:false}],
+            bcncEntpName : [{value: '',disabled:true}],
             bcncHptlCode : [''],
             bcncTaxNo : [{value: '',disabled:true}],
             cobTypeName : [{value: '',disabled:true}],
             dvyfgCobTypeName : [{value: '',disabled:true}],
             dvyfgEntpAddr : [{value: '',disabled:true}],
-            dvyfgEntpName : [''],
+            dvyfgEntpName : [{value: '',disabled:true}],
             dvyfgHptlCode : [''],
             dvyfgPlaceBcncCode : [{value: '',disabled:true}],
             dvyfgTaxNo : [{value: '',disabled:true}],
@@ -244,6 +244,14 @@ export class ManagesNewComponent implements OnInit, OnDestroy
 
     udiDiCodeChain(): void{
         //console.log(this.selectedForm.getRawValue().udiDiCode);
+
+        let udiDiCode = this.selectedForm.getRawValue().udiDiCode;
+
+        if(udiDiCode.includes('(')){
+            udiDiCode = udiDiCode.replace('(' + '01' + ')','');
+            this.selectedForm.patchValue({'udiDiCode': udiDiCode});
+            this._changeDetectorRef.markForCheck();
+        }
 
         this._managesNewService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
             .pipe(takeUntil(this._unsubscribeAll))

@@ -122,11 +122,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         this.salesorderHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             soNo: [{value: '', disabled: true}],   // 주문번호
-            account: [{value: ''}, [Validators.required]], // 거래처 코드
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             address: [{value: ''}],   // 거래처 주소
             dlvAccount: [{value: ''}],   // 납품처
-            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: '', disabled: true}],   // 납품처
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             type: [{value: ''}, [Validators.required]],   // 유형

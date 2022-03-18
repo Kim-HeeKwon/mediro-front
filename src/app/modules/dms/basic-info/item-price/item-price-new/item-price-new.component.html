@@ -27,85 +27,76 @@
             [formGroup]="selectedItemPriceForm">
             <div class="p-4 sm:p-4">
                 <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'itemCd'"
-                                (click)="openItemSearch()">
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'itemNm'">
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>고객 품목명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'refItemNm'">
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>품목코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'itemCd'">
+                        <mat-icon matSuffix
+                                  class="icon-size-5 cursor-pointer"
+                                  svgIcon="search"
+                                  (click)="openItemSearch()"></mat-icon>
+                    </mat-form-field>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>품목명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'itemNm'">
+                    </mat-form-field>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>고객 품목명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'refItemNm'">
+                    </mat-form-field>
                 </div>
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>거래처 코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'account'"
-                                (click)="openAccountSearch()">
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>거래처 명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'accountNm'">
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>거래처 코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'account'"
+                            (click)="openAccountSearch()">
+                        <mat-icon matSuffix
+                                  class="icon-size-5 cursor-pointer"
+                                  svgIcon="search"
+                                  (click)="openAccountSearch()"></mat-icon>
+                    </mat-form-field>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>거래처 명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            [formControlName]="'accountNm'">
+                    </mat-form-field>
                 </div>
                 <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>유형<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <mat-select [formControlName]="'type'">
-                                <ng-container *ngFor="let type of type">
-                                    <mat-option [value]="type.id">
-                                        {{type.name}}
-                                    </mat-option>
-                                </ng-container>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>단가 적용일자<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                type="date"
-                                [min]="minDate"
-                                [formControlName]="'effectiveDate'">
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>단가<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
-                            <input
-                                matInput
-                                type = 'number'
-                                onfocus="this.select()"
-                                [placeholder]="'0'"
-                                [formControlName]="'unitPrice'">
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>유형<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <mat-select [formControlName]="'type'">
+                            <ng-container *ngFor="let type of type">
+                                <mat-option [value]="type.id">
+                                    {{type.name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>단가 적용일자<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            type="date"
+                            [min]="minDate"
+                            [formControlName]="'effectiveDate'">
+                    </mat-form-field>
+                    <mat-form-field class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript w-full">
+                        <mat-label>단가<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                        <input
+                            matInput
+                            type = 'number'
+                            onfocus="this.select()"
+                            [placeholder]="'0'"
+                            [formControlName]="'unitPrice'">
+                    </mat-form-field>
                 </div>
             </div>
         </form>

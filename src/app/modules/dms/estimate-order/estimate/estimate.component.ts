@@ -666,25 +666,40 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
+                    const rtn = this._estimateService.getDetailReport(0, 1000, 'qtLineNo', 'asc', estimateHeader);
 
-                    this.estimateDetails$ = this._estimateService.estimateDetails$;
-                    this._estimateService.estimateDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((estimateDetail: any) => {
-                            if (estimateDetail != null) {
-                                const row = {header: estimateHeader, detail: estimateDetail};
+                    rtn.then((ex) => {
+                        if(ex.estimateDetail){
+                            if(ex.estimateDetail != null){
                                 this._router.navigate(['estimate-order/order/order-new'], {
                                     state: {
                                         'header': estimateHeader,
-                                        'detail': estimateDetail
+                                        'detail': ex.estimateDetail
                                     }
                                 });
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                return;
                             }
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                            return;
-                        });
+                        }
+                    });
+                    // this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    // this._estimateService.estimateDetails$
+                    //     .pipe(takeUntil(this._unsubscribeAll))
+                    //     .subscribe((estimateDetail: any) => {
+                    //         if (estimateDetail != null) {
+                    //             const estimateDetails = estimateDetail;
+                    //             this._router.navigate(['estimate-order/order/order-new'], {
+                    //                 state: {
+                    //                     'header': estimateHeader,
+                    //                     'detail': estimateDetails
+                    //                 }
+                    //             });
+                    //         }
+                    //         // Mark for check
+                    //         this._changeDetectorRef.markForCheck();
+                    //         return;
+                    //     });
                 } else {
                     this.selectHeader();
                 }
@@ -719,25 +734,42 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
+                    const rtn = this._estimateService.getDetailReport(0, 1000, 'qtLineNo', 'asc', estimateHeader);
 
-                    this.estimateDetails$ = this._estimateService.estimateDetails$;
-                    this._estimateService.estimateDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((estimateDetail: any) => {
-                            if (estimateDetail != null) {
-                                const row = {header: estimateHeader, detail: estimateDetail};
+                    rtn.then((ex) => {
+                        if(ex.estimateDetail){
+                            if(ex.estimateDetail != null){
                                 this._router.navigate(['salesorder/salesorder/salesorder-new'], {
                                     state: {
                                         'header': estimateHeader,
-                                        'detail': estimateDetail
+                                        'detail': ex.estimateDetail
                                     }
                                 });
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                return;
                             }
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                            return;
-                        });
+                        }
+                    });
+                    // this._estimateService.getDetail(0, 10, 'qtLineNo', 'asc', estimateHeader);
+                    //
+                    // this.estimateDetails$ = this._estimateService.estimateDetails$;
+                    // this._estimateService.estimateDetails$
+                    //     .pipe(takeUntil(this._unsubscribeAll))
+                    //     .subscribe((estimateDetail: any) => {
+                    //         if (estimateDetail != null) {
+                    //             const row = {header: estimateHeader, detail: estimateDetail};
+                    //             this._router.navigate(['salesorder/salesorder/salesorder-new'], {
+                    //                 state: {
+                    //                     'header': estimateHeader,
+                    //                     'detail': estimateDetail
+                    //                 }
+                    //             });
+                    //         }
+                    //         // Mark for check
+                    //         this._changeDetectorRef.markForCheck();
+                    //         return;
+                    //     });
                 } else {
                     this.selectHeader();
                 }

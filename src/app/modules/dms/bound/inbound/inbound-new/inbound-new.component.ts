@@ -129,7 +129,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.inBoundHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             ibNo: [{value: '', disabled: true}],   // 입고번호
-            account: [{value: ''}, [Validators.required]], // 거래처 코드
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             type: [{value: ''}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태

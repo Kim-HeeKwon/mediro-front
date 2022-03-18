@@ -130,7 +130,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             dlvAccount: [{value: ''}],   // 납품처
-            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: '', disabled: true}],   // 납품처
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             obCreDate: [{value: '', disabled: true}],//작성일

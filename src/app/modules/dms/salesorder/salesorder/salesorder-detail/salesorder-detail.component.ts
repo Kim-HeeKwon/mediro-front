@@ -116,7 +116,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             address: [{value: ''}],   // 거래처 주소
             dlvAccount: [{value: ''}],   // 납품처
-            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: '', disabled: true}],   // 납품처
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             soAmt: [{value: '', disabled: true}],   // 주문금액

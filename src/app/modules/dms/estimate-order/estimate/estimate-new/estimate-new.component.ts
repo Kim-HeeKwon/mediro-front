@@ -109,7 +109,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.estimateHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             qtNo: [{value: '', disabled: true}],   // 견적번호
-            account: ['', [Validators.required]], // 거래처 코드
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             type: [{value: '', disabled: true}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태

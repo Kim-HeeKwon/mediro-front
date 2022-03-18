@@ -84,15 +84,18 @@
                                                     matInput
                                                     [formControlName]="'qtNo'">
                                             </mat-form-field>
-                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
+                                            <mat-form-field class="sm:col-span-2 mediro-form-field-custom fuse-mat-no-subscript fuse-mat-emphasized-affix">
                                                 <mat-label>거래처 코드
                                                     <mat-icon class="icon-size-3 icon-red"
                                                               svgIcon="heroicons_solid:check-circle"></mat-icon>
                                                 </mat-label>
                                                 <input
                                                     matInput
-                                                    [formControlName]="'account'"
-                                                    (click)="openAccountSearch()">
+                                                    [formControlName]="'account'">
+                                                <mat-icon matSuffix
+                                                          class="icon-size-5 cursor-pointer"
+                                                          svgIcon="search"
+                                                          (click)="openAccountSearch()"></mat-icon>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
                                                 <mat-label>거래처 명

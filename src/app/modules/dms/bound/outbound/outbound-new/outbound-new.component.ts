@@ -113,13 +113,13 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.outBoundHeaderForm = this._formBuilder.group({
             //mId: ['', [Validators.required]],     // 회원사
             obNo: [{value: '', disabled: true}],   // 출고번호
-            account: [{value: ''}, [Validators.required]], // 거래처 코드
+            account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
             address: [{value: ''}],   // 거래처 주소
             type: [{value: ''}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             dlvAccount: [{value: ''}],   // 납품처
-            dlvAccountNm: [{value: ''}],   // 납품처
+            dlvAccountNm: [{value: '', disabled: true}],   // 납품처
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             obCreDate: [{value: '', disabled: true}],//작성일
