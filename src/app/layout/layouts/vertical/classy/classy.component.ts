@@ -112,7 +112,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     }
 
     logoClick() {
-        console.log('sss');
         this._router.navigateByUrl('monitoring/dashboards');
     }
 }

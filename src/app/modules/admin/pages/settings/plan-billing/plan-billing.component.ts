@@ -356,8 +356,6 @@ export class SettingsPlanBillingComponent implements OnInit
                     }else{
                         this.customerBirthday = '생년월일 or 사업자번호';
                     }
-
-                    console.log(responseData.data[0].payMethod);
                     this.payMethod = responseData.data[0].payMethod;
                     this._changeDetectorRef.markForCheck();
 

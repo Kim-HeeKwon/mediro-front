@@ -239,8 +239,6 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
 
     alertValueSettingMessage(param: any): void
     {
-        //console.log(param);
-
         this.selectedForm.patchValue({'udiDiSeq': ''});
         this.selectedForm.patchValue({'typeName': ''});
         this.selectedForm.patchValue({'meddevItemSeq': ''});
@@ -284,12 +282,9 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
     }
 
     udiDiCodeChain(): void{
-        //console.log(this.selectedForm.getRawValue().udiDiCode);
-
         this._managesService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((manages: any) => {
-                //console.log(manages);
                 this.alertValueSettingMessage(manages);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -320,11 +315,6 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if(result){
-
-                        //console.log(this.selectedForm.getRawValue());
-                        //this.matDialogRef.close();
-                        //return;
-
                         const sendData = [];
                         sendData.push(this.selectedForm.getRawValue());
                         this._managesService.updateSupplyInfo(sendData)

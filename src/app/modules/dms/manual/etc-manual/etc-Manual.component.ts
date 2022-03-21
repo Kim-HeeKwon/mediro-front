@@ -55,5 +55,18 @@ export class etcManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/BWJGNlTVwhw');
     }
 
+    gridCopy(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/ehIfioQPTqo');
+    }
+
+    gridPaginate(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/VrGTdEJrXTk');
+    }
+
+
 }
 

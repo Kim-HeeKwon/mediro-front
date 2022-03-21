@@ -77,8 +77,6 @@ export class ManagesEmailComponent implements OnInit, OnDestroy
     }
 
     ngOnInit(): void {
-        console.log(this.rows);
-        console.log(this.searchForm);
         this.selectedForm = this._formBuilder.group({
             year: [''],
             month: [''],
