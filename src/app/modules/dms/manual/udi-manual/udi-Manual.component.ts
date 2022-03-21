@@ -57,4 +57,10 @@ export class udiManualComponent{
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/wcZ4VlP4qZ4');
     }
 
+    udiEmail(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/G1nbBFCT8pA');
+    }
+
 }

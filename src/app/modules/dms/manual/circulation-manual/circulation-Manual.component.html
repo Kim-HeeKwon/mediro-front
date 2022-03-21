@@ -262,6 +262,13 @@
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
+                    (click)="inboundSell()">
+                    <span>반품 입고</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [ngStyle]="{'width': '94%'}"
                     (click)="inboundEnd()">
                     <span>입고 마감</span>
                 </button>
@@ -324,6 +331,13 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="outboundStore()">
+                    <span>출고 부분출고/출고</span>
+                </button>
+                <button
+                    class="ml-3 mb-3 mediro-btn-custom-background-color"
+                    mat-raised-button
+                    [ngStyle]="{'width': '94%'}"
+                    (click)="outboundUDIStore()">
                     <span>출고 부분출고/출고</span>
                 </button>
                 <button
@@ -557,50 +571,58 @@
                             <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                         </button>
                     </div>
-                    <div *ngIf="inbound" class="flex w- 6/6 my-2">
+                    <div *ngIf="inbound" class="flex w- 7/7 my-2">
                         <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundLookUp()">
                             <span>입고 조회</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundCreat()">
                             <span>입고 신규 등록</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundUpdate()">
                             <span>입고 수정</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundStore()">
                             <span>입고 부분입고/입고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button (click)="inboundSell()">
+                            <span>반품 입고</span>
+                        </button>
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundEnd()">
                             <span>입고 마감</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/7 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="inboundDelete()">
                             <span>입고 취소</span>
                         </button>
                     </div>
-                    <div *ngIf="outbound" class="flex w- 5/5 my-2">
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                    <div *ngIf="outbound" class="flex w- 6/6 my-2">
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="outboundLookUp()">
                             <span>출고 조회</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="outboundCreat()">
                             <span>출고 신규 등록</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="outboundUpdate()">
                             <span>출고 수정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="outboundStore()">
                             <span>출고 부분출고/출고</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                                mat-flat-button (click)="outboundUDIStore()">
+                            <span>UDI 공급내역 출고</span>
+                        </button>
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button (click)="outboundDelete()">
                             <span>출고 취소</span>
                         </button>

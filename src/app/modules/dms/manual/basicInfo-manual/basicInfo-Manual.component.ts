@@ -99,7 +99,7 @@ export class basicInfoManualComponent {
     itemCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/kuaPhOlhs04');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/oPsy2TfuOMg');
     }
 
     itemUpdate(): void {

@@ -246,6 +246,12 @@ export class circulationManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/apRbT-4pMv0');
     }
 
+    inboundSell(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/TBfYjzTIBks');
+    }
+
     inboundEnd(): void {
         this.video = true;
         // eslint-disable-next-line max-len
@@ -280,6 +286,12 @@ export class circulationManualComponent {
         this.video = true;
         // eslint-disable-next-line max-len
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Eo1zhuJUzU8');
+    }
+
+    outboundUDIStore(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/cvWado3rE_k');
     }
 
 

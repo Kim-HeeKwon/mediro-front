@@ -15,8 +15,8 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export class etcManualComponent {
     excel: boolean = false;
+    video: boolean = false;
     grid: boolean = false;
-    email: boolean = false;
     url: SafeResourceUrl;
     isMobile: boolean = false;
 
@@ -31,7 +31,6 @@ export class etcManualComponent {
         } else {
             this.excel = true;
             this.grid = false;
-            this.email = false;
         }
     }
 
@@ -41,18 +40,20 @@ export class etcManualComponent {
         } else {
             this.excel = false;
             this.grid = true;
-            this.email = false;
         }
     }
 
-    emailBtn(): void {
-        if(this.email) {
-            this.email = false;
-        } else {
-            this.excel = false;
-            this.grid = false;
-            this.email = true;
-        }
+    excelDown(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/w6Uy-La_-rA');
     }
+
+    gridManagement(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/BWJGNlTVwhw');
+    }
+
 }
 
