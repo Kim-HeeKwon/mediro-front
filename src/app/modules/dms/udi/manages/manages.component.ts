@@ -204,6 +204,18 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'itemName',
+                fieldName: 'itemName',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'stdCode', fieldName: 'stdCode', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '표준코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true

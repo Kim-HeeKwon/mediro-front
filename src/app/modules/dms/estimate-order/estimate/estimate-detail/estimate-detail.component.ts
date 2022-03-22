@@ -145,7 +145,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this.estimateHeaderForm.patchValue({'qtAmt' :
                     this.priceToString(this._activatedRoute.snapshot.paramMap['params'].qtAmt)});
 
-            this._estimateService.getDetail(0, 40, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
+            this._estimateService.getDetail(0, 100, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
         }
 
         const valuesItemGrades = [];
@@ -744,7 +744,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             }
         }).then((ex) => {
-            this._estimateService.getDetail(0, 40, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
+            this._estimateService.getDetail(0, 100, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
 
             this.setGridData();
 

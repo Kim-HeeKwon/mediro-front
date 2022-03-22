@@ -143,7 +143,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             this.inBoundHeaderForm.patchValue({'ibAmt' :
             this.priceToString(this._activatedRoute.snapshot.paramMap['params'].ibAmt)});
 
-            this._inboundService.getDetail(0, 40, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
+            this._inboundService.getDetail(0, 100, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._inBoundDetailPagenator._intl.itemsPerPageLabel = '';
@@ -964,7 +964,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 this._changeDetectorRef.markForCheck();
             }
         }).then((ex) =>{
-            this._inboundService.getDetail(0, 40, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
+            this._inboundService.getDetail(0, 100, 'ibLineNo', 'asc', this.inBoundHeaderForm.getRawValue());
 
             this.setGridData();
             this._inboundService.inBoundDetailPagenation$

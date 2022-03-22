@@ -134,7 +134,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             this.salesorderHeaderForm.patchValue({'soAmt' :
                     this.priceToString(this._activatedRoute.snapshot.paramMap['params'].soAmt)});
 
-            this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+            this._salesorderService.getDetail(0, 100, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._salesorderDetailPagenator._intl.itemsPerPageLabel = '';
@@ -661,7 +661,7 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
                 this._changeDetectorRef.markForCheck();
             }
         }).then((ex) => {
-            this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+            this._salesorderService.getDetail(0, 100, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
 
             this.setGridData();
 

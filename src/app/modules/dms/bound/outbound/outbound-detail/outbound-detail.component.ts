@@ -31,6 +31,7 @@ import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-bill/common-bill.types';
 import {CommonBillComponent} from '../../../../../../@teamplat/components/common-bill';
 import {OutboundScanComponent} from "../../../../../../@teamplat/components/outbound-scan";
+import {Common} from "../../../../../../@teamplat/providers/common/common";
 
 @Component({
     selector: 'app-dms-outbound-detail',
@@ -103,6 +104,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         private _formBuilder: FormBuilder,
         public _matDialogPopup: MatDialog,
         private _codeStore: CodeStore,
+        private _common: Common,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
@@ -159,7 +161,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             this.outBoundHeaderForm.patchValue({'obAmt' :
                 this.priceToString(this._activatedRoute.snapshot.paramMap['params'].obAmt)});
 
-            this._outboundService.getDetail(0, 40, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
+            this._outboundService.getDetail(0, 100, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
         }
 
         //페이지 라벨
@@ -775,44 +777,117 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             //리스트 중 하나라도 바코드 스캔 여부 Y
             if(rowYs.length > 0){
 
-                if (!this.isMobile) {
-                    const d = this._matDialog.open(OutboundScanComponent, {
-                        autoFocus: false,
-                        disableClose: true,
-                        maxHeight: '90vh',
-                        data: {
-                            detail: rowYs,
-                            detailN: rowNs
-                        },
-                    });
-                    d.afterClosed().subscribe(() => {
-                        this.reData();
-                    });
-                } else {
-                    const d = this._matDialog.open(OutboundScanComponent, {
-                        data: {
-                            detail: rowYs,
-                            detailN: rowNs
-                        },
-                        autoFocus: false,
-                        width: 'calc(100% - 50px)',
-                        maxWidth: '100vw',
-                        maxHeight: '80vh',
-                        disableClose: true
-                    });
-                    const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                        if (size.matches) {
-                            d.updateSize('calc(100vw - 10px)', '');
-                        } else {
+                //유효기간 체크
+                this._common.sendData(this.outBoundHeaderForm.getRawValue(),'/v1/api/inOut/outBound/validity-List')
+                    .subscribe((responseData: any) => {
+                        if (!this._common.gfn_isNull(responseData.data)) {
+                            console.log(responseData.data);
+
+                            let itemNm = '';
+                            responseData.data.forEach((p) => {
+                                itemNm += p.itemNm + ', ';
+                            });
+
+                            const confirmation = this._teamPlatConfirmationService.open({
+                                title: '출고',
+                                message: '유효기간이 만료된 품목이 존재합니다. 출고하시겠습니까? <br> '
+                                    + '품목명 리스트 : ' + itemNm,
+                                actions: {
+                                    confirm: {
+                                        label: '출고'
+                                    },
+                                    cancel: {
+                                        label: '닫기'
+                                    }
+                                }
+                            });
+
+                            confirmation.afterClosed()
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((result) => {
+                                    if (result) {
+                                        if (!this.isMobile) {
+                                            const d = this._matDialog.open(OutboundScanComponent, {
+                                                autoFocus: false,
+                                                disableClose: true,
+                                                maxHeight: '90vh',
+                                                data: {
+                                                    detail: rowYs,
+                                                    detailN: rowNs
+                                                },
+                                            });
+                                            d.afterClosed().subscribe(() => {
+                                                this.reData();
+                                            });
+                                        } else {
+                                            const d = this._matDialog.open(OutboundScanComponent, {
+                                                data: {
+                                                    detail: rowYs,
+                                                    detailN: rowNs
+                                                },
+                                                autoFocus: false,
+                                                width: 'calc(100% - 50px)',
+                                                maxWidth: '100vw',
+                                                maxHeight: '80vh',
+                                                disableClose: true
+                                            });
+                                            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                                if (size.matches) {
+                                                    d.updateSize('calc(100vw - 10px)', '');
+                                                } else {
+                                                }
+                                            });
+                                            d.afterClosed().subscribe(() => {
+                                                this.reData();
+                                                smallDialogSubscription.unsubscribe();
+                                            });
+                                        }
+                                    }
+                                });
+
+
+                        }else{
+                            if (!this.isMobile) {
+                                const d = this._matDialog.open(OutboundScanComponent, {
+                                    autoFocus: false,
+                                    disableClose: true,
+                                    maxHeight: '90vh',
+                                    data: {
+                                        detail: rowYs,
+                                        detailN: rowNs
+                                    },
+                                });
+                                d.afterClosed().subscribe(() => {
+                                    this.reData();
+                                });
+                            } else {
+                                const d = this._matDialog.open(OutboundScanComponent, {
+                                    data: {
+                                        detail: rowYs,
+                                        detailN: rowNs
+                                    },
+                                    autoFocus: false,
+                                    width: 'calc(100% - 50px)',
+                                    maxWidth: '100vw',
+                                    maxHeight: '80vh',
+                                    disableClose: true
+                                });
+                                const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                    if (size.matches) {
+                                        d.updateSize('calc(100vw - 10px)', '');
+                                    } else {
+                                    }
+                                });
+                                d.afterClosed().subscribe(() => {
+                                    this.reData();
+                                    smallDialogSubscription.unsubscribe();
+                                });
+                            }
                         }
                     });
-                    d.afterClosed().subscribe(() => {
-                        this.reData();
-                        smallDialogSubscription.unsubscribe();
-                    });
-                }
-            }else{
 
+
+            }else{
                 //리스트 전부 바코드 스캔 여부 N
                 this.outBoundBarcodeN(rows);
             }
@@ -886,35 +961,83 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     outBoundBarcodeN(outBoundData: OutBound[]){
-        const confirmation = this._teamPlatConfirmationService.open({
-            title: '출고',
-            message: '출고하시겠습니까?',
-            actions: {
-                confirm: {
-                    label: '출고'
-                },
-                cancel: {
-                    label: '닫기'
-                }
-            }
-        });
-        outBoundData = outBoundData.filter((outBound: any) => outBound.obQty > 0).map((param: any) => param);
 
-        const rows = this.headerDataSet(outBoundData);
-        confirmation.afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if (result) {
-                    this._outboundService.outBoundBarcodeN(rows)
+        //유효기간 체크
+        this._common.sendData(this.outBoundHeaderForm.getRawValue(),'/v1/api/inOut/outBound/validity-List')
+            .subscribe((responseData: any) => {
+                if(!this._common.gfn_isNull(responseData.data)){
+
+                    let itemNm = '';
+                    responseData.data.forEach((p) => {
+                        itemNm += p.itemNm + ', ';
+                    });
+
+                    const confirmation = this._teamPlatConfirmationService.open({
+                        title: '출고',
+                        message: '유효기간이 만료된 품목이 존재합니다. 출고하시겠습니까? <br> '
+                                    + '품목명 리스트 : ' + itemNm,
+                        actions: {
+                            confirm: {
+                                label: '출고'
+                            },
+                            cancel: {
+                                label: '닫기'
+                            }
+                        }
+                    });
+                    outBoundData = outBoundData.filter((outBound: any) => outBound.obQty > 0).map((param: any) => param);
+
+                    const rows = this.headerDataSet(outBoundData);
+                    confirmation.afterClosed()
                         .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((outBound: any) => {
-                            this._functionService.cfn_loadingBarClear();
-                            this.alertMessage(outBound);
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
+                        .subscribe((result) => {
+                            if (result) {
+                                this._outboundService.outBoundBarcodeN(rows)
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((outBound: any) => {
+                                        this._functionService.cfn_loadingBarClear();
+                                        this.alertMessage(outBound);
+                                        // Mark for check
+                                        this._changeDetectorRef.markForCheck();
+                                    });
+                            }
+                        });
+
+                }else{
+                    const confirmation = this._teamPlatConfirmationService.open({
+                        title: '출고',
+                        message: '출고하시겠습니까?',
+                        actions: {
+                            confirm: {
+                                label: '출고'
+                            },
+                            cancel: {
+                                label: '닫기'
+                            }
+                        }
+                    });
+                    outBoundData = outBoundData.filter((outBound: any) => outBound.obQty > 0).map((param: any) => param);
+
+                    const rows = this.headerDataSet(outBoundData);
+                    confirmation.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                this._outboundService.outBoundBarcodeN(rows)
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((outBound: any) => {
+                                        this._functionService.cfn_loadingBarClear();
+                                        this.alertMessage(outBound);
+                                        // Mark for check
+                                        this._changeDetectorRef.markForCheck();
+                                    });
+                            }
                         });
                 }
             });
+
+
+
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -977,7 +1100,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._changeDetectorRef.markForCheck();
             }
         }).then((ex) =>{
-            this._outboundService.getDetail(0, 40, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
+            this._outboundService.getDetail(0, 100, 'obLineNo', 'asc', this.outBoundHeaderForm.getRawValue());
 
             this.setGridData();
             this._outboundService.outBoundDetailPagenation$

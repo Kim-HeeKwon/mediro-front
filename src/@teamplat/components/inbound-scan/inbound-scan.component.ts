@@ -658,6 +658,8 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             if(manufYm === undefined){
                 manufYm = '';
+            }else if(manufYm === ''){
+                manufYm = '';
             }else{
                 if(manufYm.replace('(' + '11' + ')','').length !== 6){
                     this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
@@ -665,6 +667,8 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
             if(useTmlmt === undefined){
+                useTmlmt = '';
+            }else if(useTmlmt === ''){
                 useTmlmt = '';
             }else{
                 if(useTmlmt.replace('(' + '17' + ')','').length !== 6){

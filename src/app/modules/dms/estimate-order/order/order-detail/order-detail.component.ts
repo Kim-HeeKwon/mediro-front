@@ -143,7 +143,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             this.orderHeaderForm.patchValue({'poAmt' :
                     this.priceToString(this._activatedRoute.snapshot.paramMap['params'].poAmt)});
 
-            this._orderService.getDetail(0, 40, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
+            this._orderService.getDetail(0, 100, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
         }
         //페이지 라벨
         this._orderDetailPagenator._intl.itemsPerPageLabel = '';
@@ -757,7 +757,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._changeDetectorRef.markForCheck();
             }
         }).then((ex) => {
-            this._orderService.getDetail(0, 40, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
+            this._orderService.getDetail(0, 100, 'poLineNo', 'asc', this.orderHeaderForm.getRawValue());
 
             this.setGridData();
 
