@@ -216,6 +216,20 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'suplyQty', fieldName: 'suplyQty', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '공급수량', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
+            },
+            {
+                name: 'suplyAmt', fieldName: 'suplyAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '공급금액', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
+            },
+            {
                 name: 'stdCode', fieldName: 'stdCode', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '표준코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
@@ -270,22 +284,8 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'suplyQty', fieldName: 'suplyQty', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급수량', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-                , numberFormat: '#,##0'
-            },
-            {
                 name: 'suplyUntpc', fieldName: 'suplyUntpc', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '공급단가', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-                , numberFormat: '#,##0'
-            },
-            {
-                name: 'suplyAmt', fieldName: 'suplyAmt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급금액', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
