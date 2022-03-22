@@ -332,7 +332,7 @@ export class Api {
                     'Accept': 'application/json, text/plain, */*; q=0.01',
                     'Accept-Language': 'ko-KR'
                 }
-            });
+            }).pipe(catchError(this.handleError('error', this._functionService)));;
 
 
         //loading.close();

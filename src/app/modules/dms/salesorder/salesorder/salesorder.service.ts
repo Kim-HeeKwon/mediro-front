@@ -156,6 +156,44 @@ export class SalesorderService {
     }
 
     /**
+     * Post getDetail
+     *
+     * @returns
+     */
+    getDetailReport(page: number = 0, size: number = 1000, sort: string = 'soLineNo', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Promise<{ salesorderDetailPagenation: SalesOrderDetailPagenation; salesorderDetail: SalesOrderDetail[] }> {
+
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/salesorder/detail-List')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._salesorderDetails.next(response.data);
+                        this._salesorderDetailPagenation.next(response.pageNation);
+                        resolve({salesorderDetailPagenation: response.pageNation , salesorderDetail: response.data});
+                    }
+                }, reject);
+        });
+    }
+
+    /**
      * Post getNew
      *
      * @returns

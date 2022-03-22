@@ -27,6 +27,9 @@ import {CommonModule} from "@angular/common";
 import {SettingsUserGuideComponent} from "./userGuide/userGuide.component";
 import {MatTabsModule} from "@angular/material/tabs";
 import {ApplyContractComponent} from "./plan-billing/apply-contract/apply-contract.component";
+import {SettingsBillingComponent} from "./billing/billing.component";
+import {MatTreeModule} from "@angular/material/tree";
+import {CdkTreeModule} from "@angular/cdk/tree";
 
 @NgModule({
     declarations: [
@@ -34,6 +37,7 @@ import {ApplyContractComponent} from "./plan-billing/apply-contract/apply-contra
         SettingsAccountComponent,
         SettingsSecurityComponent,
         SettingsPlanBillingComponent,
+        SettingsBillingComponent,
         SettingsNotificationsComponent,
         SettingsTeamComponent,
         SettingsTaxComponent,
@@ -58,7 +62,9 @@ import {ApplyContractComponent} from "./plan-billing/apply-contract/apply-contra
         FuseAlertModule,
         SharedModule,
         MatProgressSpinnerModule,
-        MatTabsModule
+        MatTabsModule,
+        MatTreeModule,
+        CdkTreeModule
     ]
 })
 export class SettingsModule

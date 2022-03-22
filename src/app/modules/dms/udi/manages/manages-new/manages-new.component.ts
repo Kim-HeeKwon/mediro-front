@@ -97,9 +97,9 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             suplyContStdmt: [{value: ''}],
             suplyFlagCode: [{value: ''}, [Validators.required]], // 공급구분
             suplyTypeCode: [{value: ''}], // 공급형태
-            stdCode : [{value: '',disabled:true}, [Validators.required]],
-            udiDiCode : [{value: ''}, [Validators.required]],
-            udiPiCode : [{value: ''}, [Validators.required]],
+            stdCode : [{value: ''}, [Validators.required]],
+            udiDiCode : [{value: '',disabled:true}, [Validators.required]],
+            udiPiCode : [{value: '',disabled:true}, [Validators.required]],
             entpName : [{value: '',disabled:true}],
             itemName : [{value: '',disabled:true}],
             meaClassNo : [{value: '',disabled:true}],
@@ -146,6 +146,7 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         this.selectedForm.patchValue({'month': ''});
         this.selectedForm.patchValue({'suplyTypeCode': ''});
         this.selectedForm.patchValue({'bcncCode': ''});
+        this.selectedForm.patchValue({'stdCode': ''});
         this.selectedForm.patchValue({'udiDiCode': ''});
         this.selectedForm.patchValue({'udiPiCode': ''});
         this.changeAccountHidden = true;
@@ -244,24 +245,6 @@ export class ManagesNewComponent implements OnInit, OnDestroy
 
     udiDiCodeChain(): void{
         //console.log(this.selectedForm.getRawValue().udiDiCode);
-
-        let udiDiCode = this.selectedForm.getRawValue().udiDiCode;
-
-        if(udiDiCode.includes('(')){
-            udiDiCode = udiDiCode.replace('(' + '01' + ')','');
-            this.selectedForm.patchValue({'udiDiCode': udiDiCode});
-            this._changeDetectorRef.markForCheck();
-        }
-
-        this._managesNewService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((manages: any) => {
-                //console.log(manages);
-                this._functionService.cfn_loadingBarClear();
-                this.alertValueSettingMessage(manages);
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 
     udiPiCodeChain(): void{
@@ -589,5 +572,203 @@ export class ManagesNewComponent implements OnInit, OnDestroy
         }else{
             this.changeDlvAccountHidden = true;
         }
+    }
+
+    udiStdCode($event: any) {
+
+        let udiCode = $event.target.value;
+        if(udiCode === ''){
+
+        }else{
+
+            let lotNo;
+            let manufYm;
+            let useTmlmt;
+            let itemSeq;
+            let stdCode;
+
+            if(udiCode.length < 17){
+                this.failAlert();
+                return;
+            }
+            let udiDiCode;
+            let udiPiCode;
+            if(!udiCode.includes('(')){
+                try{
+                    udiDiCode = udiCode.substring(0, 16);
+                    udiPiCode = '';
+                    udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
+
+                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
+
+                    //값이 없을 때 까지
+                    while(cutUdiPiCode !== ''){
+
+                        if(cutUdiPiCode.substring(0, 2) === '11'){
+
+                            manufYm = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '17'){
+
+                            useTmlmt = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '10'){
+
+                            const len = cutUdiPiCode.length;
+
+                            if(len > 22){
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            }else{
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '21'){
+
+                            const len = cutUdiPiCode.length;
+
+                            if(len > 22){
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            }else{
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        }else{
+                            break;
+                        }
+                    }
+
+                    if(lotNo === undefined){
+                        lotNo = '';
+                    }
+                    if(itemSeq === undefined){
+                        itemSeq = '';
+                    }
+
+                    if(manufYm === undefined){
+                        manufYm = '';
+                    }else{
+                        if(manufYm.replace('(' + '11' + ')','').length !== 6){
+                            this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                            return;
+                        }
+                    }
+
+                    if(useTmlmt === undefined){
+                        useTmlmt = '';
+                    }else{
+                        if(useTmlmt.replace('(' + '17' + ')','').length !== 6){
+                            this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                            return;
+                        }
+                    }
+
+                    udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
+                    udiCode = udiDiCode + udiPiCode;
+
+                }catch (e){
+                    this.failAlert();
+                    return;
+                }
+            }
+
+            const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
+            list.forEach((check: any) => {
+
+                const chk = check;
+                let result = '';
+                const idx = udiCode.indexOf(chk, 0);
+                if(idx >= 0){
+                    let lastIndex = udiCode.indexOf('(', idx + 1);
+                    if(lastIndex >= 0){
+                        lastIndex = udiCode.indexOf('(', idx + 1);
+                    }else{
+                        lastIndex = udiCode.length;
+                    }
+                    result = udiCode.substring(idx, lastIndex)
+                        .replace('(' + chk + ')','');
+
+                    if(chk === '(01)'){
+                        stdCode = result;
+                    }else if(chk === '(10)'){
+                        lotNo = result;
+                    }else if(chk === '(11)'){
+                        manufYm = result;
+                    }else if(chk === '(17)'){
+                        useTmlmt = result;
+                    }else if(chk === '(21)'){
+                        itemSeq = result;
+                    }
+                }
+            });
+
+            if(lotNo === undefined){
+                lotNo = '';
+            }
+            if(itemSeq === undefined){
+                itemSeq = '';
+            }
+            if(manufYm === undefined){
+                manufYm = '';
+            }else{
+                if(manufYm.replace('(' + '11' + ')','').length !== 6){
+                    this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                    return;
+                }
+            }
+            if(useTmlmt === undefined){
+                useTmlmt = '';
+            }else{
+                if(useTmlmt.replace('(' + '17' + ')','').length !== 6){
+                    this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                    return;
+                }
+            }
+            udiDiCode = stdCode;
+            udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
+
+            // console.log(udiDiCode);
+            // console.log(udiPiCode);
+
+            this.selectedForm.patchValue({'udiDiCode': udiDiCode});
+            this.selectedForm.patchValue({'udiPiCode': udiPiCode});
+
+            let udiDiCodeA = this.selectedForm.getRawValue().udiDiCode;
+
+            if(udiDiCodeA.includes('(')){
+                udiDiCodeA = udiDiCodeA.replace('(' + '01' + ')','');
+                this.selectedForm.patchValue({'udiDiCode': udiDiCodeA});
+                this._changeDetectorRef.markForCheck();
+            }
+
+            this._managesNewService.getUdiDiCodeInfo(this.selectedForm.getRawValue())
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((manages: any) => {
+                    //console.log(manages);
+                    this._functionService.cfn_loadingBarClear();
+                    this.alertValueSettingMessage(manages);
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+        }
+    }
+
+    failAlert(){
+
+        setTimeout(() =>{
+            //this.selectedForm.patchValue({'stdCode': ''});
+        },100);
+        // Set the alert
+        this.alert = {
+            type   : 'error',
+            message: '코드를 다시 입력해주세요. 올바른 형식이 아닙니다.'
+        };
+        // Show the alert
+        this.showAlert = true;
     }
 }

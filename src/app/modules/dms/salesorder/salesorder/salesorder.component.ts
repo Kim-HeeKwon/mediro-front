@@ -302,13 +302,13 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellItemClicked = (grid, index, clickData) => {
 
-            console.log(clickData.value);
+            //console.log(clickData.value);
             const searchParam = {
                 obNo: clickData.value
             };
             const rtn = this._outBoundService.getHeader(0, 1, 'obNo', 'desc', searchParam);
             rtn.then((ex) => {
-                console.log(ex);
+                //console.log(ex);
                 if(ex.outBoundHeader.length > 0){
                     this._router.navigate(['bound/outbound/outbound-detail', ex.outBoundHeader[0]]);
                 }else{

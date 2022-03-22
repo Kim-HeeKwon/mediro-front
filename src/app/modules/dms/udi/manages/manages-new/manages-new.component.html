@@ -91,8 +91,10 @@
                             <mat-label>표준코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
-                                [formControlName]="'stdCode'"
-                                [attr.disabled]="is_edit?'':false">
+                                #stdCode
+                                onfocus="this.select()"
+                                (keydown.enter)="udiStdCode($event)"
+                                [formControlName]="'stdCode'">
                         </mat-form-field>
                     </div>
                 </div>
@@ -102,8 +104,8 @@
                             <mat-label>고유식별자(UDI-DI)<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
-                                (ngModelChange)="udiDiCodeChain()"
-                                [formControlName]="'udiDiCode'">
+                                [formControlName]="'udiDiCode'"
+                                [attr.disabled]="is_edit?'':false">
                         </mat-form-field>
                     </div>
                     <div class="sm:col-span-2">
@@ -111,8 +113,9 @@
                             <mat-label>생산식별자(UDI-PI)<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                             <input
                                 matInput
+                                [formControlName]="'udiPiCode'"
                                 (ngModelChange)="udiPiCodeChain()"
-                                [formControlName]="'udiPiCode'">
+                                [attr.disabled]="is_edit?'':false">
                         </mat-form-field>
                     </div>
                 </div>

@@ -82,6 +82,12 @@ export class SettingsComponent implements OnInit, OnDestroy
                 description: '결제 정보 관리'
             },
             {
+                id         : 'billing',
+                icon       : 'heroicons_outline:credit-card',
+                title      : '청구서',
+                description: '결제 대시보드'
+            },
+            {
                 id         : 'kakaoNotificationTalk',
                 icon       : 'question_answer',
                 title      : '알림톡 설정',

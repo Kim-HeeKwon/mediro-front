@@ -609,25 +609,40 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._salesorderService.getDetail(0, 40, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
+                    const rtn = this._salesorderService.getDetailReport(0, 1000, 'soLineNo', 'asc', this.salesorderHeaderForm.getRawValue());
 
-                    this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
-                    this._salesorderService.salesorderDetails$
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((salesorderDetail: any) => {
-                            if (salesorderDetail != null) {
-                                const row = {header: this.salesorderHeaderForm.getRawValue(), detail: salesorderDetail};
-                                // eslint-disable-next-line max-len
+                    rtn.then((ex) => {
+                        if(ex.salesorderDetail){
+                            if(ex.salesorderDetail != null){
                                 this._router.navigate(['bound/inbound/inbound-new'], {
                                     state: {
                                         'header': this.salesorderHeaderForm.getRawValue(),
-                                        'detail': salesorderDetail
+                                        'detail': ex.salesorderDetail
                                     }
                                 });
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                                return;
                             }
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
+                        }
+                    });
+                    // this.salesorderDetails$ = this._salesorderService.salesorderDetails$;
+                    // this._salesorderService.salesorderDetails$
+                    //     .pipe(takeUntil(this._unsubscribeAll))
+                    //     .subscribe((salesorderDetail: any) => {
+                    //         if (salesorderDetail != null) {
+                    //             const row = {header: this.salesorderHeaderForm.getRawValue(), detail: salesorderDetail};
+                    //             // eslint-disable-next-line max-len
+                    //             this._router.navigate(['bound/inbound/inbound-new'], {
+                    //                 state: {
+                    //                     'header': this.salesorderHeaderForm.getRawValue(),
+                    //                     'detail': salesorderDetail
+                    //                 }
+                    //             });
+                    //         }
+                    //         // Mark for check
+                    //         this._changeDetectorRef.markForCheck();
+                    //     });
                 }
             });
     }

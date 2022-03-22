@@ -395,6 +395,10 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                     });
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.inBoundDetailDataProvider, inBoundDetail);
+
+                    for(let i=0; i<this.inBoundDetails.length; i++){
+                        this.inBoundDetailDataProvider.setRowState(i, 'created', true);
+                    }
                     this._changeDetectorRef.markForCheck();
                 });
         }
@@ -444,9 +448,9 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.inBoundHeaderForm.invalid) {
 
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
-
             let detailCheck = false;
-
+            console.log(rows);
+            //return;
             if (rows.length === 0) {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
                 detailCheck = true;
