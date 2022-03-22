@@ -218,8 +218,7 @@
                 [ngClass]="{'pointer-events-none': false}"
                 [length]="inBoundDetailPagenation === null ? 0 : inBoundDetailPagenation.length"
                 [pageIndex]="inBoundDetailPagenation === null ? 0 : inBoundDetailPagenation.page"
-                [pageSize]="inBoundDetailPagenation === null ? 0 : inBoundDetailPagenation.size"
-                [pageSizeOptions]="[40, 60, 80, 100, 120]"
+                [pageSize]="inBoundDetailPagenation === null ? 0 : 100"
                 (page)="pageEvent($event)"
                 [showFirstLastButtons]="true"></mat-paginator>
         </div>

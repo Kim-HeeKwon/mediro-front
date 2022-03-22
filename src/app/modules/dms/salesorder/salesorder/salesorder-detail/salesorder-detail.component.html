@@ -244,8 +244,7 @@
                 [ngClass]="{'pointer-events-none': false}"
                 [length]="salesorderDetailPagenation === null ? 0 : salesorderDetailPagenation.length"
                 [pageIndex]="salesorderDetailPagenation === null ? 0 : salesorderDetailPagenation.page"
-                [pageSize]="salesorderDetailPagenation === null ? 0 : salesorderDetailPagenation.size"
-                [pageSizeOptions]="[40, 60, 80, 100, 120]"
+                [pageSize]="salesorderDetailPagenation === null ? 0 : 100"
                 (page)="pageEvent($event)"
                 [showFirstLastButtons]="true"></mat-paginator>
         </div>

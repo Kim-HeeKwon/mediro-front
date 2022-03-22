@@ -245,8 +245,7 @@
                 [ngClass]="{'pointer-events-none': false}"
                 [length]="estimateDetailPagenation === null ? 0 : estimateDetailPagenation.length"
                 [pageIndex]="estimateDetailPagenation === null ? 0 : estimateDetailPagenation.page"
-                [pageSize]="estimateDetailPagenation === null ? 0 : estimateDetailPagenation.size"
-                [pageSizeOptions]="[40, 60, 80, 100, 120]"
+                [pageSize]="estimateDetailPagenation === null ? 0 : 100"
                 (page)="pageEvent($event)"
                 [showFirstLastButtons]="true"></mat-paginator>
 

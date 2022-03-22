@@ -712,7 +712,7 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         if(dateGbn === 'today'){
             this.range = {
                 end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).startOf('day').toISOString(),
+                start  : moment().utc(false).add(-1, 'day').endOf('day').toISOString(),
             };
         }else if(dateGbn === 'week'){
             this.range = {
