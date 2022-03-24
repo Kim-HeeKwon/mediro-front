@@ -354,16 +354,6 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             }
         });
 
-        if(lotNo !== undefined){
-            changeUdiPiCode += lotNo;
-        }else{
-            lotNo = '';
-        }
-        if(itemSeq !== undefined){
-            changeUdiPiCode += itemSeq;
-        }else{
-            itemSeq = '';
-        }
         if(manufYm !== undefined){
             changeUdiPiCode += manufYm;
         }else{
@@ -373,6 +363,16 @@ export class ManagesNewComponent implements OnInit, OnDestroy
             changeUdiPiCode += useTmlmt;
         }else{
             useTmlmt = '';
+        }
+        if(lotNo !== undefined){
+            changeUdiPiCode += lotNo;
+        }else{
+            lotNo = '';
+        }
+        if(itemSeq !== undefined){
+            changeUdiPiCode += itemSeq;
+        }else{
+            itemSeq = '';
         }
 
         this.selectedForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')','')});
