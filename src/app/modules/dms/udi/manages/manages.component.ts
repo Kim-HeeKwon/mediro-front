@@ -332,7 +332,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    this.selectDoubleClickRow(grid.getValues(clickData.dataRow));
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        this.selectDoubleClickRow(grid.getValues(clickData.dataRow));
+                    }
                 }
             }
         };

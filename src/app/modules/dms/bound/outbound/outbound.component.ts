@@ -298,7 +298,9 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    this._router.navigate(['bound/outbound/outbound-detail', grid.getValues(clickData.dataRow)]);
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        this._router.navigate(['bound/outbound/outbound-detail', grid.getValues(clickData.dataRow)]);
+                    }
                 }
             }
         };

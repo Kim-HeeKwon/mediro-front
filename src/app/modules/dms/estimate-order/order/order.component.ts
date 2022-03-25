@@ -277,7 +277,9 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    this._router.navigate(['estimate-order/order/order-detail', grid.getValues(clickData.dataRow)]);
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        this._router.navigate(['estimate-order/order/order-detail', grid.getValues(clickData.dataRow)]);
+                    }
                 }
             }
         };

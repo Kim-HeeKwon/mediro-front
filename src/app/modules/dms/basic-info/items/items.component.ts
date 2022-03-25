@@ -358,39 +358,40 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        if (!this.isMobile) {
+                            const d = this._matDialog.open(DetailItemsComponent, {
+                                autoFocus: false,
+                                disableClose: true,
+                                data: {
+                                    selectedItem: grid.getValues(clickData.dataRow)
+                                },
+                            });
+                            d.afterClosed().subscribe(() => {
+                                this.searchItem();
+                            });
 
-                    if (!this.isMobile) {
-                        const d = this._matDialog.open(DetailItemsComponent, {
-                            autoFocus: false,
-                            disableClose: true,
-                            data: {
-                                selectedItem: grid.getValues(clickData.dataRow)
-                            },
-                        });
-                        d.afterClosed().subscribe(() => {
-                            this.searchItem();
-                        });
-
-                    } else {
-                        const d = this._matDialog.open(DetailItemsComponent, {
-                            data: {
-                                selectedItem: grid.getValues(clickData.dataRow)
-                            },
-                            autoFocus: false,
-                            width: 'calc(100% - 50px)',
-                            maxWidth: '100vw',
-                            maxHeight: '80vh',
-                            disableClose: true
-                        });
-                        const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                            if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)', '');
-                            } else {
-                            }
-                        });
-                        d.afterClosed().subscribe(() => {
-                            smallDialogSubscription.unsubscribe();
-                        });
+                        } else {
+                            const d = this._matDialog.open(DetailItemsComponent, {
+                                data: {
+                                    selectedItem: grid.getValues(clickData.dataRow)
+                                },
+                                autoFocus: false,
+                                width: 'calc(100% - 50px)',
+                                maxWidth: '100vw',
+                                maxHeight: '80vh',
+                                disableClose: true
+                            });
+                            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                if (size.matches) {
+                                    d.updateSize('calc(100vw - 10px)', '');
+                                } else {
+                                }
+                            });
+                            d.afterClosed().subscribe(() => {
+                                smallDialogSubscription.unsubscribe();
+                            });
+                        }
                     }
                 }
             }

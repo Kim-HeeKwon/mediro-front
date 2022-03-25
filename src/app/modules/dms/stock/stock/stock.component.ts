@@ -385,44 +385,46 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    this._stockService.getStockHistoryById(grid.getValues(clickData.dataRow).itemCd)
-                        .subscribe((stock) => {
-                            this.selectedStock = stock;
-                            //this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.selectedStock);
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        this._stockService.getStockHistoryById(grid.getValues(clickData.dataRow).itemCd)
+                            .subscribe((stock) => {
+                                this.selectedStock = stock;
+                                //this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.selectedStock);
 
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
-                    if (!this.isMobile) {
-                        const d = this._matDialog.open(StockHistoryComponent, {
-                            autoFocus: false,
-                            disableClose: true,
-                            data: {
-                                selectedStock: grid.getValues(clickData.dataRow)
-                            },
-                        });
-                        d.afterClosed().subscribe(() => {
-                        });
-                    } else {
-                        const d = this._matDialog.open(StockHistoryComponent, {
-                            data: {
-                                selectedStock: grid.getValues(clickData.dataRow)
-                            },
-                            autoFocus: false,
-                            width: 'calc(100% - 50px)',
-                            maxWidth: '100vw',
-                            maxHeight: '80vh',
-                            disableClose: true
-                        });
-                        const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                            if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)', '');
-                            } else {
-                            }
-                        });
-                        d.afterClosed().subscribe(() => {
-                            smallDialogSubscription.unsubscribe();
-                        });
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+                        if (!this.isMobile) {
+                            const d = this._matDialog.open(StockHistoryComponent, {
+                                autoFocus: false,
+                                disableClose: true,
+                                data: {
+                                    selectedStock: grid.getValues(clickData.dataRow)
+                                },
+                            });
+                            d.afterClosed().subscribe(() => {
+                            });
+                        } else {
+                            const d = this._matDialog.open(StockHistoryComponent, {
+                                data: {
+                                    selectedStock: grid.getValues(clickData.dataRow)
+                                },
+                                autoFocus: false,
+                                width: 'calc(100% - 50px)',
+                                maxWidth: '100vw',
+                                maxHeight: '80vh',
+                                disableClose: true
+                            });
+                            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                if (size.matches) {
+                                    d.updateSize('calc(100vw - 10px)', '');
+                                } else {
+                                }
+                            });
+                            d.afterClosed().subscribe(() => {
+                                smallDialogSubscription.unsubscribe();
+                            });
+                        }
                     }
                 }
             }

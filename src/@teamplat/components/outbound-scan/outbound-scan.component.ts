@@ -615,7 +615,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     return;
                 }
             }
-            console.log(udiCode);
+            //console.log(udiCode);
 
             const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
             list.forEach((check: any) => {

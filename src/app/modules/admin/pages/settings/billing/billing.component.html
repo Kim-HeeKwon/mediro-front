@@ -1,6 +1,5 @@
 <div class="w-full max-w-3xl margin_auto">
     <!--    <div class="w-full max-w-3xl">-->
-
     <!-- Form -->
     <form [formGroup]="billingForm">
 
@@ -9,13 +8,13 @@
 
         <div class="grid-cols-6 sm:grid-cols-6 gap-2 w-full mb-8 flex items-center justify-between">
             <!-- 이메일 -->
-            <mat-form-field class="col-span-3 sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
+            <mat-form-field class="w-2/4 col-span-3 sm:col-span-3 fuse-mat-no-subscript fuse-mat-emphasized-affix">
                 <div
                      class="text-secondary"
                      matPrefix>
                     날짜
                 </div>
-                <mat-select [formControlName]="'billingDay'">
+                <mat-select (ngModelChange)="getBillingInfo()" [formControlName]="'billingDay'">
                     <ng-container *ngFor="let billingDay of billingDay">
                         <mat-option [value]="billingDay.id">
                             {{billingDay.name}}
@@ -25,15 +24,15 @@
             </mat-form-field>
 
             <div class="col-span-3 sm:col-span-3 items-center justify-between">
-                <button
-                    class="ml-2 mediro-btn-custom"
-                    (click)="excel()"
-                    mat-stroked-button>
-                    <mat-icon
-                        [svgIcon]="'file_download'"
-                    ></mat-icon>
-                    <span class="ml-2 mr-1">엑셀 내려받기</span>
-                </button>
+<!--                <button-->
+<!--                    class="ml-2 mediro-btn-custom"-->
+<!--                    (click)="excel()"-->
+<!--                    mat-stroked-button>-->
+<!--                    <mat-icon-->
+<!--                        [svgIcon]="'file_download'"-->
+<!--                    ></mat-icon>-->
+<!--                    <span class="ml-2 mr-1">엑셀 내려받기</span>-->
+<!--                </button>-->
                 <button
                     class="ml-2 mediro-btn-custom"
                     (click)="print()"
@@ -51,10 +50,10 @@
                 예상 총액
             </p>
             <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
-                110,000 원
+                {{this.numberFormat(supAmt)}} 원
             </p>
             <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
-                100,000 원 (VAT 미포함)
+                {{this.numberFormat(totalAmt)}} 원 (VAT 미포함)
             </p>
         </div>
 
@@ -75,7 +74,7 @@
                 메디로 워크 서비스 요금
             </p>
             <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
-                100,000 원
+                {{this.numberFormat(totalAmt)}} 원
             </p>
         </div>
 
@@ -132,7 +131,7 @@
                         <p style="width: 15%; text-align: right;">
                             {{node.name2}}
                         </p>
-                        <p style="width: 15%; text-align: right;">
+                        <p class="text-bold-600" style="width: 15%; text-align: right;">
                             {{node.price}}
                         </p>
                     </div>
@@ -153,7 +152,7 @@
                 납부할 VAT
             </p>
             <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
-                1,000 원
+                {{this.numberFormat(taxAmt)}} 원
             </p>
         </div>
 
@@ -173,5 +172,165 @@
                     세금 정보에 액세스하려면 채널톡을 통해 관리자에게 문의하세요.</li>
             </ul>
         </div>
+    </div>
+
+    <div id="billingPrint" hidden="true">
+        <div class="w-full flex items-center justify-between">
+            <div class="w-40">
+                <img src="assets/images/logo/teamplat_logo.png">
+            </div>
+            <div class="w-24">
+                <img src="assets/images/logo/mediro_work.png">
+            </div>
+        </div>
+        <br>
+        <!-- Divider -->
+        <div class="mb-4 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-3 sm:col-span-3 text-13s">
+                결제 청구서 : {{this.fromDate}} ~ {{this.toDate}}
+            </p>
+            <p class="col-span-3 sm:col-span-3 text-13s">
+                이름 : {{this.name}}
+            </p>
+        </div>
+        <div class="mb-4 grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-3 sm:col-span-3 text-13s">
+                인쇄일자 : {{this.yyyy + '-' + this.mm + '-' + this.dd}}
+            </p>
+            <p class="col-span-3 sm:col-span-3 text-13s">
+                계정 : {{this.id}}
+            </p>
+        </div>
+        <!-- Divider -->
+        <div class="mb-6 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 mb-2 flex items-center justify-between">
+            <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
+                예상 총액
+            </p>
+            <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
+                {{this.numberFormat(supAmt)}} 원
+            </p>
+            <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
+                {{this.numberFormat(totalAmt)}} 원 (VAT 미포함)
+            </p>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-4 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+        <div class="mb-6 grid-cols-6 sm:grid-cols-6 gap-2 mb-2 flex items-center justify-between">
+            <div class="grid grid-cols-4 gap-6 w-full">
+                <div
+                    class="col-span-4 sm:col-span-4">
+                    <br>
+                    <ul class="text-11s">
+                        <li>본 청구서 기간 동안의 사용 요금 및 반복 청구 요금은 다음 결제 일자에 청구됩니다.
+                            이 페이지 또는 귀하에게 전송된 알림에 표시된 예상 요금은 본 청구서 기간 동안의 실제 요금과 다를 수 있습니다.
+                            이 페이지에 나와 있는 예상 요금에는 귀하가 이 페이지를 확인한 후 본 청구서 기간 동안 발생한 사용 요금은 포함되어 있지 않기 때문입니다.
+                            또한 알림을 통해 귀하에게 제공된 예상 요금 정보에는 알림을 보낸 이후 본 청구서 기간 동안 발생한 사용 요금은 포함되어 있지 않습니다.
+                            일회성 요금 및 구독 요금은 사용 요금 및 반복 청구 요금과는 별도로 발생일을 기준으로 산정됩니다.
+                            이 페이지의 요금은 별도 항목으로 나열되어있지 않는 한 세금을 제외한 금액입니다.
+                            세금 정보에 액세스하려면 채널톡을 통해 관리자에게 문의하세요.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-2 sm:col-span-2 text-17s text-bold-600">
+                세부정보
+            </p>
+        </div>
+        <!-- Divider -->
+        <div class="mb-2 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
+                메디로 워크 서비스 요금
+            </p>
+            <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
+                {{this.numberFormat(totalAmt)}} 원
+            </p>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-4 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <!--            <p class="col-span-2 sm:col-span-2 text-20s text-bold-600">-->
+            <!--                품목 판매 건수-->
+            <!--            </p>-->
+            <!--            <p class="col-span-2 sm:col-span-2 text-20s text-bold-600">-->
+            <!--                100-->
+            <!--            </p>-->
+            <!--            <mat-tree class="col-span-2 sm:col-span-2 text-20s text-bold-600">-->
+            <!--                <mat-tree-node> 품목 판매 건수 </mat-tree-node>-->
+            <!--                <mat-tree-node> &#45;&#45; child node1 </mat-tree-node>-->
+            <!--                <mat-tree-node> &#45;&#45; child node2 </mat-tree-node>-->
+            <!--            </mat-tree>-->
+            <mat-tree class="w-full"
+                      [dataSource]="dataSource" [treeControl]="treeControl" style="background: none;">
+                <!-- This is the tree node template for leaf nodes -->
+                <mat-tree-node
+                    class="text-13s"
+                    *matTreeNodeDef="let node" matTreeNodePadding>
+                    <!-- use a disabled button to provide padding for tree leaf -->
+                    <button mat-icon-button disabled></button>
+                    <div class="w-full flex items-center justify-between" style="border-bottom: 2px solid #CCCCCC;">
+                        <p style="width: 70%;">
+                            {{node.name}}
+                        </p>
+                        <p style="width: 15%; text-align: right;">
+                            {{node.name2}}
+                        </p>
+                        <p style="width: 15%; text-align: right;">
+                            {{node.price}}
+                        </p>
+                    </div>
+                </mat-tree-node>
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-tree-node
+                    class="text-13s items-center justify-items-end"
+                    *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                    <button
+                        mat-icon-button matTreeNodeToggle
+                        [attr.aria-label]="'toggle ' + node.name">
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                    </button>
+                    <div class="w-full flex items-center justify-between">
+                        <p style="width: 70%;">
+                            {{node.name}}
+                        </p>
+                        <p style="width: 15%; text-align: right;">
+                            {{node.name2}}
+                        </p>
+                        <p class="text-bold-600" style="width: 15%; text-align: right;">
+                            {{node.price}}
+                        </p>
+                    </div>
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+
+        <div class="mt-6 grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">
+                세금
+            </p>
+        </div>
+        <!-- Divider -->
+        <div class="mb-2 border-t" style="border-top-width: 2px !important;border-color: #CCCCCC;"></div>
+
+        <div class="grid-cols-6 sm:grid-cols-6 gap-2 flex items-center justify-between">
+            <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
+                납부할 VAT
+            </p>
+            <p class="col-span-3 sm:col-span-3 text-13s text-bold-600">
+                {{this.numberFormat(taxAmt)}} 원
+            </p>
+        </div>
+
     </div>
 </div>

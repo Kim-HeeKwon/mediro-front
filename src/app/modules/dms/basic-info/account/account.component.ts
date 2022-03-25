@@ -386,42 +386,44 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        if (!this.isMobile) {
+                            const d = this._matDialog.open(DetailAccountComponent, {
+                                autoFocus: false,
+                                disableClose: true,
+                                data: {
+                                    selectedAccount: grid.getValues(clickData.dataRow)
+                                },
+                            });
+                            d.afterClosed().subscribe(() => {
+                                this.selectAccount();
+                            });
 
-                    if (!this.isMobile) {
-                        const d = this._matDialog.open(DetailAccountComponent, {
-                            autoFocus: false,
-                            disableClose: true,
-                            data: {
-                                selectedAccount: grid.getValues(clickData.dataRow)
-                            },
-                        });
-                        d.afterClosed().subscribe(() => {
-                            this.selectAccount();
-                        });
-
-                    } else {
-                        const d = this._matDialog.open(DetailAccountComponent, {
-                            data: {
-                                selectedAccount: grid.getValues(clickData.dataRow)
-                            },
-                            autoFocus: false,
-                            width: 'calc(100% - 50px)',
-                            maxWidth: '100vw',
-                            maxHeight: '80vh',
-                            disableClose: true
-                        });
-                        const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                            if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)', '');
-                            } else {
-                                // d.updateSize('calc(100% - 50px)', '');
-                            }
-                        });
-                        d.afterClosed().subscribe(() => {
-                            this.selectAccount();
-                            smallDialogSubscription.unsubscribe();
-                        });
+                        } else {
+                            const d = this._matDialog.open(DetailAccountComponent, {
+                                data: {
+                                    selectedAccount: grid.getValues(clickData.dataRow)
+                                },
+                                autoFocus: false,
+                                width: 'calc(100% - 50px)',
+                                maxWidth: '100vw',
+                                maxHeight: '80vh',
+                                disableClose: true
+                            });
+                            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                if (size.matches) {
+                                    d.updateSize('calc(100vw - 10px)', '');
+                                } else {
+                                    // d.updateSize('calc(100% - 50px)', '');
+                                }
+                            });
+                            d.afterClosed().subscribe(() => {
+                                this.selectAccount();
+                                smallDialogSubscription.unsubscribe();
+                            });
+                        }
                     }
+
                 }
             }
         };

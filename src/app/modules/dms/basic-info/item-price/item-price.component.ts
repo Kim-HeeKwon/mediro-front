@@ -298,48 +298,50 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    const account = grid.getValues(clickData.dataRow).account;
-                    const itemCd = grid.getValues(clickData.dataRow).itemCd;
-                    const type = grid.getValues(clickData.dataRow).type;
+                    if(grid.getValues(clickData.dataRow) !== null){
+                        const account = grid.getValues(clickData.dataRow).account;
+                        const itemCd = grid.getValues(clickData.dataRow).itemCd;
+                        const type = grid.getValues(clickData.dataRow).type;
 
-                    // @ts-ignore
-                    this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
-                        .subscribe((itemPrice) => {
-                            // Set the selected Account
-                            this.selectedItemPriceHeader = itemPrice;
-                            this._itemPriceService.getHistory(0, 10, '', 'asc', this.selectedItemPriceHeader);
+                        // @ts-ignore
+                        this._itemPriceService.getItemPriceHistorysById(account, itemCd, type)
+                            .subscribe((itemPrice) => {
+                                // Set the selected Account
+                                this.selectedItemPriceHeader = itemPrice;
+                                this._itemPriceService.getHistory(0, 10, '', 'asc', this.selectedItemPriceHeader);
 
-                            // Mark for check
-                            this._changeDetectorRef.markForCheck();
-                        });
-                    if (!this.isMobile) {
-                        const d = this._matDialog.open(ItemPriceHistoryComponent, {
-                            autoFocus: false,
-                            disableClose: true,
-                            data: {
-                                detail: this.selectedItemPriceHeader
-                            },
-                        });
-                        d.afterClosed().subscribe(() => {
-                            this.selectHeader();
-                        });
-                    } else {
-                        const d = this._matDialog.open(ItemPriceHistoryComponent, {
-                            autoFocus: false,
-                            width: 'calc(100% - 50px)',
-                            maxWidth: '100vw',
-                            maxHeight: '80vh',
-                            disableClose: true
-                        });
-                        const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                            if (size.matches) {
-                                d.updateSize('calc(100vw - 10px)', '');
-                            }
-                        });
-                        d.afterClosed().subscribe(() => {
-                            smallDialogSubscription.unsubscribe();
-                            this.selectHeader();
-                        });
+                                // Mark for check
+                                this._changeDetectorRef.markForCheck();
+                            });
+                        if (!this.isMobile) {
+                            const d = this._matDialog.open(ItemPriceHistoryComponent, {
+                                autoFocus: false,
+                                disableClose: true,
+                                data: {
+                                    detail: this.selectedItemPriceHeader
+                                },
+                            });
+                            d.afterClosed().subscribe(() => {
+                                this.selectHeader();
+                            });
+                        } else {
+                            const d = this._matDialog.open(ItemPriceHistoryComponent, {
+                                autoFocus: false,
+                                width: 'calc(100% - 50px)',
+                                maxWidth: '100vw',
+                                maxHeight: '80vh',
+                                disableClose: true
+                            });
+                            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                                if (size.matches) {
+                                    d.updateSize('calc(100vw - 10px)', '');
+                                }
+                            });
+                            d.afterClosed().subscribe(() => {
+                                smallDialogSubscription.unsubscribe();
+                                this.selectHeader();
+                            });
+                        }
                     }
                 }
             }
