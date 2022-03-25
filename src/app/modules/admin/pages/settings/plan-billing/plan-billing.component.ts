@@ -438,6 +438,7 @@ export class SettingsPlanBillingComponent implements OnInit
     }
 
     customizeAS(): void{
+        window.open('https://medirowork.channel.io/lounge');
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
