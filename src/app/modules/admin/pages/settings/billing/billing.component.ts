@@ -211,7 +211,9 @@ export class SettingsBillingComponent implements OnInit
     }
 
     print() {
-        this.treeControl.expandAll();
+        if(this.treeControl.dataNodes !== undefined){
+            this.treeControl.expandAll();
+        }
         const printContents1 = document.getElementById('billingPrint').innerHTML;
         const originalTitle = document.title;
         const originalContents = document.body.innerHTML;
