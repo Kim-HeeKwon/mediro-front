@@ -591,6 +591,21 @@ export class ManagesNewComponent implements OnInit, OnDestroy
                 this.failAlert();
                 return;
             }
+
+            const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            if(check_kor.test(udiCode)){
+                setTimeout(() =>{
+                },100);
+                // Set the alert
+                this.alert = {
+                    type   : 'error',
+                    message: '한글은 입력할 수 없습니다.'
+                };
+                // Show the alert
+                this.showAlert = true;
+                return;
+            }
+
             let udiDiCode;
             let udiPiCode;
             if(!udiCode.includes('(')){

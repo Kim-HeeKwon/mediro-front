@@ -30,6 +30,8 @@ import {ApplyContractComponent} from "./plan-billing/apply-contract/apply-contra
 import {SettingsBillingComponent} from "./billing/billing.component";
 import {MatTreeModule} from "@angular/material/tree";
 import {CdkTreeModule} from "@angular/cdk/tree";
+import {SettingsKakaoNotificationTalkComponent} from "./kakaoNotificationTalk/kakaoNotificationTalk.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
     declarations: [
@@ -39,6 +41,7 @@ import {CdkTreeModule} from "@angular/cdk/tree";
         SettingsPlanBillingComponent,
         SettingsBillingComponent,
         SettingsNotificationsComponent,
+        SettingsKakaoNotificationTalkComponent,
         SettingsTeamComponent,
         SettingsTaxComponent,
         SettingsUserGuideComponent,
@@ -64,7 +67,8 @@ import {CdkTreeModule} from "@angular/cdk/tree";
         MatProgressSpinnerModule,
         MatTabsModule,
         MatTreeModule,
-        CdkTreeModule
+        CdkTreeModule,
+        MatCheckboxModule
     ]
 })
 export class SettingsModule

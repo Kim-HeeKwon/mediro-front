@@ -1,0 +1,49 @@
+<div class="w-full max-w-3xl margin_auto">
+
+    <div class="mt-2 grid grid-cols-4 gap-6 w-full">
+        <div
+            class="col-span-4 sm:col-span-4">
+            <br>
+            <ul class="text-11s">
+                <li>알림톡 (카카오톡)으로 업체에게 정보를 전송합니다.
+                    <br>
+                    미사용 시 알림 톡은 전송되지 않습니다. 사용 시 전화번호는 필수입니다. 전화번호는 핸드폰 번호만 가능합니다.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4 mb-4 border-t border-custom" style="border-top-width: 1px !important;border-color: #CCCCCC;"></div>
+
+    <div [formGroup]="kakaoForm" *ngFor="let column of list; let i=dataIndex;"
+         class="grid-cols-6 sm:grid-cols-6 gap-2 w-full mb-4 flex items-center justify-between">
+<!--        <p class="col-span-2 sm:col-span-2 text-13s text-bold-600">-->
+<!--            <span>{{column.kakaoNm}}</span>-->
+<!--        </p>-->
+        <p class="col-span-4 sm:col-span-4 text-13s">
+            <span>{{column.descr}}</span>
+        </p>
+        <section class="col-span-2 sm:col-span-2 text-13s">
+            <p>
+                <mat-checkbox [formControlName]="column.kakaoCd"></mat-checkbox>
+            </p>
+        </section>
+    </div>
+
+
+    <!-- Divider -->
+    <div class="mt-4 mb-4 border-t border-custom" style="border-top-width: 1px !important;border-color: #CCCCCC;"></div>
+    <div class="grid-cols-6 sm:grid-cols-6 gap-2 w-full mb-8 flex items-center justify-between">
+        <div class="col-span-3 sm:col-span-3">
+        </div>
+        <div class="col-span-3 sm:col-span-3">
+            <button
+                class="ml-2 mediro-btn-custom"
+                (click)="save()"
+                mat-stroked-button>
+                <span class="ml-2 mr-1">저장</span>
+            </button>
+        </div>
+
+    </div>
+</div>
