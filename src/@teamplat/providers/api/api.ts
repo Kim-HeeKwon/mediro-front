@@ -102,7 +102,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -135,7 +135,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post('' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post('' + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -165,7 +165,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -198,7 +198,17 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+
+        // body = JSON.stringify(body).replace(/\\n/g, "\\n")
+        //     .replace(/\\'/g, "\\'")
+        //     .replace(/\\"/g, '\\"')
+        //     .replace(/\\&/g, '\\&')
+        //     .replace(/\\r/g, '\\r')
+        //     .replace(/\\t/g, '\\t')
+        //     .replace(/\\b/g, '\\b')
+        //     .replace(/\\f/g, '\\f');
+        // console.log(encodeURIComponent(JSON.stringify(body)));
+        const req = this.http.post(this.url + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -228,7 +238,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post('' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post('' + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -261,7 +271,7 @@ export class Api {
         }];
         this.backLogin(arrayOfArraysData[0].mId);
 
-        const req = this.http.post('' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post('' + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -291,7 +301,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -323,7 +333,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -356,9 +366,9 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_pageNation=[' + JSON.stringify(body2) + ']&'
+        const req = this.http.post(this.url + endpoint, 'ds_pageNation=[' + encodeURIComponent(JSON.stringify(body2)) + ']&'
             + 'ds_session=' + JSON.stringify(arrayOfArraysData) + '&'
-            + 'ds_excelJson=[' + JSON.stringify(excelJson) + ']'
+            + 'ds_excelJson=[' + encodeURIComponent(JSON.stringify(excelJson)) + ']'
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -388,7 +398,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -455,7 +465,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post('' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post('' + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -496,7 +506,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.post(this.url + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -526,7 +536,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        return this.http.put(this.url + '/' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        return this.http.put(this.url + '/' + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -553,7 +563,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=[' + JSON.stringify(body) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -579,7 +589,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        return this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        return this.http.put(this.url + '/' + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -606,7 +616,7 @@ export class Api {
             'mId': localStorage.getItem('mId')
         }];
         this.backLogin(arrayOfArraysData[0].mId);
-        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=' + JSON.stringify(body) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+        const req = this.http.put(this.url + '/' + endpoint, 'ds_json=' + encodeURIComponent(JSON.stringify(body)) + '&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
             , {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
