@@ -206,6 +206,9 @@ export class AuthService
                 this.freeYn = response.resultD.freeYn;
                 this.payYn = response.resultD.payYn;
                 this.version = response.resultD.version;
+                // console.log(response.resultD.payYn);
+                // console.log(response.resultD.freeYn);
+                // console.log(response.resultD.version);
 
                 response.resultD.mId = response.resultD.mid;
 
@@ -240,6 +243,9 @@ export class AuthService
             'mId'   : this.userMid,
             'id'   : this.userId,
             'businessName'   : this.userBusinessName,
+            'payYn'   : this.payYn,
+            'version'   : this.version,
+            'freeYn'   : this.freeYn,
         };
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
@@ -256,8 +262,11 @@ export class AuthService
                     return of(false);
                 }
 
-                this._authenticated = true;
+                // console.log(response.resultD.payYn);
+                // console.log(response.resultD.freeYn);
+                // console.log(response.resultD.version);
 
+                this._authenticated = true;
                 // Store the user on the user service
                 this._user = response.resultD;
                 this._userService.user = response.resultD;
@@ -282,6 +291,9 @@ export class AuthService
         localStorage.removeItem('mId');
         localStorage.removeItem('id');
         localStorage.removeItem('businessName');
+        localStorage.removeItem('payYn');
+        localStorage.removeItem('freeYn');
+        localStorage.removeItem('version');
 
         // Set the authenticated flag to false
         this._authenticated = false;

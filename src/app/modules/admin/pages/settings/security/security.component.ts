@@ -43,7 +43,7 @@ export class SettingsSecurityComponent implements OnInit
             currentPassword  : ['',[Validators.required,
                 Validators.minLength(8),
                 Validators.maxLength(20)]],
-            newPassword      : ['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9@$!%*#?&]+$/),
+            newPassword      : ['',[Validators.required,Validators.pattern(/^(?=.*[a-z])(?=.*\d)[a-zA-Z0-9@$!%*#?&]+$/),
                 Validators.minLength(8),
                 Validators.maxLength(20)]],
             twoStep          : [true],

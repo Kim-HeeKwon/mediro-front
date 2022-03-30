@@ -808,32 +808,35 @@ export class Api {
         let check = true;
 
         if(this._sessionStore.getValue().freeYn !== undefined){
-            if(this._sessionStore.getValue().freeYn === 'N'){
-                check = false;
-                const confirmation = this._teamPlatConfirmationService.open({
-                    title: '',
-                    message: '무료 서비스가 종료 되었습니다. <br> 정기 서비스를 신청해주세요.',
-                    actions: {
-                        confirm: {
-                            show : true,
-                            label: '정기 서비스 이동'
-                        },
-                        cancel : {
-                            show : false,
-                            label: '닫기'
-                        }
-                    }
-                });
-                confirmation.afterClosed()
-                    .pipe(takeUntil(this._unsubscribeAll))
-                    .subscribe((result) => {
-                        if (result) {
-                            this._matDialog.closeAll();
-                            this._router.navigateByUrl('/pages/settings');
-                            // Show the alert
+            if(this._sessionStore.getValue().payYn === 'N'){
+                if(this._sessionStore.getValue().freeYn === 'N'){
+                    check = false;
+                    const confirmation = this._teamPlatConfirmationService.open({
+                        title: '',
+                        message: '무료 서비스가 종료 되었습니다. <br> 정기 서비스를 신청해주세요.',
+                        actions: {
+                            confirm: {
+                                show : true,
+                                label: '정기 서비스 이동'
+                            },
+                            cancel : {
+                                show : false,
+                                label: '닫기'
+                            }
                         }
                     });
+                    confirmation.afterClosed()
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((result) => {
+                            if (result) {
+                                this._matDialog.closeAll();
+                                this._router.navigateByUrl('/pages/settings');
+                                // Show the alert
+                            }
+                        });
+                }
             }
+
         }
         return check;
 

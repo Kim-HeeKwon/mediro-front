@@ -44,6 +44,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerOpened: boolean = false;
     searchForm: FormGroup;
     orderBy: any = 'asc';
+    cobFlagName: CommonCode[] = null;
     paymentTerms: CommonCode[] = null;
     searchCondition: CommonCode[] = [
         {
@@ -105,6 +106,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _accountService: AccountService,
                 private readonly breakpointObserver: BreakpointObserver)
     {
+        this.cobFlagName = _utilService.commonValue(_codeStore.getValue().data, 'COB_FLAG_NAME');
         this.paymentTerms = _utilService.commonValue(_codeStore.getValue().data,'PAYMENT_TERMS');
         this.isMobile = this._deviceService.isMobile();
     }
@@ -114,7 +116,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm = this._formBuilder.group({
             descr: [''],
             account: [''],
-            businessCondition: [''],
+            businessCondition: ['ALL'],
             businessCategory: ['']
         });
         const valuesPaymentTerms = [];
@@ -123,6 +125,15 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.paymentTerms.forEach((param: any) => {
             valuesPaymentTerms.push(param.id);
             lablesPaymentTerms.push(param.name);
+        });
+
+        const valuesType = [];
+        const lablesType = [];
+
+
+        this.cobFlagName.forEach((param: any) => {
+            valuesType.push(param.id);
+            lablesType.push(param.name);
         });
 
         //그리드 컬럼
@@ -153,6 +164,9 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '100',
                 styleName: 'left-cell-text',
                 header: {text: '업태', styleName: 'center-cell-text'},
+                values: valuesType,
+                labels: lablesType,
+                lookupDisplay: true,
                 renderer: {
                     showTooltip: true
                 }

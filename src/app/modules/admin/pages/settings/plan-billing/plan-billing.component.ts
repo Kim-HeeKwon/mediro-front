@@ -283,6 +283,9 @@ export class SettingsPlanBillingComponent implements OnInit
                                 if(responseData.data !== null){
                                     const orderInfo = responseData.data[0];
 
+                                    localStorage.setItem('payYn', 'Y');
+                                    localStorage.setItem('freeYn', 'Y');
+
                                     // loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                                     //     tossPayments.requestPayment('카드', {
                                     //         amount: 100,

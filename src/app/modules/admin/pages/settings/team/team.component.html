@@ -25,7 +25,7 @@
                 matInput
                 [(ngModel)]="teamEmail"
                 [placeholder]="'Email address'">
-            <button
+            <button *ngIf="isAdmin"
                 mat-icon-button
                 matSuffix
                 (click)="openAddTeam()">
@@ -83,7 +83,7 @@
                         </mat-form-field>
                     </div>
                     <div class="order-1 sm:order-2 sm:ml-3">
-                        <button mat-icon-button
+                        <button mat-icon-button *ngIf="isAdmin"
                                 (click)="memberDelete(member)">
                             <mat-icon
                                 class="text-hint"

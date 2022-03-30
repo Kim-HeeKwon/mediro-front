@@ -100,9 +100,16 @@
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>업태</mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'businessCondition'">
+                            <mat-select [formControlName]="'businessCondition'">
+                                <ng-container *ngFor="let cobFlagName of cobFlagName">
+                                    <mat-option [value]="cobFlagName.id">
+                                        {{cobFlagName.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+<!--                            <input-->
+<!--                                matInput-->
+<!--                                [formControlName]="'businessCondition'">-->
                         </mat-form-field>
                     </div>
                     <div class="sm:col-span-2">

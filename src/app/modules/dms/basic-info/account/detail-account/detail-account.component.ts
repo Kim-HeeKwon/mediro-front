@@ -46,6 +46,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
     @ViewChild('daum_popup', { read: ElementRef, static: true }) popup: ElementRef;
     selectedAccountForm: FormGroup;
     accountType: CommonCode[] = null;
+    cobFlagName: CommonCode[] = null;
     paymentTerms: CommonCode[] = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -79,6 +80,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
     ) {
         this.filterList = ['ALL'];
         this.accountType = _utilService.commonValueFilter(_codeStore.getValue().data,'ACCOUNT_TYPE',this.filterList);
+        this.cobFlagName = _utilService.commonValueFilter(_codeStore.getValue().data,'COB_FLAG_NAME',this.filterList);
         this.paymentTerms = _utilService.commonValue(_codeStore.getValue().data,'PAYMENT_TERMS');
         this.isMobile = this._deviceService.isMobile();
 

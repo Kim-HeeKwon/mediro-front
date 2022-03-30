@@ -41,7 +41,7 @@ export class NewTeamComponent implements OnInit, OnDestroy
         },
         {
             id: 'UG20',
-            name: 'WORKER'
+            name: 'MEMBER'
         }];
     is_edit:boolean = false;
     itemUnit: CommonCode[] = [];

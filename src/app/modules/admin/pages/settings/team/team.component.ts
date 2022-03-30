@@ -22,6 +22,7 @@ export class SettingsTeamComponent implements OnInit
     teamMembers: User[];
     roles: any[];
     teamEmail: string = '';
+    isAdmin: boolean = false;
 
     showAlert: boolean = false;
 
@@ -53,6 +54,10 @@ export class SettingsTeamComponent implements OnInit
      */
     ngOnInit(): void
     {
+        //console.log(this._sessionStore.getValue().udiSupplyAutoDt);
+        if(this._sessionStore.getValue().userType === 'UG10'){
+            this.isAdmin = true;
+        }
         this.memberList();
         // Setup the team members
         this.members = [

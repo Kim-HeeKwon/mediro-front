@@ -28,12 +28,21 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
-                                <input
-                                    matInput
-                                    [formControlName]="'businessCondition'"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'업태를 입력해주세요.'">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'businessCondition'">
+                                    <ng-container *ngFor="let cobFlagName of cobFlagName">
+                                        <mat-option [value]="cobFlagName.id">
+                                            {{cobFlagName.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
                             </mat-form-field>
+<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
+<!--                                <input-->
+<!--                                    matInput-->
+<!--                                    [formControlName]="'businessCondition'"-->
+<!--                                    [autocomplete]="'off'"-->
+<!--                                    [placeholder]="'업태를 입력해주세요.'">-->
+<!--                            </mat-form-field>-->
                         </div>
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
@@ -115,14 +124,24 @@
                                               class="flex flex-col w-full">
                                             <div class="flex flex-col w-full">
                                                 <div class="flex w-4/4">
-                                                    <mat-form-field
-                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label class="mediro-ft-label">업태</mat-label>
-                                                        <input
-                                                            matInput
-                                                            (window:onkeypress)="enter($event)"
-                                                            [formControlName]="'businessCondition'"
-                                                            [autocomplete]="'off'">
+<!--                                                    <mat-form-field-->
+<!--                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
+<!--                                                        <mat-label class="mediro-ft-label">업태</mat-label>-->
+<!--                                                        <input-->
+<!--                                                            matInput-->
+<!--                                                            (window:onkeypress)="enter($event)"-->
+<!--                                                            [formControlName]="'businessCondition'"-->
+<!--                                                            [autocomplete]="'off'">-->
+<!--                                                    </mat-form-field>-->
+                                                    <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                        <mat-label>업태</mat-label>
+                                                        <mat-select (selectionChange)="selectHeader()" [formControlName]="'businessCondition'">
+                                                            <ng-container *ngFor="let cobFlagName of cobFlagName">
+                                                                <mat-option [value]="cobFlagName.id">
+                                                                    {{cobFlagName.name}}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
                                                     </mat-form-field>
                                                     <mat-form-field
                                                         class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
