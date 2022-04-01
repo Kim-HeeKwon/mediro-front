@@ -25,6 +25,7 @@ export class DashboardsService {
     private _billInfo: BehaviorSubject<any> = new BehaviorSubject(null);
     private _stockInfo: BehaviorSubject<any> = new BehaviorSubject(null);
     private _bill: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _supplyStatus: BehaviorSubject<any> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -94,6 +95,11 @@ export class DashboardsService {
     get bill$(): Observable<any>
     {
         return this._bill.asObservable();
+    }
+
+    get supplyStatus$(): Observable<any>
+    {
+        return this._supplyStatus.asObservable();
     }
 
 

@@ -294,6 +294,12 @@ export class circulationManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/cvWado3rE_k');
     }
 
+    outboundPayment(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/9mIaSTalNbc');
+    }
+
 
     stockLookUp(): void {
         this.video = true;

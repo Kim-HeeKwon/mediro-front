@@ -44,7 +44,7 @@
     <!--        </div>-->
     <!--    </div>-->
     <!-- Main -->
-    <div class="flex-auto mt-6 mx-2 sm:mt-6 sm:mx-2">
+    <div class="flex-auto margin_bottom mx-2 sm:mx-2" [ngClass]="{'m    argin_top-38' : isMobile                    }">
 
         <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0': isMobile,
                                     'grid grid-cols-2 sm:grid-cols-6 md:grid-cols-6 gap-2 w-full min-w-0 h-full': !isMobile}">
@@ -163,7 +163,7 @@
             </div>
             <!-- 발주 -->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>발주</div>
@@ -264,7 +264,7 @@
             <!--            </div>-->
             <!-- 주문 -->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>주문</div>
@@ -345,7 +345,7 @@
             <!--            </div>-->
             <!-- 입고 -->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>입고</div>
@@ -479,7 +479,7 @@
             <!--            </div>-->
             <!-- 출고 -->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
+                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden h-full">
                 <div class="flex flex-col items-center mt-4" style="height: 10%;">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>출고</div>
@@ -631,7 +631,7 @@
             <!--                </div>-->
             <!--            </div>-->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
+                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-2xl cursor-pointer overflow-hidden">
                 <div class="flex flex-col items-center mt-4">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>정산</div>
@@ -647,14 +647,14 @@
                             <!-- Recurring selector -->
                             <div class="flex items-center p-0.5 overflow-hidden">
                         <span class="text-13s text-bold-600"
-                              [ngClass]="{'opacity-50' : !billop}">매입</span>
+                              [ngClass]="{'opacity-50' : billop}">매입</span>
                                 <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"
                                                   (click)="biiOption()"
                                                   [color]="'warn'"
                                                   [checked]="true">
                                 </mat-slide-toggle>
                                 <span class="text-13s text-bold-600"
-                                      [ngClass]="{'opacity-50' : billop}">매출</span>
+                                      [ngClass]="{'opacity-50' : !billop}">매출</span>
                             </div>
                         </div>
                         <div class="flex flex-col items-center">
@@ -734,7 +734,7 @@
 
             <!-- 공급내역 보고 -->
             <div [ngClass]="{'mt-2': isMobile}"
-                class="sm:col-span-3 md:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
+                 class="sm:col-span-3 md:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden mt-2">
                 <div class="flex flex-col items-center mt-2">
                     <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-20s text-bold">
                         <div>공급내역 보고</div>
@@ -752,7 +752,8 @@
                     <!--                        </mat-button-toggle-group>-->
                     <!--                    </div>-->
                 </div>
-                <div class="grid grid-cols-5 lg:grid-cols-5 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer m-auto">
+                <div
+                    class="grid grid-cols-5 lg:grid-cols-5 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer m-auto">
                     <!-- New vs. Closed -->
                     <div [ngClass]="{'flex flex-col flex-auto col-span-6': isMobile,
                                     'flex flex-col flex-auto col-span-3': !isMobile}">
@@ -789,8 +790,8 @@
                                     'col-span-2 border-blue': !isMobile}"
                                     mat-raised-button
                                     [color]="'basic'"
-                                    (click)="goPage({gbn: 'UDI' , status: ''})">
-                                <span class="text-13s text-bold-600">임시등록 <br>0</span>
+                                    (click)="goPage({gbn: 'error_UDI' , status: ''})">
+                                <span class="text-13s text-bold-600">실패내역 <br> 0</span>
                             </button>
                             <button [ngClass]="{'col-span-1 border-blue': isMobile,
                                     'col-span-2 border-blue': !isMobile}"
@@ -810,37 +811,37 @@
                                     mat-raised-button
                                     [color]="'basic'"
                                     (click)="goPage({gbn: 'UDI' , status: ''})">
-                                <span class="text-13s text-bold-600">보고목록</span>
+                                <span class="text-13s text-bold-600">보고목록 <br> 0</span>
                             </button>
-<!--                            <div-->
-<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-orange">-->
-<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">임시등록</div>-->
-<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
-<!--                                    0-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; 월보고 &ndash;&gt;-->
-<!--                            <div-->
-<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
-<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">월보고</div>-->
-<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
-<!--                                    {{udiLastDay}}-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; 반품 &ndash;&gt;-->
-<!--                            <div-->
-<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-red">-->
-<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">반품</div>-->
-<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; 보고목록 &ndash;&gt;-->
-<!--                            <div-->
-<!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
-<!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">보고목록</div>-->
-<!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                            <div-->
+                            <!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-orange">-->
+                            <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">임시등록</div>-->
+                            <!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+                            <!--                                    0-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            &lt;!&ndash; 월보고 &ndash;&gt;-->
+                            <!--                            <div-->
+                            <!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
+                            <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-11s text-bold-600">월보고</div>-->
+                            <!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+                            <!--                                    {{udiLastDay}}-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            &lt;!&ndash; 반품 &ndash;&gt;-->
+                            <!--                            <div-->
+                            <!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-red">-->
+                            <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">반품</div>-->
+                            <!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            &lt;!&ndash; 보고목록 &ndash;&gt;-->
+                            <!--                            <div-->
+                            <!--                                class="col-span-2 flex flex-col items-center justify-center rounded-1xll chart_udi_btn border-navy">-->
+                            <!--                                <div class="mt-1 text-sm sm:text-lg font-medium text-13s text-bold-600">보고목록</div>-->
+                            <!--                                <div class="leading-none tracking-tight text-13s text-bold-600 mb-1">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
                         <!--                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">-->
                         <!--                            &lt;!&ndash; 성공 &ndash;&gt;-->
@@ -884,7 +885,8 @@
                         <div>재고</div>
                     </div>
                 </div>
-                <div class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer" style="margin-top: 35px!important;">
+                <div class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row gap-6 w-full mt-8 sm:mt-4 cursor-pointer"
+                     style="margin-top: 35px!important;">
                     <!-- New vs. Closed -->
                     <div [ngClass]="{'flex flex-col flex-auto col-span-2': !isMobile,
                                     'flex flex-col flex-auto col-span-6': isMobile}">
@@ -919,26 +921,26 @@
                                 <td>소계</td>
                             </tr>
                             <tbody *ngFor="let row of stockInfos; let i=dataIndex;">
-                            <tr>
-                                <td style="background-color:#7DC4FF;">{{row.subCd}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.poQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.availQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.poQty + row.availQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.acceptableQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.unusedQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.acceptableQty + row.unusedQty}}</td>
-                                <td style="background-color:#CFE8F9;">{{row.poQty + row.availQty + row.acceptableQty + row.unusedQty}}</td>
+                            <tr style="font-size: 11px">
+                                <td style="background-color:#7DC4FF;">{{this.priceToString(row.subCd)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.poQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.availQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.poQty + row.availQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.acceptableQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.unusedQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.acceptableQty + row.unusedQty)}}</td>
+                                <td style="background-color:#CFE8F9;">{{this.priceToString(row.poQty + row.availQty + row.acceptableQty + row.unusedQty)}}</td>
                             </tr>
                             </tbody>
-                            <tr>
+                            <tr style="font-size: 12px">
                                 <td style="background-color:#A2D6F4;">Sum</td>
-                                <td style="background-color:#A2D6F4;">{{sumPoQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumAvailQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumPoAvailQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumAcceptableQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumUnusedQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumAcceptableUnusedQty}}</td>
-                                <td style="background-color:#A2D6F4;">{{sumAll}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumPoQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumAvailQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumPoAvailQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumAcceptableQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumUnusedQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumAcceptableUnusedQty)}}</td>
+                                <td style="background-color:#A2D6F4;">{{this.priceToString(sumAll)}}</td>
                             </tr>
                         </table>
                     </div>
@@ -1082,7 +1084,6 @@
                 <!--                    뉴스정보-->
                 <!--                </div>-->
             </div>
-            <br>
         </div>
 
     </div>

@@ -19,6 +19,7 @@ import {ManagesReportComponent} from './manages-report/manages-report.component'
 import {ManagesDetailComponent} from './manages-detail/manages-detail.component';
 import {ManagesNewComponent} from './manages-new';
 import {ManagesEmailComponent} from './manages-email/manages-email.component';
+import {CommonLoadingBarComponent} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.component";
 
 @Component({
     selector: 'dms-manages',
@@ -332,7 +333,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellDblClicked = (grid, clickData) => {
             if (clickData.cellType !== 'header') {
                 if (clickData.cellType !== 'head') {
-                    if(grid.getValues(clickData.dataRow) !== null){
+                    if (grid.getValues(clickData.dataRow) !== null) {
                         this.selectDoubleClickRow(grid.getValues(clickData.dataRow));
                     }
                 }
@@ -375,6 +376,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     select(): void {
+        this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loadingBar'
+        });
         this.searchSetValue();
         const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
@@ -634,6 +638,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             if (ex.manages.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._matDialog.getDialogById('loadingBar').close();
         });
     }
 

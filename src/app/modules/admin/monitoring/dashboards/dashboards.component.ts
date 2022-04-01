@@ -22,9 +22,9 @@ import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../../core/session/state/session.store';
 import {ApexOptions} from 'ng-apexcharts';
-import {ActiveElement, Chart, ChartEvent} from 'chart.js';
+import {Chart} from 'chart.js';
 import ChartDataLabels, {Context} from 'chartjs-plugin-datalabels';
-import {EmptyObject} from "chart.js/types/basic";
+import {EmptyObject} from 'chart.js/types/basic';
 
 @Component({
     selector: 'app-dashboards',
@@ -33,20 +33,20 @@ import {EmptyObject} from "chart.js/types/basic";
 })
 export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    @ViewChild(MatPaginator) private _paginator: MatPaginator;
-    @ViewChild(MatSort) private _sort: MatSort;
     userName: string;
     ibInfo$: Observable<DashboardInfo1>;
     obInfo$: Observable<DashboardInfo1>;
     qtInfo$: Observable<DashboardInfo1>;
     poInfo$: Observable<DashboardInfo1>;
     soInfo$: Observable<DashboardInfo1>;
+    supplyStatus$: Observable<DashboardInfo1>;
     udiInfo$: Observable<any>;
     bill$: Observable<any>;
     billInfo$: Observable<any>;
     stockInfo$: Observable<any>;
     stockInfos: any;
     udiInfos: any;
+    udiMonth: any;
     billInfos: any;
     udiLastDay: any;
     ibInfo: IbInfo = {nCnt: 0, cCnt: 0, pCnt: 0, sCnt: 0, pcCnt: 0, scCnt: 0};
@@ -59,7 +59,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     pagination: DashboardsPagination = {length: 0, size: 0, page: 0, lastPage: 0, startIndex: 0, endIndex: 0};
     isLoading: boolean = false;
     isMobile: boolean = false;
-    billop: boolean = false;
+    billop: boolean = true;
     ibInfonCnt: any;
     ibInfopCnt: any;
     ibInfopsCnt: any;
@@ -68,12 +68,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     obInfopsCnt: any;
     buy: any;
     sal: any;
-    buybool: boolean = true;
-    salbool: boolean = false;
+    buybool: boolean = false;
+    salbool: boolean = true;
     chartUdiInfo: ApexOptions = {};
-
     racallTaleData: any = null;
-
     reacllItemsCount: number = 0;
     sumPoQty: number = 0;
     sumAvailQty: number = 0;
@@ -82,7 +80,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     sumUnusedQty: number = 0;
     sumAcceptableUnusedQty: number = 0;
     sumAll: number = 0;
-
+    @ViewChild(MatPaginator) private _paginator: MatPaginator;
+    @ViewChild(MatSort) private _sort: MatSort;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -109,7 +108,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.udiInfo$ = this._dashboardsService.udiInfo$;
         this.stockInfo$ = this._dashboardsService.stockInfo$;
         this.bill$ = this._dashboardsService.bill$;
-
+        this.supplyStatus$ = this._dashboardsService.supplyStatus$;
         //입고
         this.ibInfo$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -140,15 +139,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
 
         this.ibInfonCnt = Math.round(ibInfonCnt);
-        if(isNaN(this.ibInfonCnt)) {
+        if (isNaN(this.ibInfonCnt)) {
             this.ibInfonCnt = 0;
         }
         this.ibInfopCnt = Math.round(ibInfopCnt);
-        if(isNaN(this.ibInfopCnt)) {
+        if (isNaN(this.ibInfopCnt)) {
             this.ibInfopCnt = 0;
         }
         this.ibInfopsCnt = Math.round(ibInfopsCnt);
-        if(isNaN(this.ibInfopsCnt)) {
+        if (isNaN(this.ibInfopsCnt)) {
             this.ibInfopsCnt = 0;
         }
 
@@ -204,15 +203,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const obInfopCnt = this.obInfo.pCnt / obInfoCnt * 100;
         const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
         this.obInfonCnt = Math.round(obInfonCnt);
-        if(isNaN(this.obInfonCnt)) {
+        if (isNaN(this.obInfonCnt)) {
             this.obInfonCnt = 0;
         }
         this.obInfopCnt = Math.round(obInfopCnt);
-        if(isNaN(this.obInfopCnt)) {
+        if (isNaN(this.obInfopCnt)) {
             this.obInfopCnt = 0;
         }
         this.obInfopsCnt = Math.round(obInfopsCnt);
-        if(isNaN(this.obInfopsCnt)) {
+        if (isNaN(this.obInfopsCnt)) {
             this.obInfopsCnt = 0;
         }
 
@@ -330,89 +329,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     /**
-     * Prepare the chart data from the data
-     *
-     * @private
-     */
-    private _prepareChartData(): void {
-        // UDI 공급내역
-        // this.chartUdiInfo = {
-        //     chart: {
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         height: '100%',
-        //         type: 'line',
-        //         toolbar: {
-        //             show: false
-        //         },
-        //         zoom: {
-        //             enabled: false
-        //         }
-        //     },
-        //     colors: ['#64748B', '#94A3B8'],
-        //     dataLabels: {
-        //         enabled: true,
-        //         enabledOnSeries: [0],
-        //         background: {
-        //             borderWidth: 0
-        //         }
-        //     },
-        //     grid: {
-        //         borderColor: 'var(--fuse-border)'
-        //     },
-        //     labels: this.udiInfos.labels,
-        //     legend: {
-        //         show: false
-        //     },
-        //     plotOptions: {
-        //         bar: {
-        //             columnWidth: '50%'
-        //         }
-        //     },
-        //     series: this.udiInfos.series,
-        //     states: {
-        //         hover: {
-        //             filter: {
-        //                 type: 'darken',
-        //                 value: 0.75
-        //             }
-        //         }
-        //     },
-        //     stroke: {
-        //         width: [3, 0]
-        //     },
-        //     tooltip: {
-        //         followCursor: true,
-        //         theme: 'dark'
-        //     },
-        //     xaxis: {
-        //         axisBorder: {
-        //             show: false
-        //         },
-        //         axisTicks: {
-        //             color: 'var(--fuse-border)'
-        //         },
-        //         labels: {
-        //             style: {
-        //                 colors: 'var(--fuse-text-secondary)'
-        //             }
-        //         },
-        //         tooltip: {
-        //             enabled: false
-        //         }
-        //     },
-        //     yaxis: {
-        //         labels: {
-        //             offsetX: -16,
-        //             style: {
-        //                 colors: 'var(--fuse-text-secondary)'
-        //             }
-        //         }
-        //     }
-        // };
-    }
-
-    /**
      * After view init
      */
     ngAfterViewInit(): void {
@@ -466,6 +382,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this._router.navigate(['/udi/manages']);
         } else if (obj.gbn === 'UDI_RTN') {
             this._router.navigate(['/bound/inbound']);
+        } else if (obj.gbn === 'error_UDI') {
+            this._router.navigate(['/udi/status']);
         }
 
 
@@ -479,7 +397,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     actionButton() {
 
     }
-
 
     qtChart() {
 
@@ -598,7 +515,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const hover = {
             id: 'hover',
             // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false) {
+            afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false): void {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#3983DC';
                 ctx.font = '17px arial, "Malgun Gothic", "맑은 고딕", AppleSDGothicNeo-Light, sans-serif';
@@ -635,8 +552,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             plugins: [hover],
         });
     }
-
-
 
     poChart() {
         const doughnutChartLabels = [
@@ -934,9 +849,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             data: {
                 datasets: [{
                     type: 'line',
-                    label: '매입     ' + this.priceToString(billInfos[billInfos.length - 2].totalAmt) + ' 원',
+                    label: '매입',
                     data: buyPrice,
                     fill: false,
+                    hidden: true,
                     borderColor: '#3983DC',
                     pointBackgroundColor: '#3983DC',
                     hoverBackgroundColor: '#3983DC',
@@ -950,10 +866,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'line',
-                    label: '매출     ' + this.priceToString(billInfos[billInfos.length - 1].totalAmt) + ' 원',
+                    label: '매출',
                     data: salesPrice,
                     fill: false,
-                    hidden: true,
                     borderColor: '#45AAB4',
                     pointBackgroundColor: '#45AAB4',
                     hoverBackgroundColor: '#45AAB4',
@@ -972,7 +887,30 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 plugins: {
                     tooltip: {
                         xAlign: 'right',
-                        yAlign: 'top'
+                        yAlign: 'top',
+                        callbacks: {
+                            label: (ctx: Context) => {
+                                const name = ctx.dataset.label;
+                                return name + ' ' + this.priceToString(ctx.chart.tooltip.dataPoints[0].raw) + '원';
+                                // for (let i = 0; i < ctx.dataset.data.length; i++) {
+                                //     if (ctx.chart.data.labels !== null) {
+                                //         if (ctx.chart.data.labels[0] !== null) {
+                                //             return ctx.dataset.data[0];
+                                //         } else if (ctx.chart.data.labels[1] !== null) {
+                                //             return ctx.dataset.data[1];
+                                //         } else if (ctx.chart.data.labels[2] !== null) {
+                                //             return ctx.dataset.data[2];
+                                //         } else if (ctx.chart.data.labels[3] !== null) {
+                                //             return ctx.dataset.data[3];
+                                //         } else if (ctx.chart.data.labels[4] !== null) {
+                                //             return ctx.dataset.data[4];
+                                //         } else if (ctx.chart.data.labels[5] !== null) {
+                                //             return ctx.dataset.data[5];
+                                //         }
+                                //     }
+                                // }
+                            }
+                        }
                     },
                     legend: {
                         display: false,
@@ -1003,27 +941,28 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
         document.getElementById('billbuy').addEventListener('click', () => {
-            if (!this.buybool) {
-                mixedChart.hide(0);
-            } else {
+            if (this.buybool) {
+                // false 라서 처음에 보인다
                 mixedChart.show(0);
+            } else {
+                mixedChart.hide(0);
             }
         });
         document.getElementById('billbuy').addEventListener('click', () => {
             if (!this.salbool) {
+                // truedlek
                 mixedChart.hide(1);
             } else {
                 mixedChart.show(1);
             }
         });
     }
-
-    billbuy()
-        :
-        void {
-        if (!
-            this.buybool
-        ) {
+    // buy: any;
+    // sal: any;
+    // buybool: boolean = true;
+    // salbool: boolean = false;
+    billbuy(): void {
+        if (!this.buybool) {
             this.buybool = true;
         } else {
             this.buybool = false;
@@ -1484,6 +1423,89 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         //this.planBillingForm.patchValue({'payGrade': this.payGrade + ''});
 
         this._changeDetectorRef.markForCheck();
+    }
+
+    /**
+     * Prepare the chart data from the data
+     *
+     * @private
+     */
+    private _prepareChartData(): void {
+        // UDI 공급내역
+        // this.chartUdiInfo = {
+        //     chart: {
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'line',
+        //         toolbar: {
+        //             show: false
+        //         },
+        //         zoom: {
+        //             enabled: false
+        //         }
+        //     },
+        //     colors: ['#64748B', '#94A3B8'],
+        //     dataLabels: {
+        //         enabled: true,
+        //         enabledOnSeries: [0],
+        //         background: {
+        //             borderWidth: 0
+        //         }
+        //     },
+        //     grid: {
+        //         borderColor: 'var(--fuse-border)'
+        //     },
+        //     labels: this.udiInfos.labels,
+        //     legend: {
+        //         show: false
+        //     },
+        //     plotOptions: {
+        //         bar: {
+        //             columnWidth: '50%'
+        //         }
+        //     },
+        //     series: this.udiInfos.series,
+        //     states: {
+        //         hover: {
+        //             filter: {
+        //                 type: 'darken',
+        //                 value: 0.75
+        //             }
+        //         }
+        //     },
+        //     stroke: {
+        //         width: [3, 0]
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark'
+        //     },
+        //     xaxis: {
+        //         axisBorder: {
+        //             show: false
+        //         },
+        //         axisTicks: {
+        //             color: 'var(--fuse-border)'
+        //         },
+        //         labels: {
+        //             style: {
+        //                 colors: 'var(--fuse-text-secondary)'
+        //             }
+        //         },
+        //         tooltip: {
+        //             enabled: false
+        //         }
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             offsetX: -16,
+        //             style: {
+        //                 colors: 'var(--fuse-text-secondary)'
+        //             }
+        //         }
+        //     }
+        // };
     }
 
 }
