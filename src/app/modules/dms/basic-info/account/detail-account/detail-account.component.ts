@@ -103,7 +103,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             custBusinessNumber : [{value:''}],
             custBusinessName: [''],
             representName: [''],
-            businessCondition: [''],
+            businessCondition: [{value:'',disabled:true}],
             businessCategory: [''],
             address: [''],
             addressDetail: [''],

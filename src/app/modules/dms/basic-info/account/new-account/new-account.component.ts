@@ -91,7 +91,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             custBusinessNumber : [''],
             custBusinessName: [''],
             representName: [''],
-            businessCondition: [''],
+            businessCondition: [{value:'',disabled:true}],
             businessCategory: [''],
             address: [''],
             addressDetail: [''],

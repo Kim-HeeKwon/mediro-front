@@ -103,7 +103,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             suplyUntpc : [''],
             suplyAmt : [{value: '',disabled:true}],
             remark : [''],
-            bcncCobTypeName : [''],
+            bcncCobTypeName : [{value: '',disabled:true}],
             bcncCode : [{value: ''}],
             bcncEntpAddr : [{value: '',disabled:true}],
             bcncEntpName : [{value: '',disabled:true}],
@@ -132,6 +132,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             active: [false]  // cell상태
         });
 
+        console.log(this.data);
 
         if(this.data !== (null || undefined)){
             this.selectedForm.patchValue(
