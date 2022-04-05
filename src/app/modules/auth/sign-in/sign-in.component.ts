@@ -51,7 +51,8 @@ export class AuthSignInComponent implements OnInit
         this.signInForm = this._formBuilder.group({
             email     : ['', [Validators.required, Validators.email]],
             password  : ['', Validators.required],
-            rememberMe: ['']
+            rememberMe: [''],
+            userGroup: ['']
         });
 
         if(this.cookieService.get('remeberMe') === 'Y'){
@@ -98,7 +99,8 @@ export class AuthSignInComponent implements OnInit
                     const userGroup = localStorage.getItem('userGroup');
 
                     if(userGroup === 'ADMIN'){
-                        this._router.navigateByUrl('/monitoring/dashboards');
+                        this._router.navigateByUrl('/admin/user/user');
+
                     }else if(id === 'test@naver.com'){
                         this._router.navigateByUrl('/monitoring/dashboards');
                     }else{

@@ -17,6 +17,10 @@ export class Common {
         return this.api.postLoading(url, accountInfo).pipe(share()); // seq;
     }
 
+    sendDataLoadingNoCancel(accountInfo: any, url: string): Observable<any> {
+        return this.api.postLoadingNoCancel(url, accountInfo).pipe(share()); // seq;
+    }
+
     sendDataChgUrl(accountInfo: any, url: string): Observable<any> {
         return this.api.postChgUrl(url, accountInfo).pipe(share()); // seq;
     }

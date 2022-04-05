@@ -27,42 +27,42 @@
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
                         <!-- Name -->
                         <div class="sm:col-span-4">
-<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
-<!--                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'businessCondition'">-->
-<!--                                    <ng-container *ngFor="let cobFlagName of cobFlagName">-->
-<!--                                        <mat-option [value]="cobFlagName.id">-->
-<!--                                            {{cobFlagName.name}}-->
-<!--                                        </mat-option>-->
-<!--                                    </ng-container>-->
-<!--                                </mat-select>-->
-<!--                            </mat-form-field>-->
+                            <!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
+                            <!--                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'businessCondition'">-->
+                            <!--                                    <ng-container *ngFor="let cobFlagName of cobFlagName">-->
+                            <!--                                        <mat-option [value]="cobFlagName.id">-->
+                            <!--                                            {{cobFlagName.name}}-->
+                            <!--                                        </mat-option>-->
+                            <!--                                    </ng-container>-->
+                            <!--                                </mat-select>-->
+                            <!--                            </mat-form-field>-->
                         </div>
                         <div class="sm:col-span-4">
-<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
-<!--                                <input-->
-<!--                                    matInput-->
-<!--                                    [formControlName]="'businessCategory'"-->
-<!--                                    [autocomplete]="'off'"-->
-<!--                                    [placeholder]="'종목을 입력해주세요.'">-->
-<!--                            </mat-form-field>-->
+                            <!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
+                            <!--                                <input-->
+                            <!--                                    matInput-->
+                            <!--                                    [formControlName]="'businessCategory'"-->
+                            <!--                                    [autocomplete]="'off'"-->
+                            <!--                                    [placeholder]="'종목을 입력해주세요.'">-->
+                            <!--                            </mat-form-field>-->
                         </div>
                         <div class="sm:col-span-4">
-<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
-<!--                                <input-->
-<!--                                    matInput-->
-<!--                                    [formControlName]="'account'"-->
-<!--                                    [autocomplete]="'off'"-->
-<!--                                    [placeholder]="'거래처를 입력해주세요.'">-->
-<!--                            </mat-form-field>-->
+                            <!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
+                            <!--                                <input-->
+                            <!--                                    matInput-->
+                            <!--                                    [formControlName]="'account'"-->
+                            <!--                                    [autocomplete]="'off'"-->
+                            <!--                                    [placeholder]="'거래처를 입력해주세요.'">-->
+                            <!--                            </mat-form-field>-->
                         </div>
                         <div class="sm:col-span-4">
-<!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
-<!--                                <input-->
-<!--                                    matInput-->
-<!--                                    [formControlName]="'descr'"-->
-<!--                                    [autocomplete]="'off'"-->
-<!--                                    [placeholder]="'거래처명을 입력해주세요.'">-->
-<!--                            </mat-form-field>-->
+                            <!--                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">-->
+                            <!--                                <input-->
+                            <!--                                    matInput-->
+                            <!--                                    [formControlName]="'descr'"-->
+                            <!--                                    [autocomplete]="'off'"-->
+                            <!--                                    [placeholder]="'거래처명을 입력해주세요.'">-->
+                            <!--                            </mat-form-field>-->
                         </div>
                     </div>
                 </form>
@@ -75,7 +75,7 @@
                             mat-raised-button
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
-                            (click)="selectUser()">
+                            (click)="selectServiceCharge()">
                             <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                             <span class="ml-2 mr-1">조회</span>
                         </button>
@@ -95,7 +95,7 @@
                             <div class="flex items-center justify-between px-8 pt-4 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-2xl tracking-tight text-17s text-bold-600">
-                                    SaaS 회원사 목록
+                                    서비스 요금관리
                                 </div>
                                 <button
                                     class="sm:hidden -ml-2"
@@ -114,48 +114,48 @@
                                               class="flex flex-col w-full">
                                             <div class="flex flex-col w-full">
                                                 <div class="flex w-4/4">
-<!--                                                    <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
-<!--                                                        <mat-label>업태</mat-label>-->
-<!--                                                        <mat-select (selectionChange)="selectHeader()" [formControlName]="'businessCondition'">-->
-<!--                                                            <ng-container *ngFor="let cobFlagName of cobFlagName">-->
-<!--                                                                <mat-option [value]="cobFlagName.id">-->
-<!--                                                                    {{cobFlagName.name}}-->
-<!--                                                                </mat-option>-->
-<!--                                                            </ng-container>-->
-<!--                                                        </mat-select>-->
-<!--                                                    </mat-form-field>-->
-<!--                                                    <mat-form-field-->
-<!--                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
-<!--                                                        <mat-label class="mediro-ft-label">종목</mat-label>-->
-<!--                                                        <input-->
-<!--                                                            matInput-->
-<!--                                                            (window:onkeypress)="enter($event)"-->
-<!--                                                            [formControlName]="'businessCategory'"-->
-<!--                                                            [autocomplete]="'off'">-->
-<!--                                                    </mat-form-field>-->
-<!--                                                    <mat-form-field-->
-<!--                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
-<!--                                                        <mat-label class="mediro-ft-label">거래처 코드</mat-label>-->
-<!--                                                        <input-->
-<!--                                                            matInput-->
-<!--                                                            (window:onkeypress)="enter($event)"-->
-<!--                                                            [formControlName]="'account'"-->
-<!--                                                            [autocomplete]="'off'">-->
-<!--                                                    </mat-form-field>-->
+                                                    <!--                                                    <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
+                                                    <!--                                                        <mat-label>업태</mat-label>-->
+                                                    <!--                                                        <mat-select (selectionChange)="selectHeader()" [formControlName]="'businessCondition'">-->
+                                                    <!--                                                            <ng-container *ngFor="let cobFlagName of cobFlagName">-->
+                                                    <!--                                                                <mat-option [value]="cobFlagName.id">-->
+                                                    <!--                                                                    {{cobFlagName.name}}-->
+                                                    <!--                                                                </mat-option>-->
+                                                    <!--                                                            </ng-container>-->
+                                                    <!--                                                        </mat-select>-->
+                                                    <!--                                                    </mat-form-field>-->
+                                                    <!--                                                    <mat-form-field-->
+                                                    <!--                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
+                                                    <!--                                                        <mat-label class="mediro-ft-label">종목</mat-label>-->
+                                                    <!--                                                        <input-->
+                                                    <!--                                                            matInput-->
+                                                    <!--                                                            (window:onkeypress)="enter($event)"-->
+                                                    <!--                                                            [formControlName]="'businessCategory'"-->
+                                                    <!--                                                            [autocomplete]="'off'">-->
+                                                    <!--                                                    </mat-form-field>-->
+                                                    <!--                                                    <mat-form-field-->
+                                                    <!--                                                        class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">-->
+                                                    <!--                                                        <mat-label class="mediro-ft-label">거래처 코드</mat-label>-->
+                                                    <!--                                                        <input-->
+                                                    <!--                                                            matInput-->
+                                                    <!--                                                            (window:onkeypress)="enter($event)"-->
+                                                    <!--                                                            [formControlName]="'account'"-->
+                                                    <!--                                                            [autocomplete]="'off'">-->
+<!--                                                                                                        </mat-form-field>-->
                                                     <mat-form-field
                                                         class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label class="mediro-ft-label">회원사 명</mat-label>
+                                                        <mat-label class="mediro-ft-label">결제 등급</mat-label>
                                                         <input
                                                             matInput
                                                             (window:onkeypress)="enter($event)"
-                                                            [formControlName]="'businessName'"
+                                                            [formControlName]="'payGrade'"
                                                             [autocomplete]="'off'">
                                                     </mat-form-field>
                                                     <button
                                                         class="ml-2 mt-6 mediro-btn-custom mediro-btn-custom-background-color"
                                                         mat-flat-button
                                                         [color]="'primary'"
-                                                        (click)="selectUser()">
+                                                        (click)="selectServiceCharge()">
                                                         <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
                                                         <span class="ml-2 mr-1">검색</span>
                                                     </button>
@@ -183,7 +183,7 @@
                         </div>
                         <div
                             class="realgrid"
-                            id="user">
+                            id="serviceCharge">
                         </div>
                         <mat-paginator
                             class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"

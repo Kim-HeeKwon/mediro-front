@@ -88,7 +88,11 @@ export class FunctionService implements OnInit, OnDestroy{
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_alertCheckMessage(param: any, redirectUrl?: string): void
     {
-        if(param.status !== 'SUCCESS'){
+        if(param.status === 'SUCCESS'){
+            this.cfn_alert('정상적으로 처리되었습니다.','check-circle');
+        }else if(param.status === 'CANCEL'){
+
+        }else{
 
             const icon = 'information-circle';
             // Setup config form
@@ -113,8 +117,6 @@ export class FunctionService implements OnInit, OnDestroy{
                 dismissible: true
             });
             const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
-        }else{
-            this.cfn_alert('정상적으로 처리되었습니다.','check-circle');
         }
     }
 

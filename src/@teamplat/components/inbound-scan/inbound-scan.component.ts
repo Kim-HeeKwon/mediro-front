@@ -888,10 +888,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
     alertMessageScan(param: any): void
     {
-        if(param.status !== 'SUCCESS'){
-            this._functionService.cfn_alert(param.msg);
-        }else{
-
+        if(param.status === 'SUCCESS'){
             const confirmation = this._teamPlatConfirmationService.open({
                 title: '',
                 message: '입고 처리되었습니다.',
@@ -914,6 +911,10 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.matDialogRef.close();
                     }
                 });
+        }else if(param.status === 'CANCEL'){
+
+        }else{
+            this._functionService.cfn_alert(param.msg);
         }
     }
 

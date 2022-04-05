@@ -131,16 +131,18 @@ export class DetailItemsComponent implements  OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
-        if(param.status !== 'SUCCESS'){
+        if(param.status === 'SUCCESS'){
+            this.matDialogRef.close();
+        }else if(param.status === 'CANCEL'){
+
+        }else{
+
             this.alert = {
                 type   : 'error',
                 message: param.msg
             };
             // Show the alert
             this.showAlert = true;
-        }else{
-
-            this.matDialogRef.close();
         }
     }
 

@@ -612,8 +612,14 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_alertCheckMessage(param: any, redirectUrl?: string): void
     {
-        if(param.status !== 'SUCCESS'){
+        if(param.status === 'SUCCESS'){
 
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.','check-circle');
+            this.selectHeaderDelete();
+
+        }else if(param.status === 'CANCEL'){
+
+        }else{
             const icon = 'information-circle';
             // Setup config form
             this._functionService.configForm = this._formBuilder.group({
@@ -637,9 +643,6 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                 dismissible: true
             });
             const confirmation = this._teamPlatConfirmationService.open(this._functionService.configForm.value);
-        }else{
-            this._functionService.cfn_alert('정상적으로 처리되었습니다.','check-circle');
-            this.selectHeaderDelete();
         }
     }
 

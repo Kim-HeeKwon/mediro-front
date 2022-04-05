@@ -225,14 +225,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
-        if(param.status !== 'SUCCESS'){
-            this.alert = {
-                type   : 'error',
-                message: param.msg
-            };
-            // Show the alert
-            this.showAlert = true;
-        }else{
+        if(param.status === 'SUCCESS'){
             this.alert = {
                 type   : 'success',
                 message: '등록완료 하였습니다.'
@@ -240,6 +233,16 @@ export class NewAccountComponent implements OnInit, OnDestroy
             // Show the alert
             this.showAlert = true;
             this._accountService.getAccount(0,40,'addDate','desc','');
+        }else if (param.status === 'CANCEL') {
+
+        }else{
+
+            this.alert = {
+                type   : 'error',
+                message: param.msg
+            };
+            // Show the alert
+            this.showAlert = true;
         }
     }
 

@@ -84,6 +84,11 @@ export class Api {
     }
 
     postLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -113,6 +118,41 @@ export class Api {
                 }
             });
             //.pipe(catchError(this.handleError('error', this._functionService)));
+        //loading.close();
+
+        return req;
+    }
+
+    postLoadingNoCancel(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        const loading = this._matDialog.open(CommonLoadingBarComponent, {
+            id: 'loadingBar'
+        });
+
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+        this.backLogin(arrayOfArraysData[0].mId);
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+        //.pipe(catchError(this.handleError('error', this._functionService)));
         //loading.close();
 
         return req;
@@ -180,6 +220,11 @@ export class Api {
     }
 
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -253,6 +298,11 @@ export class Api {
     }
 
     postListChgUrlLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -316,6 +366,11 @@ export class Api {
     }
 
     postObjectListLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -413,10 +468,7 @@ export class Api {
     }
 
     postWithPageLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     return of(false);
-        // }
+
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -550,6 +602,11 @@ export class Api {
     }
 
     apiPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -604,6 +661,11 @@ export class Api {
     }
 
     apiListPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -661,6 +723,11 @@ export class Api {
     }
 
     apiDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -723,6 +790,11 @@ export class Api {
     }
 
     apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -806,21 +878,46 @@ export class Api {
     private freeCheck(): boolean{
 
         let check = true;
-
         if(this._sessionStore.getValue().freeYn !== undefined){
-            if(this._sessionStore.getValue().payYn === 'N'){
-                if(this._sessionStore.getValue().freeYn === 'N'){
+
+            if(this._sessionStore.getValue().freeYn === 'N'){
+                check = false;
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title: '',
+                    message: '무료 서비스가 종료 되었습니다. <br> 정기 서비스를 신청해주세요.',
+                    actions: {
+                        confirm: {
+                            show : true,
+                            label: '정기 서비스 이동'
+                        },
+                        cancel : {
+                            show : true,
+                            label: '닫기'
+                        }
+                    }
+                });
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this._matDialog.closeAll();
+                            this._router.navigateByUrl('/pages/settings');
+                            // Show the alert
+                        }
+                    });
+            }else{
+                if(this._sessionStore.getValue().payYn === 'N'){
                     check = false;
                     const confirmation = this._teamPlatConfirmationService.open({
                         title: '',
-                        message: '무료 서비스가 종료 되었습니다. <br> 정기 서비스를 신청해주세요.',
+                        message: '서비스를 이용할 수 없습니다. <br> 정기 서비스를 신청해주세요.',
                         actions: {
                             confirm: {
                                 show : true,
                                 label: '정기 서비스 이동'
                             },
                             cancel : {
-                                show : false,
+                                show : true,
                                 label: '닫기'
                             }
                         }
@@ -836,7 +933,6 @@ export class Api {
                         });
                 }
             }
-
         }
         return check;
 

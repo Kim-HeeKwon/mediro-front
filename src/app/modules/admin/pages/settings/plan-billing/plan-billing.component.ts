@@ -276,7 +276,7 @@ export class SettingsPlanBillingComponent implements OnInit
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result) => {
                     if (result) {
-                        this._common.sendDataLoading(this.planBillingForm.getRawValue(),'/v1/api/payment/payment-basic-info')
+                        this._common.sendDataLoadingNoCancel(this.planBillingForm.getRawValue(),'/v1/api/payment/payment-basic-info')
                             .subscribe((responseData: any) => {
                                 this._functionService.cfn_loadingBarClear();
                                 this.alertCheckMessage(responseData);

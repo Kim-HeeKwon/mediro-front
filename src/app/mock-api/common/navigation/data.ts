@@ -469,18 +469,125 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
 export const defaultNavigationAdmin: FuseNavigationItem[] = [
     {
-        id      : 'adm',
-        title   : '사용자',
-        subtitle: '사용자 관리',
+        id      : 'admin',
+        title   : '회원',
+        subtitle: 'SaaS 유료 회원사 및 운영자 관리',
         type    : 'group',
         icon    : 'heroicons_outline:home',
         children: [
             {
-                id   : 'user.user-experience',
-                title: 'SaaS 회원사목록',
-                type : 'basic',
-                icon : 'heroicons_outline:play',
-                link : '/pages/settings/500'
+                id: 'user',
+                title: '사용자',
+                type: 'collapsable',
+                icon: 'people_alt',
+                children: [
+                    {
+                        id   : 'user.user',
+                        title: 'SaaS 회원사 목록',
+                        type : 'basic',
+                        icon : 'people_alt',
+                        link : '/admin/user/user'
+                    },{
+                        id   : 'user.adminUserInfo',
+                        title: '사업자 정보',
+                        type : 'basic',
+                        icon : 'domain',
+                        //link : '/admin/user'
+                    },{
+                        id   : 'user.adminUserDetList',
+                        title: '사용자 목록',
+                        type : 'basic',
+                        icon : 'heroicons_outline:user',
+                        //link : '/admin/user'
+                    },
+                ]
+            }, {
+                id: 'operator',
+                title: '운영자',
+                type: 'collapsable',
+                icon: 'admin_panel_settings',
+                children: [
+                    {
+                        id   : 'operator.operatorUserList',
+                        title: '운영자 목록',
+                        type : 'basic',
+                        icon : 'supervisor_account',
+                        //link : '/admin/user'
+                    },
+                    {
+                        id   : 'operator.operatorUserDetList',
+                        title: '운영자 세부',
+                        type : 'basic',
+                        icon : 'person',
+                        //link : '/admin/user'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'service',
+        title: '서비스',
+        subtitle: 'SaaS 유료 회원사 서비스 관리',
+        type: 'group',
+        icon: 'heroicons_outline:home',
+        children: [
+            {
+                id: 'serviceCharge',
+                title: '서비스 요금',
+                type: 'collapsable',
+                icon: 'manage_accounts',
+                children: [
+                    {
+                        id   : 'serviceCharge.serviceCharge',
+                        title: '서비스 요금관리',
+                        type : 'basic',
+                        icon : 'payments',
+                        link : '/admin/service/serviceCharge'
+                    },
+                    {
+                        id   : 'serviceCharge.promotion',
+                        title: '프로모션 관리',
+                        type : 'basic',
+                        icon : 'sell',
+                        //link : '/admin/user'
+                    }
+                ]
+            },{
+                id: 'fee',
+                title: '사용료',
+                type: 'collapsable',
+                icon: 'paid',
+                children: [
+                    {
+                        id   : 'fee.feeUser',
+                        title: '사용료 목록',
+                        type : 'basic',
+                        icon : 'payment',
+                        link : '/admin/fee/feeUser'
+                    },
+                    {
+                        id   : 'fee.feeBilling',
+                        title: '청구서 관리',
+                        type : 'basic',
+                        icon : 'credit_card',
+                        //link : '/admin/user'
+                    }
+                ]
+            },{
+                id: 'feeDashboard',
+                title: '대시보드',
+                type: 'collapsable',
+                icon: 'space_dashboard',
+                children: [
+                    {
+                        id   : 'feeDashboard.feeDashboard',
+                        title: '대시보드',
+                        type : 'basic',
+                        icon : 'dashboard_customize',
+                        //link : '/admin/user'
+                    },
+                ]
             },
         ]
     },

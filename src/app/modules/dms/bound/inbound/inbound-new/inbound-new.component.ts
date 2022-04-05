@@ -515,10 +515,12 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     alertMessage(param: any): void {
-        if (param.status !== 'SUCCESS') {
-            this._functionService.cfn_alert(param.msg);
-        } else {
+        if (param.status === 'SUCCESS') {
             this.backPage();
+        } else if (param.status === 'CANCEL') {
+
+        } else {
+            this._functionService.cfn_alert(param.msg);
         }
     }
 

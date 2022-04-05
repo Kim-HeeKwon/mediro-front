@@ -164,7 +164,6 @@ export class SettingsAccountComponent implements OnInit
 
 
     alertMessage(param: any): void {
-        console.log(param);
         if (param.status !== 'SUCCESS') {
             this._functionService.cfn_alert(param.msg);
         } else {

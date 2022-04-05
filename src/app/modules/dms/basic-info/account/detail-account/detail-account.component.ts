@@ -275,6 +275,8 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
 
                     if(param.status === 'SUCCESS'){
                         this.matDialogRef.close();
+                    }else if(param.status === 'CANCEL'){
+
                     }
 
                 },(response) => {
@@ -324,6 +326,8 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
 
                                 if(param.status === 'SUCCESS'){
                                     this.matDialogRef.close();
+                                }else if(param.status === 'CANCEL'){
+
                                 }
 
                             },(response) => {

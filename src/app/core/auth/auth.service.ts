@@ -174,6 +174,7 @@ export class AuthService
         let strJson = this._cryptoJson.getStringCryto(user.password);
         strJson.id = user.id;
         strJson.email = user.id;
+        strJson.userGroup = user.userGroup;
         strJson.mId = 'mediroDefault';
 
         // + 나 스페이스 들어가 있을 경우 다시 생성
@@ -250,7 +251,6 @@ export class AuthService
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
             switchMap((response: any) => {
-                //
                 const status = response.status;
                 if(status === '99' || status === null || status === 'fail' || status === undefined){
 

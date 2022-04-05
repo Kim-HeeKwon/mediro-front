@@ -12,35 +12,47 @@ export const version = environment;
 export const appRoutes: Route[] = [
 
     //관리자
-    {
-        path: 'admin',
-        //canActivate: [NoAuthGuard],
-        //canActivateChild: [NoAuthGuard],
-        component: LayoutComponent,
-        data: {
-            layout: 'empty'
-        },
-        children: [
-            {path: 'sign-in', loadChildren: () => import('app/modules/adm/auth/sign-in/sign-in.module').then(m => m.SignInModule)}
-        ]
-    },
+    // {
+    //     path: 'admin',
+    //     // canActivate: [NoAuthGuard],
+    //     // canActivateChild: [NoAuthGuard],
+    //     component: LayoutComponent,
+    //     data: {
+    //         layout: 'empty'
+    //     },
+    //     children: [
+    //         {path: 'sign-in', loadChildren: () => import('app/modules/adm/auth/sign-in/sign-in.module').then(m => m.SignInModule)}
+    //     ]
+    // },
 
     //관리자 routes
     {
         path: 'admin',
-        // canActivate: [AuthGuard],
-        // canActivateChild: [AuthGuard],
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
         component: LayoutComponent,
         resolve: {
-            // initialData: InitialDataResolver,
-            // initialCommonCodeData: InitialCommonCodeDataResolver,
-            // initialCommonPopupData: InitialCommonPopupDataResolver
+            initialData: InitialDataResolver,
+            initialCommonCodeData: InitialCommonCodeDataResolver,
+            initialCommonPopupData: InitialCommonPopupDataResolver
         },
         children   : [
             //
-            {path: 'user', children: [
+            {path: 'user',
+                children: [
                     {path: 'user', data:{key: 'user'}, loadChildren: () => import('app/modules/adm/user/user/user.module').then(m => m.UserModule)},
-                ]},
+                ]
+            },
+            {path: 'service',
+                children: [
+                    {path: 'serviceCharge', data:{key: 'serviceCharge'}, loadChildren: () => import('app/modules/adm/service/service-charge/service-charge.module').then(m => m.ServiceChargeModule)},
+                ]
+            },
+            {path: 'fee',
+                children: [
+                    {path: 'feeUser', data:{key: 'feeUser'}, loadChildren: () => import('app/modules/adm/fee/fee-user/fee-user.module').then(m => m.FeeUserModule)},
+                ]
+            },
         ]
     },
 
