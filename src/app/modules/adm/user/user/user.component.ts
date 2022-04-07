@@ -9,12 +9,13 @@ import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
 import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
 import {FunctionService} from "../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {UserService} from "./user.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {UserPagenation} from "./user.types";
+import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 
 @Component({
     selector: 'app-admin-user',
@@ -33,6 +34,14 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     drawerOpened: boolean = false;
     searchForm: FormGroup;
     orderBy: any = 'asc';
+    yearUser: CommonCode[] = null;
+    payGrade: CommonCode[] = null;
+
+    channel: CommonCode[] = null;
+    area: CommonCode[] = null;
+    talkYn: CommonCode[] = null;
+    promotion: CommonCode[] = null;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     // @ts-ignore
@@ -44,6 +53,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     userColumns: Columns[];
+
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     userFields: DataFieldObject[] = [
@@ -52,13 +62,30 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'businessName', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
-        {fieldName: 'userName', dataType: ValueType.TEXT},
+        {fieldName: 'representName', dataType: ValueType.TEXT},
+        {fieldName: 'payGrade', dataType: ValueType.TEXT},
+        {fieldName: 'yearUser', dataType: ValueType.TEXT},
+        {fieldName: 'midGrade', dataType: ValueType.TEXT},
+
+        {fieldName: 'channel', dataType: ValueType.TEXT},
+        {fieldName: 'area', dataType: ValueType.TEXT},
+        {fieldName: 'talkYn', dataType: ValueType.TEXT},
+        {fieldName: 'userCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'visitCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'surveyResponses', dataType: ValueType.TEXT},
+        {fieldName: 'promotion', dataType: ValueType.TEXT},
+        {fieldName: 'employeesCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'scale', dataType: ValueType.TEXT},
+        {fieldName: 'currentUse', dataType: ValueType.TEXT},
+        {fieldName: 'remark', dataType: ValueType.TEXT},
+
         {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'delFlag', dataType: ValueType.TEXT},
     ];
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
                 private _codeStore: CodeStore,
+                private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _router: Router,
                 private _matDialog: MatDialog,
                 public _matDialogPopup: MatDialog,
@@ -69,6 +96,15 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _userService: UserService,
                 private readonly breakpointObserver: BreakpointObserver)
     {
+        this.yearUser = _utilService.commonValue(_codeStore.getValue().data, 'YEAR_USER');
+        this.payGrade = _utilService.commonValue(_codeStore.getValue().data, 'PAY_GRADE');
+
+
+        this.channel = _utilService.commonValue(_codeStore.getValue().data, 'CHANNEL');
+        this.area = _utilService.commonValue(_codeStore.getValue().data, 'AREA');
+        this.talkYn = _utilService.commonValue(_codeStore.getValue().data, 'TALK_YN');
+        this.promotion = _utilService.commonValue(_codeStore.getValue().data, 'PROMOTION');
+
         this.isMobile = this._deviceService.isMobile();
     }
     ngAfterViewInit(): void {
@@ -97,6 +133,81 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             businessName: [''],
         });
 
+        const valuesYearUser = [];
+        const lablesYearUser = [];
+
+        const valuesPayGrade = [];
+        const lablesPayGrade = [];
+
+        const valuesChannel = [];
+        const lablesChannel = [];
+        const valuesArea = [];
+        const lablesArea = [];
+        const valuesTalkYn = [];
+        const lablesTalkYn = [];
+        const valuesPromotion = [];
+        const lablesPromotion = [];
+
+        this.yearUser.forEach((param: any) => {
+            valuesYearUser.push(param.id);
+            lablesYearUser.push(param.name);
+        });
+
+        this.payGrade.forEach((param: any) => {
+            valuesPayGrade.push(param.id);
+            lablesPayGrade.push(param.name);
+        });
+
+        this.channel.forEach((param: any) => {
+            valuesChannel.push(param.id);
+            lablesChannel.push(param.name);
+        });
+        this.area.forEach((param: any) => {
+            valuesArea.push(param.id);
+            lablesArea.push(param.name);
+        });
+        this.talkYn.forEach((param: any) => {
+            valuesTalkYn.push(param.id);
+            lablesTalkYn.push(param.name);
+        });
+        this.promotion.forEach((param: any) => {
+            valuesPromotion.push(param.id);
+            lablesPromotion.push(param.name);
+        });
+
+
+        const columnLayout = [
+            'businessNumber',
+            'businessName',
+            'representName',
+            {
+                name: 'x',
+                direction: 'horizontal',
+                items: [
+                    'payGrade',
+                    'yearUser'
+                ],
+                header: {
+                    text: '구분',
+                }
+            },
+            'addDate',
+            'midGrade',
+            'channel',
+            'area',
+            'phoneNumber',
+            'talkYn',
+            'email',
+            'visitCnt',
+            'surveyResponses',
+            'promotion',
+            'userCnt',
+            'employeesCnt',
+            'scale',
+            'currentUse',
+            'remark',
+        ];
+
         //그리드 컬럼
         this.userColumns = [
             {
@@ -112,16 +223,30 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'userName', fieldName: 'userName', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '회원 명', styleName: 'center-cell-text'}, renderer: {
+                name: 'representName', fieldName: 'representName', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '대표자 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'a', fieldName: 'a', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '구분', styleName: 'center-cell-text'}, renderer: {
+                name: 'payGrade', fieldName: 'payGrade', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '결제 등급', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesPayGrade,
+                labels: lablesPayGrade,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.payGrade)
+            },
+            {
+                name: 'yearUser', fieldName: 'yearUser', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '연/월', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                },
+                values: valuesYearUser,
+                labels: lablesYearUser,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.yearUser)
             },
             {
                 name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
@@ -130,22 +255,30 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'delFlag', fieldName: 'delFlag', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'midGrade', fieldName: 'midGrade', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '회원구분', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'd', fieldName: 'd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'channel', fieldName: 'channel', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '가입채널', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesChannel,
+                labels: lablesChannel,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.channel)
             },
             {
-                name: 'e', fieldName: 'e', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'area', fieldName: 'area', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '지역', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesArea,
+                labels: lablesArea,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.area)
             },
             {
                 name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '150', styleName: 'left-cell-text'
@@ -154,10 +287,14 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'g', fieldName: 'g', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'talkYn', fieldName: 'talkYn', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '알림톡 승인여부', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesTalkYn,
+                labels: lablesTalkYn,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.talkYn)
             },
             {
                 name: 'email', fieldName: 'email', type: 'data', width: '150', styleName: 'left-cell-text'
@@ -166,85 +303,71 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'i', fieldName: 'i', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'visitCnt', fieldName: 'visitCnt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '방문횟수', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+                , numberFormat: '#,##0'
             },
             {
-                name: 'j', fieldName: 'j', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'surveyResponses', fieldName: 'surveyResponses', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '설문조사응답', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'k', fieldName: 'k', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'promotion', fieldName: 'promotion', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '프로모션', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesPromotion,
+                labels: lablesPromotion,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.promotion)
             },
             {
-                name: 'm', fieldName: 'm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'userCnt', fieldName: 'userCnt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '계정 수', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+                , numberFormat: '#,##0'
             },
             {
-                name: 'n', fieldName: 'n', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'employeesCnt', fieldName: 'employeesCnt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '직원 수', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
+                , numberFormat: '#,##0'
             },
             {
-                name: 'q', fieldName: 'q', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'scale', fieldName: 'scale', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '규모(매출 or 인원)', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'w', fieldName: 'w', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '기존 IT사용', styleName: 'center-cell-text'}, renderer: {
+                name: 'currentUse', fieldName: 'currentUse', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '기존 IT 사용', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'x', fieldName: 'x', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: 'remark', fieldName: 'remark', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
-            // {
-            //     name: 'businessCondition',
-            //     fieldName: 'businessCondition'
-            //     ,
-            //     type: 'data',
-            //     width: '100',
-            //     styleName: 'left-cell-text',
-            //     header: {text: '업태', styleName: 'center-cell-text'},
-            //     values: valuesType,
-            //     labels: lablesType,
-            //     lookupDisplay: true,
-            //     renderer: {
-            //         showTooltip: true
-            //     }
-            // },
-            // {
         ];
 
         //그리드 Provider
-        this.userDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.userDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar: false,
+            stateBar: true,
             checkBar: true,
             footers: false,
         };
-
-        this.userDataProvider.setOptions({
-            softDeleting: false,
-            deleteCreated: false
-        });
 
         //그리드 생성
         this.gridList = this._realGridsService.gfn_CreateGrid(
@@ -252,23 +375,56 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             'user',
             this.userColumns,
             this.userFields,
-            gridListOption);
+            gridListOption,
+            columnLayout);
 
         //그리드 옵션
         this.gridList.setEditOptions({
-            readOnly: true,
+            readOnly: false,
             insertable: false,
             appendable: false,
-            editable: false,
-            deletable: false,
+            editable: true,
+            updatable: true,
+            deletable: true,
             checkable: true,
-            softDeleting: false,
+            softDeleting: true,
         });
 
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
-        this.gridList.setPasteOptions({enabled: false,});
+        this.gridList.setCopyOptions({
+            enabled: true,
+            singleMode: false
+        });
+        this.gridList.setPasteOptions({
+            enabled: true,
+            startEdit: false,
+            commitEdit: true,
+            checkReadOnly: true
+        });
+        this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.validateOnEdited = true;
+        this._realGridsService.gfn_EditGrid(this.gridList);
 
+        // 셀 edit control
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+
+            //추가시
+            if (dataCell.dataColumn.fieldName === 'channel' ||
+                dataCell.dataColumn.fieldName === 'area' ||
+                dataCell.dataColumn.fieldName === 'talkYn' ||
+                dataCell.dataColumn.fieldName === 'visitCnt' ||
+                dataCell.dataColumn.fieldName === 'surveyResponses' ||
+                dataCell.dataColumn.fieldName === 'promotion' ||
+                dataCell.dataColumn.fieldName === 'employeesCnt' ||
+                dataCell.dataColumn.fieldName === 'scale' ||
+                dataCell.dataColumn.fieldName === 'currentUse' ||
+                dataCell.dataColumn.fieldName === 'remark') {
+                return {editable: true};
+            } else {
+                return {editable: false};
+            }
+        });
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
@@ -305,7 +461,9 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         rtn.then((ex) => {
 
             ex.user.forEach((data) => {
-                if(data.phoneNumber === 0){
+                if(data.phoneNumber === '0'){
+                    data.phoneNumber = '';
+                }else if(data.phoneNumber === ''){
                     data.phoneNumber = '';
                 }else{
                     data.phoneNumber = '0' + data.phoneNumber;
@@ -334,6 +492,57 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
 
     enter(event): void {
         if (event.keyCode === 13) {
+            this.selectUser();
+        }
+    }
+
+    userInfoSave() {
+        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.userDataProvider);
+        let check = false;
+        if (rows.length === 0) {
+            this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+            check = true;
+        }
+        if (check) {
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '저장하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._userService.saveUserInfo(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((user: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(user);
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+    alertMessage(param: any): void {
+        if (param.status === 'SUCCESS') {
+            this._functionService.cfn_alert('정상적으로 처리되었습니다.');
+            this.selectUser();
+        } else {
+            this._functionService.cfn_alert(param.msg);
             this.selectUser();
         }
     }

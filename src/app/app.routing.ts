@@ -41,6 +41,8 @@ export const appRoutes: Route[] = [
             {path: 'user',
                 children: [
                     {path: 'user', data:{key: 'user'}, loadChildren: () => import('app/modules/adm/user/user/user.module').then(m => m.UserModule)},
+                    {path: 'userInfo', data:{key: 'userInfo'}, loadChildren: () => import('app/modules/adm/user/user-info/user-info.module').then(m => m.UserInfoModule)},
+                    {path: 'userList', data:{key: 'userList'}, loadChildren: () => import('app/modules/adm/user/user-list/user-list.module').then(m => m.UserListModule)},
                 ]
             },
             {path: 'service',

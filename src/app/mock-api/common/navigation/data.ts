@@ -488,17 +488,17 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         icon : 'people_alt',
                         link : '/admin/user/user'
                     },{
-                        id   : 'user.adminUserInfo',
+                        id   : 'user.userInfo',
                         title: '사업자 정보',
                         type : 'basic',
                         icon : 'domain',
-                        //link : '/admin/user'
+                        link : '/admin/user/userInfo'
                     },{
-                        id   : 'user.adminUserDetList',
+                        id   : 'user.userList',
                         title: '사용자 목록',
                         type : 'basic',
                         icon : 'heroicons_outline:user',
-                        //link : '/admin/user'
+                        link : '/admin/user/userList'
                     },
                 ]
             }, {

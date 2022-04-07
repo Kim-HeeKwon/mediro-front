@@ -55,6 +55,10 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'payYn', dataType: ValueType.TEXT},
         {fieldName: 'freeYn', dataType: ValueType.TEXT},
+        {fieldName: 'suppliedAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'vat', dataType: ValueType.NUMBER},
+        {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+
     ];
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
@@ -128,6 +132,36 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '가입일', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'suppliedAmt',
+                fieldName: 'suppliedAmt',
+                type: 'number',
+                width: '150',
+                styleName: 'right-cell-text',
+                header: {text: '결제 금액(VAT 별도)', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'vat',
+                fieldName: 'vat',
+                type: 'number',
+                width: '150',
+                styleName: 'right-cell-text',
+                header: {text: '부가세', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'totalAmt',
+                fieldName: 'totalAmt',
+                type: 'number',
+                width: '150',
+                styleName: 'right-cell-text',
+                header: {text: '총 결제금액', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },

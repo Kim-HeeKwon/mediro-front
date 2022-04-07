@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Common} from "../../../../../@teamplat/providers/common/common";
 import {BehaviorSubject, Observable} from "rxjs";
 import {UserData, UserPagenation} from "./user.types";
+import {map, switchMap, take} from "rxjs/operators";
 
 
 @Injectable({
@@ -79,6 +80,24 @@ export class UserService {
                     }
                 }, reject);
         });
+    }
+
+    /**
+     * update
+     */
+    saveUserInfo(users: UserData[]): Observable<UserData>
+    {
+        return this.users$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(users, 'v1/api/admin/user/save-user-info').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 
 }

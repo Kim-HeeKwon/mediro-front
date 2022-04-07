@@ -9,7 +9,7 @@ import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
 import {CodeStore} from "../../../../core/common-code/state/code.store";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
 import {FunctionService} from "../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {ServiceChargeService} from "./service-charge.service";
@@ -33,6 +33,9 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
     drawerOpened: boolean = false;
     searchForm: FormGroup;
     orderBy: any = 'asc';
+
+    yearUser: CommonCode[] = null;
+    payGrade: CommonCode[] = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -67,6 +70,8 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
                 private readonly breakpointObserver: BreakpointObserver)
     {
         this.isMobile = this._deviceService.isMobile();
+        this.yearUser = _utilService.commonValue(_codeStore.getValue().data, 'YEAR_USER');
+        this.payGrade = _utilService.commonValue(_codeStore.getValue().data, 'PAY_GRADE');
     }
 
     ngAfterViewInit(): void {
@@ -95,19 +100,43 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
             payGrade: ['']
         });
 
+        const valuesYearUser = [];
+        const lablesYearUser = [];
+
+        const valuesPayGrade = [];
+        const lablesPayGrade = [];
+
+        this.yearUser.forEach((param: any) => {
+            valuesYearUser.push(param.id);
+            lablesYearUser.push(param.name);
+        });
+
+        this.payGrade.forEach((param: any) => {
+            valuesPayGrade.push(param.id);
+            lablesPayGrade.push(param.name);
+        });
+
         //그리드 컬럼
         this.serviceChargeColumns = [
             {
                 name: 'payGrade', fieldName: 'payGrade', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '결제 등급', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesPayGrade,
+                labels: lablesPayGrade,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.payGrade)
             },
             {
                 name: 'yearUser', fieldName: 'yearUser', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '연/월', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesYearUser,
+                labels: lablesYearUser,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.yearUser)
             },
             {
                 name: 'basePrice',
@@ -137,9 +166,7 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
             //     width: '100',
             //     styleName: 'left-cell-text',
             //     header: {text: '업태', styleName: 'center-cell-text'},
-            //     values: valuesType,
-            //     labels: lablesType,
-            //     lookupDisplay: true,
+
             //     renderer: {
             //         showTooltip: true
             //     }

@@ -6,6 +6,10 @@ export interface FeeUserData
     freeYn: string;
     payYn: string;
 
+    suppliedAmt: number;
+    vat: number;
+    totalAmt: number;
+
     addDate?: string;
     addUser?: string;
     updDate?: string;
