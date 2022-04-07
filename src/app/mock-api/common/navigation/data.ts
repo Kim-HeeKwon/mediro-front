@@ -590,6 +590,36 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 ]
             },
         ]
+    },{
+        id: 'userLog',
+        title: '회원사 연결 관리',
+        subtitle: 'SaaS 유료 회원사 연결 관리',
+        type: 'group',
+        icon: 'link',
+        children: [
+            {
+                id: 'userLog',
+                title: '연결 관리',
+                type: 'collapsable',
+                icon: 'link',
+                children: [
+                    {
+                        id   : 'userLog.userLog',
+                        title: '접속 이력',
+                        type : 'basic',
+                        icon : 'share',
+                        //link : '/admin/user'
+                    },
+                    {
+                        id   : 'userLog.errorLog',
+                        title: '에러 이력',
+                        type : 'basic',
+                        icon : 'error',
+                        //link : '/admin/user'
+                    },
+                ]
+            },
+        ]
     },
     {
         id  : 'divider-2',

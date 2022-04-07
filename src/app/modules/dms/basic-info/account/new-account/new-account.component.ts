@@ -107,6 +107,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             managerCellPhoneNumber: [''],
             paymentTerms: [''],
             remark: [''],
+            createUdiAccountCheck: [false],
             active: [false]  // cell상태
         });
 

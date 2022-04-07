@@ -11,6 +11,7 @@ export interface UserData
     payGrade: string;
     yearUser: string;
     midGrade: string;
+    address: string;
 
     channel: string;
     area: string;

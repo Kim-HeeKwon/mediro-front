@@ -67,6 +67,8 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'yearUser', dataType: ValueType.TEXT},
         {fieldName: 'midGrade', dataType: ValueType.TEXT},
 
+        {fieldName: 'address', dataType: ValueType.TEXT},
+
         {fieldName: 'channel', dataType: ValueType.TEXT},
         {fieldName: 'area', dataType: ValueType.TEXT},
         {fieldName: 'talkYn', dataType: ValueType.TEXT},
@@ -195,6 +197,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             'midGrade',
             'channel',
             'area',
+            'address',
             'phoneNumber',
             'talkYn',
             'email',
@@ -279,6 +282,12 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 labels: lablesArea,
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.area)
+            },
+            {
+                name: 'address', fieldName: 'address', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '주소', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'phoneNumber', fieldName: 'phoneNumber', type: 'data', width: '150', styleName: 'left-cell-text'
