@@ -16,7 +16,6 @@ import {AccountService} from '../account.service';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {PopupStore} from '../../../../../core/common-popup/state/popup.store';
 import {DeviceDetectorService} from 'ngx-device-detector';
-import {CommonUdiComponent} from '../../../../../../@teamplat/components/common-udi';
 import {postcode} from '../../../../../../assets/js/postCode';
 import {geodata} from '../../../../../../assets/js/geoCode';
 import {FunctionService} from "../../../../../../@teamplat/services/function";

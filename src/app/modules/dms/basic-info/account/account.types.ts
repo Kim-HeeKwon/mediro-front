@@ -21,6 +21,7 @@ export interface AccountData
     managerCellPhoneNumber: string;    //담당자 번호
     paymentTerms: string;    //결제조건
     remark: string;    //비고
+    createUdiAccountCheck: string;
 
     addDate?: string;
     addUser?: string;
