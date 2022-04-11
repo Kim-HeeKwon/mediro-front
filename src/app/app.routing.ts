@@ -252,7 +252,7 @@ export const appRoutes: Route[] = [
             // Monitoring
             {path: 'monitoring', children: [
                     // dashboards
-                    {path: 'dashboards', data: {key: 'dashboards'}, loadChildren: () => import('app/modules/admin/monitoring/dashboards/dashboards.module').then(m => m.DashboardsModule)},
+                    {path: 'dashboards', data: {key: 'dashboards'}, loadChildren: () => import('app/modules/dms/monitoring/dashboards/dashboards.module').then(m => m.DashboardsModule)},
                 ]},
 
             // example

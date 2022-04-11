@@ -892,23 +892,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                             label: (ctx: Context) => {
                                 const name = ctx.dataset.label;
                                 return name + ' ' + this.priceToString(ctx.chart.tooltip.dataPoints[0].raw) + '원';
-                                // for (let i = 0; i < ctx.dataset.data.length; i++) {
-                                //     if (ctx.chart.data.labels !== null) {
-                                //         if (ctx.chart.data.labels[0] !== null) {
-                                //             return ctx.dataset.data[0];
-                                //         } else if (ctx.chart.data.labels[1] !== null) {
-                                //             return ctx.dataset.data[1];
-                                //         } else if (ctx.chart.data.labels[2] !== null) {
-                                //             return ctx.dataset.data[2];
-                                //         } else if (ctx.chart.data.labels[3] !== null) {
-                                //             return ctx.dataset.data[3];
-                                //         } else if (ctx.chart.data.labels[4] !== null) {
-                                //             return ctx.dataset.data[4];
-                                //         } else if (ctx.chart.data.labels[5] !== null) {
-                                //             return ctx.dataset.data[5];
-                                //         }
-                                //     }
-                                // }
                             }
                         }
                     },
@@ -1094,7 +1077,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                             }
                         },
                         y: {
-                            display: false,
                             ticks: {
                                 font: {
                                     size: 12,
@@ -1106,37 +1088,23 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         );
-        const
-            currDay = new Date();
-        const
-            year = currDay.getFullYear();
-        const
-            month = currDay.getMonth() + 1;
-        const
-            date = new Date(year, month, 0);
-        const
-            day = date.getDate();
-        const
-            lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
+        const currDay = new Date();
+        const year = currDay.getFullYear();
+        const month = currDay.getMonth() + 1;
+        const date = new Date(year, month, 0);
+        const day = date.getDate();
+        const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
 
-        const
-            diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
 
-        if (diffDays
-
-            ===
-            0
-        ) {
-            this
-                .udiLastDay = 'D-day';
+        if (diffDays === 0) {
+            this.udiLastDay = 'D-day';
         } else {
             this.udiLastDay = 'D-' + diffDays;
         }
     }
 
-    stockChart(data
-                   :
-                   any
+    stockChart(data: any
     ) {
         const doughnutChartLabels = [
             '1등급 : ' + data[0].availQty,

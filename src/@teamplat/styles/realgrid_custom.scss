@@ -240,6 +240,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     color: #ffffff;
 }
 
+.white-font-color {
+    color: #ffffff;
+}
+
 .red-font-color {
     color: #ff0000;
 }
@@ -265,6 +269,12 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .text-20s{
     font-size: 20px !important;
 }
+.text-18s{
+    font-size: 18px !important;
+}
+.text-15s{
+    font-size: 15px !important;
+}
 .text-13s{
     font-size: 13px !important;
 }
@@ -276,6 +286,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .text-10s{
     font-size: 10px !important;
+}
+.text-9s{
+    font-size: 9px !important;
 }
 .text-8s{
     font-size: 8px !important;
@@ -293,6 +306,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .text-bold-600{
     font-weight: 600 !important;
+}
+.text-bold-550{
+    font-weight: 550 !important;
 }
 
 .text-bold{
@@ -578,6 +594,59 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 //    height: 25px !important;
 //    width: 25px !important;
 //}
-.margin_bottom {
-    margin-bottom: 1rem;
+
+.mb_5 {
+    margin-bottom: 0.75rem !important;
+}
+
+.mb_4 {
+    margin-bottom: 0.5rem !important;
+}
+
+.margin_top {
+    margin-top: 1rem;
+}
+.grid-rows {
+    grid-template-rows: 15% auto !important;
+}
+.my-tb {
+    margin-top: 1.0rem !important;
+    margin-bottom: 1.0rem !important;
+}
+
+.mx-lr {
+    margin-left: 1.0rem !important;
+    margin-right: 1.0rem !important;
+}
+
+.span-border {
+    border: 1px solid #DBDDE2 !important;
+}
+.udi-color {
+    color: #8F95A0 !important;
+}
+.udi-status-color {
+    color: #535456 !important;
+}
+
+.float-left {
+    float: left;
+}
+.bill {
+    color: #8F95A0;
+    background-color: #FFFFFF;
+}
+
+.bill-sal {
+    color: #FFFFFF;
+    background-color: #277EC3;
+}
+.dash-hover:hover {
+    text-decoration: underline #ffffff !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+}
+.dash-hover-gray:hover {
+    text-decoration: underline #8F95A0 !important;
+    font-weight: bold !important;
 }
