@@ -242,6 +242,7 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
 
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeBasicDataProvider, true);
         const rtn = this._incomeOutcomeService.getBasic(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -258,6 +259,8 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeBasicDataProvider, false);
         });
     }
 

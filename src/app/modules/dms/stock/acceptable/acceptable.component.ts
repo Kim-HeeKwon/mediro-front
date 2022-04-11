@@ -326,7 +326,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.selectHeader();
+        //this.selectHeader();
         this._changeDetectorRef.markForCheck();
         // this.setGridData();
         // this._acceptableService.acceptablePagenation$
@@ -370,6 +370,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDataProvider, true);
         const rtn = this._acceptableService.getHeader(0, 40, 'accountNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -406,6 +407,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             if(ex.acceptable.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDataProvider, false);
         });
     }
 

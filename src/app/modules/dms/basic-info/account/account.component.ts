@@ -445,17 +445,19 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
+        //this.selectHeader();
+        this._changeDetectorRef.markForCheck();
         // this.setGridData();
 
         // Get the pagenation
-        this._accountService.pagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((pagenation: AccountPagenation) => {
-                // Update the pagination
-                this.pagenation = pagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        // this._accountService.pagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((pagenation: AccountPagenation) => {
+        //         // Update the pagination
+        //         this.pagenation = pagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     ngAfterViewInit(): void {
@@ -483,6 +485,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectAccount(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.accountDataProvider, true);
         const rtn = this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -539,6 +542,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.accountDataProvider, true);
         const rtn = this._accountService.getAccount(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -652,6 +656,8 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             if (ex.account.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+        }).then((ex2) => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.accountDataProvider, false);
         });
     }
 

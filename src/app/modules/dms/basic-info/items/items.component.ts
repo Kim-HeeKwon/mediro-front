@@ -401,22 +401,25 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._paginator._intl.itemsPerPageLabel = '';
 
         // this.setGridData();
+        //this.selectHeader();
+        this._changeDetectorRef.markForCheck();
 
         // Get the pagenation
-        this._itemService.pagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((pagenation: InventoryPagination) => {
-                // Update the pagination
-                this.pagenation = pagenation;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        // this._itemService.pagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((pagenation: InventoryPagination) => {
+        //         // Update the pagination
+        //         this.pagenation = pagenation;
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     /**
      * SearchItem
      */
     searchItem(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, true);
         const rtn = this._itemService.getItems(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -437,6 +440,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, true);
         const rtn = this._itemService.getItems(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -553,6 +557,8 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             if(ex.products.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+        }).then((ex2) =>{
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, false);
         });
     }
 }

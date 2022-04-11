@@ -145,11 +145,17 @@ export class SettingsAccountComponent implements OnInit
             .subscribe((response: any) => {
                 this.userForm.patchValue({udiClientSecret:''});
                 this._sessionStore.update(response.data);
-            });
 
+                if(response.status === 'SUCCESS'){
+                    this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-user-info-detail')
+                        .subscribe((a: any) => {
+                            this.alertMessage(a);
+                        });
+                }else{
 
-        this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/update-user-info-detail')
-            .subscribe((response: any) => {
+                    this.alertMessage(response);
+                }
+
             });
     }
 

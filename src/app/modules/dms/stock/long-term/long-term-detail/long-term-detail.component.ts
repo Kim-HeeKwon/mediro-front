@@ -295,6 +295,7 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDetailDataProvider, true);
         const rtn = this._longTermService.getDetail(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -367,6 +368,7 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDetailDataProvider, false);
         });
     }
 

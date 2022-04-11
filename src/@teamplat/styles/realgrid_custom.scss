@@ -650,3 +650,13 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     text-decoration: underline #8F95A0 !important;
     font-weight: bold !important;
 }
+
+.rg-load-indicator {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    border: none;
+    background: url(../../assets/images/loading/grid_loading.gif) no-repeat center center;
+    background-size: contain;
+}

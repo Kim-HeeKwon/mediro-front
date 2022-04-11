@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {merge, Observable, Subject} from 'rxjs';
-import {ItemPriceHistory, ItemPriceHistoryPagenation} from '../item-price.types';
+import {ItemPriceHistory, ItemPriceHistoryPagenation, ItemPricePagenation} from '../item-price.types';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -337,18 +337,27 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
     selectItemPrice(): void {
 
-        this._itemPriceService.getHistory(0, 40, 'seq', 'desc', this.itemPriceHistoryForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceHistoryDataProvider, true);
+        const rtn = this._itemPriceService.getHistory(0, 40, 'seq', 'desc', this.itemPriceHistoryForm.getRawValue());
+        this.selectCallBack(rtn);
 
-        this.itemPriceHistorys$ = this._itemPriceService.itemPriceHistorys$;
-        this._itemPriceService.itemPriceHistorys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((itemPriceHistory: any) => {
-                if (itemPriceHistory !== null) {
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, itemPriceHistory);
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.itemPriceHistoryDataProvider, ex.itemPriceHistorys);
+
+            this._itemPriceService.itemPriceHistoryPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((itemPriceHistoryPagenation: ItemPriceHistoryPagenation) => {
+                    this.itemPriceHistoryPagenation = itemPriceHistoryPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceHistoryDataProvider, false);
+        });
     }
 
     //페이징

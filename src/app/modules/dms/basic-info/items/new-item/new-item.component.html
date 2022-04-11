@@ -173,15 +173,21 @@
                         </mat-form-field>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
+<!--                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">-->
+<!--                            <mat-label>단위</mat-label>-->
+<!--                            <mat-select [formControlName]="'unit'">-->
+<!--                                <ng-container *ngFor="let unit of itemUnit">-->
+<!--                                    <mat-option [value]="unit.id">-->
+<!--                                        {{unit.name}}-->
+<!--                                    </mat-option>-->
+<!--                                </ng-container>-->
+<!--                            </mat-select>-->
+<!--                        </mat-form-field>-->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>단위</mat-label>
-                            <mat-select [formControlName]="'unit'">
-                                <ng-container *ngFor="let unit of itemUnit">
-                                    <mat-option [value]="unit.id">
-                                        {{unit.name}}
-                                    </mat-option>
-                                </ng-container>
-                            </mat-select>
+                            <input
+                                matInput
+                                [formControlName]="'unit'">
                         </mat-form-field>
                     </div>
                     <div class="col-span-2 sm:col-span-1">

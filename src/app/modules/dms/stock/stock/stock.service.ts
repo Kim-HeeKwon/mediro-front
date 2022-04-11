@@ -154,7 +154,7 @@ export class StockService{
      * @returns
      */
     getStockHistory(page: number = 0, size: number = 40, sort: string = 'seq', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
-        Observable<{ stockHistoryPagenation: StockHistoryPagenation; stockHistory: StockHistory[] }> {
+        Promise<{ stockHistoryPagenation: StockHistoryPagenation; stockHistory: StockHistory[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -181,7 +181,7 @@ export class StockService{
                         this._stockHistorys.next(response.data);
                         //console.log(response.pageNation);
                         this._stockHistoryPagenation.next(response.pageNation);
-                        resolve(this._stockHistorys);
+                        resolve({stockHistory: response.data, stockHistoryPagenation: response.pageNation});
                     }
                 }, reject);
         });

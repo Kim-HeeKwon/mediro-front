@@ -429,7 +429,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
         };
-        this.selectHeader();
+        //this.selectHeader();
         this._changeDetectorRef.markForCheck();
     }
 
@@ -444,6 +444,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockDataProvider, true);
         const rtn = this._stockService.getHeader(0, 40, 'itemNm', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -496,6 +497,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             if(ex.stock.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockDataProvider, false);
         });
     }
 

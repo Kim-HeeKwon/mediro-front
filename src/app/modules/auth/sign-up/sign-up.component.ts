@@ -180,16 +180,30 @@ export class AuthSignUpComponent implements OnInit
                             .subscribe(
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (response) => {
+                                    console.log(response);
                                     if(response.status === 'SUCCESS'){
                                         this.showStep1 = false;
                                         this.showStep2 = true;
                                         this.signUpForm.enable();
+                                    }else{
+                                        this.showStep1 = true;
+                                        this.showStep2 = false;
+                                        this.signUpForm.enable();
+
+                                        this.alert = {
+                                            type   : 'error',
+                                            message: response.msg
+                                        };
+
+                                        // Show the alert
+                                        this.showAlert = true;
                                     }
                                     // Navigate to the confirmation required page
                                     // this._router.navigateByUrl('/confirmation-required');
                                 },
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (err) => {
+                                    console.log(err);
                                     // Set the alert
                                     this.alert = {
                                         type   : 'error',
@@ -199,7 +213,7 @@ export class AuthSignUpComponent implements OnInit
                                     // Show the alert
                                     this.showAlert = true;
                                     // Re-enable the form
-                                    this.signUpForm.enable();
+                                    this.signUpForm.disable();
 
                                     // Reset the form
                                     this.signUpNgForm.resetForm();

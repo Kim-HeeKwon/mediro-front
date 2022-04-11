@@ -154,12 +154,14 @@ export class IncomeOutcomeDetailComponent implements OnInit, OnDestroy, AfterVie
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeDataProvider, true);
         const rtn = this._incomeOutcomeService.getDetail(0, 1, 'accountNm', 'asc', this.searchForm.getRawValue());
 
         rtn.then((ex) => {
 
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.incomeOutcomeDataProvider, ex.incomeOutcomeDetail);
 
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeDataProvider, false);
         });
     }
 

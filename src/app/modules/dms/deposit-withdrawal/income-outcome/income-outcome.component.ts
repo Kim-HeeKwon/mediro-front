@@ -600,6 +600,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
                 });
 
 
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeDataProvider, false);
             });
         } else {
             this._functionService.cfn_alert('거래처를 먼저 조회 해주세요');
@@ -825,6 +826,7 @@ export class IncomeOutcomeComponent implements OnInit, OnDestroy, AfterViewInit 
     // }
 
     searchSetValue(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeDataProvider, true);
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }

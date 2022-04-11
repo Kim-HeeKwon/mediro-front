@@ -238,6 +238,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDetailDataProvider, true);
         const rtn = this._validityService.getDetail(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -362,6 +363,8 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDetailDataProvider, false);
         });
     }
 

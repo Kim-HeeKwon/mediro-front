@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, 
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, Subject} from 'rxjs';
-import {StockHistory, StockHistoryPagenation} from '../stock.types';
+import {StockHistory, StockHistoryPagenation, StockPagenation} from '../stock.types';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CodeStore} from '../../../../../core/common-code/state/code.store';
 import {CommonCode, FuseUtilsService} from '../../../../../../@teamplat/services/utils';
@@ -12,6 +12,7 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FunctionService} from "../../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'dms-stock-history',
@@ -54,6 +55,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
         private _realGridsService: FuseRealGridService,
         private _stockService: StockService,
         public matDialogRef: MatDialogRef<StockHistoryComponent>,
+        private _functionService: FunctionService,
         private _codeStore: CodeStore,
         private _formBuilder: FormBuilder,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -225,18 +227,30 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectStockHistory(): void {
-        this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.stockHistoryForm.getRawValue());
-        this.stockHistorys$ = this._stockService.stockHistorys$;
-        this._stockService.stockHistorys$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((stockHistory: any) => {
-                if (stockHistory !== null) {
-                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, stockHistory);
-                }
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockHistoryProvider, true);
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        const rtn = this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.stockHistoryForm.getRawValue());
 
+        this.selectCallBack(rtn);
+
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, ex.stockHistory);
+            this._stockService.stockPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((stockHistoryPagenation: StockHistoryPagenation) => {
+                    // Update the pagination
+                    this.stockHistoryPagenation = stockHistoryPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.stockHistory.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockHistoryProvider, false);
+        });
     }
 }

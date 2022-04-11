@@ -633,4 +633,17 @@ export class FuseRealGridService {
         gridView.clearSelection();
         gridView.clearCurrent();
     }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_GridLoadingBar(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, enable: boolean) {
+
+        if(enable){
+            dataProvider.clearRows();
+            gridView.showLoading(enable);
+            gridView.refresh();
+        }else{
+            gridView.closeLoading();
+        }
+    }
 }

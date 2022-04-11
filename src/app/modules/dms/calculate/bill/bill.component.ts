@@ -384,7 +384,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.selectHeader();
+        //this.selectHeader();
         this._changeDetectorRef.markForCheck();
         // this.setGridData();
         //
@@ -420,7 +420,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     searchSetValue(): void {
-
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.billDataProvider, true);
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
     }
@@ -567,6 +567,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             if(ex.bill.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.billDataProvider, false);
         });
     }
 

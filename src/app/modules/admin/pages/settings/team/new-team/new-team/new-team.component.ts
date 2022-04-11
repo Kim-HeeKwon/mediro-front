@@ -132,10 +132,11 @@ export class NewTeamComponent implements OnInit, OnDestroy
 
     alertMessage(param: any): void
     {
+        console.log(param);
         if(param.status !== 'SUCCESS'){
             this.alert = {
                 type   : 'error',
-                message: param.msg
+                message: param.message
             };
             // Show the alert
             this.showAlert = true;

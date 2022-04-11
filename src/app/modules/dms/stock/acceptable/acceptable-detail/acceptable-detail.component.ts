@@ -273,6 +273,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     selectHeader() {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDetailDataProvider, true);
         const rtn = this._acceptableService.getDetail(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -289,6 +290,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDetailDataProvider, false);
         });
     }
 

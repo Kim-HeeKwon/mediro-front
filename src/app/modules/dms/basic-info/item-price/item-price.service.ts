@@ -145,7 +145,7 @@ export class ItemPriceService{
      * @returns
      */
     getHistory(page: number = 0, size: number = 20, sort: string = 'addDate', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
-        Observable<{ itemPriceHistoryPagenation: ItemPriceHistoryPagenation; inBoundDetail: ItemPriceHistory[] }> {
+        Promise<{ itemPriceHistoryPagenation: ItemPriceHistoryPagenation; itemPriceHistorys: ItemPriceHistory[] }> {
 
         const searchParam = {};
         searchParam['order'] = order;
@@ -171,7 +171,7 @@ export class ItemPriceService{
                         this._itemPrice.next(search);
                         this._itemPriceHistorys.next(response.data);
                         this._itemPriceHistoryPagenation.next(response.pageNation);
-                        resolve(this._itemPriceHistorys);
+                        resolve({itemPriceHistorys: response.data, itemPriceHistoryPagenation : response.pageNation});
                     }
                 }, reject);
         });

@@ -344,15 +344,16 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this._paginator._intl.itemsPerPageLabel = '';
         // this.setGridData();
 
-        this._managesService.managesPagenation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((managesPagenation: ManagesPagenation) => {
-                if (managesPagenation !== null) {
-                    this.managesPagenation = managesPagenation;
-                }
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this._changeDetectorRef.markForCheck();
+        // this._managesService.managesPagenation$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((managesPagenation: ManagesPagenation) => {
+        //         if (managesPagenation !== null) {
+        //             this.managesPagenation = managesPagenation;
+        //         }
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
 
@@ -371,14 +372,15 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     searchSetValue(): void {
 
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.managesDataProvider, true);
         const day = this.searchForm.getRawValue().year + this.searchForm.getRawValue().month;
         this.searchForm.patchValue({'suplyContStdmt': day});
     }
 
     select(): void {
-        this._matDialog.open(CommonLoadingBarComponent, {
-            id: 'loadingBar'
-        });
+        // this._matDialog.open(CommonLoadingBarComponent, {
+        //     id: 'loadingBar'
+        // });
         this.searchSetValue();
         const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
@@ -638,7 +640,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             if (ex.manages.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
-            this._matDialog.getDialogById('loadingBar').close();
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.managesDataProvider, false);
         });
     }
 

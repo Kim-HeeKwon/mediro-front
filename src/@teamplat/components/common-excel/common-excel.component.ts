@@ -211,6 +211,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     excelSelect(files: FileList) {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.excelDataProvider, true);
         //console.log(files);
         const file = files[0];
         if(typeof file === 'undefined'){
@@ -270,7 +271,9 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
             //output = output.replace(/<!\[CDATA\[(.*?)\]\]>/g,'$1');
 
             jsonObj = output;
-            excelService.getExcelTransaction(jsonObj, excelType, false);
+            const rtn = excelService.getExcelTransaction(jsonObj, excelType, false);
+            rtn.then((ex) => {
+            });
         };
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         reader.onloadend = function(e){
@@ -305,6 +308,7 @@ export class CommonExcelComponent implements OnInit, OnDestroy, AfterViewInit {
                             this._realGridsService.gfn_DataSetGrid(this.gridList, this.excelDataProvider, rtnList.data);
                         }
                         // Mark for check
+                        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.excelDataProvider, false);
                         this._changeDetectorRef.markForCheck();
                     }
                 }

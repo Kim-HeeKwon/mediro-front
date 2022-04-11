@@ -360,6 +360,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceDataProvider, true);
         const rtn = this._itemPriceService.getHeader(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         //this.setGridData();
         this.selectCallBack(rtn);
@@ -367,13 +368,16 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     newItemPrice(): void {
         if (!this.isMobile) {
-            this._matDialog.open(ItemPriceNewComponent, {
+            const d = this._matDialog.open(ItemPriceNewComponent, {
                 autoFocus: false,
                 maxHeight: '80vh',
                 disableClose: true,
                 data: {
                     note: {}
                 },
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectHeader();
             });
         } else {
             const d = this._matDialog.open(ItemPriceNewComponent, {
@@ -389,6 +393,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
             d.afterClosed().subscribe(() => {
+                this.selectHeader();
                 smallDialogSubscription.unsubscribe();
             });
         }
@@ -515,6 +520,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             if(ex.itemPrice.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceDataProvider, false);
         });
     }
 }

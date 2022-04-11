@@ -85,7 +85,10 @@
                                         </div>
                                         <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom fuse-mat-no-subscript fuse-mat-emphasized-affix">
-                                                <mat-label>공급처 코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>공급처 코드
+                                                    <mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                    <span class="text-10s text-bold-600" style="color: red;"> * 사업자 번호가 등록된 거래처(공급처)만 조회됩니다. *</span>
+                                                </mat-label>
                                                 <input
                                                     matInput
                                                     [formControlName]="'account'">
