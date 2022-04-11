@@ -452,10 +452,12 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.selectUser();
+        //this.selectUser();
+        this._changeDetectorRef.markForCheck();
     }
 
     selectUser() {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userDataProvider, true);
         const rtn = this._userService.getUser(0, 100, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -491,6 +493,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             if (ex.user.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userDataProvider, false);
         });
     }
 

@@ -239,11 +239,13 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        this.select();
+        //this.select();
+        this._changeDetectorRef.markForCheck();
     }
 
 
     select() {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._feeUserService.getFeeUser(0, 100, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -277,6 +279,7 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
             if (ex.feeUser.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
         });
     }
 
