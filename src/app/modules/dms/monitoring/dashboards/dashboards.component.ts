@@ -514,7 +514,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#303236';
                 ctx.font = '23px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText(Math.round(ibInfopsCnt) + '%', width / 2, top + (height / 1.9));
+                if(isNaN(ibInfopsCnt)) {
+                    ctx.fillText('0%', width / 2, top + (height / 1.9));
+                } else {
+                    ctx.fillText(Math.round(ibInfopsCnt) + '%', width / 2, top + (height / 1.9));
+                }
             }
         };
         const inbound2 = {
@@ -586,7 +590,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 ctx.fillStyle = '#303236';
                 ctx.font = '23px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText(Math.round(obInfopsCnt) + '%', width / 2, top + (height / 1.9));
+                if(isNaN(obInfopsCnt)) {
+                    ctx.fillText('0%', width / 2, top + (height / 1.9));
+                } else {
+                    ctx.fillText(Math.round(obInfopsCnt) + '%', width / 2, top + (height / 1.9));
+                }
             }
         };
         const outbound2 = {

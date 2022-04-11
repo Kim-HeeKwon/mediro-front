@@ -8,16 +8,16 @@
     <!-- Main -->
     <div class="flex-auto my-tb mx-lr sm:mx-lr">
 
-        <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0': isMobile,
+        <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0 grid-rows-mob': isMobile,
                             'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 w-full min-w-0 h-full grid-rows' : !isMobile}">
             <!--            <div class="flex flex-col sm:col-span-3 flex-auto"></div>-->
             <!-- 견적 -->
-            <div class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
+            <div [ngClass]="{'height-mob' : isMobile}" class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
                 style="background-color: #277EC3 !important;">
-                <div class="flex flex-col mt-4">
-                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-20s">
-                        <div class="white-font-color ml-4 margin_top text-bold-550">
-                            견적 확정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{qtInfo.cfCnt}}
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex flex-col mt-4">
+                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s">
+                        <div class="white-font-color text-bold-550">
+                            견적 확정&nbsp;&nbsp;{{qtInfo.cfCnt}}&nbsp;건
                         </div>
                     </div>
                 </div>
@@ -25,25 +25,25 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 gap-4 mr-4 ml-4 text-center" style="margin-top: 15px">
                         <span (click)="goPage({gbn: 'QT' , status: 'N'})"
-                            class="text-10s white-font-color dash-hover">작 성&nbsp;&nbsp;{{qtInfo.nCnt}}&nbsp;건</span>
+                            class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{qtInfo.nCnt}}&nbsp;건</span>
                             <span (click)="goPage({gbn: 'QT' , status: 'S'})"
-                                class="text-10s white-font-color dash-hover">요 청&nbsp;&nbsp;{{qtInfo.sCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">요 청&nbsp;&nbsp;{{qtInfo.sCnt}}&nbsp;건</span>
                             <span  (click)="goPage({gbn: 'QT' , status: 'QR'})"
-                                class="text-10s white-font-color dash-hover">재요청&nbsp;&nbsp;{{qtInfo.rsCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">재요청&nbsp;&nbsp;{{qtInfo.rsCnt}}&nbsp;건</span>
                             <span  (click)="goPage({gbn: 'QT' , status: 'CFA'})"
-                                class="text-10s white-font-color dash-hover">미확정&nbsp;&nbsp;{{qtInfo.cfaCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{qtInfo.cfaCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 발주 -->
-            <div [ngClass]="{'mt-2': isMobile}"
+            <div [ngClass]="{'mt-2 height-mob': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
                 style="background-color: #277EC3 !important;">
-                <div class="flex flex-col mt-4">
-                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-20s">
-                        <div class="white-font-color ml-4 margin_top text-bold-550">
-                            발주 확정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{poInfo.cfCnt}}
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex flex-col mt-4">
+                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s">
+                        <div class="white-font-color text-bold-550">
+                            발주 확정&nbsp;&nbsp;{{poInfo.cfCnt}}&nbsp;건
                         </div>
                     </div>
                 </div>
@@ -51,23 +51,23 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-3 gap-4 mr-4 ml-4 text-center" style="margin-top: 15px">
                             <span (click)="goPage({gbn: 'PO' , status: 'N'})"
-                                class="text-10s white-font-color dash-hover">작 성&nbsp;&nbsp;{{poInfo.nCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{poInfo.nCnt}}&nbsp;건</span>
                             <span (click)="goPage({gbn: 'PO' , status: 'S'})"
-                                class="text-10s white-font-color dash-hover">발 송&nbsp;&nbsp;{{poInfo.sCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">발 송&nbsp;&nbsp;{{poInfo.sCnt}}&nbsp;건</span>
                             <span (click)="goPage({gbn: 'PO' , status: 'CFA'})"
-                                class="text-10s white-font-color dash-hover">미확정&nbsp;&nbsp;{{poInfo.cfaCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{poInfo.cfaCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 주문 -->
-            <div [ngClass]="{'mt-2': isMobile}"
+            <div [ngClass]="{'mt-2 height-mob': isMobile}"
                 class="flex flex-col sm:col-span-1 flex-auto p-2 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
                 style="background-color: #277EC3 !important;">
-                <div class="flex flex-col mt-4">
-                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-20s">
-                        <div class="white-font-color ml-4 margin_top text-bold-550">
-                            주문 등록&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{soInfo.sCnt}}
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex flex-col mt-4">
+                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s">
+                        <div class="white-font-color text-bold-550">
+                            주문 등록&nbsp;&nbsp;{{soInfo.sCnt}}&nbsp;건
                         </div>
                     </div>
                 </div>
@@ -75,9 +75,9 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-2 gap-4 mr-4 ml-4 text-center" style="margin-top: 15px">
                         <span (click)="goPage({gbn: 'SO' , status: 'N'})"
-                            class="text-10s white-font-color dash-hover">접 수&nbsp;&nbsp;{{soInfo.nCnt}}&nbsp;건</span>
+                            class="text-12s white-font-color dash-hover">접 수&nbsp;&nbsp;{{soInfo.nCnt}}&nbsp;건</span>
                             <span (click)="goPage({gbn: 'SO' , status: 'C'})"
-                                class="text-10s white-font-color dash-hover">취 소&nbsp;&nbsp;{{soInfo.cCnt}}&nbsp;건</span>
+                                class="text-12s white-font-color dash-hover">취 소&nbsp;&nbsp;{{soInfo.cCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
@@ -306,7 +306,7 @@
                      style="margin-top: 20px !important;">
                     <div [ngClass]="{'flex w-full col-span-5 p-4': isMobile,
                                     'flex w-full col-span-2': !isMobile}">
-                        <div [ngClass]="{'mat-paginator-container': isMobile,
+                        <div [ngClass]="{'widht-38': isMobile,
                                     'w-1/2': !isMobile}" class="flex flex-col float-left ml-8">
                             <div class="mb_4 text-12s udi-color">0등급</div>
                             <div class="mb_4 text-12s udi-color">1등급</div>
@@ -317,7 +317,7 @@
                             <hr style="margin: auto; border-bottom-width: 0px; margin-bottom: 0.35rem !important; width: 100%">
                             <div class="mt-1-3 text-12s text-bold-550">합 계</div>
                         </div>
-                        <div [ngClass]="{'mat-paginator-container': isMobile,
+                        <div [ngClass]="{'widht-38': isMobile,
                                     'w-1/2': !isMobile}" class="flex flex-col w-1/2 float-left mr-8">
                             <div class="mb_4 text-12s udi-status-color right-cell-text">
                                 {{availQty.zCnt}}&nbsp;<span
@@ -342,20 +342,20 @@
                                     'flex flex-col w-full col-span-3': !isMobile}">
                         <div class="font-medium font-bold text-secondary">총 재고 <span style="color: #277EC3;">{{priceToString(stockTotalPrice)}}&nbsp;천원</span></div>
                         <div class="flex h-full">
-                            <canvas class="flex" id="stock_chart" baseChart width="400px" height="170px">
+                            <canvas class="flex" id="stock_chart" baseChart width="370px" height="170px">
                             </canvas>
                             <div *ngIf="!isMobile" class="flex flex-col">
-                                <div class="flex flex-col" style="position: absolute; top: 73%;">
-                                    <span class="text-8s udi-color">{{unusedQtyTotal}}(EA)</span>
-                                    <span class="text-8s udi-color">{{unusedQtyTotalPrice}}</span>
+                                <div class="flex flex-col" style="position: absolute; top: 72.4%; left: 91.5%;">
+                                    <span class="text-11s udi-color mb_2">{{priceToString(unusedQtyTotal)}}(EA)</span>
+                                    <span class="text-11s udi-color">{{priceToString(unusedQtyTotalPrice)}}</span>
                                 </div>
-                                <div class="flex flex-col" style="position: absolute; top: 79.4%;">
-                                    <span class="text-8s udi-color">{{acceptableTotal}}(EA)</span>
-                                    <span class="text-8s udi-color">{{acceptableTotalPrice}}</span>
+                                <div class="flex flex-col" style="position: absolute; top: 79%; left: 91.5%;">
+                                    <span class="text-11s udi-color mb_2">{{priceToString(acceptableTotal)}}(EA)</span>
+                                    <span class="text-11s udi-color">{{priceToString(acceptableTotalPrice)}}</span>
                                 </div>
-                                <div class="flex flex-col" style="position: absolute; top: 85.5%;">
-                                    <span class="text-8s udi-color">{{sumAvailQty}}(EA)</span>
-                                    <span class="text-8s udi-color">{{availQtyPrice}}</span>
+                                <div class="flex flex-col" style="position: absolute; top: 85.5%; left: 91.5%;">
+                                    <span class="text-11s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)</span>
+                                    <span class="text-11s udi-color">{{priceToString(availQtyPrice)}}</span>
                                 </div>
                             </div>
                         </div>
