@@ -677,6 +677,11 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         });
 
     }
+    openDlvAccountCancel(): void {
+        this.salesorderHeaderForm.patchValue({'dlvAccount': ''});
+        this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
+        this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
+    }
 
     openDlvAccountSearch(): void {
         if (!this.isMobile) {

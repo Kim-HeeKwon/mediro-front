@@ -1117,6 +1117,12 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
     }
 
+    openDlvAccountCancel(): void {
+        this.outBoundHeaderForm.patchValue({'dlvAccount': ''});
+        this.outBoundHeaderForm.patchValue({'dlvAccountNm': ''});
+        this.outBoundHeaderForm.patchValue({'dlvAddress': ''});
+    }
+
     openDlvAccountSearch(): void {
         if (!this.isMobile) {
             const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {

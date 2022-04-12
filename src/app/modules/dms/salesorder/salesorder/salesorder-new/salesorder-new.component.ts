@@ -584,6 +584,12 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
 
+    openDlvAccountCancel(): void {
+        this.salesorderHeaderForm.patchValue({'dlvAccount': ''});
+        this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
+        this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
+    }
+
     openDlvAccountSearch(): void {
         if (!this.isMobile) {
             const popup = this._matDialogPopup.open(CommonPopupItemsComponent, {

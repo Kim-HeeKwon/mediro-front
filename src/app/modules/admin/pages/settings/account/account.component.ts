@@ -108,12 +108,17 @@ export class SettingsAccountComponent implements OnInit
 
         this._common.sendData(this.userForm.getRawValue(),'/v1/api/auth/user-info-detail')
             .subscribe((response: any) => {
-                if(response.data[0].phoneNumber === 0){
+                if(response.data[0].phoneNumber === '0'){
+                    response.data[0].phoneNumber = '';
+                }else if(response.data[0].phoneNumber === ''){
                     response.data[0].phoneNumber = '';
                 }else{
                     response.data[0].phoneNumber = '0' + response.data[0].phoneNumber;
                 }
-                if(response.data[0].fax === 0){
+
+                if(response.data[0].fax === '0'){
+                    response.data[0].fax = '';
+                }else if(response.data[0].fax === ''){
                     response.data[0].fax = '';
                 }else{
                     response.data[0].fax = '0' + response.data[0].fax;
