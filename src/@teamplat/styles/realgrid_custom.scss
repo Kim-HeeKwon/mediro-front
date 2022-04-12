@@ -623,6 +623,11 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     margin-bottom: 1.0rem !important;
 }
 
+.my-tb-05 {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.2rem !important;
+}
+
 .mx-lr {
     margin-left: 1.0rem !important;
     margin-right: 1.0rem !important;
@@ -672,4 +677,14 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .height-mob {
     height: 150px !important;
+}
+.udi-hover:hover {
+    font-size: 14px !important;
+    font-weight: bold;
+    color: #277EC3 !important;
+}
+.udi-hover-bl:hover {
+    font-size: 14px !important;
+    font-weight: bold;
+    color: #303236 !important;
 }

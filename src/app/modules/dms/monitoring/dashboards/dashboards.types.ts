@@ -77,4 +77,5 @@ export interface SoInfo
 export interface BillInfo
 {
     totalCnt?: number;
+    invoiceCnt?: number;
 }
