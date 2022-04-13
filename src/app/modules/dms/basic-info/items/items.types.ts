@@ -12,6 +12,7 @@ export interface InventoryItem
     ediCode: string;
     rcperSalaryCode?: string;
     fomlInfo: string;
+    seq: string;
     itemNoFullname: string;
     supplier: string;    //공급사
     supplierNm: string;    //공급사 명

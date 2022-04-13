@@ -2,6 +2,7 @@ export interface UdiItem
 {
     modelId: string;              // 품목ID
     medDevSeq: string;            // 품목번호
+    seq: string;                  // 모델일련번호
     entpName: string;             // 업체명
     itemName: string;             // 품목명
     typeName: string;             // 모델명

@@ -86,6 +86,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             fomlInfo: [], // 모델명
             itemNoFullname: [], // 품목허가번호
             medDevSeq: [], // modelSeq
+            seq: [], // seq
             udiDiCode: [], // udiDiCode
             active: [false]  // cell상태
         });
@@ -165,8 +166,10 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
-                    if(result.modelId === ''){
-                        result.modelId = result.medDevSeq;
+                    if(result.seq === ''){
+                        result.modelId = result.medDevSeq + '_0';
+                    }else{
+                        result.modelId = result.medDevSeq + '_' + result.seq;
                     }
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
@@ -176,6 +179,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'rcperSalaryCode': result.rcperSalaryCode});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
@@ -199,8 +203,10 @@ export class NewItemComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
-                    if(result.modelId === ''){
-                        result.modelId = result.medDevSeq;
+                    if(result.seq === ''){
+                        result.modelId = result.medDevSeq + '_0';
+                    }else{
+                        result.modelId = result.medDevSeq + '_' + result.seq;
                     }
                     this.selectedItemForm.patchValue({'itemCd': result.modelId});
                     this.selectedItemForm.patchValue({'itemNm': result.itemName});
@@ -210,6 +216,7 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'itemNoFullname': result.itemNoFullname});
                     this.selectedItemForm.patchValue({'rcperSalaryCode': result.rcperSalaryCode});
                     this.selectedItemForm.patchValue({'medDevSeq': result.medDevSeq});
+                    this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
                     this.selectedItemForm.patchValue({'udiYn': 'Y'});
