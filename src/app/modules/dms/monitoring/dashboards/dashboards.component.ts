@@ -517,7 +517,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false): void {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#303236';
-                ctx.font = '23px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(isNaN(ibInfopsCnt)) {
                     ctx.fillText('0%', width / 2, top + (height / 1.9));
@@ -593,7 +593,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false): void {
                 const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
                 ctx.fillStyle = '#303236';
-                ctx.font = '23px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
+                ctx.font = '20px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
                 ctx.textAlign = 'center';
                 if(isNaN(obInfopsCnt)) {
                     ctx.fillText('0%', width / 2, top + (height / 1.9));
@@ -640,6 +640,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             salesPrice.push(param.totalAmt);
             return param;
         });
+        // const bill = {
+        //     id: 'bill',
+        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+        //     afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false): void {
+        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
+        //         ctx.fillStyle = '#303236';
+        //         ctx.font = '10px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
+        //         ctx.textAlign = 'right';
+        //         ctx.fillText('단위 (천원)', width / 0.87, top + (height / 7));
+        //     }
+        // };
+
         const ctx = document.getElementById('bill_chart');
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
@@ -724,7 +736,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 }
-            }
+            },
+            plugins: []
         });
         document.getElementById('billbuy').addEventListener('click', () => {
             if (this.buybool) {
@@ -748,47 +761,38 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    billBuy(): void {
-        this.buybool = true;
-        if (this.buybool) {
-            this.buybool = true;
-            this.salbool = false;
+    biiOption(): void {
+        if (this.billop) {
+            this.billop = false;
         } else {
-            this.buybool = false;
-            this.salbool = true;
+            this.billop = true;
         }
+        this._changeDetectorRef.markForCheck();
     }
 
-    billSal(): void {
-        this.salbool = true;
-        if (this.salbool) {
+    billbuy(): void {
+        if (!this.buybool) {
+            this.buybool = true;
+        } else {
             this.buybool = false;
+        }
+        if (!this.salbool) {
             this.salbool = true;
         } else {
-            this.buybool = true;
             this.salbool = false;
         }
     }
 
     udiLast(): void {
-        this.udiLastMonth = true;
-        if (this.udiLastMonth) {
+        if (!this.udiLastMonth) {
             this.udiLastMonth = true;
-            this.udiThisMonth = false;
         } else {
             this.udiLastMonth = false;
-            this.udiThisMonth = true;
         }
-    }
-
-    udiThis(): void {
-        this.udiThisMonth = true;
-        if (this.udiThisMonth) {
+        if (!this.udiThisMonth) {
             this.udiThisMonth = true;
-            this.udiLastMonth = false;
         } else {
             this.udiThisMonth = false;
-            this.udiLastMonth = true;
         }
     }
 
@@ -885,14 +889,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '0등급',
                         data: [unusedQty.zCnt, acceptableQty.zCnt, availQty.zCnt],
                         fill: false,
-                        borderColor: '#FFF978',
-                        pointBackgroundColor: '#FFF978',
-                        hoverBackgroundColor: '#FFF978',
-                        backgroundColor: '#FFF978',
-                        hoverBorderColor: '#FFF978',
-                        pointBorderColor: '#FFE65A',
-                        pointHoverBackgroundColor: '#FFF978',
-                        pointHoverBorderColor: '#FFF978',
+                        borderColor: '#B9FFFF',
+                        pointBackgroundColor: '#B9FFFF',
+                        hoverBackgroundColor: '#B9FFFF',
+                        backgroundColor: '#B9FFFF',
+                        hoverBorderColor: '#B9FFFF',
+                        pointBorderColor: '#B9FFFF',
+                        pointHoverBackgroundColor: '#B9FFFF',
+                        pointHoverBorderColor: '#B9FFFF',
                         borderWidth: 1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -902,14 +906,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '1등급',
                         data: [unusedQty.oCnt, acceptableQty.oCnt, availQty.oCnt],
                         fill: false,
-                        borderColor: '#FFD700',
-                        pointBackgroundColor: '#FFD700',
-                        hoverBackgroundColor: '#FFD700',
-                        backgroundColor: '#FFD700',
-                        hoverBorderColor: '#FFD700',
-                        pointBorderColor: '#FFD700',
-                        pointHoverBackgroundColor: '#FFD700',
-                        pointHoverBorderColor: '#FFD700',
+                        borderColor: '#1EDDFF',
+                        pointBackgroundColor: '#1EDDFF',
+                        hoverBackgroundColor: '#1EDDFF',
+                        backgroundColor: '#1EDDFF',
+                        hoverBorderColor: '#1EDDFF',
+                        pointBorderColor: '#1EDDFF',
+                        pointHoverBackgroundColor: '#1EDDFF',
+                        pointHoverBorderColor: '#1EDDFF',
                         borderWidth: 1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -919,14 +923,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '2등급',
                         data: [unusedQty.tCnt, acceptableQty.tCnt, availQty.tCnt],
                         fill: false,
-                        borderColor: '#FFB900',
-                        pointBackgroundColor: '#FFB900',
-                        hoverBackgroundColor: '#FFB900',
-                        backgroundColor: '#FFB900',
-                        hoverBorderColor: '#FFB900',
-                        pointBorderColor: '#FFB900',
-                        pointHoverBackgroundColor: '#FFB900',
-                        pointHoverBorderColor: '#FFB900',
+                        borderColor: '#00A5FF',
+                        pointBackgroundColor: '#00A5FF',
+                        hoverBackgroundColor: '#00A5FF',
+                        backgroundColor: '#00A5FF',
+                        hoverBorderColor: '#00A5FF',
+                        pointBorderColor: '#00A5FF',
+                        pointHoverBackgroundColor: '#00A5FF',
+                        pointHoverBorderColor: '#00A5FF',
                         borderWidth: 1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -936,14 +940,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '3등급',
                         data: [unusedQty.thCnt, acceptableQty.thCnt, availQty.thCnt],
                         fill: false,
-                        borderColor: '#BEEFFF',
-                        pointBackgroundColor: '#BEEFFF',
-                        hoverBackgroundColor: '#BEEFFF',
-                        backgroundColor: '#BEEFFF',
-                        hoverBorderColor: '#BEEFFF',
-                        pointBorderColor: '#BEEFFF',
-                        pointHoverBackgroundColor: '#BEEFFF',
-                        pointHoverBorderColor: '#BEEFFF',
+                        borderColor: '#00A5FF',
+                        pointBackgroundColor: '#00A5FF',
+                        hoverBackgroundColor: '#00A5FF',
+                        backgroundColor: '#00A5FF',
+                        hoverBorderColor: '#00A5FF',
+                        pointBorderColor: '#00A5FF',
+                        pointHoverBackgroundColor: '#00A5FF',
+                        pointHoverBorderColor: '#00A5FF',
                         borderWidth: 1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -953,14 +957,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '4등급',
                         data: [unusedQty.fCnt, acceptableQty.fCnt, availQty.fCnt],
                         fill: false,
-                        borderColor: '#5AD2FF',
-                        pointBackgroundColor: '#5AD2FF',
-                        hoverBackgroundColor: '#5AD2FF',
-                        backgroundColor: '#5AD2FF',
-                        hoverBorderColor: '#5AD2FF',
-                        pointBorderColor: '#5AD2FF',
-                        pointHoverBackgroundColor: '#5AD2FF',
-                        pointHoverBorderColor: '#5AD2FF',
+                        borderColor: '#0064FF',
+                        pointBackgroundColor: '#0064FF',
+                        hoverBackgroundColor: '#0064FF',
+                        backgroundColor: '#0064FF',
+                        hoverBorderColor: '#0064FF',
+                        pointBorderColor: '#0064FF',
+                        pointHoverBackgroundColor: '#0064FF',
+                        pointHoverBorderColor: '#0064FF',
                         borderWidth: 0.1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -970,14 +974,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '기타등급',
                         data: [unusedQty.etcCnt, acceptableQty.etcCnt, availQty.etcCnt],
                         fill: false,
-                        borderColor: '#28A0FF',
-                        pointBackgroundColor: '#28A0FF',
-                        hoverBackgroundColor: '#28A0FF',
-                        backgroundColor: '#28A0FF',
-                        hoverBorderColor: '#28A0FF',
-                        pointBorderColor: '#28A0FF',
-                        pointHoverBackgroundColor: '#28A0FF',
-                        pointHoverBorderColor: '#28A0FF',
+                        borderColor: '#0000FF',
+                        pointBackgroundColor: '#0000FF',
+                        hoverBackgroundColor: '#0000FF',
+                        backgroundColor: '#0000FF',
+                        hoverBorderColor: '#0000FF',
+                        pointBorderColor: '#0000FF',
+                        pointHoverBackgroundColor: '#0000FF',
+                        pointHoverBorderColor: '#0000FF',
                         borderWidth: 0.1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -994,13 +998,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                                 color: '#8F95A0'
                             },
                         },
-                    },
-                    responsive: (ctx: Context) => {
-                        if(this.isMobile) {
-                            return true;
-                        } else {
-                            return false;
-                        }
                     },
                     indexAxis: 'y',
                     scales: {
