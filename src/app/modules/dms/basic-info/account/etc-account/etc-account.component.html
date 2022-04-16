@@ -1,0 +1,283 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">기타 거래처 신규등록</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="selectedAccountForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래처 코드<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'account'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-4">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래처 명<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'descr'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2 mb-2">
+                    <div class="sm:col-span-6">
+                        <mat-checkbox
+                            [formControlName]="'createUdiAccountCheck'">
+                            <mat-label class="text-12s">
+                                의료기기 통합정보 시스템 거래처 등록
+                                <span class="text-10s text-bold-600" style="color: red;">* 참고! 의료기기 통합정보 시스템에도 거래처가 등록됩니다. *</span>
+                            </mat-label>
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>유형<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-select [formControlName]="'accountType'">
+                                <ng-container *ngFor="let accountType of accountType">
+                                    <mat-option [value]="accountType.id">
+                                        {{accountType.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>사업자번호</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [formControlName]="'custBusinessNumber'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>사업자명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'custBusinessName'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>대표자명</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:user'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'representName'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>업태</mat-label>
+                            <mat-select [formControlName]="'businessCondition'">
+                                <ng-container *ngFor="let cobFlagName of cobFlagName">
+                                    <mat-option [value]="cobFlagName.id">
+                                        {{cobFlagName.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                            <!--                            <input-->
+                            <!--                                matInput-->
+                            <!--                                [formControlName]="'businessCondition'">-->
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>종목</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'businessCategory'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>주소</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'address'"
+                                (click)="openDaumPopup()">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>상세주소</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'addressDetail'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>대표 전화</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:phone'"
+                                matPrefix></mat-icon>
+                            <input
+                                type="text"
+                                matInput
+                                [formControlName]="'phoneNumber'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>휴대 전화</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:phone'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'cellPhoneNumber'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>팩스</mat-label>
+                            <input
+                                type="text"
+                                matInput
+                                [formControlName]="'fax'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>이메일</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:mail'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'email'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>세금계산서 이메일</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:mail'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'taxEmail'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>결제조건</mat-label>
+                            <mat-select [formControlName]="'paymentTerms'">
+                                <ng-container *ngFor="let paymentTerms of paymentTerms">
+                                    <mat-option [value]="paymentTerms.id">
+                                        {{paymentTerms.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>담당자</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:user'"
+                                matPrefix></mat-icon>
+                            <input
+                                type="text"
+                                matInput
+                                [formControlName]="'manager'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>담당자 번호</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:phone'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'managerCellPhoneNumber'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-6">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>비고</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'note_add'"
+                                matPrefix></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'remark'">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex items-center justify-between mt-4">
+                <!-- Close -->
+                <button
+                    mat-flat-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <!-- Save -->
+                <button
+                    mat-flat-button
+                    (click)="accountCreate()">
+                    등록
+                </button>
+            </div>
+        </ng-container>
+    </div>
+
+    <div #daum_popup style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+        <img (click)="closeDaumPopup()" src="//t1.daumcdn.net/postcode/resource/images/close.png" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1;width: 6%;" />
+    </div>
+</div>

@@ -28,6 +28,7 @@ import {AccountResolver} from '../account/account.resolvers';
 import {NewAccountComponent} from './new-account/new-account.component';
 import {DetailAccountComponent} from './detail-account/detail-account.component';
 import {CommonLoadingBarModule} from '../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module';
+import {EtcAccountComponent} from "./etc-account/etc-account.component";
 
 const accountRoutes: Route[] = [
     {
@@ -43,6 +44,7 @@ const accountRoutes: Route[] = [
     declarations: [
         AccountComponent,
         NewAccountComponent,
+        EtcAccountComponent,
         DetailAccountComponent
     ],
     imports: [

@@ -99,6 +99,25 @@ export class AccountService {
         );
     }
 
+    /**
+     * Create Etc Account
+     */
+    createEtcAccount(accountData: AccountData): Observable<AccountData>
+    {
+        return this.accounts$.pipe(
+            take(1),
+            switchMap(products => this._common.sendDataLoading(accountData, 'v1/api/basicInfo/account/etc').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                        // Update the products with the new product
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
     /* Put updateAccount
      * @param accountData
      */

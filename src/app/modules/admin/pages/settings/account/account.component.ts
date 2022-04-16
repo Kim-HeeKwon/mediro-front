@@ -77,7 +77,7 @@ export class SettingsAccountComponent implements OnInit
             }],
             businessName: [{
                 value: this._sessionStore.getValue().businessName,
-                // disabled: this.isEdit
+                disabled: !this.isEdit
             }],
             userType: [{
                 value: this._sessionStore.getValue().userType,

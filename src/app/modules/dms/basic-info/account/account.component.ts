@@ -25,6 +25,7 @@ import {CommonUdiComponent} from '../../../../../@teamplat/components/common-udi
 import {NewAccountComponent} from '../account/new-account/new-account.component';
 import {Router} from '@angular/router';
 import {DetailAccountComponent} from '../account/detail-account/detail-account.component';
+import {EtcAccountComponent} from "./etc-account/etc-account.component";
 
 @Component({
     selector: 'dms-app-account',
@@ -516,6 +517,41 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         } else {
             const d = this._matDialog.open(NewAccountComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectAccount();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
+
+
+    createEtcAccount() {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(EtcAccountComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    note: {}
+                },
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectAccount();
+            });
+        } else {
+            const d = this._matDialog.open(EtcAccountComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',

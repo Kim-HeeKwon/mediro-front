@@ -264,7 +264,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '거래처 명, 유형을 입력해주세요.'
+                message: '거래처 명을 입력해주세요.'
             };
             // Show the alert
             this.showAlert = true;
