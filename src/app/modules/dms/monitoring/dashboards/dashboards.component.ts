@@ -44,6 +44,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     stockInfo$: Observable<any>;
     stockInfos: any;
     billInfos: any;
+    udiMonth: any;
     udiLastDay: any;
     errEveCnt: any;
     errNowCnt: any;
@@ -76,6 +77,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     isLoading: boolean = false;
     isMobile: boolean = false;
     billop: boolean = true;
+    udiop: boolean = true;
     ibInfopCnt: any;
     obInfopCnt: any;
     buy: any;
@@ -228,7 +230,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.billInfo$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data: any) => {
-                console.log(data);
                 data.filter(option => option.subCd === 'TOTAL').map((result: any) => {
                     this.billInfo.totalCnt = result.totalCnt;
                 });
@@ -283,6 +284,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
         this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
+        // if(this.billInfos[this.billInfos.length - 2].totalAmt.length > 4) {
+        //     this.buy = String(this.billInfos[this.billInfos.length - 2].totalAmt.toString().slice(0, -3));
+        // } else {
+        //     this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
+        // }
+        // if(this.billInfos[this.billInfos.length - 1].totalAmt.length > 4) {
+        //     this.sal = String(this.billInfos[this.billInfos.length - 1].totalAmt.toString().slice(0, -3));
+        // } else {
+        //     this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
+        // }
 
         //udi정보
         this.udiInfo$
@@ -406,7 +417,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (this.stockPrice.thCnt * this.availQty.thCnt)
             + (this.stockPrice.fCnt * this.availQty.fCnt);
         if(availPrice.toString().length > 4) {
-            this.availQtyPrice = String(availPrice.toString().slice(0, -4)) + '(천원)';
+            this.availQtyPrice = String(availPrice.toString().slice(0, -3));
         } else {
             this.availQtyPrice = availPrice + '(원)';
         }
@@ -420,6 +431,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
 
         const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+
+        if(month === 1) {
+            this.udiMonth = 12;
+        } else {
+            this.udiMonth = month - 1;
+        }
+        // this.udiMonth
 
         if (diffDays === 0) {
             this.udiLastDay = 'D - day';
@@ -670,25 +688,25 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     pointBorderColor: '#3983DC',
                     pointHoverBackgroundColor: '#3983DC',
                     pointHoverBorderColor: '#3983DC',
-                    borderWidth: 4,
-                    pointBorderWidth: 4,
-                    hoverBorderWidth: 4,
+                    borderWidth: 3,
+                    pointBorderWidth: 3,
+                    hoverBorderWidth: 3,
                 }, {
                     type: 'line',
                     label: '매출',
                     data: salesPrice,
                     fill: false,
-                    borderColor: '#52C5D8',
-                    pointBackgroundColor: '#52C5D8',
-                    hoverBackgroundColor: '#52C5D8',
-                    backgroundColor: '#52C5D8',
-                    hoverBorderColor: '#52C5D8',
-                    pointBorderColor: '#52C5D8',
-                    pointHoverBackgroundColor: '#52C5D8',
-                    pointHoverBorderColor: '#52C5D8',
-                    borderWidth: 4,
-                    pointBorderWidth: 4,
-                    hoverBorderWidth: 4,
+                    borderColor: '#00A5FF',
+                    pointBackgroundColor: '#00A5FF',
+                    hoverBackgroundColor: '#00A5FF',
+                    backgroundColor: '#00A5FF',
+                    hoverBorderColor: '#00A5FF',
+                    pointBorderColor: '#00A5FF',
+                    pointHoverBackgroundColor: '#00A5FF',
+                    pointHoverBorderColor: '#00A5FF',
+                    borderWidth: 3,
+                    pointBorderWidth: 3,
+                    hoverBorderWidth: 3,
                 }],
                 labels: date
             },
@@ -723,9 +741,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         ticks: {
                             callback: (value, index, ticks) => {
                                 if(value.toString().length > 4) {
-                                    return value.toString().slice(0, -4) + '(천원)';
+                                    return this.priceToString(value.toString().slice(0, -3));
                                 } else {
-                                    return value;
+                                    return this.priceToString(value);
                                 }
                             },
                             font: {
@@ -770,29 +788,82 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    billbuy(): void {
-        if (!this.buybool) {
+    udiOption(): void {
+        if (this.udiop) {
+            this.udiop = false;
+        } else {
+            this.udiop = true;
+        }
+        this._changeDetectorRef.markForCheck();
+    }
+
+    billBuy(): void {
+        this.buybool = true;
+        if (this.buybool) {
             this.buybool = true;
+            this.salbool = false;
         } else {
             this.buybool = false;
+            this.salbool = true;
         }
-        if (!this.salbool) {
+    }
+
+    billSal(): void {
+        this.salbool = true;
+        if (this.salbool) {
+            this.buybool = false;
             this.salbool = true;
         } else {
+            this.buybool = true;
             this.salbool = false;
         }
     }
 
+    // billbuy(): void {
+    //     if (!this.buybool) {
+    //         this.buybool = true;
+    //     } else {
+    //         this.buybool = false;
+    //     }
+    //     if (!this.salbool) {
+    //         this.salbool = true;
+    //     } else {
+    //         this.salbool = false;
+    //     }
+    // }
+
+    // udiLast(): void {
+    //     if (!this.udiLastMonth) {
+    //         this.udiLastMonth = true;
+    //     } else {
+    //         this.udiLastMonth = false;
+    //     }
+    //     if (!this.udiThisMonth) {
+    //         this.udiThisMonth = true;
+    //     } else {
+    //         this.udiThisMonth = false;
+    //     }
+    // }
+
     udiLast(): void {
-        if (!this.udiLastMonth) {
+        this.udiLastMonth = true;
+        if (this.udiLastMonth) {
             this.udiLastMonth = true;
+            this.udiThisMonth = false;
         } else {
             this.udiLastMonth = false;
-        }
-        if (!this.udiThisMonth) {
             this.udiThisMonth = true;
+        }
+    }
+
+    udiThis(): void {
+        this.udiThisMonth = true;
+        if (this.udiThisMonth) {
+            this.udiThisMonth = true;
+            this.udiLastMonth = false;
         } else {
             this.udiThisMonth = false;
+            this.udiLastMonth = true;
         }
     }
 
@@ -850,7 +921,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (price.thCnt * acceptableQty.thCnt)
             + (price.fCnt * acceptableQty.fCnt);
         if(acceptableTotalPrice.toString().length > 4) {
-            this.acceptableTotalPrice = String(acceptableTotalPrice.toString().slice(0, -4)) + '(천원)';
+            this.acceptableTotalPrice = String(acceptableTotalPrice.toString().slice(0, -3));
         } else {
             this.acceptableTotalPrice = acceptableTotalPrice + '(원)';
         }
@@ -862,7 +933,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (price.thCnt * unusedQty.thCnt)
             + (price.fCnt * unusedQty.fCnt);
         if(unusedQtyTotalPrice.toString().length > 4) {
-            this.unusedQtyTotalPrice = String(unusedQtyTotalPrice.toString().slice(0, -4)) + '(천원)';
+            this.unusedQtyTotalPrice = String(unusedQtyTotalPrice.toString().slice(0, -3));
         } else {
             this.unusedQtyTotalPrice = unusedQtyTotalPrice + '(원)';
         }
@@ -874,9 +945,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (price.fCnt * availQty.fCnt);
         totalPrice = acceptableTotalPrice + unusedQtyTotalPrice + availQtyTotalPrice;
         if(totalPrice.toString().length > 4) {
-            this.stockTotalPrice = String(totalPrice.toString().slice(0, -4));
+            this.stockTotalPrice = String(totalPrice.toString().slice(0, -3));
         } else {
-            this.stockTotalPrice = totalPrice;
+            this.stockTotalPrice = totalPrice + '(원)';
         }
         const ctx = document.getElementById('stock_chart');
 
@@ -940,14 +1011,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '3등급',
                         data: [unusedQty.thCnt, acceptableQty.thCnt, availQty.thCnt],
                         fill: false,
-                        borderColor: '#00A5FF',
-                        pointBackgroundColor: '#00A5FF',
-                        hoverBackgroundColor: '#00A5FF',
-                        backgroundColor: '#00A5FF',
-                        hoverBorderColor: '#00A5FF',
-                        pointBorderColor: '#00A5FF',
-                        pointHoverBackgroundColor: '#00A5FF',
-                        pointHoverBorderColor: '#00A5FF',
+                        borderColor: '#0064FF',
+                        pointBackgroundColor: '#0064FF',
+                        hoverBackgroundColor: '#0064FF',
+                        backgroundColor: '#0064FF',
+                        hoverBorderColor: '#0064FF',
+                        pointBorderColor: '#0064FF',
+                        pointHoverBackgroundColor: '#0064FF',
+                        pointHoverBorderColor: '#0064FF',
                         borderWidth: 1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -957,14 +1028,14 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         label: '4등급',
                         data: [unusedQty.fCnt, acceptableQty.fCnt, availQty.fCnt],
                         fill: false,
-                        borderColor: '#0064FF',
-                        pointBackgroundColor: '#0064FF',
-                        hoverBackgroundColor: '#0064FF',
-                        backgroundColor: '#0064FF',
-                        hoverBorderColor: '#0064FF',
-                        pointBorderColor: '#0064FF',
-                        pointHoverBackgroundColor: '#0064FF',
-                        pointHoverBorderColor: '#0064FF',
+                        borderColor: '#027dc4',
+                        pointBackgroundColor: '#027dc4',
+                        hoverBackgroundColor: '#027dc4',
+                        backgroundColor: '#027dc4',
+                        hoverBorderColor: '#027dc4',
+                        pointBorderColor: '#027dc4',
+                        pointHoverBackgroundColor: '#027dc4',
+                        pointHoverBorderColor: '#027dc4',
                         borderWidth: 0.1,
                         pointBorderWidth: 0.1,
                         hoverBorderWidth: 0.1,
@@ -989,6 +1060,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     labels: ['불용', '가납', '보유'],
                 },
                 options: {
+                    maxBarThickness: 30,
                     plugins: {
                         legend: {
                             display: true,

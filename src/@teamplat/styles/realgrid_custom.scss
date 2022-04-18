@@ -275,6 +275,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .text-18s{
     font-size: 18px !important;
 }
+.text-17s{
+    font-size: 17px !important;
+}
 .text-15s{
     font-size: 15px !important;
 }
@@ -347,6 +350,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 
 .m-auto{
     margin: auto !important;
+}
+
+.text-right {
+    text-align: right !important;
 }
 
 .progress-inner{
@@ -599,7 +606,7 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 //}
 
 .mb_5 {
-    margin-bottom: 0.75rem !important;
+    margin-bottom: 1rem !important;
 }
 
 .mb_4 {
@@ -657,7 +664,7 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .dash-hover:hover {
     text-decoration: underline #ffffff !important;
-    font-size: 14px !important;
+    //font-size: 12px !important;
     font-weight: bold !important;
 }
 .dash-hover-gray:hover {
@@ -679,12 +686,13 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     height: 150px !important;
 }
 .udi-hover:hover {
-    font-size: 14px !important;
     font-weight: bold;
     color: #277EC3 !important;
 }
 .udi-hover-bl:hover {
-    font-size: 14px !important;
     font-weight: bold;
     color: #303236 !important;
+}
+.w-40 {
+    width: 40% !important;
 }
