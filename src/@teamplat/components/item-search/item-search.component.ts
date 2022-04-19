@@ -81,7 +81,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         private dialog: MatDialog,
         //private commonAlertDialog: CommonAlertService
     ) {
-        this.itemGrades = _utilService.commonValue(_codeStore.getValue().data,'ITEM_GRADE');
+        this.itemGrades = _utilService.commonValueFilter(_codeStore.getValue().data,'ITEM_GRADE', ['ALL','0','-']);
 
         this.commonAlertForm = _formBuilder.group({
             dialogTitle: ['Title', [Validators.required]],

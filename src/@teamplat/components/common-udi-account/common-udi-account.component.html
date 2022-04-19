@@ -60,7 +60,18 @@
         </div>
         <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
             <button
-                class="mediro-btn-custom"
+                class="mediro-btn-custom mediro-custom-accent"
+                mat-stroked-button
+                [color]="'accent'"
+                (click)="createEtcAccount()">
+                <mat-icon
+                    class="icon-size-5"
+                    style="color: #3490DD !important;"
+                    [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">기타 거래처</span>
+            </button>
+            <button
+                class="ml-2 mediro-btn-custom"
                 mat-flat-button
                 [color]="'accent'"
                 (click)="selectHeader()">

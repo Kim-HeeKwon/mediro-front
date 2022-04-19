@@ -217,6 +217,18 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
+                name: 'typeName',
+                fieldName: 'typeName',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '모델명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'suplyQty', fieldName: 'suplyQty', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '공급수량', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true

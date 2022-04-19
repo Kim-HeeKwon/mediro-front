@@ -75,7 +75,12 @@ export class FuseUtilsService {
         childValues[0].forEach((param1: any) => {
             const commonValue: CommonCode = {
                 id: param1.subCd,
-                name: param1.descr
+                name: param1.descr,
+                udf1: param1.udf1,
+                udf2: param1.udf2,
+                udf3: param1.udf3,
+                udf4: param1.udf4,
+                udf5: param1.udf5,
             };
             commonValues.push(commonValue);
         });
@@ -97,7 +102,12 @@ export class FuseUtilsService {
         childValues[0].forEach((param1: any) => {
             const commonValue: CommonCode = {
                 id: param1.subCd,
-                name: param1.descr
+                name: param1.descr,
+                udf1: param1.udf1,
+                udf2: param1.udf2,
+                udf3: param1.udf3,
+                udf4: param1.udf4,
+                udf5: param1.udf5,
             };
             commonValues.push(commonValue);
         });
@@ -127,7 +137,12 @@ export class FuseUtilsService {
         childValues[0].forEach((param1: any) => {
             const commonValue: CommonCode = {
                 id: param1.subCd,
-                name: param1.descr
+                name: param1.descr,
+                udf1: param1.udf1,
+                udf2: param1.udf2,
+                udf3: param1.udf3,
+                udf4: param1.udf4,
+                udf5: param1.udf5,
             };
             commonValues.push(commonValue);
         });
@@ -185,6 +200,11 @@ export interface CommonCode
 {
     id: string;         //ID
     name: string;       //NAME
+    udf1?: string;       //
+    udf2?: string;       //
+    udf3?: string;       //
+    udf4?: string;       //
+    udf5?: string;       //
 }
 
 export interface CommonCodeProcess

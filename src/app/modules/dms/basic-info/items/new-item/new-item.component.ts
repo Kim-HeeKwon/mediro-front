@@ -55,7 +55,7 @@ export class NewItemComponent implements OnInit, OnDestroy
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver)
     {
-        this.itemGrades = _utilService.commonValueFilter(_codeStore.getValue().data,'ITEM_GRADE', ['ALL']);
+        this.itemGrades = _utilService.commonValueFilter(_codeStore.getValue().data,'ITEM_GRADE', ['ALL','0','-']);
         this.itemUnit = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.itemStandard = _utilService.commonValue(_codeStore.getValue().data,'ITEM_UNIT');
         this.udiYn = _utilService.commonValue(_codeStore.getValue().data,'UDI_YN');
@@ -80,8 +80,8 @@ export class NewItemComponent implements OnInit, OnDestroy
             supplier: [''], // 공급사
             supplierNm: [{value:'', disabled: true}], // 공급사 명
             manufacturer: [''], // 제조사
-            buyPrice: [, [Validators.required]], // 매입단가
-            salesPrice: [, [Validators.required]], // 매출단가
+            buyPrice: [0, [Validators.required]], // 매입단가
+            salesPrice: [0, [Validators.required]], // 매출단가
             entpName: [], // 업체명
             fomlInfo: [], // 모델명
             itemNoFullname: [], // 품목허가번호
@@ -166,7 +166,7 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
-                    if(result.seq === ''){
+                    if(result.seq === '' || result.seq === null || result.seq === 'null' || result.seq === undefined){
                         result.modelId = result.medDevSeq + '_0';
                     }else{
                         result.modelId = result.medDevSeq + '_' + result.seq;
@@ -182,7 +182,15 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
-                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                    this.itemGrades.forEach((ex) => {
+                        if(ex.id === result.grade){
+                            if(ex.udf1 === 'Y'){
+                                this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                            }else{
+                                this.selectedItemForm.patchValue({'udiYn': 'N'});
+                            }
+                        }
+                    });
                     this.is_edit = true;
                 }
             });
@@ -203,7 +211,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             });
             d.afterClosed().subscribe((result) => {
                 if(result){
-                    if(result.seq === ''){
+                    if(result.seq === '' || result.seq === null || result.seq === 'null' || result.seq === undefined){
                         result.modelId = result.medDevSeq + '_0';
                     }else{
                         result.modelId = result.medDevSeq + '_' + result.seq;
@@ -219,7 +227,15 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
-                    this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                    this.itemGrades.forEach((ex) => {
+                        if(ex.id === result.grade){
+                            if(ex.udf1 === 'Y'){
+                                this.selectedItemForm.patchValue({'udiYn': 'Y'});
+                            }else{
+                                this.selectedItemForm.patchValue({'udiYn': 'N'});
+                            }
+                        }
+                    });
                     this.is_edit = true;
                 }
                 smallDialogSubscription.unsubscribe();
@@ -236,6 +252,28 @@ export class NewItemComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
+            this.selectedItemForm.patchValue({
+                    itemCd: '', // 품목코드
+                    itemNm: '', // 품목명
+                    itemGrade: '', // 등급
+                    udiYn: '', // UDI 신고 대상 유무
+                    category: '', // 카테고리
+                    unit: '', // 단위
+                    standard: '', // 규격
+                    rcperSalaryCode: '',
+                    supplier: '', // 공급사
+                    supplierNm: '', // 공급사 명
+                    manufacturer: '', // 제조사
+                    buyPrice: 0, // 매입단가
+                    salesPrice: 0, // 매출단가
+                    entpName: '', // 업체명
+                    fomlInfo: '', // 모델명
+                    itemNoFullname: '', // 품목허가번호
+                    medDevSeq: '', // modelSeq
+                    seq: '', // seq
+                    udiDiCode: '', // udiDiCode
+                }
+            );
             this._itemService.getItems(0,40,'addDate','desc','');
         }else if(param.status === 'CANCEL'){
 
@@ -267,7 +305,7 @@ export class NewItemComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '품목코드, 품목등급, UDI 대상유무, 품목명, (매입, 매출) 단가를 입력해주세요.'
+                message: '품목코드, 품목등급, UDI 대상유무, 품목명을 입력해주세요.'
             };
 
             // Show the alert

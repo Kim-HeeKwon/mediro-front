@@ -54,6 +54,7 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'businessName', dataType: ValueType.TEXT},
         {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'payYn', dataType: ValueType.TEXT},
+        {fieldName: 'monthPayYn', dataType: ValueType.TEXT},
         {fieldName: 'freeYn', dataType: ValueType.TEXT},
         {fieldName: 'suppliedAmt', dataType: ValueType.NUMBER},
         {fieldName: 'vat', dataType: ValueType.NUMBER},
@@ -175,12 +176,18 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
             //         showTooltip: true
             //     }
             // },
-            // {
-            //     name: 'payYn', fieldName: 'payYn', type: 'data', width: '150', styleName: 'left-cell-text'
-            //     , header: {text: '정기서비스 신청여부', styleName: 'center-cell-text'}, renderer: {
-            //         showTooltip: true
-            //     }
-            // },
+            {
+                name: 'payYn', fieldName: 'payYn', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '정기서비스 신청여부', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'monthPayYn', fieldName: 'monthPayYn', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '결제여부', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
         //그리드 Provider

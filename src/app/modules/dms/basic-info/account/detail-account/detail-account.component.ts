@@ -105,7 +105,7 @@ export class DetailAccountComponent implements  OnInit, OnDestroy
             representName: [''],
             businessCondition: [{value:'',disabled:true}],
             businessCategory: [''],
-            address: [''],
+            address: [{value:'',disabled: false}, [Validators.required]],
             addressDetail: [''],
             addressX: [''],
             addressY: [''],

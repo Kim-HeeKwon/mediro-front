@@ -87,6 +87,8 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'meddevItemSeq', dataType: ValueType.TEXT},
         {fieldName: 'typeName', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'lotNo', dataType: ValueType.TEXT},
         {fieldName: 'manufYm', dataType: ValueType.TEXT},
@@ -224,18 +226,24 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             //         showTooltip:true
             //     }
             // },
-            // {
-            //     name: 'typeName', fieldName: 'typeName', type: 'data', width: '100', styleName: 'left-cell-text'
-            //     , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
-            //         showTooltip: true
-            //     }
-            // },
+            {
+                name: 'typeName', fieldName: 'typeName', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
             // {
             //     name: 'standard', fieldName: 'standard', type: 'data', width: '100', styleName: 'left-cell-text'
             //     , header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
             //         showTooltip: true
             //     }
             // },
+            {
+                name: 'unit', fieldName: 'unit', type: 'data', width: '80', styleName: 'left-cell-text'
+                , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
             {
                 name: 'itemGrade', fieldName: 'itemGrade', type: 'data', width: '100', styleName: 'left-cell-text',
                 header: {text: '품목등급', styleName: 'center-cell-text'}, renderer: {
@@ -248,21 +256,21 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'obExpQty', fieldName: 'obExpQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '출고대상수량', styleName: 'center-cell-text red-font-color'}
+                , header: {text: '출고대상수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'obQty', fieldName: 'obQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '출고수량', styleName: 'center-cell-text red-font-color'}
+                , header: {text: '출고수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'qty', fieldName: 'qty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '미출고수량', styleName: 'center-cell-text'}
+                , header: {text: '미출고수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -348,14 +356,14 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             //         showTooltip:true
             //     }
             // },
-            // {
-            //     name: 'typeName', fieldName: 'typeName', type: 'data', width: '100', styleName: 'left-cell-text'
-            //     , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
-            //         showTooltip: true
-            //     }
-            // },
             {
-                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '400', styleName: 'left-cell-text'
+                name: 'typeName', fieldName: 'typeName', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '350', styleName: 'left-cell-text'
                 , header: {text: '바코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }

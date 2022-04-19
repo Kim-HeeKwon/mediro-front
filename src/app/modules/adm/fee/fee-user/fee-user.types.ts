@@ -5,6 +5,7 @@ export interface FeeUserData
     businessName: string;
     freeYn: string;
     payYn: string;
+    monthPayYn: string;
 
     suppliedAmt: number;
     vat: number;

@@ -82,6 +82,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'medDevItemSeq', dataType: ValueType.TEXT},
         {fieldName: 'typeName', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
+        {fieldName: 'invQty', dataType: ValueType.NUMBER},
         {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
         {fieldName: 'obQty', dataType: ValueType.NUMBER},
@@ -184,7 +185,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|refItemNm:refItemNm|' +
-                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice',
+                            'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice|invQty:availQty',
                         where : [{
                             key: 'account',
                             replace : 'account:=:#{account}'
@@ -228,6 +229,13 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             {
                 name: 'udiYn', fieldName: 'udiYn', type: 'data', width: '100', styleName: 'center-cell-text'
                 , header: {text: '바코드 스캔 여부', styleName: 'center-cell-text text-8s'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'invQty', fieldName: 'invQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '보유재고량', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
@@ -380,6 +388,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
                     dataCell.dataColumn.fieldName === 'totalAmt' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
                     dataCell.dataColumn.fieldName === 'qty') {
                 } else {
                     ret.editable= true;
@@ -394,6 +403,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     dataCell.dataColumn.fieldName === 'unit' ||
                     dataCell.dataColumn.fieldName === 'itemGrade' ||
                     dataCell.dataColumn.fieldName === 'totalAmt' ||
+                    dataCell.dataColumn.fieldName === 'invQty'||
                     dataCell.dataColumn.fieldName === 'qty') {
 
                     this._realGridsService.gfn_PopUpBtnHide('itemGrdPopup');
@@ -404,7 +414,18 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
             if (
                 dataCell.dataColumn.fieldName === 'qty' ||
+                dataCell.dataColumn.fieldName === 'invQty'||
                 dataCell.dataColumn.fieldName === 'refItemNm') {
+            }
+
+            const invQty = grid.getValue(dataCell.index.itemIndex, 'invQty');
+            const qty = grid.getValue(dataCell.index.itemIndex, 'qty');
+            if(invQty < qty){
+                if (
+                    dataCell.dataColumn.fieldName === 'invQty') {
+                    ret.styleName = 'right-cell-text red-color';
+                    ret.editable = false;
+                }
             }
 
             if (obType === '1' || obType === '3' || obType === '5') {
@@ -517,7 +538,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return false;
         }
         const values = [
-            '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, ''
+            '', '', '', '', '', '', '', '', '',0 , 0, 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
@@ -571,6 +592,9 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
         rows.forEach((data: any) => {
+            if(data.refItemNm !== data.itemNm){
+                data.itemNm = data.itemNm + '/' + data.refItemNm;
+            }
             index++;
             outboundDetailData.push({
                 no: index,

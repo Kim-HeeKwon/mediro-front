@@ -92,7 +92,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             representName: [''],
             businessCondition: [{value:'',disabled:true}],
             businessCategory: [''],
-            address: [''],
+            address: [{value:'',disabled: false}, [Validators.required]],
             addressDetail: [''],
             addressX: [''],
             addressY: [''],
@@ -232,6 +232,35 @@ export class NewAccountComponent implements OnInit, OnDestroy
             };
             // Show the alert
             this.showAlert = true;
+            this.selectedAccountForm.patchValue({
+                    account: '', // 거래처
+                    udiAccount: '',
+                    udiHptlSymbl: '',
+                    cobFlagType: '',
+                    descr: '',   // 거래처 명
+                    accountType: 'CUST',   // 유형
+                    custBusinessNumber : '',
+                    custBusinessName: '',
+                    representName: '',
+                    businessCondition: '',
+                    businessCategory: '',
+                    address: '',
+                    addressDetail: '',
+                    addressX: '',
+                    addressY: '',
+                    addressZoneNo: '',
+                    phoneNumber: '',
+                    cellPhoneNumber: '',
+                    fax: '',
+                    email: '',
+                    taxEmail: '',
+                    manager: '',
+                    managerCellPhoneNumber: '',
+                    paymentTerms: '',
+                    remark: '',
+                    createUdiAccountCheck: false,
+                }
+            );
             this._accountService.getAccount(0,40,'addDate','desc','');
         }else if (param.status === 'CANCEL') {
 
@@ -264,7 +293,7 @@ export class NewAccountComponent implements OnInit, OnDestroy
             // Set the alert
             this.alert = {
                 type   : 'error',
-                message: '거래처 명을 입력해주세요.'
+                message: '거래처 명, 주소를 입력해주세요.'
             };
             // Show the alert
             this.showAlert = true;

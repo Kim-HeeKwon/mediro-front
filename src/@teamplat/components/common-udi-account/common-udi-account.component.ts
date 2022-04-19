@@ -198,6 +198,7 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
                     const obj = new Object();
                     obj['row'] = grid.getValues(clickData.dataRow);
                     obj['cobFlagCode'] = this.searchForm.getRawValue().cobFlagCode;
+                    console.log(obj);
                     this.matDialogRef.close(obj);
                 }
             }
@@ -248,5 +249,19 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
         if (event.keyCode === 13) {
             this.selectHeader();
         }
+    }
+
+    createEtcAccount() {
+        const obj = new Object();
+        obj['row'] = {
+            'cobFlagCodeName' : '기타',
+            'entpName' : '',
+            'cobDetailName' : '',
+            'rprsntName' : '',
+            'companyName' : '',
+            'entpAddrAll' : '',
+        };
+        obj['cobFlagCode'] = '99';
+        this.matDialogRef.close(obj);
     }
 }
