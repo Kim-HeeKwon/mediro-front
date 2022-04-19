@@ -19,7 +19,7 @@
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
                     <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;&nbsp;&nbsp;견적&nbsp;&nbsp;&nbsp; 확정&nbsp;{{qtInfo.cfCnt}}건
+                            &nbsp;&nbsp;견적&nbsp;&nbsp;&nbsp; 확정&nbsp;{{qtInfo.cfCnt}}건
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
                     <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;&nbsp;&nbsp;발주&nbsp;&nbsp;&nbsp; 확정&nbsp;{{poInfo.cfCnt}}건
+                           &nbsp;&nbsp;발주&nbsp;&nbsp;&nbsp; 확정&nbsp;{{poInfo.cfCnt}}건
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:truck'"></mat-icon>
                     <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;&nbsp;&nbsp;주문&nbsp;&nbsp;&nbsp; 등록&nbsp;{{soInfo.sCnt}}건
+                            &nbsp;&nbsp;주문&nbsp;&nbsp;&nbsp; 등록&nbsp;{{soInfo.sCnt}}건
                         </div>
                     </div>
                 </div>
@@ -381,27 +381,45 @@
                         </div>
                     </div>
                     <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1 m-auto': !isMobile}">
-                        <div class="font-medium font-bold text-secondary"></div>
-                        <div class="flex flex-col col-span-1 p-4" style="margin-top: 44px">
-                            <div class="col-span-2">
-                                <div class="col-span-1 text-13s udi-color mb_2">{{priceToString(unusedQtyTotal)}}
+                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 w-full min-w-0 h-full">
+                            <div class="flex flex-col col-span-1">
+                                <div class="col-span-2">
+                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 16px">
+                                        불용
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
+                                        가납
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
+                                        보유
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col col-span-1">
+                            <div class="col-span-2" style="margin-top: 10px">
+                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(unusedQtyTotal)}}
                                     (EA)
                                 </div>
                                 <div
-                                    class="col-span-1 text-13s udi-color mb_5">{{priceToString(unusedQtyTotalPrice)}}</div>
+                                    class="col-span-1 text-11s udi-color mb_2">{{priceToString(unusedQtyTotalPrice)}}</div>
                             </div>
-                            <div class="col-span-2">
-                                <div class="col-span-1 text-13s udi-color mb_2">{{priceToString(acceptableTotal)}}
+                            <div class="col-span-2" style="margin-top: 10px">
+                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(acceptableTotal)}}
                                     (EA)
                                 </div>
                                 <div
-                                    class="col-span-1 text-13s udi-color mb_5">{{priceToString(acceptableTotalPrice)}}</div>
+                                    class="col-span-1 text-11s udi-color mb_2">{{priceToString(acceptableTotalPrice)}}</div>
                             </div>
-                            <div class="col-span-2">
-                                <div class="col-span-1 text-13s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)
+                            <div class="col-span-2" style="margin-top: 10px">
+                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)
                                 </div>
-                                <div class="col-span-1 text-13s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>
+                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

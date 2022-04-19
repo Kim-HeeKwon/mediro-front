@@ -923,7 +923,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         if(acceptableTotalPrice.toString().length > 4) {
             this.acceptableTotalPrice = String(acceptableTotalPrice.toString().slice(0, -3));
         } else {
-            this.acceptableTotalPrice = acceptableTotalPrice + '(원)';
+            this.acceptableTotalPrice = acceptableTotalPrice;
         }
         this.unusedQtyTotal = unusedQty.oCnt + unusedQty.tCnt + unusedQty.thCnt + unusedQty.fCnt + unusedQty.zCnt + unusedQty.etcCnt;
         unusedQtyTotalPrice = (price.etcCnt * unusedQty.etcCnt)
@@ -935,7 +935,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         if(unusedQtyTotalPrice.toString().length > 4) {
             this.unusedQtyTotalPrice = String(unusedQtyTotalPrice.toString().slice(0, -3));
         } else {
-            this.unusedQtyTotalPrice = unusedQtyTotalPrice + '(원)';
+            this.unusedQtyTotalPrice = unusedQtyTotalPrice;
         }
         availQtyTotalPrice = (price.etcCnt * availQty.etcCnt)
             + (price.zCnt * availQty.zCnt)
@@ -947,7 +947,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         if(totalPrice.toString().length > 4) {
             this.stockTotalPrice = String(totalPrice.toString().slice(0, -3));
         } else {
-            this.stockTotalPrice = totalPrice + '(원)';
+            this.stockTotalPrice = totalPrice;
         }
         const ctx = document.getElementById('stock_chart');
 
