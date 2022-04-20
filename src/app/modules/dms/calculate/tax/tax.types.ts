@@ -14,6 +14,7 @@ export interface InvoiceHeader
     taxBillRtn: string;
     bisNo: string;
     toBisNo: string;
+    invoiceCreDate: string;
     invoiceDate: string;
     totalAmt: number;
     supplyAmt: number;

@@ -119,7 +119,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             poAmt: [{value: '', disabled: true}],   // 발주금액
             poCreDate: [{value: '', disabled: true}],//발주 생성일자
-            poDate: [{value: '', disabled: true}], //발주일자
+            poDate: [{value: '', disabled: false}, [Validators.required]], //발주일자
             email: [],//이메일
             cellPhoneNumber: [''],//휴대전화
             remarkHeader: [''], //비고
@@ -518,7 +518,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         });
         this.reportHeaderData.no = this.orderHeaderForm.getRawValue().poNo;
-        this.reportHeaderData.date = this.orderHeaderForm.getRawValue().poCreDate;
+        this.reportHeaderData.date = this.orderHeaderForm.getRawValue().poDate;
         this.reportHeaderData.remark = this.orderHeaderForm.getRawValue().remarkHeader;
         this.reportHeaderData.custBusinessNumber = this.orderHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
         this.reportHeaderData.custBusinessName = this.orderHeaderForm.getRawValue().custBusinessName;//상호
@@ -628,6 +628,15 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
             }
 
+            let poDate = '';
+            if(this.orderHeaderForm.getRawValue().poDate === null ||
+                this.orderHeaderForm.getRawValue().poDate.value === '' ||
+                this.orderHeaderForm.getRawValue().poDate === undefined ||
+                this.orderHeaderForm.getRawValue().poDate === ''){
+            }else{
+                poDate = this.orderHeaderForm.controls['poDate'].value;
+            }
+
             sendData.push({
                 account: this.orderHeaderForm.controls['account'].value,
                 poNo: this.orderHeaderForm.controls['poNo'].value,
@@ -643,7 +652,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 mId: '',
                 poAmt: 0,
                 poCreDate: '',
-                poDate: '',
+                poDate: poDate,
                 poLineNo: 0,
                 poQty: 0,
                 qty: 0,
@@ -672,6 +681,16 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     sendData[i].deliveryDate = '';
                 }else{
                     sendData[i].deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
+                }
+
+
+                if(this.orderHeaderForm.getRawValue().poDate.value === '' ||
+                    this.orderHeaderForm.getRawValue().poDate === undefined ||
+                    this.orderHeaderForm.getRawValue().poDate === null ||
+                    this.orderHeaderForm.getRawValue().poDate === ''){
+                    sendData[i].poDate = '';
+                }else{
+                    sendData[i].poDate = this.orderHeaderForm.controls['poDate'].value;
                 }
             }
         }

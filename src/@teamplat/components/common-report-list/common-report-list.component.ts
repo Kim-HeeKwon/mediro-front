@@ -77,7 +77,7 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
 
                         this.header = ex.estimateHeader;
                         this.reportHeaderData.no = ex.estimateHeader[0].qtNo;
-                        this.reportHeaderData.date = ex.estimateHeader[0].qtCreDate;
+                        this.reportHeaderData.date = ex.estimateHeader[0].qtDate;
                         this.reportHeaderData.remark = ex.estimateHeader[0].remarkHeader;
                         this.reportHeaderData.custBusinessNumber = ex.estimateHeader[0].custBusinessNumber;// 사업자 등록번호
                         this.reportHeaderData.custBusinessName = ex.estimateHeader[0].custBusinessName;//상호
@@ -161,7 +161,7 @@ export class CommonReportListComponent implements OnInit, OnDestroy{
 
                         this.header = ex.orderHeader;
                         this.reportHeaderData.no = ex.orderHeader[0].poNo;
-                        this.reportHeaderData.date = ex.orderHeader[0].poCreDate;
+                        this.reportHeaderData.date = ex.orderHeader[0].poDate;
                         this.reportHeaderData.remark = ex.orderHeader[0].remarkHeader;
                         this.reportHeaderData.custBusinessNumber = ex.orderHeader[0].custBusinessNumber;// 사업자 등록번호
                         this.reportHeaderData.custBusinessName = ex.orderHeader[0].custBusinessName;//상호

@@ -116,7 +116,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             qtAmt: [{value: '', disabled: true}],   // 견적금액
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
-            qtDate: [{value: '', disabled: true}], //견적일자
+            qtDate: [{value: '', disabled: false}, [Validators.required]], //견적일자
             deliveryDate: [{value: ''}], //납기일자
             effectiveDate: [{value: ''}, [Validators.required]], //견적가 적용일자
             email: [], //이메일
@@ -125,7 +125,12 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             active: [false]  // cell상태
         });
         const now = new Date();
+        const nowQt = new Date();
         this.minDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
+
+        const qtDate = formatDate(new Date(nowQt.setDate(nowQt.getDate())), 'yyyy-MM-dd', 'en');
+
+        this.estimateHeaderForm.patchValue({qtDate: qtDate});
 
         const valuesItemGrades = [];
         const lablesItemGrades = [];
@@ -470,6 +475,15 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].deliveryDate = '';
             }else{
                 sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
+            }
+
+            if(this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().qtDate === undefined ||
+                this.estimateHeaderForm.getRawValue().qtDate === null ||
+                this.estimateHeaderForm.getRawValue().qtDate === ''){
+                sendData[i].qtDate = '';
+            }else{
+                sendData[i].qtDate = this.estimateHeaderForm.controls['qtDate'].value;
             }
         }
         return sendData;

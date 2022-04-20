@@ -27,6 +27,7 @@ import {InboundService} from '../inbound.service';
 import {takeUntil} from 'rxjs/operators';
 import {InBound} from '../inbound.types';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-inbound-new',
@@ -136,7 +137,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             supplier: [{value: ''}],   // 공급사
             supplierNm: [{value: '', disabled: true}],   // 공급사 명
             ibCreDate: [{value: '', disabled: true}],//작성일
-            ibDate: [{value: '', disabled: true}], //입고일
+            ibDate: [{value: '', disabled: false}, [Validators.required]], //입고일
             remarkHeader: [''], //비고
             ibAmt: [{value: '', disabled: true}],   // 금액
             poNo: [{value: '', disabled: true}],   // 발주번호
@@ -348,6 +349,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             this.inBoundHeaderForm.patchValue({'supplier': ''});
             this.inBoundHeaderForm.patchValue({'poNo': ''});
             this.inBoundHeaderForm.patchValue({'remarkHeader': this.inBoundHeaders.remarkHeader});
+            this.inBoundHeaderForm.patchValue({'ibDate': this.inBoundHeaders.soDate});
 
         } else {
             this.inBoundHeaderForm.patchValue({'account': ''});
@@ -356,6 +358,9 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             this.inBoundHeaderForm.patchValue({'supplier': ''});
             this.inBoundHeaderForm.patchValue({'remarkHeader': ''});
             this.inBoundHeaderForm.patchValue({'poNo': ''});
+            const nowIb = new Date();
+            const ibDate = formatDate(new Date(nowIb.setDate(nowIb.getDate())), 'yyyy-MM-dd', 'en');
+            this.inBoundHeaderForm.patchValue({ibDate: ibDate});
         }
 
         if (this.inBoundDetails !== undefined) {
@@ -510,6 +515,15 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
             sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;
             sendData[i].remarkHeader = this.inBoundHeaderForm.controls['remarkHeader'].value;
+
+            if(this.inBoundHeaderForm.getRawValue().ibDate.value === '' ||
+                this.inBoundHeaderForm.getRawValue().ibDate === undefined ||
+                this.inBoundHeaderForm.getRawValue().ibDate === null ||
+                this.inBoundHeaderForm.getRawValue().ibDate === ''){
+                sendData[i].ibDate = '';
+            }else{
+                sendData[i].ibDate = this.inBoundHeaderForm.controls['ibDate'].value;
+            }
         }
         return sendData;
     }

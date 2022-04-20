@@ -192,7 +192,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             rtn.then((detail) => {
 
                 const header = this.header.filter((item: any) => item.qtNo === lately.qtNo).map((param: any) => {
-                    param.qtDate = null;
+                    //param.qtDate = null;
                     param.qtNo = null;
                     param.qtAmt = 0;
                     param.status = 'N';
@@ -238,7 +238,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             rtn.then((detail) => {
 
                 const header = this.header.filter((item: any) => item.poNo === lately.poNo).map((param: any) => {
-                    param.poDate = null;
+                    //param.poDate = null;
                     param.poNo = null;
                     param.poAmt = 0;
                     param.status = 'N';

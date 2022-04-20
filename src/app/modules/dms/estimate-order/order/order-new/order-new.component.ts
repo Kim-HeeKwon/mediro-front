@@ -128,7 +128,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             poAmt: [{value: '', disabled: true}],   // 발주금액
             poCreDate: [{value: '', disabled: true}],//발주 생성일자
-            poDate: [{value: '', disabled: true}], //발주일자
+            poDate: [{value: '', disabled: false}, [Validators.required]], //발주일자
             deliveryDate: [{value: ''}], //납기일자
             email: [], //이메일
             cellPhoneNumber: [], //휴대전화
@@ -332,6 +332,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             this.orderHeaderForm.patchValue({'type': '1'});
             this.orderHeaderForm.patchValue({'status': 'N'});
             this.orderHeaderForm.patchValue({'remarkHeader': this.estimateHeader.remarkHeader});
+            this.orderHeaderForm.patchValue({'poDate': this.estimateHeader.qtDate});
 
         } else {
 
@@ -339,6 +340,9 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             this.orderHeaderForm.patchValue({'type': '1'});
             this.orderHeaderForm.patchValue({'status': 'N'});
             this.orderHeaderForm.patchValue({'remarkHeader': ''});
+            const nowPo = new Date();
+            const poDate = formatDate(new Date(nowPo.setDate(nowPo.getDate())), 'yyyy-MM-dd', 'en');
+            this.orderHeaderForm.patchValue({poDate: poDate});
         }
 
         if (this.estimateDetail !== undefined) {
@@ -495,6 +499,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 sendData[i].deliveryDate = '';
             }else{
                 sendData[i].deliveryDate = this.orderHeaderForm.controls['deliveryDate'].value;
+            }
+
+            if(this.orderHeaderForm.getRawValue().poDate.value === '' ||
+                this.orderHeaderForm.getRawValue().poDate === undefined ||
+                this.orderHeaderForm.getRawValue().poDate === null ||
+                this.orderHeaderForm.getRawValue().poDate === ''){
+                sendData[i].poDate = '';
+            }else{
+                sendData[i].poDate = this.orderHeaderForm.controls['poDate'].value;
             }
         }
         return sendData;

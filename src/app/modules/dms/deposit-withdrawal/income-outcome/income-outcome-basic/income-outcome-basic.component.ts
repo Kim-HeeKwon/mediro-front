@@ -97,13 +97,19 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
                 }
             },
             {
-                name: 'balance', fieldName: 'balance', type: 'data', width: '150', styleName: 'right-cell-text'
+                name: 'balance', fieldName: 'balance', type: 'number', width: '150', styleName: 'right-cell-text'
                 , header: {text: '금액', styleName: 'center-cell-text'}
                 , footer: {
                     text: '',
                 },groupFooter: {
                     expression: 'sum',
                     numberFormat: '#,##0',
+                }
+                ,editor: {
+                    type: 'number',
+                    //textAlignment: 'far',
+                    editFormat: '#,##0',
+                    //"multipleChar": "+",
                 }
                 , numberFormat : '#,##0', renderer:{
                     showTooltip:true

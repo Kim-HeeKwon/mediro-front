@@ -118,7 +118,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             qtAmt: [{value: '', disabled: true},],    // 견적금액
             soNo: [{value: '', disabled: true}],   // 주문번호
             qtCreDate: [{value: '', disabled: true}],//견적 생성일자
-            qtDate: [{value: '', disabled: true}], //견적일자
+            qtDate: [{value: '', disabled: false}, [Validators.required]], //견적일자
             effectiveDate: [{value: ''}, [Validators.required]], //견적가 적용일자
             deliveryDate: [{value: ''}],
             email: [''],//이메일
@@ -440,7 +440,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             });
         });
         this.reportHeaderData.no = this.estimateHeaderForm.getRawValue().qtNo;
-        this.reportHeaderData.date = this.estimateHeaderForm.getRawValue().qtCreDate;
+        this.reportHeaderData.date = this.estimateHeaderForm.getRawValue().qtDate;
         this.reportHeaderData.remark = this.estimateHeaderForm.getRawValue().remarkHeader;
         this.reportHeaderData.custBusinessNumber = this.estimateHeaderForm.getRawValue().custBusinessNumber;// 사업자 등록번호
         this.reportHeaderData.custBusinessName = this.estimateHeaderForm.getRawValue().custBusinessName;//상호
@@ -576,6 +576,17 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
             }
 
+
+            let qtDate = '';
+            if (
+                this.estimateHeaderForm.getRawValue().qtDate === null ||
+                this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
+                this.estimateHeaderForm.getRawValue().qtDate === undefined ||
+                this.estimateHeaderForm.getRawValue().qtDate === '') {
+            } else {
+                qtDate = this.estimateHeaderForm.controls['qtDate'].value;
+            }
+
             sendData.push({
                 account: this.estimateHeaderForm.controls['account'].value,
                 qtNo: this.estimateHeaderForm.controls['qtNo'].value,
@@ -592,7 +603,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 mId: '',
                 qtAmt: 0,
                 qtCreDate: '',
-                qtDate: '',
+                qtDate: qtDate,
                 qtLineNo: 0,
                 qtPrice: 0,
                 qty: 0,
@@ -630,6 +641,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     sendData[i].deliveryDate = '';
                 } else {
                     sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
+                }
+                if(this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
+                    this.estimateHeaderForm.getRawValue().qtDate === undefined ||
+                    this.estimateHeaderForm.getRawValue().qtDate === null ||
+                    this.estimateHeaderForm.getRawValue().qtDate === ''){
+                    sendData[i].qtDate = '';
+                }else{
+                    sendData[i].qtDate = this.estimateHeaderForm.controls['qtDate'].value;
                 }
             }
         }

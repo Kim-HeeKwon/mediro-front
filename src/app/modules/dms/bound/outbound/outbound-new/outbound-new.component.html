@@ -73,7 +73,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                                <mat-label>상태<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                                                <mat-label>상태</mat-label>
                                                 <mat-select [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
                                                         <mat-option [value]="status.id">
@@ -158,7 +158,7 @@
                                                        [formControlName]="'obCreDate'">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-2 mediro-form-field-custom">
-                                                <mat-label>출고일</mat-label>
+                                                <mat-label>출고일<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
                                                 <input type="date"
                                                        matInput
                                                        [formControlName]="'obDate'">

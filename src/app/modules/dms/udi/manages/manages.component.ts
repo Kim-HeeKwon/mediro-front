@@ -399,12 +399,12 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectCallBack(rtn);
     }
 
-    selectDelet(): void {
-        this.searchSetValue();
-        const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
-        //this.setGridData();
-        this.selectCallBackDelete(rtn);
-    }
+    // selectDelet(): void {
+    //     this.searchSetValue();
+    //     const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+    //     //this.setGridData();
+    //     this.selectCallBackDelete(rtn);
+    // }
 
 
     /**
@@ -483,7 +483,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._functionService.cfn_alertCheckMessage(manage);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
-                                this.select();
                             });
                     }
                 });
@@ -501,11 +500,14 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         } else {
             if (!this.isMobile) {
-                this._matDialog.open(ManagesEmailComponent, {
+                const d = this._matDialog.open(ManagesEmailComponent, {
                     autoFocus: false,
                     maxHeight: '90vh',
                     disableClose: true,
                     data: {rows: getRows, searchForm: this.searchForm.getRawValue()},
+                });
+                d.afterClosed().subscribe(() => {
+                    this.select();
                 });
             } else {
                 const d = this._matDialog.open(ManagesEmailComponent, {
@@ -522,6 +524,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 });
                 d.afterClosed().subscribe(() => {
+                    this.select();
                     smallDialogSubscription.unsubscribe();
                 });
             }
@@ -568,7 +571,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._functionService.cfn_alertCheckMessage(manage);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
-                                this.selectDelet();
+                                this.select();
                             });
                     }
                 });

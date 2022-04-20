@@ -59,6 +59,8 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'writeDate', dataType: ValueType.TEXT},
         {fieldName: 'invoice', dataType: ValueType.TEXT},
+        {fieldName: 'invoiceCreDate', dataType: ValueType.TEXT},
+        {fieldName: 'invoiceDate', dataType: ValueType.TEXT},
         {fieldName: 'taxBillNo', dataType: ValueType.TEXT},
         {fieldName: 'bisNo', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
@@ -183,8 +185,8 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.invoiceHeaderColumns = [
-            {name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '작성일자' , styleName: 'center-cell-text'},
+            {name: 'writeDate', fieldName: 'writeDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '마감일자' , styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }
@@ -194,6 +196,18 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                 ,renderer:{
                     type:'button'
                 }},
+            {name: 'invoiceCreDate', fieldName: 'invoiceCreDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '발행예정일자' , styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {name: 'invoiceDate', fieldName: 'invoiceDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '발행일자' , styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
             {name: 'taxBillNo', fieldName: 'taxBillNo', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '국세청 전송번호' , styleName: 'center-cell-text'},
                 renderer:{
@@ -746,6 +760,7 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.invoiceHeaderDataProvider, false);
         });
     }
 }

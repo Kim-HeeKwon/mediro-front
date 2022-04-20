@@ -137,7 +137,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             obCreDate: [{value: '', disabled: true}],//작성일
-            obDate: [{value: '', disabled: true}], //출고일
+            obDate: [{value: '', disabled: false}, [Validators.required]], //출고일
             remarkHeader: [''], //비고
             obAmt: [{value: '', disabled: true}],   // 금액
             toAccountNm: [''],
@@ -713,6 +713,16 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: OutBound[], outBoundHeader?: any) {
         if(sendData.length === 0){
+
+            let obDate = '';
+            if(this.outBoundHeaderForm.getRawValue().obDate === null ||
+                this.outBoundHeaderForm.getRawValue().obDate.value === '' ||
+                this.outBoundHeaderForm.getRawValue().obDate === undefined ||
+                this.outBoundHeaderForm.getRawValue().obDate === ''){
+            }else{
+                obDate = this.outBoundHeaderForm.controls['obDate'].value;
+            }
+
             sendData.push({
                 account: this.outBoundHeaderForm.controls['account'].value,
                 address: this.outBoundHeaderForm.controls['address'].value,
@@ -728,7 +738,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 itemNm: '',
                 mId: '',
                 obCreDate: '',
-                obDate: '',
+                obDate: obDate,
                 obExpQty: 0,
                 obLineNo: 0,
                 obQty: 0,
@@ -750,6 +760,14 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 sendData[i].dlvDate = this.outBoundHeaderForm.controls['dlvDate'].value;
                 sendData[i].remarkHeader = this.outBoundHeaderForm.controls['remarkHeader'].value;
 
+                if(this.outBoundHeaderForm.getRawValue().obDate.value === '' ||
+                    this.outBoundHeaderForm.getRawValue().obDate === undefined ||
+                    this.outBoundHeaderForm.getRawValue().obDate === null ||
+                    this.outBoundHeaderForm.getRawValue().obDate === ''){
+                    sendData[i].obDate = '';
+                }else{
+                    sendData[i].obDate = this.outBoundHeaderForm.controls['obDate'].value;
+                }
             }
         }
 

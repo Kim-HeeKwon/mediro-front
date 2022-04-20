@@ -22,6 +22,7 @@ import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/
 import {DeviceDetectorService} from "ngx-device-detector";
 import {takeUntil} from "rxjs/operators";
 import {Bill} from "../bill.types";
+import {formatDate} from "@angular/common";
 
 @Component({
     selector       : 'bill-tax',
@@ -100,6 +101,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
             billingAmt : [{value: '',disabled:true}, [Validators.required]],
             taxAmt : [{value: '',disabled:true}, [Validators.required]],
             billingTotalAmt : [{value: '',disabled:true}, [Validators.required]],
+            billingDate: [{value: '', disabled: false}, [Validators.required]], //마감일자
         });
         //console.log(this.detailList);
 
@@ -140,6 +142,10 @@ export class BillTaxComponent implements OnInit, OnDestroy
         this.taxForm.patchValue({'toAccount': this.detailList[0].toAccount});
         this.taxForm.patchValue({'toBisNo': this.detailList[0].toBisNo});
         this.taxForm.patchValue({'toAccountNm': this.detailList[0].toAccountNm});
+
+        const now = new Date();
+        const billingDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+        this.taxForm.patchValue({billingDate: billingDate});
 
         this.taxCount = this.detailList.length;
     }
@@ -199,10 +205,10 @@ export class BillTaxComponent implements OnInit, OnDestroy
         if(!this.taxForm.invalid){
             const confirmation = this._teamPlatConfirmationService.open({
                 title  : '',
-                message: '마감 하시겠습니까?',
+                message: '선택한 일자로 마감됩니다. 마감 하시겠습니까? ',
                 actions: {
                     confirm: {
-                        label: '확정'
+                        label: '확인'
                     },
                     cancel: {
                         label: '닫기'
@@ -254,6 +260,15 @@ export class BillTaxComponent implements OnInit, OnDestroy
             sendData[i].taxAmt = this.taxForm.controls['taxAmt'].value;
             sendData[i].billingTotalAmt = this.taxForm.controls['billingTotalAmt'].value;
             sendData[i].check = check;
+
+            if(this.taxForm.getRawValue().billingDate.value === '' ||
+                this.taxForm.getRawValue().billingDate === undefined ||
+                this.taxForm.getRawValue().billingDate === null ||
+                this.taxForm.getRawValue().billingDate === ''){
+                sendData[i].billingDate = '';
+            }else{
+                sendData[i].billingDate = this.taxForm.controls['billingDate'].value;
+            }
         }
         return sendData;
     }

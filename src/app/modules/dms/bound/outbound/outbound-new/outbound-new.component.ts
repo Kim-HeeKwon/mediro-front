@@ -27,6 +27,7 @@ import {FuseRealGridService} from '../../../../../../@teamplat/services/realgrid
 import {OutBound} from '../outbound.types';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-dms-outbound-new',
@@ -123,7 +124,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             dlvAddress: [{value: ''}],   // 납품처 주소
             dlvDate: [{value: ''}, [Validators.required]],//납품일자
             obCreDate: [{value: '', disabled: true}],//작성일
-            obDate: [{value: '', disabled: true}], //출고일
+            obDate: [{value: '', disabled: false}, [Validators.required]], //출고일
             remarkHeader: [''], //비고
             obAmt: [{value: '', disabled: true}],   // 금액
             active: [false]  // cell상태
@@ -312,6 +313,9 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.outBoundHeaderForm.patchValue({'dlvAddress': ''});
         this.outBoundHeaderForm.patchValue({'dlvDate': ''});
         this.outBoundHeaderForm.patchValue({'remarkHeader': ''});
+        const nowOb = new Date();
+        const obDate = formatDate(new Date(nowOb.setDate(nowOb.getDate())), 'yyyy-MM-dd', 'en');
+        this.outBoundHeaderForm.patchValue({obDate: obDate});
 
     }
 
@@ -424,6 +428,15 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].dlvAddress = this.outBoundHeaderForm.controls['dlvAddress'].value;
             sendData[i].dlvDate = this.outBoundHeaderForm.controls['dlvDate'].value;
             sendData[i].remarkHeader = this.outBoundHeaderForm.controls['remarkHeader'].value;
+
+            if(this.outBoundHeaderForm.getRawValue().obDate.value === '' ||
+                this.outBoundHeaderForm.getRawValue().obDate === undefined ||
+                this.outBoundHeaderForm.getRawValue().obDate === null ||
+                this.outBoundHeaderForm.getRawValue().obDate === ''){
+                sendData[i].obDate = '';
+            }else{
+                sendData[i].obDate = this.outBoundHeaderForm.controls['obDate'].value;
+            }
         }
         return sendData;
     }

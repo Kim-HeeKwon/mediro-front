@@ -60,7 +60,17 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'businessNumber', dataType: ValueType.TEXT},
         {fieldName: 'businessName', dataType: ValueType.TEXT},
+        {fieldName: 'userId', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
+
+        {fieldName: 'subscriptionFeeYn', dataType: ValueType.TEXT},
+        {fieldName: 'freeYn', dataType: ValueType.TEXT},
+        {fieldName: 'payDate', dataType: ValueType.TEXT},
+        {fieldName: 'payAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'commissionWindow', dataType: ValueType.TEXT},
+        {fieldName: 'commissionRate', dataType: ValueType.NUMBER},
+        {fieldName: 'commissionAmt', dataType: ValueType.NUMBER},
+
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'representName', dataType: ValueType.TEXT},
         {fieldName: 'payGrade', dataType: ValueType.TEXT},
@@ -76,6 +86,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'visitCnt', dataType: ValueType.NUMBER},
         {fieldName: 'surveyResponses', dataType: ValueType.TEXT},
         {fieldName: 'promotion', dataType: ValueType.TEXT},
+        {fieldName: 'promotionAmt', dataType: ValueType.NUMBER},
         {fieldName: 'employeesCnt', dataType: ValueType.NUMBER},
         {fieldName: 'scale', dataType: ValueType.TEXT},
         {fieldName: 'currentUse', dataType: ValueType.TEXT},
@@ -180,6 +191,8 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const columnLayout = [
             'businessNumber',
+            'userId',
+            'addDate',
             'businessName',
             'representName',
             {
@@ -193,9 +206,17 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                     text: '구분',
                 }
             },
-            'addDate',
+            'subscriptionFeeYn',
+            'freeYn',
+            'payDate',
+            'payAmt',
             'midGrade',
             'channel',
+            'commissionWindow',
+            'commissionRate',
+            'commissionAmt',
+            'promotion',
+            'promotionAmt',
             'area',
             'address',
             'phoneNumber',
@@ -203,7 +224,6 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             'email',
             'visitCnt',
             'surveyResponses',
-            'promotion',
             'userCnt',
             'employeesCnt',
             'scale',
@@ -216,6 +236,12 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '사업자번호', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'userId', fieldName: 'userId', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '가입 ID', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -252,6 +278,31 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 editor: this._realGridsService.gfn_ComboBox(this.yearUser)
             },
             {
+                name: 'subscriptionFeeYn', fieldName: 'subscriptionFeeYn', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '가입비(결제유무)', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'freeYn', fieldName: 'freeYn', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '무료서비스', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'payDate', fieldName: 'payDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '유료시작', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'payAmt', fieldName: 'payAmt', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '결제금액(누적)', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '가입일', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
@@ -265,7 +316,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'channel', fieldName: 'channel', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '가입채널', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '가입채널', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 },
                 values: valuesChannel,
@@ -274,8 +325,45 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 editor: this._realGridsService.gfn_ComboBox(this.channel)
             },
             {
+                name: 'commissionWindow', fieldName: 'commissionWindow', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '커미션 창구', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'commissionRate', fieldName: 'commissionRate', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '커미션 률(%)', styleName: 'center-cell-text blue-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'commissionAmt', fieldName: 'commissionAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '커미션 지급액', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'promotion', fieldName: 'promotion', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '프로모션', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                },
+                values: valuesPromotion,
+                labels: lablesPromotion,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.promotion)
+            },
+            {
+                name: 'promotionAmt', fieldName: 'promotionAmt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: '프로모션(금액)', styleName: 'center-cell-text blue-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'area', fieldName: 'area', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '지역', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '지역', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 },
                 values: valuesArea,
@@ -297,7 +385,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'talkYn', fieldName: 'talkYn', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '알림톡 승인여부', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '알림톡 승인여부', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 },
                 values: valuesTalkYn,
@@ -313,26 +401,16 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'visitCnt', fieldName: 'visitCnt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '방문횟수', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '방문횟수', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'surveyResponses', fieldName: 'surveyResponses', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '설문조사응답', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '설문조사응답', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
-            },
-            {
-                name: 'promotion', fieldName: 'promotion', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '프로모션', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                },
-                values: valuesPromotion,
-                labels: lablesPromotion,
-                lookupDisplay: true,
-                editor: this._realGridsService.gfn_ComboBox(this.promotion)
             },
             {
                 name: 'userCnt', fieldName: 'userCnt', type: 'number', width: '100', styleName: 'right-cell-text'
@@ -343,26 +421,26 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'employeesCnt', fieldName: 'employeesCnt', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '직원 수', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '직원 수', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
             },
             {
                 name: 'scale', fieldName: 'scale', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '규모(매출 or 인원)', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '규모(매출 or 인원)', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'currentUse', fieldName: 'currentUse', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '기존 IT 사용', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '기존 IT 사용', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'remark', fieldName: 'remark', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '비고', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },

@@ -134,7 +134,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             soAmt: [{value: '', disabled: true}],   // 주문금액
             obNo: [{value: '', disabled: true}],   // 출고번호
             soCreDate: [{value: '', disabled: true}],//주문 생성일자
-            soDate: [{value: '', disabled: true}], //주문일자
+            soDate: [{value: '', disabled: false}, [Validators.required]], //주문일자
             remarkHeader: [''], //비고
             active: [false]  // cell상태
         });
@@ -347,6 +347,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
             this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
             this.salesorderHeaderForm.patchValue({'dlvDate': ''});
+            this.salesorderHeaderForm.patchValue({'soDate': this.estimateHeader.qtDate});
         } else {
             this.salesorderHeaderForm.patchValue({'account': ''});
             this.salesorderHeaderForm.patchValue({'address': ''});
@@ -358,6 +359,9 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             this.salesorderHeaderForm.patchValue({'dlvAccountNm': ''});
             this.salesorderHeaderForm.patchValue({'dlvAddress': ''});
             this.salesorderHeaderForm.patchValue({'dlvDate': ''});
+            const nowSo = new Date();
+            const soDate = formatDate(new Date(nowSo.setDate(nowSo.getDate())), 'yyyy-MM-dd', 'en');
+            this.salesorderHeaderForm.patchValue({soDate: soDate});
         }
 
         if (this.estimateDetail !== undefined) {
@@ -508,6 +512,15 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             sendData[i].dlvDate = this.salesorderHeaderForm.controls['dlvDate'].value;
             sendData[i].obNo = '';
             sendData[i].remarkHeader = this.salesorderHeaderForm.controls['remarkHeader'].value;
+
+            if(this.salesorderHeaderForm.getRawValue().soDate.value === '' ||
+                this.salesorderHeaderForm.getRawValue().soDate === undefined ||
+                this.salesorderHeaderForm.getRawValue().soDate === null ||
+                this.salesorderHeaderForm.getRawValue().soDate === ''){
+                sendData[i].soDate = '';
+            }else{
+                sendData[i].soDate = this.salesorderHeaderForm.controls['soDate'].value;
+            }
         }
         return sendData;
     }

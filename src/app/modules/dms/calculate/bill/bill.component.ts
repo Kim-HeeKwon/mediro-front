@@ -55,6 +55,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'no', dataType: ValueType.TEXT},
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'billing', dataType: ValueType.TEXT},
+        {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'billingCreDate', dataType: ValueType.TEXT},
         {fieldName: 'billingDate', dataType: ValueType.TEXT},
         {fieldName: 'lineNo', dataType: ValueType.TEXT},
@@ -172,6 +173,36 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             //     }
             // },
             {
+                name: 'addDate',
+                fieldName: 'addDate',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '생성일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'billingCreDate',
+                fieldName: 'billingCreDate',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '청구일자', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '마감일자', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'obNo', fieldName: 'obNo', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '출고번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
@@ -288,24 +319,6 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 ,
                 numberFormat: '#,##0',
                 renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'billingCreDate',
-                fieldName: 'billingCreDate',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '생성일자', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'billingDate', fieldName: 'billingDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '마감일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

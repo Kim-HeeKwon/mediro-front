@@ -129,7 +129,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             supplier: [{value: '', disabled: true}],   // 공급사
             supplierNm: [{value: '', disabled: true}],   // 공급사 명
             ibCreDate: [{value: '', disabled: true}],//작성일
-            ibDate: [{value: '', disabled: true}], //입고일
+            ibDate: [{value: '', disabled: false}, [Validators.required]], //입고일
             remarkHeader: [''], //비고
             ibAmt: [{value: '', disabled: true}],   // 금액
             poNo: [{value: '', disabled: true}],   // 발주번호
@@ -739,6 +739,16 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     headerDataSet(sendData: InBound[], inBoundHeader?: any) {
         if(sendData.length === 0){
+
+            let ibDate = '';
+            if(this.inBoundHeaderForm.getRawValue().ibDate === null ||
+                this.inBoundHeaderForm.getRawValue().ibDate.value === '' ||
+                this.inBoundHeaderForm.getRawValue().ibDate === undefined ||
+                this.inBoundHeaderForm.getRawValue().ibDate === ''){
+            }else{
+                ibDate = this.inBoundHeaderForm.controls['ibDate'].value;
+            }
+
             sendData.push({
                 account: this.inBoundHeaderForm.controls['account'].value,
                 ibNo: this.inBoundHeaderForm.controls['ibNo'].value,
@@ -747,7 +757,7 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 supplier: this.inBoundHeaderForm.controls['supplier'].value,
                 remarkHeader: this.inBoundHeaderForm.controls['remarkHeader'].value,
                 ibCreDate: '',
-                ibDate: '',
+                ibDate: ibDate,
                 ibExpQty: 0,
                 ibLineNo: 0,
                 ibQty: 0,
@@ -787,6 +797,15 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 sendData[i].status = this.inBoundHeaderForm.controls['status'].value;
                 sendData[i].supplier = this.inBoundHeaderForm.controls['supplier'].value;
                 sendData[i].remarkHeader = this.inBoundHeaderForm.controls['remarkHeader'].value;
+
+                if(this.inBoundHeaderForm.getRawValue().ibDate.value === '' ||
+                    this.inBoundHeaderForm.getRawValue().ibDate === undefined ||
+                    this.inBoundHeaderForm.getRawValue().ibDate === null ||
+                    this.inBoundHeaderForm.getRawValue().ibDate === ''){
+                    sendData[i].ibDate = '';
+                }else{
+                    sendData[i].ibDate = this.inBoundHeaderForm.controls['ibDate'].value;
+                }
             }
         }
         return sendData;

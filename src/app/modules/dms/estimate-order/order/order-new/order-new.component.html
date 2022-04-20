@@ -123,9 +123,8 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                                <mat-label>상태
-                                                    <mat-icon class="icon-size-3 icon-red"
-                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                <mat-label>
+                                                    상태
                                                 </mat-label>
                                                 <mat-select [formControlName]="'status'">
                                                     <ng-container *ngFor="let status of status">
@@ -136,9 +135,8 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                                <mat-label>휴대 전화
-                                                    <mat-icon class="icon-size-3 icon-red"
-                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                <mat-label>
+                                                    휴대 전화
                                                 </mat-label>
                                                 <mat-icon
                                                     class="icon-size-5"
@@ -178,7 +176,11 @@
                                                        [formControlName]="'poCreDate'">
                                             </mat-form-field>
                                             <mat-form-field class="sm:col-span-1 mediro-form-field-custom">
-                                                <mat-label>발주일자</mat-label>
+                                                <mat-label>
+                                                    발주일자
+                                                    <mat-icon class="icon-size-3 icon-red"
+                                                              svgIcon="heroicons_solid:check-circle"></mat-icon>
+                                                </mat-label>
                                                 <input type="date"
                                                        matInput
                                                        [formControlName]="'poDate'">
