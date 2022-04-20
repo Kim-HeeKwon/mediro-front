@@ -89,12 +89,12 @@
             <!-- 입출고 -->
             <div [ngClass]="{'mt-2': isMobile}"
                  class="flex flex-col sm:col-span-1 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">
-                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col m-auto">
+                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
-                        <div class="text-center">입/출고 관리</div>
+                        <div class="text-center m-05">입/출고 관리</div>
                     </div>
+                    <hr style="margin: 0px !important; border-bottom-width: 0px;">
                 </div>
-                <hr style="margin: 0px; border-bottom-width: 0px;">
                 <div [ngClass]="{'my-tb' : isMobile}" class="grid grid-cols-2 lg:grid-cols-2 grid-flow-row w-full cursor-pointer m-auto">
                     <div class="flex flex-col flex-auto col-span-1 m-auto">
                         <canvas id="in_chart" width="110px" height="110px" baseChart>
@@ -152,12 +152,12 @@
             <!-- 정산 -->
             <div [ngClass]="{'mt-2': isMobile}"
                  class="flex flex-col sm:col-span-2 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">
-                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col m-auto">
+                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
-                        <div class="text-center">정산</div>
+                        <div class="text-center m-05">정산</div>
                     </div>
+                    <hr style="margin: 0px; border-bottom-width: 0px;">
                 </div>
-                <hr style="margin: 0px; border-bottom-width: 0px;">
                 <div class="font-medium text-secondary text-bold text-9s mr-2 text-right">단위 (천원)</div>
                 <div
                     class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row w-full cursor-pointer m-auto">
@@ -228,16 +228,16 @@
             <!-- 공급내역 보고 -->
             <div [ngClass]="{'mt-2': isMobile}"
                  class="flex flex-col sm:col-span-1 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">
-                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col m-auto">
+                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
-                        <div class="text-center">공급내역 보고</div>
+                        <div class="text-center m-05">공급내역 보고</div>
                     </div>
+                    <hr style="margin: 0px; border-bottom-width: 0px;">
                 </div>
-                <hr style="margin: 0px; border-bottom-width: 0px;">
                 <div class="font-medium text-secondary text-bold text-9s mr-2 text-right"></div>
                 <div [ngClass]="{'flex-col' : isMobile}" class="w-full m-auto" style="padding: 0rem 0rem 0rem 1rem;">
                     <div [ngClass]="{'flex-col' : isMobile}" class="flex items-center">
-                        <div [ngClass]="{'w-40 my-tb' : !isMobile}" class="center-cell-text">
+                        <div [ngClass]="{'w-45 my-tb' : !isMobile}" class="center-cell-text">
                             <div class="span-border text-15s w-1/2 float-left" (click)="udiLast()" style="width: 80px !important; height: 26px !important;"
                                  [ngClass]="{'bill-sal' : udiLastMonth, 'bill' : !udiLastMonth}">전월
                             </div>
@@ -325,12 +325,12 @@
             <!-- 재고 -->
             <div [ngClass]="{'mt-2': isMobile}"
                  class="flex flex-col sm:col-span-2 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">
-                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col m-auto">
+                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
-                        <div class="text-center">재고</div>
+                        <div class="text-center m-05">재고</div>
                     </div>
+                    <hr style="margin: 0px; border-bottom-width: 0px;">
                 </div>
-                <hr style="margin: 0px; border-bottom-width: 0px;">
                 <div class="font-medium text-secondary text-bold text-9s mr-2 text-right">단위 (천원)</div>
                 <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer m-auto">
                     <div [ngClass]="{'flex w-full col-span-7 p-4': isMobile,
@@ -381,19 +381,19 @@
                         </div>
                     </div>
                     <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1 m-auto': !isMobile}">
-                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 w-full min-w-0 h-full">
+                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 w-full min-w-0 h-full mt-6">
                             <div class="flex flex-col col-span-1">
-                                <div class="col-span-2">
+                                <div class="col-span-2 center-cell-text">
                                     <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 16px">
                                         불용
                                     </div>
                                 </div>
-                                <div class="col-span-2">
+                                <div class="col-span-2 center-cell-text">
                                     <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
                                         가납
                                     </div>
                                 </div>
-                                <div class="col-span-2">
+                                <div class="col-span-2 center-cell-text">
                                     <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
                                         보유
                                     </div>
@@ -401,23 +401,23 @@
                             </div>
                             <div class="flex flex-col col-span-1">
                             <div class="col-span-2" style="margin-top: 10px">
-                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(unusedQtyTotal)}}
+                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotal)}}
                                     (EA)
                                 </div>
                                 <div
-                                    class="col-span-1 text-11s udi-color mb_2">{{priceToString(unusedQtyTotalPrice)}}</div>
+                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotalPrice)}}</div>
                             </div>
-                            <div class="col-span-2" style="margin-top: 10px">
-                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(acceptableTotal)}}
+                            <div class="col-span-2" style="margin-top: 15px">
+                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotal)}}
                                     (EA)
                                 </div>
                                 <div
-                                    class="col-span-1 text-11s udi-color mb_2">{{priceToString(acceptableTotalPrice)}}</div>
+                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotalPrice)}}</div>
                             </div>
-                            <div class="col-span-2" style="margin-top: 10px">
-                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)
+                            <div class="col-span-2" style="margin-top: 15px">
+                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)
                                 </div>
-                                <div class="col-span-1 text-11s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>
+                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>
                             </div>
                         </div>
                         </div>

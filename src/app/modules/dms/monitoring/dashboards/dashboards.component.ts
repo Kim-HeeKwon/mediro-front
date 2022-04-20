@@ -444,6 +444,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.udiLastDay = 'D - ' + diffDays;
         }
+        console.log(diffDays);
 
         this._changeDetectorRef.markForCheck();
     }
@@ -521,7 +522,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     return 35;
                 }
             },
-            responsive: false,
             plugins: {
                 legend: {
                     display: false
@@ -597,7 +597,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     return 35;
                 }
             },
-            responsive: false,
             plugins: {
                 legend: {
                     display: false

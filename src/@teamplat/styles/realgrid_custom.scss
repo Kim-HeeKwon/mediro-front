@@ -622,6 +622,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .margin_top {
     margin-top: 1rem;
 }
+.mt-6 {
+    margin-top: 2rem;
+}
 .grid-rows {
     grid-template-rows: 15% auto !important;
 }
@@ -634,8 +637,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 
 .my-tb-05 {
-    margin-top: 0.7rem !important;
-    margin-bottom: 0.3rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
 }
 
 .mx-lr {
@@ -696,6 +699,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     font-weight: bold;
     color: #303236 !important;
 }
-.w-40 {
-    width: 40% !important;
+.w-45 {
+    width: 45% !important;
+}
+.m-05 {
+    margin: 0.5rem 0 0.5rem 0 !important;
 }

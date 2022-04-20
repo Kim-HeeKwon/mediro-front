@@ -712,151 +712,171 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.alertMessage(manages);
 
                         if(manages.data !== null){
-                            let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
-                            chk = chk.filter((detail: any) =>
-                                (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
-                                .map((param: any) => param);
-                            chk = chk.filter((detail: any) =>
-                                (detail.typeName === manages.data[0].typeName))
-                                .map((param: any) => param);
 
-                            if(chk.length > 0){
-                                this.searchForm.patchValue({'stdCode': udiCode});
-                                this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')','')});
-                                this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')','')});
-                                this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')','')});
-                                this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')','')});
-                                this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')','')});
+                            const dataRows = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
+                                , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
 
-                                const values = [
-                                    chk[0].ibNo, chk[0].ibLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq, chk[0].typeName, udiCode,
-                                    lotNo.replace('(' + '10' + ')',''),manufYm.replace('(' + '11' + ')',''),useTmlmt.replace('(' + '17' + ')',''),itemSeq.replace('(' + '21' + ')',''),1
-                                ];
-
-                                let rows = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
-
-                                rows = rows.filter((detail: any) =>
-                                    (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                            const qtys = this._realGridsService.gfn_CellDataGetRow(
+                                this.gridList1,
+                                this.gridList1DataProvider,
+                                dataRows,'qty');
+                            if(qtys > 0) {
+                                let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
+                                chk = chk.filter((detail: any) =>
+                                    (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
+                                    .map((param: any) => param);
+                                chk = chk.filter((detail: any) =>
+                                    (detail.typeName === manages.data[0].typeName))
                                     .map((param: any) => param);
 
-                                if(rows.length > 0){
+                                if(chk.length > 0){
+                                    this.searchForm.patchValue({'stdCode': udiCode});
+                                    this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')','')});
+                                    this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')','')});
+                                    this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')','')});
+                                    this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')','')});
+                                    this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')','')});
 
-                                    const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
-                                        , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
+                                    const values = [
+                                        chk[0].ibNo, chk[0].ibLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq, chk[0].typeName, udiCode,
+                                        lotNo.replace('(' + '10' + ')',''),manufYm.replace('(' + '11' + ')',''),useTmlmt.replace('(' + '17' + ')',''),itemSeq.replace('(' + '21' + ')',''),1
+                                    ];
 
-                                    let sumQty = 1;
-                                    const qty = this._realGridsService.gfn_CellDataGetRow(
-                                        this.gridList1,
-                                        this.gridList1DataProvider,
-                                        dataRow,'ibQty');
-                                    sumQty = sumQty + qty;
-                                    setTimeout(() =>{
-                                        this._realGridsService.gfn_CellDataSetRow(this.gridList1,
-                                            this.gridList1DataProvider,
-                                            dataRow,
-                                            'ibQty',
-                                            sumQty);
+                                    let rows = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
 
-                                        const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                    rows = rows.filter((detail: any) =>
+                                        (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                        .map((param: any) => param);
+
+                                    if(rows.length > 0){
+
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
+
+                                        let sumQty = 1;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
                                             this.gridList1,
                                             this.gridList1DataProvider,
-                                            dataRow,'ibExpQty');
-                                        this._realGridsService.gfn_CellDataSetRow(this.gridList1,
-                                            this.gridList1DataProvider,
-                                            dataRow,
-                                            'qty',
-                                            ibExpQty - sumQty);
-                                    },100);
+                                            dataRow,'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() =>{
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
 
-                                    const dataRow2 = this.gridList2DataProvider.searchDataRow({fields:['udiCode'], values: [udiCode]});
-                                    let sumQty2 = 1;
-                                    let qty2 = this._realGridsService.gfn_CellDataGetRow(
-                                        this.gridList2,
-                                        this.gridList2DataProvider,
-                                        dataRow2,'ibQty');
-                                    if(qty2 === undefined){
-                                        qty2 = 0;
-                                    }
-                                    sumQty2 = sumQty2 + qty2;
-                                    setTimeout(() =>{
-                                        this._realGridsService.gfn_CellDataSetRow(this.gridList2,
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        },100);
+
+                                        const dataRow2 = this.gridList2DataProvider.searchDataRow({fields:['udiCode'], values: [udiCode]});
+                                        let sumQty2 = 1;
+                                        let qty2 = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList2,
                                             this.gridList2DataProvider,
-                                            dataRow2,
-                                            'ibQty',
-                                            sumQty2);
-                                    },100);
+                                            dataRow2,'ibQty');
+                                        if(qty2 === undefined){
+                                            qty2 = 0;
+                                        }
+                                        sumQty2 = sumQty2 + qty2;
+                                        setTimeout(() =>{
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList2,
+                                                this.gridList2DataProvider,
+                                                dataRow2,
+                                                'ibQty',
+                                                sumQty2);
+                                        },100);
 
-                                }else{
-                                    const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
-                                        , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
-                                    let sumQty = 1;
-                                    const qty = this._realGridsService.gfn_CellDataGetRow(
-                                        this.gridList1,
-                                        this.gridList1DataProvider,
-                                        dataRow,'ibQty');
-                                    sumQty = sumQty + qty;
-                                    setTimeout(() =>{
-                                        this._realGridsService.gfn_CellDataSetRow(this.gridList1,
-                                            this.gridList1DataProvider,
-                                            dataRow,
-                                            'ibQty',
-                                            sumQty);
-
-                                        const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                    }else{
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
+                                        let sumQty = 1;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
                                             this.gridList1,
                                             this.gridList1DataProvider,
-                                            dataRow,'ibExpQty');
-                                        this._realGridsService.gfn_CellDataSetRow(this.gridList1,
-                                            this.gridList1DataProvider,
-                                            dataRow,
-                                            'qty',
-                                            ibExpQty - sumQty);
-                                    },100);
+                                            dataRow,'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() =>{
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
 
-                                    this._realGridsService.gfn_AddRow(this.gridList2, this.gridList2DataProvider, values);
-                                }
-                                setTimeout(() =>{
-                                    const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
-                                        , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
-                                    this.gridList1.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
-                                    this.searchForm.patchValue({'udiCode': ''});
-                                },100);
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        },100);
 
-                                if(!this.barcodeYn){
+                                        this._realGridsService.gfn_AddRow(this.gridList2, this.gridList2DataProvider, values);
+                                    }
                                     setTimeout(() =>{
-                                        this.refUdiCode.nativeElement.focus();
-                                        this._changeDetectorRef.markForCheck();
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
+                                        this.gridList1.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
+                                        this.searchForm.patchValue({'udiCode': ''});
                                     },100);
+
+                                    if(!this.barcodeYn){
+                                        setTimeout(() =>{
+                                            this.refUdiCode.nativeElement.focus();
+                                            this._changeDetectorRef.markForCheck();
+                                        },100);
+                                    }else{
+                                        const dataRow = this.gridList2DataProvider.searchDataRow({fields:['udiCode'], values: [udiCode]});
+                                        //셀이동
+                                        //this.gridList2.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
+                                        setTimeout(() =>{
+                                            this.refUdiCode.nativeElement.blur();
+                                            this._changeDetectorRef.markForCheck();
+                                        },100);
+                                        const focusCell = this.gridList2.getCurrent();
+                                        focusCell.dataRow = dataRow;
+                                        focusCell.column = 'ibQty';
+                                        focusCell.fieldName = 'ibQty';
+                                        //포커스된 셀 변경
+                                        this.gridList2.setCurrent(focusCell);
+                                        const curr = this.gridList2.getCurrent();
+                                        this.gridList2.beginUpdateRow(curr.itemIndex);
+                                        this.gridList2.showEditor();
+                                        this.gridList2.setFocus();
+                                    }
+
+                                    this.showAlert = false;
+                                    this._changeDetectorRef.markForCheck();
+
                                 }else{
-                                    const dataRow = this.gridList2DataProvider.searchDataRow({fields:['udiCode'], values: [udiCode]});
-                                    //셀이동
-                                    //this.gridList2.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
                                     setTimeout(() =>{
-                                        this.refUdiCode.nativeElement.blur();
-                                        this._changeDetectorRef.markForCheck();
+                                        this.gridList1.clearSelection();
                                     },100);
-                                    const focusCell = this.gridList2.getCurrent();
-                                    focusCell.dataRow = dataRow;
-                                    focusCell.column = 'ibQty';
-                                    focusCell.fieldName = 'ibQty';
-                                    //포커스된 셀 변경
-                                    this.gridList2.setCurrent(focusCell);
-                                    const curr = this.gridList2.getCurrent();
-                                    this.gridList2.beginUpdateRow(curr.itemIndex);
-                                    this.gridList2.showEditor();
-                                    this.gridList2.setFocus();
+                                    this.alert = {
+                                        type   : 'error',
+                                        message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                    };
+                                    // Show the alert
+                                    this.showAlert = true;
                                 }
-
-                                this.showAlert = false;
-                                this._changeDetectorRef.markForCheck();
-
-                            }else{
+                            } else {
                                 setTimeout(() =>{
                                     this.gridList1.clearSelection();
                                 },100);
                                 this.alert = {
                                     type   : 'error',
-                                    message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                    message: '반품 입고 수량이 초과 되었습니다.'
                                 };
                                 // Show the alert
                                 this.showAlert = true;
