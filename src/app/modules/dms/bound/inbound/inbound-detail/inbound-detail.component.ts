@@ -242,6 +242,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 }
             },
             {
+                name: 'lot4', fieldName: 'lot4', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: 'UDI No.', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'lot2', fieldName: 'lot2', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '유효기간', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
@@ -257,12 +263,6 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
             {
                 name: 'lot3', fieldName: 'lot3', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '제조사 lot', styleName: 'center-cell-text blue-font-color'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'lot4', fieldName: 'lot4', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: 'UDI No.', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -388,8 +388,120 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         });
         // eslint-disable-next-line max-len
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.inBoundDetailDataProvider, this.inBoundDetailColumns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef, this.inBoundHeaderForm);
+
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellPasting = ((grid, itemIndex, row, field) => {
+            if(itemIndex.column === 'lot4'){
+                const that = this;
+                setTimeout(() =>{
+                    const udi = this.udiScanLot(row);
+                    if(udi !== undefined){
+                        let lot2 = '20' + udi['useTmlmt'].replace('(' + '17' + ')','');
+
+                        const yyyy = lot2.substr(0,4);
+                        const mm = lot2.substr(4,2);
+                        const dd = lot2.substr(6,2);
+
+                        lot2 = yyyy + '-' + mm + '-' + dd;
+                        const lot3 = udi['lotNo'].replace('(' + '10' + ')','');
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex.itemIndex,
+                            'lot2',
+                            lot2);
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex.itemIndex,
+                            'lot3',
+                            lot3);
+
+                        const focusCell = this.gridList.getCurrent();
+                        focusCell.dataRow = itemIndex.itemIndex + 1;
+                        focusCell.column = 'lot4';
+                        focusCell.fieldName = 'lot4';
+                        //포커스된 셀 변경
+                        this.gridList.setCurrent(focusCell);
+                        const curr = this.gridList.getCurrent();
+                        this.gridList.beginUpdateRow(curr.itemIndex);
+                        this.gridList.showEditor();
+                        this.gridList.commit();
+                        this.gridList.setFocus();
+                    }else{
+
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex.itemIndex,
+                            'lot2',
+                            '');
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex.itemIndex,
+                            'lot3',
+                            '');
+                    }
+                },100);
+            }
+        });
+
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+
+            if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'lot4'){
+                const that = this;
+                setTimeout(() =>{
+                    const lot4 = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.inBoundDetailDataProvider,
+                        itemIndex,'lot4');
+
+                    const udi = this.udiScanLot(lot4);
+
+                    if(udi !== undefined){
+                        let lot2 = '20' + udi['useTmlmt'].replace('(' + '17' + ')','');
+
+                        const yyyy = lot2.substr(0,4);
+                        const mm = lot2.substr(4,2);
+                        const dd = lot2.substr(6,2);
+
+                        lot2 = yyyy + '-' + mm + '-' + dd;
+                        const lot3 = udi['lotNo'].replace('(' + '10' + ')','');
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex,
+                            'lot2',
+                            lot2);
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex,
+                            'lot3',
+                            lot3);
+
+                        const focusCell = this.gridList.getCurrent();
+                        focusCell.dataRow = itemIndex + 1;
+                        focusCell.column = 'lot4';
+                        focusCell.fieldName = 'lot4';
+                        //포커스된 셀 변경
+                        this.gridList.setCurrent(focusCell);
+                        const curr = this.gridList.getCurrent();
+                        this.gridList.beginUpdateRow(curr.itemIndex);
+                        this.gridList.showEditor();
+                        this.gridList.setFocus();
+                    }else{
+
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex,
+                            'lot2',
+                            '');
+                        that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                            that.inBoundDetailDataProvider,
+                            itemIndex,
+                            'lot3',
+                            '');
+                    }
+
+                },100);
+            }
 
             if(this.inBoundDetailDataProvider.getOrgFieldName(field) === 'ibExpQty' ||
                 this.inBoundDetailDataProvider.getOrgFieldName(field) === 'unitPrice'){
@@ -982,5 +1094,184 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
 
     priceToString(price): string {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    udiScanLot(udiCode: string): object{
+        let udi = {};
+        if(udiCode === ''){
+        }else{
+            let lotNo;
+            let manufYm;
+            let useTmlmt;
+            let itemSeq;
+            let stdCode;
+
+            if(udiCode.length < 17){
+                return;
+            }
+            const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            if(check_kor.test(udiCode)){
+                setTimeout(() =>{
+                },100);
+                return;
+            }
+
+            if(!udiCode.includes('(')){
+                try{
+                    let udiDiCode = udiCode.substring(0, 16);
+                    let udiPiCode = '';
+                    udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
+
+                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
+
+                    //값이 없을 때 까지
+                    while(cutUdiPiCode !== ''){
+
+                        if(cutUdiPiCode.substring(0, 2) === '11'){
+
+                            manufYm = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '17'){
+
+                            useTmlmt = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '10'){
+
+                            const len = cutUdiPiCode.length;
+
+                            if(len > 22){
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            }else{
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        }else if(cutUdiPiCode.substring(0, 2) === '21'){
+
+                            const len = cutUdiPiCode.length;
+
+                            if(len > 22){
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            }else{
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        }else{
+                            break;
+                        }
+                    }
+
+                    if(lotNo === undefined){
+                        lotNo = '';
+                    }
+                    if(itemSeq === undefined){
+                        itemSeq = '';
+                    }
+
+                    if(manufYm === undefined){
+                        manufYm = '';
+                    }else{
+                        if(manufYm.replace('(' + '11' + ')','').length !== 6){
+                            this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                            return;
+                        }
+                    }
+
+                    if(useTmlmt === undefined){
+                        useTmlmt = '';
+                    }else{
+                        if(useTmlmt.replace('(' + '17' + ')','').length !== 6){
+                            this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                            return;
+                        }
+                    }
+
+                    udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
+                    udiCode = udiDiCode + udiPiCode;
+
+                }catch (e){
+                    return;
+                }
+            }
+
+            const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
+            list.forEach((check: any) => {
+
+                const chk = check;
+                let result = '';
+                const idx = udiCode.indexOf(chk, 0);
+                if(idx >= 0){
+                    let lastIndex = udiCode.indexOf('(', idx + 1);
+                    if(lastIndex >= 0){
+                        lastIndex = udiCode.indexOf('(', idx + 1);
+                    }else{
+                        lastIndex = udiCode.length;
+                    }
+                    result = udiCode.substring(idx, lastIndex)
+                        .replace('(' + chk + ')','');
+
+                    if(chk === '(01)'){
+                        stdCode = result;
+                    }else if(chk === '(10)'){
+                        lotNo = result;
+                    }else if(chk === '(11)'){
+                        manufYm = result;
+                    }else if(chk === '(17)'){
+                        useTmlmt = result;
+                    }else if(chk === '(21)'){
+                        itemSeq = result;
+                    }
+                }
+            });
+
+            if(lotNo === undefined){
+                lotNo = '';
+            }
+            if(itemSeq === undefined){
+                itemSeq = '';
+            }
+            if(manufYm === undefined){
+                manufYm = '';
+            }else if(manufYm === ''){
+                manufYm = '';
+            }else{
+                if(manufYm.replace('(' + '11' + ')','').length !== 6){
+                    this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                    return;
+                }
+            }
+            if(useTmlmt === undefined){
+                useTmlmt = '';
+            }else if(useTmlmt === ''){
+                useTmlmt = '';
+            }else{
+                if(useTmlmt.replace('(' + '17' + ')','').length !== 6){
+                    this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                    return;
+                }
+            }
+
+            if(stdCode === undefined){
+                return;
+            }else{
+                udi = {
+                    stdCode: stdCode,
+                    lotNo: lotNo,
+                    itemSeq: itemSeq,
+                    useTmlmt: useTmlmt,
+                    manufYm: manufYm,
+                };
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+                return udi;
+            }
+        }
+
+        return udi;
     }
 }

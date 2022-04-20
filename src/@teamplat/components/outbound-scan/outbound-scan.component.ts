@@ -87,8 +87,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'meddevItemSeq', dataType: ValueType.TEXT},
         {fieldName: 'typeName', dataType: ValueType.TEXT},
-        {fieldName: 'standard', dataType: ValueType.TEXT},
-        {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'lotNo', dataType: ValueType.TEXT},
         {fieldName: 'manufYm', dataType: ValueType.TEXT},
