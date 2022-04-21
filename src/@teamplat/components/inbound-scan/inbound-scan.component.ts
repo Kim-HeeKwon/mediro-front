@@ -531,7 +531,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             that.gridList2DataProvider,
                             itemIndex,
                             'ibQty',
-                            inputOrgQty + inputQty);
+                            grid1OrgIbQty);
 
                         this.qtyFailAlert();
                         this._changeDetectorRef.markForCheck();
@@ -761,12 +761,6 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
                             const dataRows = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
                                 , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]});
-
-                            const qtys = this._realGridsService.gfn_CellDataGetRow(
-                                this.gridList1,
-                                this.gridList1DataProvider,
-                                dataRows,'qty');
-                            if(qtys > 0) {
                                 let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
                                 chk = chk.filter((detail: any) =>
                                     (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
@@ -776,6 +770,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                     .map((param: any) => param);
 
                                 if(chk.length > 0){
+                                    const qtys = this._realGridsService.gfn_CellDataGetRow(
+                                        this.gridList1,
+                                        this.gridList1DataProvider,
+                                        dataRows,'qty');
+                                    if(qtys > 0) {
                                     this.searchForm.patchValue({'stdCode': udiCode});
                                     this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')','')});
                                     this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')','')});
@@ -906,18 +905,18 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this._changeDetectorRef.markForCheck();
 
                                 }else{
-                                    setTimeout(() =>{
-                                        this.gridList1.clearSelection();
-                                    },100);
-                                    this.alert = {
-                                        type   : 'error',
-                                        message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
-                                    };
-                                    // Show the alert
-                                    this.showAlert = true;
+                                    this.qtyFailAlert();
                                 }
                             } else {
-                                this.qtyFailAlert();
+                                setTimeout(() =>{
+                                    this.gridList1.clearSelection();
+                                },100);
+                                this.alert = {
+                                    type   : 'error',
+                                    message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                };
+                                // Show the alert
+                                this.showAlert = true;
                             }
                         }
 

@@ -571,7 +571,7 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         title: '청구서 관리',
                         type : 'basic',
                         icon : 'credit_card',
-                        //link : '/admin/user'
+                        link : '/admin/fee/billManagement'
                     }
                 ]
             },{

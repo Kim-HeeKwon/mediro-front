@@ -25,9 +25,12 @@ const dashboardsRoutes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [
-    DashboardsComponent
-  ],
+    declarations: [
+        DashboardsComponent
+    ],
+    exports: [
+        DashboardsComponent
+    ],
     imports: [
         CommonModule,
         RouterModule.forChild(dashboardsRoutes),

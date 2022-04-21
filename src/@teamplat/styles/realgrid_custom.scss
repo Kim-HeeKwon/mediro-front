@@ -256,10 +256,6 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .text-25s{
     font-size: 25px !important;
 }
-.text-17s{
-    font-size: 17px !important;
-}
-
 .text-30s{
     font-size: 30px !important;
 }
@@ -319,7 +315,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .text-bold-550{
     font-weight: 550 !important;
 }
-
+.text-normal {
+    font-weight: normal !important;
+}
 .text-bold{
     font-weight: bold !important;
 }
@@ -670,8 +668,7 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .dash-hover:hover {
     text-decoration: underline #ffffff !important;
-    //font-size: 12px !important;
-    font-weight: bold !important;
+    font-weight: bolder !important;
 }
 .dash-hover-gray:hover {
     text-decoration: underline #8F95A0 !important;
@@ -703,5 +700,5 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     width: 45% !important;
 }
 .m-05 {
-    margin: 0.5rem 0 0.5rem 0 !important;
+    margin: 1rem 0 1rem 0 !important;
 }

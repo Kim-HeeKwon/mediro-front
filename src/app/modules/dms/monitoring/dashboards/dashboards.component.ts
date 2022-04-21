@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {takeUntil} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {
@@ -31,6 +40,7 @@ import {EmptyObject} from 'chart.js/types/basic';
     styleUrls: ['./dashboards.component.scss']
 })
 export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
+    @Output() dashboards = new EventEmitter<boolean>();
     userName: string;
     ibInfo$: Observable<DashboardInfo1>;
     obInfo$: Observable<DashboardInfo1>;
@@ -422,7 +432,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.availQtyPrice = availPrice + '(원)';
         }
 
-
         const currDay = new Date();
         const year = currDay.getFullYear();
         const month = currDay.getMonth() + 1;
@@ -437,14 +446,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.udiMonth = month - 1;
         }
-        // this.udiMonth
 
         if (diffDays === 0) {
             this.udiLastDay = 'D - day';
         } else {
             this.udiLastDay = 'D - ' + diffDays;
         }
-        console.log(diffDays);
 
         this._changeDetectorRef.markForCheck();
     }
@@ -465,6 +472,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     goPage(obj): void {
+        this.dashboards.emit(true);
         if (obj.gbn === 'QT') {
             if (obj.status === 'QR') {
                 this._router.navigate(['/estimate-order/estimate', {type: obj.status}]);
@@ -943,11 +951,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (price.thCnt * availQty.thCnt)
             + (price.fCnt * availQty.fCnt);
         totalPrice = acceptableTotalPrice + unusedQtyTotalPrice + availQtyTotalPrice;
-        if(totalPrice.toString().length > 4) {
-            this.stockTotalPrice = String(totalPrice.toString().slice(0, -3));
-        } else {
-            this.stockTotalPrice = totalPrice;
-        }
+        this.stockTotalPrice = totalPrice + '원';
         const ctx = document.getElementById('stock_chart');
 
         // @ts-ignore
@@ -1059,7 +1063,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     labels: ['불용', '가납', '보유'],
                 },
                 options: {
-                    maxBarThickness: 30,
+                    maxBarThickness: 25,
                     plugins: {
                         legend: {
                             display: true,
