@@ -2166,7 +2166,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 labels: ['불용', '가납', '보유'],
             },
             options: {
-                responsive: false,
+                // responsive: false,
                 maxBarThickness: 25,
                 plugins: {
                     legend: {

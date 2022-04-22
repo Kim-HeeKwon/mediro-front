@@ -674,7 +674,7 @@
                 </div>
                 <div class="grid grid-cols-4 lg:grid-cols-4 grid-flow-row gap-2 w-full cursor-pointer"
                      style="margin: 0px 0px 20px 0px!important;">
-                    <div class="flex flex-col p-8 col-span-1">
+                    <div class="flex flex-col p-4 col-span-1">
                         <div class="flex-auto grid grid-cols-1 w-full text-12s text-bold-550">
                             <div class="col-span-2 mb_5 udi-color">1등급</div>
                             <div class="col-span-2 mb_5 udi-color">2등급</div>
@@ -682,7 +682,7 @@
                             <div class="col-span-2 mb_5 udi-color">4등급</div>
                         </div>
                     </div>
-                    <div *ngIf="udiThisMonth" class="flex flex-col p-8 col-span-1">
+                    <div *ngIf="udiThisMonth" class="flex flex-col p-4 col-span-1">
                         <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
                             <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{nowCnt.oCnt}}&nbsp;<span
                                 class="udi-color">건</span></div>
@@ -697,7 +697,7 @@
                     <hr *ngIf="!isMobile"
                         style="border-left: solid #DBDDE2; height: 22%; left: 17%; top: 67%; position: absolute;">
 
-                    <div *ngIf="udiLastMonth" class="flex flex-col p-6 col-span-1">
+                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1">
                         <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
                             <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{eveCnt.oCnt}}&nbsp;<span
                                 class="udi-color">건</span></div>
@@ -716,7 +716,7 @@
                             <div class="col-span-2 mb_5 udi-color">보고내역</div>
                         </div>
                     </div>
-                    <div *ngIf="udiLastMonth" class="flex flex-col p-6 col-span-1 m-auto">
+                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1 m-auto">
                         <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
                             <div (click)="goPage({gbn: 'error_UDI' , status: ''})"
                                  class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{errEveCnt}}&nbsp;<span
@@ -755,7 +755,7 @@
                 </div>
                 <div class="font-medium text-12s text-bold-550 text-secondary text-right udi-color" style="margin: 15px 15px 0px 0px;">총&nbsp;&nbsp;&nbsp;
                     <span style="color: #277EC3!important;">{{priceToString(stockTotalPrice)}}</span>&nbsp;&nbsp;&nbsp;원</div>
-                <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer m-auto">
+                <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer" style="margin: auto auto 15px auto!important;">
                     <div [ngClass]="{'flex w-full col-span-7 p-4': isMobile,
                                     'flex w-full col-span-2 p-2 m-auto': !isMobile}">
                         <div [ngClass]="{'widht-38': isMobile,
