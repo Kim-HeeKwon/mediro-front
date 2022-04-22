@@ -7,6 +7,7 @@ export interface Order
     itemCd: string;
     itemNm: string;
     refItemNm?: string;
+    fomlInfo?: string;
     standard: string;
     unit: string;
     itemGrade: string;
@@ -77,6 +78,7 @@ export interface OrderDetail
     itemCd: string;
     itemNm: string;
     refItemNm?: string;
+    fomlInfo?: string;
     standard: string;
     unit: string;
     itemGrade: string;

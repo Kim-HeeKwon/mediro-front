@@ -61,6 +61,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     stockFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -107,6 +108,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             type: ['ALL'],
             itemCd: [''],
             itemNm: [''],
+            fomlInfo: [''],
             itemGrade: ['ALL'],
             supplier: [''],
             supplierNm: [''],
@@ -116,6 +118,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         const columnLayout = [
             'itemCd',
             'itemNm',
+            'fomlInfo',
             'standard',
             'unit',
             'itemGrade',
@@ -178,6 +181,13 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'},
                 renderer:{
                     showTooltip:true
                 }

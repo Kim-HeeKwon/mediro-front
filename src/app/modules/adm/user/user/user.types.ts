@@ -7,7 +7,7 @@ export interface UserData
     userId: string;
 
     subscriptionFeeYn: string;
-    freeYn: string;
+    freeDate: string;
     payDate: string;
     payAmt: number;
     commissionWindow: string;
@@ -35,6 +35,9 @@ export interface UserData
     scale: string;
     currentUse: string;
     remark: string;
+
+    breakReason: string;
+    breakDate: string;
 
     addDate?: string;
     addUser?: string;

@@ -1,0 +1,65 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 -m-6">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">회원 탈퇴</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Alert -->
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="breakForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>탈퇴사유<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'breakReason'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>탈퇴일자<mat-icon class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <input type="date"
+                                   matInput
+                                   [formControlName]="'breakDate'">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <ng-container>
+            <div class="flex items-center justify-between mt-4">
+                <!-- Close -->
+                <button
+                    mat-flat-button
+                    matDialogClose>
+                    닫기
+                </button>
+                <button
+                        mat-flat-button
+                        (click)="userInfoBreak()">
+                    탈퇴
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>

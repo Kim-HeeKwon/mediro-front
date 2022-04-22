@@ -7,6 +7,7 @@ export interface Estimate
     itemCd: string;
     itemNm: string;
     refItemNm?: string;
+    fomlInfo?: string;
     standard: string;
     unit: string;
     itemGrade: string;
@@ -79,6 +80,7 @@ export interface EstimateDetail
     itemCd: string;
     itemNm: string;
     refItemNm?: string;
+    fomlInfo?: string;
     standard: string;
     unit: string;
     qty: number;

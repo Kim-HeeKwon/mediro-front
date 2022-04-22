@@ -68,6 +68,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'poLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -155,7 +156,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|' +
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:buyPrice|' +
                             'poReqQty:poQty|invQty:availQty',
                         where : [{
@@ -165,8 +166,14 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -288,6 +295,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade' ||
@@ -356,6 +364,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                             flag: 'C',
                             itemCd: estimateDetail.itemCd,
                             itemNm: estimateDetail.itemNm,
+                            fomlInfo: estimateDetail.fomlInfo,
                             standard: estimateDetail.standard,
                             unit: estimateDetail.unit,
                             itemGrade : estimateDetail.itemGrade,
@@ -399,7 +408,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
     addRow(): void {
 
         const values = [
-            '', '', '', '', '', '', 0, 0, 0, 0, 0, 0, ''
+            '', '', '', '', '', '', '', 0, 0, 0, 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.orderDetailDataProvider, values);

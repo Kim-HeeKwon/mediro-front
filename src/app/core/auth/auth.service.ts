@@ -196,7 +196,12 @@ export class AuthService
             switchMap((response: any) => {
                 // tslint:disable-next-line:triple-equals
                 if (response.status !== 95){
-                    return throwError('패스워드가 옳지 않습니다.');
+
+                    if (response.status !== 92){
+                        return throwError('회원이 아닙니다.');
+                    }else{
+                        return throwError('이메일 또는 패스워드가 일치하지 않습니다.');
+                    }
                 }
                 this.accessToken = response.resultD.accessToken;
                 this.userEmail = response.resultD.email;

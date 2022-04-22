@@ -73,6 +73,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         {fieldName: 'qtLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -189,7 +190,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|refItemNm:refItemNm|standard:standard|unit:unit|itemGrade:itemGrade',
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|refItemNm:refItemNm|standard:standard|unit:unit|itemGrade:itemGrade',
                         where: [{
                             key: 'account',
                             replace: 'account:=:#{account}'
@@ -197,8 +198,14 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -313,6 +320,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             if (dataCell.item.rowState === 'created') {
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'fomlInfo' ||
                     dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
@@ -325,6 +333,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             } else {
                 if (dataCell.dataColumn.fieldName === 'itemCd' ||
                     dataCell.dataColumn.fieldName === 'itemNm' ||
+                    dataCell.dataColumn.fieldName === 'fomlInfo' ||
                     dataCell.dataColumn.fieldName === 'refItemNm' ||
                     dataCell.dataColumn.fieldName === 'standard' ||
                     dataCell.dataColumn.fieldName === 'unit' ||
@@ -339,6 +348,7 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             }
 
             if (dataCell.dataColumn.fieldName === 'qtAmt' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'refItemNm') {
                 return {editable: false};
             }
@@ -662,19 +672,17 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
             return false;
         }
         let effectiveDate = '';
-        if (this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+        if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate.value === undefined) {
+            this.estimateHeaderForm.getRawValue().effectiveDate === '') {
             effectiveDate = '';
         } else {
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
         }
         const values = [
-            effectiveDate, '', '', '', '', '', '', 0, 0, 0, ''
+            effectiveDate, '', '', '', '', '', '', '', '', 0, 0, 0, ''
         ];
-
         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
 
     }
@@ -726,11 +734,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this._changeDetectorRef.markForCheck();
 
         let effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
-        if (this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+        if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
-            this.estimateHeaderForm.getRawValue().effectiveDate.value === undefined) {
+            this.estimateHeaderForm.getRawValue().effectiveDate === '') {
             effectiveDate = '';
         } else {
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;

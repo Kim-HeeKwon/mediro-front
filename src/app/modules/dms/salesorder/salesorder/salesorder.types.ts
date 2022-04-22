@@ -6,6 +6,7 @@ export interface SalesOrder
     soLineNo: number;
     itemCd: string;
     itemNm: string;
+    fomlInfo?: string;
     refItemNm?: string;
     standard: string;
     unit: string;
@@ -73,6 +74,7 @@ export interface SalesOrderDetail
     itemCd: string;
     itemNm: string;
     refItemNm?: string;
+    fomlInfo?: string;
     standard: string;
     unit: string;
     itemGrade: string;

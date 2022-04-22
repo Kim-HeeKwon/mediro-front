@@ -25,7 +25,7 @@
             class="flex flex-col border-b"
             [formGroup]="selectedStockForm">
             <div class="p-4 sm:p-4">
-                <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
+                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label> 품목 코드 </mat-label>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목 명</mat-label>
+                            <mat-label>품목명</mat-label>
                             <input
                                 matInput
                                 [formControlName]="'itemNm'">
@@ -44,13 +44,21 @@
                     </div>
                     <div class="sm:col-span-2">
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>모델명</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'fomlInfo'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-3">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>보유 수량</mat-label>
                             <input
                                 matInput
                                 [formControlName]="'availQty'">
                         </mat-form-field>
                     </div>
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-3">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>조정 수량 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
@@ -60,7 +68,7 @@
                                 [formControlName]="'qty'">
                         </mat-form-field>
                     </div>
-                    <div class="sm:col-span-4">
+                    <div class="sm:col-span-6">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>사유 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>

@@ -4,6 +4,7 @@ export interface Validity
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo: string;           //모델명
     itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위

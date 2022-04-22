@@ -4,6 +4,7 @@ export interface Stock
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;           //모델명
     standard: string;           //규격
     unit: string;               //단위
     itemGrade: string;          //품목등급
@@ -23,6 +24,7 @@ export interface StockHistory
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;           //모델명
     chgType: string;
     chgReason: string;
     qty: string;
@@ -56,6 +58,7 @@ export interface StockAdj
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;           //모델명
     qty: number;
     adjType: string;
 }

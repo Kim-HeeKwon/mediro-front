@@ -14,6 +14,7 @@ export interface Bill
     status: string;
     itemCd: string;
     itemNm: string;
+    fomlInfo?: string;
     refItemNm?: string;
     standard: string;
     unit: string;
