@@ -1,3 +1,435 @@
+<!--<div class="flex flex-col flex-auto min-w-0" style="background-color: #DFE1E5">-->
+<!--    &lt;!&ndash; Loader &ndash;&gt;-->
+<!--    <div-->
+<!--        class="flex flex-col inset-x-0 bottom-0"-->
+<!--        *ngIf="isLoading">-->
+<!--        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Main &ndash;&gt;-->
+<!--    <div class="flex-auto my-tb mx-lr sm:mx-lr">-->
+
+<!--        <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0 grid-rows-mob': isMobile,-->
+<!--                            'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 w-full min-w-0 h-full grid-rows' : !isMobile}">-->
+<!--            &lt;!&ndash;            <div class="flex flex-col sm:col-span-3 flex-auto"></div>&ndash;&gt;-->
+<!--            &lt;!&ndash; 견적 &ndash;&gt;-->
+<!--            <div [ngClass]="{'height-mob' : isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"-->
+<!--                 style="background-color: #277EC3 !important;">-->
+<!--                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">-->
+<!--                    <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">-->
+<!--                        <div class="white-font-color text-bold-550">-->
+<!--                            &nbsp;견적&nbsp;<span  (click)="goPage({gbn: 'QT' , status: 'CF'})" class="ml-6 text-normal text-15s dash-hover">확정&nbsp;{{qtInfo.cfCnt}}건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="flex flex-col items-center">-->
+<!--                    <div class="flex flex-col w-full">-->
+<!--                        <div class="flex-auto grid grid-cols-4 mr-4 ml-4 text-center">-->
+<!--                        <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'N'})"-->
+<!--                              class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{qtInfo.nCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'S'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">요 청&nbsp;&nbsp;{{qtInfo.sCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'QR'})"-->
+<!--                                  class="text-11s white-font-color dash-hover">재요청&nbsp;&nbsp;{{qtInfo.rsCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'CFA'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{qtInfo.cfaCnt}}&nbsp;건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 발주 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2 height-mob': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"-->
+<!--                 style="background-color: #277EC3 !important;">-->
+<!--                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">-->
+<!--                    <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">-->
+<!--                        <div class="white-font-color text-bold-550">-->
+<!--                            &nbsp;발주 <span (click)="goPage({gbn: 'PO' , status: 'CF'})" class="ml-6 text-normal text-15s dash-hover">확정&nbsp;{{poInfo.cfCnt}}건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="flex flex-col items-center">-->
+<!--                    <div class="flex flex-col w-full">-->
+<!--                        <div class="flex-auto grid grid-cols-3 mr-4 ml-4 text-center">-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'N'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{poInfo.nCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'S'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">발 송&nbsp;&nbsp;{{poInfo.sCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'CFA'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{poInfo.cfaCnt}}&nbsp;건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 주문 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2 height-mob': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"-->
+<!--                 style="background-color: #277EC3 !important;">-->
+<!--                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">-->
+<!--                    <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:truck'"></mat-icon>-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">-->
+<!--                        <div class="white-font-color text-bold-550">-->
+<!--                            &nbsp;주문 <span (click)="goPage({gbn: 'SO' , status: 'S'})" class="ml-6 text-normal text-15s dash-hover">등록&nbsp;{{soInfo.sCnt}}건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="flex flex-col items-center">-->
+<!--                    <div class="flex flex-col w-full">-->
+<!--                        <div class="flex-auto grid grid-cols-2 mr-4 ml-4 text-center">-->
+<!--                        <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'SO' , status: 'N'})"-->
+<!--                              class="text-12s white-font-color dash-hover">접 수&nbsp;&nbsp;{{soInfo.nCnt}}&nbsp;건</span>-->
+<!--                            <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'SO' , status: 'C'})"-->
+<!--                                  class="text-12s white-font-color dash-hover">취 소&nbsp;&nbsp;{{soInfo.cCnt}}&nbsp;건</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 입출고 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-1 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">-->
+<!--                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">-->
+<!--                        <div class="text-center m-05">입/출고 관리</div>-->
+<!--                    </div>-->
+<!--                    <hr style="margin: 0px !important; border-bottom-width: 0px;">-->
+<!--                </div>-->
+<!--                <div [ngClass]="{'my-tb' : isMobile}" class="grid grid-cols-2 lg:grid-cols-2 grid-flow-row w-full cursor-pointer m-auto">-->
+<!--                    <div class="flex flex-col flex-auto col-span-1 m-auto">-->
+<!--                        <canvas id="in_chart" width="110px" height="110px" baseChart>-->
+<!--                        </canvas>-->
+<!--                    </div>-->
+<!--                    <div class="flex flex-col flex-auto col-span-1 m-auto">-->
+<!--                        <canvas id="out_chart" width="110px" height="110px" baseChart>-->
+<!--                        </canvas>-->
+<!--                    </div>-->
+<!--                    <div class="flex flex-col flex-auto col-span-1">-->
+<!--                        <div (click)="goPage({gbn: 'IB' , status: 'P,S'})"-->
+<!--                             class="flex col-span-2 m-auto center-cell-text my-tb-05">-->
+<!--                            <div class="span-border text-13s"-->
+<!--                                 style="color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">-->
+<!--                                미확정-->
+<!--                            </div>-->
+<!--                            <div class="span-border text-13s"-->
+<!--                                 style="background-color: #DBDDE2; color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">{{ibInfo.pCnt + ibInfo.sCnt}}-->
+<!--                                건-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex col-span-2 m-auto center-cell-text">-->
+<!--                            <div class="text-13s" style="color: #8F95A0">-->
+<!--                                <span class="dash-hover-gray" (click)="goPage({gbn: 'IB' , status: 'N'})">-->
+<!--                                    접수: {{ibInfo.nCnt}}</span> /-->
+<!--                                <span class="dash-hover-gray" (click)="goPage({gbn: 'IB' , status: 'P'})">-->
+<!--                                    작업중: {{ibInfo.pCnt}}</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="flex flex-col flex-auto col-span-1 m-auto">-->
+<!--                        <div (click)="goPage({gbn: 'OB' , status: 'P,S'})"-->
+<!--                             class="flex col-span-2 m-auto center-cell-text my-tb-05">-->
+<!--                            <div class="span-border text-13s"-->
+<!--                                 style="color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">-->
+<!--                                미확정-->
+<!--                            </div>-->
+<!--                            <div class="span-border text-13s"-->
+<!--                                 style="background-color: #DBDDE2; color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">{{obInfo.pCnt + obInfo.sCnt}}-->
+<!--                                건-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex col-span-2 m-auto center-cell-text">-->
+<!--                            <div class="text-13s" style="color: #8F95A0">-->
+<!--                                                <span class="dash-hover-gray"-->
+<!--                                                      (click)="goPage({gbn: 'OB' , status: 'N'})">-->
+<!--                                                    접수: {{obInfo.nCnt}}</span> /-->
+<!--                                <span class="dash-hover-gray" (click)="goPage({gbn: 'OB' , status: 'P'})">-->
+<!--                                                    작업중: {{obInfo.pCnt}}</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 정산 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-2 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">-->
+<!--                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">-->
+<!--                        <div class="text-center m-05">정산</div>-->
+<!--                    </div>-->
+<!--                    <hr style="margin: 0px; border-bottom-width: 0px;">-->
+<!--                </div>-->
+<!--                <div class="font-medium text-secondary text-bold text-9s mr-2 text-right m-2">단위 (천원)</div>-->
+<!--                <div-->
+<!--                    class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row w-full cursor-pointer m-auto">-->
+<!--                    <div [ngClass]="{'flex flex-col flex-auto col-span-6 p-4': isMobile,-->
+<!--                                    'flex flex-col flex-auto col-span-4 ml-6': !isMobile}">-->
+<!--                        <div class="chart_css h-full">-->
+<!--                            <canvas id="bill_chart" baseChart width="580px" height="150px">-->
+<!--                            </canvas>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div [ngClass]="{'flex flex-col col-span-6 p-4': isMobile,-->
+<!--                                    'flex flex-col col-span-2 m-auto': !isMobile}">-->
+<!--                        <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row w-full cursor-pointer">-->
+<!--                            <div id="billbuy" class="flex col-span-1 center-cell-text m-auto items-center">-->
+<!--                                <div class="span-border text-13s" (click)="billBuy()"-->
+<!--                                     [ngClass]="{'bill-sal' : buybool, 'bill' : !buybool}"-->
+<!--                                     style="width: 75px !important; height: 23px !important;">-->
+<!--                                    <span>매입</span>-->
+<!--                                </div>-->
+<!--                                <div class="span-border text-13s"-->
+<!--                                     [ngClass]="{'bill-sal' : salbool, 'bill' : !salbool}" (click)="billSal()"-->
+<!--                                     style="width: 75px !important; height: 23px !important;">-->
+<!--                                    <span>매출</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--&lt;!&ndash;                            <div class="flex flex-col items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="flex items-center p-0.5 overflow-hidden">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span class="text-13s text-bold-600"&ndash;&gt;-->
+<!--&lt;!&ndash;                              [ngClass]="{'opacity-50' : billop}">매입</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                      (click)="biiOption()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                      [color]="'primary'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                      [checked]="true">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </mat-slide-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <span class="text-13s text-bold-600"&ndash;&gt;-->
+<!--&lt;!&ndash;                                          [ngClass]="{'opacity-50' : !billop}">매출</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row w-full cursor-pointer">-->
+<!--                            <div *ngIf="buybool"-->
+<!--                                 class="col-span-1 margin_top flex items-center justify-center text-15s text-bold-600">-->
+<!--                                총&nbsp;&nbsp;&nbsp;-->
+<!--                                <span style="color: #277EC3;">{{this.priceToString(this.buy)}}</span>&nbsp;&nbsp;&nbsp;&nbsp;원-->
+<!--                            </div>-->
+<!--                            <div *ngIf="salbool"-->
+<!--                                 class="col-span-1 margin_top flex items-center justify-center text-15s text-bold-600">-->
+<!--                                총&nbsp;&nbsp;&nbsp;-->
+<!--                                <span style="color: #277EC3;">{{this.priceToString(this.sal)}}</span>&nbsp;&nbsp;&nbsp;&nbsp;원-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row cursor-pointer">-->
+<!--                            <div (click)="goPage({gbn: 'BILL' , status: 'ALL'})"-->
+<!--                                 class="flex col-span-1 margin_top items-center dash-hover-gray bill text-13s justify-center">-->
+<!--                                실적집계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{billInfo.totalCnt}}&nbsp;건-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row cursor-pointer">-->
+<!--                            <div (click)="goPage({gbn: 'TAX' , status: 'ALL'})"-->
+<!--                                 class="flex col-span-1 margin_top items-center bill text-13s justify-center dash-hover-gray">-->
+<!--                                계산서-->
+<!--                                미발행&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{billInfo.invoiceCnt}}&nbsp;건-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 공급내역 보고 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-1 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">-->
+<!--                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">-->
+<!--                        <div class="text-center m-05">공급내역 보고</div>-->
+<!--                    </div>-->
+<!--                    <hr style="margin: 0px; border-bottom-width: 0px;">-->
+<!--                </div>-->
+<!--                <div class="font-medium text-secondary text-bold text-9s mr-2 text-right"></div>-->
+<!--                <div [ngClass]="{'flex-col' : isMobile}" class="w-full m-auto" style="padding: 0rem 0rem 0rem 1rem;">-->
+<!--                    <div [ngClass]="{'flex-col' : isMobile}" class="flex items-center">-->
+<!--                        <div [ngClass]="{'w-45 my-tb' : !isMobile}" class="center-cell-text">-->
+<!--                            <div class="span-border text-13s w-1/2 float-left" (click)="udiLast()"-->
+<!--                                 style="width: 75px !important; height: 23px !important;"-->
+<!--                                 [ngClass]="{'bill-sal' : udiLastMonth, 'bill' : !udiLastMonth}">전월-->
+<!--                            </div>-->
+<!--                            <div class="span-border text-13s w-1/2 float-left" (click)="udiThis()"-->
+<!--                                 style="width: 75px !important; height: 23px !important;"-->
+<!--                                 [ngClass]="{'bill-sal' : udiThisMonth, 'bill' : !udiThisMonth}">당월-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex ml-4 text-bold">{{udiMonth}}월보고&nbsp;&nbsp;&nbsp;-->
+<!--                            <span class="text-bold" style="color: #277EC3;">{{udiLastDay}}</span>-->
+<!--                            &nbsp;&nbsp;남았습니다.-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="grid grid-cols-4 lg:grid-cols-4 grid-flow-row gap-2 w-full cursor-pointer m-auto">-->
+<!--                    <div class="flex flex-col p-4 col-span-1">-->
+<!--                        <div class="flex-auto grid grid-cols-1 w-full">-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">1등급</div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">2등급</div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">3등급</div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">4등급</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="udiThisMonth" class="flex flex-col p-4 col-span-1">-->
+<!--                        <div class="flex-auto grid grid-cols-1">-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.oCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.tCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.thCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.fCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <hr *ngIf="!isMobile"-->
+<!--                        style="border-left: solid #DBDDE2; height: 25%; left: 17%; top: 65%; position: absolute;">-->
+
+<!--                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1">-->
+<!--                        <div class="flex-auto grid grid-cols-1">-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.oCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.tCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.thCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.fCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s">건</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="flex flex-col col-span-1 m-auto">-->
+<!--                        <div class="flex-auto grid grid-cols-1">-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">실패내역</div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">반품</div>-->
+<!--                            <div class="col-span-2 mb_5 text-15s udi-color">보고내역</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1 m-auto">-->
+<!--                        <div class="flex-auto grid grid-cols-1">-->
+<!--                            <div (click)="goPage({gbn: 'error_UDI' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{errEveCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                            <div (click)="goPage({gbn: 'UDI_RTN' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{eveRtn}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                            <div (click)="goPage({gbn: 'UDI' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{eveRpt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="udiThisMonth" class="flex flex-col p-4 col-span-1 m-auto">-->
+<!--                        <div class="flex-auto grid grid-cols-1">-->
+<!--                            <div (click)="goPage({gbn: 'error_UDI' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{this.errNowCnt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                            <div (click)="goPage({gbn: 'UDI_RTN' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{nowRtn}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                            <div (click)="goPage({gbn: 'UDI' , status: ''})"-->
+<!--                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{nowRpt}}&nbsp;<span-->
+<!--                                class="udi-color text-15s udi-hover-bl">건</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 재고 &ndash;&gt;-->
+<!--            <div [ngClass]="{'mt-2': isMobile}"-->
+<!--                 class="flex flex-col sm:col-span-2 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">-->
+<!--                <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">-->
+<!--                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">-->
+<!--                        <div class="text-center m-05">재고</div>-->
+<!--                    </div>-->
+<!--                    <hr style="margin: 0px; border-bottom-width: 0px;">-->
+<!--                </div>-->
+<!--                <div class="font-medium text-secondary text-bold text-9s mr-2 text-right m-2">단위 (천원)</div>-->
+<!--                <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer m-auto">-->
+<!--                    <div [ngClass]="{'flex w-full col-span-7 p-4': isMobile,-->
+<!--                                    'flex w-full col-span-2 p-2 m-auto': !isMobile}">-->
+<!--                        <div [ngClass]="{'widht-38': isMobile,-->
+<!--                                    'w-1/2': !isMobile}" class="flex flex-col float-left ml-8">-->
+<!--                            <div class="mb_4 text-13s udi-color">0등급</div>-->
+<!--                            <div class="mb_4 text-13s udi-color">1등급</div>-->
+<!--                            <div class="mb_4 text-13s udi-color">2등급</div>-->
+<!--                            <div class="mb_4 text-13s udi-color">3등급</div>-->
+<!--                            <div class="mb_4 text-13s udi-color">4등급</div>-->
+<!--                            <div class="mb_4 text-13s udi-color">기 타</div>-->
+<!--                            <hr style="margin: 10px 0; border-bottom-width: 0px; margin-bottom: 0.35rem !important; width: 100%">-->
+<!--                            <div class="mt-1-3 text-13s text-bold-550">합 계</div>-->
+<!--                        </div>-->
+<!--                        <div [ngClass]="{'widht-38': isMobile,-->
+<!--                                    'w-1/2': !isMobile}" class="flex flex-col w-1/2 float-left mr-8">-->
+<!--                            <div class="mb_4 text-13s udi-status-color right-cell-text">-->
+<!--                                {{priceToString(availQty.zCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.oCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.tCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <div-->
+<!--                                class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.thCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.fCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <div-->
+<!--                                class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.etcCnt)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                            <hr style="margin: 10px 0; border-bottom-width: 0px; margin-bottom: 0.35rem !important; width: 100%">-->
+<!--                            <div class="mt-1-3 text-13s text-bold-550 right-cell-text"-->
+<!--                                 style="color: #277EC3">{{priceToString(sumAvailQty)}}&nbsp;<span-->
+<!--                                class="udi-color text-13s">개</span></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <hr *ngIf="!isMobile"-->
+<!--                        style="border-left: solid #DBDDE2; height: 28%; left: 51%; top: 62%; position: absolute;">-->
+<!--                    <div [ngClass]="{'flex flex-col col-span-7 p-4': isMobile,-->
+<!--                                    'flex flex-col w-full col-span-4': !isMobile}">-->
+<!--                        <div class="font-medium font-bold text-secondary">총 재고 <span-->
+<!--                            style="color: #277EC3;">{{priceToString(stockTotalPrice)}}</span></div>-->
+<!--                        <div class="flex h-full">-->
+<!--                            <canvas class="flex" id="stock_chart" baseChart width="410px" height="180px">-->
+<!--                            </canvas>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1 m-auto': !isMobile}">-->
+<!--                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 w-full min-w-0 h-full mt-6">-->
+<!--                            <div class="flex flex-col col-span-1">-->
+<!--                                <div class="col-span-2 center-cell-text">-->
+<!--                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 16px">-->
+<!--                                        불용-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-span-2 center-cell-text">-->
+<!--                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">-->
+<!--                                        가납-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-span-2 center-cell-text">-->
+<!--                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">-->
+<!--                                        보유-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="flex flex-col col-span-1">-->
+<!--                            <div class="col-span-2" style="margin-top: 10px">-->
+<!--                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotal)}}-->
+<!--                                    (EA)-->
+<!--                                </div>-->
+<!--                                <div-->
+<!--                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotalPrice)}}</div>-->
+<!--                            </div>-->
+<!--                            <div class="col-span-2" style="margin-top: 15px">-->
+<!--                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotal)}}-->
+<!--                                    (EA)-->
+<!--                                </div>-->
+<!--                                <div-->
+<!--                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotalPrice)}}</div>-->
+<!--                            </div>-->
+<!--                            <div class="col-span-2" style="margin-top: 15px">-->
+<!--                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)-->
+<!--                                </div>-->
+<!--                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
 <div class="flex flex-col flex-auto min-w-0" style="background-color: #DFE1E5">
     <!-- Loader -->
     <div
@@ -9,17 +441,17 @@
     <div class="flex-auto my-tb mx-lr sm:mx-lr">
 
         <div [ngClass]="{'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 w-full min-w-0 grid-rows-mob': isMobile,
-                            'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 w-full min-w-0 h-full grid-rows' : !isMobile}">
+                            'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 w-full min-w-0 h-full grid-rows' : !isMobile}">
             <!--            <div class="flex flex-col sm:col-span-3 flex-auto"></div>-->
             <!-- 견적 -->
             <div [ngClass]="{'height-mob' : isMobile}"
                  class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
-                 style="background-color: #277EC3 !important;">
-                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">
+                 style="background-color: #9186D0 !important;">
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex" style="margin: 15px auto 25px">
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
-                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
+                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s" style="margin: auto 10px;">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;견적&nbsp;<span  (click)="goPage({gbn: 'QT' , status: 'CF'})" class="ml-6 text-normal text-15s dash-hover">확정&nbsp;{{qtInfo.cfCnt}}건</span>
+                            견적
                         </div>
                     </div>
                 </div>
@@ -27,13 +459,13 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-4 mr-4 ml-4 text-center">
                         <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'N'})"
-                              class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{qtInfo.nCnt}}&nbsp;건</span>
+                              class="text-12s white-font-color dash-hover text-bold-550">작 성&nbsp;&nbsp;{{qtInfo.nCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'S'})"
-                                  class="text-12s white-font-color dash-hover">요 청&nbsp;&nbsp;{{qtInfo.sCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">요 청&nbsp;&nbsp;{{qtInfo.sCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'QR'})"
-                                  class="text-11s white-font-color dash-hover">재요청&nbsp;&nbsp;{{qtInfo.rsCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">재요청&nbsp;&nbsp;{{qtInfo.rsCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'QT' , status: 'CFA'})"
-                                  class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{qtInfo.cfaCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">미확정&nbsp;&nbsp;{{qtInfo.cfaCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
@@ -41,12 +473,12 @@
             <!-- 발주 -->
             <div [ngClass]="{'mt-2 height-mob': isMobile}"
                  class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
-                 style="background-color: #277EC3 !important;">
-                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">
+                 style="background-color: #9186D0 !important;">
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex" style="margin: 15px auto 25px">
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
-                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
+                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s" style="margin: auto 10px;">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;발주 <span (click)="goPage({gbn: 'PO' , status: 'CF'})" class="ml-6 text-normal text-15s dash-hover">확정&nbsp;{{poInfo.cfCnt}}건</span>
+                            발주
                         </div>
                     </div>
                 </div>
@@ -54,11 +486,11 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-3 mr-4 ml-4 text-center">
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'N'})"
-                                  class="text-12s white-font-color dash-hover">작 성&nbsp;&nbsp;{{poInfo.nCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">작 성&nbsp;&nbsp;{{poInfo.nCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'S'})"
-                                  class="text-12s white-font-color dash-hover">발 송&nbsp;&nbsp;{{poInfo.sCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">발 송&nbsp;&nbsp;{{poInfo.sCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'PO' , status: 'CFA'})"
-                                  class="text-12s white-font-color dash-hover">미확정&nbsp;&nbsp;{{poInfo.cfaCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">미확정&nbsp;&nbsp;{{poInfo.cfaCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
@@ -66,12 +498,12 @@
             <!-- 주문 -->
             <div [ngClass]="{'mt-2 height-mob': isMobile}"
                  class="flex flex-col sm:col-span-1 flex-auto p-4 bg-card shadow rounded-md cursor-pointer overflow-hidden h-full"
-                 style="background-color: #277EC3 !important;">
-                <div [ngClass]="{'mt-12' : isMobile}" class="flex m-auto">
+                 style="background-color: #9186D0 !important;">
+                <div [ngClass]="{'mt-12' : isMobile}" class="flex" style="margin: 15px auto 25px">
                     <mat-icon style="color: white;" [svgIcon]="'heroicons_outline:truck'"></mat-icon>
-                    <div class="text-7xl sm:text-8xl tracking-tight text-center leading-none text-18s m-auto">
+                    <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s" style="margin: auto 10px;">
                         <div class="white-font-color text-bold-550">
-                            &nbsp;주문 <span (click)="goPage({gbn: 'SO' , status: 'S'})" class="ml-6 text-normal text-15s dash-hover">등록&nbsp;{{soInfo.sCnt}}건</span>
+                            주문
                         </div>
                     </div>
                 </div>
@@ -79,9 +511,9 @@
                     <div class="flex flex-col w-full">
                         <div class="flex-auto grid grid-cols-2 mr-4 ml-4 text-center">
                         <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'SO' , status: 'N'})"
-                              class="text-12s white-font-color dash-hover">접 수&nbsp;&nbsp;{{soInfo.nCnt}}&nbsp;건</span>
+                              class="text-12s white-font-color dash-hover text-bold-550">접 수&nbsp;&nbsp;{{soInfo.nCnt}}&nbsp;건</span>
                             <span [ngClass]="{'text-10s' : isMobile}" (click)="goPage({gbn: 'SO' , status: 'C'})"
-                                  class="text-12s white-font-color dash-hover">취 소&nbsp;&nbsp;{{soInfo.cCnt}}&nbsp;건</span>
+                                  class="text-12s white-font-color dash-hover text-bold-550">취 소&nbsp;&nbsp;{{soInfo.cCnt}}&nbsp;건</span>
                         </div>
                     </div>
                 </div>
@@ -93,9 +525,10 @@
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
                         <div class="text-center m-05">입/출고 관리</div>
                     </div>
-                    <hr style="margin: 0px !important; border-bottom-width: 0px;">
+                    <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
-                <div [ngClass]="{'my-tb' : isMobile}" class="grid grid-cols-2 lg:grid-cols-2 grid-flow-row w-full cursor-pointer m-auto">
+                <div [ngClass]="{'my-tb' : isMobile}"
+                     class="grid grid-cols-2 lg:grid-cols-2 grid-flow-row w-full cursor-pointer m-auto">
                     <div class="flex flex-col flex-auto col-span-1 m-auto">
                         <canvas id="in_chart" width="110px" height="110px" baseChart>
                         </canvas>
@@ -107,17 +540,17 @@
                     <div class="flex flex-col flex-auto col-span-1">
                         <div (click)="goPage({gbn: 'IB' , status: 'P,S'})"
                              class="flex col-span-2 m-auto center-cell-text my-tb-05">
-                            <div class="span-border text-13s"
+                            <div class="span-border text-12s text-bold-550"
                                  style="color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">
                                 미확정
                             </div>
-                            <div class="span-border text-13s"
+                            <div class="span-border text-12s text-bold-550"
                                  style="background-color: #DBDDE2; color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">{{ibInfo.pCnt + ibInfo.sCnt}}
                                 건
                             </div>
                         </div>
                         <div class="flex col-span-2 m-auto center-cell-text">
-                            <div class="text-13s" style="color: #8F95A0">
+                            <div class="text-12s text-bold-550 mt-05" style="color: #8F95A0">
                                 <span class="dash-hover-gray" (click)="goPage({gbn: 'IB' , status: 'N'})">
                                     접수: {{ibInfo.nCnt}}</span> /
                                 <span class="dash-hover-gray" (click)="goPage({gbn: 'IB' , status: 'P'})">
@@ -128,17 +561,17 @@
                     <div class="flex flex-col flex-auto col-span-1 m-auto">
                         <div (click)="goPage({gbn: 'OB' , status: 'P,S'})"
                              class="flex col-span-2 m-auto center-cell-text my-tb-05">
-                            <div class="span-border text-13s"
+                            <div class="span-border text-12s text-bold-550"
                                  style="color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">
                                 미확정
                             </div>
-                            <div class="span-border text-13s"
+                            <div class="span-border text-12s text-bold-550"
                                  style="background-color: #DBDDE2; color: #303236; width: 60px !important; height: 25px !important; padding: 0.2rem">{{obInfo.pCnt + obInfo.sCnt}}
                                 건
                             </div>
                         </div>
                         <div class="flex col-span-2 m-auto center-cell-text">
-                            <div class="text-13s" style="color: #8F95A0">
+                            <div class="text-12s text-bold-550 mt-05" style="color: #8F95A0">
                                                 <span class="dash-hover-gray"
                                                       (click)="goPage({gbn: 'OB' , status: 'N'})">
                                                     접수: {{obInfo.nCnt}}</span> /
@@ -156,9 +589,9 @@
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
                         <div class="text-center m-05">정산</div>
                     </div>
-                    <hr style="margin: 0px; border-bottom-width: 0px;">
+                    <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
-                <div class="font-medium text-secondary text-bold text-9s mr-2 text-right m-2">단위 (천원)</div>
+                <div class="font-medium text-secondary text-bold text-9s text-left" style="margin: 0.5rem 0px 0px 1.5rem; color: #9ca0a9!important;">단위 (천원)</div>
                 <div
                     class="grid grid-cols-6 lg:grid-cols-6 grid-flow-row w-full cursor-pointer m-auto">
                     <div [ngClass]="{'flex flex-col flex-auto col-span-6 p-4': isMobile,
@@ -172,54 +605,40 @@
                                     'flex flex-col col-span-2 m-auto': !isMobile}">
                         <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row w-full cursor-pointer">
                             <div id="billbuy" class="flex col-span-1 center-cell-text m-auto items-center">
-                                <div class="span-border text-13s" (click)="billBuy()"
+                                <div class="span-border text-12s text-bold-550 p-02" (click)="billBuy()"
                                      [ngClass]="{'bill-sal' : buybool, 'bill' : !buybool}"
                                      style="width: 75px !important; height: 23px !important;">
                                     <span>매입</span>
                                 </div>
-                                <div class="span-border text-13s"
+                                <div class="span-border text-12s text-bold-550 p-02"
                                      [ngClass]="{'bill-sal' : salbool, 'bill' : !salbool}" (click)="billSal()"
                                      style="width: 75px !important; height: 23px !important;">
                                     <span>매출</span>
                                 </div>
                             </div>
-<!--                            <div class="flex flex-col items-center">-->
-<!--                                <div class="flex items-center p-0.5 overflow-hidden">-->
-<!--                        <span class="text-13s text-bold-600"-->
-<!--                              [ngClass]="{'opacity-50' : billop}">매입</span>-->
-<!--                                    <mat-slide-toggle class="ml-2 mr-2" id="billbuy" (click)="billbuy()"-->
-<!--                                                      (click)="biiOption()"-->
-<!--                                                      [color]="'primary'"-->
-<!--                                                      [checked]="true">-->
-<!--                                    </mat-slide-toggle>-->
-<!--                                    <span class="text-13s text-bold-600"-->
-<!--                                          [ngClass]="{'opacity-50' : !billop}">매출</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row w-full cursor-pointer">
                             <div *ngIf="buybool"
-                                 class="col-span-1 margin_top flex items-center justify-center text-15s text-bold-600">
+                                 class="col-span-1 margin_top flex items-center justify-center text-15s text-bold-600 udi-color">
                                 총&nbsp;&nbsp;&nbsp;
-                                <span style="color: #277EC3;">{{this.priceToString(this.buy)}}</span>&nbsp;&nbsp;&nbsp;&nbsp;원
+                                <span style="color: #277EC3!important;">{{this.priceToString(this.buy)}}</span>&nbsp;&nbsp;&nbsp;&nbsp;원
                             </div>
                             <div *ngIf="salbool"
-                                 class="col-span-1 margin_top flex items-center justify-center text-15s text-bold-600">
+                                 class="col-span-1 margin_top flex items-center justify-center text-12s text-bold-600 udi-color">
                                 총&nbsp;&nbsp;&nbsp;
                                 <span style="color: #277EC3;">{{this.priceToString(this.sal)}}</span>&nbsp;&nbsp;&nbsp;&nbsp;원
                             </div>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row cursor-pointer">
                             <div (click)="goPage({gbn: 'BILL' , status: 'ALL'})"
-                                 class="flex col-span-1 margin_top items-center dash-hover-gray bill text-13s justify-center">
+                                 class="flex col-span-1 margin_top items-center dash-hover-gray bill text-12s text-bold-550">
                                 실적집계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{billInfo.totalCnt}}&nbsp;건
                             </div>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row cursor-pointer">
                             <div (click)="goPage({gbn: 'TAX' , status: 'ALL'})"
-                                 class="flex col-span-1 margin_top items-center bill text-13s justify-center dash-hover-gray">
-                                계산서
-                                미발행&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{billInfo.invoiceCnt}}&nbsp;건
+                                 class="flex col-span-1 margin_top items-center bill text-12s dash-hover-gray text-bold-550">
+                                계산서 미발행&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{billInfo.invoiceCnt}}&nbsp;건
                             </div>
                         </div>
                     </div>
@@ -232,94 +651,95 @@
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
                         <div class="text-center m-05">공급내역 보고</div>
                     </div>
-                    <hr style="margin: 0px; border-bottom-width: 0px;">
+                    <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
                 <div class="font-medium text-secondary text-bold text-9s mr-2 text-right"></div>
                 <div [ngClass]="{'flex-col' : isMobile}" class="w-full m-auto" style="padding: 0rem 0rem 0rem 1rem;">
                     <div [ngClass]="{'flex-col' : isMobile}" class="flex items-center">
                         <div [ngClass]="{'w-45 my-tb' : !isMobile}" class="center-cell-text">
-                            <div class="span-border text-13s w-1/2 float-left" (click)="udiLast()"
+                            <div class="span-border text-12s text-bold-550 w-1/2 float-left p-02" (click)="udiLast()"
                                  style="width: 75px !important; height: 23px !important;"
                                  [ngClass]="{'bill-sal' : udiLastMonth, 'bill' : !udiLastMonth}">전월
                             </div>
-                            <div class="span-border text-13s w-1/2 float-left" (click)="udiThis()"
+                            <div class="span-border text-12s text-bold-550 w-1/2 float-left p-02" (click)="udiThis()"
                                  style="width: 75px !important; height: 23px !important;"
                                  [ngClass]="{'bill-sal' : udiThisMonth, 'bill' : !udiThisMonth}">당월
                             </div>
                         </div>
-                        <div class="flex ml-4 text-bold">{{udiMonth}}월보고&nbsp;&nbsp;&nbsp;
-                            <span class="text-bold" style="color: #277EC3;">{{udiLastDay}}</span>
+                        <div class="flex ml-4 text-bold udi-color">{{udiMonth}}월보고&nbsp;&nbsp;&nbsp;
+                            <span class="text-bold" style="color: #277EC3!important;">{{udiLastDay}}</span>
                             &nbsp;&nbsp;남았습니다.
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-4 lg:grid-cols-4 grid-flow-row gap-2 w-full cursor-pointer m-auto">
-                    <div class="flex flex-col p-4 col-span-1">
-                        <div class="flex-auto grid grid-cols-1 w-full">
-                            <div class="col-span-2 mb_5 text-15s udi-color">1등급</div>
-                            <div class="col-span-2 mb_5 text-15s udi-color">2등급</div>
-                            <div class="col-span-2 mb_5 text-15s udi-color">3등급</div>
-                            <div class="col-span-2 mb_5 text-15s udi-color">4등급</div>
+                <div class="grid grid-cols-4 lg:grid-cols-4 grid-flow-row gap-2 w-full cursor-pointer"
+                     style="margin: 0px 0px 20px 0px!important;">
+                    <div class="flex flex-col p-8 col-span-1">
+                        <div class="flex-auto grid grid-cols-1 w-full text-12s text-bold-550">
+                            <div class="col-span-2 mb_5 udi-color">1등급</div>
+                            <div class="col-span-2 mb_5 udi-color">2등급</div>
+                            <div class="col-span-2 mb_5 udi-color">3등급</div>
+                            <div class="col-span-2 mb_5 udi-color">4등급</div>
                         </div>
                     </div>
-                    <div *ngIf="udiThisMonth" class="flex flex-col p-4 col-span-1">
-                        <div class="flex-auto grid grid-cols-1">
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.oCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.tCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.thCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{nowCnt.fCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
+                    <div *ngIf="udiThisMonth" class="flex flex-col p-8 col-span-1">
+                        <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{nowCnt.oCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{nowCnt.tCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{nowCnt.thCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{nowCnt.fCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
                         </div>
                     </div>
                     <hr *ngIf="!isMobile"
-                        style="border-left: solid #DBDDE2; height: 25%; left: 17%; top: 65%; position: absolute;">
+                        style="border-left: solid #DBDDE2; height: 22%; left: 17%; top: 67%; position: absolute;">
 
-                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1">
-                        <div class="flex-auto grid grid-cols-1">
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.oCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.tCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.thCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
-                            <div class="col-span-2 mb_5 text-15s udi-status-color right-cell-text">{{eveCnt.fCnt}}&nbsp;<span
-                                class="udi-color text-15s">건</span></div>
+                    <div *ngIf="udiLastMonth" class="flex flex-col p-6 col-span-1">
+                        <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{eveCnt.oCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{eveCnt.tCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{eveCnt.thCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
+                            <div class="col-span-2 mb_5 udi-status-color right-cell-text">{{eveCnt.fCnt}}&nbsp;<span
+                                class="udi-color">건</span></div>
                         </div>
                     </div>
                     <div class="flex flex-col col-span-1 m-auto">
-                        <div class="flex-auto grid grid-cols-1">
-                            <div class="col-span-2 mb_5 text-15s udi-color">실패내역</div>
-                            <div class="col-span-2 mb_5 text-15s udi-color">반품</div>
-                            <div class="col-span-2 mb_5 text-15s udi-color">보고내역</div>
+                        <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
+                            <div class="col-span-2 mb_5 udi-color">실패내역</div>
+                            <div class="col-span-2 mb_5 udi-color">반품</div>
+                            <div class="col-span-2 mb_5 udi-color">보고내역</div>
                         </div>
                     </div>
-                    <div *ngIf="udiLastMonth" class="flex flex-col p-4 col-span-1 m-auto">
-                        <div class="flex-auto grid grid-cols-1">
+                    <div *ngIf="udiLastMonth" class="flex flex-col p-6 col-span-1 m-auto">
+                        <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
                             <div (click)="goPage({gbn: 'error_UDI' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{errEveCnt}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{errEveCnt}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                             <div (click)="goPage({gbn: 'UDI_RTN' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{eveRtn}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{eveRtn}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                             <div (click)="goPage({gbn: 'UDI' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{eveRpt}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{eveRpt}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                         </div>
                     </div>
                     <div *ngIf="udiThisMonth" class="flex flex-col p-4 col-span-1 m-auto">
-                        <div class="flex-auto grid grid-cols-1">
+                        <div class="flex-auto grid grid-cols-1 text-12s text-bold-550">
                             <div (click)="goPage({gbn: 'error_UDI' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{this.errNowCnt}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{this.errNowCnt}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                             <div (click)="goPage({gbn: 'UDI_RTN' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{nowRtn}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{nowRtn}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                             <div (click)="goPage({gbn: 'UDI' , status: ''})"
-                                 class="col-span-2 mb_5 text-15s udi-status-color right-cell-text udi-hover">{{nowRpt}}&nbsp;<span
-                                class="udi-color text-15s udi-hover-bl">건</span></div>
+                                 class="col-span-2 mb_5 udi-status-color right-cell-text udi-hover">{{nowRpt}}&nbsp;<span
+                                class="udi-color udi-hover-bl">건</span></div>
                         </div>
                     </div>
                 </div>
@@ -331,97 +751,69 @@
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
                         <div class="text-center m-05">재고</div>
                     </div>
-                    <hr style="margin: 0px; border-bottom-width: 0px;">
+                    <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
-                <div class="font-medium text-secondary text-bold text-9s mr-2 text-right m-2">단위 (천원)</div>
+                <div class="font-medium text-12s text-bold-550 text-secondary text-right udi-color" style="margin: 15px 15px 0px 0px;">총&nbsp;&nbsp;&nbsp;
+                    <span style="color: #277EC3!important;">{{priceToString(stockTotalPrice)}}</span>&nbsp;&nbsp;&nbsp;원</div>
                 <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer m-auto">
                     <div [ngClass]="{'flex w-full col-span-7 p-4': isMobile,
                                     'flex w-full col-span-2 p-2 m-auto': !isMobile}">
                         <div [ngClass]="{'widht-38': isMobile,
-                                    'w-1/2': !isMobile}" class="flex flex-col float-left ml-8">
-                            <div class="mb_4 text-13s udi-color">0등급</div>
-                            <div class="mb_4 text-13s udi-color">1등급</div>
-                            <div class="mb_4 text-13s udi-color">2등급</div>
-                            <div class="mb_4 text-13s udi-color">3등급</div>
-                            <div class="mb_4 text-13s udi-color">4등급</div>
-                            <div class="mb_4 text-13s udi-color">기 타</div>
-                            <hr style="margin: 10px 0; border-bottom-width: 0px; margin-bottom: 0.35rem !important; width: 100%">
-                            <div class="mt-1-3 text-13s text-bold-550">합 계</div>
+                                    'w-1/2': !isMobile}" class="flex flex-col float-left ml-8 text-bold-550">
+                            <div class="mb_4 text-12s udi-color">0등급</div>
+                            <div class="mb_4 text-12s udi-color">1등급</div>
+                            <div class="mb_4 text-12s udi-color">2등급</div>
+                            <div class="mb_4 text-12s udi-color">3등급</div>
+                            <div class="mb_4 text-12s udi-color">4등급</div>
+                            <div class="mb_4 text-12s udi-color">기 타</div>
+                            <hr style="margin: 10px 0; border-bottom-width: 1px; width: 100%">
+                            <div class="mt-1-3 text-14s udi-color">합 계</div>
                         </div>
                         <div [ngClass]="{'widht-38': isMobile,
-                                    'w-1/2': !isMobile}" class="flex flex-col w-1/2 float-left mr-8">
-                            <div class="mb_4 text-13s udi-status-color right-cell-text">
+                                    'w-1/2': !isMobile}" class="flex flex-col w-1/2 float-left mr-8 text-bold-550">
+                            <div class="mb_4 text-12s udi-status-color right-cell-text">
                                 {{priceToString(availQty.zCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
-                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.oCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
-                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.tCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
+                                class="udi-color text-12s">개</span></div>
+                            <div class="mb_4 text-12s udi-status-color right-cell-text">{{priceToString(availQty.oCnt)}}&nbsp;<span
+                                class="udi-color text-12s">개</span></div>
+                            <div class="mb_4 text-12s udi-status-color right-cell-text">{{priceToString(availQty.tCnt)}}&nbsp;<span
+                                class="udi-color text-12s">개</span></div>
                             <div
-                                class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.thCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
-                            <div class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.fCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
+                                class="mb_4 text-12s udi-status-color right-cell-text">{{priceToString(availQty.thCnt)}}&nbsp;<span
+                                class="udi-color text-12s">개</span></div>
+                            <div class="mb_4 text-12s udi-status-color right-cell-text">{{priceToString(availQty.fCnt)}}&nbsp;<span
+                                class="udi-color text-12s">개</span></div>
                             <div
-                                class="mb_4 text-13s udi-status-color right-cell-text">{{priceToString(availQty.etcCnt)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
-                            <hr style="margin: 10px 0; border-bottom-width: 0px; margin-bottom: 0.35rem !important; width: 100%">
-                            <div class="mt-1-3 text-13s text-bold-550 right-cell-text"
+                                class="mb_4 text-12s udi-status-color right-cell-text">{{priceToString(availQty.etcCnt)}}&nbsp;<span
+                                class="udi-color text-12s">개</span></div>
+                            <hr style="margin: 10px 0; border-bottom-width: 1px; width: 100%">
+                            <div class="mt-1-3 text-14s right-cell-text"
                                  style="color: #277EC3">{{priceToString(sumAvailQty)}}&nbsp;<span
-                                class="udi-color text-13s">개</span></div>
+                                class="udi-color text-14s">개</span></div>
                         </div>
                     </div>
                     <hr *ngIf="!isMobile"
-                        style="border-left: solid #DBDDE2; height: 28%; left: 51%; top: 62%; position: absolute;">
+                        style="border-left: solid #DBDDE2; height: 28%; left: 51.3%; top: 62%; position: absolute;">
                     <div [ngClass]="{'flex flex-col col-span-7 p-4': isMobile,
                                     'flex flex-col w-full col-span-4': !isMobile}">
-                        <div class="font-medium font-bold text-secondary">총 재고 <span
-                            style="color: #277EC3;">{{priceToString(stockTotalPrice)}}</span></div>
                         <div class="flex h-full">
-                            <canvas class="flex" id="stock_chart" baseChart width="410px" height="180px">
+                            <canvas class="flex" id="stock_chart" baseChart width="520px" height="210px">
                             </canvas>
                         </div>
                     </div>
-                    <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1 m-auto': !isMobile}">
-                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 w-full min-w-0 h-full mt-6">
-                            <div class="flex flex-col col-span-1">
-                                <div class="col-span-2 center-cell-text">
-                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 16px">
-                                        불용
-                                    </div>
-                                </div>
-                                <div class="col-span-2 center-cell-text">
-                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
-                                        가납
-                                    </div>
-                                </div>
-                                <div class="col-span-2 center-cell-text">
-                                    <div class="col-span-2 text-15s udi-color mb_2" style="margin-top: 26px">
-                                        보유
-                                    </div>
+                    <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1': !isMobile}" style="margin: 50px 0px 0px 10px;">
+                        <div class="flex flex-col col-span-2 text-bold-550">
+                            <div class="col-span-2">
+                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(unusedQtyTotal)}}(EA)
                                 </div>
                             </div>
-                            <div class="flex flex-col col-span-1">
-                            <div class="col-span-2" style="margin-top: 10px">
-                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotal)}}
-                                    (EA)
+                            <div class="col-span-2" style="margin-top: 35px!important;">
+                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(acceptableTotal)}}(EA)
                                 </div>
-                                <div
-                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(unusedQtyTotalPrice)}}</div>
                             </div>
-                            <div class="col-span-2" style="margin-top: 15px">
-                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotal)}}
-                                    (EA)
-                                </div>
-                                <div
-                                    class="col-span-1 text-10s udi-color mb_2">{{priceToString(acceptableTotalPrice)}}</div>
+                            <div class="col-span-2" style="margin-top: 36px!important;">
+                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)</div>
                             </div>
-                            <div class="col-span-2" style="margin-top: 15px">
-                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)
-                                </div>
-                                <div class="col-span-1 text-10s udi-color mb_2">{{priceToString(availQtyPrice)}}</div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>

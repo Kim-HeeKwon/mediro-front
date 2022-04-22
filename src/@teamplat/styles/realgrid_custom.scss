@@ -357,6 +357,13 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     text-align: right !important;
 }
 
+.text-left {
+    text-align: left !important;
+}
+.p-02 {
+    padding: 0.2rem !important;
+}
+
 .progress-inner{
     border-radius: 0px !important;
     font-size: 9px !important;
@@ -620,6 +627,9 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .margin_top {
     margin-top: 1rem;
 }
+.mt-05 {
+    margin-top: 0.5rem;
+}
 .mt-6 {
     margin-top: 2rem;
 }
@@ -630,8 +640,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     grid-template-rows: 20% auto !important;
 }
 .my-tb {
-    margin-top: 1.0rem !important;
-    margin-bottom: 1.0rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
 }
 
 .my-tb-05 {
@@ -640,8 +650,8 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 
 .mx-lr {
-    margin-left: 1.0rem !important;
-    margin-right: 1.0rem !important;
+    margin-left: 1.5rem !important;
+    margin-right: 1.5rem !important;
 }
 
 .span-border {
@@ -662,17 +672,20 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     background-color: #FFFFFF;
 }
 
+//.bill-sal {
+//    color: #FFFFFF;
+//    background-color: #277EC3;
+//}
 .bill-sal {
     color: #FFFFFF;
-    background-color: #277EC3;
+    background-color: #9186D0;
 }
 .dash-hover:hover {
     text-decoration: underline #ffffff !important;
-    font-weight: bolder !important;
 }
 .dash-hover-gray:hover {
     text-decoration: underline #8F95A0 !important;
-    font-weight: bold !important;
+    font-size: 13px !important;
 }
 
 .rg-load-indicator {

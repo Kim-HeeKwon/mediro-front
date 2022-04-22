@@ -15,7 +15,6 @@
 
     <!-- Content -->
     <div class="flex flex-col sm:flex-row items-center sm:items-start p-8 pb-6 sm:pb-8">
-
         <!-- Icon -->
         <ng-container *ngIf="data.icon.show">
             <div
@@ -64,6 +63,7 @@
             <ng-container *ngIf="data.actions.cancel.show">
                 <button
                     mat-stroked-button
+                    id="enterCancel"
                     [matDialogClose]=false>
                     {{data.actions.cancel.label}}
                 </button>
@@ -73,12 +73,12 @@
             <ng-container *ngIf="data.actions.confirm.show">
                 <button
                     mat-flat-button
+                    id="enterSubmit"
                     [color]="data.actions.confirm.color"
                     [matDialogClose]=true>
                     {{data.actions.confirm.label}}
                 </button>
             </ng-container>
-
         </div>
     </ng-container>
 
