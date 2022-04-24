@@ -43,6 +43,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
     acceptableDetailFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -82,6 +83,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this.searchForm = this._formBuilder.group({
             itemCd: [''],
             itemNm: [''],
+            fomlInfo: [''],
         });
         const values = [];
         const lables = [];
@@ -107,6 +109,12 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -190,6 +198,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade') {
@@ -235,6 +244,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
                     if (result) {
                         this.searchForm.patchValue({'itemCd': result.itemCd});
                         this.searchForm.patchValue({'itemNm': result.itemNm});
+                        this.searchForm.patchValue({'fomlInfo': result.fomlInfo});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -263,6 +273,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
                         smallDialogSubscription.unsubscribe();
                         this.searchForm.patchValue({'itemCd': result.itemCd});
                         this.searchForm.patchValue({'itemNm': result.itemNm});
+                        this.searchForm.patchValue({'fomlInfo': result.fomlInfo});
                     }
                 });
         }

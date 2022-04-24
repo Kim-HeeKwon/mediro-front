@@ -88,6 +88,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         this.itemPriceHistoryForm = this._formBuilder.group({
             itemCd: [{value: ''}, [Validators.required]], // 품목코드
             itemNm: [{value: ''}, [Validators.required]], // 품목명
+            fomlInfo: [{value: ''}], // 모델명
             refItemNm: [''], // 품목명
             account: [{value: ''}, [Validators.required]], // 거래처 코드
             accountNm: [{value: ''}, [Validators.required]], // 거래처 명
@@ -251,6 +252,7 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.itemPriceHistoryForm.controls['itemCd'].disable();
         this.itemPriceHistoryForm.controls['itemNm'].disable();
+        this.itemPriceHistoryForm.controls['fomlInfo'].disable();
         this.itemPriceHistoryForm.controls['account'].disable();
         this.itemPriceHistoryForm.controls['accountNm'].disable();
         this.itemPriceHistoryForm.controls['type'].disable();

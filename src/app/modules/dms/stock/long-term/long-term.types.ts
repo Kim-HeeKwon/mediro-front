@@ -3,6 +3,7 @@ export interface LongTerm{
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;
     itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위
@@ -20,6 +21,7 @@ export interface LongTermDetail{
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;
     itemGrade: string;          //품목등급
     standard: string;           //규격
     unit: string;               //단위

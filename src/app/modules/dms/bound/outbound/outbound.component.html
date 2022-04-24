@@ -128,6 +128,16 @@
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="outBoundUpdate()">
+                            <span class="ml-2 mr-1">수정</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="outBoundCancel()">
                             <span class="ml-2 mr-1">취소</span>
                         </button>
@@ -324,6 +334,14 @@
                                         style="color: #3490DD !important;"
                                         [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                                     <span class="ml-2 mr-1">신규</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="outBoundUpdate()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
+                                    <span class="ml-2 mr-1">수정</span>
                                 </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"
