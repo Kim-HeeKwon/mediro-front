@@ -6,6 +6,43 @@ table {
 th, tr, td {
     border: 1px solid #ffffff;
 }
+
+.dashboards-step {
+    margin: auto!important;
+    font-size: 10px!important;
+    border-radius: 100%;
+    line-height: 0;
+    background: #fff;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    display: flex;
+    color: #000000;
+    width: 25px;
+    height: 25px;
+    font-weight: 600;
+    z-index: 4;
+    cursor: pointer;
+}
+.dashboards-step:hover {
+    margin: auto!important;
+    font-size: 10px!important;
+    border-radius: 100%;
+    line-height: 0;
+    background: #959;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    display: flex;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    font-weight: 600;
+    z-index: 4;
+    cursor: pointer;
+}
 //div {
 //    font-family: 'NanumGothicExtraBold';
 //}

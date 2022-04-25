@@ -1397,16 +1397,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
         this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
-        // if(this.billInfos[this.billInfos.length - 2].totalAmt.length > 4) {
-        //     this.buy = String(this.billInfos[this.billInfos.length - 2].totalAmt.toString().slice(0, -3));
-        // } else {
-        //     this.buy = this.billInfos[this.billInfos.length - 2].totalAmt;
-        // }
-        // if(this.billInfos[this.billInfos.length - 1].totalAmt.length > 4) {
-        //     this.sal = String(this.billInfos[this.billInfos.length - 1].totalAmt.toString().slice(0, -3));
-        // } else {
-        //     this.sal = this.billInfos[this.billInfos.length - 1].totalAmt;
-        // }
 
         //udi정보
         this.udiInfo$
@@ -1604,9 +1594,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     inChart(): void {
-        const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + (this.ibInfo.pCnt + this.ibInfo.sCnt);
-        const ibInfopsCnt = (this.ibInfo.pCnt + this.ibInfo.sCnt) / ibInfoCnt * 100;
-        const undecided = this.ibInfo.pCnt + this.ibInfo.sCnt;
+        const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + this.ibInfo.pcCnt + this.ibInfo.sCnt + this.ibInfo.scCnt;
+        const ibInfopsCnt = (this.ibInfo.pcCnt + this.ibInfo.scCnt) / ibInfoCnt * 100;
+        const undecided = this.ibInfo.pCnt + this.ibInfo.sCnt + this.ibInfo.nCnt;
         const doughnutChartLabels = [
             '미확정',
             '확정',
@@ -1679,9 +1669,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     outChart(): void {
-        const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + (this.obInfo.pCnt + this.obInfo.sCnt);
-        const obInfopsCnt = (this.obInfo.pCnt + this.obInfo.sCnt) / obInfoCnt * 100;
-        const undecided = this.obInfo.pCnt + this.obInfo.sCnt;
+        const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + this.obInfo.pcCnt + this.obInfo.sCnt + this.obInfo.scCnt;
+        const obInfopsCnt = (this.obInfo.pcCnt + this.obInfo.scCnt) / obInfoCnt * 100;
+        const undecided = this.obInfo.pCnt + this.obInfo.sCnt + this.obInfo.nCnt;
         const doughnutChartLabels = [
             '미확정',
             '확정',

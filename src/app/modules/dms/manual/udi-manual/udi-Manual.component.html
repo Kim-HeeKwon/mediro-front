@@ -74,14 +74,14 @@
                                 mat-flat-button (click)="managesBtn()">
                             <mat-icon class="maual-icon"
                                       [svgIcon]="'heroicons_outline:identification'"></mat-icon>
-                            <span class="ml-2 mr-1 mediro-span-custom">공급내역 보고 관리</span>
+                            <span class="ml-2 mr-1 text-15s text-bold-600">공급내역 보고 관리</span>
                             <mat-icon [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
                         </button>
                         <button *ngIf="manages" class="w-full fuse-mat-dense fuse-mat-no-subscript pr-2"
                                 mat-flat-button (click)="managesBtn()">
-                            <mat-icon class="maual-icon"
+                            <mat-icon style="color: #4F46E5 !important;" class="maual-icon"
                                       [svgIcon]="'heroicons_outline:identification'"></mat-icon>
-                            <span class="ml-2 mr-1 mediro-span-custom">공급내역 보고 관리</span>
+                            <span class="ml-2 mr-1 text-15s text-bold-600 manual-color">공급내역 보고 관리</span>
                             <mat-icon [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                         </button>
                     </div>
@@ -89,27 +89,27 @@
                         <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button
                                 (click)="udiCreat()">
-                            <span>공급내역 보고 등록</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">공급내역 보고 등록</span>
                         </button>
                         <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button
                                 (click)="udiUpdate()">
-                            <span>공급내역 보고 수정</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">공급내역 보고 수정</span>
                         </button>
                         <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button
                                 (click)="udiDelet()">
-                            <span>공급내역 보고 삭제</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">공급내역 보고 삭제</span>
                         </button>
                         <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button
                                 (click)="udiReport()">
-                            <span>공급내역 월 보고</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">공급내역 월 보고</span>
                         </button>
                         <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
                                 mat-flat-button
                                 (click)="udiEmail()">
-                            <span>공급내역 이메일 전송</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">공급내역 이메일 전송</span>
                         </button>
                     </div>
                 </div>

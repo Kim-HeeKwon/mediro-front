@@ -34,12 +34,8 @@ export class TeamPlatConfirmationDialogComponent implements OnInit, AfterViewIni
         setTimeout(() => {
             if (submit !== null) {
                 submit.focus();
-                cancel.blur();
             } else if(cancel !== null) {
                 cancel.focus();
-            } else {
-                submit.blur();
-                cancel.blur();
             }
         }, 300);
     }
