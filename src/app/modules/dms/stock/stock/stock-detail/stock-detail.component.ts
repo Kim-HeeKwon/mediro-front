@@ -63,6 +63,7 @@ export class StockDetailComponent implements OnInit, OnDestroy {
         this.selectedStockForm = this._formBuilder.group({
             itemCd: [{value: this.data.detail.itemCd ,disabled:true}], // 품목코드
             itemNm: [{value: this.data.detail.itemNm ,disabled:true}], // 품목명
+            fomlInfo: [{value: this.data.detail.fomlInfo ,disabled:true}], // 모델명
             adjType: ['', [Validators.required]], // 사유
             availQty: [{value: this.data.detail.availQty ,disabled:true}], // 보유수량
             qty: ['', [Validators.required]], // 조정수량

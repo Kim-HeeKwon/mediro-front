@@ -42,6 +42,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
     validityDetailFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -83,6 +84,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.searchForm = this._formBuilder.group({
             itemCd: [''], // 품목코드
             itemNm: [''], // 품목명,
+            fomlInfo: ['']
         });
 
         const values = [];
@@ -101,15 +103,22 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         //그리드 컬럼
         this.validityDetailColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
@@ -206,6 +215,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
                 dataCell.dataColumn.fieldName === 'itemGrade') {
@@ -263,6 +273,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                     if (result) {
                         this.searchForm.patchValue({'itemCd': result.itemCd});
                         this.searchForm.patchValue({'itemNm': result.itemNm});
+                        this.searchForm.patchValue({'fomlInfo': result.fomlInfo});
                         this._changeDetectorRef.markForCheck();
                     }
                 });
@@ -291,6 +302,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
                         smallDialogSubscription.unsubscribe();
                         this.searchForm.patchValue({'itemCd': result.itemCd});
                         this.searchForm.patchValue({'itemNm': result.itemNm});
+                        this.searchForm.patchValue({'fomlInfo': result.fomlInfo});
                     }
                 });
         }

@@ -73,6 +73,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -112,6 +113,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
             type: ['ALL'],
             itemCd: [''],
             itemNm: [''],
+            fomlInfo: [''],
             account: [''],
             accountNm: [''],
             searchCondition: ['100'],
@@ -168,6 +170,16 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '150',
                 styleName: 'left-cell-text',
                 header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo',
+                fieldName: 'fomlInfo',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text',
+                header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

@@ -14,6 +14,7 @@ export interface InBound
     ibLineNo: number;           //입고라인번호
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;
     refItemNm?: string;
     itemGrade: string;          //품목등급
     standard: string;           //규격
@@ -70,6 +71,7 @@ export interface InBoundDetail
     ibLineNo: number;           //입고라인번호
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;
     refItemNm?: string;
     itemGrade: string;          //품목등급
     standard: string;           //규격

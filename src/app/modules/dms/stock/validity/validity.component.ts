@@ -55,6 +55,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
     validityFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -134,21 +135,29 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
             type: ['ALL'],
             validity: ['ALL'],
             itemNm: [''],
+            fomlInfo: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
 
         this.validityColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }

@@ -25,6 +25,7 @@ import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 import {UserComponent} from "./user.component";
+import {UserBreakComponent} from "./user-break/user-break.component";
 
 const userRoutes: Route[] = [
     {
@@ -36,6 +37,7 @@ const userRoutes: Route[] = [
 @NgModule({
     declarations: [
         UserComponent,
+        UserBreakComponent
     ],
     imports: [
         CommonModule,

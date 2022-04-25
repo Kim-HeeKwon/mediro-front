@@ -332,6 +332,24 @@ export class OutboundService{
     }
 
     /**
+     * Update
+     */
+    outBoundUpdate(outBounds: OutBound[]): Observable<OutBound>
+    {
+        return this.outBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(outBounds, 'v1/api/inOut/outBound/update').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
      * outBound
      */
     outBoundConfirm(outBounds: OutBound[]): Observable<OutBound>

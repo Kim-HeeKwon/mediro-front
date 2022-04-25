@@ -47,6 +47,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -95,6 +96,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm = this._formBuilder.group({
             accountNm: [''],
             itemNm: [''],
+            fomlInfo: [''],
         });
 
         const columnLayout = [
@@ -102,6 +104,7 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
             'accountNm',
             'itemCd',
             'itemNm',
+            'fomlInfo',
             'standard',
             'unit',
             'itemGrade',
@@ -126,13 +129,13 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.acceptableColumns = [
             {
-                name: 'account', fieldName: 'account', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -144,8 +147,14 @@ export class AcceptableComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

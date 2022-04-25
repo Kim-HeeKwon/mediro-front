@@ -48,6 +48,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
     safetyFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'supplier', dataType: ValueType.TEXT},
         {fieldName: 'supplierNm', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
@@ -97,20 +98,27 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             itemNm: [''],
+            fomlInfo: [''],
             invYn: ['ALL'],
         });
 
         //그리드 컬럼
         this.safetyColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -280,6 +288,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'supplierNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||

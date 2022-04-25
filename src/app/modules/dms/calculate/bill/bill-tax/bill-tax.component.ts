@@ -97,7 +97,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
             chargeDirection: [{value: '',disabled:true}, [Validators.required]], // 과금방향
             type: [{value: '',disabled:true}, [Validators.required]], // 유형
             taxType: [{value: '',disabled:true}, [Validators.required]], // 과세유형
-            purposeType: ['', [Validators.required]], // 영수/청구
+            purposeType: ['청구', [Validators.required]], // 영수/청구
             billingAmt : [{value: '',disabled:true}, [Validators.required]],
             taxAmt : [{value: '',disabled:true}, [Validators.required]],
             billingTotalAmt : [{value: '',disabled:true}, [Validators.required]],

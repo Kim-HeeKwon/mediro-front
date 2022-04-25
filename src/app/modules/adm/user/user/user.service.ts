@@ -99,5 +99,22 @@ export class UserService {
             ))
         );
     }
+    /**
+     * break
+     */
+    breakUserInfo(users: UserData[]): Observable<UserData>
+    {
+        return this.users$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(users, 'v1/api/admin/user/break-user-info').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 
 }

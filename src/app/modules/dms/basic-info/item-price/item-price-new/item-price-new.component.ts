@@ -68,6 +68,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
         this.selectedItemPriceForm = this._formBuilder.group({
             itemCd: [{value: '', disabled: true}, [Validators.required]], // 품목코드
             itemNm: [{value:'', disabled:true}], // 품목명
+            fomlInfo: [{value:'', disabled:true}], // 모델명
             refItemNm: [''], // 품목명
             account: [{value: '', disabled: true}, [Validators.required]], // 거래처
             accountNm: [{value:'', disabled:true}], // 거래처명
@@ -99,6 +100,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
                 if(result){
                     this.selectedItemPriceForm.patchValue({'itemCd': result.itemCd});
                     this.selectedItemPriceForm.patchValue({'itemNm': result.itemNm});
+                    this.selectedItemPriceForm.patchValue({'fomlInfo': result.fomlInfo});
                 }
             });
     } else {
@@ -122,6 +124,7 @@ export class ItemPriceNewComponent implements OnInit, OnDestroy
                     if(result){
                         this.selectedItemPriceForm.patchValue({'itemCd': result.itemCd});
                         this.selectedItemPriceForm.patchValue({'itemNm': result.itemNm});
+                        this.selectedItemPriceForm.patchValue({'fomlInfo': result.fomlInfo});
                     }
                     smallDialogSubscription.unsubscribe();
                 });

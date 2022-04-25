@@ -240,11 +240,11 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             },
         ];
         //그리드 Provider
-        this.outBoundHeaderDataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.outBoundHeaderDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
-            stateBar: false,
+            stateBar: true,
             checkBar: true,
             footers: false,
         };
@@ -256,25 +256,31 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             this.outBoundHeaderColumns,
             this.outBoundHeaderFields,
             gridListOption);
-
         //그리드 옵션
         this.gridList.setEditOptions({
-            readOnly: true,
+            readOnly: false,
             insertable: false,
             appendable: false,
-            editable: false,
-            deletable: false,
+            editable: true,
+            updatable: true,
+            deletable: true,
             checkable: true,
-            softDeleting: false,
+            softDeleting: true,
         });
-
         this.gridList.deleteSelection(true);
         this.gridList.setDisplayOptions({liveScroll: false,});
-        this.gridList.setPasteOptions({enabled: false,});
         this.gridList.setCopyOptions({
             enabled: true,
             singleMode: false
         });
+        this.gridList.setPasteOptions({
+            enabled: true,
+            commitEdit: true,
+            checkReadOnly: true
+        });
+        this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.validateOnEdited = true;
+        this._realGridsService.gfn_EditGrid(this.gridList);
 
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
@@ -304,6 +310,18 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
         };
+
+        // 셀 edit control
+        this.gridList.setCellStyleCallback((grid, dataCell) => {
+
+            //추가시
+            if (dataCell.dataColumn.fieldName === 'remarkHeader') {
+                return {editable: true};
+            } else {
+                return {editable: false};
+            }
+        });
+
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
@@ -566,5 +584,53 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         if(this.statusProcess !== null) {
             this.searchForm.patchValue({'status': [this.statusProcess]});
         }
+    }
+
+    outBoundUpdate() {
+
+        let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.outBoundHeaderDataProvider);
+
+        let detailCheck = false;
+        if(rows.length < 1){
+            this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            detailCheck = true;
+        }
+        if (detailCheck) {
+            return;
+        }
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '수정하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._outBoundService.outBoundUpdate(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((outBound: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this._functionService.cfn_alertCheckMessage(outBound);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                            this.selectHeader();
+                        });
+                } else {
+                    this.selectHeader();
+                }
+            });
+
+
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
     }
 }

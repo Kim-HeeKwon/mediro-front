@@ -16,6 +16,7 @@ import {UserService} from "./user.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {UserPagenation} from "./user.types";
 import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
+import {UserBreakComponent} from "./user-break/user-break.component";
 
 @Component({
     selector: 'app-admin-user',
@@ -42,6 +43,8 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     talkYn: CommonCode[] = null;
     promotion: CommonCode[] = null;
 
+    yn: CommonCode[] = null;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     // @ts-ignore
@@ -64,7 +67,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'email', dataType: ValueType.TEXT},
 
         {fieldName: 'subscriptionFeeYn', dataType: ValueType.TEXT},
-        {fieldName: 'freeYn', dataType: ValueType.TEXT},
+        {fieldName: 'freeDate', dataType: ValueType.TEXT},
         {fieldName: 'payDate', dataType: ValueType.TEXT},
         {fieldName: 'payAmt', dataType: ValueType.NUMBER},
         {fieldName: 'commissionWindow', dataType: ValueType.TEXT},
@@ -117,6 +120,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         this.area = _utilService.commonValue(_codeStore.getValue().data, 'AREA');
         this.talkYn = _utilService.commonValue(_codeStore.getValue().data, 'TALK_YN');
         this.promotion = _utilService.commonValue(_codeStore.getValue().data, 'PROMOTION');
+        this.yn = _utilService.commonValue(_codeStore.getValue().data, 'YN');
 
         this.isMobile = this._deviceService.isMobile();
     }
@@ -161,6 +165,9 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         const valuesPromotion = [];
         const lablesPromotion = [];
 
+        const valuesYn = [];
+        const lablesYn = [];
+
         this.yearUser.forEach((param: any) => {
             valuesYearUser.push(param.id);
             lablesYearUser.push(param.name);
@@ -187,6 +194,10 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             valuesPromotion.push(param.id);
             lablesPromotion.push(param.name);
         });
+        this.yn.forEach((param: any) => {
+            valuesYn.push(param.id);
+            lablesYn.push(param.name);
+        });
 
 
         const columnLayout = [
@@ -207,7 +218,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             'subscriptionFeeYn',
-            'freeYn',
+            'freeDate',
             'payDate',
             'payAmt',
             'midGrade',
@@ -281,18 +292,36 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'subscriptionFeeYn', fieldName: 'subscriptionFeeYn', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '가입비(결제유무)', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
-                }
+                },
+                values: valuesYn,
+                labels: lablesYn,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.yn)
             },
             {
-                name: 'freeYn', fieldName: 'freeYn', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '무료서비스', styleName: 'center-cell-text blue-font-color'}, renderer: {
+                name: 'freeDate', fieldName: 'freeDate', type: 'data', width: '120', styleName: 'left-cell-text'
+                , header: {text: '무료서비스(종료)', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
+                }
+                , datetimeFormat: 'yyyy-MM-dd'
+                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+                , editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM-dd',
+                    textReadOnly: true,
                 }
             },
             {
                 name: 'payDate', fieldName: 'payDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '유료시작', styleName: 'center-cell-text blue-font-color'}, renderer: {
                     showTooltip: true
+                }
+                , datetimeFormat: 'yyyy-MM-dd'
+                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+                , editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM-dd',
+                    textReadOnly: true,
                 }
             },
             {
@@ -497,7 +526,14 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.setCellStyleCallback((grid, dataCell) => {
 
             //추가시
-            if (dataCell.dataColumn.fieldName === 'channel' ||
+            if (
+                dataCell.dataColumn.fieldName === 'subscriptionFeeYn' ||
+                dataCell.dataColumn.fieldName === 'freeDate' ||
+                dataCell.dataColumn.fieldName === 'payDate' ||
+                dataCell.dataColumn.fieldName === 'commissionWindow' ||
+                dataCell.dataColumn.fieldName === 'commissionRate' ||
+                dataCell.dataColumn.fieldName === 'promotionAmt' ||
+                dataCell.dataColumn.fieldName === 'channel' ||
                 dataCell.dataColumn.fieldName === 'area' ||
                 dataCell.dataColumn.fieldName === 'talkYn' ||
                 dataCell.dataColumn.fieldName === 'visitCnt' ||
@@ -583,6 +619,53 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     enter(event): void {
         if (event.keyCode === 13) {
             this.selectUser();
+        }
+    }
+
+    userInfoBreak() {
+        let rows = this._realGridsService.gfn_GetCheckRows(this.gridList, this.userDataProvider);
+
+        console.log(rows);
+        let check = false;
+        if (rows.length === 0) {
+            this._functionService.cfn_alert('선택된 행이 존재하지 않습니다.');
+            check = true;
+        }
+
+        if (check) {
+            return;
+        }
+        if (!this.isMobile) {
+            const d = this._matDialog.open(UserBreakComponent, {
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true,
+                data: {select: rows}
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.selectUser();
+            });
+        } else {
+            const d = this._matDialog.open(UserBreakComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+                data: {select: rows}
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                    // d.updateSize('calc(100% - 50px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.selectUser();
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 

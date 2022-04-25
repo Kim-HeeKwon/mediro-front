@@ -147,6 +147,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.searchForm = this._formBuilder.group({
             itemGrade: ['ALL'],
             itemNm: [''],
+            fomlInfo: [''],
             itemCd: [''],
             searchCondition: ['100'],
             searchText: [''],
@@ -189,6 +190,12 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'standard',
                 fieldName: 'standard',
                 type: 'data',
@@ -220,12 +227,6 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 name: 'rcperSalaryCode', fieldName: 'rcperSalaryCode', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '요양급여코드', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

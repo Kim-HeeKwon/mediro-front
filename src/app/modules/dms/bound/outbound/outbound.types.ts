@@ -18,6 +18,7 @@ export interface OutBound
     obLineNo: number;
     itemCd: string;
     itemNm: string;
+    fomlInfo?: string;
     refItemNm?: string;
     obExpQty: number;
     qty: number;
@@ -61,6 +62,7 @@ export interface OutBoundDetail
     obLineNo: number;
     itemCd: string;
     itemNm: string;
+    fomlInfo?: string;
     refItemNm?: string;
     status: string;
     obExpQty: number;

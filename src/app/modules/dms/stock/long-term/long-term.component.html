@@ -34,6 +34,15 @@
                                     [autocomplete]="'off'">
                             </mat-form-field>
                         </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [formControlName]="'fomlInfo'"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'모델명을 입력해주세요.'">
+                            </mat-form-field>
+                        </div>
                     </div>
                 </form>
                 <!-- Actions -->
@@ -88,11 +97,19 @@
                                         <div class="flex flex-col w-full">
                                             <div class="flex w-4/4">
                                                 <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                    <mat-label class="mediro-ft-label">품목 명</mat-label>
+                                                    <mat-label class="mediro-ft-label">품목명</mat-label>
                                                     <input
                                                         matInput
                                                         (window:onkeypress)="enter($event)"
                                                         [formControlName]="'itemNm'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">모델명</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'fomlInfo'"
                                                         [autocomplete]="'off'">
                                                 </mat-form-field>
                                                 <button

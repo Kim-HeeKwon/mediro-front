@@ -70,6 +70,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
         this.stockHistoryForm = this._formBuilder.group({
             itemCd: [{value: ''}], // 품목코드
             itemNm: [{value: ''}], // 품목명
+            fomlInfo: [{value: ''}], // 모델명
             standard: [{value: ''}], // 규격
             unit: [{value: ''}], // 단위
             itemGrade: [{value: ''}], // 품목등급
@@ -184,6 +185,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.stockHistoryForm.controls['itemCd'].disable();
         this.stockHistoryForm.controls['itemNm'].disable();
+        this.stockHistoryForm.controls['fomlInfo'].disable();
         this.stockHistoryForm.controls['standard'].disable();
         this.stockHistoryForm.controls['unit'].disable();
         this.stockHistoryForm.controls['itemGrade'].disable();

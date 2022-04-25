@@ -4,6 +4,7 @@ export interface Safety
     mId: string;                //회원사
     itemCd: string;             //품목코드
     itemNm: string;             //품목명
+    fomlInfo?: string;
     supplier?: string;
     supplierNm?: string;
     itemGrade: string;          //품목등급

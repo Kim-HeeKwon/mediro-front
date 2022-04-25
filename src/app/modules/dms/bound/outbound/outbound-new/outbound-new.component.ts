@@ -68,6 +68,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'obLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -149,7 +150,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|refItemNm:refItemNm|' +
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|refItemNm:refItemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|unitPrice:salesPrice',
                         where : [{
                             key: 'account',
@@ -158,8 +159,14 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -268,6 +275,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (dataCell.dataColumn.fieldName === 'itemCd' ||
                 dataCell.dataColumn.fieldName === 'itemNm' ||
+                dataCell.dataColumn.fieldName === 'fomlInfo' ||
                 dataCell.dataColumn.fieldName === 'refItemNm' ||
                 dataCell.dataColumn.fieldName === 'standard' ||
                 dataCell.dataColumn.fieldName === 'unit' ||
@@ -331,7 +339,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     addRow(): void {
         const values = [
-            '', '', '', '', '', '', 0, 0, 0, ''
+            '', '', '', '', '', '', '', '', 0, 0, 0, 0, ''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);

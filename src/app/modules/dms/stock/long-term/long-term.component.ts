@@ -48,6 +48,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
     longTermFields: DataFieldObject[] = [
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
@@ -107,6 +108,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             itemNm: [''],
+            fomlInfo: [''],
             searchCondition: ['100'],
             searchText: [''],
         });
@@ -127,15 +129,22 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.longTermColumns = [
             {
-                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '100', styleName: 'left-cell-text'
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }

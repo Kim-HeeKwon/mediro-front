@@ -138,7 +138,7 @@ export class AuthSignInComponent implements OnInit
                     // Set the alert
                     this.alert = {
                         type   : 'error',
-                        message: '이메일 또는 패스워드가 일치하지 않습니다.'
+                        message: response
                     };
 
                     // Show the alert
