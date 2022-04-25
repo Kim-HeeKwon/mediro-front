@@ -100,6 +100,19 @@ export const appRoutes: Route[] = [
             {path: 'list', loadChildren: () => import('@teamplat/components/common-report-list/common-report-list.module').then(m => m.CommonReportListModule)},
         ]
     },
+    {
+        path: 'notice',
+        //canActivate: [NoAuthGuard],
+        //canActivateChild: [NoAuthGuard],
+        component: LayoutComponent,
+        data: {
+            layout: 'empty'
+        },
+        children: [
+            {path: 'board', loadChildren: () => import('@teamplat/components/notice-board/notice-board.module').then(m => m.NoticeBoardModule)},
+        ]
+    },
+
 
 
     {

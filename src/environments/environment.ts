@@ -10,6 +10,7 @@ export const environment = {
     },
     userLogtest: 'Y',
     defaultUserId: 'mediroDefault',
+    pageUrl: 'https://localhost:4409/#/',
     serverUrl: '',
     //serverTaxUrl: '',
     serverTaxUrl: 'http://localhost:8097/teamPlatBill/',

@@ -6,6 +6,8 @@ export const environment = {
     },
     userLogtest: 'N',
     defaultUserId: 'mediroFw',
+    pageUrl: 'http://52.78.184.115/',
+    //pageUrl: 'https://www.teammediro.com/',
     serverUrl: 'http://52.78.184.115/teamPlatFw/',
     serverTaxUrl: 'http://52.78.184.115/teamPlatBill/',
     //serverUrl: 'https://www.teammediro.com/teamPlatFw/',

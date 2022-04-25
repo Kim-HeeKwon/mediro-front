@@ -107,6 +107,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+        let dashboard = false;
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             taxGbn: ['ALL'],
@@ -140,6 +141,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 end: [],
             });
             this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+            dashboard = true;
         }
 
         const valuesType = [];
@@ -403,8 +405,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
-
-        //this.selectHeader();
+        if(dashboard){
+            this.selectHeader();
+        }
         this._changeDetectorRef.markForCheck();
         // this.setGridData();
         //

@@ -99,6 +99,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+        let dashboard = false;
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             status: ['ALL'],
@@ -129,6 +130,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 end: []
             });
             this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+            dashboard = true;
         }
 
         const valuesType = [];
@@ -330,7 +332,9 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        //this.selectHeader();
+        if(dashboard){
+            this.selectHeader();
+        }
         this._changeDetectorRef.markForCheck();
         // this.setGridData();
         //
@@ -465,7 +469,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
     salesorderCancel() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.salesorderHeaderDataProvider);
         if (checkValues.length < 1) {
-            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         } else {
             let check = true;
@@ -480,7 +484,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                     title: '',
-                    message: '취소하시겠습니까?',
+                    message: '삭제하시겠습니까?',
                     icon: this._formBuilder.group({
                         show: true,
                         name: 'heroicons_outline:exclamation',
@@ -489,7 +493,7 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                     actions: this._formBuilder.group({
                         confirm: this._formBuilder.group({
                             show: true,
-                            label: '취소',
+                            label: '삭제',
                             color: 'warn'
                         }),
                         cancel: this._formBuilder.group({

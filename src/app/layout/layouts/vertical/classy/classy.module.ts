@@ -16,6 +16,7 @@ import { UserMenuModule } from 'app/layout/common/user-menu/user-menu.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
 import {LinkModule} from "../../../common/link/link.module";
+import {FuseAddscreenModule} from "../../../../../@teamplat/components/addscreen/addscreen.module";
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import {LinkModule} from "../../../common/link/link.module";
         MatIconModule,
         MatMenuModule,
         FuseFullscreenModule,
+        FuseAddscreenModule,
         FuseNavigationModule,
         LanguageModule,
         MessagesModule,
@@ -37,7 +39,7 @@ import {LinkModule} from "../../../common/link/link.module";
         ShortcutsModule,
         UserMenuModule,
         SharedModule,
-        LinkModule
+        LinkModule,
     ],
     exports     : [
         ClassyLayoutComponent

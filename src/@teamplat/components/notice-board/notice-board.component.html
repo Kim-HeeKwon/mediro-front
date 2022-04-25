@@ -1,0 +1,222 @@
+<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <mat-drawer-container class="flex-auto sm:h-full w-full">
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col w-full">
+
+            <!-- Main -->
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+
+                <!-- Load settings panel -->
+                <div class="mt-8">
+                    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between">
+                            <div style="margin: 0 auto;"
+                                 class="flex items-center pt-8 pb-8">
+                                <!-- Add product button -->
+                                <div class="relative text-3xl font-extrabold tracking-tight">
+                                    <span
+                                        class="absolute bottom-4 w-6 h-6 rounded-full"
+                                        style="opacity: 0.5;left: -12px !important; background-color: #3490DD !important;"></span>
+                                    <span>
+                                        공지사항
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!isMobile" class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pt-1 pb-2 px-6 border-b">
+                            <!-- 검새조건 -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0">
+                                <span>전체 : {{listsCount}}</span>
+
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <form
+                                    [formGroup]="searchForm">
+                                    <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript min-w-50 mr-2">
+                                        <input
+                                            matInput
+                                            (window:onkeypress)="enter($event)"
+                                            [formControlName]="'title'"
+                                            [autocomplete]="'off'"
+                                            [placeholder]="'검색어를 입력해주세요.'">
+                                    </mat-form-field>
+                                </form>
+                                <!-- Add product button -->
+                                <button
+                                    class="ml-2 mediro-btn-custom-background-color"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="search()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                    <span class="ml-2 mr-1">검색하기</span>
+                                </button>
+                            </div>
+                            <!-- Loader -->
+                            <div
+                                class="absolute inset-x-0 bottom-0"
+                                *ngIf="isLoading">
+                                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                            </div>
+                        </div>
+
+                        <!-- Main -->
+                        <div class="flex flex-auto overflow-hidden">
+                            <!-- Item list -->
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <ng-container *ngIf="listsCount > 0; else noItems">
+                                    <!-- Table wrapper -->
+                                    <div
+                                        class="overflow-x-auto sm:overflow-y-auto"
+                                        cdkScrollable>
+                                        <!-- Table -->
+                                        <table
+                                            class="w-full min-w-320 table-fixed bg-transparent"
+                                            [ngClass]="{'pointer-events-none': isLoading}"
+                                            mat-table
+                                            matSort
+                                            [matSortActive]="'no'"
+                                            [matSortDisableClear]="true"
+                                            [matSortDirection]="'asc'"
+                                            [multiTemplateDataRows]="true"
+                                            [dataSource]="lists$"
+                                            [trackBy]="trackByFn">
+
+                                            <ng-container matColumnDef="nbNo">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    <button>번호</button>
+                                                </th>
+                                                <td
+                                                    mat-cell
+                                                    *matCellDef="let product"
+                                                >
+                                                    <button
+                                                        style="padding: 0px;
+                                                                max-height: 24px;
+                                                                min-height: 24px;
+                                                                height: 24px;
+                                                                /* width: 20%; */
+                                                                /* width: 10px !important; */
+                                                                min-width: 40%;"
+                                                        mat-raised-button
+                                                        color="warn">
+<!--                                                        <mat-icon [svgIcon]="'heroicons_outline:pencil'"></mat-icon>-->
+                                                        <span class="text-bold-600">공지</span>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+                                            <!-- itemNm -->
+                                            <ng-container matColumnDef="title">
+                                                <th
+                                                    style="width: 55%;"
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    제목
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.title}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- grade -->
+                                            <ng-container matColumnDef="addUser">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    작성자
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.addUser}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="addDate">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    등록일
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.addDate}}
+                                                </td>
+                                            </ng-container>
+                                            <!-- unit -->
+                                            <ng-container matColumnDef="cnt">
+                                                <th
+                                                    class="bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    mat-header-cell
+                                                    *matHeaderCellDef
+                                                    mat-sort-header
+                                                    disableClear>
+                                                    조회
+                                                </th>
+                                                <td
+                                                    class="pr-8 truncate"
+                                                    mat-cell
+                                                    *matCellDef="let product">
+                                                    {{product.cnt}}
+                                                </td>
+                                            </ng-container>
+                                            <tr
+                                                class="shadow"
+                                                mat-header-row
+                                                *matHeaderRowDef="tableColumns; sticky: true"></tr>
+                                            <tr
+                                                class="hover:bg-gray-100 dark:hover:bg-hover"
+                                                mat-row
+                                                *matRowDef="let product; columns: tableColumns;"></tr>
+                                        </table>
+                                    </div>
+                                    <mat-paginator
+                                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                                        [ngClass]="{'pointer-events-none': isLoading}"
+                                        [length]="pagination.length"
+                                        [pageIndex]="pagination.page"
+                                        [pageSize]="pagination.size"
+                                        [pageSizeOptions]="[8, 10, 25, 100]"
+                                        [showFirstLastButtons]="true"></mat-paginator>
+
+                                </ng-container>
+                                <ng-template #noItems>
+                                    <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">
+                                        <p>데이터가 없습니다.</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>
+
+

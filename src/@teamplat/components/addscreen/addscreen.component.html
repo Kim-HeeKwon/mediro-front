@@ -1,0 +1,29 @@
+<!-- Button -->
+<button
+    mat-icon-button
+    [matMenuTriggerFor]="userActions">
+    <span class="relative">
+        <mat-icon
+            [svgIcon]="'bookmark_add'"></mat-icon>
+<!--        <span-->
+<!--            class="absolute right-0 bottom-0 w-2 h-2 rounded-full"-->
+<!--            [ngClass]="{'bg-green-500': 'busy'}"-->
+<!--        ></span>-->
+    </span>
+</button>
+
+<mat-menu
+    [xPosition]="'before'"
+    #userActions="matMenu">
+    <button mat-menu-item (click)="newPage();">
+        <mat-icon [svgIcon]="'web'"></mat-icon>
+        <span class="text-12s">새창열기</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button
+        mat-menu-item
+        (click)="tabPage()">
+        <mat-icon [svgIcon]="'tab'"></mat-icon>
+        <span class="text-12s">새탭열기</span>
+    </button>
+</mat-menu>
