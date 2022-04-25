@@ -519,9 +519,9 @@
                         <span [ngClass]="{'text-10s' : isMobile}"
                               class="text-12s white-font-color text-bold-550">접 수</span>
                             <span [ngClass]="{'text-10s' : isMobile}"
-                                  class="text-12s white-font-color text-bold-550">취 소</span>
+                                  class="text-12s white-font-color text-bold-550">등 록</span>
                             <div (click)="goPage({gbn: 'SO' , status: 'N'})" class="dashboards-step flex-col sm:col-span-1 flex-auto">{{soInfo.nCnt}}</div>
-                            <div (click)="goPage({gbn: 'SO' , status: 'C'})" class="dashboards-step flex-col sm:col-span-1 flex-auto">{{soInfo.cCnt}}</div>
+                            <div (click)="goPage({gbn: 'SO' , status: 'S'})" class="dashboards-step flex-col sm:col-span-1 flex-auto">{{soInfo.sCnt}}</div>
                         </div>
                     </div>
                 </div>
