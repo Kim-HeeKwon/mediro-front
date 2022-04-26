@@ -4,7 +4,7 @@
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
     [navigation]="data.navigation.default"
-    [opened]="!isScreenSmall">
+    [opened]="!isScreenSmall" xmlns="http://www.w3.org/1999/html">
     <!-- Navigation header hook -->
     <ng-container fuseVerticalNavigationContentHeader>
         <div class="flex items-center w-full p-4 pl-4" style="background: #ffffff; justify-content: center; padding: 14.9px !important;">
@@ -59,6 +59,9 @@
             <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
         </button>
 
+        <div class="flex items-center">
+            <fuse-announcement></fuse-announcement>
+        </div>
 <!--        &lt;!&ndash; Horizontal navigation &ndash;&gt;-->
 <!--        <fuse-horizontal-navigation *ngIf="!isMobile"-->
 <!--        class="mr-2 bg-card"-->
@@ -139,13 +142,23 @@
 <!--                    {{user.email}}-->
 <!--                </div>-->
             </div>
-            <fuse-addscreen></fuse-addscreen>
-            <user-menu [showAvatar]="false"></user-menu>
+            <button *ngIf="isMobile" mat-icon-button
+                (click)="mobileToggle()">
+                <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
+            </button>
+            <div *ngIf="toggle" class="flex flex-col" style="position: absolute; top: 80%; left: 86.5%; background: white;">
+                <fuse-addscreen></fuse-addscreen>
+                <user-menu [showAvatar]="false"></user-menu>
+                <fuse-fullscreen></fuse-fullscreen>
+                <links></links>
+            </div>
+            <fuse-addscreen *ngIf="!isMobile"></fuse-addscreen>
+            <user-menu *ngIf="!isMobile" [showAvatar]="false"></user-menu>
             <!--<language></language>-->
-            <fuse-fullscreen></fuse-fullscreen>
+            <fuse-fullscreen *ngIf="!isMobile"></fuse-fullscreen>
             <!--<search [appearance]="'bar'"></search>-->
 <!--            <shortcuts [shortcuts]="data.shortcuts"></shortcuts>-->
-            <links></links>
+            <links *ngIf="!isMobile"></links>
         </div>
     </div>
 

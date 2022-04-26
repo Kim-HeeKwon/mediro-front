@@ -30,6 +30,18 @@
                         class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
+                        (click)="shipmentOutbound()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:table'"></mat-icon>
+                        <span class="ml-2 mr-1 mediro-font-custom">출하지시서</span>
+                    </button>
+                </div>
+                <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                        mat-flat-button
+                        [color]="'primary'"
                         (click)="reportOutbound()">
                         <mat-icon
                             class="icon-size-5"

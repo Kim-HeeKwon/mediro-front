@@ -89,7 +89,8 @@
             <div style="font-size: 14px; text-align: left;">[ {{headerText}} ]<span></span></div>
             <div style="font-size: 14px; text-align: left;">{{divisionText}}번호 : {{reportHeaderData.no}}<span></span></div>
         </div>
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
+        <!-- 거래명세서 -->
+        <table *ngIf="!shipment" border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
             <tbody>
             <tr style="height: 40px;">
                 <td style="border: solid 1px; width: 43%;" colspan="4" rowspan="5">
@@ -135,11 +136,37 @@
             </tr>
             </tbody>
         </table>
+        <!-- 출하지시서 -->
+        <table *ngIf="shipment" border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black;">
+            <tbody>
+            <tr style="height: 40px;">
+                <td width="25" style="border: solid 1px; background-color: lightgray;" colspan="1" rowspan="5">
+                    <div style="text-align:center;font-weight: bold;">납</div>
+
+                    <div style="text-align:center;font-weight: bold;">품</div>
+
+                    <div style="text-align:center;font-weight: bold;">처</div>
+                </td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">업체명</td>
+                <td style="border: solid 1px;text-align: center;" colspan="5">{{shipmentAccountNm}}</td>
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">출하예정일</td>
+                <td style="border: solid 1px;text-align: center;" colspan="5">{{reportHeaderData.deliveryDate}}</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px; text-align: center; width: 90px;">주소</td>
+                <td style="border: solid 1px;text-align: center;" colspan="10">{{shipmentAddress}}</td>
+            </tr>
+            <tr style="height: 40px;">
+                <td style="border: solid 1px; padding:5px;text-align: center;font-weight: bold;" colspan="10">합&nbsp;&nbsp;계&nbsp;&nbsp;금&nbsp;&nbsp;액&nbsp;&nbsp;:&nbsp;&nbsp;원&nbsp;&nbsp;정&nbsp;&nbsp;&nbsp;&nbsp;&#8361;&nbsp;&nbsp;{{this.priceToString(totalPrice)}}&nbsp;&nbsp;(VAT 포함)</td>
+            </tr>
+            </tbody>
+        </table>
 
         <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
             <tr style="background-color: lightgray; text-align: center; font-weight: bold; height: 40px;">
                 <td style="border: solid 1px">순번</td>
                 <td style="border: solid 1px">품목</td>
+                <td *ngIf="shipment" style="border: solid 1px">모델</td>
                 <td style="border: solid 1px">규격</td>
                 <td style="border: solid 1px">단위</td>
                 <td style="border: solid 1px">수량</td>
@@ -148,11 +175,12 @@
 <!--                <td style="border: solid 1px">세액</td>-->
                 <td style="border: solid 1px">비고</td>
             </tr>
-            <tbody *ngFor="let row of detail; let i=dataIndex;">
+            <tbody *ngFor="let row of shipmentDetail; let i=dataIndex;">
 
             <tr style="text-align: center; height: 40px;">
                 <td style="border: solid 1px">{{row.no}}</td>
                 <td style="border: solid 1px;">{{row.itemNm}}</td>
+                <td style="border: solid 1px;">{{row.fomlInfo}}</td>
                 <td style="border: solid 1px;">{{row.standard}}</td>
                 <td style="border: solid 1px;">{{row.unit}}</td>
                 <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.qty)}}</td>
@@ -286,7 +314,7 @@
 
             </tbody>-->
         </table>
-        <table border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
+        <table *ngIf="!shipment" border="1" cellpadding="1" cellspacing="1" style="width:1000px; border: 2px solid black; margin-top: 5px;">
             <tbody>
             <tr style="text-align: center; padding:5px; height: 40px;">
                 <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납품일자</td>

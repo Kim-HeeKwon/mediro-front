@@ -20,23 +20,28 @@ import {PopupStore} from "../../../app/core/common-popup/state/popup.store";
     selector: 'app-common-bill',
     templateUrl: './common-bill.component.html',
     styleUrls: ['./common-bill.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations
+    animations: fuseAnimations
 })
 export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoading: boolean = false;
     headerText: string = '';
     divisionText: string = '';
     detail: any;
+    shipmentDetail: any;
     qty: number = 0;
     unitPrice: number = 0;
     totalAmt: number = 0;
     taxAmt: number = 0;
     totalTax: number = 0;
     totalPrice: number = 0;
+    shipment: boolean;
+    shipmentAccountNm: any;
+    shipmentAddress: any;
     reportHeaderData: ReportHeaderData = new ReportHeaderData();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
     constructor(
         public _matDialogRef: MatDialogRef<CommonBillComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -46,23 +51,34 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _popupStore: PopupStore) {
         //console.log(data.body);
-        if(data.divisionText){
+        if (data.divisionText) {
             this.headerText = data.divisionText + '서';
             this.divisionText = data.divisionText;
-        }else{
+        } else {
             this.headerText = '준 비 중';
             this.divisionText = '';
         }
 
-        if(data.header){
+        if (data.header) {
             this.reportHeaderData = data.header;
+            if (this.reportHeaderData.dlvAccountNm === '') {
+                this.shipmentAccountNm = this.reportHeaderData.toAccountNm;
+            } else {
+                this.shipmentAccountNm = this.reportHeaderData.dlvAccountNm;
+            }
+            if (this.reportHeaderData.deliveryAddress === '') {
+                this.shipmentAddress = this.reportHeaderData.dlvAddress;
+            } else {
+                this.shipmentAddress = this.reportHeaderData.deliveryAddress;
+            }
+
             this.reportHeaderData.phoneNumber = this.reportHeaderData.phoneNumber !== '00' ? this.reportHeaderData.phoneNumber : '';
             this.reportHeaderData.fax = this.reportHeaderData.fax !== '00' ? this.reportHeaderData.fax : '';
         }
 
-        if(data.body){
+        if (data.body) {
             this.detail = data.body;
-
+            this.shipmentDetail = data.body;
             this.detail.forEach((reportDetail: any) => {
                 this.qty += reportDetail.qty;
                 this.unitPrice += reportDetail.unitPrice;
@@ -70,16 +86,21 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.taxAmt += reportDetail.taxAmt;
                 // this.totalTax += reportDetail.tax;
             });
-            this.totalPrice = this.totalAmt +  this.totalTax;
-
-            if(this.detail.length < 20){
-                let idx = this.detail.length;
-                const lastIdx = 20 - this.detail.length;
-                for(let i=0; i<lastIdx; i++){
-                    this.detail.push({
+            this.totalPrice = this.totalAmt + this.totalTax;
+            if (data.shipment) {
+                this.shipment = data.shipment;
+            } else {
+                this.shipment = false;
+            }
+            if (this.shipmentDetail.length < 25) {
+                let idx = this.shipmentDetail.length;
+                const lastIdx = 25 - this.shipmentDetail.length;
+                for (let i = 0; i < lastIdx; i++) {
+                    this.shipmentDetail.push({
                         itemGrade: '',
                         itemNm: '',
-                        no: idx+1,
+                        fomlInfo: '',
+                        no: idx + 1,
                         qty: '',
                         tax: '',
                         remark: '',
@@ -89,17 +110,36 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                         unit: '',
                         unitPrice: '',
                     });
-
                     idx++;
                 }
-
-
+            }
+            if (this.detail.length < 20) {
+                let idx = this.detail.length;
+                const lastIdx = 20 - this.detail.length;
+                for (let i = 0; i < lastIdx; i++) {
+                    this.detail.push({
+                        itemGrade: '',
+                        itemNm: '',
+                        no: idx + 1,
+                        qty: '',
+                        tax: '',
+                        remark: '',
+                        standard: '',
+                        taxAmt: '',
+                        totalAmt: '',
+                        unit: '',
+                        unitPrice: '',
+                    });
+                    idx++;
+                }
             }
         }
 
     }
+
     ngOnInit(): void {
     }
+
     ngAfterViewInit(): void {
 
     }
@@ -109,39 +149,42 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
     priceToString(price): number {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
-    phoneFomatter(num,type?): string{
+
+    phoneFomatter(num, type?): string {
         let formatNum = '';
-        if(num.length === 11){
-            if(type===0){
+        if (num.length === 11) {
+            if (type === 0) {
                 formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-            }else{
+            } else {
                 formatNum = num.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
             }
-        }else if(num.length===8){
+        } else if (num.length === 8) {
             formatNum = num.replace(/(\d{4})(\d{4})/, '$1-$2');
-        }else{
-            if(num.indexOf('02') === 0){
-                if(type === 0){
+        } else {
+            if (num.indexOf('02') === 0) {
+                if (type === 0) {
                     formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
-                }else{
+                } else {
                     formatNum = num.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
                 }
-            }else{
-                if(type === 0){
+            } else {
+                if (type === 0) {
                     formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-                }else{
+                } else {
                     formatNum = num.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
                 }
             }
         }
         return formatNum;
     }
+
     bizNoFormatter(num, type?): string {
         let formatNum = '';
-        try{
+        try {
             if (num.length === 10) {
                 if (type === 0) {
                     formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
@@ -149,12 +192,13 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                     formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
                 }
             }
-        } catch(e) {
+        } catch (e) {
             formatNum = num;
         }
         return formatNum;
     }
-    print(elementId): void{
+
+    print(elementId): void {
         const printContents = document.getElementById(elementId).innerHTML;
         const originalContents = document.body.innerHTML;
 

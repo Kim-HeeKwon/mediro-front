@@ -20,6 +20,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
     user: User;
     data: InitialData;
     isScreenSmall: boolean;
+    toggle: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -111,7 +112,15 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         }
     }
 
-    logoClick() {
+    logoClick(): void {
         this._router.navigateByUrl('monitoring/dashboards');
+    }
+
+    mobileToggle(): void {
+        if(!this.toggle) {
+            this.toggle = true;
+        } else {
+            this.toggle = false;
+        }
     }
 }

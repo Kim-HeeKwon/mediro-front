@@ -609,6 +609,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             outboundDetailData.push({
                 no: index,
                 itemNm: data.itemNm,
+                fomlInfo: data.fomlInfo,
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
@@ -626,19 +627,19 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             obDate = this.outBoundHeaderForm.getRawValue().obDate;
         }
         this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
-        this.reportHeaderData.date = obDate;
-        this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader;
+        this.reportHeaderData.date = obDate; // 출고일
+        this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader; // 비고
         this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().reportAddress;//주소
-        this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress;
-        this.reportHeaderData.custBusinessNumber = this.outBoundHeaderForm.getRawValue().custBusinessNumber;
-        this.reportHeaderData.custBusinessName = this.outBoundHeaderForm.getRawValue().custBusinessName;
-        this.reportHeaderData.representName = this.outBoundHeaderForm.getRawValue().representName;
-        this.reportHeaderData.businessCondition = this.outBoundHeaderForm.getRawValue().businessCondition;
-        this.reportHeaderData.businessCategory = this.outBoundHeaderForm.getRawValue().businessCategory;
-        this.reportHeaderData.phoneNumber = '0' + this.outBoundHeaderForm.getRawValue().phoneNumber;
-        this.reportHeaderData.fax = '0' + this.outBoundHeaderForm.getRawValue().fax;
+        this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress; // 낲품주소
+        this.reportHeaderData.custBusinessNumber = this.outBoundHeaderForm.getRawValue().custBusinessNumber; // 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.outBoundHeaderForm.getRawValue().custBusinessName; // 상호
+        this.reportHeaderData.representName = this.outBoundHeaderForm.getRawValue().representName; // 성명
+        this.reportHeaderData.businessCondition = this.outBoundHeaderForm.getRawValue().businessCondition; // 업태
+        this.reportHeaderData.businessCategory = this.outBoundHeaderForm.getRawValue().businessCategory; // 종목
+        this.reportHeaderData.phoneNumber = '0' + this.outBoundHeaderForm.getRawValue().phoneNumber; // 전화번호
+        this.reportHeaderData.fax = '0' + this.outBoundHeaderForm.getRawValue().fax; // 팩스
         this.reportHeaderData.toAccountNm = this.outBoundHeaderForm.getRawValue().toAccountNm;
-        this.reportHeaderData.deliveryDate = this.outBoundHeaderForm.getRawValue().dlvDate;
+        this.reportHeaderData.deliveryDate = this.outBoundHeaderForm.getRawValue().dlvDate; // 납품일자
 
         const popup = this._matDialogPopup.open(CommonBillComponent, {
             data: {
@@ -647,6 +648,71 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 header: this.reportHeaderData,
                 body: outboundDetailData,
                 tail: '',
+            },
+            autoFocus: false,
+            maxHeight: '100vh',
+            disableClose: true
+        });
+        popup.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => {
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    shipmentOutbound(): void {
+        const outboundDetailData = [];
+        let index = 0;
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
+        rows.forEach((data: any) => {
+            if(data.refItemNm !== data.itemNm){
+                data.itemNm = data.itemNm + '/' + data.refItemNm;
+            }
+            index++;
+            outboundDetailData.push({
+                no: index,
+                itemNm: data.itemNm,
+                standard: data.standard,
+                unit: data.unit,
+                itemGrade: data.itemGrade,
+                qty: data.obQty,
+                unitPrice: data.unitPrice,
+                totalAmt: data.totalAmt,
+                taxAmt: 0,
+                remark: data.reportRemark,
+                tax: data.totalAmt / 10
+            });
+        });
+
+        let obDate = '';
+        if(this.outBoundHeaderForm.getRawValue().obDate !== 'null'){
+            obDate = this.outBoundHeaderForm.getRawValue().obDate;
+        }
+        this.reportHeaderData.no = this.outBoundHeaderForm.getRawValue().obNo;
+        this.reportHeaderData.date = obDate; // 출고일
+        this.reportHeaderData.dlvAddress = this.outBoundHeaderForm.getRawValue().address; // 거래처 주소
+        this.reportHeaderData.remark = this.outBoundHeaderForm.getRawValue().remarkHeader; // 비고
+        this.reportHeaderData.address = this.outBoundHeaderForm.getRawValue().reportAddress;//주소
+        this.reportHeaderData.dlvAccountNm = this.outBoundHeaderForm.getRawValue().dlvAccountNm; // 납품처
+        this.reportHeaderData.deliveryAddress = this.outBoundHeaderForm.getRawValue().dlvAddress; // 납품주소
+        this.reportHeaderData.custBusinessNumber = this.outBoundHeaderForm.getRawValue().custBusinessNumber; // 사업자 등록번호
+        this.reportHeaderData.custBusinessName = this.outBoundHeaderForm.getRawValue().custBusinessName; // 상호
+        this.reportHeaderData.representName = this.outBoundHeaderForm.getRawValue().representName; // 성명
+        this.reportHeaderData.businessCondition = this.outBoundHeaderForm.getRawValue().businessCondition; // 업태
+        this.reportHeaderData.businessCategory = this.outBoundHeaderForm.getRawValue().businessCategory; // 종목
+        this.reportHeaderData.phoneNumber = '0' + this.outBoundHeaderForm.getRawValue().phoneNumber; // 전화번호
+        this.reportHeaderData.fax = '0' + this.outBoundHeaderForm.getRawValue().fax; // 팩스
+        this.reportHeaderData.toAccountNm = this.outBoundHeaderForm.getRawValue().toAccountNm; // 거래처명
+        this.reportHeaderData.deliveryDate = this.outBoundHeaderForm.getRawValue().dlvDate; // 납품일자
+
+        const popup = this._matDialogPopup.open(CommonBillComponent, {
+            data: {
+                divisionText: '출하지시',
+                division: 'OUTBOUND',
+                header: this.reportHeaderData,
+                body: outboundDetailData,
+                tail: '',
+                shipment: true
             },
             autoFocus: false,
             maxHeight: '100vh',

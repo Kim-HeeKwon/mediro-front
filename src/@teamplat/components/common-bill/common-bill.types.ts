@@ -13,6 +13,8 @@ export class ReportHeaderData{
     businessCategory?: string;// 종목
     phoneNumber?: string;// 전화번호
     fax?: string;// 팩스번호
+    dlvAccountNm?: string; // 납품처
+    dlvAddress?: string; // 거래처 주소
 }
 export class ReportDetailData{
     no?: string;

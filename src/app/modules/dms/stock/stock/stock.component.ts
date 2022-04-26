@@ -23,6 +23,8 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {StockHistoryComponent} from './stock-history/stock-history.component';
 import {FunctionService} from '../../../../../@teamplat/services/function';
+import * as moment from "moment";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'dms-app-stock',
@@ -80,6 +82,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
+        private _activatedRoute: ActivatedRoute,
         private _stockService: StockService,
         private _formBuilder: FormBuilder,
         private _utilService: FuseUtilsService,
@@ -96,7 +99,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-
+        let dashboard = false;
         const values = [];
         const lables = [];
         this.itemGrades.forEach((param: any) => {
@@ -115,6 +118,28 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             searchCondition: ['100'],
             searchText: [''],
         });
+        if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
+            && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
+            this.searchForm = this._formBuilder.group({
+                type: ['ALL'],
+                itemCd: [''],
+                itemNm: [''],
+                fomlInfo: [''],
+                itemGrade: ['ALL'],
+                supplier: [''],
+                supplierNm: [''],
+                searchCondition: ['100'],
+                searchText: [''],
+                range: [{
+                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(false).startOf('day').toISOString()
+                }],
+                start: [],
+                end: [],
+            });
+            this.searchForm.patchValue(this._activatedRoute.snapshot.paramMap['params']);
+            dashboard = true;
+        }
         const columnLayout = [
             'itemCd',
             'itemNm',
@@ -334,8 +359,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
             if (clickData.cellType === 'header') {
                 const rtn = this._stockService.getHeader(this.stockPagenation.page, this.stockPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
-            }
-            ;
+            };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -440,7 +464,9 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
         };
-        //this.selectHeader();
+        if(dashboard){
+            this.selectHeader();
+        }
         this._changeDetectorRef.markForCheck();
     }
 
