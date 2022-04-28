@@ -40,7 +40,7 @@ export class NoticeBoardComponent implements OnInit, OnDestroy, AfterViewInit{
     lists$: Observable<any[]>;
     listsCount: number = 0;
     pagination: any | null = null;
-    tableColumns: string[] = ['nbNo', 'title', 'addUser', 'addDate','cnt'];
+    tableColumns: string[] = ['nbNo', 'title', 'addUser', 'addDate'];
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
