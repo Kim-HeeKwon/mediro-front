@@ -297,7 +297,8 @@
                         </div>
                         <!-- Card CVC -->
                         <div class="col-span-2 sm:col-span-1">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-form-field
+                                class="fuse-mat-no-subscript w-full" [floatLabel]="'always'">
                                 <mat-label>CVC</mat-label>
                                 <mat-icon
                                     class="icon-size-5"
@@ -305,12 +306,13 @@
                                     matPrefix></mat-icon>
                                 <input
                                     [formControlName]="'cardCVC'"
+                                    [placeholder]="'000'"
                                     matInput>
                             </mat-form-field>
                         </div>
                         <!-- ZIP -->
                         <div class="col-span-4 sm:col-span-4">
-                            <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-form-field class="fuse-mat-no-subscript w-full" [floatLabel]="'always'">
                                 <mat-label>{{customerBirthday}}</mat-label>
 <!--                                <mat-icon-->
 <!--                                    class="icon-size-5"-->
@@ -318,6 +320,7 @@
 <!--                                    matPrefix></mat-icon>-->
                                 <input
                                     [formControlName]="'customerBirthday'"
+                                    [placeholder]="birthday"
                                     matInput
                                     type="text"
                                     maxlength="10"
