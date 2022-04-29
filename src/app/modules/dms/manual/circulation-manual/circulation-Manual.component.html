@@ -59,7 +59,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="estimateDelete()">
-                    <span>견적 취소</span>
+                    <span>견적 삭제</span>
                 </button>
             </div>
             <div class="sm:col-span-12">
@@ -120,7 +120,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="orderDelete()">
-                    <span>발주 취소</span>
+                    <span>발주 삭제</span>
                 </button>
             </div>
             <div class="sm:col-span-12">
@@ -174,7 +174,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="salesorderDelete()">
-                    <span>주문 취소</span>
+                    <span>주문 삭제</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
@@ -249,7 +249,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="inboundDelete()">
-                    <span>입고 취소</span>
+                    <span>입고 삭제</span>
                 </button>
             </div>
             <div class="sm:col-span-12">
@@ -317,7 +317,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="outboundDelete()">
-                    <span>출고 취소</span>
+                    <span>출고 삭제</span>
                 </button>
             </div>
             <div class="sm:col-span-12">
@@ -415,67 +415,67 @@
                         </button>
                     </div>
                     <div *ngIf="estimate" class="flex w- 5/5 my-2">
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="estimateCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">견적 작성</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="estimateUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">견적 수정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="estimateSend()">
                             <span class="ml-2 mr-1 text-12s manual-color">견적 발송</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="estimateConfirmed()">
                             <span class="ml-2 mr-1 text-12s manual-color">견적 확정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="estimateDelete()">
-                            <span class="ml-2 mr-1 text-12s manual-color">견적 취소</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">견적 삭제</span>
                         </button>
                     </div>
                     <div *ngIf="order" class="flex w- 5/5 my-2">
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="orderCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">발주 작성</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="orderUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">발주 수정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="orderSend()">
                             <span class="ml-2 mr-1 text-12s manual-color">발주 발송</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="orderConfirmed()">
                             <span class="ml-2 mr-1 text-12s manual-color">발주 확정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="orderDelete()">
-                            <span class="ml-2 mr-1 text-12s manual-color">발주 취소</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">발주 삭제</span>
                         </button>
                     </div>
                     <div *ngIf="salesorder" class="flex w- 5/5 my-2">
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="salesorderCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">주문 작성</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="salesorderUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">주문 수정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="salesorderConfirmed()">
                             <span class="ml-2 mr-1 text-12s manual-color">주문 확정</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="salesorderDelete()">
-                            <span class="ml-2 mr-1 text-12s manual-color">주문 취소</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">주문 삭제</span>
                         </button>
-                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="salesorderRefund()">
                             <span class="ml-2 mr-1 text-12s manual-color">주문 반품</span>
                         </button>
@@ -525,63 +525,63 @@
                         </button>
                     </div>
                     <div *ngIf="inbound" class="flex w- 6/6 my-2">
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">입고 신규 등록</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">입고 수정</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundStore()">
                             <span class="ml-2 mr-1 text-12s manual-color">입고 부분입고/입고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundSell()">
                             <span class="ml-2 mr-1 text-12s manual-color">반품 입고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundEnd()">
                             <span class="ml-2 mr-1 text-12s manual-color">입고 마감</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="inboundDelete()">
-                            <span class="ml-2 mr-1 text-12s manual-color">입고 취소</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">입고 삭제</span>
                         </button>
                     </div>
                     <div *ngIf="outbound" class="flex w- 6/6 my-2">
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 신규 등록</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 수정</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundStore()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 부분출고/출고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundUDIStore()">
                             <span class="ml-2 mr-1 text-12s manual-color">UDI 공급내역 출고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundPayment()">
                             <span class="ml-2 mr-1 text-12s manual-color">가납 출고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundDelete()">
-                            <span class="ml-2 mr-1 text-12s manual-color">출고 취소</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">출고 삭제</span>
                         </button>
                     </div>
                     <div *ngIf="stock" class="flex w- 2/2 my-2">
-                        <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="stockAdjustment()">
                             <span class="ml-2 mr-1 text-12s manual-color">재고 조정</span>
                         </button>
-                        <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript"
+                        <button class="w-1/2 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="stockRecordLookUp()">
                             <span class="ml-2 mr-1 text-12s manual-color">재고 이력 조회</span>
                         </button>

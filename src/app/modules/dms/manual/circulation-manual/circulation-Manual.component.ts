@@ -108,28 +108,22 @@ export class circulationManualComponent {
         }
     }
 
-    estimateLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/A_5FoURCoEo');
-    }
-
     estimateCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/NMvS7hxaAQ8');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/PBOBpUCeK50');
     }
 
     estimateUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/QOoD_nyUvXs');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/xaX0YaBLo_Q');
     }
 
     estimateDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/TkkGfbgAe7s');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/shGTqvHXWVU');
     }
 
     estimateSend(): void {
@@ -153,7 +147,7 @@ export class circulationManualComponent {
     orderCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Rf0ocaW-OXA');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/eO3YB_H8aLg');
     }
 
     orderUpdate(): void {
@@ -178,12 +172,6 @@ export class circulationManualComponent {
         this.video = true;
         // eslint-disable-next-line max-len
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/f1PkWYsLZrc');
-    }
-
-    salesorderLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/niu-pTopEK8');
     }
 
     salesorderCreat(): void {
@@ -214,12 +202,6 @@ export class circulationManualComponent {
         this.video = true;
         // eslint-disable-next-line max-len
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/oqVLdqbQk3Y');
-    }
-
-    inboundLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/HXt-ptlYlGQ');
     }
 
     inboundCreat(): void {
@@ -298,13 +280,6 @@ export class circulationManualComponent {
         this.video = true;
         // eslint-disable-next-line max-len
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/9mIaSTalNbc');
-    }
-
-
-    stockLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/2y7I3hg4l-Q');
     }
 
     stockAdjustment(): void {

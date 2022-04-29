@@ -60,22 +60,16 @@ export class basicInfoManualComponent {
         }
     }
 
-    accountLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/eQ_8lrBg0CU');
-    }
-
     accountCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/lofG779axcw');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/TghFH0ApbwE');
     }
 
     accountUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/kseHLjYM9Rs');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/C0ELuBapAtQ');
     }
 
     accountDelete(): void {
@@ -90,22 +84,16 @@ export class basicInfoManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/MOmxR4ZcmX8');
     }
 
-    itemLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/4moyiFmaegk');
-    }
-
     itemCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/oPsy2TfuOMg');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/KnezVWnq4Zg');
     }
 
     itemUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/9S5p1mNggoI');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/VdiulflW2E0');
     }
 
     itemDelete(): void {
@@ -114,16 +102,10 @@ export class basicInfoManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/EqX6yzjy8I0');
     }
 
-    itemPriceLookUp(): void {
-        this.video = true;
-        // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/FHxqgxBQNQk');
-    }
-
     itemPriceCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/OQmuVBWGi3g');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Xz3BnlsA6Lc');
     }
 
     itemPriceUpdate(): void {

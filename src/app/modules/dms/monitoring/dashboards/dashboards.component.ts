@@ -408,7 +408,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
         let availPrice;
-        this.sumAvailQty = this.availQty.etcCnt + this.availQty.zCnt + this.availQty.oCnt + this.availQty.tCnt + this.availQty.thCnt + this.availQty.fCnt;
         availPrice = (this.stockPrice.etcCnt * this.availQty.etcCnt)
             + (this.stockPrice.zCnt * this.availQty.zCnt)
             + (this.stockPrice.oCnt * this.availQty.oCnt)
@@ -427,9 +426,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const date = new Date(year, month, 0);
         const day = date.getDate();
         const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
-
-        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
-
+        // const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = lastDay.getDate().valueOf() - currDay.getDate().valueOf();
         if (month === 1) {
             this.udiMonth = 12;
         } else {
@@ -526,6 +524,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     return 35;
                 }
             },
+            onClick: (ctx: Context, event) => {
+                if(event[0].index === 1) {
+                    this.goPage({gbn: 'IB' , status: 'SC'});
+                } else if(event[0].index === 0) {
+                    this.goPage({gbn: 'IB' , status: 'N,P,S'});
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -607,6 +612,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     return 35;
                 }
             },
+            onClick: (ctx: Context, event) => {
+                if(event[0].index === 1) {
+                    this.goPage({gbn: 'OB' , status: 'SC'});
+                } else if(event[0].index === 0) {
+                    this.goPage({gbn: 'OB' , status: 'N,P,S'});
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -667,17 +679,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             salesPrice.push(param.totalAmt);
             return param;
         });
-        // const bill = {
-        //     id: 'bill',
-        //     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-        //     afterDatasetsDraw(chart: Chart, args: EmptyObject, cancelable: false): void {
-        //         const {ctx, chartArea: {top, right, bottom, left, width, height}} = chart;
-        //         ctx.fillStyle = '#303236';
-        //         ctx.font = '10px arial, "Malgun Gothic", AppleSDGothicNeo-Light, sans-serif';
-        //         ctx.textAlign = 'right';
-        //         ctx.fillText('단위 (천원)', width / 0.87, top + (height / 7));
-        //     }
-        // };
 
         const ctx = document.getElementById('bill_chart');
         // @ts-ignore
@@ -828,32 +829,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // billbuy(): void {
-    //     if (!this.buybool) {
-    //         this.buybool = true;
-    //     } else {
-    //         this.buybool = false;
-    //     }
-    //     if (!this.salbool) {
-    //         this.salbool = true;
-    //     } else {
-    //         this.salbool = false;
-    //     }
-    // }
-
-    // udiLast(): void {
-    //     if (!this.udiLastMonth) {
-    //         this.udiLastMonth = true;
-    //     } else {
-    //         this.udiLastMonth = false;
-    //     }
-    //     if (!this.udiThisMonth) {
-    //         this.udiThisMonth = true;
-    //     } else {
-    //         this.udiThisMonth = false;
-    //     }
-    // }
-
     udiLast(): void {
         this.udiLastMonth = true;
         if (this.udiLastMonth) {
@@ -946,6 +921,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.unusedQtyTotalPrice = unusedQtyTotalPrice;
         }
+        this.sumAvailQty = availQty.etcCnt + availQty.zCnt + availQty.oCnt + availQty.tCnt + availQty.thCnt + availQty.fCnt;
         availQtyTotalPrice = (price.etcCnt * availQty.etcCnt)
             + (price.zCnt * availQty.zCnt)
             + (price.oCnt * availQty.oCnt)
@@ -955,7 +931,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         totalPrice = acceptableTotalPrice + unusedQtyTotalPrice + availQtyTotalPrice;
         this.stockTotalPrice = totalPrice;
         const ctx = document.getElementById('stock_chart');
-
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
             data: {
@@ -1094,7 +1069,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 }
-            }
+            },
         });
     }
 }

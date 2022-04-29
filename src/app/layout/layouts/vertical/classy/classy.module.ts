@@ -17,7 +17,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
 import {LinkModule} from "../../../common/link/link.module";
 import {FuseAddscreenModule} from "../../../../../@teamplat/components/addscreen/addscreen.module";
-import {FuseAnnouncementModule} from "../../../../../@teamplat/components/ announcement/announcement.module";
+import {FuseAnnouncementModule} from "../../../../../@teamplat/components/announcement/announcement.module";
 
 @NgModule({
     declarations: [
