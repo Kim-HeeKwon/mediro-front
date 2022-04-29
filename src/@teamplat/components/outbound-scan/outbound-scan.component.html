@@ -25,7 +25,7 @@
                         <form
                             [formGroup]="searchForm">
                             <div class="grid sm:grid-cols-12 gap-2 w-full sm:pr-2">
-                                <div class="sm:col-span-2">
+                                <div class="sm:col-span-2" [hidden]="true">
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4">
                                         <mat-select [formControlName]="'year'">
                                             <ng-container *ngFor="let year of year">
@@ -36,7 +36,7 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-                                <div class="sm:col-span-2">
+                                <div class="sm:col-span-2" [hidden]="true">
                                     <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4">
                                         <mat-select [formControlName]="'month'">
                                             <ng-container *ngFor="let month of month">

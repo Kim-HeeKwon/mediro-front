@@ -262,6 +262,24 @@ export class InboundService {
     }
 
     /**
+     * back
+     */
+    inBoundBack(inBounds: InBound[]): Observable<InBound>
+    {
+        return this.inBounds$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(inBounds, 'v1/api/inOut/inBound/back').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    /**
      * Close
      */
     inBoundClose(inBounds: InBound[]): Observable<InBound>

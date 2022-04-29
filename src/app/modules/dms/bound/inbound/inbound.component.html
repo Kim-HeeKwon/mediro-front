@@ -110,6 +110,16 @@
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="inBoundBack()">
+                            <span class="ml-2 mr-1">취소</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="inBoundCancel()">
                             <span class="ml-2 mr-1">삭제</span>
                         </button>
@@ -121,7 +131,7 @@
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
                             (click)="inBoundClose()">
-                            <span class="ml-2 mr-1">확정</span>
+                            <span class="ml-2 mr-1">확정 [공급내역 보고/정산]</span>
                         </button>
                     </div>
                 </div>
@@ -295,8 +305,16 @@
                                     class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'accent'"
-                                    (click)="inBoundCancel()">
+                                    (click)="inBoundBack()">
                                     <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                    <span class="ml-2 mr-1">취소</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="inBoundCancel()">
+                                    <mat-icon [svgIcon]="'delete'"></mat-icon>
                                     <span class="ml-2 mr-1">삭제</span>
                                 </button>
                                 <button
@@ -305,7 +323,7 @@
                                     [color]="'accent'"
                                     (click)="inBoundClose()">
                                     <mat-icon [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                    <span class="ml-2 mr-1">확정</span>
+                                    <span class="ml-2 mr-1">확정 [공급내역 보고/정산]</span>
                                 </button>
                             </div>
                         </div>

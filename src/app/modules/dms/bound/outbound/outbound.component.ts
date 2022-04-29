@@ -395,6 +395,72 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this._router.navigate(['bound/outbound/outbound-new', {}]);
     }
 
+    outBoundBack(): boolean {
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.outBoundHeaderDataProvider);
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('취소 대상을 선택해주세요.');
+            return;
+        } else {
+            let check = true;
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < checkValues.length; i++) {
+                if (checkValues[i].status === 'PC' || checkValues[i].status === 'SC' ||
+                    checkValues[i].status === 'N' || checkValues[i].status === 'C'  || checkValues[i].status === '') {
+                    this._functionService.cfn_alert('작업 상태에서만 취소할 수 있습니다. <br> 출고번호 : ' + checkValues[i].obNo);
+                    check = false;
+                    return false;
+                }
+            }
+
+            if (check) {
+                const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                    title: '',
+                    message: '취소하시겠습니까?',
+                    icon: this._formBuilder.group({
+                        show: true,
+                        name: 'heroicons_outline:exclamation',
+                        color: 'warn'
+                    }),
+                    actions: this._formBuilder.group({
+                        confirm: this._formBuilder.group({
+                            show: true,
+                            label: '취소',
+                            color: 'warn'
+                        }),
+                        cancel: this._formBuilder.group({
+                            show: true,
+                            label: '닫기'
+                        })
+                    }),
+                    dismissible: true
+                }).value);
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            if (checkValues) {
+                                this._outBoundService.outBoundBack(checkValues)
+                                    .pipe(takeUntil(this._unsubscribeAll))
+                                    .subscribe((outBound: any) => {
+                                        this._functionService.cfn_loadingBarClear();
+                                        this._functionService.cfn_alertCheckMessage(outBound);
+                                        // Mark for check
+                                        this._changeDetectorRef.markForCheck();
+                                        this.selectHeader();
+                                    });
+                            }
+                        } else {
+                            this.selectHeader();
+                        }
+                    });
+            }
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
     outBoundCancel(): boolean {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.outBoundHeaderDataProvider);
         if (checkValues.length < 1) {
@@ -405,7 +471,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('예정 상태에서만 취소할 수 있습니다. <br> 출고번호 : ' + checkValues[i].obNo);
+                    this._functionService.cfn_alert('예정 상태에서만 삭제할 수 있습니다. <br> 출고번호 : ' + checkValues[i].obNo);
                     check = false;
                     return false;
                 }
@@ -417,7 +483,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
                     message: '삭제하시겠습니까?',
                     icon: this._formBuilder.group({
                         show: true,
-                        name: 'heroicons_outline:exclamation',
+                        name: 'delete',
                         color: 'warn'
                     }),
                     actions: this._formBuilder.group({

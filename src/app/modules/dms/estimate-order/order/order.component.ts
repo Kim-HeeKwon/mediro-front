@@ -523,7 +523,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
                 if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('생성 상태에서만 취소할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
+                    this._functionService.cfn_alert('생성 상태에서만 삭제할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
@@ -535,7 +535,7 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
                     message: '삭제하시겠습니까?',
                     icon: this._formBuilder.group({
                         show: true,
-                        name: 'heroicons_outline:exclamation',
+                        name: 'delete',
                         color: 'warn'
                     }),
                     actions: this._formBuilder.group({

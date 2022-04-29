@@ -83,6 +83,10 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'meddevItemSeq', dataType: ValueType.TEXT},
+        {fieldName: 'seq', dataType: ValueType.TEXT},
+        {fieldName: 'udiDiSeq', dataType: ValueType.TEXT},
+        {fieldName: 'userSterilizationYn', dataType: ValueType.TEXT},
+        {fieldName: 'kitYn', dataType: ValueType.TEXT},
         {fieldName: 'typeName', dataType: ValueType.TEXT},
         {fieldName: 'udiCode', dataType: ValueType.TEXT},
         {fieldName: 'lotNo', dataType: ValueType.TEXT},
@@ -783,7 +787,12 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')','')});
 
                                     const values = [
-                                        chk[0].ibNo, chk[0].ibLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq, chk[0].typeName, udiCode,
+                                        chk[0].ibNo, chk[0].ibLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq,
+                                        manages.data[0].seq,
+                                        manages.data[0].udiDiSeq,
+                                        manages.data[0].userSterilizationYn,
+                                        manages.data[0].kitYn,
+                                        chk[0].typeName, udiCode,
                                         lotNo.replace('(' + '10' + ')',''),manufYm.replace('(' + '11' + ')',''),useTmlmt.replace('(' + '17' + ')',''),itemSeq.replace('(' + '21' + ')',''),1
                                     ];
 
