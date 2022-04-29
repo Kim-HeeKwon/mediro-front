@@ -36,7 +36,6 @@ export class SettingsPlanBillingComponent implements OnInit
         message: ''
     };
     customerBirthday: string = '생년월일 or 사업자번호';
-    birthday: string = '생년월일 or 사업자번호';
 
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
@@ -511,14 +510,12 @@ export class SettingsPlanBillingComponent implements OnInit
         }
     }
 
-    selectOwnerType(ownerType: string): void {
+    selectOwnerType(ownerType: string) {
 
         if(ownerType === '개인'){
             this.customerBirthday = '생년월일';
-            this.birthday = 'YY / MM / DD';
         }else if(ownerType === '법인'){
             this.customerBirthday = '사업자번호';
-            this.birthday = '000-00-00000';
         }else{
             this.customerBirthday = '생년월일 or 사업자번호';
         }

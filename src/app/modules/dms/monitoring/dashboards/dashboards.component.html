@@ -343,10 +343,10 @@
                     </div>
                     <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
-<!--                <div class="font-medium text-12s text-bold-600 text-secondary udi-color" [ngClass]="{'text-right mr-2 mt-05':!isMobile,-->
-<!--                                    'm-auto':isMobile}">총&nbsp;&nbsp;&nbsp;-->
-<!--                    <span style="color: #277EC3!important;">{{priceToString(stockTotalPrice)}}</span>&nbsp;&nbsp;&nbsp;원-->
-<!--                </div>-->
+                <div class="font-medium text-12s text-bold-600 text-secondary udi-color" [ngClass]="{'text-right mr-2 mt-05':!isMobile,
+                                    'm-auto':isMobile}">총&nbsp;&nbsp;&nbsp;
+                    <span style="color: #277EC3!important;">{{priceToString(stockTotalPrice)}}</span>&nbsp;&nbsp;&nbsp;원
+                </div>
                 <div class="grid grid-cols-7 lg:grid-cols-7 grid-flow-row gap-2 w-full cursor-pointer m-auto">
                     <div [ngClass]="{'flex w-full col-span-7 p-4': isMobile,
                                     'flex w-full col-span-2 p-2 m-auto': !isMobile}">
@@ -392,7 +392,7 @@
                     <hr *ngIf="!isMobile"
                         style="border-left: solid #DBDDE2; height: 28%; left: 51.3%; top: 62%; position: absolute;">
                     <div [ngClass]="{'flex flex-col col-span-7 p-4': isMobile,
-                                    'flex flex-col w-full col-span-3 m-auto': !isMobile}">
+                                    'flex flex-col w-full col-span-3': !isMobile}">
                         <div class="flex h-full">
                             <canvas class="flex" id="stock_chart">
                             </canvas>
@@ -401,35 +401,46 @@
                     <div [ngClass]="{'flex flex-col col-span-7 p-2': isMobile,
                                     'flex flex-col w-full col-span-2': !isMobile}">
                         <table border="2" style="border: 2px solid #ffffff; width: 88%; height: 88%; margin: auto;">
-                            <tr style="background-color:#9186D0; color: #ffffff;">
+                            <tr style="background-color:#8b00ff; color: #ffffff;">
                                 <th colspan="1">재고</th>
-                                <th colspan="1">수량<span style="font-size: 11px">(개)</span></th>
-                                <th colspan="1">금액<span style="font-size: 11px">(천원)</span></th>
+                                <th colspan="1">수량</th>
+                                <th colspan="1">금액</th>
                             </tr>
                             <tbody style="text-align: center">
-                            <tr style="font-size: 12px">
-                                <td style="background-color:#f1dcff; font-weight: bold;">불용</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(unusedQtyTotal)}}</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(unusedQtyTotalPrice)}}</td>
+                            <tr style="font-size: 11px">
+                                <td style="background-color:#bd71ff;">불용</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(unusedQtyTotal)}}(EA)</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(unusedQtyTotalPrice)}}(천원)</td>
                             </tr>
-                            <tr style="font-size: 12px">
-                                <td style="background-color:#f1dcff; font-weight: bold;">가납</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(acceptableTotal)}}</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(acceptableTotalPrice)}}</td>
+                            <tr style="font-size: 11px">
+                                <td style="background-color:#bd71ff;">가납</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(acceptableTotal)}}(EA)</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(acceptableTotalPrice)}}(천원)</td>
                             </tr>
-                            <tr style="font-size: 12px">
-                                <td style="background-color:#f1dcff; font-weight: bold;">보유</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(sumAvailQty)}}</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(availQtyPrice)}}</td>
-                            </tr>
-                            <tr style="font-size: 12px">
-                                <td style="background-color:#f1dcff; font-weight: bold;">힙계</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(sumAvailQty + acceptableTotal + unusedQtyTotal)}}</td>
-                                <td style="background-color:#dddddd; font-weight: bold;">{{priceToString(stockTotalPrice)}}</td>
+                            <tr style="font-size: 11px">
+                                <td style="background-color:#bd71ff;">보유</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(sumAvailQty)}}(EA)</td>
+                                <td style="background-color:#f1dcff;">{{priceToString(availQtyPrice)}}(천원)</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <!--                    <div *ngIf="!isMobile" [ngClass]="{'flex flex-col w-full col-span-1': !isMobile}"-->
+                    <!--                         style="margin: 50px 0px 0px 10px;">-->
+                    <!--                        <div class="flex flex-col col-span-2 text-bold-550">-->
+                    <!--                            <div class="col-span-2">-->
+                    <!--                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(unusedQtyTotal)}}(EA)-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="col-span-2" style="margin-top: 35px!important;">-->
+                    <!--                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(acceptableTotal)}}(EA)-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                            <div class="col-span-2" style="margin-top: 36px!important;">-->
+                    <!--                                <div class="col-span-2 text-11s udi-color mb_2">{{priceToString(sumAvailQty)}}(EA)</div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>

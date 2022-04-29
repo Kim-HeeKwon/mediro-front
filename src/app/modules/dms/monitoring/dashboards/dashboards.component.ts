@@ -426,8 +426,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const date = new Date(year, month, 0);
         const day = date.getDate();
         const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
-        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
-        // const diffDays = lastDay.getDate().valueOf() - currDay.getDate().valueOf();
+        // const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = lastDay.getDate().valueOf() - currDay.getDate().valueOf();
         if (month === 1) {
             this.udiMonth = 12;
         } else {
@@ -929,11 +929,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             + (price.thCnt * availQty.thCnt)
             + (price.fCnt * availQty.fCnt);
         totalPrice = acceptableTotalPrice + unusedQtyTotalPrice + availQtyTotalPrice;
-        if (totalPrice.toString().length > 4) {
-            this.stockTotalPrice = String(totalPrice.toString().slice(0, -3));
-        } else {
-            this.stockTotalPrice = totalPrice;
-        }
+        this.stockTotalPrice = totalPrice;
         const ctx = document.getElementById('stock_chart');
         // @ts-ignore
         const mixedChart = new Chart(ctx, {
