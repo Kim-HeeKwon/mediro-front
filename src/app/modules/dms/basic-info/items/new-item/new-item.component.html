@@ -157,6 +157,7 @@
                             <mat-label>매입단가 (VAT포함)<mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon> </mat-label>
                             <input
                                 matInput
+                                onfocus="this.select()"
                                 type = 'number'
                                 [placeholder]="'0'"
                                 [formControlName]="'buyPrice'">
@@ -167,6 +168,7 @@
                             <mat-label>매출단가 (VAT포함)<mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon> </mat-label>
                             <input
                                 matInput
+                                onfocus="this.select()"
                                 type = 'number'
                                 [placeholder]="'0'"
                                 [formControlName]="'salesPrice'">

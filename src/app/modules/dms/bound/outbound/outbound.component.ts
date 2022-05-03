@@ -262,7 +262,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
             readOnly: false,
             insertable: false,
             appendable: false,
-            editable: true,
+            editable: false,
             updatable: true,
             deletable: true,
             checkable: true,
@@ -313,15 +313,14 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         };
 
         // 셀 edit control
-        this.gridList.setCellStyleCallback((grid, dataCell) => {
-
-            //추가시
-            if (dataCell.dataColumn.fieldName === 'remarkHeader') {
-                return {editable: true};
-            } else {
-                return {editable: false};
-            }
-        });
+        // this.gridList.setCellStyleCallback((grid, dataCell) => {
+        //     //추가시
+        //     if (dataCell.dataColumn.fieldName === 'remarkHeader') {
+        //         return {editable: false};
+        //     } else {
+        //         return {editable: false};
+        //     }
+        // });
 
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';

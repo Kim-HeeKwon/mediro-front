@@ -135,7 +135,7 @@ export class circulationManualComponent {
     estimateConfirmed(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/cUl7XpwFioU');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Jcb3jwFr5so');
     }
 
     orderLookUp(): void {
@@ -147,19 +147,19 @@ export class circulationManualComponent {
     orderCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/eO3YB_H8aLg');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/zKuebh-ZRr8');
     }
 
     orderUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/6s3sA3VWj_k');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/1MwI9bypRx4');
     }
 
     orderDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/yvfoZwe-HN8');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Bf4IpswmIiE');
     }
 
     orderSend(): void {
@@ -171,7 +171,7 @@ export class circulationManualComponent {
     orderConfirmed(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/f1PkWYsLZrc');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/_MMQH_9xGUI');
     }
 
     salesorderCreat(): void {

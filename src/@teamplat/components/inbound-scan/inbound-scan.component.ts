@@ -46,6 +46,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     showAlert: boolean = false;
     detail: any;
     detailN: any;
+    ibQty: any = 1;
     isLoading: boolean = false;
     searchForm: FormGroup;
     isMobile: boolean = false;
@@ -526,7 +527,9 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         that.gridList1DataProvider,
                         dataRow,
                         'qty');
-
+                    if(inputQty >= 0) {
+                        this.ibQty = inputOrgQty;
+                    }
                     if(inputQty < 0) {
                         that._realGridsService.gfn_CellDataSetRow(that.gridList1,
                             that.gridList1DataProvider,
@@ -544,7 +547,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             that.gridList2DataProvider,
                             itemIndex,
                             'ibQty',
-                            grid1OrgIbQty);
+                            this.ibQty);
 
                         this.qtyFailAlert();
                         this._changeDetectorRef.markForCheck();

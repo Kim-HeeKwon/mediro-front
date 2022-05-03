@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, ViewEncapsulation} from "@angular/core";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {DeviceDetectorService} from "ngx-device-detector";
+import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DeviceDetectorService} from 'ngx-device-detector';
 
 @Component({
     selector: 'calculate-Manual',

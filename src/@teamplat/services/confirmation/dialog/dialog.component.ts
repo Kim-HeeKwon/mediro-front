@@ -37,7 +37,7 @@ export class TeamPlatConfirmationDialogComponent implements OnInit, AfterViewIni
             } else if(cancel !== null) {
                 cancel.focus();
             }
-        }, 300);
+        }, 100);
     }
 
     // -----------------------------------------------------------------------------------------------------

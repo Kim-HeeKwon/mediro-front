@@ -602,6 +602,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
         rows.forEach((data: any) => {
+            console.log(data);
             if(data.refItemNm !== data.itemNm){
                 data.itemNm = data.itemNm + '/' + data.refItemNm;
             }
@@ -609,7 +610,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             outboundDetailData.push({
                 no: index,
                 itemNm: data.itemNm,
-                fomlInfo: data.fomlInfo,
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
@@ -617,7 +617,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,
-                remark: data.reportRemark,
+                remark: data.remarkDetail,
                 tax: data.totalAmt / 10
             });
         });
@@ -672,6 +672,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             outboundDetailData.push({
                 no: index,
                 itemNm: data.itemNm,
+                fomlInfo: data.fomlInfo,
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
@@ -679,7 +680,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,
-                remark: data.reportRemark,
+                remark: data.remarkDetail,
                 tax: data.totalAmt / 10
             });
         });
