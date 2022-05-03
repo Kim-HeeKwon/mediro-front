@@ -24,6 +24,7 @@ import {BreakpointObserver} from "@angular/cdk/layout";
 import {InboundScanService} from "./inbound-scan.service";
 import {InboundService} from "../../../app/modules/dms/bound/inbound/inbound.service";
 import {takeUntil} from "rxjs/operators";
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-inbound-scan',
@@ -78,6 +79,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     gridList2Columns: Columns[];
     // @ts-ignore
     gridList2Fields: DataFieldObject[] = [
+        {fieldName: 'useTmlmtUse', dataType: ValueType.TEXT},
         {fieldName: 'ibNo', dataType: ValueType.TEXT},
         {fieldName: 'ibLineNo', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
@@ -315,6 +317,13 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 컬럼
         this.gridList2Columns = [
+            {
+                name: 'useTmlmtUse', fieldName: 'useTmlmtUse', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '유효기간', styleName: 'center-cell-text'},
+                renderer:{
+                    showTooltip:true
+                }
+            },
             // {
             //     name: 'ibNo', fieldName: 'ibNo', type: 'data', width: '100', styleName: 'left-cell-text'
             //     , header: {text: '입고번호', styleName: 'center-cell-text'},
@@ -357,7 +366,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '350', styleName: 'left-cell-text'
+                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '250', styleName: 'left-cell-text'
                 , header: {text: '바코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -550,6 +559,18 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             //console.log(dataCell.dataColumn.renderer);
             if (dataCell.dataColumn.fieldName === 'ibQty') {
                 ret.editable= true;
+            }
+
+            const useTmlmtUse = grid.getValue(dataCell.index.itemIndex, 'useTmlmtUse');
+
+            if(useTmlmtUse === '만료'){
+                if (dataCell.dataColumn.fieldName === 'useTmlmtUse') {
+                    ret.styleName= 'red-color';
+                }
+            }else{
+                if (dataCell.dataColumn.fieldName === 'useTmlmtUse') {
+                    ret.styleName= 'green-color';
+                }
             }
 
             return ret;
@@ -786,7 +807,36 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')','')});
                                     this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')','')});
 
+                                    let useTmlmtUse = '-';
+                                    if(useTmlmt !== undefined){
+                                        if(useTmlmt !== null){
+
+                                            if(useTmlmt !== ''){
+                                                const now = new Date();
+                                                const nowDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                                                const nD = new Date(nowDate);
+                                                const nDDate = formatDate(new Date(nD.setDate(nD.getDate())), 'yyyy-MM-dd', 'en');
+                                                const useTmletCustom = useTmlmt.replace('(' + '17' + ')','');
+                                                const yy = '20' + useTmletCustom.substring(0, 2);
+                                                const mm = useTmletCustom.substring(2, 4);
+                                                const dd = useTmletCustom.substring(4, 6);
+                                                //console.log(nD);
+                                                const sD = new Date(yy + '-' + mm + '-' + dd);
+                                                const sDDate = formatDate(new Date(sD.setDate(sD.getDate())), 'yyyy-MM-dd', 'en');
+                                                //console.log(sD);
+
+                                                if(nD > sD){
+                                                    useTmlmtUse = '만료';
+                                                }else{
+                                                    useTmlmtUse = '유효';
+                                                }
+                                            }
+                                        }
+                                    }else{
+                                        useTmlmtUse = '-';
+                                    }
                                     const values = [
+                                        useTmlmtUse,
                                         chk[0].ibNo, chk[0].ibLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq,
                                         manages.data[0].seq,
                                         manages.data[0].udiDiSeq,
@@ -1085,5 +1135,47 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         // Show the alert
         this.showAlert = true;
+    }
+
+    udiDiCodeScanDelete() {
+        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList2, this.gridList2DataProvider);
+
+        if (checkValues.length < 1) {
+            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
+            return;
+        }
+
+        checkValues.forEach((ex) => {
+            const deleteQty = ex.ibQty;
+
+            const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
+                , values: [ex.meddevItemSeq, ex.typeName]});
+
+            setTimeout(() =>{
+
+                const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                    this.gridList1,
+                    this.gridList1DataProvider,
+                    dataRow,'ibExpQty');
+                const ibQty = this._realGridsService.gfn_CellDataGetRow(
+                    this.gridList1,
+                    this.gridList1DataProvider,
+                    dataRow,'ibQty');
+
+                this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                    this.gridList1DataProvider,
+                    dataRow,
+                    'ibQty',
+                    ibQty - deleteQty);
+
+                this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                    this.gridList1DataProvider,
+                    dataRow,
+                    'qty',
+                    ibExpQty - (ibQty - deleteQty));
+            },100);
+        });
+        this._realGridsService.gfn_DelRows(this.gridList2, this.gridList2DataProvider);
+
     }
 }

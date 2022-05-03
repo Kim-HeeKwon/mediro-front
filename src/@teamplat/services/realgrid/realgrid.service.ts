@@ -355,9 +355,18 @@ export class FuseRealGridService {
     gfn_DelRow(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
         gridView.cancel();
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for(let i=0; i<gridView.getCheckedRows().length; i++){
-            dataProvider.removeRow(gridView.getCheckedRows()[i]);
-        }
+        // for(let i=0; i<gridView.getCheckedRows().length; i++){
+        //     dataProvider.removeRow(gridView.getCheckedRows()[i]);
+        // }
+        dataProvider.removeRows(gridView.getCheckedRows());
+    }
+
+    // 그리드 행 삭제
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    gfn_DelRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
+        gridView.cancel();
+        dataProvider.removeRows(gridView.getCheckedRows());
     }
 
     // 그리드 추가, 수정, 삭제 행 가져오기

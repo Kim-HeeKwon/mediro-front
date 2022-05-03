@@ -198,6 +198,9 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     param.status = 'N';
                     param.type = 'QN';
                     param.qtCreDate = null;
+                    if(param.deliveryDate === null){
+                        param.deliveryDate = '';
+                    }
                     return param;
                 });
                 const rtnList = {
@@ -243,6 +246,9 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     param.poAmt = 0;
                     param.status = 'N';
                     param.poCreDate = null;
+                    if(param.deliveryDate === null){
+                        param.deliveryDate = '';
+                    }
                     return param;
                 });
                 const rtnList = {

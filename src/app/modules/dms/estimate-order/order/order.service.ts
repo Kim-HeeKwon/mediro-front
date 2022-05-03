@@ -153,7 +153,7 @@ export class OrderService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/header-List-report')
+            this._common.sendDataWithPageNationReport(searchParam, pageParam, 'v1/api/estimateOrder/order/header-List-report')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._orderHeaders.next(response.data);
@@ -191,7 +191,7 @@ export class OrderService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/order/detail-List-report')
+            this._common.sendDataWithPageNationReport(searchParam, pageParam, 'v1/api/estimateOrder/order/detail-List-report')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._orderDetails.next(response.data);

@@ -325,6 +325,10 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         const obDate = formatDate(new Date(nowOb.setDate(nowOb.getDate())), 'yyyy-MM-dd', 'en');
         this.outBoundHeaderForm.patchValue({obDate: obDate});
 
+        const now = new Date();
+        const dlvDate = formatDate(new Date(now.setDate(now.getDate() + 7)), 'yyyy-MM-dd', 'en');
+
+        this.outBoundHeaderForm.patchValue({dlvDate: dlvDate});
     }
 
     ngAfterViewInit(): void {

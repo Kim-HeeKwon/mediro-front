@@ -467,6 +467,36 @@ export class Api {
         return req;
     }
 
+    postWithPageReport(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+        const arrayOfArraysData = [{
+            'sessionDtctCd': 'korea',
+            'sessionSupplier': 'Mediro',
+            'sessionOwnrgCd': 'Mediro',
+            'sessionUserIp': '0.0.0.0',
+            'sessionUserId': localStorage.getItem('id'),
+            'mId': localStorage.getItem('mId')
+        }];
+        //this.backLogin(arrayOfArraysData[0].mId);
+        const req = this.http.post(this.url + endpoint, 'ds_json=[' + encodeURIComponent(JSON.stringify(body)) + ']&' + 'ds_pageNation=[' + JSON.stringify(body2) + ']&' + 'ds_session=' + JSON.stringify(arrayOfArraysData)
+            , {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Access-Control-Allow-Origin': '*',
+                    'Accept': 'application/json, text/plain, */*; q=0.01',
+                    'Accept-Language': 'ko-KR'
+                }
+            });
+
+        return req;
+    }
+
     postWithPageLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
 
         const loading = this._matDialog.open(CommonLoadingBarComponent, {

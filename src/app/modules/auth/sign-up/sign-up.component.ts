@@ -75,6 +75,7 @@ export class AuthSignUpComponent implements OnInit
                 phone     : ['', Validators.required],
                 businessNumber  : ['', Validators.required],
                 agreements: ['', Validators.requiredTrue],
+                channel    : ['none', Validators.required],
                 company   : [''],
                 avatar    : [''],
                 userType        : [''],
@@ -153,6 +154,18 @@ export class AuthSignUpComponent implements OnInit
             return;
         }
 
+        if(this.signUpForm.value.channel === 'none'){
+
+            this.alert = {
+                type   : 'error',
+                message: '가입경로를 선택해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+            return;
+        }
+
         // 사업자번호 조회
         this._authService.checkBusinessNumber(this.signUpForm.value.businessNumber)
             .subscribe(
@@ -203,7 +216,7 @@ export class AuthSignUpComponent implements OnInit
                                 },
                                 // eslint-disable-next-line @typescript-eslint/no-shadow
                                 (err) => {
-                                    console.log(err);
+                                    //console.log(err);
                                     // Set the alert
                                     this.alert = {
                                         type   : 'error',

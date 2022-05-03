@@ -14,6 +14,7 @@ import { authSignupRoutes } from 'app/modules/auth/sign-up/sign-up.routing';
 import {TermOfServiceComponent} from './term-of-service/term-of-service.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {SubscriptionFeeComponent} from "./subscription-fee/subscription-fee.component";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
     declarations: [
@@ -22,7 +23,7 @@ import {SubscriptionFeeComponent} from "./subscription-fee/subscription-fee.comp
         PrivacyComponent,
         SubscriptionFeeComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(authSignupRoutes),
         MatButtonModule,
         MatCheckboxModule,
@@ -32,7 +33,8 @@ import {SubscriptionFeeComponent} from "./subscription-fee/subscription-fee.comp
         MatProgressSpinnerModule,
         FuseCardModule,
         FuseAlertModule,
-        SharedModule
+        SharedModule,
+        MatSelectModule
     ]
 })
 export class AuthSignUpModule

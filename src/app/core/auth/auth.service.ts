@@ -331,6 +331,7 @@ export class AuthService
         formData.append('mId', user.businessNumber);
         formData.append('name', user.name);
         formData.append('phone', user.phone);
+        formData.append('channel', user.channel);
         formData.append('businessNumber', user.businessNumber);
         formData.append('company', user.company);
         formData.append('userType', user.userType);
@@ -372,6 +373,7 @@ export class AuthService
         formData.append('id', user.email);
         formData.append('name', user.name);
         formData.append('phone', user.phone);
+        formData.append('channel', user.channel);
         formData.append('businessNumber', user.businessNumber);
         formData.append('company', user.company);
         formData.append('userType', user.userType);

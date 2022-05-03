@@ -52,6 +52,9 @@ export class Common {
     sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
     }
+    sendDataWithPageNationReport(param: any, pageParam: any,url: string): Observable<any> {
+        return this.api.postWithPageReport(url, param, pageParam).pipe(share()); // seq;
+    }
 
     sendDataWithPageNationLoading(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPageLoading(url, param, pageParam).pipe(share()); // seq;
