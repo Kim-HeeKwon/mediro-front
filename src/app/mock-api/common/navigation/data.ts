@@ -143,7 +143,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: '정산관리',
         type: 'collapsable',
         icon: 'heroicons_outline:archive',
-        tag: '3',
+        tag: '',
         children: [
             {
                 id   : 'calculate.bill',
@@ -165,7 +165,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/deposit',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.withdrawal',
@@ -173,7 +173,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/withdrawal',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
@@ -181,7 +181,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'credit_score',
                 link : '/deposit-withdrawal/income-outcome',
-                tag: 'N'
+                tag: ''
             },
         ]
     },
@@ -226,7 +226,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title   : '스마트플러스',
         type    : 'collapsable',
         icon    : 'playlist_add',
-        tag: '4',
+        tag: '',
         children: [
             // {
             //     id   : 'smart-plus.manages',
@@ -250,7 +250,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/safety',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'stock.validity',
@@ -258,7 +258,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
                 link : '/stock/validity',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'smart-plus.status',
@@ -266,7 +266,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'receipt_long',
                 link : '/stock/long-term',
-                tag: 'N'
+                tag: ''
             },
             {
                 id      : 'stock.acceptable',
@@ -274,7 +274,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/acceptable',
-                tag: 'N'
+                tag: ''
             },
         ]
     },
@@ -283,6 +283,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title   : '기준정보',
         type    : 'collapsable',
         icon    : 'info',
+        tag: '',
         children: [
             // {
             //     id   : 'basic-info.status',
@@ -309,11 +310,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id      : 'basic-info.item-price',
-                title   : '계약단가관리',
+                title   : '계약단가 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:currency-dollar',
                 link    : '/basic-info/item-price'
+            },
+            {
+                id      : 'basic-info.udi-di-code',
+                title   : 'UDI DI 코드 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'code',
+                link    : '/basic-info/udi-di-code',
+                tag: '',
             },
         ]
     },
@@ -766,7 +776,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
         title: '정산관리',
         type: 'collapsable',
         icon: 'heroicons_outline:archive',
-        tag: '3',
+        tag: '',
         children: [
             {
                 id   : 'calculate.bill',
@@ -788,7 +798,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/deposit',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.withdrawal',
@@ -796,7 +806,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/withdrawal',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
@@ -804,7 +814,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'credit_score',
                 link : '/deposit-withdrawal/income-outcome',
-                tag: 'N'
+                tag: ''
             },
         ]
     },
@@ -849,7 +859,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
         title   : '스마트플러스',
         type    : 'collapsable',
         icon    : 'playlist_add',
-        tag: '4',
+        tag: '',
         children: [
             // {
             //     id   : 'smart-plus.manages',
@@ -873,7 +883,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/safety',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'stock.validity',
@@ -881,7 +891,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
                 link : '/stock/validity',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'smart-plus.status',
@@ -889,7 +899,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'receipt_long',
                 link : '/stock/long-term',
-                tag: 'N'
+                tag: ''
             },
             {
                 id      : 'stock.acceptable',
@@ -897,7 +907,7 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'heroicons_outline:cube',
                 link    : '/stock/acceptable',
-                tag: 'N'
+                tag: ''
             },
         ]
     },
@@ -1101,7 +1111,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         title: '정산관리',
         type: 'collapsable',
         icon: 'heroicons_outline:archive',
-        tag: '3',
+        tag: '',
         children: [
             {
                 id   : 'calculate.bill',
@@ -1123,7 +1133,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/deposit',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.withdrawal',
@@ -1131,7 +1141,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'monetization_on',
                 link : '/deposit-withdrawal/withdrawal',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'deposit-withdrawal.income-outcome',
@@ -1139,7 +1149,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'credit_score',
                 link : '/deposit-withdrawal/income-outcome',
-                tag: 'N'
+                tag: ''
             },
         ]
     },
@@ -1184,7 +1194,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         title   : '스마트플러스',
         type    : 'collapsable',
         icon    : 'playlist_add',
-        tag: '4',
+        tag: '',
         children: [
             // {
             //     id   : 'smart-plus.manages',
@@ -1208,7 +1218,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/safety',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'stock.validity',
@@ -1216,7 +1226,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:calendar',
                 link : '/stock/validity',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'smart-plus.status',
@@ -1224,7 +1234,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'receipt_long',
                 link : '/stock/long-term',
-                tag: 'N'
+                tag: ''
             },
             {
                 id   : 'stock.acceptable',
@@ -1232,7 +1242,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cube',
                 link : '/stock/acceptable',
-                tag: 'N'
+                tag: ''
             }
         ]
     },
@@ -1241,6 +1251,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         title   : '기준정보',
         type    : 'collapsable',
         icon    : 'info',
+        tag: '',
         children: [
             // {
             //     id   : 'basic-info.status',
@@ -1267,11 +1278,20 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
             {
                 id      : 'basic-info.item-price',
-                title   : '계약단가관리',
+                title   : '계약단가 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'heroicons_outline:currency-dollar',
                 link    : '/basic-info/item-price'
+            },
+            {
+                id      : 'basic-info.udi-di-code',
+                title   : 'UDI DI 코드 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'code',
+                link    : '/basic-info/udi-di-code',
+                tag: '',
             },
         ]
     },

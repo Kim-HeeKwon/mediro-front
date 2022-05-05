@@ -50,12 +50,10 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
         {fieldName: 'businessNumber', dataType: ValueType.TEXT},
         {fieldName: 'businessName', dataType: ValueType.TEXT},
         {fieldName: 'addDate', dataType: ValueType.TEXT},
-        {fieldName: 'payYn', dataType: ValueType.TEXT},
-        {fieldName: 'monthPayYn', dataType: ValueType.TEXT},
-        {fieldName: 'freeYn', dataType: ValueType.TEXT},
-        {fieldName: 'suppliedAmt', dataType: ValueType.NUMBER},
-        {fieldName: 'vat', dataType: ValueType.NUMBER},
-        {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'userCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'salesCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'udiCnt', dataType: ValueType.NUMBER},
+        {fieldName: 'invoiceCnt', dataType: ValueType.NUMBER},
     ];
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
@@ -133,54 +131,42 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
                 }
             },
             {
-                name: 'suppliedAmt',
-                fieldName: 'suppliedAmt',
+                name: 'userCnt',
+                fieldName: 'userCnt',
                 type: 'number',
                 width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '결제 금액(VAT 별도)', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                header: {text: '플랫폼 사용자 수', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'vat',
-                fieldName: 'vat',
+                name: 'salesCnt',
+                fieldName: 'salesCnt',
                 type: 'number',
                 width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '부가세', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
+                header: {text: '품목 판매 건수', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'totalAmt',
-                fieldName: 'totalAmt',
+                name: 'udiCnt',
+                fieldName: 'udiCnt',
                 type: 'number',
                 width: '150',
                 styleName: 'right-cell-text',
-                header: {text: '총 결제금액', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
-                    showTooltip: true
-                }
-            },
-            // {
-            //     name: 'december',
-            //     fieldName: 'december',
-            //     type: 'number',
-            //     width: '100',
-            //     styleName: 'right-cell-text',
-            //     header: {text: '12월', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
-            //         showTooltip: true
-            //     }
-            // },
-            {
-                name: 'payYn', fieldName: 'payYn', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '정기서비스 신청여부', styleName: 'center-cell-text'}, renderer: {
+                header: {text: '공급내역 건수', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'monthPayYn', fieldName: 'monthPayYn', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '결제여부', styleName: 'center-cell-text'}, renderer: {
+                name: 'invoiceCnt',
+                fieldName: 'invoiceCnt',
+                type: 'number',
+                width: '150',
+                styleName: 'right-cell-text',
+                header: {text: '전자세금계산서건수', styleName: 'center-cell-text'}, numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },

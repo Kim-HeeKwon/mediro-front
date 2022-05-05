@@ -7,6 +7,11 @@ export interface BillManagementData
     payYn: string;
     monthPayYn: string;
 
+    userCnt: number;
+    salesCnt: number;
+    invoiceCnt: number;
+    udiCnt: number;
+
     suppliedAmt: number;
     vat: number;
     totalAmt: number;

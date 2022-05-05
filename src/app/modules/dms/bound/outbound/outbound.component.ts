@@ -288,10 +288,12 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if (clickData.cellType !== 'head') {
-                    this.searchSetValue();
-                    // eslint-disable-next-line max-len
-                    const rtn = this._outBoundService.getHeader(this.outBoundHeaderPagenation.page, this.outBoundHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                    this.selectCallBack(rtn);
+                    if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.outBoundHeaderDataProvider)){
+                        this.searchSetValue();
+                        // eslint-disable-next-line max-len
+                        const rtn = this._outBoundService.getHeader(this.outBoundHeaderPagenation.page, this.outBoundHeaderPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                        this.selectCallBack(rtn);
+                    }
                 }
             }
             if (this.orderBy === 'asc') {

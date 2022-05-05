@@ -92,9 +92,9 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
                 this.shipment = false;
             }
-            if (this.shipmentDetail.length < 25) {
+            if (this.shipmentDetail.length < 20) {
                 let idx = this.shipmentDetail.length;
-                const lastIdx = 25 - this.shipmentDetail.length;
+                const lastIdx = 20 - this.shipmentDetail.length;
                 for (let i = 0; i < lastIdx; i++) {
                     this.shipmentDetail.push({
                         itemGrade: '',

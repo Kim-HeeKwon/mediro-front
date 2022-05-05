@@ -68,7 +68,7 @@ export class BillingManagementService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/admin/fee/feeUser/feeUser-list') // url 변경
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/admin/fee/billManagement/billManagement-list') // url 변경
                 .subscribe((response: any) => {
                     if(response.status === 'SUCCESS'){
                         this._billmanagements.next(response.data);

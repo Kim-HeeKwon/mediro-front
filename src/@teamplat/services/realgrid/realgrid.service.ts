@@ -655,4 +655,14 @@ export class FuseRealGridService {
             gridView.closeLoading();
         }
     }
+
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
+    gfn_GridDataCnt(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): boolean{
+        if(gridView.getItemCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

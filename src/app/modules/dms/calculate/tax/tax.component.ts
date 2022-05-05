@@ -359,10 +359,12 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if(clickData.cellType === 'header'){
                 if(clickData.cellType !== 'head'){
-                    this.searchSetValue();
-                    // eslint-disable-next-line max-len
-                    const rtn = this._taxService.getHeader(this.invoiceHeaderPagenation.page,this.invoiceHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
-                    this.selectCallBack(rtn);
+                    if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.invoiceHeaderDataProvider)){
+                        this.searchSetValue();
+                        // eslint-disable-next-line max-len
+                        const rtn = this._taxService.getHeader(this.invoiceHeaderPagenation.page,this.invoiceHeaderPagenation.size,clickData.column,this.orderBy,this.searchForm.getRawValue());
+                        this.selectCallBack(rtn);
+                    }
                 }
             }
             if(this.orderBy === 'asc'){

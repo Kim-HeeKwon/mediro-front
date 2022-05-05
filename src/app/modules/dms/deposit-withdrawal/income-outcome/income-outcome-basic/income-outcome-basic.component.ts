@@ -171,8 +171,10 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._incomeOutcomeService.getBasic(this.incomeOutcomeBasicPagenation.page, this.incomeOutcomeBasicPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.incomeOutcomeBasicDataProvider)){
+                    const rtn = this._incomeOutcomeService.getBasic(this.incomeOutcomeBasicPagenation.page, this.incomeOutcomeBasicPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {

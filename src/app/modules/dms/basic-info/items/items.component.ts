@@ -344,8 +344,10 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.itemsDataProvider)){
+                    const rtn = this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
