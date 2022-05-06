@@ -84,6 +84,15 @@ export class NewItemComponent implements OnInit, OnDestroy
             salesPrice: [0, [Validators.required]], // 매출단가
             entpName: [], // 업체명
             fomlInfo: [], // 모델명
+            modelId: [],
+
+            udiEntpName: [],
+            udiItemName: [],
+            udiTypeName: [],
+            udiBrandName: [],
+            udiItemNoFullname: [],
+            udiGrade: [],
+
             itemNoFullname: [], // 품목허가번호
             medDevSeq: [], // modelSeq
             seq: [], // seq
@@ -166,6 +175,7 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
+                    console.log(result);
                     if(result.seq === '' || result.seq === null || result.seq === 'null' || result.seq === undefined){
                         result.modelId = result.medDevSeq + '_0';
                     }else{
@@ -182,6 +192,14 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
+
+                    this.selectedItemForm.patchValue({'udiEntpName': result.entpName});
+                    this.selectedItemForm.patchValue({'udiItemName': result.itemName});
+                    this.selectedItemForm.patchValue({'udiTypeName': result.typeName});
+                    this.selectedItemForm.patchValue({'udiBrandName': result.brandName});
+                    this.selectedItemForm.patchValue({'udiItemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'udiGrade': result.grade});
+
                     this.itemGrades.forEach((ex) => {
                         if(ex.id === result.grade){
                             if(ex.udf1 === 'Y'){
@@ -227,6 +245,14 @@ export class NewItemComponent implements OnInit, OnDestroy
                     this.selectedItemForm.patchValue({'seq': result.seq});
                     this.selectedItemForm.patchValue({'udiDiCode': result.udidiCode});
                     this.selectedItemForm.patchValue({'manufacturer': result.entpName});
+
+                    this.selectedItemForm.patchValue({'udiEntpName': result.entpName});
+                    this.selectedItemForm.patchValue({'udiItemName': result.itemName});
+                    this.selectedItemForm.patchValue({'udiTypeName': result.typeName});
+                    this.selectedItemForm.patchValue({'udiBrandName': result.brandName});
+                    this.selectedItemForm.patchValue({'udiItemNoFullname': result.itemNoFullname});
+                    this.selectedItemForm.patchValue({'udiGrade': result.grade});
+
                     this.itemGrades.forEach((ex) => {
                         if(ex.id === result.grade){
                             if(ex.udf1 === 'Y'){
@@ -266,12 +292,19 @@ export class NewItemComponent implements OnInit, OnDestroy
                     manufacturer: '', // 제조사
                     buyPrice: 0, // 매입단가
                     salesPrice: 0, // 매출단가
+                    modelId: '',
                     entpName: '', // 업체명
                     fomlInfo: '', // 모델명
                     itemNoFullname: '', // 품목허가번호
                     medDevSeq: '', // modelSeq
                     seq: '', // seq
                     udiDiCode: '', // udiDiCode
+                    udiEntpName: '',
+                    udiItemName: '',
+                    udiTypeName: '',
+                    udiBrandName: '',
+                    udiItemNoFullname: '',
+                    udiGrade: '',
                 }
             );
             this._itemService.getItems(0,40,'addDate','desc','');

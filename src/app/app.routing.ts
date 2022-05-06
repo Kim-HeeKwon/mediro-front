@@ -185,6 +185,7 @@ export const appRoutes: Route[] = [
                     // item-price
                     // {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
                     {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/dms/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
+                    {path: 'udi-code', data: {key: 'udi-code'}, loadChildren: () => import('app/modules/dms/basic-info/udi-code/udi-code.module').then(m => m.UdiCodeModule)},
                     ]},
             // estimate-order
             {path: 'estimate-order', children: [

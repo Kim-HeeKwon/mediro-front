@@ -11,6 +11,7 @@ export interface InventoryItem
     standard: string;    //규격
     ediCode: string;
     rcperSalaryCode?: string;
+    modelId?: string;
     fomlInfo: string;
     seq: string;
     itemNoFullname: string;

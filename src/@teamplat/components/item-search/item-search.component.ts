@@ -226,11 +226,11 @@ export class ItemSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
         } else if(this.searchForm.getRawValue().udidiCode !== '') {
             this.validatorsRequired = false;
-            if(this.searchForm.getRawValue().udidiCode.length === 13){
-                this.searchForm.patchValue({'udidiCode': '0' + this.searchForm.getRawValue().udidiCode});
-            }else if(this.searchForm.getRawValue().udidiCode.length > 13){
+            if(this.searchForm.getRawValue().udidiCode.length > 14){
                 const code = this.searchForm.getRawValue().udidiCode.substring(2, 16);
                 this.searchForm.patchValue({'udidiCode': code});
+            }else{
+                this.searchForm.patchValue({'udidiCode': this.searchForm.getRawValue().udidiCode});
             }
             this._itemSearchService.getUdiSearchItems(0,10,'itemName','asc',this.searchForm.getRawValue());
         } else {

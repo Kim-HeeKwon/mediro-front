@@ -317,12 +317,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/basic-info/item-price'
             },
             {
-                id      : 'basic-info.udi-di-code',
+                id      : 'basic-info.udi-code',
                 title   : 'UDI DI 코드 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'code',
-                link    : '/basic-info/udi-di-code',
+                link    : '/basic-info/udi-code',
                 tag: '',
             },
         ]
@@ -1285,12 +1285,12 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 link    : '/basic-info/item-price'
             },
             {
-                id      : 'basic-info.udi-di-code',
+                id      : 'basic-info.udi-code',
                 title   : 'UDI DI 코드 관리',
                 subtitle: '',
                 type    : 'basic',
                 icon    : 'code',
-                link    : '/basic-info/udi-di-code',
+                link    : '/basic-info/udi-code',
                 tag: '',
             },
         ]
