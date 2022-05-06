@@ -175,7 +175,6 @@ export class NewItemComponent implements OnInit, OnDestroy
 
             popup.afterClosed().subscribe((result) => {
                 if(result){
-                    console.log(result);
                     if(result.seq === '' || result.seq === null || result.seq === 'null' || result.seq === undefined){
                         result.modelId = result.medDevSeq + '_0';
                     }else{
