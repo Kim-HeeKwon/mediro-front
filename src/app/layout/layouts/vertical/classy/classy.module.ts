@@ -15,9 +15,10 @@ import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserMenuModule } from 'app/layout/common/user-menu/user-menu.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
-import {LinkModule} from "../../../common/link/link.module";
-import {FuseAddscreenModule} from "../../../../../@teamplat/components/addscreen/addscreen.module";
-import {FuseAnnouncementModule} from "../../../../../@teamplat/components/announcement/announcement.module";
+import {LinkModule} from '../../../common/link/link.module';
+import {FuseAddscreenModule} from '../../../../../@teamplat/components/addscreen/addscreen.module';
+import {FuseAnnouncementModule} from '../../../../../@teamplat/components/announcement/announcement.module';
+import {RemoteControlModule} from '../../../../../@teamplat/components/remoteControl /remoteControl.module';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import {FuseAnnouncementModule} from "../../../../../@teamplat/components/announ
         SharedModule,
         LinkModule,
         FuseAnnouncementModule,
+        RemoteControlModule,
     ],
     exports     : [
         ClassyLayoutComponent
