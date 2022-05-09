@@ -183,10 +183,50 @@
                                     (click)="excelExport()">
                                     <img src="assets/images/excel/excel_down.png">
                                 </button>
+<!--                                <button-->
+<!--                                    class="ml-4 mediro-btn-custom"-->
+<!--                                    mat-stroked-button-->
+<!--                                    [color]="'primary'"-->
+<!--                                    matTooltip="엑셀 내려받기"-->
+<!--                                    matTooltipPosition="right"-->
+<!--                                    (click)="excelUpload()">-->
+<!--                                    <img src="assets/images/excel/excel_upload.png">-->
+<!--                                </button>-->
+<!--                                <label class="upload-btn-label" for="input-files"><span>엑셀 업로드</span></label>-->
+<!--                                <input type="file" name="files" id="input-files" accept=".xlsx" style="display: none;"-->
+<!--                                       (change)="excelSelect(fileInput.files)" #fileInput>-->
                             </div>
                             <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">-->
+
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
-                                <!-- Add product button -->
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    (click)="addRow()"
+                                    mat-stroked-button>
+                                    <mat-icon
+                                        [svgIcon]="'heroicons_outline:plus-circle'"
+                                    ></mat-icon>
+                                    <span class="ml-2 mr-1">추가</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    (click)="delRow()"
+                                    mat-stroked-button>
+                                    <mat-icon
+                                        [svgIcon]="'heroicons_outline:minus-circle'"
+                                    ></mat-icon>
+                                    <span class="ml-2 mr-1">삭제</span>
+                                </button>
+                                <button
+                                    class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                    (click)="saveUdiDiCode()">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                    <span class="ml-2 mr-1 mediro-font-custom">저장</span>
+                                </button>
                             </div>
                         </div>
                         <div

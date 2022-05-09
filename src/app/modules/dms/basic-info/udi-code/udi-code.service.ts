@@ -5,6 +5,7 @@ import {Common} from '../../../../../@teamplat/providers/common/common';
 import {ActivatedRoute} from '@angular/router';
 import {map, switchMap, take, tap} from 'rxjs/operators';
 import {UdiCode, UdiCodePagination} from './udi-code.types';
+import {InBound} from "../../bound/inbound/inbound.types";
 
 @Injectable({
     providedIn: 'root'
@@ -79,7 +80,7 @@ export class UdiCodeService{
      *
      * @returns
      */
-    getUdiCodes(page: number = 0, size: number = 20, sort: string = 'itemNm', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getUdiCodes(page: number = 0, size: number = 20, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ pagination: UdiCodePagination; products: UdiCode[] }>{
 
         const searchParam = {};
@@ -112,7 +113,7 @@ export class UdiCodeService{
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/item/item-info')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/basicInfo/udi-code/udi-code-List')
                 .subscribe((response: any) => {
                     this._udiCodes.next(response.data);
                     this._pagination.next(response.pageNation);
@@ -191,6 +192,24 @@ export class UdiCodeService{
     updateUdiCode(udiCodeData: UdiCode): Observable<{response: any}> {
         return this._common.putLoading('v1/api/basicInfo/item', udiCodeData).pipe(
             switchMap((response: any) => of(response))
+        );
+    }
+
+    /**
+     * save
+     */
+    saveUdiDiCode(udiCodeData: UdiCode[]): Observable<UdiCode>
+    {
+        return this.udiCodes$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(udiCodeData, 'v1/api/basicInfo/udi-code/save-udi-code').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
         );
     }
 }
