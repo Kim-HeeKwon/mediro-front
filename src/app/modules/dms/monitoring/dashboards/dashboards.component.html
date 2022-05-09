@@ -56,19 +56,23 @@
                 </div>
                 <div class="flex flex-col items-center">
                     <div class="flex flex-col w-full">
-                        <div class="flex-auto grid grid-cols-3 text-center">
+                        <div class="flex-auto grid grid-cols-4 text-center">
                             <span [ngClass]="{'text-10s' : isMobile}"
                                   class="text-12s white-font-color text-bold-550">작 성</span>
                             <span [ngClass]="{'text-10s' : isMobile}"
                                   class="text-12s white-font-color text-bold-550">발 송</span>
                             <span [ngClass]="{'text-10s' : isMobile}"
                                   class="text-12s white-font-color text-bold-550">미확정</span>
+                            <span [ngClass]="{'text-10s' : isMobile}"
+                                  class="text-12s white-font-color text-bold-550">확정</span>
                             <div (click)="goPage({gbn: 'PO' , status: 'N'})"
                                  class="dashboards-step flex-col sm:col-span-1 flex-auto">{{poInfo.nCnt}}</div>
                             <div (click)="goPage({gbn: 'PO' , status: 'S'})"
                                  class="dashboards-step flex-col sm:col-span-1 flex-auto">{{poInfo.sCnt}}</div>
                             <div (click)="goPage({gbn: 'PO' , status: 'CFA'})"
                                  class="dashboards-step flex-col sm:col-span-1 flex-auto">{{poInfo.cfaCnt}}</div>
+                            <div (click)="goPage({gbn: 'PO' , status: 'CF'})"
+                                 class="dashboards-step flex-col sm:col-span-1 flex-auto">{{poInfo.cfCnt}}</div>
                         </div>
                     </div>
                 </div>

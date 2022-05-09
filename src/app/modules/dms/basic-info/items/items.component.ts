@@ -24,7 +24,6 @@ import {DeviceDetectorService} from 'ngx-device-detector';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {MatSort} from '@angular/material/sort';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
-import {AccountPagenation} from "../account/account.types";
 import {FunctionService} from "../../../../../@teamplat/services/function";
 import {NewItemsComponent} from "./new-items/new-items.component";
 
