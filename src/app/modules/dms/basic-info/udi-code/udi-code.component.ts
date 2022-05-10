@@ -100,6 +100,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
             itemGrade: ['ALL'],
+            udiDiCode: [''],
             itemNm: [''],
             fomlInfo: [''],
             itemCd: [''],
@@ -146,7 +147,8 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpId: 'P$_UDI_ITEM',
                         popUpHeaderText: '품목 조회 - UDI',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|' +
-                            'itemNoFullname:itemNoFullname|itemGrade:itemGrade|manufacturer:manufacturer',
+                            'itemNoFullname:itemNoFullname|itemGrade:itemGrade|manufacturer:manufacturer' +
+                            '|medDevSeq:medDevSeq|mebTypeSeq:mebTypeSeq',
                     }
             },
             {
@@ -364,7 +366,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     searchUdiCode(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeDataProvider, true);
-        const rtn = this._udiCodeService.getUdiCodes(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
+        const rtn = this._udiCodeService.getUdiCodes(0, 40, 'itemCd', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -390,7 +392,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectHeader(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeDataProvider, true);
-        const rtn = this._udiCodeService.getUdiCodes(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
+        const rtn = this._udiCodeService.getUdiCodes(0, 40, 'itemCd', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -407,7 +409,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        const rtn = this._udiCodeService.getUdiCodes(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._udiCodeService.getUdiCodes(this._paginator.pageIndex, this._paginator.pageSize, 'itemCd', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
     excelSelect(files: FileList) {
@@ -449,8 +451,6 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.udiCodeDataProvider);
-
-        console.log(rows);
 
         const confirmation = this._teamPlatConfirmationService.open({
             title: '',
