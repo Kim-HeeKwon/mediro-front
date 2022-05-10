@@ -64,6 +64,15 @@
                                     [autocomplete]="'off'">
                             </mat-form-field>
                         </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <input
+                                    matInput
+                                    [placeholder]="'코드를 입력해주세요.'"
+                                    [formControlName]="'udiDiCode'"
+                                    [autocomplete]="'off'">
+                            </mat-form-field>
+                        </div>
                     </div>
                 </form>
                 <!-- Actions -->
@@ -155,6 +164,14 @@
                                                         matInput
                                                         (window:onkeypress)="enter($event)"
                                                         [formControlName]="'fomlInfo'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">UDI DI 코드</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'udiDiCode'"
                                                         [autocomplete]="'off'">
                                                 </mat-form-field>
                                                 <button

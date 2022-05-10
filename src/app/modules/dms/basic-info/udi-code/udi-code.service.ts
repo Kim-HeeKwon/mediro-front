@@ -80,7 +80,7 @@ export class UdiCodeService{
      *
      * @returns
      */
-    getUdiCodes(page: number = 0, size: number = 20, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+    getUdiCodes(page: number = 0, size: number = 40, sort: string = 'itemCd', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ pagination: UdiCodePagination; products: UdiCode[] }>{
 
         const searchParam = {};

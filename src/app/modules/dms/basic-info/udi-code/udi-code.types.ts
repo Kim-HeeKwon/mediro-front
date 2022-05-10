@@ -22,6 +22,8 @@ export interface UdiCode
     sellPrice: number;   //판매단가
     salesPrice: number;   //판매단가
     active: boolean;     //cell상태
+    medDevSeq?: string;
+    mebTypeSeq?: string;
     addDate?: string;
     addUser?: string;
     updDate?: string;

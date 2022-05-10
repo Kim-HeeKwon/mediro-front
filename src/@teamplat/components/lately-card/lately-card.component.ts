@@ -156,7 +156,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             const rtn = new Promise((resolve, reject) => {
-                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/SALESORDER/salesorder-lately')
+                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/salesorder/salesorder-lately')
                     .subscribe((response: any) => {
                         if (response.status === 'SUCCESS') {
                             resolve(response.data);
@@ -300,7 +300,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             const search = {soNo: lately.soNo};
             const searchParam = {};
             searchParam['order'] = 'asc';
-            searchParam['sort'] = 'poLineNo';
+            searchParam['sort'] = 'soLineNo';
 
             // 검색조건 Null Check
             if ((Object.keys(search).length === 0) === false) {
@@ -316,7 +316,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             };
 
             const rtn = new Promise((resolve, reject) => {
-                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/salesorder/detail-List')
+                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/salesorder/detail-List')
                     .subscribe((response: any) => {
                         if (response.status === 'SUCCESS') {
                             resolve(response.data);
