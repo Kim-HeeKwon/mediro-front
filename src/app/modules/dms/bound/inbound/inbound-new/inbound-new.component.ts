@@ -361,7 +361,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         } else {
             this.inBoundHeaderForm.patchValue({'account': ''});
-            this.inBoundHeaderForm.patchValue({'type': '1'});
+            this.inBoundHeaderForm.patchValue({'type': ''});
             this.inBoundHeaderForm.patchValue({'status': 'N'});
             this.inBoundHeaderForm.patchValue({'supplier': ''});
             this.inBoundHeaderForm.patchValue({'remarkHeader': ''});
@@ -416,6 +416,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 });
         }
+        this._changeDetectorRef.markForCheck();
     }
 
     ngAfterViewInit(): void {
@@ -456,6 +457,10 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
     inBoundSave(): void {
         const status = this.inBoundHeaderForm.controls['status'].value;
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
+            return;
+        }
+        if(this.inBoundHeaderForm.getRawValue().type === ''){
+            this._functionService.cfn_alert('유형은 필수값 입니다.');
             return;
         }
         if(this.inBoundHeaderForm.getRawValue().account === ''){

@@ -314,7 +314,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this.outBoundDetails$ = this._outboundService.outBoundDetails$;
         this.outBoundHeaderForm.patchValue({'account': ''});
         this.outBoundHeaderForm.patchValue({'address': ''});
-        this.outBoundHeaderForm.patchValue({'type': '1'});
+        this.outBoundHeaderForm.patchValue({'type': ''});
         this.outBoundHeaderForm.patchValue({'status': 'N'});
         this.outBoundHeaderForm.patchValue({'dlvAccount': ''});
         this.outBoundHeaderForm.patchValue({'dlvAccountNm': ''});
@@ -424,6 +424,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._functionService.cfn_alert('납품일자는 필수값 입니다.');
             } else if (!this.outBoundHeaderForm.getRawValue().obDate) {
                 this._functionService.cfn_alert('출고일은 필수값 입니다.');
+            } else if (!this.outBoundHeaderForm.getRawValue().type) {
+                this._functionService.cfn_alert('유형은 필수값 입니다.');
             }
         }
     }
