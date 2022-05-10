@@ -34,6 +34,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
     lately: any[];
     row: any[];
     header: any;
+    tooltipText: string;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -68,7 +69,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.row = [];
         this.header = null;
-
+        this.tooltipText = '최근 사용하신 '+this.text+'내역을 선택하여 간편하게 '+this.text+'서을 생성할 수 있습니다.';
         if(this.content === 'ESTIMATE'){
 
             const searchParam = {};
@@ -135,6 +136,42 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                             poNo: set.poNo,
                             accountNm: set.accountNm,
                             date: set.poDate};
+                        this.row.push(setData);
+                    });
+
+                    this.header = l;
+                    this.lately = this.row;
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
+        }else if(this.content === 'SALESORDER'){
+            const searchParam = {};
+            searchParam['order'] = '';
+            searchParam['sort'] = '';
+            const pageParam = {
+                page: 1,
+                size: 4,
+            };
+            //searchParam['excelType'] = excelType;
+            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+            const rtn = new Promise((resolve, reject) => {
+                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/SALESORDER/salesorder-lately')
+                    .subscribe((response: any) => {
+                        if (response.status === 'SUCCESS') {
+                            resolve(response.data);
+                        }
+                    }, reject);
+            });
+            rtn.then((l) => {
+                if(l){
+                    // @ts-ignore
+                    l.forEach((set) => {
+                        const setData = {
+                            click: 0,
+                            soNo: set.soNo,
+                            accountNm: set.accountNm,
+                            date: set.soDate};
                         this.row.push(setData);
                     });
 
@@ -246,6 +283,54 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     param.poAmt = 0;
                     param.status = 'N';
                     param.poCreDate = null;
+                    if(param.deliveryDate === null){
+                        param.deliveryDate = '';
+                    }
+                    return param;
+                });
+                const rtnList = {
+                    header: header,
+                    detail: detail
+                };
+                this._matDialogRef.close(rtnList);
+
+            });
+        }else if(this.content === 'SALESORDER'){
+
+            const search = {soNo: lately.soNo};
+            const searchParam = {};
+            searchParam['order'] = 'asc';
+            searchParam['sort'] = 'poLineNo';
+
+            // 검색조건 Null Check
+            if ((Object.keys(search).length === 0) === false) {
+                // eslint-disable-next-line guard-for-in
+                for (const k in search) {
+                    searchParam[k] = search[k];
+                }
+            }
+
+            const pageParam = {
+                page: 0,
+                size: 1000,
+            };
+
+            const rtn = new Promise((resolve, reject) => {
+                this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/estimateOrder/salesorder/detail-List')
+                    .subscribe((response: any) => {
+                        if (response.status === 'SUCCESS') {
+                            resolve(response.data);
+                        }
+                    }, reject);
+            });
+            rtn.then((detail) => {
+
+                const header = this.header.filter((item: any) => item.soNo === lately.soNo).map((param: any) => {
+                    //param.poDate = null;
+                    param.soNo = null;
+                    param.soAmt = 0;
+                    param.status = 'N';
+                    param.soCreDate = null;
                     if(param.deliveryDate === null){
                         param.deliveryDate = '';
                     }

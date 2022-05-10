@@ -28,6 +28,7 @@ import {takeUntil} from 'rxjs/operators';
 import {SalesOrder} from '../salesorder.types';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {formatDate} from "@angular/common";
+import {LatelyCardComponent} from "../../../../../../@teamplat/components/lately-card";
 
 @Component({
     selector: 'app-dms-salesorder-new',
@@ -501,6 +502,69 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             this._functionService.cfn_alert('필수값을 입력해주세요.');
         }
     }
+
+    // 최근 주문
+    latelySalesorder(): void {
+        if (!this.isMobile) {
+            const popup = this._matDialogPopup.open(LatelyCardComponent, {
+                data: {
+                    text: '주문',
+                    content: 'SALESORDER'
+                },
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+
+            popup.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.salesorderHeaderForm.patchValue(
+                        result.header[0]
+                    );
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.salesorderDetailDataProvider, result.detail);
+                    for (let i = 0; i < this.salesorderDetailDataProvider.getRowCount(); i++) {
+
+                        this.salesorderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
+        } else {
+            const d = this._matDialogPopup.open(LatelyCardComponent, {
+                data: {
+                    text: '주문',
+                    content: 'SALESORDER'
+                },
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.salesorderHeaderForm.patchValue(
+                        result.header[0]
+                    );
+                    this._realGridsService.gfn_DataSetGrid(this.gridList, this.salesorderDetailDataProvider, result.detail);
+                    for (let i = 0; i < this.salesorderDetailDataProvider.getRowCount(); i++) {
+
+                        this.salesorderDetailDataProvider.setRowState(i, 'created', false);
+                    }
+                    this.gridList.commit();
+                    this._changeDetectorRef.markForCheck();
+                }
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
 
     /* 트랜잭션 전 data Set
      * @param sendData

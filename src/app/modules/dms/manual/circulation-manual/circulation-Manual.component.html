@@ -296,14 +296,7 @@
                     mat-raised-button
                     [ngStyle]="{'width': '94%'}"
                     (click)="outboundStore()">
-                    <span>출고 부분출고/출고</span>
-                </button>
-                <button
-                    class="ml-3 mb-3 mediro-btn-custom-background-color"
-                    mat-raised-button
-                    [ngStyle]="{'width': '94%'}"
-                    (click)="outboundUDIStore()">
-                    <span>UDI 공급내역 출고</span>
+                    <span>출고</span>
                 </button>
                 <button
                     class="ml-3 mb-3 mediro-btn-custom-background-color"
@@ -550,28 +543,24 @@
                             <span class="ml-2 mr-1 text-12s manual-color">입고 삭제</span>
                         </button>
                     </div>
-                    <div *ngIf="outbound" class="flex w- 6/6 my-2">
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                    <div *ngIf="outbound" class="flex w- 5/5 my-2">
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 신규 등록</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 수정</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundStore()">
-                            <span class="ml-2 mr-1 text-12s manual-color">출고 부분출고/출고</span>
+                            <span class="ml-2 mr-1 text-12s manual-color">출고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
-                                mat-flat-button (click)="outboundUDIStore()">
-                            <span class="ml-2 mr-1 text-12s manual-color">UDI 공급내역 출고</span>
-                        </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundPayment()">
                             <span class="ml-2 mr-1 text-12s manual-color">가납 출고</span>
                         </button>
-                        <button class="w-1/6 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="outboundDelete()">
                             <span class="ml-2 mr-1 text-12s manual-color">출고 삭제</span>
                         </button>

@@ -267,7 +267,7 @@ export class circulationManualComponent {
     outboundStore(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Eo1zhuJUzU8');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/-c9NCaD5Z5s');
     }
 
     outboundUDIStore(): void {

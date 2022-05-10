@@ -30,6 +30,16 @@
                         class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
                         mat-flat-button
                         [color]="'primary'"
+                        (click)="latelySalesorder()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                        <span class="ml-2 mr-1 mediro-font-custom">최근 주문서</span>
+                    </button>
+                    <button
+                        class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                        mat-flat-button
+                        [color]="'primary'"
                         (click)="salesorderSave()">
                         <mat-icon
                             class="icon-size-5"
