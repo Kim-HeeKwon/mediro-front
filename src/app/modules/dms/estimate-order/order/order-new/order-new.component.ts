@@ -131,7 +131,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             poCreDate: [{value: '', disabled: true}],//발주 생성일자
             poDate: [{value: '', disabled: false}, [Validators.required]], //발주일자
             deliveryDate: [{value: ''}], //납기일자
-            email: [], //이메일
+            email: [{value: '', disabled: false}, [Validators.required]], //이메일
             cellPhoneNumber: [], //휴대전화
             remarkHeader: [''], //비고
             active: [false]  // cell상태

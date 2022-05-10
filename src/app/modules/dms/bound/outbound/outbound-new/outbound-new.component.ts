@@ -117,7 +117,7 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
             obNo: [{value: '', disabled: true}],   // 출고번호
             account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
-            address: [{value: ''}],   // 거래처 주소
+            address: [{value: '', disabled: false}, [Validators.required]],   // 거래처 주소
             type: [{value: ''}, [Validators.required]],   // 유형
             status: [{value: '', disabled: true}, [Validators.required]],   // 상태
             dlvAccount: [{value: ''}],   // 납품처

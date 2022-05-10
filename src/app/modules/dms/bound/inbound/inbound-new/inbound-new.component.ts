@@ -458,12 +458,19 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
             return;
         }
-
+        if(this.inBoundHeaderForm.getRawValue().account === ''){
+            this._functionService.cfn_alert('공급처는 필수값 입니다.');
+            return;
+        }
+        if(this.inBoundHeaderForm.getRawValue().ibDate === ''){
+            this._functionService.cfn_alert('입고일은 필수값 입니다.');
+            return;
+        }
         if (!this.inBoundHeaderForm.invalid) {
 
             let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.inBoundDetailDataProvider);
             let detailCheck = false;
-            console.log(rows);
+
             //return;
             if (rows.length === 0) {
                 this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');

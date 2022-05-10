@@ -126,7 +126,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             soNo: [{value: '', disabled: true}],   // 주문번호
             account: [{value: '', disabled: true}, [Validators.required]], // 거래처 코드
             accountNm: [{value: '', disabled: true}],   // 거래처 명
-            address: [{value: ''}],   // 거래처 주소
+            address: [{value: '', disabled: false}, [Validators.required]],   // 거래처 주소
             dlvAccount: [{value: ''}],   // 납품처
             dlvAccountNm: [{value: '', disabled: true}],   // 납품처
             dlvAddress: [{value: ''}],   // 납품처 주소
