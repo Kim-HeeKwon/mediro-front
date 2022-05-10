@@ -145,13 +145,22 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.estimateDetailColumns = [
             {
-                name: 'effectiveDate', fieldName: 'effectiveDate', type: 'date', width: '150', styleName: 'left-cell-text'
-                , header: {text: '견적가 적용일자', styleName: 'center-cell-text'}
-                , datetimeFormat: 'yyyy-MM-dd', renderer: {
+                name: 'effectiveDate',
+                fieldName: 'effectiveDate',
+                type: 'date',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '견적가 적용일자', styleName: 'center-cell-text'}
+                ,
+                datetimeFormat: 'yyyy-MM-dd',
+                renderer: {
                     showTooltip: true
                 }
-                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
-                , editor: {
+                ,
+                mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+                ,
+                editor: {
                     type: 'date',
                     datetimeFormat: 'yyyy-MM-dd',
                     textReadOnly: true,
@@ -168,9 +177,9 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpHeaderText: '품목 조회',
                         popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|refItemNm:refItemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|qtPrice:salesPrice',
-                        where : [{
+                        where: [{
                             key: 'account',
-                            replace : 'account:=:#{account}'
+                            replace: 'account:=:#{account}'
                         }]
                     }
             },
@@ -311,24 +320,24 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
-            if(this.estimateDetailDataProvider.getOrgFieldName(field) === 'qty' ||
-                this.estimateDetailDataProvider.getOrgFieldName(field) === 'qtPrice'){
+            if (this.estimateDetailDataProvider.getOrgFieldName(field) === 'qty' ||
+                this.estimateDetailDataProvider.getOrgFieldName(field) === 'qtPrice') {
                 const that = this;
-                setTimeout(() =>{
+                setTimeout(() => {
                     const qty = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList,
                         this.estimateDetailDataProvider,
-                        itemIndex,'qty');
+                        itemIndex, 'qty');
                     const qtPrice = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList,
                         this.estimateDetailDataProvider,
-                        itemIndex,'qtPrice');
+                        itemIndex, 'qtPrice');
                     that._realGridsService.gfn_CellDataSetRow(that.gridList,
                         that.estimateDetailDataProvider,
                         itemIndex,
                         'qtAmt',
                         qty * qtPrice);
-                },100);
+                }, 100);
             }
         });
 
@@ -361,11 +370,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
     addRow(): void {
 
         let effectiveDate = '';
-        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+        if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
             this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
-        }else{
+            this.estimateHeaderForm.getRawValue().effectiveDate === '') {
+        } else {
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
         }
         const values = [
@@ -399,7 +408,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (!this.estimateHeaderForm.invalid) {
-
+            console.log(this.estimateHeaderForm.invalid);
             const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.estimateDetailDataProvider);
 
             let detailCheck = false;
@@ -444,7 +453,15 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             // Mark for check
             this._changeDetectorRef.markForCheck();
         } else {
-            this._functionService.cfn_alert('필수값을 입력해주세요.');
+            if (!this.estimateHeaderForm.getRawValue().account) {
+                this._functionService.cfn_alert('거래처는 필수값 입니다.');
+            } else if (!this.estimateHeaderForm.getRawValue().email) {
+                this._functionService.cfn_alert('이메일은 필수값 입니다.');
+            } else if (!this.estimateHeaderForm.getRawValue().qtDate) {
+                this._functionService.cfn_alert('견적일자는 필수값 입니다.');
+            } else if (!this.estimateHeaderForm.getRawValue().effectiveDate) {
+                this._functionService.cfn_alert('견적가 적용일자는 필수값 입니다.');
+            }
         }
     }
 
@@ -466,31 +483,31 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             sendData[i].cellPhoneNumber = this.estimateHeaderForm.controls['cellPhoneNumber'].value;
             sendData[i].remarkHeader = this.estimateHeaderForm.controls['remarkHeader'].value;
 
-            if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+            if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
                 this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
                 this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-                this.estimateHeaderForm.getRawValue().effectiveDate === ''){
+                this.estimateHeaderForm.getRawValue().effectiveDate === '') {
                 sendData[i].effectiveDateH = '';
-            }else{
+            } else {
                 sendData[i].effectiveDateH = this.estimateHeaderForm.controls['effectiveDate'].value;
             }
 
-            if(this.estimateHeaderForm.getRawValue().deliveryDate === null ||
+            if (this.estimateHeaderForm.getRawValue().deliveryDate === null ||
                 this.estimateHeaderForm.getRawValue().deliveryDate.value === '' ||
                 this.estimateHeaderForm.getRawValue().deliveryDate.value === null ||
                 this.estimateHeaderForm.getRawValue().deliveryDate === undefined ||
-                this.estimateHeaderForm.getRawValue().deliveryDate === ''){
+                this.estimateHeaderForm.getRawValue().deliveryDate === '') {
                 sendData[i].deliveryDate = '';
-            }else{
+            } else {
                 sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
             }
 
-            if(this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
+            if (this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
                 this.estimateHeaderForm.getRawValue().qtDate === undefined ||
                 this.estimateHeaderForm.getRawValue().qtDate === null ||
-                this.estimateHeaderForm.getRawValue().qtDate === ''){
+                this.estimateHeaderForm.getRawValue().qtDate === '') {
                 sendData[i].qtDate = '';
-            }else{
+            } else {
                 sendData[i].qtDate = this.estimateHeaderForm.controls['qtDate'].value;
             }
         }
@@ -504,7 +521,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
     alertMessage(param: any): void {
         if (param.status === 'SUCCESS') {
             this.backPage();
-        } else if(param.status === 'CANCEL'){
+        } else if (param.status === 'CANCEL') {
 
         } else {
             this._functionService.cfn_alert(param.msg);
@@ -583,9 +600,9 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
             popup.afterClosed().subscribe((result) => {
                 if (result) {
                     result.header.forEach((data) => {
-                        if(data.cellPhoneNumber === 0){
+                        if (data.cellPhoneNumber === 0) {
                             data.cellPhoneNumber = '';
-                        }else{
+                        } else {
                             data.cellPhoneNumber = '0' + data.cellPhoneNumber;
                         }
                     });
@@ -642,11 +659,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
         this._changeDetectorRef.markForCheck();
 
         let effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
-        if(this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+        if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
             this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
             this.estimateHeaderForm.getRawValue().effectiveDate === null ||
-            this.estimateHeaderForm.getRawValue().effectiveDate === ''){
-        }else{
+            this.estimateHeaderForm.getRawValue().effectiveDate === '') {
+        } else {
             effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
         }
 

@@ -461,7 +461,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             let detailCheck = false;
 
             if (rows.length === 0) {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+                this._functionService.cfn_alert('상세정보에 값이 없습니다.');
                 detailCheck = true;
             }
             if (detailCheck) {
@@ -499,7 +499,15 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             this._changeDetectorRef.markForCheck();
 
         } else {
-            this._functionService.cfn_alert('필수값을 입력해주세요.');
+            if (!this.salesorderHeaderForm.getRawValue().type) {
+                this._functionService.cfn_alert('유형은 필수값 입니다.');
+            } else if (!this.salesorderHeaderForm.getRawValue().account) {
+                this._functionService.cfn_alert('거래처는 필수값 입니다.');
+            } else if (!this.salesorderHeaderForm.getRawValue().dlvDate) {
+                this._functionService.cfn_alert('납품일자는 필수값 입니다.');
+            } else if (!this.salesorderHeaderForm.getRawValue().soDate) {
+                this._functionService.cfn_alert('주문일자는 필수값 입니다.');
+            }
         }
     }
 

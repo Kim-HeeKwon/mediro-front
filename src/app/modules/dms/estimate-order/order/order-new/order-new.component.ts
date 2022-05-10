@@ -442,7 +442,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             let detailCheck = false;
 
             if (rows.length === 0) {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+                this._functionService.cfn_alert('상세정보에 값이 없습니다.');
                 detailCheck = true;
             }
             if (detailCheck) {
@@ -480,7 +480,15 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
             this._changeDetectorRef.markForCheck();
 
         } else {
-            this._functionService.cfn_alert('필수값을 입력해주세요.');
+            if (!this.orderHeaderForm.getRawValue().account) {
+                this._functionService.cfn_alert('공급처는 필수값 입니다.');
+            } else if (!this.orderHeaderForm.getRawValue().email) {
+                this._functionService.cfn_alert('이메일은 필수값 입니다.');
+            } else if (!this.orderHeaderForm.getRawValue().obDate) {
+                this._functionService.cfn_alert('발주일자는 필수값 입니다.');
+            } else if (!this.orderHeaderForm.getRawValue().type) {
+                this._functionService.cfn_alert('유형은 필수값 입니다.');
+            }
         }
     }
 

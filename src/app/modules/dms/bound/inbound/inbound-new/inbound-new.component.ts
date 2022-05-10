@@ -473,7 +473,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
             //return;
             if (rows.length === 0) {
-                this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+                this._functionService.cfn_alert('상세정보에 값이 없습니다.');
                 detailCheck = true;
             }
             if (detailCheck) {
