@@ -13,6 +13,7 @@ export class ItemsService {
 
     private _item: BehaviorSubject<InventoryItem> = new BehaviorSubject(null);
     private _items: BehaviorSubject<InventoryItem[]> = new BehaviorSubject(null);
+    private _udiDiCodes: BehaviorSubject<any[]> = new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> = new BehaviorSubject(null);
 
     /**
@@ -37,6 +38,14 @@ export class ItemsService {
     get items$(): Observable<InventoryItem[]>
     {
         return this._items.asObservable();
+    }
+
+    /**
+     * Getter for products
+     */
+    get udiDiCodes$(): Observable<any[]>
+    {
+        return this._udiDiCodes.asObservable();
     }
 
     /**
@@ -193,6 +202,24 @@ export class ItemsService {
     updateItem(itemData: InventoryItem): Observable<{response: any}> {
         return this._common.putLoading('v1/api/basicInfo/item', itemData).pipe(
             switchMap((response: any) => of(response))
+        );
+    }
+
+    /**
+     * save
+     */
+    uploadItem(udiDiCodes: any[]): Observable<any>
+    {
+        return this.udiDiCodes$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(udiDiCodes, 'v1/api/basicInfo/item/upload-item').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
         );
     }
 }

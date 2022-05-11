@@ -31,6 +31,8 @@ import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help'
 import {CommonLoadingBarModule} from '../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
 import {NewItemsComponent} from "./new-items/new-items.component";
+import {NewItemProduceComponent} from "./new-item-produce/new-item-produce.component";
+import {UploadItemsComponent} from "./upload-items/upload-items.component";
 
 const itemsRoutes: Route[] = [
     {
@@ -46,7 +48,9 @@ const itemsRoutes: Route[] = [
     declarations: [
         ItemsComponent,
         NewItemComponent,
+        NewItemProduceComponent,
         NewItemsComponent,
+        UploadItemsComponent,
         DetailItemsComponent
     ],
     imports: [

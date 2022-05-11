@@ -19,13 +19,16 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
-import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {map, retry, switchMap, takeUntil} from 'rxjs/operators';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {CodeStore} from '../../../../core/common-code/state/code.store';
 import {MatSort} from '@angular/material/sort';
 import {DetailItemsComponent} from './detail-items/detail-items.component';
 import {FunctionService} from "../../../../../@teamplat/services/function";
 import {NewItemsComponent} from "./new-items/new-items.component";
+import {Common} from "../../../../../@teamplat/providers/common/common";
+import {NewItemProduceComponent} from "./new-item-produce/new-item-produce.component";
+import {UploadItemsComponent} from "./upload-items/upload-items.component";
 
 @Component({
     selector: 'dms-app-items',
@@ -91,6 +94,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     constructor(
+        private _common: Common,
         private _realGridsService: FuseRealGridService,
         private _router: Router,
         private _formBuilder: FormBuilder,
@@ -455,8 +459,38 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     //엑셀 업로드
-    excelImport(): void {
-        this._realGridsService.gfn_ExcelImportGrid('ITEM');
+    excelImportGrid(): void {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(UploadItemsComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    note: {}
+                },
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+            });
+        } else {
+            const d = this._matDialog.open(UploadItemsComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     //엑셀 다운로드
@@ -538,6 +572,44 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    /**
+     * Add a new note
+     */
+    createProduceItem(): void {
+
+        if (!this.isMobile) {
+            const d = this._matDialog.open(NewItemProduceComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    note: {}
+                },
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+            });
+        } else {
+            const d = this._matDialog.open(NewItemProduceComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
     //페이징
     pageEvent($event: PageEvent): void {
         const rtn = this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
@@ -561,6 +633,72 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }).then((ex2) =>{
             this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, false);
+        });
+    }
+
+    getUdiItem() : void{
+
+        const r = this.getItem();
+
+        r.then((ex) => {
+            console.log(ex);
+        })
+    }
+
+    mergeUdiItem() : void{
+
+        const r = this.mergeItem();
+
+        r.then((ex) => {
+            console.log(ex);
+        })
+        this._functionService.cfn_alert("품목을 등록 중입니다.(UDI 코드 정보가 등록되어 있는 품목만) <br> 데이터가 많으면 시간이 다소 걸릴 수 있습니다.");
+
+    }
+
+    mergeItem(): Promise<{ pagenation: any; getList: any }>{
+
+        const searchParam = {};
+        searchParam['order'] = 'asc';
+        searchParam['sort'] = 'asc';
+        searchParam['offset'] = '1';
+        searchParam['limit'] = '100';
+        searchParam['businessName'] = localStorage.getItem('businessName');
+
+        const pageParam = {
+            page: 0,
+            size: 100,
+        };
+
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam,'/v1/api/udi/models/merge')
+                .subscribe((response: any) => {
+                    resolve({pagenation: response.pageNation , getList: response.data});
+                }, reject);
+
+        });
+    }
+
+    getItem(): Promise<{ pagenation: any; getList: any }>{
+
+        const searchParam = {};
+        searchParam['order'] = 'asc';
+        searchParam['sort'] = 'asc';
+        searchParam['offset'] = '1';
+        searchParam['limit'] = '100';
+        searchParam['businessName'] = localStorage.getItem('businessName');
+
+        const pageParam = {
+            page: 0,
+            size: 100,
+        };
+
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam,'/v1/api/udi/models/list')
+                .subscribe((response: any) => {
+                    resolve({pagenation: response.pageNation , getList: response.data});
+                }, reject);
+
         });
     }
 }

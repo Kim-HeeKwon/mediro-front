@@ -1,0 +1,61 @@
+<div class="flex flex-col flex-auto md:w-240 md:min-w-240 -m-6">
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <!-- Header -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-lg font-medium">품목 업로드</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between mt-4 pb-4 px-8 mediro-backcolor-custom">
+        <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+            <button
+                class="mediro-btn-custom"
+                mat-stroked-button
+                [color]="'primary'"
+                (click)="excelExport()">
+                <img src="assets/images/excel/excel_down.png">
+            </button>
+        </div>
+        <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+            <button
+                class="ml-2 mediro-btn-custom"
+                mat-stroked-button
+                [color]="'accent'"
+                (click)="uploadItem()">
+                <mat-icon [svgIcon]="'settings'"></mat-icon>
+                <span class="ml-2 mr-1">업로드</span>
+            </button>
+            <button
+                class="ml-2 mediro-btn-custom"
+                mat-stroked-button
+                [color]="'accent'"
+                (click)="uploadInsertItem()">
+                <mat-icon [svgIcon]="'create'"></mat-icon>
+                <span class="ml-2 mr-1">추가</span>
+            </button>
+            <button
+                class="ml-2 mediro-btn-custom"
+                mat-stroked-button
+                [color]="'accent'"
+                (click)="uploadDeleteItem()">
+                <mat-icon [svgIcon]="'delete'"></mat-icon>
+                <span class="ml-2 mr-1">삭제</span>
+            </button>
+        </div>
+    </div>
+    <div
+        style="height: 300px;"
+        class="realgrid"
+        id="uploadItem">
+    </div>
+</div>

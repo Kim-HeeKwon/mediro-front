@@ -494,8 +494,8 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status === 'CF' || checkValues[i].status === 'N' || checkValues[i].status === 'C') {
-                    this._functionService.cfn_alert('확정대기 또는 요청 상태에서만 가능합니다. <br> 견적번호 : ' + checkValues[i].qtNo);
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('확정 또는 취소 상태에서는 확정할 수 없습니다. <br> 견적번호 : ' + checkValues[i].qtNo);
                     check = false;
                     return false;
                 }

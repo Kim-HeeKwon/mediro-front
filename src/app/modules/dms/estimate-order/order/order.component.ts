@@ -463,9 +463,8 @@ export class OrderComponent implements OnInit, OnDestroy, AfterViewInit {
             let check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status !== 'S' && checkValues[i].status !== 'P'&&
-                    checkValues[i].status !== 'CFA') {
-                    this._functionService.cfn_alert('확정대기 또는 발주서 발송 상태에서만 발주 할 수 있습니다. <br> 발주번호 : ' + checkValues[i].poNo);
+                if (checkValues[i].status === 'CF' || checkValues[i].status === 'C') {
+                    this._functionService.cfn_alert('확정 또는 취소 상태에서는 발주할 수 없습니다. <br> 발주번호 : ' + checkValues[i].poNo);
                     check = false;
                     return false;
                 }
