@@ -464,7 +464,10 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList2.onCellEdited = ((grid, itemIndex, row, field) => {
 
             if (this.gridList2DataProvider.getOrgFieldName(field) === 'obQty') {
+
                 const that = this;
+
+                //row 2 : 전체 meddevItemSeq, typename <비교> 입력한 meddevItemSeq, typeName
                 const medDevItemSeq = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList2,
                     this.gridList2DataProvider,
@@ -473,72 +476,94 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.gridList2,
                     this.gridList2DataProvider,
                     itemIndex,'typeName');
+
                 const dataRow = this.gridList1DataProvider.searchDataRow({fields:['medDevItemSeq', 'typeName']
                     , values: [medDevItemSeq, typeName]});
+
+                let chk = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
+
+                chk = chk.filter((detail: any) =>
+                    (detail.meddevItemSeq === medDevItemSeq))
+                    .map((param: any) => param);
+                chk = chk.filter((detail: any) =>
+                    (detail.typeName === typeName))
+                    .map((param: any) => param)
+
                 const obQty = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList1,
                     this.gridList1DataProvider,
                     dataRow, 'obQty');
-                const qty = that._realGridsService.gfn_CellDataGetRow(
+
+                const obQty2 = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList1,
                     this.gridList1DataProvider,
-                    dataRow, 'qty');
+                    dataRow, 'obQty');
+
                 const inputOrgQty = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList2,
                     this.gridList2DataProvider,
                     itemIndex, 'obQty');
-                const grid1OrgObQty = obQty;
-                const grid1OrgQty = qty;
+
+                const qty = that._realGridsService.gfn_CellDataGetRow(
+                    this.gridList1,
+                    this.gridList1DataProvider,
+                    itemIndex, 'qty');
+
+                const qty2 = that._realGridsService.gfn_CellDataGetRow(
+                    this.gridList1,
+                    this.gridList1DataProvider,
+                    dataRow, 'qty');
+
+                const grid1OrgObQty = obQty2;
+                const grid1OrgQty = qty2;
+
+                let row2SumObQty = 0;
+                if(chk.length > 0) {
+                    chk.forEach((ex) => {
+                        row2SumObQty += ex.obQty * ex.convertedQty;
+                    });
+                }
 
                 setTimeout(() => {
-                    let finalQty = 0;
 
+                    // row 1 : 입고 중 수량
                     const orgObQty = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList1,
                         this.gridList1DataProvider,
                         dataRow,'orgObQty');
 
-                    let chk = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
+                    // row : 입고 예정 수량
+                   const obExpQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList1,
+                        this.gridList1DataProvider,
+                        dataRow,'obExpQty');
 
-                    chk = chk.filter((detail: any) =>
-                        (detail.meddevItemSeq === medDevItemSeq))
-                        .map((param: any) => param);
-                    chk = chk.filter((detail: any) =>
-                        (detail.typeName === typeName))
-                        .map((param: any) => param);
-                    if(chk.length > 0){
-                        chk.forEach((ex) => {
-                            finalQty += ex.obQty;
-                        });
-                    }
                     const convertedQty = that._realGridsService.gfn_CellDataGetRow(
                         this.gridList2,
                         this.gridList2DataProvider,
                         itemIndex,'convertedQty');
 
-                    finalQty = finalQty * convertedQty;
+                    row2SumObQty = row2SumObQty + orgObQty;
 
-                    that._realGridsService.gfn_CellDataSetRow(that.gridList1,
-                        that.gridList1DataProvider,
-                        dataRow,
-                        'obQty',
-                        finalQty);
-
-                    const obExpQty = that._realGridsService.gfn_CellDataGetRow(
-                        this.gridList1,
-                        this.gridList1DataProvider,
-                        dataRow,'obExpQty');
-
+                    // 미입고 수랑 row1
                     that._realGridsService.gfn_CellDataSetRow(that.gridList1,
                         that.gridList1DataProvider,
                         dataRow,
                         'qty',
-                        obExpQty - finalQty);
+                        obExpQty - row2SumObQty);
+
+                    // 입고 수량 row1
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList1,
+                        that.gridList1DataProvider,
+                        dataRow,
+                        'obQty',
+                        row2SumObQty);
 
                     const inputQty = that._realGridsService.gfn_CellDataGetRow(that.gridList1,
                         that.gridList1DataProvider,
                         dataRow,
                         'qty');
+
                     if(inputQty >= 0) {
                         this.obQty = inputOrgQty;
                     }
@@ -560,6 +585,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             itemIndex,
                             'obQty',
                             this.obQty);
+
                         this.qtyFailAlert();
                         this._changeDetectorRef.markForCheck();
                     }

@@ -507,6 +507,8 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                 this._functionService.cfn_alert('납품일자는 필수값 입니다.');
             } else if (!this.salesorderHeaderForm.getRawValue().soDate) {
                 this._functionService.cfn_alert('주문일자는 필수값 입니다.');
+            } else if (!this.salesorderHeaderForm.getRawValue().address) {
+                this._functionService.cfn_alert('거래처주소는 필수값 입니다.');
             }
         }
     }
