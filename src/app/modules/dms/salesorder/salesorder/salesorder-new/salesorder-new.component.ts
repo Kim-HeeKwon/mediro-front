@@ -347,7 +347,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
         if (this.estimateHeader !== undefined) {
             this.salesorderHeaderForm.patchValue({'account': this.estimateHeader.account});
             this.salesorderHeaderForm.patchValue({'accountNm': this.estimateHeader.accountNm});
-            this.salesorderHeaderForm.patchValue({'address': ''});
+            this.salesorderHeaderForm.patchValue({'address': this.estimateHeader.accountAddress});
             this.salesorderHeaderForm.patchValue({'type': '1'});
             this.salesorderHeaderForm.patchValue({'status': 'N'});
             this.salesorderHeaderForm.patchValue({'obNo': ''});
@@ -508,7 +508,7 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
             } else if (!this.salesorderHeaderForm.getRawValue().soDate) {
                 this._functionService.cfn_alert('주문일자는 필수값 입니다.');
             } else if (!this.salesorderHeaderForm.getRawValue().address) {
-                this._functionService.cfn_alert('거래처주소는 필수값 입니다.');
+                this._functionService.cfn_alert('거래처 주소는 필수값 입니다.');
             }
         }
     }

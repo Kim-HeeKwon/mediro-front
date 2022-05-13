@@ -88,7 +88,7 @@
                             [ngStyle]="{'width': '94%'}"
                             (click)="createItems()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">UDI 외 품목 등록</span>
+                            <span class="ml-2 mr-1">기타 품목 등록</span>
                         </button>
                     </div>
                     <div class="col-span-12">
@@ -99,7 +99,7 @@
                             [ngStyle]="{'width': '94%'}"
                             (click)="createItem()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">UDI 품목 등록</span>
+                            <span class="ml-2 mr-1">UDI 품목 개별 등록</span>
                         </button>
                     </div>
                     <div class="col-span-12">
@@ -110,7 +110,7 @@
                             [ngStyle]="{'width': '94%'}"
                             (click)="createProduceItem()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">UDI 품목 등록 [제조]</span>
+                            <span class="ml-2 mr-1">제조사 품목 가져오기</span>
                         </button>
                     </div>
                 </div>
@@ -138,6 +138,16 @@
                                     mat-icon-button
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="createProduceItem()">
+                                    <!--                                    <mat-icon-->
+                                    <!--                                        style="color: #ffffff !important;"-->
+                                    <!--                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                                    <span class="ml-2 mr-1">제조사 품목 가져오기</span>
                                 </button>
                             </div>
                         </div>
@@ -207,17 +217,17 @@
                         <div *ngIf="!isMobile"
                              class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between pb-4 px-8 mediro-backcolor-custom">
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+<!--                                <button-->
+<!--                                    class="mediro-btn-custom"-->
+<!--                                    mat-stroked-button-->
+<!--                                    [color]="'primary'"-->
+<!--                                    matTooltip="엑셀 업로드 가기"-->
+<!--                                    matTooltipPosition="right"-->
+<!--                                    (click)="excelImportGrid()">-->
+<!--                                    <img src="assets/images/excel/excel_upload.png">-->
+<!--                                </button>-->
                                 <button
                                     class="mediro-btn-custom"
-                                    mat-stroked-button
-                                    [color]="'primary'"
-                                    matTooltip="엑셀 업로드 가기"
-                                    matTooltipPosition="right"
-                                    (click)="excelImportGrid()">
-                                    <img src="assets/images/excel/excel_upload.png">
-                                </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
                                     mat-stroked-button
                                     [color]="'primary'"
                                     matTooltip="엑셀 내려받기"
@@ -225,6 +235,16 @@
                                     (click)="excelExport()">
                                     <img src="assets/images/excel/excel_down.png">
                                 </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom mediro-custom-accent"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="excelImportGrid()">
+                                    <mat-icon
+                                        style="color: #3490DD !important;"
+                                        [svgIcon]="'file_upload'"></mat-icon>
+                                    <span class="ml-2 mr-1">UDI 품목 일괄 등록</span>
+                                </button><!-- Add product button -->
                             </div>
                             <!--                                <div class="flex flex-shrink-0 items-center sm:mt-0 sm:ml-4">-->
                             <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
@@ -251,7 +271,7 @@
                                     <mat-icon
                                         style="color: #3490DD !important;"
                                         [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                                    <span class="ml-2 mr-1">UDI 외 품목 등록</span>
+                                    <span class="ml-2 mr-1">기타 품목 등록</span>
                                 </button><!-- Add product button -->
                                 <button
                                     class="ml-2 mediro-btn-custom mediro-custom-accent"
@@ -261,18 +281,9 @@
                                     <mat-icon
                                         style="color: #3490DD !important;"
                                         [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                                    <span class="ml-2 mr-1">UDI 품목 등록</span>
+                                    <span class="ml-2 mr-1">UDI 품목 개별 등록</span>
                                 </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-flat-button
-                                    [color]="'accent'"
-                                    (click)="createProduceItem()">
-                                    <mat-icon
-                                        style="color: #ffffff !important;"
-                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                                    <span class="ml-2 mr-1">UDI 품목 등록 [제조]</span>
-                                </button>
+
                             </div>
                         </div>
                         <div

@@ -6,7 +6,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">품목 업로드</div>
+        <div class="text-lg font-medium">품목 일괄 등록</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -32,7 +32,7 @@
                 mat-stroked-button
                 [color]="'accent'"
                 (click)="uploadItem()">
-                <mat-icon [svgIcon]="'settings'"></mat-icon>
+                <mat-icon [svgIcon]="'file_upload'"></mat-icon>
                 <span class="ml-2 mr-1">업로드</span>
             </button>
             <button

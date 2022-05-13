@@ -426,6 +426,8 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._functionService.cfn_alert('출고일은 필수값 입니다.');
             } else if (!this.outBoundHeaderForm.getRawValue().type) {
                 this._functionService.cfn_alert('유형은 필수값 입니다.');
+            } else if (!this.outBoundHeaderForm.getRawValue().address) {
+                this._functionService.cfn_alert('거래처 주소는 필수값 입니다.');
             }
         }
     }

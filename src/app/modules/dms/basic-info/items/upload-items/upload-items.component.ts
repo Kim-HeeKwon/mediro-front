@@ -70,8 +70,8 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         this.columns = [
             {
-                name: 'udiDiCode', fieldName: 'udiDiCode', type: 'data', width: '250', styleName: 'left-cell-text'
-                , header: {text: 'UDI DI 코드 (14자리)', styleName: 'center-cell-text red-font-color'},
+                name: 'udiDiCode', fieldName: 'udiDiCode', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: 'UDI DI 코드 (GTIN 14자리)', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
                 }
@@ -98,8 +98,8 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'message', fieldName: 'message', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '업로드 상태', styleName: 'center-cell-text'},
+                name: 'message', fieldName: 'message', type: 'data', width: '280', styleName: 'left-cell-text'
+                , header: {text: '업로드 메세지', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
@@ -107,7 +107,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         ];
 
-        this.dataProvider = this._realGridsService.gfn_CreateDataProvider(true);
+        this.dataProvider = this._realGridsService.gfn_CreateDataProvider(false);
 
         //그리드 옵션
         const gridListOption = {
@@ -151,12 +151,24 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // 셀 edit control
         this.gridList.setCellStyleCallback((grid, dataCell) => {
+            const ret = {styleName : '', editable: false};
+            if (dataCell.item.rowState === 'updated') {
+
+                const message = grid.getValue(dataCell.index.itemIndex, 'message');
+                if(message !== ''){
+                    if (dataCell.dataColumn.fieldName === 'message') {
+                        ret.styleName = 'left-cell-text red-cell-color'
+                    }
+                }
+            }
 
             //추가시
             if (dataCell.dataColumn.fieldName === 'message') {
-                return {editable: false};
+                ret.editable = false;
+                return ret;
             } else {
-                return {editable: true};
+                ret.editable = true;
+                return ret;
             }
         });
 
@@ -184,9 +196,13 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     uploadItem() {
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.dataProvider);
-
         if(rows.length < 1){
             this._functionService.cfn_alert("업로드 할 데이터가 없습니다. 확인해주세요.");
+            return;
+        }
+        if(rows.length > 300){
+            this._functionService.cfn_alert("품목 일괄 등록은 300개 까지 가능합니다.");
+            return;
         }
 
         const confirmation = this._teamPlatConfirmationService.open({
@@ -225,10 +241,40 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (param.status === 'SUCCESS') {
             if(param.data.length > 0){
                 this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, param.data);
+
+
+                setTimeout(() => {
+
+                    for(let i=0; i<param.data.length; i++){
+                        this.dataProvider.setRowState(i, "updated", false);
+                    }
+
+                },200);
+
+
                 this._changeDetectorRef.markForCheck();
             }else{
-                this._functionService.cfn_alert('정상적으로 처리되었습니다.');
-                this.matDialogRef.close();
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title: '',
+                    message: '정상적으로 처리되었습니다.',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '취소',
+                            show: false,
+                        },
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            this.matDialogRef.close();
+                        }
+                    });
             }
         } else if (param.status === 'CANCEL') {
 
@@ -259,5 +305,6 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this._realGridsService.gfn_DelRow(this.gridList, this.dataProvider);
+
     }
 }

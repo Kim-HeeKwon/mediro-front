@@ -61,6 +61,7 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'status', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
+        {fieldName: 'accountAddress', dataType: ValueType.TEXT},
         {fieldName: 'poCreate', dataType: ValueType.TEXT},
         {fieldName: 'soCreate', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
