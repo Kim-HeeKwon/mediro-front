@@ -49,7 +49,9 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     showAlert: boolean = false;
     detail: any;
     detailN: any;
-    obQty: any = 1;
+    grid2ObQty: any = 1;
+    getItemIndex: any;
+    grid2OldValue: any;
     isLoading: boolean = false;
     searchForm: FormGroup;
     isMobile: boolean = false;
@@ -487,42 +489,36 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     .map((param: any) => param);
                 chk = chk.filter((detail: any) =>
                     (detail.typeName === typeName))
-                    .map((param: any) => param)
+                    .map((param: any) => param);
 
-                const obQty = that._realGridsService.gfn_CellDataGetRow(
+                let obQty = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList1,
                     this.gridList1DataProvider,
                     dataRow, 'obQty');
 
-                const obQty2 = that._realGridsService.gfn_CellDataGetRow(
-                    this.gridList1,
-                    this.gridList1DataProvider,
-                    dataRow, 'obQty');
 
-                const inputOrgQty = that._realGridsService.gfn_CellDataGetRow(
-                    this.gridList2,
-                    this.gridList2DataProvider,
-                    itemIndex, 'obQty');
-
-                const qty = that._realGridsService.gfn_CellDataGetRow(
-                    this.gridList1,
-                    this.gridList1DataProvider,
-                    itemIndex, 'qty');
-
-                const qty2 = that._realGridsService.gfn_CellDataGetRow(
+                let qty = that._realGridsService.gfn_CellDataGetRow(
                     this.gridList1,
                     this.gridList1DataProvider,
                     dataRow, 'qty');
 
-                const grid1OrgObQty = obQty2;
-                const grid1OrgQty = qty2;
+                let inputOrgQty = that._realGridsService.gfn_CellDataGetRow(
+                    this.gridList2,
+                    this.gridList2DataProvider,
+                    itemIndex, 'obQty');
 
                 let row2SumObQty = 0;
+
                 if(chk.length > 0) {
                     chk.forEach((ex) => {
                         row2SumObQty += ex.obQty * ex.convertedQty;
                     });
                 }
+
+                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+                this.gridList2.onEditCommit = ((grid, index, oldValue, newValue) => {
+                    this.grid2OldValue = oldValue;
+                });
 
                 setTimeout(() => {
 
@@ -537,11 +533,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.gridList1,
                         this.gridList1DataProvider,
                         dataRow,'obExpQty');
-
-                    const convertedQty = that._realGridsService.gfn_CellDataGetRow(
-                        this.gridList2,
-                        this.gridList2DataProvider,
-                        itemIndex,'convertedQty');
 
                     row2SumObQty = row2SumObQty + orgObQty;
 
@@ -565,26 +556,36 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         'qty');
 
                     if(inputQty >= 0) {
-                        this.obQty = inputOrgQty;
+                        this.grid2ObQty = inputOrgQty;
+                        this.getItemIndex = itemIndex;
+
                     }
+
                     if(inputQty < 0) {
                         that._realGridsService.gfn_CellDataSetRow(that.gridList1,
                             that.gridList1DataProvider,
                             dataRow,
                             'obQty',
-                            grid1OrgObQty);
+                            obQty);
 
                         that._realGridsService.gfn_CellDataSetRow(that.gridList1,
                             that.gridList1DataProvider,
                             dataRow,
                             'qty',
-                            grid1OrgQty);
-
-                        that._realGridsService.gfn_CellDataSetRow(that.gridList2,
-                            that.gridList2DataProvider,
-                            itemIndex,
-                            'obQty',
-                            this.obQty);
+                            qty);
+                        if(this.getItemIndex === itemIndex) {
+                            that._realGridsService.gfn_CellDataSetRow(that.gridList2,
+                                that.gridList2DataProvider,
+                                itemIndex,
+                                'obQty',
+                                this.grid2ObQty);
+                        } else {
+                            that._realGridsService.gfn_CellDataSetRow(that.gridList2,
+                                that.gridList2DataProvider,
+                                itemIndex,
+                                'obQty',
+                                this.grid2OldValue);
+                        }
 
                         this.qtyFailAlert();
                         this._changeDetectorRef.markForCheck();

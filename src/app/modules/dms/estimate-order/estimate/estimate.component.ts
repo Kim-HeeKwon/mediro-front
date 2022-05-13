@@ -746,8 +746,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
                     const rtn = this._estimateService.getDetailReport(0, 1000, 'qtLineNo', 'asc', estimateHeader);
 
                     rtn.then((ex) => {
-                        console.log(estimateHeader);
-                        console.log(ex);
                         if(ex.estimateDetail){
                             if(ex.estimateDetail != null){
                                 this._router.navigate(['salesorder/salesorder/salesorder-new'], {
