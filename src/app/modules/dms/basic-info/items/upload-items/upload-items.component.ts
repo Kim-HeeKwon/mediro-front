@@ -144,7 +144,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
             enabled: true,
             startEdit: false,
             commitEdit: true,
-            checkReadOnly: true
+            checkReadOnly: true,
         });
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.validateOnEdited = true;
@@ -157,7 +157,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
                 const message = grid.getValue(dataCell.index.itemIndex, 'message');
                 if(message !== ''){
                     if (dataCell.dataColumn.fieldName === 'message') {
-                        ret.styleName = 'left-cell-text red-cell-color'
+                        ret.styleName = 'left-cell-text red-cell-color';
                     }
                 }
             }

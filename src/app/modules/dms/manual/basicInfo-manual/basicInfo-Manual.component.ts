@@ -90,6 +90,12 @@ export class basicInfoManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/KnezVWnq4Zg');
     }
 
+    itemBatchCreat(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/69_KnCBQn-Y');
+    }
+
     itemUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
