@@ -96,8 +96,8 @@ export class DepositComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchForm = this._formBuilder.group({
             accountNm: [''],
             range: [{
-                start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: moment().utc(true).add(-1, 'month').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString()
             }],
             start: [],
             end: []

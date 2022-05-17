@@ -97,8 +97,8 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
             searchText: [''],
             searchText2: [''],
             range: [{
-                start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: moment().utc(true).add(-7, 'day').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString()
             }],
             start: [],
             end: [],
@@ -375,6 +375,10 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
+
+        this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
+        this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
+
         this._statusService.getHeader(0, 20, 'serialkey', 'desc', this.searchForm.getRawValue());
 
         this.setGridData();

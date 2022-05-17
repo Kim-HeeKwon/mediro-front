@@ -99,12 +99,13 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             ibNo: [''],
             range: [{
-                start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: moment().utc(true).add(-7, 'day').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString()
             }],
             start: [],
             end: []
         });
+        //2022-05-17T00:00:00.000Z
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
             && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
             this.searchForm = this._formBuilder.group({
@@ -114,8 +115,8 @@ export class InboundComponent implements OnInit, OnDestroy, AfterViewInit {
                 accountNm: [''],
                 ibNo: [''],
                 range: [{
-                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
-                    end: moment().utc(false).startOf('day').toISOString()
+                    start: moment().utc(true).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(true).startOf('day').toISOString()
                 }],
                 start: [],
                 end: []

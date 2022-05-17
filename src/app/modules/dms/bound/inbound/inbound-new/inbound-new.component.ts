@@ -103,7 +103,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver) {
-        this.filterList = ['ALL', '1', '2'];
+        this.filterList = ['ALL'];
         this.type = _utilService.commonValueFilter(_codeStore.getValue().data, 'IB_TYPE', this.filterList);
         this.status = _utilService.commonValueFilter(_codeStore.getValue().data, 'IB_STATUS', this.filterList);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');

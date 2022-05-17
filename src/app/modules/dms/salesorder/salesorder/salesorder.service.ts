@@ -96,8 +96,8 @@ export class SalesorderService {
 
         if(searchParam['start'] === undefined){
             if(searchParam['end'] === undefined){
-                searchParam['start'] = moment().utc(false).add(-7, 'day').endOf('day').toISOString();
-                searchParam['end'] =  moment().utc(false).startOf('day').toISOString();
+                searchParam['start'] = moment().utc(true).add(-7, 'day').endOf('day').toISOString();
+                searchParam['end'] =  moment().utc(true).startOf('day').toISOString();
             }
         }
         const pageParam = {

@@ -108,8 +108,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             accountNm: [''],
             soNo: [''],
             range: [{
-                start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: moment().utc(true).add(-7, 'day').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString()
             }],
             start: [],
             end: []
@@ -123,8 +123,8 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
                 accountNm: [''],
                 soNo: [''],
                 range: [{
-                    start: moment().utc(false).add(-1, 'month').endOf('day').toISOString(),
-                    end: moment().utc(false).startOf('day').toISOString()
+                    start: moment().utc(true).add(-1, 'month').endOf('day').toISOString(),
+                    end: moment().utc(true).startOf('day').toISOString()
                 }],
                 start: [],
                 end: []

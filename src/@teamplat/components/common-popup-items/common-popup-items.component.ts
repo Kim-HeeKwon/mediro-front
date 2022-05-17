@@ -294,7 +294,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
         this.searchForm.patchValue({'acWhereVal': whereVal});
-        this._popupService.getDynamicSql(0, 1000, '', 'asc', this.searchForm.getRawValue());
+        this._popupService.getDynamicSql(0, 300, '', 'asc', this.searchForm.getRawValue());
 
         this.setGridData();
     }

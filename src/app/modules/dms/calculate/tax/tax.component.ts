@@ -114,8 +114,8 @@ export class TaxComponent implements OnInit, OnDestroy, AfterViewInit {
             toAccountNm: [''],
             invoice: [''],
             range: [{
-                start: moment().utc(false).add(-7, 'day').endOf('day').toISOString(),
-                end: moment().utc(false).startOf('day').toISOString()
+                start: moment().utc(true).add(-7, 'day').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString()
             }],
             start: [],
             end: [],
