@@ -220,11 +220,11 @@ export class Api {
     }
 
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
-        const freechek = this.freeCheck();
-        if(!freechek){
-            //return of(false);
-            return of({status : 'CANCEL'});
-        }
+        // const freechek = this.freeCheck();
+        // if(!freechek){
+        //     //return of(false);
+        //     return of({status : 'CANCEL'});
+        // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
