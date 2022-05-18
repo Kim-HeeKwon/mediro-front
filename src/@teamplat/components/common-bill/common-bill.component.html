@@ -166,7 +166,7 @@
             <tr style="background-color: lightgray; text-align: center; font-weight: bold; height: 40px;">
                 <td style="border: solid 1px">순번</td>
                 <td style="border: solid 1px">품목</td>
-                <td *ngIf="shipment" style="border: solid 1px">모델</td>
+                <td style="border: solid 1px">모델</td>
                 <td style="border: solid 1px">규격</td>
                 <td style="border: solid 1px">단위</td>
                 <td style="border: solid 1px">수량</td>
@@ -180,7 +180,7 @@
             <tr style="text-align: center; height: 40px;">
                 <td style="border: solid 1px">{{row.no}}</td>
                 <td style="border: solid 1px;">{{row.itemNm}}</td>
-                <td *ngIf="shipment" style="border: solid 1px;">{{row.fomlInfo}}</td>
+                <td style="border: solid 1px;">{{row.fomlInfo}}</td>
                 <td style="border: solid 1px;">{{row.standard}}</td>
                 <td style="border: solid 1px;">{{row.unit}}</td>
                 <td style="border: solid 1px;text-align: right;padding-right: 2px;">{{this.priceToString(row.qty)}}</td>

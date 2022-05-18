@@ -610,6 +610,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
             outboundDetailData.push({
                 no: index,
                 itemNm: data.itemNm,
+                fomlInfo: data.fomlInfo,
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,

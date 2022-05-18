@@ -249,7 +249,7 @@ export class circulationManualComponent {
     outboundCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/wGZ66cgKKlw');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Ztzf84mZVAQ');
     }
 
     outboundUpdate(): void {
@@ -261,13 +261,13 @@ export class circulationManualComponent {
     outboundDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/xTWt-Mjksqs');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/txUE3B6qzRM');
     }
 
     outboundStore(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/APM-198Kd5c');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/6-HvzFuFGVc');
     }
 
     outboundUDIStore(): void {
@@ -279,7 +279,7 @@ export class circulationManualComponent {
     outboundPayment(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/9mIaSTalNbc');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/chO9gJSt998');
     }
 
     stockAdjustment(): void {

@@ -120,6 +120,7 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.detail.push({
                         itemGrade: '',
                         itemNm: '',
+                        fomlInfo: '',
                         no: idx + 1,
                         qty: '',
                         tax: '',
