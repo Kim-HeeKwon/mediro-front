@@ -298,49 +298,102 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     suplyUpdate() {
-        if(!this.selectedForm.invalid){
-            const confirmation = this._teamPlatConfirmationService.open({
-                title  : '',
-                message: '수정하시겠습니까?',
-                actions: {
-                    confirm: {
-                        label: '확인'
-                    },
-                    cancel: {
-                        label: '닫기'
-                    }
-                }
-            });
-
-            confirmation.afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if(result){
-                        const sendData = [];
-                        sendData.push(this.selectedForm.getRawValue());
-                        this._managesService.updateSupplyInfo(sendData)
-                            .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe((manage: any) => {
-                                this._functionService.cfn_loadingBarClear();
-                                this._functionService.cfn_alertCheckMessage(manage);
-
-                                this._managesService.getHeader(0,100,'','asc',this.selectedForm.getRawValue());
-                                // Mark for check
-                                this._changeDetectorRef.markForCheck();
-                            });
+        if(this.selectedForm.getRawValue().suplyFlagCode === '1' || this.selectedForm.getRawValue().suplyFlagCode === '4') {
+            if(!this.selectedForm.invalid){
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '수정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
                     }
                 });
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        }else{
-            // Set the alert
-            this.alert = {
-                type   : 'error',
-                message: '필수값을 입력해주세요.'
-            };
 
-            // Show the alert
-            this.showAlert = true;
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            const sendData = [];
+                            sendData.push(this.selectedForm.getRawValue());
+                            this._managesService.updateSupplyInfo(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((manage: any) => {
+                                    this._functionService.cfn_loadingBarClear();
+                                    this._functionService.cfn_alertCheckMessage(manage);
+
+                                    this._managesService.getHeader(0,100,'','desc',this.selectedForm.getRawValue());
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            } else{
+                // Set the alert
+                this.alert = {
+                    type   : 'error',
+                    message: '필수값을 입력해주세요.'
+                };
+
+                // Show the alert
+                this.showAlert = true;
+            }
+        } else if(this.selectedForm.getRawValue().suplyFlagCode === '3' ||
+            this.selectedForm.getRawValue().suplyFlagCode === '2' ||
+            this.selectedForm.getRawValue().suplyFlagCode === '5') {
+            if(this.selectedForm.getRawValue().stdCode !== ''
+                && this.selectedForm.getRawValue().udiDiCode !== ''
+                && this.selectedForm.getRawValue().udiPiCode !== ''
+                && this.selectedForm.getRawValue().suplyDate !== ''
+                && this.selectedForm.getRawValue().suplyQty !== '') {
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title  : '',
+                    message: '수정하시겠습니까?',
+                    actions: {
+                        confirm: {
+                            label: '확인'
+                        },
+                        cancel: {
+                            label: '닫기'
+                        }
+                    }
+                });
+
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if(result){
+                            const sendData = [];
+                            sendData.push(this.selectedForm.getRawValue());
+                            this._managesService.updateSupplyInfo(sendData)
+                                .pipe(takeUntil(this._unsubscribeAll))
+                                .subscribe((manage: any) => {
+                                    this._functionService.cfn_loadingBarClear();
+                                    this._functionService.cfn_alertCheckMessage(manage);
+
+                                    this._managesService.getHeader(0, 100, '', 'desc', this.selectedForm.getRawValue());
+                                    // Mark for check
+                                    this._changeDetectorRef.markForCheck();
+                                });
+                        }
+                    });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            } else{
+                // Set the alert
+                this.alert = {
+                    type   : 'error',
+                    message: '필수값을 입력해주세요.'
+                };
+
+                // Show the alert
+                this.showAlert = true;
+            }
         }
     }
 

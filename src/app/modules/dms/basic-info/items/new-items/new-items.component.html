@@ -30,7 +30,7 @@
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>품목코드 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-label>품목코드</mat-label>
                             <input
                                 matInput
                                 [formControlName]="'itemCd'"
@@ -70,7 +70,7 @@
                     <div class="sm:col-span-1">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                            <mat-label>UDI 대상 유무 <mat-icon  class="icon-size-3 icon-red" svgIcon="heroicons_solid:check-circle"></mat-icon></mat-label>
+                            <mat-label>UDI 대상 유무</mat-label>
                             <mat-select [formControlName]="'udiYn'">
                                 <ng-container *ngFor="let udiYn of udiYn">
                                     <mat-option [value]="udiYn.id">

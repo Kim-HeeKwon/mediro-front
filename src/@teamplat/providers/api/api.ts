@@ -84,6 +84,7 @@ export class Api {
     }
 
     postLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -220,6 +221,7 @@ export class Api {
     }
 
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -297,11 +299,14 @@ export class Api {
         return req;
     }
 
-    postListChgUrlLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
+    postListChgUrlLoading(endpoint: string, body: any, invoice?: boolean, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
+        // if(invoice) {
+        //     const freechek = this.freeCheck();
+        //     if(!freechek){
+        //         //return of(false);
+        //         return of({status : 'CANCEL'});
+        //     }
         // }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
@@ -366,6 +371,7 @@ export class Api {
     }
 
     postObjectListLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -437,8 +443,15 @@ export class Api {
         return req;
     }
 
-    postWithPage(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
-
+    postWithPage(endpoint: string, body: any, body2: any, stock?: boolean, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
+        // if(stock) {
+        //     const freechek = this.freeCheck();
+        //     if(!freechek){
+        //         //return of(false);
+        //         return of({status : 'CANCEL'});
+        //     }
+        // }
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()
@@ -632,6 +645,7 @@ export class Api {
     }
 
     apiPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -691,6 +705,7 @@ export class Api {
     }
 
     apiListPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -753,6 +768,7 @@ export class Api {
     }
 
     apiDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -820,6 +836,7 @@ export class Api {
     }
 
     apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
+        // 2개월 체크 주석화
         // const freechek = this.freeCheck();
         // if(!freechek){
         //     //return of(false);
@@ -869,8 +886,6 @@ export class Api {
     backLogin(mbId: any): void {
         if (mbId === null) {
             this.signOut().subscribe(()=> {
-                // this._router.navigateByUrl('/signed-in');
-                console.log('api 사용');
                 window.location.reload();
                 this._matDialog.closeAll();
             });

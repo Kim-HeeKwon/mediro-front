@@ -87,7 +87,7 @@ export class basicInfoManualComponent {
     itemCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/KnezVWnq4Zg');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/zjj53bStxwU');
     }
 
     itemBatchCreat(): void {
@@ -96,33 +96,39 @@ export class basicInfoManualComponent {
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/aLMJNPGZZdk');
     }
 
+    itemEtcCreat(): void {
+        this.video = true;
+        // eslint-disable-next-line max-len
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/F8YvMdzPL1s');
+    }
+
     itemUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/VdiulflW2E0');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/kilXiiumf2o');
     }
 
     itemDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/EqX6yzjy8I0');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/1d47jCyh8f0');
     }
 
     itemPriceCreat(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/Xz3BnlsA6Lc');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/HsESCT5kh8k');
     }
 
     itemPriceUpdate(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/ipGPJwII2uA');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/tsTowdnc6TI');
     }
 
     itemPriceDelete(): void {
         this.video = true;
         // eslint-disable-next-line max-len
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/5Cw77X0G2o4');
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/WiqGWBcIfOU');
     }
 }

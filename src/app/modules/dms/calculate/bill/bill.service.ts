@@ -97,11 +97,11 @@ export class BillService {
     /**
      * 세금계산서
      */
-    invoice(bills: Bill[]): Observable<Bill>
+    invoice(bills: Bill[], invoice: boolean): Observable<Bill>
     {
         return this.bill$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataChgUrlLoading(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice').pipe(
+            switchMap(products => this._common.sendListDataChgUrlLoading(bills, environment.serverTaxUrl + 'v1/api/calculate/tax/invoice', invoice).pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

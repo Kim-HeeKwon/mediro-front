@@ -37,8 +37,8 @@ export class Common {
         return this.api.postListChgUrl(url, accountInfo).pipe(share()); // seq;
     }
 
-    sendListDataChgUrlLoading(accountInfo: any, url: string): Observable<any> {
-        return this.api.postListChgUrlLoading(url, accountInfo).pipe(share()); // seq;
+    sendListDataChgUrlLoading(accountInfo: any, url: string, invoice?: boolean): Observable<any> {
+        return this.api.postListChgUrlLoading(url, accountInfo, invoice).pipe(share()); // seq;
     }
 
     sendListDataObject(info: any, pageParam: any, url: string): Observable<any> {
@@ -49,8 +49,8 @@ export class Common {
         return this.api.postObjectListLoading(url, info, pageParam).pipe(share()); // seq;
     }
 
-    sendDataWithPageNation(param: any, pageParam: any,url: string): Observable<any> {
-        return this.api.postWithPage(url, param, pageParam).pipe(share()); // seq;
+    sendDataWithPageNation(param: any, pageParam: any,url: string, stock?: boolean): Observable<any> {
+        return this.api.postWithPage(url, param, pageParam, stock).pipe(share()); // seq;
     }
     sendDataWithPageNationReport(param: any, pageParam: any,url: string): Observable<any> {
         return this.api.postWithPageReport(url, param, pageParam).pipe(share()); // seq;

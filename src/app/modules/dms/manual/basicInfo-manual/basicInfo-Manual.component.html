@@ -94,6 +94,13 @@
                         class="ml-3 mb-3 mediro-btn-custom-background-color"
                         mat-raised-button
                         [ngStyle]="{'width': '94%'}"
+                        (click)="itemEtcCreat()">
+                        <span class="ml-2 mr-1">기타 품목 등록</span>
+                    </button>
+                    <button
+                        class="ml-3 mb-3 mediro-btn-custom-background-color"
+                        mat-raised-button
+                        [ngStyle]="{'width': '94%'}"
                         (click)="itemUpdate()">
                         <span class="ml-2 mr-1">품목 수정</span>
                     </button>
@@ -221,20 +228,24 @@
                             <span class="ml-2 mr-1 text-12s manual-color">의료기기 통합정보 거래처 가져오기</span>
                         </button>
                     </div>
-                    <div class="flex w- 3/3 my-2" *ngIf="item">
-                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                    <div class="flex w- 5/5 my-2" *ngIf="item">
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="itemCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">품목 개별 등록</span>
                         </button>
-                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="itemBatchCreat()">
                             <span class="ml-2 mr-1 text-12s manual-color">품목 일괄 등록</span>
                         </button>
-                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                                mat-flat-button (click)="itemEtcCreat()">
+                            <span class="ml-2 mr-1 text-12s manual-color">기타 품목 등록</span>
+                        </button>
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="itemUpdate()">
                             <span class="ml-2 mr-1 text-12s manual-color">품목 수정</span>
                         </button>
-                        <button class="w-1/3 fuse-mat-dense fuse-mat-no-subscript manual-hover"
+                        <button class="w-1/5 fuse-mat-dense fuse-mat-no-subscript manual-hover"
                                 mat-flat-button (click)="itemDelete()">
                             <span class="ml-2 mr-1 text-12s manual-color">품목 삭제</span>
                         </button>

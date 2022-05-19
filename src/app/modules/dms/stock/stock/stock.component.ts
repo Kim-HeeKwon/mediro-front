@@ -514,7 +514,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelImport(): void {
-        this._realGridsService.gfn_ExcelImportGrid('STOCK');
+        this._realGridsService.gfn_ExcelImportGrid('STOCK', true);
     }
 
     excelExport(): void {

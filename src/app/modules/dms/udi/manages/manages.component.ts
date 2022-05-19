@@ -481,6 +481,9 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                             .subscribe((manage: any) => {
                                 this._functionService.cfn_loadingBarClear();
                                 this._functionService.cfn_alertCheckMessage(manage);
+                                this.searchSetValue();
+                                const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+                                this.selectCallBack(rtn);
                                 // Mark for check
                                 this._changeDetectorRef.markForCheck();
                             });
@@ -604,10 +607,12 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
             maxHeight: '90vh',
             disableClose: true
         });
-
         popup.afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
+                this.searchSetValue();
+                const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
                 if (result) {
                 }
             });
@@ -615,11 +620,16 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectDoubleClickRow(row: any): void {
         if (!this.isMobile) {
-            this._matDialog.open(ManagesDetailComponent, {
+            const d = this._matDialog.open(ManagesDetailComponent, {
                 autoFocus: false,
                 maxHeight: '90vh',
                 disableClose: true,
                 data: row,
+            });
+            d.afterClosed().subscribe(() => {
+                this.searchSetValue();
+                const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
+                this.selectCallBack(rtn);
             });
         } else {
             const d = this._matDialog.open(ManagesDetailComponent, {

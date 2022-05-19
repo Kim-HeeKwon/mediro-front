@@ -276,7 +276,7 @@ export class BillTaxComponent implements OnInit, OnDestroy
     invoiceCall(sendData: Bill[], check?: any): void{
         if(sendData){
             sendData = this.headerDataSet(sendData, check);
-            this._billService.invoice(sendData)
+            this._billService.invoice(sendData, true)
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((bill: any) => {
                     this._functionService.cfn_loadingBarClear();

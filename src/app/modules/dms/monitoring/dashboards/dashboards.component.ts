@@ -62,7 +62,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     nowRpt: any;
     eveRpt: any;
     stockTotalPrice: any;
-    availQtyPrice: any;
+    availQtyTotalPrice: any;
     acceptableTotal: any;
     acceptableTotalPrice: any;
     unusedQtyTotal: any;
@@ -150,6 +150,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.ibInfo.scCnt = result.totalCnt;
                 });
             });
+
 
         //견적
         this.qtInfo$
@@ -407,18 +408,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.stockPrice.fCnt = result.buyPrice;
                 });
             });
-        let availPrice;
-        availPrice = (this.stockPrice.etcCnt * this.availQty.etcCnt)
-            + (this.stockPrice.zCnt * this.availQty.zCnt)
-            + (this.stockPrice.oCnt * this.availQty.oCnt)
-            + (this.stockPrice.tCnt * this.availQty.tCnt)
-            + (this.stockPrice.thCnt * this.availQty.thCnt)
-            + (this.stockPrice.fCnt * this.availQty.fCnt);
-        if (availPrice.toString().length > 4) {
-            this.availQtyPrice = String(availPrice.toString().slice(0, -3));
-        } else {
-            this.availQtyPrice = availPrice + '(원)';
-        }
 
         const currDay = new Date();
         const year = currDay.getFullYear();
@@ -426,8 +415,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const date = new Date(year, month, 0);
         const day = date.getDate();
         const lastDay = new Date(`${currDay.getFullYear()}-${month}-${day}`);
-        const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
-        // const diffDays = lastDay.getDate().valueOf() - currDay.getDate().valueOf();
+        // const diffDays = Math.floor((lastDay.getTime() - currDay.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = lastDay.getDate().valueOf() - currDay.getDate().valueOf();
         if (month === 1) {
             this.udiMonth = 12;
         } else {
@@ -855,79 +844,99 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         const unusedQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const acceptableQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const availQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
-        const price = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
+        const aBuyPrice = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
+        const uBuyPrice = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
+        const iBuyPrice = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
 
         data.filter(option => option.subCd === '-').map((result: any) => {
             unusedQty.etcCnt = result.unusedQty;
             acceptableQty.etcCnt = result.acceptableQty;
             availQty.etcCnt = result.availQty;
-            price.etcCnt = result.buyPrice;
+            aBuyPrice.etcCnt = result.aBuyPrice;
+            uBuyPrice.etcCnt = result.uBuyPrice;
+            iBuyPrice.etcCnt = result.iBuyPrice;
         });
         data.filter(option => option.subCd === '0').map((result: any) => {
             unusedQty.zCnt = result.unusedQty;
             acceptableQty.zCnt = result.acceptableQty;
             availQty.zCnt = result.availQty;
-            price.zCnt = result.buyPrice;
+            aBuyPrice.zCnt = result.aBuyPrice;
+            uBuyPrice.etcCnt = result.uBuyPrice;
+            iBuyPrice.etcCnt = result.iBuyPrice;
         });
         data.filter(option => option.subCd === '1').map((result: any) => {
             unusedQty.oCnt = result.unusedQty;
             acceptableQty.oCnt = result.acceptableQty;
             availQty.oCnt = result.availQty;
-            price.oCnt = result.buyPrice;
+            aBuyPrice.oCnt = result.aBuyPrice;
+            uBuyPrice.oCnt = result.uBuyPrice;
+            iBuyPrice.oCnt = result.iBuyPrice;
         });
         data.filter(option => option.subCd === '2').map((result: any) => {
             unusedQty.tCnt = result.unusedQty;
             acceptableQty.tCnt = result.acceptableQty;
             availQty.tCnt = result.availQty;
-            price.tCnt = result.buyPrice;
+            aBuyPrice.tCnt = result.aBuyPrice;
+            uBuyPrice.tCnt = result.uBuyPrice;
+            iBuyPrice.tCnt = result.iBuyPrice;
         });
         data.filter(option => option.subCd === '3').map((result: any) => {
             unusedQty.thCnt = result.unusedQty;
             acceptableQty.thCnt = result.acceptableQty;
             availQty.thCnt = result.availQty;
-            price.thCnt = result.buyPrice;
+            aBuyPrice.thCnt = result.aBuyPrice;
+            uBuyPrice.thCnt = result.uBuyPrice;
+            iBuyPrice.thCnt = result.iBuyPrice;
         });
         data.filter(option => option.subCd === '4').map((result: any) => {
             unusedQty.fCnt = result.unusedQty;
             acceptableQty.fCnt = result.acceptableQty;
             availQty.fCnt = result.availQty;
-            price.fCnt = result.buyPrice;
+            aBuyPrice.fCnt = result.aBuyPrice;
+            uBuyPrice.fCnt = result.uBuyPrice;
+            iBuyPrice.fCnt = result.iBuyPrice;
         });
         let acceptableTotalPrice;
         let unusedQtyTotalPrice;
         let availQtyTotalPrice;
         let totalPrice;
         this.acceptableTotal = acceptableQty.oCnt + acceptableQty.tCnt + acceptableQty.thCnt + acceptableQty.fCnt + acceptableQty.zCnt + acceptableQty.etcCnt;
-        acceptableTotalPrice = (price.etcCnt * acceptableQty.etcCnt)
-            + (price.zCnt * acceptableQty.zCnt)
-            + (price.oCnt * acceptableQty.oCnt)
-            + (price.tCnt * acceptableQty.tCnt)
-            + (price.thCnt * acceptableQty.thCnt)
-            + (price.fCnt * acceptableQty.fCnt);
+        acceptableTotalPrice = (aBuyPrice.etcCnt * acceptableQty.etcCnt)
+            + (aBuyPrice.zCnt * acceptableQty.zCnt)
+            + (aBuyPrice.oCnt * acceptableQty.oCnt)
+            + (aBuyPrice.tCnt * acceptableQty.tCnt)
+            + (aBuyPrice.thCnt * acceptableQty.thCnt)
+            + (aBuyPrice.fCnt * acceptableQty.fCnt);
+
         if (acceptableTotalPrice.toString().length > 4) {
             this.acceptableTotalPrice = String(acceptableTotalPrice.toString().slice(0, -3));
         } else {
             this.acceptableTotalPrice = acceptableTotalPrice;
         }
         this.unusedQtyTotal = unusedQty.oCnt + unusedQty.tCnt + unusedQty.thCnt + unusedQty.fCnt + unusedQty.zCnt + unusedQty.etcCnt;
-        unusedQtyTotalPrice = (price.etcCnt * unusedQty.etcCnt)
-            + (price.zCnt * unusedQty.zCnt)
-            + (price.oCnt * unusedQty.oCnt)
-            + (price.tCnt * unusedQty.tCnt)
-            + (price.thCnt * unusedQty.thCnt)
-            + (price.fCnt * unusedQty.fCnt);
+        unusedQtyTotalPrice = (uBuyPrice.etcCnt * unusedQty.etcCnt)
+            + (uBuyPrice.zCnt * unusedQty.zCnt)
+            + (uBuyPrice.oCnt * unusedQty.oCnt)
+            + (uBuyPrice.tCnt * unusedQty.tCnt)
+            + (uBuyPrice.thCnt * unusedQty.thCnt)
+            + (uBuyPrice.fCnt * unusedQty.fCnt);
         if (unusedQtyTotalPrice.toString().length > 4) {
             this.unusedQtyTotalPrice = String(unusedQtyTotalPrice.toString().slice(0, -3));
         } else {
             this.unusedQtyTotalPrice = unusedQtyTotalPrice;
         }
         this.sumAvailQty = availQty.etcCnt + availQty.zCnt + availQty.oCnt + availQty.tCnt + availQty.thCnt + availQty.fCnt;
-        availQtyTotalPrice = (price.etcCnt * availQty.etcCnt)
-            + (price.zCnt * availQty.zCnt)
-            + (price.oCnt * availQty.oCnt)
-            + (price.tCnt * availQty.tCnt)
-            + (price.thCnt * availQty.thCnt)
-            + (price.fCnt * availQty.fCnt);
+        availQtyTotalPrice = (iBuyPrice.etcCnt * availQty.etcCnt)
+            + (iBuyPrice.zCnt * availQty.zCnt)
+            + (iBuyPrice.oCnt * availQty.oCnt)
+            + (iBuyPrice.tCnt * availQty.tCnt)
+            + (iBuyPrice.thCnt * availQty.thCnt)
+            + (iBuyPrice.fCnt * availQty.fCnt);
+        if (availQtyTotalPrice.toString().length > 4) {
+            this.availQtyTotalPrice = String(availQtyTotalPrice.toString().slice(0, -3));
+        } else {
+            this.availQtyTotalPrice = availQtyTotalPrice;
+        }
         totalPrice = acceptableTotalPrice + unusedQtyTotalPrice + availQtyTotalPrice;
         if (totalPrice.toString().length > 4) {
             this.stockTotalPrice = String(totalPrice.toString().slice(0, -3));

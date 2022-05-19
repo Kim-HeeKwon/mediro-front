@@ -196,7 +196,7 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    gfn_ExcelImportGrid(excelType: string): void{
+    gfn_ExcelImportGrid(excelType: string, stock?: boolean): void{
 
         const searchParam = {};
         searchParam['order'] = '';
@@ -210,7 +210,7 @@ export class FuseRealGridService {
         // @ts-ignore
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         const rtn = new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/common/excel/excel-config-list')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/common/excel/excel-config-list', stock)
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         resolve(response.data);
