@@ -85,11 +85,11 @@ export class Api {
 
     postLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -222,11 +222,11 @@ export class Api {
 
     postListLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -301,13 +301,13 @@ export class Api {
 
     postListChgUrlLoading(endpoint: string, body: any, invoice?: boolean, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // if(invoice) {
-        //     const freechek = this.freeCheck();
-        //     if(!freechek){
-        //         //return of(false);
-        //         return of({status : 'CANCEL'});
-        //     }
-        // }
+        if(invoice) {
+            const freechek = this.freeCheck();
+            if(!freechek){
+                //return of(false);
+                return of({status : 'CANCEL'});
+            }
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -372,11 +372,11 @@ export class Api {
 
     postObjectListLoading(endpoint: string, body: any, body2: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -445,13 +445,13 @@ export class Api {
 
     postWithPage(endpoint: string, body: any, body2: any, stock?: boolean, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // if(stock) {
-        //     const freechek = this.freeCheck();
-        //     if(!freechek){
-        //         //return of(false);
-        //         return of({status : 'CANCEL'});
-        //     }
-        // }
+        if(stock) {
+            const freechek = this.freeCheck();
+            if(!freechek){
+                //return of(false);
+                return of({status : 'CANCEL'});
+            }
+        }
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()
@@ -646,11 +646,11 @@ export class Api {
 
     apiPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -706,11 +706,11 @@ export class Api {
 
     apiListPutLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -769,11 +769,11 @@ export class Api {
 
     apiDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
@@ -837,11 +837,11 @@ export class Api {
 
     apiListDeleteLoading(endpoint: string, body: any, reqOpts?: any): Observable<any> {
         // 2개월 체크 주석화
-        // const freechek = this.freeCheck();
-        // if(!freechek){
-        //     //return of(false);
-        //     return of({status : 'CANCEL'});
-        // }
+        const freechek = this.freeCheck();
+        if(!freechek){
+            //return of(false);
+            return of({status : 'CANCEL'});
+        }
         const loading = this._matDialog.open(CommonLoadingBarComponent, {
             id: 'loadingBar'
         });
