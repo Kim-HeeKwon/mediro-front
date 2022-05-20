@@ -139,16 +139,26 @@
                                     (click)="drawer.toggle()">
                                     <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
                                 </button>
-                                <button
-                                    class="ml-2 mediro-btn-custom"
-                                    mat-flat-button
-                                    [color]="'accent'"
-                                    (click)="createProduceItem()">
-                                    <!--                                    <mat-icon-->
-                                    <!--                                        style="color: #ffffff !important;"-->
-                                    <!--                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
-                                    <span class="ml-2 mr-1">제조사 품목 가져오기</span>
-                                </button>
+                                <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
+                                    <button
+                                        class="ml-2 mediro-btn-custom"
+                                        mat-flat-button
+                                        [color]="'accent'"
+                                        (click)="createProduceItem()">
+                                        <!--                                    <mat-icon-->
+                                        <!--                                        style="color: #ffffff !important;"-->
+                                        <!--                                        [svgIcon]="'heroicons_outline:plus'"></mat-icon>-->
+                                        <span class="ml-2 mr-1">제조사 품목 가져오기</span>
+                                    </button>
+                                    <button
+                                        class="ml-2 mediro-btn-custom"
+                                        mat-flat-button
+                                        [color]="'accent'"
+                                        (click)="itemUpdateGrid()">
+                                        <span class="ml-2 mr-1">품목 일괄 수정</span>
+                                    </button><!-- Add product button -->
+                                </div>
+
                             </div>
                         </div>
                         <div *ngIf="!isMobile"

@@ -205,14 +205,26 @@ export class ItemsService {
         );
     }
 
-    /**
-     * save
-     */
     uploadItem(udiDiCodes: any[]): Observable<any>
     {
         return this.udiDiCodes$.pipe(
             take(1),
             switchMap(products => this._common.sendListDataLoading(udiDiCodes, 'v1/api/basicInfo/item/upload-item').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    uploadUpdateItem(udiDiCodes: any[]): Observable<any>
+    {
+        return this.udiDiCodes$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(udiDiCodes, 'v1/api/basicInfo/item/upload-update-item').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

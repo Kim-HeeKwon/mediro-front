@@ -33,6 +33,7 @@ import {DetailItemsComponent} from './detail-items/detail-items.component';
 import {NewItemsComponent} from "./new-items/new-items.component";
 import {NewItemProduceComponent} from "./new-item-produce/new-item-produce.component";
 import {UploadItemsComponent} from "./upload-items/upload-items.component";
+import {UpdateItemsComponent} from "./update-items/update-items.component";
 
 const itemsRoutes: Route[] = [
     {
@@ -51,6 +52,7 @@ const itemsRoutes: Route[] = [
         NewItemProduceComponent,
         NewItemsComponent,
         UploadItemsComponent,
+        UpdateItemsComponent,
         DetailItemsComponent
     ],
     imports: [

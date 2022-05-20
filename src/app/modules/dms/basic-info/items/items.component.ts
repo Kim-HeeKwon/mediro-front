@@ -29,6 +29,7 @@ import {NewItemsComponent} from "./new-items/new-items.component";
 import {Common} from "../../../../../@teamplat/providers/common/common";
 import {NewItemProduceComponent} from "./new-item-produce/new-item-produce.component";
 import {UploadItemsComponent} from "./upload-items/upload-items.component";
+import {UpdateItemsComponent} from "./update-items/update-items.component";
 
 @Component({
     selector: 'dms-app-items',
@@ -474,6 +475,41 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         } else {
             const d = this._matDialog.open(UploadItemsComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+    }
+
+    //일괄 수정
+    itemUpdateGrid(): void {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(UpdateItemsComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    note: {}
+                },
+            });
+
+            d.afterClosed().subscribe(() => {
+                this.searchItem();
+            });
+        } else {
+            const d = this._matDialog.open(UpdateItemsComponent, {
                 autoFocus: false,
                 width: 'calc(100% - 50px)',
                 maxWidth: '100vw',

@@ -5,21 +5,21 @@ import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.types";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
+import {ItemsService} from "../items.service";
 import {FormBuilder} from "@angular/forms";
 import {CodeStore} from "../../../../../core/common-code/state/code.store";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {FuseUtilsService} from "../../../../../../@teamplat/services/utils";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {ItemsService} from "../items.service";
 import {takeUntil} from "rxjs/operators";
 
 @Component({
-    selector: 'dms-upload-items',
-    templateUrl: 'upload-items.component.html',
-    styleUrls: ['upload-items.component.scss'],
+    selector: 'dms-update-items',
+    templateUrl: 'update-items.component.html',
+    styleUrls: ['update-items.component.scss'],
 })
-export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
@@ -32,17 +32,14 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     columns: Columns[];
     // @ts-ignore
     fields: DataFieldObject[] = [
-        {fieldName: 'udiDiCode', dataType: ValueType.TEXT},
-        {fieldName: 'unit', dataType: ValueType.TEXT},
-        {fieldName: 'buyPrice', dataType: ValueType.TEXT},
-        {fieldName: 'salesPrice', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+        {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'message', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public matDialogRef: MatDialogRef<UploadItemsComponent>,
+        public matDialogRef: MatDialogRef<UpdateItemsComponent>,
         private _realGridsService: FuseRealGridService,
         public _matDialogPopup: MatDialog,
         private _itemService: ItemsService,
@@ -70,29 +67,15 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         this.columns = [
             {
-                name: 'udiDiCode', fieldName: 'udiDiCode', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: 'UDI DI 코드 (GTIN 14자리)', styleName: 'center-cell-text red-font-color'},
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '모델명(품목명)', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '단위', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'buyPrice', fieldName: 'buyPrice', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '매입단가(VAT포함)', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'salesPrice', fieldName: 'salesPrice', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '매출단가(VAT포함)', styleName: 'center-cell-text'},
+                name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '품목명', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
                 }
@@ -118,7 +101,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.gridList = this._realGridsService.gfn_CreateGrid(
             this.dataProvider,
-            'uploadItem',
+            'updateItem',
             this.columns,
             this.fields,
             gridListOption);
@@ -175,15 +158,15 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         setTimeout(() => {
             const values = [
-                '', '', 0, 0, '',
+                '', '',
             ];
 
             this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
 
             const focusCell = this.gridList.getCurrent();
             focusCell.dataRow = 0;
-            focusCell.column = 'udiDiCode';
-            focusCell.fieldName = 'udiDiCode';
+            focusCell.column = 'fomlInfo';
+            focusCell.fieldName = 'fomlInfo';
             //포커스된 셀 변경
             this.gridList.setCurrent(focusCell);
             const curr = this.gridList.getCurrent();
@@ -194,20 +177,16 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         this._changeDetectorRef.markForCheck();
     }
 
-    uploadItem() {
+    updateItem() {
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.dataProvider);
         if(rows.length < 1){
             this._functionService.cfn_alert('업로드 할 데이터가 없습니다. 확인해주세요.');
             return;
         }
-        if(rows.length > 300){
-            this._functionService.cfn_alert('품목 일괄 등록은 300개 까지 가능합니다.');
-            return;
-        }
 
         const confirmation = this._teamPlatConfirmationService.open({
             title: '',
-            message: '업로드 하시겠습니까?',
+            message: '일괄 수정 하시겠습니까?',
             actions: {
                 confirm: {
                     label: '확인'
@@ -222,7 +201,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._itemService.uploadItem(rows)
+                    this._itemService.uploadUpdateItem(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe((item: any) => {
                             this._functionService.cfn_loadingBarClear();
@@ -235,7 +214,6 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         // Mark for check
         this._changeDetectorRef.markForCheck();
     }
-
 
     alertMessage(param: any): void {
         if (param.status === 'SUCCESS') {
@@ -284,10 +262,10 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '품목 업로드');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '품목 일괄 수정');
     }
 
-    uploadInsertItem() {
+    updateInsertItem() {
         const values = [
             '', '', 0, 0, '',
         ];
@@ -295,7 +273,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
     }
 
-    uploadDeleteItem() {
+    updateDeleteItem() {
 
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.dataProvider);
 
@@ -307,4 +285,5 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_DelRow(this.gridList, this.dataProvider);
 
     }
+
 }
