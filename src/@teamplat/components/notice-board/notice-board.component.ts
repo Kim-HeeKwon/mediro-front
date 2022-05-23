@@ -122,7 +122,7 @@ export class NoticeBoardComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     search(): void {
-        this._noticeService.getNoticeBoard(0,40,'nbNo','asc',this.searchForm.getRawValue());
+        this._noticeService.getNoticeBoard(0,40,'nbNo','desc',this.searchForm.getRawValue());
     }
 
     detail(val: any): void {

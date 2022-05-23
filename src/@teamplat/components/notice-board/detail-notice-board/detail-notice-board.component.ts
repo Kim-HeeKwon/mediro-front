@@ -53,30 +53,30 @@ export class DetailNoticeBoardComponent implements OnInit, OnDestroy, AfterViewI
 
     }
     ngOnInit(): void {
-        if(this.no) {
-            if (this.no === '1') {
+        if(this.nbNo) {
+            if (this.nbNo === '1') {
                 this.prev = '이전글이 없습니다.';
-                for(let i = 0; i < this.detail.length; i++) {
-                    if(this.no === this.detail[i].no){
-                        this.nextNo = Number(this.detail[i].no) + 1;
-                    }
-                }
-                for(let i = 0; i < this.detail.length; i++) {
-                    if (this.detail[i].no === String(this.nextNo)) {
-                        this.next = this.detail[i].title;
-                    }
-                }
-            } else if (Number(this.no) === this.detail.length) {
+            } else if (Number(this.nbNo) === this.detail.length) {
                 this.next = '다음글이 없습니다.';
-                for(let i = 0; i < this.detail.length; i++) {
-                    if(this.no === this.detail[i].no){
-                        this.prevNo = Number(this.detail[i].no) - 1;
-                    }
+            }
+            for(let i = 0; i < this.detail.length; i++) {
+                if(this.nbNo === this.detail[i].nbNo){
+                    this.nextNo = Number(this.detail[i].nbNo) + 1;
                 }
-                for(let i = 0; i < this.detail.length; i++) {
-                    if (this.detail[i].no === String(this.prevNo)) {
-                        this.prev = this.detail[i].title;
-                    }
+            }
+            for(let i = 0; i < this.detail.length; i++) {
+                if (this.detail[i].nbNo === String(this.nextNo)) {
+                    this.next = this.detail[i].title;
+                }
+            }
+            for(let i = 0; i < this.detail.length; i++) {
+                if(this.nbNo === this.detail[i].nbNo){
+                    this.prevNo = Number(this.detail[i].nbNo) - 1;
+                }
+            }
+            for(let i = 0; i < this.detail.length; i++) {
+                if (this.detail[i].nbNo === String(this.prevNo)) {
+                    this.prev = this.detail[i].title;
                 }
             }
         }
@@ -110,29 +110,29 @@ export class DetailNoticeBoardComponent implements OnInit, OnDestroy, AfterViewI
                     this.addDate = this.detail[i].addDate;
                     this.cnt = this.detail[i].cnt;
                     this.comment = this.detail[i].comment;
-                    this.no = this.detail[i].no;
-                    if (this.no === '1') {
+                    this.nbNo = this.detail[i].nbNo;
+                    if (this.nbNo === '1') {
                         this.prev = '이전글이 없습니다.';
-                    } else if (Number(this.no) === this.detail.length) {
+                    } else if (Number(this.nbNo) === this.detail.length) {
                         this.next = '다음글이 없습니다.';
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if(this.no === this.detail[i].no){
-                            this.nextNo = Number(this.detail[i].no) + 1;
+                        if(this.nbNo === this.detail[i].nbNo){
+                            this.nextNo = Number(this.detail[i].nbNo) + 1;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if (this.detail[i].no === String(this.nextNo)) {
+                        if (this.detail[i].nbNo === String(this.nextNo)) {
                             this.next = this.detail[i].title;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if(this.no === this.detail[i].no){
-                            this.prevNo = Number(this.detail[i].no) - 1;
+                        if(this.nbNo === this.detail[i].nbNo){
+                            this.prevNo = Number(this.detail[i].nbNo) - 1;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if (this.detail[i].no === String(this.prevNo)) {
+                        if (this.detail[i].nbNo === String(this.prevNo)) {
                             this.prev = this.detail[i].title;
                         }
                     }
@@ -160,29 +160,29 @@ export class DetailNoticeBoardComponent implements OnInit, OnDestroy, AfterViewI
                     this.addDate = this.detail[i].addDate;
                     this.cnt = this.detail[i].cnt;
                     this.comment = this.detail[i].comment;
-                    this.no = this.detail[i].no;
-                    if (this.no === '1') {
+                    this.nbNo = this.detail[i].nbNo;
+                    if (this.nbNo === '1') {
                         this.prev = '이전글이 없습니다.';
-                    } else if (Number(this.no) === this.detail.length) {
+                    } else if (Number(this.nbNo) === this.detail.length) {
                         this.next = '다음글이 없습니다.';
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if(this.no === this.detail[i].no){
-                            this.nextNo = Number(this.detail[i].no) + 1;
+                        if(this.nbNo === this.detail[i].nbNo){
+                            this.nextNo = Number(this.detail[i].nbNo) + 1;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if (this.detail[i].no === String(this.nextNo)) {
+                        if (this.detail[i].nbNo === String(this.nextNo)) {
                             this.next = this.detail[i].title;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if(this.no === this.detail[i].no){
-                            this.prevNo = Number(this.detail[i].no) - 1;
+                        if(this.nbNo === this.detail[i].nbNo){
+                            this.prevNo = Number(this.detail[i].nbNo) - 1;
                         }
                     }
                     for(let i = 0; i < this.detail.length; i++) {
-                        if (this.detail[i].no === String(this.prevNo)) {
+                        if (this.detail[i].nbNo === String(this.prevNo)) {
                             this.prev = this.detail[i].title;
                         }
                     }

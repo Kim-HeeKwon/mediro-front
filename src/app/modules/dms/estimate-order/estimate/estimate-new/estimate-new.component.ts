@@ -609,6 +609,9 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.estimateHeaderForm.patchValue(
                         result.header[0]
                     );
+                    for(let i = 0; i < result.detail.length; i++) {
+                        result.detail[i].effectiveDate = result.header[0].effectiveDate;
+                    }
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.estimateDetailDataProvider, result.detail);
                     for (let i = 0; i < this.estimateDetailDataProvider.getRowCount(); i++) {
 

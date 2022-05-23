@@ -19,14 +19,15 @@ import {Subject} from "rxjs";
 import {LatelyCardService} from "./lately-card.service";
 import {HttpClient} from "@angular/common/http";
 import {Common} from "../../providers/common/common";
+import {formatDate} from "@angular/common";
 
 @Component({
     selector: 'app-lately-card',
     templateUrl: './lately-card.component.html',
     styleUrls: ['./lately-card.component.scss'],
-    encapsulation  : ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations     : fuseAnimations
+    animations: fuseAnimations
 })
 export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
     text: string;
@@ -56,6 +57,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
         this.content = data.content;
 
     }
+
     ngAfterViewInit(): void {
     }
 
@@ -69,8 +71,8 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.row = [];
         this.header = null;
-        this.tooltipText = '최근 사용하신 '+this.text+'내역을 선택하여 간편하게 '+this.text+'서을 생성할 수 있습니다.';
-        if(this.content === 'ESTIMATE'){
+        this.tooltipText = '최근 사용하신 ' + this.text + '내역을 선택하여 간편하게 ' + this.text + '서을 생성할 수 있습니다.';
+        if (this.content === 'ESTIMATE') {
 
             const searchParam = {};
             searchParam['order'] = '';
@@ -92,14 +94,15 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, reject);
             });
             rtn.then((l) => {
-                if(l){
+                if (l) {
                     // @ts-ignore
                     l.forEach((set) => {
                         const setData = {
                             click: 0,
                             qtNo: set.qtNo,
                             accountNm: set.accountNm,
-                            date: set.qtDate};
+                            date: set.qtDate
+                        };
                         this.row.push(setData);
                     });
 
@@ -108,7 +111,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 }
             });
-        }else if(this.content === 'ORDER'){
+        } else if (this.content === 'ORDER') {
             const searchParam = {};
             searchParam['order'] = '';
             searchParam['sort'] = '';
@@ -128,14 +131,15 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, reject);
             });
             rtn.then((l) => {
-                if(l){
+                if (l) {
                     // @ts-ignore
                     l.forEach((set) => {
                         const setData = {
                             click: 0,
                             poNo: set.poNo,
                             accountNm: set.accountNm,
-                            date: set.poDate};
+                            date: set.poDate
+                        };
                         this.row.push(setData);
                     });
 
@@ -144,7 +148,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 }
             });
-        }else if(this.content === 'SALESORDER'){
+        } else if (this.content === 'SALESORDER') {
             const searchParam = {};
             searchParam['order'] = '';
             searchParam['sort'] = '';
@@ -164,14 +168,15 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, reject);
             });
             rtn.then((l) => {
-                if(l){
+                if (l) {
                     // @ts-ignore
                     l.forEach((set) => {
                         const setData = {
                             click: 0,
                             soNo: set.soNo,
                             accountNm: set.accountNm,
-                            date: set.soDate};
+                            date: set.soDate
+                        };
                         this.row.push(setData);
                     });
 
@@ -182,24 +187,26 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             });
         }
     }
+
     /**
      * Track by function for ngFor loops
      *
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
     select(lately: any): void {
+        const now = new Date();
+
         this.lately.forEach((a: any) => {
             a.click = 0;
         });
         lately.click = 1;
 
-        if(this.content === 'ESTIMATE'){
+        if (this.content === 'ESTIMATE') {
             const search = {qtNo: lately.qtNo};
             const searchParam = {};
             searchParam['order'] = 'asc';
@@ -227,15 +234,17 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, reject);
             });
             rtn.then((detail) => {
-
+                // @ts-ignore
                 const header = this.header.filter((item: any) => item.qtNo === lately.qtNo).map((param: any) => {
                     //param.qtDate = null;
                     param.qtNo = null;
                     param.qtAmt = 0;
+                    param.qtDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                    param.effectiveDate = formatDate(new Date(now.setDate(now.getDate() + 1)), 'yyyy-MM-dd', 'en');
                     param.status = 'N';
                     param.type = 'QN';
                     param.qtCreDate = null;
-                    if(param.deliveryDate === null){
+                    if (param.deliveryDate === null) {
                         param.deliveryDate = '';
                     }
                     return param;
@@ -247,7 +256,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._matDialogRef.close(rtnList);
 
             });
-        }else if(this.content === 'ORDER'){
+        } else if (this.content === 'ORDER') {
 
             const search = {poNo: lately.poNo};
             const searchParam = {};
@@ -278,12 +287,14 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             rtn.then((detail) => {
 
                 const header = this.header.filter((item: any) => item.poNo === lately.poNo).map((param: any) => {
-                    //param.poDate = null;
+                    param.poDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                    param.deliveryDate = formatDate(new Date(now.setDate(now.getDate() + 7)), 'yyyy-MM-dd', 'en');
                     param.poNo = null;
                     param.poAmt = 0;
                     param.status = 'N';
                     param.poCreDate = null;
-                    if(param.deliveryDate === null){
+
+                    if (param.deliveryDate === null) {
                         param.deliveryDate = '';
                     }
                     return param;
@@ -295,7 +306,7 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._matDialogRef.close(rtnList);
 
             });
-        }else if(this.content === 'SALESORDER'){
+        } else if (this.content === 'SALESORDER') {
 
             const search = {soNo: lately.soNo};
             const searchParam = {};
@@ -326,12 +337,13 @@ export class LatelyCardComponent implements OnInit, OnDestroy, AfterViewInit {
             rtn.then((detail) => {
 
                 const header = this.header.filter((item: any) => item.soNo === lately.soNo).map((param: any) => {
-                    //param.poDate = null;
+                    param.soDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                    param.dlvDate = formatDate(new Date(now.setDate(now.getDate() + 7)), 'yyyy-MM-dd', 'en');
                     param.soNo = null;
                     param.soAmt = 0;
                     param.status = 'N';
                     param.soCreDate = null;
-                    if(param.deliveryDate === null){
+                    if (param.deliveryDate === null) {
                         param.deliveryDate = '';
                     }
                     return param;

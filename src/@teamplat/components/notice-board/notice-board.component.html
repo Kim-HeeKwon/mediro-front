@@ -1,4 +1,4 @@
-<div class="flex flex-col wh-90 m-auto min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+<div class="flex flex-col flex-auto wh-90 md:h-180 md:h-180 -m-6">
     <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <div class="text-lg font-medium"></div>
         <button
@@ -110,7 +110,6 @@
                                                     *matCellDef="let product"
                                                 >
                                                     <button
-                                                        (click)="detail(product)"
                                                         style="padding: 0px;
                                                                 max-height: 24px;
                                                                 min-height: 24px;
@@ -137,7 +136,7 @@
                                                     제목
                                                 </th>
                                                 <td
-                                                    class="pr-8 truncate title"
+                                                    class="pr-8 truncate titleLine"
                                                     mat-cell
                                                     (click)="detail(product)"
                                                     *matCellDef="let product">

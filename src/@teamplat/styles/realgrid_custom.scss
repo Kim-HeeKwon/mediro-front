@@ -717,9 +717,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 
 .wh-90 {
-    width: 90% !important;
-    height: 90% !important;
+    width: 65rem !important;
+    min-width: 65rem !important;
 }
+
 .m-05 {
     margin: 1rem 0 1rem 0 !important;
 }
