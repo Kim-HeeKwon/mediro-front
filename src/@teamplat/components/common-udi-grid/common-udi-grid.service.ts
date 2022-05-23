@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {UdiGridPagenation} from './common-udi-grid.types';
 import {HttpClient} from '@angular/common/http';
 import {Common} from '../../providers/common/common';
-import {UdiPagenation} from './common-udi.types';
-import {map, mergeMap, retry, switchMap, take} from 'rxjs/operators';
-import {FunctionService} from "../../services/function";
+import {FunctionService} from '../../services/function';
+import {UdiPagenation} from '../common-udi/common-udi.types';
+import {map, retry, switchMap, take} from 'rxjs/operators';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class CommonUdiService{
+export class CommonUdiGridService {
     private _getList: BehaviorSubject<any> = new BehaviorSubject(null);
-    private _pagenation: BehaviorSubject<UdiPagenation | null> = new BehaviorSubject(null);
+    private _pagenation: BehaviorSubject<UdiGridPagenation | null> = new BehaviorSubject(null);
     private _status: BehaviorSubject<any> = new BehaviorSubject(null);
     private _msg: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -47,11 +49,12 @@ export class CommonUdiService{
     /**
      * Getter for pagenation
      */
-    get pagenation$(): Observable<UdiPagenation>
+    get pagenation$(): Observable<UdiGridPagenation>
     {
         return this._pagenation.asObservable();
     }
-    getUdi(page: number = 0, size: number = 100, sort: string = '', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+
+    getUdiGrid(page: number = 0, size: number = 100, sort: string = '', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagenation: UdiPagenation; getList: any }>{
 
         const searchParam = {};
@@ -82,7 +85,6 @@ export class CommonUdiService{
                         this._status.next(response);
                         this._msg.next('');
                         this._getList.next(response.data);
-                        console.log(response);
                         this._pagenation.next(response.pageNation);
                         resolve(this._getList);
                     }else{

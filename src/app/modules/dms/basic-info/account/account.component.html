@@ -82,9 +82,30 @@
                             mat-raised-button
                             [color]="'primary'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="createAccount()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">신규</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3 mediro-btn-custom-background-color"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="selectAccount()">
                             <mat-icon [svgIcon]="'heroicons_outline:view-grid'"></mat-icon>
                             <span class="ml-2 mr-1">조회</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3 mediro-btn-custom-background-color"
+                            mat-raised-button
+                            [color]="'primary'"
+                            [ngStyle]="{'width': '94%'}"
+                            (click)="createUdiAccount()">
+                            <span class="ml-2 mr-1">의료기기 통합정보 거래처 가져오기</span>
                         </button>
                     </div>
                 </div>

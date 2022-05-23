@@ -26,6 +26,7 @@ import {NewAccountComponent} from '../account/new-account/new-account.component'
 import {Router} from '@angular/router';
 import {DetailAccountComponent} from '../account/detail-account/detail-account.component';
 import {EtcAccountComponent} from "./etc-account/etc-account.component";
+import {CommonUdiGridComponent} from "../../../../../@teamplat/components/common-udi-grid";
 
 @Component({
     selector: 'dms-app-account',
@@ -602,7 +603,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     createUdiAccount(): void {
         if (!this.isMobile) {
-            const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
+            const popupUdi = this._matDialogPopup.open(CommonUdiGridComponent, {
                 data: {
                     headerText: '거래처 조회',
                     url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
@@ -623,7 +624,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.selectAccount();
             });
         } else {
-            const d = this._matDialog.open(CommonUdiComponent, {
+            const d = this._matDialog.open(CommonUdiGridComponent, {
                 data: {
                     headerText: '거래처 조회',
                     url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
@@ -653,6 +654,58 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.selectAccount();
             });
         }
+        // if (!this.isMobile) {
+        //     const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
+        //         data: {
+        //             headerText: '거래처 조회',
+        //             url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+        //             searchList: ['companyName', 'taxNo', 'cobFlagCode'],
+        //             code: 'UDI_BCNC',
+        //             tail: false,
+        //             mediroUrl: 'bcnc/company-info',
+        //             tailKey: '',
+        //             merge: true,
+        //             mergeData: 'account'
+        //         },
+        //         autoFocus: false,
+        //         maxHeight: '80vh',
+        //         disableClose: true
+        //     });
+        //
+        //     popupUdi.afterClosed().subscribe((result) => {
+        //         this.selectAccount();
+        //     });
+        // } else {
+        //     const d = this._matDialog.open(CommonUdiComponent, {
+        //         data: {
+        //             headerText: '거래처 조회',
+        //             url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
+        //             searchList: ['companyName', 'taxNo', 'cobFlagCode'],
+        //             code: 'UDI_BCNC',
+        //             tail: false,
+        //             mediroUrl: 'bcnc/company-info',
+        //             tailKey: '',
+        //             merge: true,
+        //             mergeData: 'account'
+        //         },
+        //         autoFocus: false,
+        //         width: 'calc(100% - 50px)',
+        //         maxWidth: '100vw',
+        //         maxHeight: '80vh',
+        //         disableClose: true
+        //     });
+        //     const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+        //         if (size.matches) {
+        //             d.updateSize('calc(100vw - 10px)', '');
+        //         } else {
+        //             // d.updateSize('calc(100% - 50px)', '');
+        //         }
+        //     });
+        //     d.afterClosed().subscribe((result) => {
+        //         smallDialogSubscription.unsubscribe();
+        //         this.selectAccount();
+        //     });
+        // }
     }
 
     selectCallBack(rtn: any): void {

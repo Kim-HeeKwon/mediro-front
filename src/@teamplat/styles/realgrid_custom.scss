@@ -667,6 +667,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .float-left {
     float: left;
 }
+
+.float-right {
+    float: right;
+}
 .bill {
     color: #8F95A0;
     background-color: #FFFFFF;
@@ -710,6 +714,11 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .w-45 {
     width: 45% !important;
+}
+
+.wh-90 {
+    width: 90% !important;
+    height: 90% !important;
 }
 .m-05 {
     margin: 1rem 0 1rem 0 !important;

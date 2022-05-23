@@ -55,6 +55,8 @@ export class NoticeBoardService {
         Observable<{ pagination: Pagination; products: Notice[] }>{
 
         const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
 
         const pageParam = {
             page: page,
@@ -67,7 +69,6 @@ export class NoticeBoardService {
                 for (const kk in params) {
                     searchParam[kk] = params[kk];
                 }
-                console.log(searchParam);
             }else{
                 searchParam['order'] = order;
                 searchParam['sort'] = sort;
@@ -92,4 +93,10 @@ export class NoticeBoardService {
                 }, reject);
         });
     }
+
+
+    setInitList(): void{
+        this._lists.next(null);
+    }
+
 }

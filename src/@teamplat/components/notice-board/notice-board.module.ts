@@ -22,10 +22,12 @@ import {FuseNavigationModule} from "../navigation";
 import {NoticeBoardComponent} from "./notice-board.component";
 import {noticeBoardRouting} from "./notice-board.routing";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {DetailNoticeBoardComponent} from "./detail-notice-board/detail-notice-board.component";
 
 @NgModule({
     declarations: [
-        NoticeBoardComponent
+        NoticeBoardComponent,
+        DetailNoticeBoardComponent
     ],
     imports: [
         RouterModule.forChild(noticeBoardRouting),
@@ -51,7 +53,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
         MatSidenavModule,
     ],
     exports     : [
-        NoticeBoardComponent
+        NoticeBoardComponent,
+        DetailNoticeBoardComponent
     ]
 })
 export class NoticeBoardModule

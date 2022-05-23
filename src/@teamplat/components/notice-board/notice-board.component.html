@@ -1,4 +1,15 @@
-<div class="flex flex-col w-full min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+<div class="flex flex-col wh-90 m-auto min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium"></div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
     <mat-drawer-container class="flex-auto sm:h-full w-full">
 
         <!-- Drawer content -->
@@ -95,9 +106,11 @@
                                                 </th>
                                                 <td
                                                     mat-cell
+                                                    (click)="detail(product)"
                                                     *matCellDef="let product"
                                                 >
                                                     <button
+                                                        (click)="detail(product)"
                                                         style="padding: 0px;
                                                                 max-height: 24px;
                                                                 min-height: 24px;
@@ -124,8 +137,9 @@
                                                     제목
                                                 </th>
                                                 <td
-                                                    class="pr-8 truncate"
+                                                    class="pr-8 truncate title"
                                                     mat-cell
+                                                    (click)="detail(product)"
                                                     *matCellDef="let product">
                                                     {{product.title}}
                                                 </td>
@@ -143,6 +157,7 @@
                                                 <td
                                                     class="pr-8 truncate"
                                                     mat-cell
+                                                    (click)="detail(product)"
                                                     *matCellDef="let product">
                                                     {{product.addUser}}
                                                 </td>
@@ -159,6 +174,7 @@
                                                 <td
                                                     class="pr-8 truncate"
                                                     mat-cell
+                                                    (click)="detail(product)"
                                                     *matCellDef="let product">
                                                     {{product.addDate}}
                                                 </td>
@@ -193,9 +209,9 @@
                                     <mat-paginator
                                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                                         [ngClass]="{'pointer-events-none': isLoading}"
-                                        [length]="pagination.length"
-                                        [pageIndex]="pagination.page"
-                                        [pageSize]="pagination.size"
+                                        [length]="pagination === null ? 0 : pagination.length"
+                                        [pageIndex]="pagination === null ? 0 : pagination.page"
+                                        [pageSize]="pagination === null ? 0 : pagination.size"
                                         [pageSizeOptions]="[8, 10, 25, 100]"
                                         [showFirstLastButtons]="true"></mat-paginator>
 

@@ -1,0 +1,81 @@
+<div class="flex flex-col wh-90 m-auto min-w-0 sm:absolute sm:inset-0 sm:overflow-hidden">
+    <div class="flex flex-0 items-center justify-between h-14 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium"></div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <mat-drawer-container class="flex-auto sm:h-full w-full">
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col w-full">
+            <div class="flex-auto px-6 pt-9 pb-12 md:p-8 md:pb-12 lg:p-12">
+                <div class="mt-8">
+                    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden bg-card dark:bg-transparent">
+                        <!-- Header -->
+                        <div class="flex flex-col justify-between">
+                            <div style="margin: 0 auto;"
+                                 class="flex items-center pt-8 pb-8">
+                                <!-- Add product button -->
+                                <div class="relative text-3xl font-extrabold tracking-tight">
+                                    <span
+                                        class="absolute bottom-4 w-6 h-6 rounded-full"
+                                        style="opacity: 0.5;left: -12px !important; background-color: #3490DD !important;"></span>
+                                    <span>
+                                        공지사항
+                                    </span>
+                                </div>
+                            </div>
+                        </div>  <!-- Header -->
+                        <div class="flex flex-auto border-top">
+                            <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden">
+                                <div class="title text-20s text-bold">
+                                    <span>{{title}}</span>
+                                </div>
+                                <div class="user">
+                                    <span class="float-left mr-4 text-bold-550">{{addUser}}</span>
+                                    <span style="color: #767676!important;">{{addDate}}</span>
+                                    <span class="float-right"><strong class="mr-4">조회수</strong>{{cnt}}</span>
+                                </div>
+<!--                                <div class="files pr-4">-->
+<!--                                    <a>첨부파일</a>-->
+<!--                                    <span>(<strong>1</strong>)</span>-->
+<!--                                </div>-->
+                                <div class="comment">
+                                    <p class="commentText">{{comment}}</p>
+                                </div>
+                                <div class="backButton pr-4">
+                                    <div class="float-right">
+                                        <button
+                                            class="ml-2 mt-7 mediro-btn-custom mediro-btn-custom-background-color"
+                                            mat-flat-button
+                                            [color]="'primary'"
+                                            (click)="matDialogRef.close()"
+                                            [tabIndex]="-1">
+                                            <mat-icon class="icon-size-9" [svgIcon]="'feather:arrow-left-circle'"></mat-icon>
+                                            <span class="ml-2 mr-1">목록</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="prevNext">
+                                    <dl class="prev">
+                                        <dt class="prevDt">다음글</dt>
+                                        <dd [ngClass]="{'textUnderLine' : !textNext}" (click)="nextNotice(next)">{{next}}</dd>
+                                    </dl>
+                                    <dl class="next">
+                                        <dt class="nextDt">이전글</dt>
+                                        <dd [ngClass]="{'textUnderLine' : !textPrev}" (click)="prevNotice(prev)">{{prev}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
