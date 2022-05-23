@@ -286,6 +286,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
                                     localStorage.setItem('payYn', 'Y');
                                     localStorage.setItem('freeYn', 'Y');
+                                    window.location.reload();
 
                                     // loadTossPayments(environment.tossClientKey).then((tossPayments) => {
                                     //     tossPayments.requestPayment('카드', {

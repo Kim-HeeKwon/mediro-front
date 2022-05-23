@@ -711,33 +711,33 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     {
         if(dateGbn === 'today'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-1, 'day').endOf('day').toISOString(),
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-1, 'day').endOf('day').toISOString(),
             };
         }else if(dateGbn === 'week'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-7, 'day').endOf('day').toISOString()
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-7, 'day').endOf('day').toISOString()
             };
         }else if(dateGbn === '1mon'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-2, 'month').endOf('month').toISOString()
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-2, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '3mon'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-3, 'month').endOf('month').toISOString()
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-3, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '6mon'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-6, 'month').endOf('month').toISOString()
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-6, 'month').endOf('month').toISOString()
             };
         }else if(dateGbn === '1year'){
             this.range = {
-                end: moment().utc(false).startOf('day').toISOString(),
-                start  : moment().utc(false).add(-1, 'year').endOf('year').toISOString()
+                end: moment().utc(true).startOf('day').toISOString(),
+                start  : moment().utc(true).add(-1, 'year').endOf('year').toISOString()
             };
         }
     }

@@ -951,32 +951,32 @@ export class Api {
                         }
                     });
             }else{
-                if(this._sessionStore.getValue().payYn === 'N'){
-                    check = false;
-                    const confirmation = this._teamPlatConfirmationService.open({
-                        title: '',
-                        message: '서비스를 이용할 수 없습니다. <br> 정기 서비스를 신청해주세요.',
-                        actions: {
-                            confirm: {
-                                show : true,
-                                label: '정기 서비스 이동'
-                            },
-                            cancel : {
-                                show : true,
-                                label: '닫기'
-                            }
-                        }
-                    });
-                    confirmation.afterClosed()
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((result) => {
-                            if (result) {
-                                this._matDialog.closeAll();
-                                this._router.navigateByUrl('/pages/settings');
-                                // Show the alert
-                            }
-                        });
-                }
+                // if(this._sessionStore.getValue().payYn === 'N'){
+                //     check = false;
+                //     const confirmation = this._teamPlatConfirmationService.open({
+                //         title: '',
+                //         message: '서비스를 이용할 수 없습니다. <br> 정기 서비스를 신청해주세요.',
+                //         actions: {
+                //             confirm: {
+                //                 show : true,
+                //                 label: '정기 서비스 이동'
+                //             },
+                //             cancel : {
+                //                 show : true,
+                //                 label: '닫기'
+                //             }
+                //         }
+                //     });
+                //     confirmation.afterClosed()
+                //         .pipe(takeUntil(this._unsubscribeAll))
+                //         .subscribe((result) => {
+                //             if (result) {
+                //                 this._matDialog.closeAll();
+                //                 this._router.navigateByUrl('/pages/settings');
+                //                 // Show the alert
+                //             }
+                //         });
+                // }
             }
         }
         return check;
