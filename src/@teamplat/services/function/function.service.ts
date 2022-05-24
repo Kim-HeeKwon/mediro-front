@@ -5,8 +5,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
 import {TeamPlatConfirmationService} from '../confirmation';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {TableConfig} from "../../components/common-table/common-table.types";
-import {CommonLoadingBarComponent} from "../../components/common-loding-bar/common-loading-bar.component";
+import {TableConfig} from '../../components/common-table/common-table.types';
 
 @Injectable({
     providedIn: 'root'
@@ -23,14 +22,16 @@ export class FunctionService implements OnInit, OnDestroy{
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         public _matDialog: MatDialog,
         @Optional() public _matDialogRef: MatDialogRef<any>,
-        ) {
+        )
+    {
     }
 
+    // 로딩바 닫아주는 함수
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_loadingBarClear(): void{
-        this._matDialogRef = this._matDialog.getDialogById('loadingBar');
-        if(this._matDialogRef !== undefined){
-            this._matDialogRef.close();
+        this._matDialogRef = this._matDialog.getDialogById('loadingBar'); // 로딩바 ID 찾기
+        if(this._matDialogRef !== undefined){ // 팝업창(ID) null 체크
+            this._matDialogRef.close(); // 팝업창 ID null 아닐 때 닫기
         }
     }
     // eslint-disable-next-line @angular-eslint/contextual-lifecycle
@@ -45,9 +46,10 @@ export class FunctionService implements OnInit, OnDestroy{
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_inputBold(): string{
-        return 'font-weight: bold;';
+        return 'font-weight: bold;'; // css font bold 처리
     }
     /*
      * 공통 alert
@@ -56,18 +58,18 @@ export class FunctionService implements OnInit, OnDestroy{
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     cfn_alert(message?: string, iconValue?: string){
         let icon;
-        if(iconValue === undefined){
+        if(iconValue === undefined){ // iconValue null 이면 정보 아이콘
             icon = 'information-circle';
-        }else{
+        }else{ // null이 아니라면 iconValue 아이콘
             icon = iconValue;
         }
         // Setup config form
         this.configForm = this._formBuilder.group({
             title      : '',
-            message    : message,
+            message    : message, // 메시지 전달
             icon       : this._formBuilder.group({
                 show : true,
-                name : 'heroicons_outline:' + icon,
+                name : 'heroicons_outline:' + icon, // 아이콘 전달
                 color: 'accent'
             }),
             actions    : this._formBuilder.group({
@@ -82,17 +84,19 @@ export class FunctionService implements OnInit, OnDestroy{
             }),
             dismissible: true
         });
+        // 정보값 전달 받고 얼럿창 띄우는 함수
         const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
     }
 
+    // 추가, 삭제, 수정, 확정 처리 얼럿 창
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_alertCheckMessage(param: any, redirectUrl?: string): void
     {
-        if(param.status === 'SUCCESS'){
+        if(param.status === 'SUCCESS'){ // 전달 받은 param.status가 SUCCESS이면 정상 얼럿창
             this.cfn_alert('정상적으로 처리되었습니다.','check-circle');
         }else if(param.status === 'CANCEL'){
 
-        }else{
+        }else{ // SUCCESS가 아닐때 전달 받은 메시지 출력
 
             const icon = 'information-circle';
             // Setup config form
@@ -116,6 +120,7 @@ export class FunctionService implements OnInit, OnDestroy{
                 }),
                 dismissible: true
             });
+            // 실제 전달 받은 정보 띄우는 얼럿 함수
             const confirmation = this._teamPlatConfirmationService.open(this.configForm.value);
         }
     }
@@ -151,6 +156,7 @@ export class FunctionService implements OnInit, OnDestroy{
         }
     }
 
+    // admin version 1
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     cfn_cellDisable(column: TableConfig, dataFiled: string[], form?: FormGroup){
 
@@ -160,6 +166,8 @@ export class FunctionService implements OnInit, OnDestroy{
             }
         });
     }
+
+    // admin version 1
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     cfn_cellEnable(column: TableConfig,dataFiled: string[], form?: any){
         dataFiled.forEach((array: any) => {
@@ -169,6 +177,7 @@ export class FunctionService implements OnInit, OnDestroy{
         });
     }
 
+    // admin version 1
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_validator(text: string, list$: Observable<any>, table: TableConfig[]): boolean{
         let validCheck = false;
@@ -197,33 +206,35 @@ export class FunctionService implements OnInit, OnDestroy{
         return validCheck;
     }
 
-    // 검색조건 멀티 콤보
+    // 검색조건 멀티 콤보 조회
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_multipleComboValueGet(arr): string{
-        if(typeof arr === 'object'){
-            if(arr !== (null || undefined)){
+        if(typeof arr === 'object'){ // 데이터 타입이 함수, 배열 등 객체일 때
+            if(arr !== (null || undefined)){ // 전달 받은 데이더 null, undefined 체크
                 let str = '';
-                if(arr.length !== 0){
-                    if(arr.length === 1){
-                        if(arr[0] === 'ALL'){
-                            str = arr[0] + '';
-                        }else{
-                            str = "'" + arr[0] + "'";
+                if(arr.length !== 0){ // 전달 받은 데이터 값이 0개가 아닐때
+                    if(arr.length === 1){ // 전달 받은 데이터 값이 1개 일때
+                        if(arr[0] === 'ALL'){ // 전체 조회 시
+                            str = arr[0] + ''; // str String으로 변환
+                        }else{ // arr[0] 이 ALL이 아닐때
+                            str = '\'' + arr[0] + '\'';
                         }
-                    }else{
+                    }else{ // 전달 받은 데이터 값이 1개 이상일때
                         let idx = 1;
-                        str += "'";
+                        str += '\'';
+                        console.log(str);
                         arr.forEach((param) => {
+                            console.log(param);
                             str += param;
-                            if(arr.length !== idx){
-                                str += "','";
+                            if(arr.length !== idx){ // forEach문 돌리면서 arr 값 개수 idx 값 비교
+                                str += '\',\''; // str 문자열로 변환
                             }else{
-                                str += "'";
+                                str += '\''; // 마지막 str 문자열로 변환
                             }
                             idx++;
                         });
                     }
-                }else{
+                }else{ // 전달 받은 데이터 없을떄
                     str = '';
                 }
 

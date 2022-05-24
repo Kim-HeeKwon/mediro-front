@@ -52,6 +52,7 @@ export const appRoutes: Route[] = [
             },
             {path: 'fee',
                 children: [
+                    {path: 'discount', data: {key: 'discount'}, loadChildren: () => import ('app/modules/adm/fee/discount/discount.module').then(m => m.DiscountModule)},
                     {path: 'billManagement', data:{key: 'billManagement'}, loadChildren: () => import('app/modules/adm/fee/billing-management/billing-management.module').then(m => m.BillingManagementModule)},
                     {path: 'feeUser', data:{key: 'feeUser'}, loadChildren: () => import('app/modules/adm/fee/fee-user/fee-user.module').then(m => m.FeeUserModule)},
                 ]

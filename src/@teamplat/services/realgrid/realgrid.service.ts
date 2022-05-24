@@ -46,33 +46,40 @@ export class FuseRealGridService {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_CreateGrid(dataProvider: RealGrid.LocalDataProvider, id: string, columns: any, fields: any, option?: any, columnLayout?: any, group?: any, displayOptions?: any): RealGrid.GridView{
-        const gridView = new RealGrid.GridView(id);
-        gridView.setDataSource(dataProvider);
-        dataProvider.setFields(fields);
-        gridView.setColumns(columns);
-        if(columnLayout){
+        const gridView = new RealGrid.GridView(id); // 그리드 id
+        gridView.setDataSource(dataProvider); // 그리드 생성된 dataProvider
+        dataProvider.setFields(fields); // 그리드 데이터 필드
+        gridView.setColumns(columns); // 그리드 데이터 컬럼
+        if(columnLayout){ // 그리드 컬럼 겹칠 때 사용
             gridView.setColumnLayout(columnLayout);
         }
-        if(group){
+        if(group){ // 그리드 그룹 설정
             gridView.groupPanel.visible = false;
             gridView.groupBy(group);
             gridView.setRowGroup({
                 mergeMode: true,
             });
         }
-        if(displayOptions){
+        if(displayOptions){ // 그리드 표시 정보를 DisplayOptions 모델로 설정한다.
             gridView.setDisplayOptions(displayOptions);
         }
+
+        // 그리드에 표시되는 데이터 행이 한 건도 없을 때 표시되는 메세지
         gridView.displayOptions.emptyMessage = '표시할 데이터가 없습니다.';
 
+        // 그리드 footer 표시여부
         gridView.footers.visible = false;
-        //상태바
+
+        //상태바 표시 여부
         gridView.setStateBar({visible: false});
-        //체크바
+
+        //체크바 표시 여부
         gridView.setCheckBar({visible: false});
 
+        // 실행취소 기능 사용 가능 여부
         gridView.undoable = true;
 
+        // 옵션들 undefined가 아닐때 실행 되는 함수 전달 받은 데이터 표시 여부
         if(option !== undefined){
             if(option.footers){gridView.footers.visible = option.footers;}
             if(option.stateBar){gridView.setStateBar({visible: option.stateBar});}
@@ -81,18 +88,22 @@ export class FuseRealGridService {
         /**
          * 그리드 기본 설정
          */
-        if(this.isMobile) {
+        // 모바일 체크 여부 후 높이 설정
+        if(this.isMobile) { // 모바일
             gridView.header.height = 40;
             gridView.displayOptions.rowHeight = 40;
-        }else {
+        }else { // 모바일 아닐때
             gridView.header.height = 27;
             gridView.displayOptions.rowHeight = 27;
         }
-        //인디케이터 (NO)
+
+        //인디케이터 (NO) 그리드 왼쪽 행 숫자 표시 여부
         gridView.setRowIndicator({
             visible: true, displayValue: IndicatorValue.INDEX, zeroBase: false,
             headText: 'No',
             footText: ''});
+
+        // 그리드에서 오른쪽 마우스를 클릭했을때 표시되는 컨텍스트 메뉴에 추가할 메뉴 항목들을 지정한다.
         gridView.setContextMenu([
             {
                 label: '열 고정',
@@ -111,8 +122,11 @@ export class FuseRealGridService {
                 tag: 'all'
             },
         ]);
+
+        // setContextMenu() 를 통해 추가한 컨텍스트 메뉴 항목 클릭을 알리는 콜백
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         gridView.onContextMenuItemClicked = ((grid, item, clickData) => {
+            console.log(item);
             if (item.tag === 'fixedCol') {
                 const count = grid.getColumnProperty(clickData.column, 'displayIndex') + 1;
                 grid.setFixedOptions({ colCount: count });
@@ -128,11 +142,12 @@ export class FuseRealGridService {
             };
         });
 
-        //정렬
+        //정렬 컬럼 헤더를 클릭으로 컬럼을 정렬 가능 여부
         gridView.sortingOptions.enabled = false;
         // @ts-ignore
+        // 해더 아이콘 표시 여부
         gridView.sortingOptions.handleVisibility = 'always';
-        //컬럼 move
+        //컬럼 move 컬럼 위치 변경 가능 여부 헤더 셀을 드래그하여 변경 가능
         gridView.displayOptions.columnMovable = true;
 
         return gridView;
@@ -143,15 +158,18 @@ export class FuseRealGridService {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/explicit-function-return-type
     gfn_DataSetGrid(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, data: any): void {
-        if(data){
+        if(data){ // data 존재 여부 체크
 
+            // 데이터 셋을 초기화한다
             dataProvider.clearRows();
 
             //dataProvider.setRows(data);
 
+            // JSON 데이터 원본에서 데이터를 가져와 데이터 셋을 생성한다.
             dataProvider.fillJsonData(data, { fillMode: 'set' });
 
             // @ts-ignore
+            // 그리드를 내부적으로 새로 그린다.
             gridView.refresh();
         }
     }
@@ -205,6 +223,7 @@ export class FuseRealGridService {
             page: 1,
             size: 10,
         };
+
         searchParam['excelType'] = excelType;
 
         // @ts-ignore
@@ -285,6 +304,7 @@ export class FuseRealGridService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_Destory(gridList: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): void {
 
+        // 현재 편집 중인 행의 편집을 취소한다.
         gridList.cancel();
 
         //데이터 초기화
@@ -299,7 +319,7 @@ export class FuseRealGridService {
         dataProvider = null;
     }
 
-    // 체크 된 행 가져오기
+    // 체크 된 행 데이터 가져오기
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/naming-convention
     gfn_GetCheckRows(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): any {
@@ -446,10 +466,7 @@ export class FuseRealGridService {
     // 그리드 공통 팝업
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention,max-len
-    gfn_PopUp(isMobile: boolean, isExtraSmall: Observable<BreakpointState>, gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, columns: Columns[], _matDialogPopup: MatDialog, _unsubscribeAll: Subject<any>, _changeDetectorRef: ChangeDetectorRef
-                ,param?: any) {
-
-        //console.log(columns);
+    gfn_PopUp(isMobile: boolean, isExtraSmall: Observable<BreakpointState>, gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, columns: Columns[], _matDialogPopup: MatDialog, _unsubscribeAll: Subject<any>, _changeDetectorRef: ChangeDetectorRef, param?: any) {
         if(columns.length > 1){
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
             for(let i=0; i<columns.length; i++){
@@ -643,6 +660,7 @@ export class FuseRealGridService {
         gridView.clearCurrent();
     }
 
+    // 그리드 로딩바 함수
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     gfn_GridLoadingBar(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider, enable: boolean) {
@@ -656,6 +674,7 @@ export class FuseRealGridService {
         }
     }
 
+    // 그리드 데이터 개수로 정렬 막는 함수
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,@typescript-eslint/naming-convention
     gfn_GridDataCnt(gridView: RealGrid.GridView, dataProvider: RealGrid.LocalDataProvider): boolean{

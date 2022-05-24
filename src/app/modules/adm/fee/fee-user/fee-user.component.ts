@@ -14,7 +14,6 @@ import {FunctionService} from "../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {FeeUserService} from "./fee-user.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
-import {UserPagenation} from "../../user/user/user.types";
 import {FeeUserPagenation} from "./fee-user.types";
 
 @Component({

@@ -570,6 +570,13 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'paid',
                 children: [
                     {
+                        id   : 'fee.discount',
+                        title: '할인율',
+                        type : 'basic',
+                        icon : 'payment',
+                        link : '/admin/fee/discount'
+                    },
+                    {
                         id   : 'fee.feeUser',
                         title: '사용료 목록',
                         type : 'basic',
