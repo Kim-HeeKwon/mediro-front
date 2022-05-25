@@ -16,7 +16,7 @@ export class manualComponent implements OnInit, OnDestroy {
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'basicInfo';
+    selectedPanel: string = 'newSignup';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -37,6 +37,12 @@ export class manualComponent implements OnInit, OnDestroy {
             this.goToPanel(this._route.snapshot.paramMap.get('id'));
         }
         this.panels = [
+            {
+                id         : 'newSignup',
+                icon       : 'heroicons_outline:film',
+                title      : '신규가입자 안내영상',
+                description: '신규 가입자들을 위한 안내 영상'
+            },
             {
                 id         : 'basicInfo',
                 icon       : 'info',

@@ -76,6 +76,9 @@
                 <!-- Load settings panel -->
                 <div class="mt-8">
                     <ng-container [ngSwitch]="selectedPanel">
+                        <ng-container *ngSwitchCase="'newSignup'">
+                            <newSignup-Manual></newSignup-Manual>
+                        </ng-container>
                         <ng-container *ngSwitchCase="'basicInfo'">
                             <basicInfo-Manual></basicInfo-Manual>
                         </ng-container>
