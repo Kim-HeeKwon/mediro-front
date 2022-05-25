@@ -35,14 +35,14 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     dataProvider: RealGrid.LocalDataProvider;// @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     fields: DataFieldObject[] = [
-        {fieldName: 'mId', dataType: ValueType.TEXT},
-        {fieldName: 'businessNumber', dataType: ValueType.TEXT},
-        {fieldName: 'businessName', dataType: ValueType.TEXT},
-        {fieldName: 'addDate', dataType: ValueType.TEXT},
-        {fieldName: 'payYn', dataType: ValueType.TEXT},
-        {fieldName: 'startDate', dataType: ValueType.TEXT},
+        {fieldName: 'endFlag', dataType: ValueType.TEXT},
+        {fieldName: 'discount', dataType: ValueType.TEXT},
+        {fieldName: 'discountTitle', dataType: ValueType.TEXT},
+        {fieldName: 'discountComment', dataType: ValueType.TEXT},
+        {fieldName: 'beginDate', dataType: ValueType.TEXT},
         {fieldName: 'endDate', dataType: ValueType.TEXT},
         {fieldName: 'discountRate', dataType: ValueType.NUMBER},
+        {fieldName: 'remark', dataType: ValueType.TEXT},
     ];
 
     constructor(private _realGridsService: FuseRealGridService,
@@ -78,49 +78,89 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            businessName: ['']
+            discountTitle: ['']
         });
 
         this.columns = [
             {
-                name: 'businessNumber',
-                fieldName: 'businessNumber',
+                name: 'endFlag', fieldName: 'endFlag', type: 'data', width: '110', styleName: 'left-cell-text'
+                , header: {text: '종료여부', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'discount',
+                fieldName: 'discount',
                 type: 'data',
                 width: '100',
                 styleName: 'left-cell-text'
                 ,
-                header: {text: '사업자번호', styleName: 'center-cell-text'},
+                header: {text: '번호', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'businessName', fieldName: 'businessName', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '회원사 명', styleName: 'center-cell-text'}, renderer: {
+                name: 'discountTitle',
+                fieldName: 'discountTitle',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '제목', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '가입일', styleName: 'center-cell-text'}, renderer: {
+                name: 'discountComment',
+                fieldName: 'discountComment',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '내용', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'startDate', fieldName: 'startDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '시작일자', styleName: 'center-cell-text'}, renderer: {
+                name: 'beginDate', fieldName: 'beginDate', type: 'date', width: '120', styleName: 'center-cell-text'
+                , header: {text: '기간(시작)', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
+                },
+                datetimeFormat: 'yyyy-MM',
+                mask: {editMask: '9999-99', includeFormat: false, allowEmpty: true}
+                ,
+                editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM',
+                    textReadOnly: true,
                 }
             },
             {
-                name: 'endDate', fieldName: 'endDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '종료일자', styleName: 'center-cell-text'}, renderer: {
+                name: 'endDate', fieldName: 'endDate', type: 'data', width: '120', styleName: 'center-cell-text'
+                , header: {text: '기간(종료)', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
+                },
+                datetimeFormat: 'yyyy-MM',
+                mask: {editMask: '9999-99', includeFormat: false, allowEmpty: true}
+                ,
+                editor: {
+                    type: 'date',
+                    datetimeFormat: 'yyyy-MM',
+                    textReadOnly: true,
                 }
             },
             {
                 name: 'discountRate', fieldName: 'discountRate', type: 'number', width: '100', styleName: 'left-cell-text'
                 , header: {text: '할인율', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'remark', fieldName: 'remark', type: 'data', width: '200', styleName: 'left-cell-text'
+                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

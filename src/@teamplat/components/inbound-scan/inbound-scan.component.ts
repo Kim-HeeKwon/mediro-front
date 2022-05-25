@@ -323,8 +323,14 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.gridList2Columns = [
             {
-                name: 'useTmlmtUse', fieldName: 'useTmlmtUse', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '유효기간', styleName: 'center-cell-text'},
+                name: 'useTmlmtUse', fieldName: 'useTmlmtUse', type: 'data', width: '110', styleName: 'center-cell-text'
+                , header: {text: '유효기간', styleName: 'center-cell-text',
+                    template: '${headerText}<span class="material-icons text-13s text-bold-600 tooltip-hover-scan">\n' +
+                        'help_outline\n' +
+                        '<span class="tooltip-text-scan tooltip-scan">' +
+                        '* 유통기한이 6개월 미만일 경우 위험으로 표시 *' +
+                        '</span>',
+                    values: { 'headerText':'유효기간' }},
                 renderer: {
                     showTooltip: true
                 }
@@ -371,7 +377,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '250', styleName: 'left-cell-text'
+                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '240', styleName: 'left-cell-text'
                 , header: {text: '바코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -708,7 +714,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (dataCell.dataColumn.fieldName === 'useTmlmtUse') {
                     ret.styleName = 'red-color';
                 }
-            } else {
+            } else if(useTmlmtUse === '위험'){
+                if (dataCell.dataColumn.fieldName === 'useTmlmtUse') {
+                    ret.styleName = 'orange-color';
+                }
+            } else if(useTmlmtUse === '유효'){
                 if (dataCell.dataColumn.fieldName === 'useTmlmtUse') {
                     ret.styleName = 'green-color';
                 }
@@ -975,7 +985,13 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 if (nD > sD) {
                                                     useTmlmtUse = '만료';
                                                 } else {
-                                                    useTmlmtUse = '유효';
+                                                    const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                    if(diff < 180){
+                                                        useTmlmtUse = '위험';
+                                                    }else{
+                                                        useTmlmtUse = '유효';
+                                                    }
                                                 }
                                             }
                                         }

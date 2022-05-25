@@ -204,6 +204,11 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     background-color: orange;
     color: #000000;
 }
+.orange-color{
+    background-color: orange;
+    color: #FFFFFF;
+    font-weight: 500;
+}
 .yellow-cell-color{
     background-color: yellow;
     color: #000000;
@@ -231,6 +236,10 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
     background-color: green;
     color: #FFFFFF;
     font-weight: 500;
+}
+.green-cell-color{
+    background-color: green;
+    color: #ffffff;
 }
 
 .lite-blue-color{
@@ -601,6 +610,38 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 .tooltip-hover-longTerm:hover .tooltip-text-longTerm {
     display: block;
 }
+
+.tooltip-hover-scan {
+    display: inline-block;
+}
+
+.tooltip-text-scan {
+    display: none;
+    position: fixed;
+    width: 300px;
+    margin-top: -68px;
+    margin-left: -219.3px;
+    border: 1px solid;
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 2;
+    color: #4e545f;
+    background: #e4e7eb;
+}
+.tooltip-scan::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip-hover-scan:hover .tooltip-text-scan {
+    display: block;
+}
 //.mat-slide-toggle{
 //    height: 25px !important;
 //    width: 25px !important;
@@ -735,4 +776,11 @@ body.light .mat-button.mat-primary, body.light .mat-icon-button.mat-primary, bod
 }
 .manual-hover:hover {
     font-weight: bold;
+}
+
+.detail-label{
+    color: #ffffff;
+    //background: #F1F0F0;
+    //padding: 3px;
+    //border-radius: 5px;
 }

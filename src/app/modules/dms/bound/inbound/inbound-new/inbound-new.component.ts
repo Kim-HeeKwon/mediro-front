@@ -28,6 +28,7 @@ import {takeUntil} from 'rxjs/operators';
 import {InBound} from '../inbound.types';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {formatDate} from "@angular/common";
+import {ItemSelectComponent} from "../../../../../../@teamplat/components/item-select";
 
 @Component({
     selector: 'app-dms-inbound-new',
@@ -614,6 +615,111 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.inBoundHeaderForm.patchValue({'email': result.email});
                     }
                 });
+        }
+    }
+
+    itemSelect() {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    account: this.inBoundHeaderForm.getRawValue().account
+                },
+            });
+
+            d.afterClosed().subscribe((result) => {
+
+                if(result){
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'ibLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'ibExpQty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'lot1', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot2', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot3', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot4', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot5', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot6', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot7', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot8', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot9', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot10', dataType: ValueType.TEXT},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, ex.buyPrice, 0, '', '', '', '', '', '', '', '', '', '', ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);
+                    });
+                }
+            });
+        } else {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+                data: {
+                    account: this.inBoundHeaderForm.getRawValue().account
+                },
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'ibLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'ibExpQty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'lot1', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot2', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot3', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot4', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot5', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot6', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot7', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot8', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot9', dataType: ValueType.TEXT},
+                        // {fieldName: 'lot10', dataType: ValueType.TEXT},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, ex.buyPrice, 0, '', '', '', '', '', '', '', '', '', '', ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);
+                    });
+                }
+
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 }

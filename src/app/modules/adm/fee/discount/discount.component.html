@@ -29,9 +29,9 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
-                                    [formControlName]="'businessName'"
+                                    [formControlName]="'discountTitle'"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'회원사 명을 입력해주세요.'">
+                                    [placeholder]="'제목을 입력해주세요.'">
                             </mat-form-field>
                         </div>
                     </div>
@@ -86,11 +86,11 @@
                                                 <div class="flex w-4/4">
                                                     <mat-form-field
                                                         class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label class="mediro-ft-label">회원사 명</mat-label>
+                                                        <mat-label class="mediro-ft-label">제목</mat-label>
                                                         <input
                                                             matInput
                                                             (window:onkeypress)="enter($event)"
-                                                            [formControlName]="'businessName'"
+                                                            [formControlName]="'discountTitle'"
                                                             [autocomplete]="'off'">
                                                     </mat-form-field>
                                                     <button

@@ -3,7 +3,7 @@ export interface UserList
     mId: string; //회원사
     businessNumber: string; // 사업자 번호
     businessName: string;   // 회원사 명
-    businessId: string; // 회원 ID
+    userId: string; // 회원 ID
     addDate?: string;
 }
 

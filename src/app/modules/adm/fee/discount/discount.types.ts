@@ -1,12 +1,13 @@
 export interface DiscountData
 {
-    mId: string;
-    businessNumber: string; // 사업자 번호
-    businessName: string; // 회원사 명
-    addDate?: string; // 가입일
-    startDate?: string; // 시작일자
-    endDate?: string; // 종료 일자
+    endFlag: string;
+    discount: string; // 번호
+    discountTitle: string; // 제목
+    discountComment: string; // 내용
+    beginDate: string; // 시작일자
+    endDate: string; // 종료 일자
     discountRate: number; // 할인율
+    remark: string;
 }
 
 export interface DiscountPagenation

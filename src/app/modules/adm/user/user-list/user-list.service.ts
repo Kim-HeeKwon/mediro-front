@@ -3,7 +3,6 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {UserList, UserListPagenation} from "./user-list.types";
 import {HttpClient} from "@angular/common/http";
 import {Common} from "../../../../../@teamplat/providers/common/common";
-import {UserInfo, UserInfoPagenation} from "../user-info/user-info.types";
 
 @Injectable({
     providedIn: 'root'
@@ -47,9 +46,36 @@ export class UserListService{
      *
      * @returns
      */
-    getUserList(page: number = 0, size: number = 100, sort: string = 'businessName', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
-        Promise<{ pagenation: UserInfoPagenation; userInfo: UserInfo[] }> {
+    getUserList(page: number = 0, size: number = 100, sort: string = 'addDate', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
+        Promise<{ pagenation: UserListPagenation; userList: UserList[] }> {
 
-        return;
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if((Object.keys(search).length === 0) === false){
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/admin/user-list/list')
+                .subscribe((response: any) => {
+                    if(response.status === 'SUCCESS'){
+                        this._userLists.next(response.data);
+                        this._pagenation.next(response.pageNation);
+                        resolve({userList: response.data, pagenation: response.pageNation});
+                    }
+                }, reject);
+        });
     }
 }

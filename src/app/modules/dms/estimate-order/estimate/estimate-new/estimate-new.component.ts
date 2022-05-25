@@ -32,6 +32,7 @@ import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {LatelyCardComponent} from '../../../../../../@teamplat/components/lately-card';
 import {formatDate} from "@angular/common";
+import {ItemSelectComponent} from "../../../../../../@teamplat/components/item-select";
 
 @Component({
     selector: 'app-dms-estimate-new',
@@ -675,5 +676,110 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onC(val): void {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    itemSelect() {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    account: this.estimateHeaderForm.getRawValue().account
+                },
+            });
+
+            d.afterClosed().subscribe((result) => {
+
+                if(result){
+                    let effectiveDate = '';
+                    if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === '') {
+                    } else {
+                        effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
+                    }
+
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
+                        // {fieldName: 'qtLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'refItemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qtPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            effectiveDate, '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, 0, ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
+                    });
+                }
+
+            });
+        } else {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+                data: {
+                    account: this.estimateHeaderForm.getRawValue().account
+                },
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    let effectiveDate = '';
+                    if (this.estimateHeaderForm.getRawValue().effectiveDate.value === '' ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === undefined ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === null ||
+                        this.estimateHeaderForm.getRawValue().effectiveDate === '') {
+                    } else {
+                        effectiveDate = this.estimateHeaderForm.getRawValue().effectiveDate;
+                    }
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'effectiveDate', dataType: ValueType.TEXT},
+                        // {fieldName: 'qtLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'refItemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qtPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            effectiveDate, '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, 0, ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
+                    });
+                }
+
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 }

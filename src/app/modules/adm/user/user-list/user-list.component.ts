@@ -7,7 +7,9 @@ import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types
 import {DeviceDetectorService} from "ngx-device-detector";
 import {merge, Subject} from "rxjs";
 import {UserListService} from "./user-list.service";
-import {map, switchMap} from "rxjs/operators";
+import {map, switchMap, takeUntil} from "rxjs/operators";
+import {UserListPagenation} from "./user-list.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'app-admin-user-list',
@@ -38,7 +40,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'businessNumber', dataType: ValueType.TEXT},
         {fieldName: 'businessName', dataType: ValueType.TEXT},
-        {fieldName: 'businessId', dataType: ValueType.TEXT},
+        {fieldName: 'userId', dataType: ValueType.TEXT},
         {fieldName: 'addDate', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -46,6 +48,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
     constructor(private _realGridsService: FuseRealGridService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _deviceService: DeviceDetectorService,
+                private _functionService: FunctionService,
                 private _formBuilder: FormBuilder,
                 private _userListService: UserListService)
     {
@@ -98,7 +101,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
                 }
             },
             {
-                name: 'businessId', fieldName: 'businessId', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'userId', fieldName: 'userId', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '회원 ID', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -171,7 +174,23 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     selectCallBack(rtn: any): void {
-        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userListDataProvider, false);
+
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.userListDataProvider, ex.userList);
+            this._userListService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((userListPagenation: UserListPagenation) => {
+                    // Update the pagination
+                    this.pagenation = userListPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.userList.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userListDataProvider, false);
+        });
     }
 
     enter(event): void {

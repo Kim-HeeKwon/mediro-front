@@ -28,6 +28,7 @@ import {OutBound} from '../outbound.types';
 import {takeUntil} from 'rxjs/operators';
 import {CommonPopupItemsComponent} from '../../../../../../@teamplat/components/common-popup-items';
 import {formatDate} from "@angular/common";
+import {ItemSelectComponent} from "../../../../../../@teamplat/components/item-select";
 
 @Component({
     selector: 'app-dms-outbound-new',
@@ -586,6 +587,93 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.outBoundHeaderForm.patchValue({'dlvAddress': result.address});
                     }
                 });
+        }
+    }
+
+    itemSelect() {
+        if (!this.isMobile) {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                disableClose: true,
+                data: {
+                    account: this.outBoundHeaderForm.getRawValue().account
+                },
+            });
+
+            d.afterClosed().subscribe((result) => {
+
+                if(result){
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'obLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'refItemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, ex.salesPrice, 0, ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
+                    });
+                }
+            });
+        } else {
+            const d = this._matDialog.open(ItemSelectComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+                data: {
+                    account: this.outBoundHeaderForm.getRawValue().account
+                },
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            d.afterClosed().subscribe((result) => {
+                if(result){
+                    result.forEach((ex) => {
+
+                        // {fieldName: 'obLineNo', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemCd', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
+                        // {fieldName: 'refItemNm', dataType: ValueType.TEXT},
+                        // {fieldName: 'standard', dataType: ValueType.TEXT},
+                        // {fieldName: 'unit', dataType: ValueType.TEXT},
+                        // {fieldName: 'itemGrade', dataType: ValueType.TEXT},
+                        // {fieldName: 'obExpQty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'qty', dataType: ValueType.NUMBER},
+                        // {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+                        // {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+                        // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
+
+                        const values = [
+                            '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
+                            ex.unit, ex.itemGrade, 0, 0, ex.salesPrice, 0, ''
+                        ];
+
+                        this._realGridsService.gfn_AddRow(this.gridList, this.outBoundDetailDataProvider, values);
+                    });
+                }
+
+                smallDialogSubscription.unsubscribe();
+            });
         }
     }
 }
