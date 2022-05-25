@@ -625,14 +625,21 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         title: '접속 이력',
                         type : 'basic',
                         icon : 'share',
-                        //link : '/admin/user'
+                        link : '/admin/connection/connectionHistory'
                     },
                     {
                         id   : 'userLog.errorLog',
                         title: '에러 이력',
                         type : 'basic',
                         icon : 'error',
-                        //link : '/admin/user'
+                        link : '/admin/connection/errorHistory'
+                    },
+                    {
+                        id   : 'userLog.scheduler',
+                        title: '스케줄러 이력',
+                        type : 'basic',
+                        icon : 'error',
+                        link : '/admin/connection/schedulerHistory'
                     },
                 ]
             },

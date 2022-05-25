@@ -57,6 +57,13 @@ export const appRoutes: Route[] = [
                     {path: 'feeUser', data:{key: 'feeUser'}, loadChildren: () => import('app/modules/adm/fee/fee-user/fee-user.module').then(m => m.FeeUserModule)},
                 ]
             },
+            {path: 'connection',
+                children: [
+                    {path: 'connectionHistory', data: {key: 'connectionHistory'}, loadChildren: () => import ('app/modules/adm/connection/connection-history/connection-history.module').then(m => m.ConnectionHistoryModule)},
+                    {path: 'errorHistory', data: {key: 'errorHistory'}, loadChildren: () => import ('app/modules/adm/connection/error-history/error-history.module').then(m => m.ErrorHistoryModule)},
+                    {path: 'schedulerHistory', data: {key: 'schedulerHistory'}, loadChildren: () => import ('app/modules/adm/connection/scheduler-history/scheduler-history.module').then(m => m.SchedulerHistoryModule)},
+                ]
+            },
         ]
     },
 
