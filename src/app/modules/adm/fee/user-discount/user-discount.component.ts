@@ -1,32 +1,31 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {merge, Subject} from "rxjs";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import {DiscountService} from "./discount.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
+import {merge, Subject} from "rxjs";
+import RealGrid, {DataFieldObject, ValueType} from "realgrid";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
+import {UserDiscountService} from "./user-discount.service";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 
 @Component({
-    selector: 'app-admin-discount',
-    templateUrl: 'discount.component.html',
-    styleUrls: ['./discount.component.scss']
+    selector: 'app-admin-user-discount',
+    templateUrl: 'user-discount.component.html',
+    styleUrls: ['./user-discount.component.scss']
 })
-export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     orderBy: any = 'asc';
     drawerOpened: boolean = false;
-    isLoading: boolean = false;
     isMobile: boolean = false;
+    isLoading: boolean = false;
     pagenation: any | null = null;
     searchForm: FormGroup;
     columns: Columns[];
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     gridList: RealGrid.GridView;
@@ -35,23 +34,25 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     dataProvider: RealGrid.LocalDataProvider;// @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     fields: DataFieldObject[] = [
-        {fieldName: 'endFlag', dataType: ValueType.TEXT},
-        {fieldName: 'discount', dataType: ValueType.TEXT},
+        {fieldName: 'businessNumber', dataType: ValueType.TEXT},
+        {fieldName: 'businessName', dataType: ValueType.TEXT},
+        {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'discountTitle', dataType: ValueType.TEXT},
         {fieldName: 'discountComment', dataType: ValueType.TEXT},
         {fieldName: 'beginDate', dataType: ValueType.TEXT},
-        {fieldName: 'endDate', dataType: ValueType.TEXT},
+        {fieldName: 'endDate', dataType: ValueType.NUMBER},
         {fieldName: 'discountRate', dataType: ValueType.NUMBER},
-        {fieldName: 'remark', dataType: ValueType.TEXT},
     ];
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(private _realGridsService: FuseRealGridService,
+                private _changeDetectorRef: ChangeDetectorRef,
                 private _formBuilder: FormBuilder,
                 private _functionService: FunctionService,
-                private _changeDetectorRef: ChangeDetectorRef,
-                private _deviceService: DeviceDetectorService,
                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
-                private _discountService: DiscountService) {
+                private _userDiscountService: UserDiscountService,
+                private _deviceService: DeviceDetectorService,)
+    {
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -60,7 +61,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             switchMap(() => {
                 this.isLoading = true;
                 // eslint-disable-next-line max-len
-                return this._discountService.getDiscount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', 'desc', this.searchForm.getRawValue());
+                return this._userDiscountService.getUserDiscount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', 'desc', this.searchForm.getRawValue());
             }),
             map(() => {
                 this.isLoading = false;
@@ -78,49 +79,37 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            discountTitle: ['']
+            businessName: ['']
         });
 
         this.columns = [
             {
-                name: 'endFlag', fieldName: 'endFlag', type: 'data', width: '110', styleName: 'left-cell-text'
-                , header: {text: '종료여부', styleName: 'center-cell-text'}, renderer: {
+                name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '110', styleName: 'left-cell-text'
+                , header: {text: '사업자 번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'discount',
-                fieldName: 'discount',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '번호', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'businessName', fieldName: 'businessName', type: 'data', width: '110', styleName: 'left-cell-text'
+                , header: {text: '회원사 명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'discountTitle',
-                fieldName: 'discountTitle',
-                type: 'data',
-                width: '150',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '제목', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'addDate', fieldName: 'addDate', type: 'data', width: '110', styleName: 'left-cell-text'
+                , header: {text: '가입일', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'discountComment',
-                fieldName: 'discountComment',
-                type: 'data',
-                width: '150',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '내용', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'discountTitle', fieldName: 'discountTitle', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '제목', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'discountComment', fieldName: 'discountComment', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '내용', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -158,38 +147,27 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                     showTooltip: true
                 }
             },
-            {
-                name: 'remark', fieldName: 'remark', type: 'data', width: '200', styleName: 'left-cell-text'
-                , header: {text: '비고', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
         ];
+        this.dataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
-        //그리드 Provider
-        this.dataProvider = this._realGridsService.gfn_CreateDataProvider();
-
-        //그리드 옵션
         const gridListOption = {
             stateBar: true,
             checkBar: true,
             footers: false,
         };
 
-        // this.dataProvider.setOptions({
-        //     softDeleting: false,
-        //     deleteCreated: false
-        // });
+        this.dataProvider.setOptions({
+            softDeleting: false,
+            deleteCreated: false
+        });
 
-        //그리드 생성
         this.gridList = this._realGridsService.gfn_CreateGrid(
             this.dataProvider,
-            'discount',
+            'userDiscount',
             this.columns,
             this.fields,
             gridListOption);
 
-        //그리드 옵션
         this.gridList.setEditOptions({
             readOnly: false,
             insertable: false,
@@ -209,22 +187,18 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.gridList.setPasteOptions({
             enabled: true,
-            startEdit: false,
             commitEdit: true,
             checkReadOnly: true
         });
         this.gridList.editOptions.commitByCell = true;
+        this.gridList.editOptions.editWhenFocused = true;
         this.gridList.editOptions.validateOnEdited = true;
-
         this._realGridsService.gfn_EditGrid(this.gridList);
-        const validationList = ['businessNumber', 'businessName', 'addDate', 'startDate', 'endDate', 'discountRate'];
-        this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
 
-        //정렬
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._discountService.getDiscount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                const rtn = this._userDiscountService.getUserDiscount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
             };
             if (this.orderBy === 'asc') {
@@ -237,14 +211,12 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
 
-        //this.select();
         this._changeDetectorRef.markForCheck();
-
     }
 
     select(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
-        const rtn = this._discountService.getDiscount(0, 100, 'addDate', 'desc', this.searchForm.getRawValue());
+        const rtn = this._userDiscountService.getUserDiscount(0, 100, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -252,44 +224,12 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
     }
 
-    enter(event): void {
-        if (event.keyCode === 13) {
-            this.select();
-        }
-    }
-
     //엑셀 다운로드
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '할인율');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '회원사 할인율');
     }
 
-    pageEvent($event: PageEvent): void {
-        const rtn = this._discountService.getDiscount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
-        this.selectCallBack(rtn);
-    }
-
-    // @ts-ignore
-    addRow(): boolean {
-
-        const values = [
-            '','','','','',''
-        ];
-
-        this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
-    }
-
-    delRow(): boolean {
-        const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.dataProvider);
-
-        if (checkValues.length < 1) {
-            this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
-            return;
-        }
-
-        this._realGridsService.gfn_DelRow(this.gridList, this.dataProvider);
-    }
-
-    saveDiscount(): void {
+    saveUserDiscount(): void {
 
         if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
             return;
@@ -314,11 +254,11 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if (result) {
-                    this._discountService.saveDiscount(rows)
+                    this._userDiscountService.saveUserDiscount(rows)
                         .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe((discount: any) => {
+                        .subscribe((userDiscount: any) => {
                             this._functionService.cfn_loadingBarClear();
-                            this.alertMessage(discount);
+                            this.alertMessage(userDiscount);
                             this._changeDetectorRef.markForCheck();
                         });
                 }
@@ -338,4 +278,16 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert(param.msg);
         }
     }
+
+    pageEvent($event: PageEvent): void {
+        const rtn = this._userDiscountService.getUserDiscount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    enter(event): void {
+        if (event.keyCode === 13) {
+            this.select();
+        }
+    }
+
 }

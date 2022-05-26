@@ -29,7 +29,7 @@ import {udiManualComponent} from "../udi-manual/udi-Manual.component";
 import {smartPlusManualComponent} from "../smartPlus-manual/smartPlus-Manual.component";
 import {etcManualComponent} from "../etc-manual/etc-Manual.component";
 import {calculateManualComponent} from "../calculate-manual/calculate-Manual.component";
-import {newSignupManualComponent} from "../newSigup/newSignup-Manual.component";
+import {newSignupManualComponent} from "../newSigup-manual/newSignup-Manual.component";
 
 
 const manualsRoutes: Route[] = [
