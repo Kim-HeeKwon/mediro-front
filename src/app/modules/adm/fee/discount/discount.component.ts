@@ -10,6 +10,9 @@ import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types
 import {DiscountService} from "./discount.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
+import {DiscountPagenation} from "./discount.types";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CodeStore} from "../../../../core/common-code/state/code.store";
 
 @Component({
     selector: 'app-admin-discount',
@@ -26,6 +29,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     pagenation: any | null = null;
     searchForm: FormGroup;
     columns: Columns[];
+    ynFlag: CommonCode[] = null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -49,10 +53,13 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _formBuilder: FormBuilder,
                 private _functionService: FunctionService,
                 private _changeDetectorRef: ChangeDetectorRef,
+                private _codeStore: CodeStore,
+                private _utilService: FuseUtilsService,
                 private _deviceService: DeviceDetectorService,
                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _discountService: DiscountService) {
         this.isMobile = this._deviceService.isMobile();
+        this.ynFlag = _utilService.commonValue(_codeStore.getValue().data, 'YN_FLAG');
     }
 
     ngAfterViewInit(): void {
@@ -81,25 +88,37 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             discountTitle: ['']
         });
 
+        const valuesFlag = [];
+        const lablesFlag = [];
+
+        this.ynFlag.forEach((param: any) => {
+            valuesFlag.push(param.id);
+            lablesFlag.push(param.name);
+        });
+
         this.columns = [
-            {
-                name: 'endFlag', fieldName: 'endFlag', type: 'data', width: '110', styleName: 'left-cell-text'
-                , header: {text: '종료여부', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'discount',
-                fieldName: 'discount',
-                type: 'data',
-                width: '100',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '번호', styleName: 'center-cell-text'},
-                renderer: {
-                    showTooltip: true
-                }
-            },
+            // {
+            //     name: 'endFlag', fieldName: 'endFlag', type: 'data', width: '110', styleName: 'left-cell-text'
+            //     , header: {text: '종료여부', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     },
+            //     values: valuesFlag,
+            //     labels: lablesFlag,
+            //     lookupDisplay: true,
+            //     editor: this._realGridsService.gfn_ComboBox(this.ynFlag),
+            // },
+            // {
+            //     name: 'discount',
+            //     fieldName: 'discount',
+            //     type: 'data',
+            //     width: '100',
+            //     styleName: 'left-cell-text'
+            //     ,
+            //     header: {text: '번호', styleName: 'center-cell-text'},
+            //     renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
                 name: 'discountTitle',
                 fieldName: 'discountTitle',
@@ -107,7 +126,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 width: '150',
                 styleName: 'left-cell-text'
                 ,
-                header: {text: '제목', styleName: 'center-cell-text'},
+                header: {text: '제목', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
                 }
@@ -126,7 +145,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'beginDate', fieldName: 'beginDate', type: 'date', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(시작)', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '기간(시작)', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 },
                 datetimeFormat: 'yyyy-MM',
@@ -140,7 +159,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'endDate', fieldName: 'endDate', type: 'data', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(종료)', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '기간(종료)', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 },
                 datetimeFormat: 'yyyy-MM',
@@ -153,8 +172,13 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'discountRate', fieldName: 'discountRate', type: 'number', width: '100', styleName: 'left-cell-text'
-                , header: {text: '할인율', styleName: 'center-cell-text'}, renderer: {
+                name: 'discountRate',
+                fieldName: 'discountRate',
+                type: 'data',
+                width: '120',
+                styleName: 'right-cell-text',
+                header: {text: '할인율', styleName: 'center-cell-text red-font-color'},
+                numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
@@ -167,7 +191,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         ];
 
         //그리드 Provider
-        this.dataProvider = this._realGridsService.gfn_CreateDataProvider();
+        this.dataProvider = this._realGridsService.gfn_CreateDataProvider(true);
 
         //그리드 옵션
         const gridListOption = {
@@ -217,7 +241,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
-        const validationList = ['businessNumber', 'businessName', 'addDate', 'startDate', 'endDate', 'discountRate'];
+        const validationList = ['discountTitle', 'startDate', 'endDate', 'discountRate'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
 
         //정렬
@@ -249,7 +273,22 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectCallBack(rtn: any): void {
-        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        rtn.then((ex) => {
+
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.discount);
+            this._discountService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((discountPagenation: DiscountPagenation) => {
+                    // Update the pagination
+                    this.pagenation = discountPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.discount.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        });
     }
 
     enter(event): void {
@@ -296,6 +335,17 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.dataProvider);
+
+        let detailCheck = false;
+
+        if (rows.length === 0) {
+            this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+            detailCheck = true;
+        }
+
+        if (detailCheck) {
+            return;
+        }
 
         const confirmation = this._teamPlatConfirmationService.open({
             title: '',

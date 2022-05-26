@@ -123,6 +123,24 @@
                                 </div>
                                 <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                     <button
+                                        class="ml-2 mediro-btn-custom"
+                                        (click)="addRow()"
+                                        mat-stroked-button>
+                                        <mat-icon
+                                            [svgIcon]="'heroicons_outline:plus-circle'"
+                                        ></mat-icon>
+                                        <span class="ml-2 mr-1">추가</span>
+                                    </button>
+                                    <button
+                                        class="ml-2 mediro-btn-custom"
+                                        (click)="delRow()"
+                                        mat-stroked-button>
+                                        <mat-icon
+                                            [svgIcon]="'heroicons_outline:minus-circle'"
+                                        ></mat-icon>
+                                        <span class="ml-2 mr-1">삭제</span>
+                                    </button>
+                                    <button
                                         class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
                                         mat-flat-button
                                         [color]="'primary'"

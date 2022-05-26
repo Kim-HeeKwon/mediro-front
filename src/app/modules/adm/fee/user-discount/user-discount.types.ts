@@ -1,5 +1,7 @@
 export interface UserDiscountData
 {
+    mId: string;
+    discount: string;
     businessNumber: string; // 사업자 번호
     businessName: string; // 회원사 명
     addDate?: string; // 가입일

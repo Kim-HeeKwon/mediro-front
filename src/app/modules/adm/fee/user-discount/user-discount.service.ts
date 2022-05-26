@@ -3,6 +3,7 @@ import {UserDiscountData, UserDiscountPagenation} from "./user-discount.types";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Common} from "../../../../../@teamplat/providers/common/common";
+import {map, switchMap, take} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -50,14 +51,51 @@ export class UserDiscountService {
     getUserDiscount(page: number = 0, size: number = 100, sort: string = 'addDate', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Promise<{ pagenation: UserDiscountPagenation; userDiscount: UserDiscountData[] }> {
 
-        return;
+        const searchParam = {};
+        searchParam['order'] = order;
+        searchParam['sort'] = sort;
+
+        // 검색조건 Null Check
+        if ((Object.keys(search).length === 0) === false) {
+            // eslint-disable-next-line guard-for-in
+            for (const k in search) {
+                searchParam[k] = search[k];
+            }
+        }
+
+        const pageParam = {
+            page: page,
+            size: size,
+        };
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/admin/fee/userDiscount/userDiscount-list')
+                .subscribe((response: any) => {
+                    if (response.status === 'SUCCESS') {
+                        this._userDiscounts.next(response.data);
+                        this._pagenation.next(response.pageNation);
+                        resolve({userDiscount: response.data, pagenation: response.pageNation});
+                    }
+                }, reject);
+        });
     }
 
     /**
      * save
      */
-    saveUserDiscount(userDiscount: UserDiscountData[]): Observable<UserDiscountData>
+    saveUserDiscount(userDiscounts: UserDiscountData[]): Observable<UserDiscountData>
     {
-        return;
+        return this.userDiscounts$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(userDiscounts, 'v1/api/admin/fee/userDiscount/save-UserDiscount').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
     }
 }
