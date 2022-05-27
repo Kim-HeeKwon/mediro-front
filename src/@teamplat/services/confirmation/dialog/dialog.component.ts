@@ -1,6 +1,8 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TeamPlatConfirmationConfig} from '@teamplat/services/confirmation/confirmation.types';
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
     selector: 'fuse-confirmation-dialog',

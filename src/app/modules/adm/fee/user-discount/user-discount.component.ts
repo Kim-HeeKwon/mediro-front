@@ -250,7 +250,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             if (dataCell.item.rowState === 'created') {
                 return {editable: false};
             }else{
-                this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopup');
+                this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopupmIdGrdPopup');
                 this._realGridsService.gfn_PopUpBtnHide('discountGrdPopup');
                 return {editable: false};
             }

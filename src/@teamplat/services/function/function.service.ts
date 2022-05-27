@@ -92,7 +92,7 @@ export class FunctionService implements OnInit, OnDestroy{
     // eslint-disable-next-line @typescript-eslint/naming-convention
     cfn_alertCheckMessage(param: any, redirectUrl?: string): void
     {
-        if(param.status === 'SUCCESS'){ // 전달 받은 param.status가 SUCCESS이면 정상 얼럿창
+        if(param.status === 'SUCCESS'){ // 전달 받은 param.status가 SUCCESS 면 정상 얼럿창
             this.cfn_alert('정상적으로 처리되었습니다.','check-circle');
         }else if(param.status === 'CANCEL'){
 
@@ -222,9 +222,7 @@ export class FunctionService implements OnInit, OnDestroy{
                     }else{ // 전달 받은 데이터 값이 1개 이상일때
                         let idx = 1;
                         str += '\'';
-                        console.log(str);
                         arr.forEach((param) => {
-                            console.log(param);
                             str += param;
                             if(arr.length !== idx){ // forEach문 돌리면서 arr 값 개수 idx 값 비교
                                 str += '\',\''; // str 문자열로 변환
