@@ -97,6 +97,7 @@ export class NoticeBoardService {
 
     setInitList(): void{
         this._lists.next(null);
+        this._pagination.next(null);
     }
 
 }

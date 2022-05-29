@@ -65,6 +65,12 @@ export const appRoutes: Route[] = [
                     {path: 'schedulerHistory', data: {key: 'schedulerHistory'}, loadChildren: () => import ('app/modules/adm/connection/scheduler-history/scheduler-history.module').then(m => m.SchedulerHistoryModule)},
                 ]
             },
+            {path: 'common',
+                children: [
+                    {path: 'commonCode', data: {key: 'commonCode'}, loadChildren: () => import ('app/modules/adm/common/common-code/common-code.module').then(m => m.CommonCodeModule)},
+                    {path: 'commonPopup', data: {key: 'commonPopup'}, loadChildren: () => import ('app/modules/adm/common/common-popup/common-popup.module').then(m => m.CommonPopupModule)},
+                ]
+            },
         ]
     },
 

@@ -614,7 +614,8 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 ]
             },
         ]
-    },{
+    },
+    {
         id: 'userLog',
         title: '회원사 연결 관리',
         subtitle: 'SaaS 유료 회원사 연결 관리',
@@ -645,8 +646,39 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         id   : 'userLog.scheduler',
                         title: '스케줄러 이력',
                         type : 'basic',
-                        icon : 'error',
+                        icon : 'heroicons_solid:clipboard-list',
                         link : '/admin/connection/schedulerHistory'
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        id: 'common',
+        title: '공통 관리',
+        subtitle: '공통 코드 및 팝업 관리',
+        type: 'group',
+        icon: 'link',
+        children: [
+            {
+                id: 'common',
+                title: '공통 관리',
+                type: 'collapsable',
+                icon: 'link',
+                children: [
+                    {
+                        id   : 'common.code',
+                        title: '공통코드 관리',
+                        type : 'basic',
+                        icon : 'share',
+                        link : '/admin/common/commonCode'
+                    },
+                    {
+                        id   : 'common.popup',
+                        title: '공통팝업 관리',
+                        type : 'basic',
+                        icon : 'error',
+                        link : '/admin/common/commonPopup'
                     },
                 ]
             },
