@@ -25,6 +25,7 @@ import {FuseFindByKeyPipeModule} from "../../../../../@teamplat/pipes/find-by-ke
 import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
+import {AngularSplitModule} from "angular-split";
 
 const commonCodeRoutes: Route[] = [
     {
@@ -63,6 +64,7 @@ const commonCodeRoutes: Route[] = [
         FuseAlertModule,
         FuseUserHelpModule,
         CommonLoadingBarModule,
+        AngularSplitModule,
     ]
 })
 export class CommonCodeModule

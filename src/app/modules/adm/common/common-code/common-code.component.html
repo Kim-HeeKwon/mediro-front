@@ -124,7 +124,7 @@
                                 <div class="flex flex-row flex-shrink-0 items-center mt-8 sm:mt-0">
                                     <button
                                         class="ml-2 mediro-btn-custom"
-                                        (click)="addRow()"
+                                        (click)="addRow('grid')"
                                         mat-stroked-button>
                                         <mat-icon
                                             [svgIcon]="'heroicons_outline:plus-circle'"
@@ -133,7 +133,7 @@
                                     </button>
                                     <button
                                         class="ml-2 mediro-btn-custom"
-                                        (click)="delRow()"
+                                        (click)="delRow('grid')"
                                         mat-stroked-button>
                                         <mat-icon
                                             [svgIcon]="'heroicons_outline:minus-circle'"
@@ -144,7 +144,7 @@
                                         class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
                                         mat-flat-button
                                         [color]="'primary'"
-                                        (click)="saveCommonCode()">
+                                        (click)="saveCommonCode('grid')">
                                         <mat-icon
                                             class="icon-size-5"
                                             [svgIcon]="'heroicons_solid:save'"></mat-icon>
@@ -153,19 +153,63 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="realgrid"
-                            id="commonCode">
-                        </div>
-                        <mat-paginator
-                            class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                            [ngClass]="{'pointer-events-none': false}"
-                            [length]="pagenation === null ? 0 : pagenation.length"
-                            [pageIndex]="pagenation === null ? 0 : pagenation.page"
-                            [pageSize]="pagenation === null ? 0 : pagenation.size"
-                            [pageSizeOptions]="[100]"
-                            (page)="pageEvent($event)"
-                            [showFirstLastButtons]="true"></mat-paginator>
+                        <as-split direction="vertical">
+                            <as-split-area [size]="40">
+                                <div
+                                    class="realgrid"
+                                    id="commonCode">
+                                </div>
+                            </as-split-area>
+                            <as-split-area [size]="60">
+                                <div
+                                    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2 pb-2">
+                                    <div></div>
+                                    <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
+                                        <button
+                                            class="ml-2 mediro-btn-custom"
+                                            (click)="addRow('gridDetail')"
+                                            mat-stroked-button>
+                                            <mat-icon
+                                                [svgIcon]="'heroicons_outline:plus-circle'"
+                                            ></mat-icon>
+                                            <span class="ml-2 mr-1">추가</span>
+                                        </button>
+                                        <button
+                                            class="ml-2 mediro-btn-custom"
+                                            (click)="delRow('gridDetail')"
+                                            mat-stroked-button>
+                                            <mat-icon
+                                                [svgIcon]="'heroicons_outline:minus-circle'"
+                                            ></mat-icon>
+                                            <span class="ml-2 mr-1">삭제</span>
+                                        </button>
+                                        <button
+                                            class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                                            mat-flat-button
+                                            [color]="'primary'"
+                                            (click)="saveCommonCode('gridDetail')">
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                            <span class="ml-2 mr-1 mediro-font-custom">저장</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="realgrid" style="height: 90% !important;"
+                                    id="commonCodeDetail">
+                                </div>
+                            </as-split-area>
+                        </as-split>
+<!--                        <mat-paginator-->
+<!--                            class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"-->
+<!--                            [ngClass]="{'pointer-events-none': false}"-->
+<!--                            [length]="pagenation === null ? 0 : pagenation.length"-->
+<!--                            [pageIndex]="pagenation === null ? 0 : pagenation.page"-->
+<!--                            [pageSize]="pagenation === null ? 0 : pagenation.size"-->
+<!--                            [pageSizeOptions]="[100]"-->
+<!--                            (page)="pageEvent($event)"-->
+<!--                            [showFirstLastButtons]="true"></mat-paginator>-->
                     </div>
                 </div>
             </div>

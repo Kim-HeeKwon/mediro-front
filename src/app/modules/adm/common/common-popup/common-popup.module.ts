@@ -25,6 +25,7 @@ import {FuseAlertModule} from "../../../../../@teamplat/components/alert";
 import {FuseUserHelpModule} from "../../../../../@teamplat/components/user-help";
 import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module";
 import {CommonPopupComponent} from "./common-popup.component";
+import {AngularSplitModule} from "angular-split";
 
 const commonPopupRoutes: Route[] = [
     {
@@ -63,6 +64,7 @@ const commonPopupRoutes: Route[] = [
         FuseAlertModule,
         FuseUserHelpModule,
         CommonLoadingBarModule,
+        AngularSplitModule,
     ]
 })
 export class CommonPopupModule

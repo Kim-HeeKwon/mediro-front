@@ -573,7 +573,7 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         id   : 'fee.discount',
                         title: '할인율',
                         type : 'basic',
-                        icon : 'payment',
+                        icon : 'heroicons_solid:cash',
                         link : '/admin/fee/discount'
                     },
                     {
@@ -587,14 +587,14 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         id   : 'fee.feeUser',
                         title: '사용료 목록',
                         type : 'basic',
-                        icon : 'payment',
+                        icon : 'heroicons_solid:clipboard-check',
                         link : '/admin/fee/feeUser'
                     },
                     {
                         id   : 'fee.feeBilling',
                         title: '청구서 관리',
                         type : 'basic',
-                        icon : 'credit_card',
+                        icon : 'heroicons_solid:credit-card',
                         link : '/admin/fee/billManagement'
                     }
                 ]
@@ -670,14 +670,14 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                         id   : 'common.code',
                         title: '공통코드 관리',
                         type : 'basic',
-                        icon : 'share',
+                        icon : 'heroicons_solid:save',
                         link : '/admin/common/commonCode'
                     },
                     {
                         id   : 'common.popup',
                         title: '공통팝업 관리',
                         type : 'basic',
-                        icon : 'error',
+                        icon : 'heroicons_solid:folder',
                         link : '/admin/common/commonPopup'
                     },
                 ]
