@@ -1,20 +1,20 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
-import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
-import RealGrid, {DataFieldObject, ValueType} from "realgrid";
-import {DeviceDetectorService} from "ngx-device-detector";
-import {CodeStore} from "../../../../core/common-code/state/code.store";
-import {map, switchMap, takeUntil} from "rxjs/operators";
-import {CommonPopupService} from "./common-popup.service";
-import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
-import {MatDialog} from "@angular/material/dialog";
-import {FunctionService} from "../../../../../@teamplat/services/function";
-import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
-import {CommonPopupPagenation} from "./common-popup.types";
+import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {CommonCode, FuseUtilsService} from '../../../../../@teamplat/services/utils';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
+import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
+import {DeviceDetectorService} from 'ngx-device-detector';
+import {CodeStore} from '../../../../core/common-code/state/code.store';
+import {map, switchMap, takeUntil} from 'rxjs/operators';
+import {CommonPopupService} from './common-popup.service';
+import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
+import {MatDialog} from '@angular/material/dialog';
+import {FunctionService} from '../../../../../@teamplat/services/function';
+import {TeamPlatConfirmationService} from '../../../../../@teamplat/services/confirmation';
+import {CommonPopupPagenation} from './common-popup.types';
 
 @Component({
     selector: 'app-admin-common-popup',
@@ -406,7 +406,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.dataProvider);
+            const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.dataProvider);
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title: '',
@@ -441,7 +441,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            let rows = this._realGridsService.gfn_GetEditRows(this.detailGridList, this.detailDataProvider);
+            const rows = this._realGridsService.gfn_GetEditRows(this.detailGridList, this.detailDataProvider);
 
             const confirmation = this._teamPlatConfirmationService.open({
                 title: '',

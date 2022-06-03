@@ -70,9 +70,9 @@
                     <!-- Panel title -->
                     <div class="ml-2 lg:ml-0 text-2xl font-bold tracking-tight leading-none">
                         {{getPanelInfo(selectedPanel).title}}
+                        &nbsp;&nbsp;&nbsp;<span *ngIf="getPanelInfo(selectedPanel).title === '신규가입자 안내영상'" class="text-11s text-bold-600"> [ * 신규 가입자 안내 영상 입니다. 신규 회원 분들은 영상을 순서대로 보세요. * ]</span>
                     </div>
                 </div>
-
                 <!-- Load settings panel -->
                 <div class="mt-8">
                     <ng-container [ngSwitch]="selectedPanel">

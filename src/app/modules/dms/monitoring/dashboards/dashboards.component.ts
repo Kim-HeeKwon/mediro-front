@@ -901,37 +901,21 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         let availQtyTotalPrice;
         let totalPrice;
         this.acceptableTotal = acceptableQty.oCnt + acceptableQty.tCnt + acceptableQty.thCnt + acceptableQty.fCnt + acceptableQty.zCnt + acceptableQty.etcCnt;
-        acceptableTotalPrice = (aBuyPrice.etcCnt * acceptableQty.etcCnt)
-            + (aBuyPrice.zCnt * acceptableQty.zCnt)
-            + (aBuyPrice.oCnt * acceptableQty.oCnt)
-            + (aBuyPrice.tCnt * acceptableQty.tCnt)
-            + (aBuyPrice.thCnt * acceptableQty.thCnt)
-            + (aBuyPrice.fCnt * acceptableQty.fCnt);
-
+        acceptableTotalPrice = aBuyPrice.etcCnt + aBuyPrice.zCnt + aBuyPrice.oCnt + aBuyPrice.tCnt + aBuyPrice.thCnt + aBuyPrice.fCnt;
         if (acceptableTotalPrice.toString().length > 4) {
             this.acceptableTotalPrice = String(acceptableTotalPrice.toString().slice(0, -3));
         } else {
             this.acceptableTotalPrice = acceptableTotalPrice;
         }
         this.unusedQtyTotal = unusedQty.oCnt + unusedQty.tCnt + unusedQty.thCnt + unusedQty.fCnt + unusedQty.zCnt + unusedQty.etcCnt;
-        unusedQtyTotalPrice = (uBuyPrice.etcCnt * unusedQty.etcCnt)
-            + (uBuyPrice.zCnt * unusedQty.zCnt)
-            + (uBuyPrice.oCnt * unusedQty.oCnt)
-            + (uBuyPrice.tCnt * unusedQty.tCnt)
-            + (uBuyPrice.thCnt * unusedQty.thCnt)
-            + (uBuyPrice.fCnt * unusedQty.fCnt);
+        unusedQtyTotalPrice = uBuyPrice.etcCnt + uBuyPrice.zCnt + uBuyPrice.oCnt + uBuyPrice.tCnt + uBuyPrice.thCnt + uBuyPrice.fCnt;
         if (unusedQtyTotalPrice.toString().length > 4) {
             this.unusedQtyTotalPrice = String(unusedQtyTotalPrice.toString().slice(0, -3));
         } else {
             this.unusedQtyTotalPrice = unusedQtyTotalPrice;
         }
         this.sumAvailQty = availQty.etcCnt + availQty.zCnt + availQty.oCnt + availQty.tCnt + availQty.thCnt + availQty.fCnt;
-        availQtyTotalPrice = (iBuyPrice.etcCnt * availQty.etcCnt)
-            + (iBuyPrice.zCnt * availQty.zCnt)
-            + (iBuyPrice.oCnt * availQty.oCnt)
-            + (iBuyPrice.tCnt * availQty.tCnt)
-            + (iBuyPrice.thCnt * availQty.thCnt)
-            + (iBuyPrice.fCnt * availQty.fCnt);
+        availQtyTotalPrice = iBuyPrice.etcCnt + iBuyPrice.zCnt + iBuyPrice.oCnt + iBuyPrice.tCnt + iBuyPrice.thCnt + iBuyPrice.fCnt;
         if (availQtyTotalPrice.toString().length > 4) {
             this.availQtyTotalPrice = String(availQtyTotalPrice.toString().slice(0, -3));
         } else {

@@ -126,7 +126,6 @@ export class FuseRealGridService {
         // setContextMenu() 를 통해 추가한 컨텍스트 메뉴 항목 클릭을 알리는 콜백
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         gridView.onContextMenuItemClicked = ((grid, item, clickData) => {
-            console.log(item);
             if (item.tag === 'fixedCol') {
                 const count = grid.getColumnProperty(clickData.column, 'displayIndex') + 1;
                 grid.setFixedOptions({ colCount: count });

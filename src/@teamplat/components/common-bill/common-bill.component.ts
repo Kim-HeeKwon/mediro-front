@@ -50,7 +50,6 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
         private _popupService: CommonPopupService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _popupStore: PopupStore) {
-        //console.log(data.body);
         if (data.divisionText) {
             this.headerText = data.divisionText + '서';
             this.divisionText = data.divisionText;
@@ -76,64 +75,73 @@ export class CommonBillComponent implements OnInit, OnDestroy, AfterViewInit {
             this.reportHeaderData.fax = this.reportHeaderData.fax !== '00' ? this.reportHeaderData.fax : '';
         }
 
+        if (data.shipment) {
+            this.shipment = data.shipment;
+        } else {
+            this.shipment = false;
+        }
+
         if (data.body) {
             this.detail = data.body;
             this.shipmentDetail = data.body;
-            this.detail.forEach((reportDetail: any) => {
-                this.qty += reportDetail.qty;
-                this.unitPrice += reportDetail.unitPrice;
-                this.totalAmt += reportDetail.totalAmt;
-                this.taxAmt += reportDetail.taxAmt;
-                // this.totalTax += reportDetail.tax;
-            });
-            this.totalPrice = this.totalAmt + this.totalTax;
-            if (data.shipment) {
-                this.shipment = data.shipment;
+            if(this.shipment) {
+                this.shipmentDetail.forEach((reportDetail: any) => {
+                    this.qty += reportDetail.qty;
+                    this.unitPrice += reportDetail.unitPrice;
+                    this.totalAmt += reportDetail.totalAmt;
+                    this.taxAmt += reportDetail.taxAmt;
+                });
+                if (this.shipmentDetail.length < 20) {
+                    let idx = this.shipmentDetail.length;
+                    const lastIdx = 20 - this.shipmentDetail.length;
+                    for (let i = 0; i < lastIdx; i++) {
+                        this.shipmentDetail.push({
+                            itemGrade: '',
+                            itemNm: '',
+                            fomlInfo: '',
+                            no: idx + 1,
+                            qty: '',
+                            tax: '',
+                            remark: '',
+                            standard: '',
+                            taxAmt: '',
+                            totalAmt: '',
+                            unit: '',
+                            unitPrice: '',
+                        });
+                        idx++;
+                    }
+                }
             } else {
-                this.shipment = false;
-            }
-            if (this.shipmentDetail.length < 20) {
-                let idx = this.shipmentDetail.length;
-                const lastIdx = 20 - this.shipmentDetail.length;
-                for (let i = 0; i < lastIdx; i++) {
-                    this.shipmentDetail.push({
-                        itemGrade: '',
-                        itemNm: '',
-                        fomlInfo: '',
-                        no: idx + 1,
-                        qty: '',
-                        tax: '',
-                        remark: '',
-                        standard: '',
-                        taxAmt: '',
-                        totalAmt: '',
-                        unit: '',
-                        unitPrice: '',
-                    });
-                    idx++;
+                this.detail.forEach((reportDetail: any) => {
+                    this.qty += reportDetail.qty;
+                    this.unitPrice += reportDetail.unitPrice;
+                    this.totalAmt += reportDetail.totalAmt;
+                    this.taxAmt += reportDetail.taxAmt;
+                });
+                if (this.detail.length < 20) {
+                    let idx = this.detail.length;
+                    const lastIdx = 20 - this.detail.length;
+                    for (let i = 0; i < lastIdx; i++) {
+                        this.detail.push({
+                            itemGrade: '',
+                            itemNm: '',
+                            fomlInfo: '',
+                            no: idx + 1,
+                            qty: '',
+                            tax: '',
+                            remark: '',
+                            standard: '',
+                            taxAmt: '',
+                            totalAmt: '',
+                            unit: '',
+                            unitPrice: '',
+                        });
+                        idx++;
+                    }
                 }
             }
-            if (this.detail.length < 20) {
-                let idx = this.detail.length;
-                const lastIdx = 20 - this.detail.length;
-                for (let i = 0; i < lastIdx; i++) {
-                    this.detail.push({
-                        itemGrade: '',
-                        itemNm: '',
-                        fomlInfo: '',
-                        no: idx + 1,
-                        qty: '',
-                        tax: '',
-                        remark: '',
-                        standard: '',
-                        taxAmt: '',
-                        totalAmt: '',
-                        unit: '',
-                        unitPrice: '',
-                    });
-                    idx++;
-                }
-            }
+            this.totalPrice = this.totalAmt + this.totalTax;
         }
 
     }

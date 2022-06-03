@@ -289,7 +289,7 @@
             <tbody>
             <tr style="text-align: center; padding:5px; height: 40px;">
                 <td style="border: solid 1px; width: 30px; background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납기일자</td>
-                <td style="border: solid 1px; padding:5px;" colspan="3">{{reportHeaderData.deliveryDate}}</td>
+                <td style="border: solid 1px; padding:5px;" colspan="3">{{reportHeaderData.deliveryDate === null ? '' : reportHeaderData.deliveryDate}}</td>
                 <td style="border: solid 1px; width: 30px;background-color: lightgray; padding:5px; font-weight: bold;" colspan="2">납품장소</td>
                 <td style="border: solid 1px; padding:5px;" colspan="3">{{reportHeaderData.deliveryAddress}}</td>
             </tr>

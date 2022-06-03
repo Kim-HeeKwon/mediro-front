@@ -55,6 +55,7 @@ export class CommonReportComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if(data.header){
             this.reportHeaderData = data.header;
+            this.reportHeaderData.deliveryDate = this.reportHeaderData.deliveryDate === 'null' ? '' : this.reportHeaderData.deliveryDate;
             this.reportHeaderData.phoneNumber = this.reportHeaderData.phoneNumber !== '00' ? this.reportHeaderData.phoneNumber : '';
             this.reportHeaderData.fax = this.reportHeaderData.fax !== '00' ? this.reportHeaderData.fax : '';
         }
