@@ -216,12 +216,11 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
 
     selectHeader() {
         const rtn = this._commonUdiAccountService.getAccount(0, 100, '', 'asc', this.searchForm.getRawValue());
-
+        this.selectCallBack(rtn);
     }
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
-            this.selectCallBack(rtn);
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.list);
             this._commonUdiAccountService.pagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
