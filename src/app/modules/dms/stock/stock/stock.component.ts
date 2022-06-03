@@ -25,6 +25,7 @@ import {StockHistoryComponent} from './stock-history/stock-history.component';
 import {FunctionService} from '../../../../../@teamplat/services/function';
 import * as moment from "moment";
 import {ActivatedRoute} from "@angular/router";
+import {StockUploadComponent} from "./stock-upload/stock-upload.component";
 
 @Component({
     selector: 'dms-app-stock',
@@ -514,7 +515,35 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelImport(): void {
-        this._realGridsService.gfn_ExcelImportGrid('STOCK', true);
+        // this._realGridsService.gfn_ExcelImportGrid('STOCK', true);
+        if(!this.isMobile) {
+            const popUp = this._matDialog.open(StockUploadComponent, {
+                autoFocus: false,
+                disableClose: true,
+            });
+
+            popUp.afterClosed().subscribe(() => {
+                this.selectHeader();
+            });
+        } else {
+            const popUp = this._matDialog.open(StockUploadComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    popUp.updateSize('calc(100vw - 10px)', '');
+                } else {
+                }
+            });
+            popUp.afterClosed().subscribe(() => {
+                this.selectHeader();
+                smallDialogSubscription.unsubscribe();
+            });
+        }
     }
 
     excelExport(): void {

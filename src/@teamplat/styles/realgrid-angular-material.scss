@@ -107,6 +107,17 @@
         }
     }
 }
+.as-split-area  {
+    &.fuse-mat-textarea {
+        .mat-form-field-wrapper {
+            .mat-form-field-flex {
+                padding: 0px 8px !important;
+                font-size: 12px !important;
+                border-radius: 0px !important;
+            }
+        }
+    }
+}
 :host-context ::ng-deep .mat-form-field-label-wrapper {
     top: -18px;
     height: auto;

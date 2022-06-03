@@ -33,6 +33,7 @@ import {StockHistoryComponent} from './stock-history/stock-history.component';
 import {FuseUserHelpModule} from '../../../../../@teamplat/components/user-help';
 import {StockDetailComponent} from './stock-detail/stock-detail.component';
 import {CommonLoadingBarModule} from '../../../../../@teamplat/components/common-loding-bar/common-loading-bar.module';
+import {StockUploadComponent} from "./stock-upload/stock-upload.component";
 
 const stockRoutes: Route[] = [
     {
@@ -48,7 +49,8 @@ const stockRoutes: Route[] = [
     declarations: [
         StockComponent,
         StockHistoryComponent,
-        StockDetailComponent
+        StockDetailComponent,
+        StockUploadComponent
     ],
     imports: [
         CommonModule,

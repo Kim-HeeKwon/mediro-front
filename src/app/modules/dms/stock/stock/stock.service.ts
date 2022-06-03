@@ -16,7 +16,7 @@ export class StockService{
     private _stockHistory: BehaviorSubject<StockHistory> = new BehaviorSubject(null);
     private _stockHistorys: BehaviorSubject<StockHistory[]> = new BehaviorSubject(null);
     private _stockHistoryPagenation: BehaviorSubject<StockHistoryPagenation | null> = new BehaviorSubject(null);
-
+    private _rtnList: BehaviorSubject<any> = new BehaviorSubject(null);
     /**
      * Constructor
      */
@@ -79,6 +79,14 @@ export class StockService{
     get stockHistoryPagenation$(): Observable<StockHistoryPagenation>
     {
         return this._stockHistoryPagenation.asObservable();
+    }
+
+    /**
+     * Getter for products
+     */
+    get rtnList$(): Observable<any[]>
+    {
+        return this._rtnList.asObservable();
     }
 
     /**
@@ -203,6 +211,21 @@ export class StockService{
             take(1),
             switchMap(products => this._common.sendListDataObjectLoading(stockAdj, pageParam, 'v1/api/basicInfo/stock/stock-adj').pipe(
                 map((result) => {
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
+
+    uploadStock(rtnList: any[]): Observable<any>
+    {
+        return this.rtnList$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(rtnList, '').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
                     // Return the new product
                     return result;
                 })
