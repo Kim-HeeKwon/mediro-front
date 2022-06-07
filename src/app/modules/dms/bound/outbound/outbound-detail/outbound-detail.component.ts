@@ -602,7 +602,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
         rows.forEach((data: any) => {
-            console.log(data);
             if(data.refItemNm !== data.itemNm){
                 data.itemNm = data.itemNm + '/' + data.refItemNm;
             }
@@ -614,7 +613,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
-                qty: data.obQty,
+                qty: data.obExpQty,
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,
@@ -666,6 +665,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let index = 0;
         const rows = this._realGridsService.gfn_GetRows(this.gridList, this.outBoundDetailDataProvider);
         rows.forEach((data: any) => {
+            console.log(data);
             if(data.refItemNm !== data.itemNm){
                 data.itemNm = data.itemNm + '/' + data.refItemNm;
             }
@@ -677,7 +677,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 standard: data.standard,
                 unit: data.unit,
                 itemGrade: data.itemGrade,
-                qty: data.obQty,
+                qty: data.obExpQty,
                 unitPrice: data.unitPrice,
                 totalAmt: data.totalAmt,
                 taxAmt: 0,

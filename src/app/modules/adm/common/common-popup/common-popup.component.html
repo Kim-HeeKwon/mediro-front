@@ -161,55 +161,126 @@
                                 </div>
                             </as-split-area>
                             <as-split-area [size]="60">
-                                <div
-                                    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2 pb-2">
-                                    <div></div>
-                                    <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
-                                        <button
-                                            class="ml-2 mediro-btn-custom"
-                                            (click)="addRow('gridDetail')"
-                                            mat-stroked-button>
-                                            <mat-icon
-                                                [svgIcon]="'heroicons_outline:plus-circle'"
-                                            ></mat-icon>
-                                            <span class="ml-2 mr-1">추가</span>
-                                        </button>
-                                        <button
-                                            class="ml-2 mediro-btn-custom"
-                                            (click)="delRow('gridDetail')"
-                                            mat-stroked-button>
-                                            <mat-icon
-                                                [svgIcon]="'heroicons_outline:minus-circle'"
-                                            ></mat-icon>
-                                            <span class="ml-2 mr-1">삭제</span>
-                                        </button>
-                                        <button
-                                            class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
-                                            mat-flat-button
-                                            [color]="'primary'"
-                                            (click)="saveCommonCode('gridDetail')">
-                                            <mat-icon
-                                                class="icon-size-5"
-                                                [svgIcon]="'heroicons_solid:save'"></mat-icon>
-                                            <span class="ml-2 mr-1 mediro-font-custom">저장</span>
-                                        </button>
+                                <as-split direction="horizontal">
+                                    <as-split-area [size]="50">
+                                        <div
+                                            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2 pb-2">
+                                            <div></div>
+                                            <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
+                                                <button
+                                                    class="ml-2 mediro-btn-custom"
+                                                    (click)="addRow('gridDetail')"
+                                                    mat-stroked-button>
+                                                    <mat-icon
+                                                        [svgIcon]="'heroicons_outline:plus-circle'"
+                                                    ></mat-icon>
+                                                    <span class="ml-2 mr-1">추가</span>
+                                                </button>
+                                                <button
+                                                    class="ml-2 mediro-btn-custom"
+                                                    (click)="delRow('gridDetail')"
+                                                    mat-stroked-button>
+                                                    <mat-icon
+                                                        [svgIcon]="'heroicons_outline:minus-circle'"
+                                                    ></mat-icon>
+                                                    <span class="ml-2 mr-1">삭제</span>
+                                                </button>
+                                                <button
+                                                    class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                                                    mat-flat-button
+                                                    [color]="'primary'"
+                                                    (click)="saveCommonCode('gridDetail')">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                                    <span class="ml-2 mr-1 mediro-font-custom">저장</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="realgrid" style="height: 90% !important;"
+                                            id="commonPopupDetail">
+                                        </div>
+                                    </as-split-area>
+                                    <as-split-area [size]="50">
+                                        <div
+                                            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-6 pt-2">
+                                        <div></div>
+                                            <div class="flex flex-shrink-0 items-center mt-1 sm:mt-0 sm:ml-4">
+                                            <button
+                                                class="ml-2 fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                                                mat-flat-button
+                                                [color]="'primary'"
+                                                (click)="addPopUp()">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                                                <span class="ml-2 mr-1 mediro-font-custom">저장</span>
+                                            </button>
+                                            <button
+                                                class="ml-2 mediro-btn-custom"
+                                                (click)="delPopUp()"
+                                                mat-stroked-button>
+                                                <mat-icon
+                                                    [svgIcon]="'heroicons_outline:minus-circle'"></mat-icon>
+                                                <span class="ml-2 mr-1">취소</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    class="realgrid" style="height: 90% !important;"
-                                    id="commonPopupDetail">
-                                </div>
+                                        <div class="flex pl-4 pr-4">
+                                            <form
+                                                class="flex flex-col w-full"
+                                                [formGroup]="popUpForm">
+                                                <div class="flex flex-auto flex-col pr-2 pl-2 pr-0">
+                                                    <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2">
+                                                        <mat-form-field
+                                                            class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                            <mat-label class="mediro-ft-label">공통 팝업</mat-label>
+                                                            <input
+                                                                type="text"
+                                                                matInput
+                                                                [formControlName]="'extPopupNo'">
+                                                        </mat-form-field>
+                                                        <mat-form-field
+                                                            class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                            <mat-label class="mediro-ft-label">명</mat-label>
+                                                            <input
+                                                                type="text"
+                                                                matInput
+                                                                [formControlName]="'extPopupNo'">
+                                                        </mat-form-field>
+                                                        <mat-form-field
+                                                            class="sm:col-span-2 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                            <mat-label class="mediro-ft-label">사용여부</mat-label>
+                                                            <mat-select [formControlName]="'extUseYn'">
+                                                                <ng-container *ngFor="let extUseYn of extUseYn">
+                                                                    <mat-option [value]="extUseYn.id">
+                                                                        {{extUseYn.name}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div style="display: grid !important;" class="sm:grid-cols-6 gap-2 w-full sm:pr-2 mt-2 text-area">
+                                                        <div class="sm:col-span-6">
+                                                            <mat-form-field
+                                                                class="fuse-mat-textarea w-full">
+                                                                <mat-label class="mediro-ft-label">쿼리</mat-label>
+                                                                <textarea
+                                                                    type="text"
+                                                                    matInput
+                                                                    [formControlName]="'query'">
+                                                                    </textarea>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </as-split-area>
+                                </as-split>
                             </as-split-area>
                         </as-split>
-<!--                        <mat-paginator-->
-<!--                            class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"-->
-<!--                            [ngClass]="{'pointer-events-none': false}"-->
-<!--                            [length]="pagenation === null ? 0 : pagenation.length"-->
-<!--                            [pageIndex]="pagenation === null ? 0 : pagenation.page"-->
-<!--                            [pageSize]="pagenation === null ? 0 : pagenation.size"-->
-<!--                            [pageSizeOptions]="[100]"-->
-<!--                            (page)="pageEvent($event)"-->
-<!--                            [showFirstLastButtons]="true"></mat-paginator>-->
                     </div>
                 </div>
             </div>

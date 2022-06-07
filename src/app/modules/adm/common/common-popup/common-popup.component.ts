@@ -35,6 +35,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     extUseYn: CommonCode[] = null;
     detailExtUseYn: CommonCode[] = null;
     searchForm: FormGroup;
+    popUpForm: FormGroup;
     columns: Columns[];
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -81,12 +82,12 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         private _formBuilder: FormBuilder,
         private _functionService: FunctionService,
         public _matDialogPopup: MatDialog,
-        private readonly breakpointObserver: BreakpointObserver)
-    {
+        private readonly breakpointObserver: BreakpointObserver) {
         this.extUseYn = this._utilService.commonValue(_codeStore.getValue().data, 'YN_FLAG');
         this.detailExtUseYn = this._utilService.commonValue(_codeStore.getValue().data, 'YN_FLAG');
         this.isMobile = this._deviceService.isMobile();
     }
+
     ngAfterViewInit(): void {
         // merge(this._paginator.page).pipe(
         //     switchMap(() => {
@@ -110,7 +111,13 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.searchForm = this._formBuilder.group({
-            extPopupNm: ['']
+            extPopupNm: [''],
+        });
+        this.popUpForm = this._formBuilder.group({
+            extPopupNo: [''],
+            extPopupNm: [''],
+            extUseYn: [''],
+            query: ['']
         });
 
         const valuesUse = [];
@@ -137,7 +144,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'extPopupNm', fieldName: 'extPopupNm', type: 'data', width: '200', styleName: 'left-cell-text'
+                name: '명', fieldName: 'extPopupNm', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -147,6 +154,8 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '사용여부', styleName: 'center-cell-text'},
                 values: valuesUse,
                 labels: lablesUse,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.extUseYn),
                 renderer: {
                     showTooltip: true
                 }
@@ -204,7 +213,8 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
             if (clickData.cellType === 'header') {
                 const rtn = this._commonPopupService.getCommonPopup(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                 this.selectCallBack(rtn);
-            };
+            }
+            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -236,6 +246,8 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '사용여부', styleName: 'center-cell-text'},
                 values: detailValuesUse,
                 labels: detailLablesUse,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.detailExtUseYn),
                 renderer: {
                     showTooltip: true
                 }
@@ -247,20 +259,38 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'extColSortSeqVal', fieldName: 'extColSortSeqVal', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '정렬', styleName: 'center-cell-text'}, renderer: {
+                name: 'extColSortSeqVal',
+                fieldName: 'extColSortSeqVal',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '정렬', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'extColCondGbnVal', fieldName: 'extColCondGbnVal', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '검색조건', styleName: 'center-cell-text'}, renderer: {
+                name: 'extColCondGbnVal',
+                fieldName: 'extColCondGbnVal',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '검색조건', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'extColQrySortSeqVal', fieldName: 'extColQrySortSeqVal', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '정렬', styleName: 'center-cell-text'}, renderer: {
+                name: 'extColQrySortSeqVal',
+                fieldName: 'extColQrySortSeqVal',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '정렬', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
@@ -271,14 +301,26 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'extSelBoxAttrVal', fieldName: 'extSelBoxAttrVal', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: 'val 타입', styleName: 'center-cell-text'}, renderer: {
+                name: 'extSelBoxAttrVal',
+                fieldName: 'extSelBoxAttrVal',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: 'val 타입', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'extEtcQryColCondVal', fieldName: 'extEtcQryColCondVal', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '조건', styleName: 'center-cell-text'}, renderer: {
+                name: 'extEtcQryColCondVal',
+                fieldName: 'extEtcQryColCondVal',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '조건', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
@@ -363,13 +405,13 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     addRow(val: any): void {
-        if(val === 'grid') {
+        if (val === 'grid') {
             const values = [
                 '', '', ''
             ];
 
             this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
-        } else if(val === 'gridDetail') {
+        } else if (val === 'gridDetail') {
             const values = [
                 '', '', '', '', '', '', '', '', '', '', ''
             ];
@@ -379,7 +421,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     delRow(val: any): void {
-        if(val === 'grid') {
+        if (val === 'grid') {
             const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.dataProvider);
 
             if (checkValues.length < 1) {
@@ -388,7 +430,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             this._realGridsService.gfn_DelRow(this.gridList, this.dataProvider);
-        } else if(val === 'gridDetail') {
+        } else if (val === 'gridDetail') {
             const checkValues = this._realGridsService.gfn_GetCheckRows(this.detailGridList, this.detailDataProvider);
 
             if (checkValues.length < 1) {
@@ -400,8 +442,58 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    addPopUp(): void {
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '저장하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                }
+            });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
+    delPopUp(): void {
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '취소하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '확인'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this.popUpForm.patchValue({'extPopupNo': ''});
+                    this.popUpForm.patchValue({'extPopupNm': ''});
+                    this.popUpForm.patchValue({'extUseYn': ''});
+                    this.popUpForm.patchValue({'query': ''});
+                }
+            });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
+
     saveCommonCode(val: any): void {
-        if(val === 'grid') {
+        if (val === 'grid') {
             if (this._realGridsService.gfn_ValidationRows(this.gridList, this._functionService)) {
                 return;
             }
@@ -436,7 +528,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
             // Mark for check
             this._changeDetectorRef.markForCheck();
-        } else if(val === 'gridDetail') {
+        } else if (val === 'gridDetail') {
             if (this._realGridsService.gfn_ValidationRows(this.detailGridList, this._functionService)) {
                 return;
             }
@@ -490,7 +582,7 @@ export class CommonPopupComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.commonPopup.length < 1){
+            if (ex.commonPopup.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
             this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);

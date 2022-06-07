@@ -144,6 +144,8 @@ export class CommonCodeComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '사용여부', styleName: 'center-cell-text'},
                 values: valuesUse,
                 labels: lablesUse,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.useYn),
                 renderer: {
                     showTooltip: true
                 }
@@ -269,6 +271,8 @@ export class CommonCodeComponent implements OnInit, OnDestroy, AfterViewInit {
                 , header: {text: '사용여부', styleName: 'center-cell-text'},
                 values: detailValuesUse,
                 labels: detailLablesUse,
+                lookupDisplay: true,
+                editor: this._realGridsService.gfn_ComboBox(this.detailUseYn),
                 renderer: {
                     showTooltip: true
                 }
