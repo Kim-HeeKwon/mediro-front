@@ -325,6 +325,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link    : '/basic-info/udi-code',
                 tag: '',
             },
+            {
+                id      : 'basic-info.udi-code-group',
+                title   : 'UDI DI 포장 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'inventory_2',
+                link    : '/basic-info/udi-code-group',
+                tag: '',
+            },
         ]
     },
     {
@@ -1344,6 +1353,15 @@ export const defaultNavigationM: FuseNavigationItem[] = [
                 type    : 'basic',
                 icon    : 'code',
                 link    : '/basic-info/udi-code',
+                tag: '',
+            },
+            {
+                id      : 'basic-info.udi-code-group',
+                title   : 'UDI DI 포장 관리',
+                subtitle: '',
+                type    : 'basic',
+                icon    : 'inventory_2',
+                link    : '/basic-info/udi-code-group',
                 tag: '',
             },
         ]
