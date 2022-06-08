@@ -974,23 +974,75 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 const nD = new Date(nowDate);
                                                 const nDDate = formatDate(new Date(nD.setDate(nD.getDate())), 'yyyy-MM-dd', 'en');
                                                 const useTmletCustom = useTmlmt.replace('(' + '17' + ')', '');
-                                                const yy = '20' + useTmletCustom.substring(0, 2);
+                                                let yy;
+                                                if(useTmletCustom.substring(0, 2) === '00') {
+                                                    yy = '0000';
+                                                } else {
+                                                    yy = '20' + useTmletCustom.substring(0, 2);
+                                                }
                                                 const mm = useTmletCustom.substring(2, 4);
                                                 const dd = useTmletCustom.substring(4, 6);
                                                 //console.log(nD);
-                                                const sD = new Date(yy + '-' + mm + '-' + dd);
-                                                const sDDate = formatDate(new Date(sD.setDate(sD.getDate())), 'yyyy-MM-dd', 'en');
-                                                //console.log(sD);
-
-                                                if (nD > sD) {
+                                                let sD;
+                                                if(yy === '0000' && mm === '00' && dd === '00') {
+                                                    useTmlmtUse = '-';
+                                                } else if(yy === '0000') {
                                                     useTmlmtUse = '만료';
-                                                } else {
-                                                    const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+                                                } else if(mm === '00') {
+                                                    if(dd !== '00') {
+                                                        sD = new Date(yy + '-' + '12' + '-' + dd);
+                                                        if(nD > sD){
+                                                            useTmlmtUse = '만료';
+                                                        }else{
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
 
-                                                    if(diff < 180){
-                                                        useTmlmtUse = '위험';
+                                                            if(diff < 180){
+                                                                useTmlmtUse = '위험';
+                                                            }else{
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    } else {
+                                                        let lastDay = new Date(yy, 12, 0);
+                                                        sD = new Date(yy + '-' + 12 + '-' + lastDay.getDate().valueOf());
+                                                        if(nD > sD){
+                                                            useTmlmtUse = '만료';
+                                                        }else{
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                            if(diff < 180){
+                                                                useTmlmtUse = '위험';
+                                                            }else{
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    }
+                                                } else if(dd === '00') {
+                                                    let lastDay = new Date(yy, mm, 0);
+                                                    sD = new Date(yy + '-' + mm + '-' + lastDay.getDate().valueOf());
+                                                    if(nD > sD){
+                                                        useTmlmtUse = '만료';
                                                     }else{
-                                                        useTmlmtUse = '유효';
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if(diff < 180){
+                                                            useTmlmtUse = '위험';
+                                                        }else{
+                                                            useTmlmtUse = '유효';
+                                                        }
+                                                    }
+                                                } else {
+                                                    sD = new Date(yy + '-' + mm + '-' + dd);
+                                                    if(nD > sD){
+                                                        useTmlmtUse = '만료';
+                                                    }else{
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if(diff < 180){
+                                                            useTmlmtUse = '위험';
+                                                        }else{
+                                                            useTmlmtUse = '유효';
+                                                        }
                                                     }
                                                 }
                                             }
