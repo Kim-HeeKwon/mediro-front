@@ -515,35 +515,35 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelImport(): void {
-        // this._realGridsService.gfn_ExcelImportGrid('STOCK', true);
-        if(!this.isMobile) {
-            const popUp = this._matDialog.open(StockUploadComponent, {
-                autoFocus: false,
-                disableClose: true,
-            });
-
-            popUp.afterClosed().subscribe(() => {
-                this.selectHeader();
-            });
-        } else {
-            const popUp = this._matDialog.open(StockUploadComponent, {
-                autoFocus: false,
-                width: 'calc(100% - 50px)',
-                maxWidth: '100vw',
-                maxHeight: '80vh',
-                disableClose: true
-            });
-            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                if (size.matches) {
-                    popUp.updateSize('calc(100vw - 10px)', '');
-                } else {
-                }
-            });
-            popUp.afterClosed().subscribe(() => {
-                this.selectHeader();
-                smallDialogSubscription.unsubscribe();
-            });
-        }
+        this._realGridsService.gfn_ExcelImportGrid('STOCK', true);
+        // if(!this.isMobile) {
+        //     const popUp = this._matDialog.open(StockUploadComponent, {
+        //         autoFocus: false,
+        //         disableClose: true,
+        //     });
+        //
+        //     popUp.afterClosed().subscribe(() => {
+        //         this.selectHeader();
+        //     });
+        // } else {
+        //     const popUp = this._matDialog.open(StockUploadComponent, {
+        //         autoFocus: false,
+        //         width: 'calc(100% - 50px)',
+        //         maxWidth: '100vw',
+        //         maxHeight: '80vh',
+        //         disableClose: true
+        //     });
+        //     const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+        //         if (size.matches) {
+        //             popUp.updateSize('calc(100vw - 10px)', '');
+        //         } else {
+        //         }
+        //     });
+        //     popUp.afterClosed().subscribe(() => {
+        //         this.selectHeader();
+        //         smallDialogSubscription.unsubscribe();
+        //     });
+        // }
     }
 
     excelExport(): void {
