@@ -393,6 +393,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
         // this._matDialog.open(CommonLoadingBarComponent, {
         //     id: 'loadingBar'
         // });
+        this.searchForm.patchValue({'offset': 1});
         this.searchSetValue();
         const rtn = this._managesService.getHeader(0, 100, '', 'asc', this.searchForm.getRawValue());
         //this.setGridData();
@@ -591,7 +592,8 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     //페이징
     pageEvent($event: PageEvent): void {
         this.searchSetValue();
-        const rtn = this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        this.searchForm.patchValue({'offset' : this._paginator.pageIndex + 1});
+        const rtn = this._managesService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'stdCode', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 

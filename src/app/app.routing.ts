@@ -195,13 +195,10 @@ export const appRoutes: Route[] = [
                     // items
                     // {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/admin/basic-info/items/items.module').then(m => m.ItemsModule)},
                     {path: 'items', data: {key: 'items'}, loadChildren: () => import('app/modules/dms/basic-info/items/items.module').then(m => m.ItemsModule)},
-                ]},
-            {path: 'basic-info', children: [
-                    // item-price
-                    // {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/admin/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
                     {path: 'item-price', data: {key: 'item-price'}, loadChildren: () => import('app/modules/dms/basic-info/item-price/item-price.module').then(m => m.ItemPriceModule)},
                     {path: 'udi-code', data: {key: 'udi-code'}, loadChildren: () => import('app/modules/dms/basic-info/udi-code/udi-code.module').then(m => m.UdiCodeModule)},
-                    ]},
+                    {path: 'udi-code-group', data: {key: 'udi-code-group'}, loadChildren: () => import('app/modules/dms/basic-info/udi-code-group/udi-code-group.module').then(m => m.UdiCodeGroupModule)},
+                ]},
             // estimate-order
             {path: 'estimate-order', children: [
                     // estimate

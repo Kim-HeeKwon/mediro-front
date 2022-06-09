@@ -902,7 +902,6 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._common.sendData(this.outBoundHeaderForm.getRawValue(),'/v1/api/inOut/outBound/validity-List')
                     .subscribe((responseData: any) => {
                         if (!this._common.gfn_isNull(responseData.data)) {
-                            console.log(responseData.data);
 
                             let itemNm = '';
                             responseData.data.forEach((p) => {

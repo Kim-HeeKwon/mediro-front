@@ -67,7 +67,7 @@ export class ManagesService {
      *
      * @returns
      */
-    getHeader(page: number = 0, size: number = 10, sort: string = '', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
+    getHeader(page: number = 0, size: number = 10, sort: string = 'stdCode', order: 'asc' | 'desc' | '' = 'desc', search: any = {}):
         Promise<{managesPagenation: ManagesPagenation; manages: Manages[] }> {
 
         const searchParam = {};
