@@ -36,6 +36,8 @@ import {formatDate} from "@angular/common";
 })
 export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('udiCode') refUdiCode: ElementRef;
+    @ViewChild('udiDiCode') refUdiDiCode: ElementRef;
+    @ViewChild('udiPiCode') refUdiPiCode: ElementRef;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
@@ -106,6 +108,13 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     month: CommonCode[] = null;
     year: CommonCode[] = null;
     itemGrades: CommonCode[] = null;
+    udiScan: CommonCode[] = [
+        {id: 'ALL', name: '표준코드(UDI)'},
+        {id: '0', name: '고유식별자(UDI-DI) + 생산식별자(UDI-PI)'},
+    ];
+    udiAll: boolean = true;
+    udiDiPi: boolean;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -158,6 +167,8 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         // Form 생성
         this.searchForm = this._formBuilder.group({
             udiCode: [''],   // 바코드
+            udiDiCode: [''],
+            udiPiCode: [''],
             udiCodeBak: [''],   // 바코드
             stdCode: [''],   //
             gtin: [''],   //
@@ -168,7 +179,8 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             year: [YYYY + ''],
             month: [''],
             suplyContStdmt: [''],
-            active: [false]  // cell상태
+            active: [false],  // cell상태
+            udiScan: ['ALL']
         });
 
         this.searchForm.controls['year'].disable();
@@ -738,7 +750,666 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         this._changeDetectorRef.markForCheck();
     }
 
-    udiDiCode($event) {
+    udiDiPiCode($event): void {
+        let udiCode = $event.target.value;
+        if (udiCode === '') {
+
+        } else {
+
+            let noCode;
+            let lotNo;
+            let manufYm;
+            let useTmlmt;
+            let itemSeq;
+            let stdCode;
+
+            if (udiCode.length < 17) {
+                this.failAlert();
+                return;
+            }
+            const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            if (check_kor.test(udiCode)) {
+                setTimeout(() => {
+                    this.searchForm.patchValue({'udiCode': ''});
+                    this.gridList1.clearSelection();
+                }, 100);
+                // Set the alert
+                this.alert = {
+                    type: 'error',
+                    message: '한글은 입력할 수 없습니다.'
+                };
+                // Show the alert
+                this.showAlert = true;
+                return;
+            }
+
+
+
+            if (!udiCode.includes('(')) {
+
+                try {
+                    let udiDiCode = udiCode.substring(0, 16);
+                    let udiPiCode = '';
+                    udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
+
+                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
+
+                    //값이 없을 때 까지
+                    while (cutUdiPiCode !== '') {
+
+                        if (cutUdiPiCode.substring(0, 2) === '11') {
+
+                            manufYm = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '17') {
+
+                            useTmlmt = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '10') {
+
+                            const len = cutUdiPiCode.length;
+
+                            if (len > 22) {
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            } else {
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '21') {
+
+                            const len = cutUdiPiCode.length;
+
+                            if (len > 22) {
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            } else {
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (lotNo === undefined) {
+                        lotNo = '';
+                    }
+                    if (itemSeq === undefined) {
+                        itemSeq = '';
+                    }
+                    if (manufYm === undefined) {
+                        manufYm = '';
+                    }
+                    if (useTmlmt === undefined) {
+                        useTmlmt = '';
+                    }
+
+                    udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
+                    udiCode = udiDiCode + udiPiCode;
+
+                } catch (e) {
+                    this.failAlert();
+                    return;
+                }
+            }
+
+            const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
+            list.forEach((check: any) => {
+
+                const chk = check;
+                let result = '';
+                const idx = udiCode.indexOf(chk, 0);
+                if (idx >= 0) {
+                    let lastIndex = udiCode.indexOf('(', idx + 1);
+                    if (lastIndex >= 0) {
+                        lastIndex = udiCode.indexOf('(', idx + 1);
+                    } else {
+                        lastIndex = udiCode.length;
+                    }
+                    result = udiCode.substring(idx, lastIndex)
+                        .replace('(' + chk + ')', '');
+
+                    if (chk === '(01)') {
+                        stdCode = result;
+                    } else if (chk === '(10)' || chk === '(11)' || chk === '(17)' || chk === '(21)') {
+                        noCode = result;
+                    }
+                }
+            });
+
+            if(noCode) {
+                setTimeout(() => {
+                    this.searchForm.patchValue({'udiDiCode': ''});
+                    this.searchForm.patchValue({'udiPiCode': ''});
+                    this.gridList1.clearSelection();
+                }, 100);
+                // Set the alert
+                this.alert = {
+                    type: 'error',
+                    message: 'UDI DI 코드만 스캔 해주세요.'
+                };
+                // Show the alert
+                this.showAlert = true;
+            } else {
+                if (stdCode === undefined) {
+                    this.failAlert();
+                    return;
+                } else {
+                    const searchForm = {udiDiCode: stdCode.replace('(' + '01' + ')', '')};
+
+                    this._inBoundScanService.getUdiDiCodeInfo(searchForm)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((manages: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(manages);
+
+                            if (manages.data !== null) {
+                                const dataRows = this.gridList1DataProvider.searchDataRow({
+                                    fields: ['medDevItemSeq', 'typeName']
+                                    , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                });
+                                let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
+                                chk = chk.filter((detail: any) =>
+                                    (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
+                                    .map((param: any) => param);
+                                chk = chk.filter((detail: any) =>
+                                    (detail.typeName === manages.data[0].typeName))
+                                    .map((param: any) => param);
+                                if (chk.length > 0) {
+                                    this.alert = {
+                                        type: 'success',
+                                        message: 'UDI DI 바코드 스캔 성공'
+                                    };
+                                    // Show the alert
+                                    this.showAlert = true;
+                                    this.refUdiPiCode.nativeElement.focus();
+                                } else {
+                                    setTimeout(() => {
+                                        this.gridList1.clearSelection();
+                                    }, 100);
+                                    this.alert = {
+                                        type: 'error',
+                                        message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                    };
+                                    // Show the alert
+                                    this.showAlert = true;
+                                }
+                            }
+
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        }, (err) => {
+                        });
+                }
+            }
+        }
+    }
+
+    udiDiPiCode2($event): void {
+
+        let udiCode = this.searchForm.getRawValue().udiDiCode + $event.target.value;
+        if (udiCode === '') {
+
+        } else {
+
+            let lotNo;
+            let manufYm;
+            let useTmlmt;
+            let itemSeq;
+
+            if (udiCode.length < 17) {
+                this.failAlert();
+                return;
+            }
+            const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            if (check_kor.test(udiCode)) {
+                setTimeout(() => {
+                    this.searchForm.patchValue({'udiCode': ''});
+                    this.gridList1.clearSelection();
+                }, 100);
+                // Set the alert
+                this.alert = {
+                    type: 'error',
+                    message: '한글은 입력할 수 없습니다.'
+                };
+                // Show the alert
+                this.showAlert = true;
+                return;
+            }
+
+            if (!udiCode.includes('(')) {
+
+                try {
+                    // let udiDiCode = udiCode.substring(0, 16);
+                    let udiPiCode = '';
+                    // udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
+
+                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
+
+                    //값이 없을 때 까지
+                    while (cutUdiPiCode !== '') {
+
+                        if (cutUdiPiCode.substring(0, 2) === '11') {
+
+                            manufYm = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '17') {
+
+                            useTmlmt = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
+                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '10') {
+
+                            const len = cutUdiPiCode.length;
+
+                            if (len > 22) {
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            } else {
+                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        } else if (cutUdiPiCode.substring(0, 2) === '21') {
+
+                            const len = cutUdiPiCode.length;
+
+                            if (len > 22) {
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
+                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                            } else {
+                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
+                                cutUdiPiCode = '';
+                            }
+
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (lotNo === undefined) {
+                        lotNo = '';
+                    }
+                    if (itemSeq === undefined) {
+                        itemSeq = '';
+                    }
+                    if (manufYm === undefined) {
+                        manufYm = '';
+                    }
+                    if (useTmlmt === undefined) {
+                        useTmlmt = '';
+                    }
+
+                    udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
+                    udiCode = this.searchForm.getRawValue().udiDiCode + udiPiCode;
+
+                } catch (e) {
+                    this.failAlert();
+                    return;
+                }
+            }
+
+            const list = ['(11)', '(17)', '(10)', '(21)'];
+            list.forEach((check: any) => {
+
+                const chk = check;
+                let result = '';
+                const idx = udiCode.indexOf(chk, 0);
+                if (idx >= 0) {
+                    let lastIndex = udiCode.indexOf('(', idx + 1);
+                    if (lastIndex >= 0) {
+                        lastIndex = udiCode.indexOf('(', idx + 1);
+                    } else {
+                        lastIndex = udiCode.length;
+                    }
+                    result = udiCode.substring(idx, lastIndex)
+                        .replace('(' + chk + ')', '');
+
+                    if (chk === '(10)') {
+                        lotNo = result;
+                    } else if (chk === '(11)') {
+                        manufYm = result;
+                    } else if (chk === '(17)') {
+                        useTmlmt = result;
+                    } else if (chk === '(21)') {
+                        itemSeq = result;
+                    }
+                }
+            });
+
+            if (lotNo === undefined) {
+                lotNo = '';
+            }
+            if (itemSeq === undefined) {
+                itemSeq = '';
+            }
+            if (manufYm === undefined) {
+                manufYm = '';
+            } else if (manufYm === '') {
+                manufYm = '';
+            } else {
+                if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                    return;
+                }
+            }
+            if (useTmlmt === undefined) {
+                useTmlmt = '';
+            } else if (useTmlmt === '') {
+                useTmlmt = '';
+            } else {
+                if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                    return;
+                }
+            }
+
+            if (this.searchForm.getRawValue().udiDiCode === undefined) {
+                this.failAlert();
+                return;
+            } else {
+
+                const searchForm = {udiDiCode: this.searchForm.getRawValue().udiDiCode.replace('(' + '01' + ')', '')};
+
+                this._inBoundScanService.getUdiDiCodeInfo(searchForm)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((manages: any) => {
+                        this._functionService.cfn_loadingBarClear();
+                        this.alertMessage(manages);
+
+                        if (manages.data !== null) {
+
+                            const dataRows = this.gridList1DataProvider.searchDataRow({
+                                fields: ['medDevItemSeq', 'typeName']
+                                , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                            });
+                            let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
+                            chk = chk.filter((detail: any) =>
+                                (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
+                                .map((param: any) => param);
+                            chk = chk.filter((detail: any) =>
+                                (detail.typeName === manages.data[0].typeName))
+                                .map((param: any) => param);
+
+                            if (chk.length > 0) {
+                                const obExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList1,
+                                    this.gridList1DataProvider,
+                                    dataRows, 'ibExpQty');
+                                let obQty = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList1,
+                                    this.gridList1DataProvider,
+                                    dataRows, 'ibQty');
+                                obQty += manages.data[0].convertedQty;
+                                if (obExpQty >= obQty) {
+                                    this.searchForm.patchValue({'stdCode': udiCode});
+                                    this.searchForm.patchValue({'gtin': this.searchForm.getRawValue().udiDiCode.replace('(' + '01' + ')', '')});
+                                    this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
+                                    this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
+                                    this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
+                                    this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
+
+                                    let useTmlmtUse = '-';
+                                    if (useTmlmt !== undefined) {
+                                        if (useTmlmt !== null) {
+
+                                            if (useTmlmt !== '') {
+                                                const now = new Date();
+                                                const nowDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                                                const nD = new Date(nowDate);
+                                                const nDDate = formatDate(new Date(nD.setDate(nD.getDate())), 'yyyy-MM-dd', 'en');
+                                                const useTmletCustom = useTmlmt.replace('(' + '17' + ')', '');
+                                                let yy;
+                                                if (useTmletCustom.substring(0, 2) === '00') {
+                                                    yy = '0000';
+                                                } else {
+                                                    yy = '20' + useTmletCustom.substring(0, 2);
+                                                }
+                                                const mm = useTmletCustom.substring(2, 4);
+                                                const dd = useTmletCustom.substring(4, 6);
+                                                let sD;
+                                                if (yy === '0000' && mm === '00' && dd === '00') {
+                                                    useTmlmtUse = '-';
+                                                } else if (yy === '0000') {
+                                                    useTmlmtUse = '만료';
+                                                } else if (mm === '00') {
+                                                    if (dd !== '00') {
+                                                        sD = new Date(yy + '-' + '12' + '-' + dd);
+                                                        if (nD > sD) {
+                                                            useTmlmtUse = '만료';
+                                                        } else {
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                            if (diff < 180) {
+                                                                useTmlmtUse = '위험';
+                                                            } else {
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    } else {
+                                                        let lastDay = new Date(yy, 12, 0);
+                                                        sD = new Date(yy + '-' + 12 + '-' + lastDay.getDate().valueOf());
+                                                        if (nD > sD) {
+                                                            useTmlmtUse = '만료';
+                                                        } else {
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                            if (diff < 180) {
+                                                                useTmlmtUse = '위험';
+                                                            } else {
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    }
+                                                } else if (dd === '00') {
+                                                    let lastDay = new Date(yy, mm, 0);
+                                                    sD = new Date(yy + '-' + mm + '-' + lastDay.getDate().valueOf());
+                                                    if (nD > sD) {
+                                                        useTmlmtUse = '만료';
+                                                    } else {
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if (diff < 180) {
+                                                            useTmlmtUse = '위험';
+                                                        } else {
+                                                            useTmlmtUse = '유효';
+                                                        }
+                                                    }
+                                                } else {
+                                                    sD = new Date(yy + '-' + mm + '-' + dd);
+                                                    if (nD > sD) {
+                                                        useTmlmtUse = '만료';
+                                                    } else {
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if (diff < 180) {
+                                                            useTmlmtUse = '위험';
+                                                        } else {
+                                                            useTmlmtUse = '유효';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        useTmlmtUse = '-';
+                                    }
+                                    const values = [
+                                        manages.data[0].convertedQty,
+                                        useTmlmtUse,
+                                        chk[0].obNo, chk[0].obLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq,
+                                        manages.data[0].seq,
+                                        manages.data[0].udiDiSeq,
+                                        manages.data[0].userSterilizationYn,
+                                        manages.data[0].kitYn,
+                                        chk[0].typeName, udiCode,
+                                        lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
+                                    ];
+
+                                    let rows = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
+
+                                    rows = rows.filter((detail: any) =>
+                                        (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                        .map((param: any) => param);
+
+                                    if (rows.length > 0) {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+
+                                        let sumQty = manages.data[0].convertedQty;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList1,
+                                            this.gridList1DataProvider,
+                                            dataRow, 'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
+
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow, 'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        }, 100);
+
+                                        const dataRow2 = this.gridList2DataProvider.searchDataRow({
+                                            fields: ['udiCode'],
+                                            values: [udiCode]
+                                        });
+                                        let sumQty2 = 1;
+                                        let qty2 = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList2,
+                                            this.gridList2DataProvider,
+                                            dataRow2, 'ibQty');
+                                        if (qty2 === undefined) {
+                                            qty2 = 0;
+                                        }
+                                        sumQty2 = sumQty2 + qty2;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList2,
+                                                this.gridList2DataProvider,
+                                                dataRow2,
+                                                'ibQty',
+                                                sumQty2);
+                                        }, 100);
+
+                                    } else {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+                                        let sumQty = manages.data[0].convertedQty;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList1,
+                                            this.gridList1DataProvider,
+                                            dataRow, 'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
+
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow, 'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        }, 100);
+
+                                        this._realGridsService.gfn_AddRow(this.gridList2, this.gridList2DataProvider, values);
+                                    }
+                                    setTimeout(() => {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+                                        this.gridList1.setSelection({
+                                            style: 'rows',
+                                            startRow: dataRow,
+                                            endRow: dataRow
+                                        });
+                                        this.searchForm.patchValue({'udiDiCode': ''});
+                                        this.searchForm.patchValue({'udiPiCode': ''});
+                                    }, 100);
+
+                                    if (!this.barcodeYn) {
+                                        setTimeout(() => {
+                                            this.refUdiDiCode.nativeElement.focus();
+                                            this._changeDetectorRef.markForCheck();
+                                        }, 100);
+                                    } else {
+                                        const dataRow = this.gridList2DataProvider.searchDataRow({
+                                            fields: ['udiCode'],
+                                            values: [udiCode]
+                                        });
+                                        //셀이동
+                                        //this.gridList2.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
+                                        setTimeout(() => {
+                                            this.refUdiDiCode.nativeElement.blur();
+                                            this._changeDetectorRef.markForCheck();
+                                        }, 100);
+                                        const focusCell = this.gridList2.getCurrent();
+                                        focusCell.dataRow = dataRow;
+                                        focusCell.column = 'ibQty';
+                                        focusCell.fieldName = 'ibQty';
+                                        //포커스된 셀 변경
+                                        this.gridList2.setCurrent(focusCell);
+                                        const curr = this.gridList2.getCurrent();
+                                        this.gridList2.beginUpdateRow(curr.itemIndex);
+                                        this.gridList2.showEditor();
+                                        this.gridList2.setFocus();
+                                    }
+
+                                    this.showAlert = false;
+                                    this._changeDetectorRef.markForCheck();
+
+                                } else {
+                                    this.qtyFailAlert();
+                                }
+                            } else {
+                                setTimeout(() => {
+                                    this.gridList1.clearSelection();
+                                }, 100);
+                                this.alert = {
+                                    type: 'error',
+                                    message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                };
+                                // Show the alert
+                                this.showAlert = true;
+                            }
+                        }
+
+                        // Mark for check
+                        this._changeDetectorRef.markForCheck();
+                    }, (err) => {
+                    });
+            }
+        }
+    }
+
+    udiDiCode($event): void {
         let udiCode = $event.target.value;
         if (udiCode === '') {
 
@@ -1273,6 +1944,8 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
         setTimeout(() => {
             this.searchForm.patchValue({'udiCode': ''});
+            this.searchForm.patchValue({'udiDiCode': ''});
+            this.searchForm.patchValue({'udiPiCode': ''});
             this.gridList1.clearSelection();
         }, 100);
         // Set the alert
@@ -1288,13 +1961,31 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.barcodeYn) {
             this.barcodeYn = false;
             setTimeout(() => {
-                this.refUdiCode.nativeElement.focus();
-                this._changeDetectorRef.markForCheck();
+                if(this.searchForm.getRawValue().udiScan === 'ALL') {
+                    if(this.udiAll) {
+                        this.refUdiCode.nativeElement.focus();
+                        this._changeDetectorRef.markForCheck();
+                    }
+                } else if(this.searchForm.getRawValue().udiScan === '0') {
+                    if(this.udiDiPi) {
+                        this.refUdiDiCode.nativeElement.focus();
+                        this._changeDetectorRef.markForCheck();
+                    }
+                }
             }, 100);
         } else {
             setTimeout(() => {
-                this.refUdiCode.nativeElement.blur();
-                this._changeDetectorRef.markForCheck();
+                if(this.searchForm.getRawValue().udiScan === 'ALL') {
+                    if(!this.udiAll) {
+                        this.refUdiCode.nativeElement.blur();
+                        this._changeDetectorRef.markForCheck();
+                    }
+                } else if(this.searchForm.getRawValue().udiScan === '0') {
+                    if(!this.udiDiPi) {
+                        this.refUdiDiCode.nativeElement.blur();
+                        this._changeDetectorRef.markForCheck();
+                    }
+                }
             }, 100);
             this.barcodeYn = true;
         }
@@ -1407,5 +2098,39 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this._realGridsService.gfn_DelRows(this.gridList2, this.gridList2DataProvider);
 
+    }
+
+    selectUdiScan(val: any): void {
+        if (val.value === 'ALL') {
+            this.searchForm.patchValue({'udiCode': ''});
+            this.searchForm.patchValue({'udiDiCode': ''});
+            this.searchForm.patchValue({'udiPiCode': ''});
+            this.udiAll = true;
+            this.udiDiPi = false;
+            if(this.udiAll) {
+                setTimeout(() => {
+                    this.refUdiCode.nativeElement.focus();
+                }, 200);
+            } else {
+                setTimeout(() => {
+                    this.refUdiCode.nativeElement.blur();
+                }, 200);
+            }
+        } else if (val.value === '0') {
+            this.searchForm.patchValue({'udiCode': ''});
+            this.searchForm.patchValue({'udiDiCode': ''});
+            this.searchForm.patchValue({'udiPiCode': ''});
+            this.udiDiPi = true;
+            this.udiAll = false;
+            if(this.udiDiPi) {
+                setTimeout(() => {
+                    this.refUdiDiCode.nativeElement.focus();
+                }, 200);
+            } else {
+                setTimeout(() => {
+                    this.refUdiDiCode.nativeElement.blur();
+                }, 200);
+            }
+        }
     }
 }

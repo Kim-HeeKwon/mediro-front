@@ -1,5 +1,6 @@
 <div class="flex flex-col flex-auto md:w-240 md:min-w-240 -m-6">
-    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+    <div
+        class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <!-- Header -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -72,7 +73,7 @@
                                     </button>
                                 </div>
                                 <div class="sm:col-span-4">
-<!--                                    <span class="ml-2 mr-1">바코드 포커스 설정</span>-->
+                                    <!--                                    <span class="ml-2 mr-1">바코드 포커스 설정</span>-->
                                     <span class="text-12s text-bold-600 ml-6"
                                           [ngClass]="{'opacity-50' : barcodeYn}">바코드</span>
                                     <mat-slide-toggle class="ml-2 mr-2"
@@ -163,10 +164,23 @@
                                                 [formControlName]="'itemSeq'">
                                         </mat-form-field>
                                     </div>
-                                    <div class="sm:col-span-5">
+                                    <div class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>스캔 유형</mat-label>
+                                                <mat-select (selectionChange)="selectUdiScan($event)"
+                                                    [formControlName]="'udiScan'">
+                                                    <ng-container *ngFor="let udiScan of udiScan">
+                                                        <mat-option [value]="udiScan.id">
+                                                            {{udiScan.name}}
+                                                        </mat-option>
+                                                    </ng-container>
+                                                </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiAll" class="sm:col-span-4">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>
-                                                바코드 스캔
+                                                표준코드(UDI) 스캔
                                                 <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>
                                             </mat-label>
                                             <input
@@ -175,6 +189,34 @@
                                                 onfocus="this.select()"
                                                 (keydown.enter)="udiDiCode($event)"
                                                 [formControlName]="'udiCode'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDiPi" class="sm:col-span-2">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>
+                                                고유식별자(UDI-DI) 스캔
+<!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                            </mat-label>
+                                            <input
+                                                #udiDiCode
+                                                matInput
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDiPiCode($event)"
+                                                [formControlName]="'udiDiCode'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDiPi" class="sm:col-span-2">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>
+                                                생산식별자(UDI-PI) 스캔
+<!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                            </mat-label>
+                                            <input
+                                                #udiPiCode
+                                                matInput
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDiPiCode2($event)"
+                                                [formControlName]="'udiPiCode'">
                                         </mat-form-field>
                                     </div>
                                     <div class="sm:col-span-1">
