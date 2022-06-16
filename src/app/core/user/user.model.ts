@@ -28,6 +28,7 @@ export interface User
     freeYn?: string;
     payYn?: string;
     version?: string;
+    dashboardColor?: string;
 }
 export interface UserExperience
 {

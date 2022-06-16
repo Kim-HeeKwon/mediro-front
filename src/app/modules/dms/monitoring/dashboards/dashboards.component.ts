@@ -126,7 +126,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log(this.change);
         this.ibInfo$ = this._dashboardsService.ibInfo$;
         this.obInfo$ = this._dashboardsService.obInfo$;
         this.qtInfo$ = this._dashboardsService.qtInfo$;
@@ -441,6 +440,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._dashBoardColorChangeService.dateCreated$.subscribe((val) => {
             this.colorChange(val);
         });
+
+        this.colorChange(localStorage.getItem('dashboardColor'));
         this._changeDetectorRef.markForCheck();
     }
 
@@ -1065,47 +1066,53 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     colorChange(color: any): void {
-        let as;
-        let colors = [];
-        if (color.includes(',')) {
-            as = color.split(',');
+
+        if(color === 'main'){
+
+        }else{
+            let as;
+            let colors = [];
+            if (color.includes(',')) {
+                as = color.split(',');
+            }
+            for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
+                colors.push('rgb(' + (Number(as[0]) + (i * 30) + ', ' + (Number(as[1]) + (i * 30)) + ', ' + (Number(as[2]) + (i * 30)) + ')'));
+                this.mixedChart.data.datasets[i].borderColor = colors[i];
+                this.mixedChart.data.datasets[i].hoverBackgroundColor = colors[i];
+                this.mixedChart.data.datasets[i].backgroundColor = colors[i];
+                this.mixedChart.data.datasets[i].hoverBorderColor = colors[i];
+            }
+            for (let i = 0; i < this.billsChart.data.datasets.length; i++) {
+                this.billsChart.data.datasets[i].borderColor = colors[4];
+                this.billsChart.data.datasets[i].pointBackgroundColor = colors[4];
+                this.billsChart.data.datasets[i].hoverBackgroundColor = colors[4];
+                this.billsChart.data.datasets[i].backgroundColor = colors[4];
+                this.billsChart.data.datasets[i].hoverBorderColor = colors[4];
+                this.billsChart.data.datasets[i].pointBorderColor = colors[4];
+                this.billsChart.data.datasets[i].pointHoverBackgroundColor = colors[4];
+                this.billsChart.data.datasets[i].pointHoverBorderColor = colors[4];
+            }
+            this.inBoundChart.data.datasets[0].backgroundColor[1] = colors[3];
+            this.inBoundChart.data.datasets[0].hoverBorderColor[1] = colors[3];
+            this.inBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[3];
+            if(color === '166,72,255') {
+                this.ouBoundChart.data.datasets[0].backgroundColor[1] = '#9186D0';
+                this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = '#9186D0';
+                this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#9186D0';
+                this.style = 'background-color: #9186D0!important; color: #FFFFFF;';
+            } else {
+                this.ouBoundChart.data.datasets[0].backgroundColor[1] = colors[4];
+                this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = colors[4];
+                this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[4];
+                this.style = 'background-color: '+colors[0]+'!important; color: #FFFFFF;';
+            }
+            this.styleTable = 'background-color: '+colors[5]+'!important; color: #000000;';
+            this.billsChart.update();
+            this.ouBoundChart.update();
+            this.inBoundChart.update();
+            this.mixedChart.update();
         }
-        for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
-            colors.push('rgb(' + (Number(as[0]) + (i * 30) + ', ' + (Number(as[1]) + (i * 30)) + ', ' + (Number(as[2]) + (i * 30)) + ')'));
-            this.mixedChart.data.datasets[i].borderColor = colors[i];
-            this.mixedChart.data.datasets[i].hoverBackgroundColor = colors[i];
-            this.mixedChart.data.datasets[i].backgroundColor = colors[i];
-            this.mixedChart.data.datasets[i].hoverBorderColor = colors[i];
-        }
-        for (let i = 0; i < this.billsChart.data.datasets.length; i++) {
-            this.billsChart.data.datasets[i].borderColor = colors[4];
-            this.billsChart.data.datasets[i].pointBackgroundColor = colors[4];
-            this.billsChart.data.datasets[i].hoverBackgroundColor = colors[4];
-            this.billsChart.data.datasets[i].backgroundColor = colors[4];
-            this.billsChart.data.datasets[i].hoverBorderColor = colors[4];
-            this.billsChart.data.datasets[i].pointBorderColor = colors[4];
-            this.billsChart.data.datasets[i].pointHoverBackgroundColor = colors[4];
-            this.billsChart.data.datasets[i].pointHoverBorderColor = colors[4];
-        }
-        this.inBoundChart.data.datasets[0].backgroundColor[1] = colors[3];
-        this.inBoundChart.data.datasets[0].hoverBorderColor[1] = colors[3];
-        this.inBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[3];
-        if(color === '166,72,255') {
-            this.ouBoundChart.data.datasets[0].backgroundColor[1] = '#9186D0';
-            this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = '#9186D0';
-            this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#9186D0';
-            this.style = 'background-color: #9186D0!important; color: #FFFFFF;';
-        } else {
-            this.ouBoundChart.data.datasets[0].backgroundColor[1] = colors[4];
-            this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = colors[4];
-            this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[4];
-            this.style = 'background-color: '+colors[0]+'!important; color: #FFFFFF;';
-        }
-        this.styleTable = 'background-color: '+colors[5]+'!important; color: #FFFFFF;';
-        this.billsChart.update();
-        this.ouBoundChart.update();
-        this.inBoundChart.update();
-        this.mixedChart.update();
+
     }
 }
 

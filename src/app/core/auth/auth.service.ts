@@ -132,6 +132,19 @@ export class AuthService
         return localStorage.getItem('version') ?? '';
     }
 
+    /**
+     * 색깔
+     */
+    set dashboardColor(token: string)
+    {
+        localStorage.setItem('dashboardColor', token);
+    }
+
+    get dashboardColor(): string
+    {
+        return localStorage.getItem('dashboardColor') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -212,6 +225,7 @@ export class AuthService
                 this.freeYn = response.resultD.freeYn;
                 this.payYn = response.resultD.payYn;
                 this.version = response.resultD.version;
+                this.dashboardColor = response.resultD.dashboardColor;
                 // console.log(response.resultD.payYn);
                 // console.log(response.resultD.freeYn);
                 // console.log(response.resultD.version);
@@ -252,6 +266,7 @@ export class AuthService
             'payYn'   : this.payYn,
             'version'   : this.version,
             'freeYn'   : this.freeYn,
+            'dashboardColor'   : this.dashboardColor,
         };
         // Renew token
         return this._api.postToken('auth.renewToken.do', vData).pipe(
@@ -270,7 +285,6 @@ export class AuthService
                 // console.log(response.resultD.payYn);
                 // console.log(response.resultD.freeYn);
                 // console.log(response.resultD.version);
-
                 this._authenticated = true;
                 // Store the user on the user service
                 this._user = response.resultD;
@@ -299,6 +313,7 @@ export class AuthService
         localStorage.removeItem('payYn');
         localStorage.removeItem('freeYn');
         localStorage.removeItem('version');
+        localStorage.removeItem('dashboardColor');
 
         // Set the authenticated flag to false
         this._authenticated = false;

@@ -6,11 +6,16 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class DashboardsColorChangeService {
 
-    private newDateCreationSource = new Subject<Date>();
+    private newDateCreationSource = new Subject<any>();
     // eslint-disable-next-line @typescript-eslint/member-ordering
     dateCreated$ = this.newDateCreationSource.asObservable();
 
-    broadcastDate(date: Date): void {
-        this.newDateCreationSource.next(date);
+    broadcastDate(val: any): void {
+
+        // 업데이트 -> 컬러
+        console.log('service color change');
+        console.log(val);
+
+        this.newDateCreationSource.next(val);
     }
 }

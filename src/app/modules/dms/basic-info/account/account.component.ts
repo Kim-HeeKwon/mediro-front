@@ -27,6 +27,7 @@ import {Router} from '@angular/router';
 import {DetailAccountComponent} from '../account/detail-account/detail-account.component';
 import {EtcAccountComponent} from "./etc-account/etc-account.component";
 import {CommonUdiGridComponent} from "../../../../../@teamplat/components/common-udi-grid";
+import {TeamPlatConfirmationService} from "../../../../../@teamplat/services/confirmation";
 
 @Component({
     selector: 'dms-app-account',
@@ -103,6 +104,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
                 public _matDialogPopup: MatDialog,
                 private _utilService: FuseUtilsService,
                 private _changeDetectorRef: ChangeDetectorRef,
+                private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _accountService: AccountService,
@@ -602,60 +604,38 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     createUdiAccount(): void {
-        if (!this.isMobile) {
-            const popupUdi = this._matDialogPopup.open(CommonUdiGridComponent, {
-                data: {
-                    headerText: '거래처 조회',
-                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
-                    code: 'UDI_BCNC',
-                    tail: false,
-                    mediroUrl: 'bcnc/company-info',
-                    tailKey: '',
-                    merge: true,
-                    mergeData: 'account'
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '',
+            message: '<span> 의료기기 통합정보 시스템에 등록되어 있는 <br> 거래처 정보를 가져오시겠습니까? </span>',
+            actions: {
+                confirm: {
+                    label: '가져오기'
                 },
-                autoFocus: false,
-                maxHeight: '80vh',
-                disableClose: true
-            });
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
 
-            popupUdi.afterClosed().subscribe((result) => {
-                this.selectAccount();
-            });
-        } else {
-            const d = this._matDialog.open(CommonUdiGridComponent, {
-                data: {
-                    headerText: '거래처 조회',
-                    url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
-                    searchList: ['companyName', 'taxNo', 'cobFlagCode'],
-                    code: 'UDI_BCNC',
-                    tail: false,
-                    mediroUrl: 'bcnc/company-info',
-                    tailKey: '',
-                    merge: true,
-                    mergeData: 'account'
-                },
-                autoFocus: false,
-                width: 'calc(100% - 50px)',
-                maxWidth: '100vw',
-                maxHeight: '80vh',
-                disableClose: true
-            });
-            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
-                if (size.matches) {
-                    d.updateSize('calc(100vw - 10px)', '');
-                } else {
-                    // d.updateSize('calc(100% - 50px)', '');
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this._accountService.mergeAllAccount([{mId : localStorage.getItem('mId')}])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((account: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this.alertMessage(account);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
                 }
             });
-            d.afterClosed().subscribe((result) => {
-                smallDialogSubscription.unsubscribe();
-                this.selectAccount();
-            });
-        }
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+
         // if (!this.isMobile) {
-        //     const popupUdi = this._matDialogPopup.open(CommonUdiComponent, {
+        //     const popupUdi = this._matDialogPopup.open(CommonUdiGridComponent, {
         //         data: {
         //             headerText: '거래처 조회',
         //             url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
@@ -676,7 +656,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //         this.selectAccount();
         //     });
         // } else {
-        //     const d = this._matDialog.open(CommonUdiComponent, {
+        //     const d = this._matDialog.open(CommonUdiGridComponent, {
         //         data: {
         //             headerText: '거래처 조회',
         //             url: 'https://udiportal.mfds.go.kr/api/v1/company-info/bcnc',
@@ -706,6 +686,18 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         //         this.selectAccount();
         //     });
         // }
+
+    }
+
+    alertMessage(param: any): void
+    {
+        if (param.status === 'SUCCESS') {
+            this.selectAccount();
+        } else if (param.status === 'CANCEL') {
+
+        } else {
+            this._functionService.cfn_alert(param.msg);
+        }
     }
 
     selectCallBack(rtn: any): void {

@@ -463,7 +463,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
         this.selectedForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')','')});
         this.selectedForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')','')});
         this.selectedForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')','')});
-        this.selectedForm.patchValue({'stdCode': udiDiCode + changeUdiPiCode});
+        this.selectedForm.patchValue({'stdCode': udiDiCode + this.selectedForm.getRawValue().udiPiCode});
 
         // Mark for check
         this._changeDetectorRef.markForCheck();

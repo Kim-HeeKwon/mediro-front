@@ -182,4 +182,22 @@ export class AccountService {
             })
         );
     }
+
+    /**
+     * merge (거래처)
+     */
+    mergeAllAccount(data: any): Observable<any>
+    {
+        return this.account$.pipe(
+            take(1),
+            switchMap(products => this._common.sendListDataLoading(data, 'v1/api/basicInfo/account/merge-all').pipe(
+                map((result) => {
+                    if(result.status === 'SUCCESS'){
+                    }
+                    // Return the new product
+                    return result;
+                })
+            ))
+        );
+    }
 }

@@ -25,13 +25,12 @@
                 <!-- 검색조건 -->
                 <form [formGroup]="searchForm">
                     <div class="grid sm:grid-cols-4 gap-2 w-full mt-4 p-2">
-                        <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
-                                    [placeholder]="'코드를 입력해주세요.'"
-                                    [formControlName]="'udiDiCode'"
+                                    [placeholder]="'그룹 코드를 입력해주세요.'"
+                                    [formControlName]="'udiDiCodeGroup'"
                                     [autocomplete]="'off'">
                             </mat-form-field>
                         </div>
@@ -39,8 +38,8 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <input
                                     matInput
-                                    [placeholder]="'코드 그룹을 입력해주세요.'"
-                                    [formControlName]="'udiDiCodeGroup'"
+                                    [placeholder]="'코드를 입력해주세요.'"
+                                    [formControlName]="'udiDiCode'"
                                     [autocomplete]="'off'">
                             </mat-form-field>
                         </div>
@@ -75,7 +74,7 @@
                             <div class="flex items-center justify-between px-8 pt-4 pb-2">
                                 <!-- Add product button -->
                                 <div class="text-2xl tracking-tight text-17s text-bold-600">
-                                    UDI DI 포장 관리
+                                    UDI DI 그룹 관리
                                     <fuse-user-help
                                         [helpCd]="''"
                                         [display]="true"></fuse-user-help>
@@ -98,6 +97,14 @@
                                         <div class="flex flex-col w-full">
                                             <div class="flex w-4/4">
                                                 <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                    <mat-label class="mediro-ft-label">UDI DI 그룹 코드</mat-label>
+                                                    <input
+                                                        matInput
+                                                        (window:onkeypress)="enter($event)"
+                                                        [formControlName]="'udiDiCodeGroup'"
+                                                        [autocomplete]="'off'">
+                                                </mat-form-field>
+                                                <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                     <mat-label class="mediro-ft-label">UDI DI 코드</mat-label>
                                                     <input
                                                         matInput
@@ -105,14 +112,6 @@
                                                         [formControlName]="'udiDiCode'"
                                                         [autocomplete]="'off'">
                                                 </mat-form-field>
-                                                    <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
-                                                        <mat-label class="mediro-ft-label">UDI DI 코드 그룹</mat-label>
-                                                        <input
-                                                            matInput
-                                                            (window:onkeypress)="enter($event)"
-                                                            [formControlName]="'udiDiCodeGroup'"
-                                                            [autocomplete]="'off'">
-                                                    </mat-form-field>
                                                 <button
                                                     class="ml-2 mt-6 mediro-btn-custom mediro-btn-custom-background-color"
                                                     mat-flat-button

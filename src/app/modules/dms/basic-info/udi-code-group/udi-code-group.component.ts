@@ -46,8 +46,8 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/member-ordering
     udiCodeGroupFields: DataFieldObject[] = [
-        {fieldName: 'udiDiCode', dataType: ValueType.TEXT},
         {fieldName: 'udiDiCodeGroup', dataType: ValueType.TEXT},
+        {fieldName: 'udiDiCode', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'convertedQty', dataType: ValueType.NUMBER},
     ];
@@ -81,21 +81,21 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.udiCodeGroup$ = this._udiCodeGroupService.udiCodeGroups$;
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
-            udiDiCode: [''],
             udiDiCodeGroup: [''],
+            udiDiCode: [''],
         });
 
         //그리드 컬럼
         this.udiCodeGroupColumns = [
             {
-                name: 'udiDiCode', fieldName: 'udiDiCode', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: 'UDI DI 코드 그룹', styleName: 'center-cell-text red-font-color'}, renderer: {
+                name: 'udiDiCodeGroup', fieldName: 'udiDiCodeGroup', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: 'UDI DI 그룹 코드', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'udiDiCodeGroup',
-                fieldName: 'udiDiCodeGroup',
+                name: 'udiDiCode',
+                fieldName: 'udiDiCode',
                 type: 'data',
                 width: '150',
                 styleName: 'left-cell-text'
@@ -106,7 +106,7 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'unit', fieldName: 'unit', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'unit', fieldName: 'unit', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
@@ -170,7 +170,7 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
-        const validationList = ['udiDiCode', 'udiDiCodeGroup'];
+        const validationList = ['udiDiCodeGroup', 'udiDiCode'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
 
         //정렬
@@ -215,7 +215,7 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     searchUdiCodeGroup(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeGroupDataProvider, true);
-        const rtn = this._udiCodeGroupService.getUdiCodeGroups(0, 40, 'udiDiCode', 'desc', this.searchForm.getRawValue());
+        const rtn = this._udiCodeGroupService.getUdiCodeGroups(0, 40, 'udiDiCodeGroup', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -240,7 +240,7 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectHeader(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeGroupDataProvider, true);
-        const rtn = this._udiCodeGroupService.getUdiCodeGroups(0, 40, 'udiDiCode', 'desc', this.searchForm.getRawValue());
+        const rtn = this._udiCodeGroupService.getUdiCodeGroups(0, 40, 'udiDiCodeGroup', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -327,7 +327,7 @@ export class UdiCodeGroupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     pageEvent($event: PageEvent): void {
-        const rtn = this._udiCodeGroupService.getUdiCodeGroups(this._paginator.pageIndex, this._paginator.pageSize, 'udiDiCode', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._udiCodeGroupService.getUdiCodeGroups(this._paginator.pageIndex, this._paginator.pageSize, 'udiDiCodeGroup', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 }
