@@ -437,17 +437,49 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
                    check = true;
                }
             });
-
             if(check){
                 this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, param.data);
 
                 setTimeout(() => {
 
-                    console.log(this.dataProvider);
-                    for(let i=0; i<param.data.length; i++){
+                    for(let i=0; i<param.data.length; i++) {
                         this.dataProvider.setRowState(i, 'updated', false);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'amt',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'qty',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'price',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'buyPrice',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'salesPrice',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'poQty',
+                            0);
+                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                            this.dataProvider,
+                            i,
+                            'availQty',
+                            0);
                     }
-
                 },200);
                 return;
             }
