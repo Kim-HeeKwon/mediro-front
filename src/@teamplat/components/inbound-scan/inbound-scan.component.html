@@ -1,5 +1,6 @@
 <div class="flex flex-col flex-auto md:w-240 md:min-w-240 -m-6">
-    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+    <div
+        class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
         <!-- Header -->
         <div
             class="absolute inset-x-0 bottom-0"
@@ -98,8 +99,8 @@
                                 {{alert.message}}
                             </fuse-alert>
                             <div class="p-2 sm:p-2">
-                                <div class="grid sm:grid-cols-6 gap-2 w-full sm:pr-2">
-                                    <div class="sm:col-span-1">
+                                <div class="grid sm:grid-cols-8 gap-2 w-full sm:pr-2">
+                                    <div class="sm:col-span-2">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>입력한 바코드</mat-label>
                                             <input
@@ -108,7 +109,7 @@
                                                 [formControlName]="'stdCode'">
                                         </mat-form-field>
                                     </div>
-                                    <div class="sm:col-span-1">
+                                    <div class="sm:col-span-2">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>GTIN</mat-label>
                                             <input
@@ -153,7 +154,7 @@
                                                 [formControlName]="'itemSeq'">
                                         </mat-form-field>
                                     </div>
-                                    <div class="sm:col-span-1">
+                                    <div class="sm:col-span-2">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>스캔 유형</mat-label>
                                             <mat-select (selectionChange)="selectUdiScan($event)"
@@ -166,11 +167,11 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-                                    <div *ngIf="udiAll" class="sm:col-span-4">
+                                    <div *ngIf="udiAll" class="sm:col-span-5">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>
                                                 표준코드(UDI) 스캔
-                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>
+                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 *</span>
                                             </mat-label>
                                             <input
                                                 #udiCode
@@ -194,7 +195,7 @@
                                                 [formControlName]="'udiDiCode'">
                                         </mat-form-field>
                                     </div>
-                                    <div *ngIf="udiDiPi" class="sm:col-span-2">
+                                    <div *ngIf="udiDiPi" class="sm:col-span-3">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>
                                                 생산식별자(UDI-PI) 스캔
@@ -206,6 +207,51 @@
                                                 onfocus="this.select()"
                                                 (keydown.enter)="udiDiPiCode2($event)"
                                                 [formControlName]="'udiPiCode'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDirect" class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>GTIN</mat-label>
+                                            <input
+                                                class="barcode-bold"
+                                                matInput
+                                                [formControlName]="'gtin'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDirect" class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>제조일자(11)</mat-label>
+                                            <input
+                                                class="barcode-bold"
+                                                matInput
+                                                [formControlName]="'manufYm'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDirect" class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>유통기한(17)</mat-label>
+                                            <input
+                                                class="barcode-bold"
+                                                matInput
+                                                [formControlName]="'useTmlmt'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDirect" class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>Lot No.(10)</mat-label>
+                                            <input
+                                                class="barcode-bold"
+                                                matInput
+                                                [formControlName]="'lotNo'">
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="udiDirect" class="sm:col-span-1">
+                                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                            <mat-label>일련번호(21)</mat-label>
+                                            <input
+                                                class="barcode-bold"
+                                                matInput
+                                                [formControlName]="'itemSeq'">
                                         </mat-form-field>
                                     </div>
                                     <div class="sm:col-span-1">

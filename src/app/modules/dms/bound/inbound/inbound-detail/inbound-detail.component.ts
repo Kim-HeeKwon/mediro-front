@@ -26,7 +26,6 @@ import {FunctionService} from '../../../../../../@teamplat/services/function';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {InBound} from '../inbound.types';
-import {CommonUdiRtnScanComponent} from '../../../../../../@teamplat/components/common-udi-rtn-scan';
 import {InboundScanComponent} from "../../../../../../@teamplat/components/inbound-scan";
 
 @Component({

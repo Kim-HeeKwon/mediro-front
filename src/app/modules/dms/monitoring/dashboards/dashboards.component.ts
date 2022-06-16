@@ -440,8 +440,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._dashBoardColorChangeService.dateCreated$.subscribe((val) => {
             this.colorChange(val);
         });
-
-        this.colorChange(localStorage.getItem('dashboardColor'));
+        if(localStorage.getItem('dashboardColor') !== null) {
+            this.colorChange(localStorage.getItem('dashboardColor'));
+        }
         this._changeDetectorRef.markForCheck();
     }
 
@@ -1067,13 +1068,46 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     colorChange(color: any): void {
 
-        if(color === 'main'){
-
-        }else{
+        if (color === 'main') {
+            let colors = [];
+            let colors2 = [];
+            for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
+                colors = ['#f1dcff', '#e2b9ff', '#d195ff', '#bd71ff', '#a648ff', '#8b00ff'];
+                this.mixedChart.data.datasets[i].borderColor = colors[i];
+                this.mixedChart.data.datasets[i].hoverBackgroundColor = colors[i];
+                this.mixedChart.data.datasets[i].backgroundColor = colors[i];
+                this.mixedChart.data.datasets[i].hoverBorderColor = colors[i];
+            }
+            for (let i = 0; i < this.billsChart.data.datasets.length; i++) {
+                colors2 = ['#C8B7F9', '#9186D0'];
+                this.billsChart.data.datasets[i].borderColor = colors2[i];
+                this.billsChart.data.datasets[i].pointBackgroundColor = colors2[i];
+                this.billsChart.data.datasets[i].hoverBackgroundColor = colors2[i];
+                this.billsChart.data.datasets[i].backgroundColor = colors2[i];
+                this.billsChart.data.datasets[i].hoverBorderColor = colors2[i];
+                this.billsChart.data.datasets[i].pointBorderColor = colors2[i];
+                this.billsChart.data.datasets[i].pointHoverBackgroundColor = colors2[i];
+                this.billsChart.data.datasets[i].pointHoverBorderColor = colors2[i];
+            }
+            this.inBoundChart.data.datasets[0].backgroundColor[1] = '#9186D0';
+            this.inBoundChart.data.datasets[0].hoverBorderColor[1] = '#9186D0';
+            this.inBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#9186D0';
+            this.ouBoundChart.data.datasets[0].backgroundColor[1] = '#C8B7F9';
+            this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = '#C8B7F9';
+            this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#C8B7F9';
+            this.style = 'background-color: #9186D0!important; color: #FFFFFF;';
+            this.styleTable = 'background-color: #f1dcff!important;';
+            this.billsChart.update();
+            this.ouBoundChart.update();
+            this.inBoundChart.update();
+            this.mixedChart.update();
+        } else {
             let as;
             let colors = [];
             if (color.includes(',')) {
                 as = color.split(',');
+            } else {
+                return color;
             }
             for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
                 colors.push('rgb(' + (Number(as[0]) + (i * 30) + ', ' + (Number(as[1]) + (i * 30)) + ', ' + (Number(as[2]) + (i * 30)) + ')'));
@@ -1095,7 +1129,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.inBoundChart.data.datasets[0].backgroundColor[1] = colors[3];
             this.inBoundChart.data.datasets[0].hoverBorderColor[1] = colors[3];
             this.inBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[3];
-            if(color === '166,72,255') {
+            if (color === '166,72,255') {
                 this.ouBoundChart.data.datasets[0].backgroundColor[1] = '#9186D0';
                 this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = '#9186D0';
                 this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#9186D0';
@@ -1104,9 +1138,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.ouBoundChart.data.datasets[0].backgroundColor[1] = colors[4];
                 this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = colors[4];
                 this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[4];
-                this.style = 'background-color: '+colors[0]+'!important; color: #FFFFFF;';
+                this.style = 'background-color: ' + colors[0] + '!important; color: #FFFFFF;';
             }
-            this.styleTable = 'background-color: '+colors[5]+'!important; color: #000000;';
+            this.styleTable = 'background-color: ' + colors[5] + '!important; color: #000000;';
             this.billsChart.update();
             this.ouBoundChart.update();
             this.inBoundChart.update();

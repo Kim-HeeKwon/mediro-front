@@ -111,9 +111,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     udiScan: CommonCode[] = [
         {id: 'ALL', name: '표준코드(UDI)'},
         {id: '0', name: '고유식별자(UDI-DI) + 생산식별자(UDI-PI)'},
+        {id: '1', name: '직접 입력'},
     ];
     udiAll: boolean = true;
     udiDiPi: boolean;
+    udiDirect: boolean;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -1449,7 +1451,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            if (!udiCode.includes('(')) {
+            if (!udiCode.includes('(') || udiCode.includes(',')) {
 
                 try {
                     let udiDiCode = udiCode.substring(0, 16);
@@ -1478,9 +1480,33 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (len > 22) {
                                 lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
                                 cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                                if (lotNo.includes(',')) {
+                                    let a = lotNo.split(',');
+                                    lotNo = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '21') {
+                                        itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             } else {
                                 lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
                                 cutUdiPiCode = '';
+                                if (lotNo.includes(',')) {
+                                    let a = lotNo.split(',');
+                                    lotNo = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '21') {
+                                        itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             }
 
                         } else if (cutUdiPiCode.substring(0, 2) === '21') {
@@ -1490,12 +1516,111 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (len > 22) {
                                 itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
                                 cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                                if (itemSeq.includes(',')) {
+                                    let a = itemSeq.split(',');
+                                    itemSeq = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '10') {
+                                        lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             } else {
                                 itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
                                 cutUdiPiCode = '';
+                                if (itemSeq.includes(',')) {
+                                    let a = itemSeq.split(',');
+                                    itemSeq = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '10') {
+                                        lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             }
 
-                        } else {
+                        } else if(cutUdiPiCode.substring(0, 1) === ',') {
+                            // 11, 17, 10, 21
+                            if (cutUdiPiCode.substring(1, 3) === '11') {
+                                manufYm = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 9);
+                                cutUdiPiCode = cutUdiPiCode.substring(9, cutUdiPiCode.length);
+                            } else if (cutUdiPiCode.substring(1, 3) === '17') {
+                                useTmlmt = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 9);
+                                cutUdiPiCode = cutUdiPiCode.substring(9, cutUdiPiCode.length);
+                            } else if (cutUdiPiCode.substring(1, 3) === '10') {
+                                const len = cutUdiPiCode.length;
+                                if (len > 22) {
+                                    lotNo = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 23);
+                                    cutUdiPiCode = cutUdiPiCode.substring(23, cutUdiPiCode.length);
+                                    if (lotNo.includes(',')) {
+                                        let a = lotNo.split(',');
+                                        lotNo = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '21') {
+                                            itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                } else {
+                                    lotNo = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, cutUdiPiCode.length);
+                                    cutUdiPiCode = '';
+                                    if (lotNo.includes(',')) {
+                                        let a = lotNo.split(',');
+                                        lotNo = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '21') {
+                                            itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                }
+                            } else if (cutUdiPiCode.substring(1, 3) === '21') {
+                                const len = cutUdiPiCode.length;
+                                if (len > 22) {
+                                    itemSeq = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 23);
+                                    cutUdiPiCode = cutUdiPiCode.substring(23, cutUdiPiCode.length);
+                                    if (itemSeq.includes(',')) {
+                                        let a = itemSeq.split(',');
+                                        itemSeq = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '10') {
+                                            lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                } else {
+                                    itemSeq = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, cutUdiPiCode.length);
+                                    cutUdiPiCode = '';
+                                    if (itemSeq.includes(',')) {
+                                        let a = itemSeq.split(',');
+                                        itemSeq = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '10') {
+                                            lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                }
+                            }
+                        } else{
                             break;
                         }
                     }
@@ -2107,6 +2232,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiPiCode': ''});
             this.udiAll = true;
             this.udiDiPi = false;
+            this.udiDirect = false;
             if(this.udiAll) {
                 setTimeout(() => {
                     this.refUdiCode.nativeElement.focus();
@@ -2122,6 +2248,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiPiCode': ''});
             this.udiDiPi = true;
             this.udiAll = false;
+            this.udiDirect = false;
             if(this.udiDiPi) {
                 setTimeout(() => {
                     this.refUdiDiCode.nativeElement.focus();
@@ -2131,6 +2258,13 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.refUdiDiCode.nativeElement.blur();
                 }, 200);
             }
+        } else if(val.value === '1') {
+            this.searchForm.patchValue({'udiCode': ''});
+            this.searchForm.patchValue({'udiDiCode': ''});
+            this.searchForm.patchValue({'udiPiCode': ''});
+            this.udiDiPi = false;
+            this.udiAll = false;
+            this.udiDirect = true;
         }
     }
 }
