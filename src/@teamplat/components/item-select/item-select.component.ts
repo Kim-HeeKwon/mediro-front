@@ -444,21 +444,21 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     for(let i=0; i<param.data.length; i++) {
                         this.dataProvider.setRowState(i, 'updated', false);
-                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
-                            this.dataProvider,
-                            i,
-                            'amt',
-                            0);
-                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
-                            this.dataProvider,
-                            i,
-                            'qty',
-                            0);
-                        this._realGridsService.gfn_CellDataSetRow(this.gridList,
-                            this.dataProvider,
-                            i,
-                            'price',
-                            0);
+                        // this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                        //     this.dataProvider,
+                        //     i,
+                        //     'amt',
+                        //     0);
+                        // this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                        //     this.dataProvider,
+                        //     i,
+                        //     'qty',
+                        //     0);
+                        // this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                        //     this.dataProvider,
+                        //     i,
+                        //     'price',
+                        //     0);
                         this._realGridsService.gfn_CellDataSetRow(this.gridList,
                             this.dataProvider,
                             i,
