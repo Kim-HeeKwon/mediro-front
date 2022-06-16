@@ -1,0 +1,51 @@
+<button
+    mat-icon-button
+    [matMenuTriggerFor]="userActions"
+    [matTooltip]="'데시보드 컬러 변경'">
+    <mat-icon [svgIcon]="'heroicons_outline:template'"></mat-icon>
+</button>
+
+
+<mat-menu
+    [xPosition]="'before'"
+    #userActions="matMenu">
+    <button mat-menu-item (click)="dashBoardsColorChange('15,23,42')">
+        <mat-icon style="color: #0f172a" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>매인</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('255,0,0')">
+        <mat-icon style="color: red" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>빨간색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('255,127,0')">
+        <mat-icon style="color: orange" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>주황색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('255,212,0')">
+        <mat-icon style="color: yellow" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>노란색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('0,128,0')">
+        <mat-icon style="color: green" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>초록색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('0,0,255')">
+        <mat-icon style="color: blue" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>파란색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('0,0,128')">
+        <mat-icon style="color: indigo" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>남색</span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item (click)="dashBoardsColorChange('166,72,255')">
+        <mat-icon style="color: purple" [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+        <span>보라색</span>
+    </button>
+</mat-menu>

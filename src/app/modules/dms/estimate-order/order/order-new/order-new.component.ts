@@ -678,7 +678,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 autoFocus: false,
                 disableClose: true,
                 data: {
-                    account: this.orderHeaderForm.getRawValue().account
+                    account: this.orderHeaderForm.getRawValue().account,
+                    qty: '발주요청수량',
+                    price: '매입단가(VAT포함)',
+                    amt: '발주금액',
+                    buyPrice: 'buyPrice'
                 },
             });
 
@@ -719,7 +723,11 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 maxHeight: '80vh',
                 disableClose: true,
                 data: {
-                    account: this.orderHeaderForm.getRawValue().account
+                    account: this.orderHeaderForm.getRawValue().account,
+                    qty: '발주요청수량',
+                    price: '매입단가(VAT포함)',
+                    amt: '발주금액',
+                    buyPrice: 'buyPrice'
                 },
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {

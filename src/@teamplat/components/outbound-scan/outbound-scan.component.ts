@@ -115,9 +115,11 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     udiScan: CommonCode[] = [
         {id: 'ALL', name: '표준코드(UDI)'},
         {id: '0', name: '고유식별자(UDI-DI) + 생산식별자(UDI-PI)'},
+        {id: '1', name: '직접 입력'},
     ];
     udiAll: boolean = true;
     udiDiPi: boolean;
+    udiDirect: boolean;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -687,7 +689,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
 
-
             if (!udiCode.includes('(')) {
 
                 try {
@@ -785,7 +786,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
 
-            if(noCode) {
+            if (noCode) {
                 setTimeout(() => {
                     this.searchForm.patchValue({'udiDiCode': ''});
                     this.searchForm.patchValue({'udiPiCode': ''});
@@ -1352,7 +1353,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            if (!udiCode.includes('(')) {
+            if (!udiCode.includes('(') || udiCode.includes(',')) {
 
                 try {
                     let udiDiCode = udiCode.substring(0, 16);
@@ -1360,7 +1361,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
 
                     let cutUdiPiCode = udiCode.substring(16, udiCode.length);
-
+                    // 01503829030517501011123214124,21222222,1122010117240909?
                     //값이 없을 때 까지
                     while (cutUdiPiCode !== '') {
 
@@ -1381,9 +1382,33 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (len > 22) {
                                 lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
                                 cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                                if (lotNo.includes(',')) {
+                                    let a = lotNo.split(',');
+                                    lotNo = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '21') {
+                                        itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             } else {
                                 lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
                                 cutUdiPiCode = '';
+                                if (lotNo.includes(',')) {
+                                    let a = lotNo.split(',');
+                                    lotNo = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '21') {
+                                        itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             }
 
                         } else if (cutUdiPiCode.substring(0, 2) === '21') {
@@ -1393,11 +1418,110 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                             if (len > 22) {
                                 itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
                                 cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
+                                if (itemSeq.includes(',')) {
+                                    let a = itemSeq.split(',');
+                                    itemSeq = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '10') {
+                                        lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             } else {
                                 itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
                                 cutUdiPiCode = '';
+                                if (itemSeq.includes(',')) {
+                                    let a = itemSeq.split(',');
+                                    itemSeq = a[0];
+                                    let b = a[1];
+                                    if (b.substring(0, 2) === '10') {
+                                        lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '11') {
+                                        manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    } else if (b.substring(0, 2) === '17') {
+                                        useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                    }
+                                }
                             }
 
+                        } else if (cutUdiPiCode.substring(0, 1) === ',') {
+                            // 11, 17, 10, 21
+                            if (cutUdiPiCode.substring(1, 3) === '11') {
+                                manufYm = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 9);
+                                cutUdiPiCode = cutUdiPiCode.substring(9, cutUdiPiCode.length);
+                            } else if (cutUdiPiCode.substring(1, 3) === '17') {
+                                useTmlmt = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 9);
+                                cutUdiPiCode = cutUdiPiCode.substring(9, cutUdiPiCode.length);
+                            } else if (cutUdiPiCode.substring(1, 3) === '10') {
+                                const len = cutUdiPiCode.length;
+                                if (len > 22) {
+                                    lotNo = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 23);
+                                    cutUdiPiCode = cutUdiPiCode.substring(23, cutUdiPiCode.length);
+                                    if (lotNo.includes(',')) {
+                                        let a = lotNo.split(',');
+                                        lotNo = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '21') {
+                                            itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                } else {
+                                    lotNo = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, cutUdiPiCode.length);
+                                    cutUdiPiCode = '';
+                                    if (lotNo.includes(',')) {
+                                        let a = lotNo.split(',');
+                                        lotNo = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '21') {
+                                            itemSeq = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                }
+                            } else if (cutUdiPiCode.substring(1, 3) === '21') {
+                                const len = cutUdiPiCode.length;
+                                if (len > 22) {
+                                    itemSeq = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, 23);
+                                    cutUdiPiCode = cutUdiPiCode.substring(23, cutUdiPiCode.length);
+                                    if (itemSeq.includes(',')) {
+                                        let a = itemSeq.split(',');
+                                        itemSeq = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '10') {
+                                            lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                } else {
+                                    itemSeq = '(' + cutUdiPiCode.substring(1, 3) + ')' + cutUdiPiCode.substring(3, cutUdiPiCode.length);
+                                    cutUdiPiCode = '';
+                                    if (itemSeq.includes(',')) {
+                                        let a = itemSeq.split(',');
+                                        itemSeq = a[0];
+                                        let b = a[1];
+                                        if (b.substring(0, 2) === '10') {
+                                            lotNo = '(' +  b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '11') {
+                                            manufYm = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        } else if (b.substring(0, 2) === '17') {
+                                            useTmlmt = '(' + b.substring(0, 2) + ')' + b.substring(2, b.length);
+                                        }
+                                    }
+                                }
+                            }
                         } else {
                             break;
                         }
@@ -1869,13 +1993,13 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.barcodeYn) {
             this.barcodeYn = false;
             setTimeout(() => {
-                if(this.searchForm.getRawValue().udiScan === 'ALL') {
-                    if(this.udiAll) {
+                if (this.searchForm.getRawValue().udiScan === 'ALL') {
+                    if (this.udiAll) {
                         this.refUdiCode.nativeElement.focus();
                         this._changeDetectorRef.markForCheck();
                     }
-                } else if(this.searchForm.getRawValue().udiScan === '0') {
-                    if(this.udiDiPi) {
+                } else if (this.searchForm.getRawValue().udiScan === '0') {
+                    if (this.udiDiPi) {
                         this.refUdiDiCode.nativeElement.focus();
                         this._changeDetectorRef.markForCheck();
                     }
@@ -1883,13 +2007,13 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             }, 100);
         } else {
             setTimeout(() => {
-                if(this.searchForm.getRawValue().udiScan === 'ALL') {
-                    if(!this.udiAll) {
+                if (this.searchForm.getRawValue().udiScan === 'ALL') {
+                    if (!this.udiAll) {
                         this.refUdiCode.nativeElement.blur();
                         this._changeDetectorRef.markForCheck();
                     }
-                } else if(this.searchForm.getRawValue().udiScan === '0') {
-                    if(!this.udiDiPi) {
+                } else if (this.searchForm.getRawValue().udiScan === '0') {
+                    if (!this.udiDiPi) {
                         this.refUdiDiCode.nativeElement.blur();
                         this._changeDetectorRef.markForCheck();
                     }
@@ -2005,7 +2129,8 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiPiCode': ''});
             this.udiAll = true;
             this.udiDiPi = false;
-            if(this.udiAll) {
+            this.udiDirect = false;
+            if (this.udiAll) {
                 setTimeout(() => {
                     this.refUdiCode.nativeElement.focus();
                 }, 200);
@@ -2020,7 +2145,8 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiPiCode': ''});
             this.udiDiPi = true;
             this.udiAll = false;
-            if(this.udiDiPi) {
+            this.udiDirect = false;
+            if (this.udiDiPi) {
                 setTimeout(() => {
                     this.refUdiDiCode.nativeElement.focus();
                 }, 200);
@@ -2029,6 +2155,13 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.refUdiDiCode.nativeElement.blur();
                 }, 200);
             }
+        } else if(val.value === '1') {
+            this.searchForm.patchValue({'udiCode': ''});
+            this.searchForm.patchValue({'udiDiCode': ''});
+            this.searchForm.patchValue({'udiPiCode': ''});
+            this.udiDiPi = false;
+            this.udiAll = false;
+            this.udiDirect = true;
         }
     }
 }

@@ -746,7 +746,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                 autoFocus: false,
                 disableClose: true,
                 data: {
-                    account: this.salesorderHeaderForm.getRawValue().account
+                    account: this.salesorderHeaderForm.getRawValue().account,
+                    qty: '요청수량',
+                    price: '매출단가(VAT포함)',
+                    amt: '주문금액',
+                    buyPrice: 'salesPrice'
                 },
             });
 
@@ -788,7 +792,11 @@ export class SalesorderNewComponent implements OnInit, OnDestroy, AfterViewInit 
                 maxHeight: '80vh',
                 disableClose: true,
                 data: {
-                    account: this.salesorderHeaderForm.getRawValue().account
+                    account: this.salesorderHeaderForm.getRawValue().account,
+                    qty: '요청수량',
+                    price: '매출단가(VAT포함)',
+                    amt: '주문금액',
+                    buyPrice: 'salesPrice'
                 },
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {

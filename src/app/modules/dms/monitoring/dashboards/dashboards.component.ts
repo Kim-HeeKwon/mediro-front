@@ -33,6 +33,7 @@ import {SessionStore} from '../../../../core/session/state/session.store';
 import {Chart} from 'chart.js';
 import {Context} from 'chartjs-plugin-datalabels';
 import {EmptyObject} from 'chart.js/types/basic';
+import {DashboardsColorChangeService} from "../../../../../@teamplat/components/dashboards-color-change/dashboards-color-change.service";
 
 @Component({
     selector: 'app-dashboards',
@@ -98,6 +99,13 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     racallTaleData: any = null;
     reacllItemsCount: number = 0;
     sumAvailQty: number = 0;
+    mixedChart: any;
+    inBoundChart: any;
+    ouBoundChart: any;
+    billsChart: any;
+    change: any;
+    style = 'background-color: #9186D0!important; color: #FFFFFF;';
+    styleTable = 'background-color: #f1dcff!important;';
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -105,6 +113,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private _dashboardsService: DashboardsService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _dashBoardColorChangeService: DashboardsColorChangeService,
         private _sessionStore: SessionStore,
         private _codeStore: CodeStore,
         private _utilService: FuseUtilsService,
@@ -117,6 +126,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        console.log(this.change);
         this.ibInfo$ = this._dashboardsService.ibInfo$;
         this.obInfo$ = this._dashboardsService.obInfo$;
         this.qtInfo$ = this._dashboardsService.qtInfo$;
@@ -428,7 +438,9 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.udiLastDay = 'D - ' + diffDays;
         }
-
+        this._dashBoardColorChangeService.dateCreated$.subscribe((val) => {
+            this.colorChange(val);
+        });
         this._changeDetectorRef.markForCheck();
     }
 
@@ -446,6 +458,16 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
+    // dashBordColorChange(): void {
+    //     if (this.dashBoardsColor) {
+    //         this.dashBoardsColor = false;
+    //     } else {
+    //         this.dashBoardsColor = true;
+    //     }
+    //     this._changeDetectorRef.markForCheck();
+    // }
+
 
     goPage(obj): void {
         if (obj.gbn === 'QT') {
@@ -478,6 +500,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     inChart(): void {
+        let color;
         const ibInfoCnt = this.ibInfo.nCnt + this.ibInfo.pCnt + this.ibInfo.pcCnt + this.ibInfo.sCnt + this.ibInfo.scCnt;
         const ibInfopsCnt = (this.ibInfo.pcCnt + this.ibInfo.scCnt) / ibInfoCnt * 100;
         const undecided = this.ibInfo.pCnt + this.ibInfo.sCnt + this.ibInfo.nCnt;
@@ -514,10 +537,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             onClick: (ctx: Context, event) => {
-                if(event[0].index === 1) {
-                    this.goPage({gbn: 'IB' , status: 'SC'});
-                } else if(event[0].index === 0) {
-                    this.goPage({gbn: 'IB' , status: 'N,P,S'});
+                if (event[0].index === 1) {
+                    this.goPage({gbn: 'IB', status: 'SC'});
+                } else if (event[0].index === 0) {
+                    this.goPage({gbn: 'IB', status: 'N,P,S'});
                 }
             },
             plugins: {
@@ -557,7 +580,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const ctx = document.getElementById('in_chart');
         // @ts-ignore
-        const inChart = new Chart(ctx, {
+        this.inBoundChart = new Chart(ctx, {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
@@ -566,6 +589,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     outChart(): void {
+        let color;
         const obInfoCnt = this.obInfo.nCnt + this.obInfo.pCnt + this.obInfo.pcCnt + this.obInfo.sCnt + this.obInfo.scCnt;
         const obInfopsCnt = (this.obInfo.pcCnt + this.obInfo.scCnt) / obInfoCnt * 100;
         const undecided = this.obInfo.pCnt + this.obInfo.sCnt + this.obInfo.nCnt;
@@ -602,10 +626,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             onClick: (ctx: Context, event) => {
-                if(event[0].index === 1) {
-                    this.goPage({gbn: 'OB' , status: 'SC'});
-                } else if(event[0].index === 0) {
-                    this.goPage({gbn: 'OB' , status: 'N,P,S'});
+                if (event[0].index === 1) {
+                    this.goPage({gbn: 'OB', status: 'SC'});
+                } else if (event[0].index === 0) {
+                    this.goPage({gbn: 'OB', status: 'N,P,S'});
                 }
             },
             plugins: {
@@ -646,7 +670,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const ctx = document.getElementById('out_chart');
         // @ts-ignore
-        const outChart = new Chart(ctx, {
+        this.ouBoundChart = new Chart(ctx, {
             type: 'doughnut',
             data: doughnutChartData,
             options: doughnutChartOption,
@@ -655,7 +679,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     billChart(billInfos: any): void {
-
         const buyPrice = [];
         const salesPrice = [];
         const date = [];
@@ -671,7 +694,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const ctx = document.getElementById('bill_chart');
         // @ts-ignore
-        const mixedChart = new Chart(ctx, {
+        this.billsChart = new Chart(ctx, {
             data: {
                 datasets: [{
                     type: 'line',
@@ -759,17 +782,17 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         document.getElementById('billbuy').addEventListener('click', () => {
             if (this.buybool) {
                 // false 라서 처음에 보인다
-                mixedChart.show(0);
+                this.billsChart.show(0);
             } else {
-                mixedChart.hide(0);
+                this.billsChart.hide(0);
             }
         });
         document.getElementById('billbuy').addEventListener('click', () => {
             if (!this.salbool) {
                 // truedlek
-                mixedChart.hide(1);
+                this.billsChart.hide(1);
             } else {
-                mixedChart.show(1);
+                this.billsChart.show(1);
             }
         });
     }
@@ -840,7 +863,8 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    stockChart(data: any): void {
+    stockChart(data: any, colors?: any): void {
+        let color;
         const unusedQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const acceptableQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const availQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
@@ -929,7 +953,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         const ctx = document.getElementById('stock_chart');
         // @ts-ignore
-        const mixedChart = new Chart(ctx, {
+        this.mixedChart = new Chart(ctx, {
             data: {
                 datasets: [{
                     type: 'bar',
@@ -938,15 +962,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.zCnt, acceptableQty.zCnt, availQty.zCnt],
                     fill: false,
                     borderColor: '#f1dcff',
-                    pointBackgroundColor: '#f1dcff',
                     hoverBackgroundColor: '#f1dcff',
                     backgroundColor: '#f1dcff',
                     hoverBorderColor: '#f1dcff',
-                    pointBorderColor: '#f1dcff',
-                    pointHoverBackgroundColor: '#f1dcff',
-                    pointHoverBorderColor: '#f1dcff',
                     borderWidth: 1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'bar',
@@ -955,15 +974,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.oCnt, acceptableQty.oCnt, availQty.oCnt],
                     fill: false,
                     borderColor: '#e2b9ff',
-                    pointBackgroundColor: '#e2b9ff',
                     hoverBackgroundColor: '#e2b9ff',
                     backgroundColor: '#e2b9ff',
                     hoverBorderColor: '#e2b9ff',
-                    pointBorderColor: '#e2b9ff',
-                    pointHoverBackgroundColor: '#e2b9ff',
-                    pointHoverBorderColor: '#e2b9ff',
                     borderWidth: 1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'bar',
@@ -972,15 +986,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.tCnt, acceptableQty.tCnt, availQty.tCnt],
                     fill: false,
                     borderColor: '#d195ff',
-                    pointBackgroundColor: '#d195ff',
                     hoverBackgroundColor: '#d195ff',
                     backgroundColor: '#d195ff',
                     hoverBorderColor: '#d195ff',
-                    pointBorderColor: '#d195ff',
-                    pointHoverBackgroundColor: '#d195ff',
-                    pointHoverBorderColor: '#d195ff',
                     borderWidth: 1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'bar',
@@ -989,15 +998,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.thCnt, acceptableQty.thCnt, availQty.thCnt],
                     fill: false,
                     borderColor: '#bd71ff',
-                    pointBackgroundColor: '#bd71ff',
                     hoverBackgroundColor: '#bd71ff',
                     backgroundColor: '#bd71ff',
                     hoverBorderColor: '#bd71ff',
-                    pointBorderColor: '#bd71ff',
-                    pointHoverBackgroundColor: '#bd71ff',
-                    pointHoverBorderColor: '#bd71ff',
                     borderWidth: 1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'bar',
@@ -1006,15 +1010,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.fCnt, acceptableQty.fCnt, availQty.fCnt],
                     fill: false,
                     borderColor: '#a648ff',
-                    pointBackgroundColor: '#a648ff',
                     hoverBackgroundColor: '#a648ff',
                     backgroundColor: '#a648ff',
                     hoverBorderColor: '#a648ff',
-                    pointBorderColor: '#a648ff',
-                    pointHoverBackgroundColor: '#a648ff',
-                    pointHoverBorderColor: '#a648ff',
                     borderWidth: 0.1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }, {
                     type: 'bar',
@@ -1023,15 +1022,10 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     data: [unusedQty.etcCnt, acceptableQty.etcCnt, availQty.etcCnt],
                     fill: false,
                     borderColor: '#8b00ff',
-                    pointBackgroundColor: '#8b00ff',
                     hoverBackgroundColor: '#8b00ff',
                     backgroundColor: '#8b00ff',
                     hoverBorderColor: '#8b00ff',
-                    pointBorderColor: '#8b00ff',
-                    pointHoverBackgroundColor: '#8b00ff',
-                    pointHoverBorderColor: '#8b00ff',
                     borderWidth: 0.1,
-                    pointBorderWidth: 0.1,
                     hoverBorderWidth: 0.1,
                 }],
                 labels: ['불용', '가납', '보유'],
@@ -1069,6 +1063,51 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         });
     }
+
+    colorChange(color: any): void {
+        let as;
+        let colors = [];
+        if (color.includes(',')) {
+            as = color.split(',');
+        }
+        for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
+            colors.push('rgb(' + (Number(as[0]) + (i * 30) + ', ' + (Number(as[1]) + (i * 30)) + ', ' + (Number(as[2]) + (i * 30)) + ')'));
+            this.mixedChart.data.datasets[i].borderColor = colors[i];
+            this.mixedChart.data.datasets[i].hoverBackgroundColor = colors[i];
+            this.mixedChart.data.datasets[i].backgroundColor = colors[i];
+            this.mixedChart.data.datasets[i].hoverBorderColor = colors[i];
+        }
+        for (let i = 0; i < this.billsChart.data.datasets.length; i++) {
+            this.billsChart.data.datasets[i].borderColor = colors[4];
+            this.billsChart.data.datasets[i].pointBackgroundColor = colors[4];
+            this.billsChart.data.datasets[i].hoverBackgroundColor = colors[4];
+            this.billsChart.data.datasets[i].backgroundColor = colors[4];
+            this.billsChart.data.datasets[i].hoverBorderColor = colors[4];
+            this.billsChart.data.datasets[i].pointBorderColor = colors[4];
+            this.billsChart.data.datasets[i].pointHoverBackgroundColor = colors[4];
+            this.billsChart.data.datasets[i].pointHoverBorderColor = colors[4];
+        }
+        this.inBoundChart.data.datasets[0].backgroundColor[1] = colors[3];
+        this.inBoundChart.data.datasets[0].hoverBorderColor[1] = colors[3];
+        this.inBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[3];
+        if(color === '166,72,255') {
+            this.ouBoundChart.data.datasets[0].backgroundColor[1] = '#9186D0';
+            this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = '#9186D0';
+            this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = '#9186D0';
+            this.style = 'background-color: #9186D0!important; color: #FFFFFF;';
+        } else {
+            this.ouBoundChart.data.datasets[0].backgroundColor[1] = colors[4];
+            this.ouBoundChart.data.datasets[0].hoverBorderColor[1] = colors[4];
+            this.ouBoundChart.data.datasets[0].hoverBackgroundColor[1] = colors[4];
+            this.style = 'background-color: '+colors[0]+'!important; color: #FFFFFF;';
+        }
+        this.styleTable = 'background-color: '+colors[5]+'!important; color: #FFFFFF;';
+        this.billsChart.update();
+        this.ouBoundChart.update();
+        this.inBoundChart.update();
+        this.mixedChart.update();
+    }
 }
+
 
 

@@ -147,15 +147,17 @@
                 <mat-icon [svgIcon]="'heroicons_outline:adjustments'"></mat-icon>
             </button>
             <div *ngIf="toggle" class="flex flex-col" style="position: absolute; top: 80%; left: 86.5%; background: white;">
-                <fuse-addscreen></fuse-addscreen>
+                <fuse-dashboards-color-change></fuse-dashboards-color-change>
                 <user-menu [showAvatar]="false"></user-menu>
+                <fuse-addscreen></fuse-addscreen>
                 <fuse-fullscreen></fuse-fullscreen>
                 <links></links>
                 <fuse-remoteControl></fuse-remoteControl>
             </div>
 
-            <fuse-addscreen *ngIf="!isMobile"></fuse-addscreen>
+            <fuse-dashboards-color-change *ngIf="!isMobile"></fuse-dashboards-color-change>
             <user-menu *ngIf="!isMobile" [showAvatar]="false"></user-menu>
+            <fuse-addscreen *ngIf="!isMobile"></fuse-addscreen>
             <!--<language></language>-->
             <fuse-fullscreen *ngIf="!isMobile"></fuse-fullscreen>
             <!--<search [appearance]="'bar'"></search>-->

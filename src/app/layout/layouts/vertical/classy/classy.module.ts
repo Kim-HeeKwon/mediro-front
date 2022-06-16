@@ -19,6 +19,7 @@ import {LinkModule} from '../../../common/link/link.module';
 import {FuseAddscreenModule} from '../../../../../@teamplat/components/addscreen/addscreen.module';
 import {FuseAnnouncementModule} from '../../../../../@teamplat/components/announcement/announcement.module';
 import {RemoteControlModule} from '../../../../../@teamplat/components/remoteControl /remoteControl.module';
+import {DashboardsColorChangeModule} from "../../../../../@teamplat/components/dashboards-color-change/dashboards-color-change.module";
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import {RemoteControlModule} from '../../../../../@teamplat/components/remoteCon
         LinkModule,
         FuseAnnouncementModule,
         RemoteControlModule,
+        DashboardsColorChangeModule,
     ],
     exports     : [
         ClassyLayoutComponent

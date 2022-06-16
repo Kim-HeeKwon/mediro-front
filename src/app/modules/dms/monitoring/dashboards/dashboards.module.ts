@@ -13,6 +13,7 @@ import {NgApexchartsModule} from 'ng-apexcharts';
 import {NgChartsModule} from 'ng2-charts';
 import {ProgressBarModule} from 'angular-progress-bar';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {DashboardsColorChangeModule} from "../../../../../@teamplat/components/dashboards-color-change/dashboards-color-change.module";
 
 const dashboardsRoutes: Route[] = [
     {
@@ -40,7 +41,8 @@ const dashboardsRoutes: Route[] = [
         NgApexchartsModule,
         NgChartsModule,
         ProgressBarModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        DashboardsColorChangeModule
     ]
 })
 export class DashboardsModule { }

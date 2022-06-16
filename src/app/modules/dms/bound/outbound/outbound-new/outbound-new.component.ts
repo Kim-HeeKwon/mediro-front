@@ -596,7 +596,11 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 autoFocus: false,
                 disableClose: true,
                 data: {
-                    account: this.outBoundHeaderForm.getRawValue().account
+                    account: this.outBoundHeaderForm.getRawValue().account,
+                    qty: '출고대상수량',
+                    price: '단가(VAT포함)',
+                    amt: '금액',
+                    buyPrice: 'salesPrice'
                 },
             });
 
@@ -636,7 +640,11 @@ export class OutboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 maxHeight: '80vh',
                 disableClose: true,
                 data: {
-                    account: this.outBoundHeaderForm.getRawValue().account
+                    account: this.outBoundHeaderForm.getRawValue().account,
+                    qty: '출고대상수량',
+                    price: '단가(VAT포함)',
+                    amt: '금액',
+                    buyPrice: 'salesPrice'
                 },
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {

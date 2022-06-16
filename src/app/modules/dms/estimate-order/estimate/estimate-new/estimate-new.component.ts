@@ -684,7 +684,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 autoFocus: false,
                 disableClose: true,
                 data: {
-                    account: this.estimateHeaderForm.getRawValue().account
+                    account: this.estimateHeaderForm.getRawValue().account,
+                    qty: '수량',
+                    price: '단가(VAT포함)',
+                    amt: '견적금액',
+                    buyPrice: 'salesPrice'
                 },
             });
 
@@ -715,7 +719,6 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         // {fieldName: 'qtPrice', dataType: ValueType.NUMBER},
                         // {fieldName: 'qtAmt', dataType: ValueType.NUMBER},
                         // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
-
                         const values = [
                             effectiveDate, '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
                             ex.unit, ex.itemGrade, 0, 0, 0, ''
@@ -734,7 +737,11 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                 maxHeight: '80vh',
                 disableClose: true,
                 data: {
-                    account: this.estimateHeaderForm.getRawValue().account
+                    account: this.estimateHeaderForm.getRawValue().account,
+                    qty: '수량',
+                    price: '단가(VAT포함)',
+                    amt: '견적금액',
+                    buyPrice: 'salesPrice'
                 },
             });
             const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {

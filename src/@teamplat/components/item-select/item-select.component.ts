@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CommonCode, FuseUtilsService} from "../../services/utils";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {CodeStore} from "../../../app/core/common-code/state/code.store";
 import {PopupStore} from "../../../app/core/common-popup/state/popup.store";
 import {Observable, Subject} from "rxjs";
@@ -24,7 +24,10 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
     isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.XSmall
     );
-
+    qty: string;
+    price: string;
+    amt: string;
+    buyPrice: string;
     formGroup: FormGroup;
     itemGrades: CommonCode[] = [];
     isLoading: boolean = false;
@@ -38,6 +41,9 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
     fields: DataFieldObject[] = [
         {fieldName: 'message', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
+        {fieldName: 'qty', dataType: ValueType.NUMBER},
+        {fieldName: 'price', dataType: ValueType.NUMBER},
+        {fieldName: 'amt', dataType: ValueType.NUMBER},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
         {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'refItemNm', dataType: ValueType.TEXT},
@@ -70,6 +76,18 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
         private _deviceService: DeviceDetectorService,
         private readonly breakpointObserver: BreakpointObserver
     ) {
+        if(data.qty) {
+            this.qty = data.qty;
+        }
+        if(data.price) {
+            this.price = data.price;
+        }
+        if(data.amt) {
+            this.amt = data.amt;
+        }
+        if(data.buyPrice) {
+            this.buyPrice = data.buyPrice;
+        }
         this.isMobile = this._deviceService.isMobile();
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
     }
@@ -118,7 +136,7 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
                     {
                         popUpId: 'P$_ALL_ITEM',
                         popUpHeaderText: '품목 조회',
-                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|fomlInfo:fomlInfo|refItemNm:refItemNm|' +
+                        popUpDataSet: 'itemCd:itemCd|itemNm:itemNm|price:'+ this.buyPrice +'|fomlInfo:fomlInfo|refItemNm:refItemNm|' +
                             'standard:standard|unit:unit|itemGrade:itemGrade|buyPrice:buyPrice' +
                             '|salesPrice:salesPrice|poQty:poQty|availQty:availQty',
                         where: [{
@@ -126,6 +144,27 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
                             replace: 'account:=:#{account}'
                         }]
                     }
+            },
+            {
+                name: 'qty', fieldName: 'qty', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: this.qty, styleName: 'center-cell-text red-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'price', fieldName: 'price', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: this.price, styleName: 'center-cell-text red-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'amt', fieldName: 'amt', type: 'data', width: '120', styleName: 'right-cell-text'
+                , header: {text: this.amt, styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
@@ -278,7 +317,7 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             //추가시
-            if (dataCell.dataColumn.fieldName === 'itemCd') {
+            if (dataCell.dataColumn.fieldName === 'itemCd' || dataCell.dataColumn.fieldName === 'qty' || dataCell.dataColumn.fieldName === 'price') {
                 ret.editable = true;
                 return ret;
             } else {
@@ -289,7 +328,7 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         setTimeout(() => {
             const values = [
-                '','','','','','','','',0,0,0,0,
+                '','',0,0,0,'','','','','','',0,0,0,0,
             ];
 
             this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
@@ -305,12 +344,35 @@ export class ItemSelectComponent implements OnInit, OnDestroy, AfterViewInit {
             // this.gridList.setFocus();
         },200);
 
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+            if (this.dataProvider.getOrgFieldName(field) === 'qty' ||
+                this.dataProvider.getOrgFieldName(field) === 'price') {
+                const that = this;
+                setTimeout(() => {
+                    const qty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.dataProvider,
+                        itemIndex, 'qty');
+                    const qtPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.dataProvider,
+                        itemIndex, 'price');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.dataProvider,
+                        itemIndex,
+                        'amt',
+                        qty * qtPrice);
+                }, 100);
+            }
+        });
+
         this._changeDetectorRef.markForCheck();
     }
 
     insertItem() {
         const values = [
-            '','','','','','','','',0,0,0,0,
+            '','',0,0,0,'','','','','','',0,0,0,0,
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
