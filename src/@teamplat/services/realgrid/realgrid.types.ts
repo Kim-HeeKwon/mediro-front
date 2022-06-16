@@ -23,5 +23,6 @@ export class Columns{
     widget?: object;
     mask?: any;
     datetimeFormat?: any;
+    textFormat?: any;
     numberFormat?: any;
 };
