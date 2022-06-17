@@ -38,6 +38,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('udiCode') refUdiCode: ElementRef;
     @ViewChild('udiDiCode') refUdiDiCode: ElementRef;
     @ViewChild('udiPiCode') refUdiPiCode: ElementRef;
+    @ViewChild('udiDirectCodes') refUdiDirectCode: ElementRef;
     // eslint-disable-next-line @typescript-eslint/member-ordering
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
@@ -182,7 +183,12 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             month: [''],
             suplyContStdmt: [''],
             active: [false],  // cell상태
-            udiScan: ['ALL']
+            udiScan: ['ALL'],
+            gtinDirect: [''],   // UDI NO
+            manufYmDirect: [''],   // 제조일자
+            useTmlmtDirect: [''],   // 유통기한
+            lotNoDirect: [''],   // LOT NO
+            itemSeqDirect: [''],   // 일련번호
         });
 
         this.searchForm.controls['year'].disable();
@@ -2016,6 +2022,399 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
 
+    udiDirectCode(): void {
+
+        let manufYm;
+        let useTmlmt;
+        let lotNo;
+        let itemSeq;
+        let stdCode;
+        let udiCode = this.searchForm.getRawValue().gtinDirect +
+            this.searchForm.getRawValue().manufYmDirect +
+            this.searchForm.getRawValue().useTmlmtDirect +
+            this.searchForm.getRawValue().lotNoDirect +
+            this.searchForm.getRawValue().itemSeqDirect;
+        let udi;
+
+        if (!this.searchForm.getRawValue().gtinDirect) {
+            setTimeout(() => {
+                this.searchForm.patchValue({'gtinDirect': ''});
+                this.searchForm.patchValue({'manufYmDirect': ''});
+                this.searchForm.patchValue({'useTmlmtDirect': ''});
+                this.searchForm.patchValue({'lotNoDirect': ''});
+                this.searchForm.patchValue({'itemSeqDirect': ''});
+                this.gridList1.clearSelection();
+            }, 100);
+            this.alert = {
+                type: 'error',
+                message: 'GTIN은 필수값 입니다.'
+            };
+            // Show the alert
+            this.showAlert = true;
+        } else {
+            if (this.searchForm.getRawValue().gtinDirect.length < 14) {
+                this.failAlert();
+                return;
+            }
+
+            const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+            if (check_kor.test(udiCode)) {
+                setTimeout(() => {
+                    this.searchForm.patchValue({'gtinDirect': ''});
+                    this.searchForm.patchValue({'manufYmDirect': ''});
+                    this.searchForm.patchValue({'useTmlmtDirect': ''});
+                    this.searchForm.patchValue({'lotNoDirect': ''});
+                    this.searchForm.patchValue({'itemSeqDirect': ''});
+                    this.gridList1.clearSelection();
+                }, 100);
+                // Set the alert
+                this.alert = {
+                    type: 'error',
+                    message: '한글은 입력할 수 없습니다.'
+                };
+                // Show the alert
+                this.showAlert = true;
+                return;
+            }
+
+            if(!this.searchForm.getRawValue().gtinDirect) {
+                stdCode = '';
+            } else {
+                stdCode = '(01)' + this.searchForm.getRawValue().gtinDirect;
+            }
+            if(!this.searchForm.getRawValue().manufYmDirect) {
+                manufYm = '';
+            } else {
+                manufYm = '(11)' + this.searchForm.getRawValue().manufYmDirect;
+                if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                    return;
+                }
+            }
+
+            if(!this.searchForm.getRawValue().useTmlmtDirect) {
+                useTmlmt = '';
+            } else {
+                useTmlmt = '(17)' + this.searchForm.getRawValue().useTmlmtDirect;
+                if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                    return;
+                }
+            }
+
+            if(!this.searchForm.getRawValue().lotNoDirect) {
+                lotNo = '';
+            } else {
+                lotNo = '(10)' + this.searchForm.getRawValue().lotNoDirect;
+            }
+
+            if(!this.searchForm.getRawValue().itemSeqDirect) {
+                itemSeq = '';
+            } else {
+                itemSeq = '(21)' + this.searchForm.getRawValue().itemSeqDirect;
+            }
+
+            udi = stdCode + manufYm + useTmlmt + lotNo + itemSeq;
+            if (stdCode === undefined) {
+                this.failAlert();
+                return;
+            } else {
+                const searchForm = {udiDiCode: stdCode.replace('(' + '01' + ')', '')};
+                this._inBoundScanService.getUdiDiCodeInfo(searchForm)
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((manages: any) => {
+                        this._functionService.cfn_loadingBarClear();
+                        this.alertMessage(manages);
+
+                        if (manages.data !== null) {
+
+                            const dataRows = this.gridList1DataProvider.searchDataRow({
+                                fields: ['medDevItemSeq', 'typeName']
+                                , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                            });
+                            let chk = this._realGridsService.gfn_GetRows(this.gridList1, this.gridList1DataProvider);
+                            chk = chk.filter((detail: any) =>
+                                (detail.medDevItemSeq === manages.data[0].meddevItemSeq))
+                                .map((param: any) => param);
+                            chk = chk.filter((detail: any) =>
+                                (detail.typeName === manages.data[0].typeName))
+                                .map((param: any) => param);
+
+                            if (chk.length > 0) {
+                                const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList1,
+                                    this.gridList1DataProvider,
+                                    dataRows, 'ibExpQty');
+                                let ibQty = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList1,
+                                    this.gridList1DataProvider,
+                                    dataRows, 'ibQty');
+                                ibQty += manages.data[0].convertedQty;
+                                if (ibExpQty >= ibQty) {
+                                    this.searchForm.patchValue({'stdCode': udi});
+                                    this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')', '')});
+                                    this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
+                                    this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
+                                    this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
+                                    this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
+
+                                    let useTmlmtUse = '-';
+                                    if (useTmlmt !== undefined) {
+                                        if (useTmlmt !== null) {
+
+                                            if (useTmlmt !== '') {
+                                                const now = new Date();
+                                                const nowDate = formatDate(new Date(now.setDate(now.getDate())), 'yyyy-MM-dd', 'en');
+                                                const nD = new Date(nowDate);
+                                                const nDDate = formatDate(new Date(nD.setDate(nD.getDate())), 'yyyy-MM-dd', 'en');
+                                                const useTmletCustom = useTmlmt.replace('(' + '17' + ')', '');
+                                                let yy;
+                                                if (useTmletCustom.substring(0, 2) === '00') {
+                                                    yy = '0000';
+                                                } else {
+                                                    yy = '20' + useTmletCustom.substring(0, 2);
+                                                }
+                                                const mm = useTmletCustom.substring(2, 4);
+                                                const dd = useTmletCustom.substring(4, 6);
+                                                let sD;
+                                                if (yy === '0000' && mm === '00' && dd === '00') {
+                                                    useTmlmtUse = '-';
+                                                } else if (yy === '0000') {
+                                                    useTmlmtUse = '만료';
+                                                } else if (mm === '00') {
+                                                    if (dd !== '00') {
+                                                        sD = new Date(yy + '-' + '12' + '-' + dd);
+                                                        if (nD > sD) {
+                                                            useTmlmtUse = '만료';
+                                                        } else {
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                            if (diff < 180) {
+                                                                useTmlmtUse = '위험';
+                                                            } else {
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    } else {
+                                                        let lastDay = new Date(yy, 12, 0);
+                                                        sD = new Date(yy + '-' + 12 + '-' + lastDay.getDate().valueOf());
+                                                        if (nD > sD) {
+                                                            useTmlmtUse = '만료';
+                                                        } else {
+                                                            const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                            if (diff < 180) {
+                                                                useTmlmtUse = '위험';
+                                                            } else {
+                                                                useTmlmtUse = '유효';
+                                                            }
+                                                        }
+                                                    }
+                                                } else if (dd === '00') {
+                                                    let lastDay = new Date(yy, mm, 0);
+                                                    sD = new Date(yy + '-' + mm + '-' + lastDay.getDate().valueOf());
+                                                    if (nD > sD) {
+                                                        useTmlmtUse = '만료';
+                                                    } else {
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if (diff < 180) {
+                                                            useTmlmtUse = '위험';
+                                                        } else {
+                                                            useTmlmtUse = '유효';
+                                                        }
+                                                    }
+                                                } else {
+                                                    sD = new Date(yy + '-' + mm + '-' + dd);
+                                                    if (nD > sD) {
+                                                        useTmlmtUse = '만료';
+                                                    } else {
+                                                        const diff = Math.abs((nD.getTime() - sD.getTime()) / (1000 * 3600 * 24));
+
+                                                        if (diff < 180) {
+                                                            useTmlmtUse = '위험';
+                                                        } else {
+                                                            useTmlmtUse = '유효';
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        useTmlmtUse = '-';
+                                    }
+                                    const values = [
+                                        manages.data[0].convertedQty,
+                                        useTmlmtUse,
+                                        chk[0].obNo, chk[0].obLineNo, chk[0].itemCd, chk[0].itemNm, manages.data[0].meddevItemSeq,
+                                        manages.data[0].seq,
+                                        manages.data[0].udiDiSeq,
+                                        manages.data[0].userSterilizationYn,
+                                        manages.data[0].kitYn,
+                                        chk[0].typeName, udi,
+                                        lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
+                                    ];
+
+                                    let rows = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
+
+                                    rows = rows.filter((detail: any) =>
+                                        (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                        .map((param: any) => param);
+
+                                    if (rows.length > 0) {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+
+                                        let sumQty = manages.data[0].convertedQty;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList1,
+                                            this.gridList1DataProvider,
+                                            dataRow, 'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
+
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow, 'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        }, 100);
+
+                                        const dataRow2 = this.gridList2DataProvider.searchDataRow({
+                                            fields: ['udiCode'],
+                                            values: [udi]
+                                        });
+                                        let sumQty2 = 1;
+                                        let qty2 = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList2,
+                                            this.gridList2DataProvider,
+                                            dataRow2, 'ibQty');
+                                        if (qty2 === undefined) {
+                                            qty2 = 0;
+                                        }
+                                        sumQty2 = sumQty2 + qty2;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList2,
+                                                this.gridList2DataProvider,
+                                                dataRow2,
+                                                'ibQty',
+                                                sumQty2);
+                                        }, 100);
+
+                                    } else {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+                                        let sumQty = manages.data[0].convertedQty;
+                                        const qty = this._realGridsService.gfn_CellDataGetRow(
+                                            this.gridList1,
+                                            this.gridList1DataProvider,
+                                            dataRow, 'ibQty');
+                                        sumQty = sumQty + qty;
+                                        setTimeout(() => {
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'ibQty',
+                                                sumQty);
+
+                                            const ibExpQty = this._realGridsService.gfn_CellDataGetRow(
+                                                this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow, 'ibExpQty');
+                                            this._realGridsService.gfn_CellDataSetRow(this.gridList1,
+                                                this.gridList1DataProvider,
+                                                dataRow,
+                                                'qty',
+                                                ibExpQty - sumQty);
+                                        }, 100);
+
+                                        this._realGridsService.gfn_AddRow(this.gridList2, this.gridList2DataProvider, values);
+                                    }
+                                    setTimeout(() => {
+                                        const dataRow = this.gridList1DataProvider.searchDataRow({
+                                            fields: ['medDevItemSeq', 'typeName']
+                                            , values: [manages.data[0].meddevItemSeq, manages.data[0].typeName]
+                                        });
+                                        this.gridList1.setSelection({
+                                            style: 'rows',
+                                            startRow: dataRow,
+                                            endRow: dataRow
+                                        });
+                                        this.searchForm.patchValue({'gtinDirect': ''});
+                                        this.searchForm.patchValue({'manufYmDirect': ''});
+                                        this.searchForm.patchValue({'useTmlmtDirect': ''});
+                                        this.searchForm.patchValue({'lotNoDirect': ''});
+                                        this.searchForm.patchValue({'itemSeqDirect': ''});
+                                    }, 100);
+
+                                    if (!this.barcodeYn) {
+                                        setTimeout(() => {
+                                            this.refUdiDirectCode.nativeElement.focus();
+                                            this._changeDetectorRef.markForCheck();
+                                        }, 100);
+                                    } else {
+                                        const dataRow = this.gridList2DataProvider.searchDataRow({
+                                            fields: ['udiCode'],
+                                            values: [udi]
+                                        });
+                                        //셀이동
+                                        //this.gridList2.setSelection({ style : 'rows', startRow : dataRow, endRow : dataRow });
+                                        setTimeout(() => {
+                                            this.refUdiDirectCode.nativeElement.blur();
+                                            this._changeDetectorRef.markForCheck();
+                                        }, 100);
+                                        const focusCell = this.gridList2.getCurrent();
+                                        focusCell.dataRow = dataRow;
+                                        focusCell.column = 'ibQty';
+                                        focusCell.fieldName = 'ibQty';
+                                        //포커스된 셀 변경
+                                        this.gridList2.setCurrent(focusCell);
+                                        const curr = this.gridList2.getCurrent();
+                                        this.gridList2.beginUpdateRow(curr.itemIndex);
+                                        this.gridList2.showEditor();
+                                        this.gridList2.setFocus();
+                                    }
+
+                                    this.showAlert = false;
+                                    this._changeDetectorRef.markForCheck();
+
+                                } else {
+                                    this.qtyFailAlert();
+                                }
+                            } else {
+                                setTimeout(() => {
+                                    this.gridList1.clearSelection();
+                                }, 100);
+                                this.alert = {
+                                    type: 'error',
+                                    message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
+                                };
+                                // Show the alert
+                                this.showAlert = true;
+                            }
+                        }
+
+                        // Mark for check
+                        this._changeDetectorRef.markForCheck();
+                    }, (err) => {
+                    });
+            }
+        }
+    }
+
     alertMessage(param: any): void {
         if (param.status !== 'SUCCESS') {
             this.alert = {
@@ -2065,12 +2464,17 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    failAlert() {
+    failAlert(): void {
 
         setTimeout(() => {
             this.searchForm.patchValue({'udiCode': ''});
             this.searchForm.patchValue({'udiDiCode': ''});
             this.searchForm.patchValue({'udiPiCode': ''});
+            this.searchForm.patchValue({'gtinDirect': ''});
+            this.searchForm.patchValue({'manufYmDirect': ''});
+            this.searchForm.patchValue({'useTmlmtDirect': ''});
+            this.searchForm.patchValue({'lotNoDirect': ''});
+            this.searchForm.patchValue({'itemSeqDirect': ''});
             this.gridList1.clearSelection();
         }, 100);
         // Set the alert
@@ -2082,7 +2486,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showAlert = true;
     }
 
-    focusSetting() {
+    focusSetting(): void {
         if (this.barcodeYn) {
             this.barcodeYn = false;
             setTimeout(() => {
@@ -2094,6 +2498,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 } else if(this.searchForm.getRawValue().udiScan === '0') {
                     if(this.udiDiPi) {
                         this.refUdiDiCode.nativeElement.focus();
+                        this._changeDetectorRef.markForCheck();
+                    }
+                } else if (this.searchForm.getRawValue().udiScan === '1') {
+                    if (this.udiDirect) {
+                        this.refUdiDirectCode.nativeElement.focus();
                         this._changeDetectorRef.markForCheck();
                     }
                 }
@@ -2110,6 +2519,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.refUdiDiCode.nativeElement.blur();
                         this._changeDetectorRef.markForCheck();
                     }
+                } else if (this.searchForm.getRawValue().udiScan === '1') {
+                    if (this.udiDirect) {
+                        this.refUdiDirectCode.nativeElement.blur();
+                        this._changeDetectorRef.markForCheck();
+                    }
                 }
             }, 100);
             this.barcodeYn = true;
@@ -2119,7 +2533,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     //입고 처리
-    inBound() {
+    inBound(): void {
 
         const confirmation = this._teamPlatConfirmationService.open({
             title: '입고',
@@ -2165,7 +2579,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    qtyFailAlert() {
+    qtyFailAlert(): void {
         // setTimeout(() => {
             // const snd =
             //     // eslint-disable-next-line max-len
@@ -2181,7 +2595,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showAlert = true;
     }
 
-    udiDiCodeScanDelete() {
+    udiDiCodeScanDelete(): void {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList2, this.gridList2DataProvider);
 
         if (checkValues.length < 1) {
@@ -2230,6 +2644,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiCode': ''});
             this.searchForm.patchValue({'udiDiCode': ''});
             this.searchForm.patchValue({'udiPiCode': ''});
+            this.searchForm.patchValue({'gtinDirect': ''});
+            this.searchForm.patchValue({'manufYmDirect': ''});
+            this.searchForm.patchValue({'useTmlmtDirect': ''});
+            this.searchForm.patchValue({'lotNoDirect': ''});
+            this.searchForm.patchValue({'itemSeqDirect': ''});
             this.udiAll = true;
             this.udiDiPi = false;
             this.udiDirect = false;
@@ -2246,6 +2665,11 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiCode': ''});
             this.searchForm.patchValue({'udiDiCode': ''});
             this.searchForm.patchValue({'udiPiCode': ''});
+            this.searchForm.patchValue({'gtinDirect': ''});
+            this.searchForm.patchValue({'manufYmDirect': ''});
+            this.searchForm.patchValue({'useTmlmtDirect': ''});
+            this.searchForm.patchValue({'lotNoDirect': ''});
+            this.searchForm.patchValue({'itemSeqDirect': ''});
             this.udiDiPi = true;
             this.udiAll = false;
             this.udiDirect = false;
@@ -2262,9 +2686,23 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchForm.patchValue({'udiCode': ''});
             this.searchForm.patchValue({'udiDiCode': ''});
             this.searchForm.patchValue({'udiPiCode': ''});
+            this.searchForm.patchValue({'gtinDirect': ''});
+            this.searchForm.patchValue({'manufYmDirect': ''});
+            this.searchForm.patchValue({'useTmlmtDirect': ''});
+            this.searchForm.patchValue({'lotNoDirect': ''});
+            this.searchForm.patchValue({'itemSeqDirect': ''});
             this.udiDiPi = false;
             this.udiAll = false;
             this.udiDirect = true;
+            if(this.udiDirect) {
+                setTimeout(() => {
+                    this.refUdiDirectCode.nativeElement.focus();
+                }, 200);
+            } else {
+                setTimeout(() => {
+                    this.refUdiDirectCode.nativeElement.blur();
+                }, 200);
+            }
         }
     }
 }

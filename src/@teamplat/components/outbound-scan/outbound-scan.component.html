@@ -167,14 +167,14 @@
                                     <div class="sm:col-span-2">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>스캔 유형</mat-label>
-                                                <mat-select (selectionChange)="selectUdiScan($event)"
-                                                    [formControlName]="'udiScan'">
-                                                    <ng-container *ngFor="let udiScan of udiScan">
-                                                        <mat-option [value]="udiScan.id">
-                                                            {{udiScan.name}}
-                                                        </mat-option>
-                                                    </ng-container>
-                                                </mat-select>
+                                            <mat-select (selectionChange)="selectUdiScan($event)"
+                                                        [formControlName]="'udiScan'">
+                                                <ng-container *ngFor="let udiScan of udiScan">
+                                                    <mat-option [value]="udiScan.id">
+                                                        {{udiScan.name}}
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiAll" class="sm:col-span-5">
@@ -195,7 +195,7 @@
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>
                                                 고유식별자(UDI-DI) 스캔
-<!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                                <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
                                             </mat-label>
                                             <input
                                                 #udiDiCode
@@ -209,7 +209,7 @@
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>
                                                 생산식별자(UDI-PI) 스캔
-<!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                                <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
                                             </mat-label>
                                             <input
                                                 #udiPiCode
@@ -221,47 +221,53 @@
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                            <mat-label>GTIN</mat-label>
+                                            <mat-label>GTIN(10)</mat-label>
                                             <input
-                                                class="barcode-bold"
+                                                #udiDirectCodes
                                                 matInput
-                                                [formControlName]="'gtin'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'gtinDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>제조일자(11)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'manufYm'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'manufYmDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>유통기한(17)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'useTmlmt'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'useTmlmtDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>Lot No.(10)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'lotNo'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'lotNoDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>일련번호(21)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'itemSeq'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'itemSeqDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div class="sm:col-span-1">

@@ -211,47 +211,53 @@
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
-                                            <mat-label>GTIN</mat-label>
+                                            <mat-label>GTIN(10)</mat-label>
                                             <input
-                                                class="barcode-bold"
+                                                #udiDirectCodes
                                                 matInput
-                                                [formControlName]="'gtin'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'gtinDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>제조일자(11)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'manufYm'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'manufYmDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>유통기한(17)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'useTmlmt'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'useTmlmtDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>Lot No.(10)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'lotNo'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'lotNoDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div *ngIf="udiDirect" class="sm:col-span-1">
                                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                             <mat-label>일련번호(21)</mat-label>
                                             <input
-                                                class="barcode-bold"
                                                 matInput
-                                                [formControlName]="'itemSeq'">
+                                                onfocus="this.select()"
+                                                (keydown.enter)="udiDirectCode()"
+                                                [formControlName]="'itemSeqDirect'">
                                         </mat-form-field>
                                     </div>
                                     <div class="sm:col-span-1">
