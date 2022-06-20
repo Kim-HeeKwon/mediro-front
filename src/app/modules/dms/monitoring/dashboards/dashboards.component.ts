@@ -865,8 +865,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    stockChart(data: any, colors?: any): void {
-        let color;
+    stockChart(data: any): void {
         const unusedQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const acceptableQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};
         const availQty = {etcCnt: 0, zCnt: 0, oCnt: 0, tCnt: 0, thCnt: 0, fCnt: 0};

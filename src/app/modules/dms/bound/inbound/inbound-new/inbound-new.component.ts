@@ -662,7 +662,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         const values = [
                             '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
-                            ex.unit, ex.itemGrade, 0, 0, ex.buyPrice, 0, '', '', '', '', '', '', '', '', '', '', ''
+                            ex.unit, ex.itemGrade, ex.qty, 0, ex.price, ex.amt, '', '', '', '', '', '', '', '', '', '', ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);
@@ -719,7 +719,7 @@ export class InboundNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         const values = [
                             '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
-                            ex.unit, ex.itemGrade, 0, 0, ex.buyPrice, 0, '', '', '', '', '', '', '', '', '', '', ''
+                            ex.unit, ex.itemGrade, ex.qty, 0, ex.price, ex.amt, '', '', '', '', '', '', '', '', '', '', ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.inBoundDetailDataProvider, values);

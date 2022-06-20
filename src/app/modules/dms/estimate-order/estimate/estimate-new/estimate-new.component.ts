@@ -721,7 +721,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
                         // {fieldName: 'remarkDetail', dataType: ValueType.TEXT},
                         const values = [
                             effectiveDate, '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
-                            ex.unit, ex.itemGrade, 0, 0, 0, ''
+                            ex.unit, ex.itemGrade, ex.qty, ex.price, ex.amt, ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);
@@ -778,7 +778,7 @@ export class EstimateNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         const values = [
                             effectiveDate, '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.refItemNm, ex.standard,
-                            ex.unit, ex.itemGrade, 0, 0, 0, ''
+                            ex.unit, ex.itemGrade, ex.qty, ex.price, ex.amt, ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.estimateDetailDataProvider, values);

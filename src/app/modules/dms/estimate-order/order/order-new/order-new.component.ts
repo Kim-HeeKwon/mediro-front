@@ -708,7 +708,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         const values = [
                             '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
-                            ex.unit, ex.itemGrade, ex.poQty, ex.availQty, 0, 0, ex.buyPrice, 0, ''
+                            ex.unit, ex.itemGrade, ex.poQty, ex.availQty, ex.qty, 0, ex.price, ex.amt, ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.orderDetailDataProvider, values);
@@ -757,7 +757,7 @@ export class OrderNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         const values = [
                             '', ex.itemCd, ex.itemNm, ex.fomlInfo, ex.standard,
-                            ex.unit, ex.itemGrade, ex.poQty, ex.availQty, 0, 0, ex.buyPrice, 0, ''
+                            ex.unit, ex.itemGrade, ex.poQty, ex.availQty, ex.qty, 0, ex.price, ex.amt, ''
                         ];
 
                         this._realGridsService.gfn_AddRow(this.gridList, this.orderDetailDataProvider, values);
