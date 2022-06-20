@@ -1306,11 +1306,19 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if(!this.searchForm.getRawValue().gtinDirect) {
                 stdCode = '';
+            } else if(this.searchForm.getRawValue().gtinDirect.includes('(01)')) {
+                stdCode = this.searchForm.getRawValue().gtinDirect;
             } else {
                 stdCode = '(01)' + this.searchForm.getRawValue().gtinDirect;
             }
             if(!this.searchForm.getRawValue().manufYmDirect) {
                 manufYm = '';
+            } else if(this.searchForm.getRawValue().manufYmDirect.includes('(11)')) {
+                manufYm = this.searchForm.getRawValue().manufYmDirect;
+                if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
+                    return;
+                }
             } else {
                 manufYm = '(11)' + this.searchForm.getRawValue().manufYmDirect;
                 if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
@@ -1321,6 +1329,12 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if(!this.searchForm.getRawValue().useTmlmtDirect) {
                 useTmlmt = '';
+            } else if(this.searchForm.getRawValue().useTmlmtDirect.includes('(17)')) {
+                useTmlmt = this.searchForm.getRawValue().useTmlmtDirect;
+                if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
+                    this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
+                    return;
+                }
             } else {
                 useTmlmt = '(17)' + this.searchForm.getRawValue().useTmlmtDirect;
                 if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
@@ -1331,12 +1345,16 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if(!this.searchForm.getRawValue().lotNoDirect) {
                 lotNo = '';
+            } else if(this.searchForm.getRawValue().lotNoDirect.includes('10')) {
+                lotNo = this.searchForm.getRawValue().lotNoDirect;
             } else {
                 lotNo = '(10)' + this.searchForm.getRawValue().lotNoDirect;
             }
 
             if(!this.searchForm.getRawValue().itemSeqDirect) {
                 itemSeq = '';
+            } else if(this.searchForm.getRawValue().itemSeqDirect.includes('(21)')) {
+                itemSeq = this.searchForm.getRawValue().itemSeqDirect;
             } else {
                 itemSeq = '(21)' + this.searchForm.getRawValue().itemSeqDirect;
             }

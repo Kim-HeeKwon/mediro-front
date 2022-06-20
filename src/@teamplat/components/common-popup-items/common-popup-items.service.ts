@@ -64,5 +64,6 @@ export class CommonPopupItemsService{
 
     setInitList(): void{
         this._getList.next(null);
+        this._pagenation.next(null);
     }
 }

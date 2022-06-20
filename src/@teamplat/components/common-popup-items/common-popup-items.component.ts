@@ -23,6 +23,8 @@ import {PopupStore} from '../../../app/core/common-popup/state/popup.store';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {FuseRealGridService} from '../../services/realgrid';
 import {Columns} from '../../services/realgrid/realgrid.types';
+import {EstimateHeaderPagenation} from "../../../app/modules/dms/estimate-order/estimate/estimate.types";
+import {FunctionService} from "../../services/function";
 
 export interface DisplayedColumn {
     id: string;
@@ -76,6 +78,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _realGridsService: FuseRealGridService,
         private _utilService: FuseUtilsService,
+        private _functionService: FunctionService,
         private _formBuilder: FormBuilder,
         private _popupService: CommonPopupItemsService,
         private _changeDetectorRef: ChangeDetectorRef,
@@ -178,6 +181,9 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellDblClicked = (grid, clickData) => {
             this._matDialogRef.close(grid.getValues(clickData.dataRow));
+            // this._matDialogRef.afterClosed().subscribe(() => {
+            //     this._popupService.setInitList();
+            // });
         };
         //페이지 라벨
         this._paginator._intl.itemsPerPageLabel = '';
@@ -231,7 +237,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
      */
     ngOnDestroy(): void {
         this.popupCount = 0;
-        this.pagenation = null;
+        // this.pagenation = null;
         this._popupService.setInitList();
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -254,7 +260,7 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     select(): void {
-        this.loading = true;
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.popupDataProvider, true);
         let whereVal;
         const curVal = this.searchForm.controls['type'].value;
         const textCond = this.searchForm.controls['searchText'].value;
@@ -294,9 +300,27 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.searchForm.patchValue({'asPopupCd': this.asPopupCd});
         this.searchForm.patchValue({'acWhereVal': whereVal});
-        this._popupService.getDynamicSql(0, 300, '', 'asc', this.searchForm.getRawValue());
+        const rtn = this._popupService.getDynamicSql(0, 300, '', 'asc', this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
+        // this.setGridData();
+    }
 
-        this.setGridData();
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.popupDataProvider, ex.estimateHeader);
+            this._popupService.getList$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((pagenation: PopupPagenation) => {
+                    // Update the pagination
+                    this.pagenation = pagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex._value.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.popupDataProvider, false);
+        });
     }
 
     getProperty(element, id: string): string {
@@ -317,8 +341,8 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
                 // Update the counts
                 if (gridList !== null) {
                     this._realGridsService.gfn_DataSetGrid(this.gridList, this.popupDataProvider, gridList);
-                    this.loading = false;
                 }
+                // this._realGridsService.gfn_GridLoadingBar(this.gridList, this.popupDataProvider, false);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
