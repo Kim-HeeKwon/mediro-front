@@ -626,7 +626,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.gridList2.setCellStyleCallback((grid, dataCell) => {
             const ret = {styleName: '', editable: false};
-            //console.log(dataCell.dataColumn.renderer);
             if (dataCell.dataColumn.fieldName === 'obQty') {
                 ret.editable = true;
             }
@@ -668,13 +667,9 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
 
             let noCode;
-            let lotNo;
-            let manufYm;
-            let useTmlmt;
-            let itemSeq;
             let stdCode;
 
-            if (udiCode.length < 17) {
+            if (udiCode.length < 16) {
                 this.failAlert();
                 return;
             }
@@ -694,78 +689,10 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-
-            if (!udiCode.includes('(')) {
-
-                try {
-                    let udiDiCode = udiCode.substring(0, 16);
-                    let udiPiCode = '';
-                    udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
-
-                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
-
-                    //값이 없을 때 까지
-                    while (cutUdiPiCode !== '') {
-
-                        if (cutUdiPiCode.substring(0, 2) === '11') {
-
-                            manufYm = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
-                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
-
-                        } else if (cutUdiPiCode.substring(0, 2) === '17') {
-
-                            useTmlmt = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 8);
-                            cutUdiPiCode = cutUdiPiCode.substring(8, cutUdiPiCode.length);
-
-                        } else if (cutUdiPiCode.substring(0, 2) === '10') {
-
-                            const len = cutUdiPiCode.length;
-
-                            if (len > 22) {
-                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
-                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
-                            } else {
-                                lotNo = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
-                                cutUdiPiCode = '';
-                            }
-
-                        } else if (cutUdiPiCode.substring(0, 2) === '21') {
-
-                            const len = cutUdiPiCode.length;
-
-                            if (len > 22) {
-                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, 22);
-                                cutUdiPiCode = cutUdiPiCode.substring(22, cutUdiPiCode.length);
-                            } else {
-                                itemSeq = '(' + cutUdiPiCode.substring(0, 2) + ')' + cutUdiPiCode.substring(2, cutUdiPiCode.length);
-                                cutUdiPiCode = '';
-                            }
-
-                        } else {
-                            break;
-                        }
-                    }
-
-                    if (lotNo === undefined) {
-                        lotNo = '';
-                    }
-                    if (itemSeq === undefined) {
-                        itemSeq = '';
-                    }
-                    if (manufYm === undefined) {
-                        manufYm = '';
-                    }
-                    if (useTmlmt === undefined) {
-                        useTmlmt = '';
-                    }
-
-                    udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
-                    udiCode = udiDiCode + udiPiCode;
-
-                } catch (e) {
-                    this.failAlert();
-                    return;
-                }
+            if(!udiCode.includes('(')) {
+                let udiDiCode = udiCode.substring(0, 16);
+                udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
+                udiCode = udiDiCode;
             }
 
             const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
@@ -861,7 +788,14 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     udiDiPiCode2($event): void {
-        let udiCode = this.searchForm.getRawValue().udiDiCode + $event.target.value;
+        let udiDiCodes;
+        let udiPiCodes = $event.target.value;
+        if(!this.searchForm.getRawValue().udiDiCode.includes('(')) {
+            udiDiCodes = '(' + this.searchForm.getRawValue().udiDiCode.substring(0, 2) + ')' + this.searchForm.getRawValue().udiDiCode.substring(2, 16);
+        } else {
+            udiDiCodes = this.searchForm.getRawValue().udiDiCode;
+        }
+        let udiCode = udiDiCodes + udiPiCodes;
         if (udiCode === '') {
 
         } else {
@@ -891,14 +825,10 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            if (!udiCode.includes('(')) {
-
+            if (!udiPiCodes.includes('(')) {
                 try {
-                    // let udiDiCode = udiCode.substring(0, 16);
                     let udiPiCode = '';
-                    // udiDiCode = '(' + udiDiCode.substring(0, 2) + ')' + udiDiCode.substring(2, 16);
-
-                    let cutUdiPiCode = udiCode.substring(16, udiCode.length);
+                    let cutUdiPiCode = udiPiCodes.substring(0, udiCode.length);
 
                     //값이 없을 때 까지
                     while (cutUdiPiCode !== '') {
@@ -956,7 +886,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
 
                     udiPiCode = manufYm + useTmlmt + lotNo + itemSeq;
-                    udiCode = this.searchForm.getRawValue().udiDiCode + udiPiCode;
+                    udiCode = udiDiCodes + udiPiCode;
 
                 } catch (e) {
                     this.failAlert();
@@ -1019,12 +949,12 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
 
-            if (this.searchForm.getRawValue().udiDiCode === undefined) {
+            if (udiDiCodes === undefined) {
                 this.failAlert();
                 return;
             } else {
 
-                const searchForm = {udiDiCode: this.searchForm.getRawValue().udiDiCode.replace('(' + '01' + ')', '')};
+                const searchForm = {udiDiCode: udiDiCodes.replace('(' + '01' + ')', '')};
 
                 this._outBoundScanService.getUdiDiCodeInfo(searchForm)
                     .pipe(takeUntil(this._unsubscribeAll))
@@ -1058,7 +988,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                 obQty += manages.data[0].convertedQty;
                                 if (obExpQty >= obQty) {
                                     this.searchForm.patchValue({'stdCode': udiCode});
-                                    this.searchForm.patchValue({'gtin': this.searchForm.getRawValue().udiDiCode.replace('(' + '01' + ')', '')});
+                                    this.searchForm.patchValue({'gtin': udiDiCodes.replace('(' + '01' + ')', '')});
                                     this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
                                     this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
                                     this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
@@ -1733,7 +1663,7 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             let itemSeq;
             let stdCode;
 
-            if (udiCode.length < 17) {
+            if (udiCode.length < 16) {
                 this.failAlert();
                 return;
             }
@@ -1948,7 +1878,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                     return;
                 }
             }
-            //console.log(udiCode);
 
             const list = ['(01)', '(11)', '(17)', '(10)', '(21)'];
             list.forEach((check: any) => {
@@ -2148,7 +2077,6 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                         chk[0].typeName, udiCode,
                                         lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
                                     ];
-                                    console.log(values);
 
                                     let rows = this._realGridsService.gfn_GetRows(this.gridList2, this.gridList2DataProvider);
 
