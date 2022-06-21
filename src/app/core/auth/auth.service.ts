@@ -120,6 +120,19 @@ export class AuthService
     }
 
     /**
+     * 정기결제 여부
+     */
+    set payFailYn(payFailYn: string)
+    {
+        localStorage.setItem('payFailYn', payFailYn);
+    }
+
+    get payFailYn(): string
+    {
+        return localStorage.getItem('payFailYn') ?? '';
+    }
+
+    /**
      * 버전
      */
     set version(token: string)
@@ -224,6 +237,7 @@ export class AuthService
                 this.userGroup = response.resultD.userType;
                 this.freeYn = response.resultD.freeYn;
                 this.payYn = response.resultD.payYn;
+                this.payFailYn = response.resultD.payFailYn;
                 this.version = response.resultD.version;
                 this.dashboardColor = response.resultD.dashboardColor;
                 // console.log(response.resultD.payYn);
@@ -264,6 +278,7 @@ export class AuthService
             'id'   : this.userId,
             'businessName'   : this.userBusinessName,
             'payYn'   : this.payYn,
+            'payFailYn'   : this.payFailYn,
             'version'   : this.version,
             'freeYn'   : this.freeYn,
             'dashboardColor'   : this.dashboardColor,
@@ -311,6 +326,7 @@ export class AuthService
         localStorage.removeItem('id');
         localStorage.removeItem('businessName');
         localStorage.removeItem('payYn');
+        localStorage.removeItem('payFailYn');
         localStorage.removeItem('freeYn');
         localStorage.removeItem('version');
         localStorage.removeItem('dashboardColor');

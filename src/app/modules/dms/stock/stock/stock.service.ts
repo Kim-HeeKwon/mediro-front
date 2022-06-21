@@ -227,7 +227,7 @@ export class StockService{
     {
         return this.rtnList$.pipe(
             take(1),
-            switchMap(products => this._common.sendListDataLoading(rtnList, '').pipe(
+            switchMap(products => this._common.sendListDataLoading(rtnList, 'v1/api/basicInfo/stock/upload-stock').pipe(
                 map((result) => {
                     if(result.status === 'SUCCESS'){
                     }

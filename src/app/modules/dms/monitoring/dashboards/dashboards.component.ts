@@ -289,7 +289,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        this._dashboardsService.getRecallItem();
+        //this._dashboardsService.getRecallItem();
 
         this.inChart();
         this.outChart();
@@ -953,116 +953,122 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.stockTotalPrice = totalPrice;
         }
         const ctx = document.getElementById('stock_chart');
-        // @ts-ignore
-        this.mixedChart = new Chart(ctx, {
-            data: {
-                datasets: [{
-                    type: 'bar',
-                    axis: 'y',
-                    label: '0등급',
-                    data: [unusedQty.zCnt, acceptableQty.zCnt, availQty.zCnt],
-                    fill: false,
-                    borderColor: '#f1dcff',
-                    hoverBackgroundColor: '#f1dcff',
-                    backgroundColor: '#f1dcff',
-                    hoverBorderColor: '#f1dcff',
-                    borderWidth: 1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    axis: 'y',
-                    label: '1등급',
-                    data: [unusedQty.oCnt, acceptableQty.oCnt, availQty.oCnt],
-                    fill: false,
-                    borderColor: '#e2b9ff',
-                    hoverBackgroundColor: '#e2b9ff',
-                    backgroundColor: '#e2b9ff',
-                    hoverBorderColor: '#e2b9ff',
-                    borderWidth: 1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    axis: 'y',
-                    label: '2등급',
-                    data: [unusedQty.tCnt, acceptableQty.tCnt, availQty.tCnt],
-                    fill: false,
-                    borderColor: '#d195ff',
-                    hoverBackgroundColor: '#d195ff',
-                    backgroundColor: '#d195ff',
-                    hoverBorderColor: '#d195ff',
-                    borderWidth: 1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    axis: 'y',
-                    label: '3등급',
-                    data: [unusedQty.thCnt, acceptableQty.thCnt, availQty.thCnt],
-                    fill: false,
-                    borderColor: '#bd71ff',
-                    hoverBackgroundColor: '#bd71ff',
-                    backgroundColor: '#bd71ff',
-                    hoverBorderColor: '#bd71ff',
-                    borderWidth: 1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    axis: 'y',
-                    label: '4등급',
-                    data: [unusedQty.fCnt, acceptableQty.fCnt, availQty.fCnt],
-                    fill: false,
-                    borderColor: '#a648ff',
-                    hoverBackgroundColor: '#a648ff',
-                    backgroundColor: '#a648ff',
-                    hoverBorderColor: '#a648ff',
-                    borderWidth: 0.1,
-                    hoverBorderWidth: 0.1,
-                }, {
-                    type: 'bar',
-                    axis: 'y',
-                    label: '기타등급',
-                    data: [unusedQty.etcCnt, acceptableQty.etcCnt, availQty.etcCnt],
-                    fill: false,
-                    borderColor: '#8b00ff',
-                    hoverBackgroundColor: '#8b00ff',
-                    backgroundColor: '#8b00ff',
-                    hoverBorderColor: '#8b00ff',
-                    borderWidth: 0.1,
-                    hoverBorderWidth: 0.1,
-                }],
-                labels: ['불용', '가납', '보유'],
-            },
-            options: {
-                // responsive: false,
-                maxBarThickness: 25,
-                plugins: {
-                    legend: {
-                        display: true,
-                        labels: {
-                            boxWidth: 8,
-                            font: {weight: 'bold', size: 11},
-                            color: '#8F95A0'
+        if(!this.mixedChart){
+            // @ts-ignore
+            this.mixedChart = new Chart(ctx, {
+                data: {
+                    datasets: [{
+                        type: 'bar',
+                        axis: 'y',
+                        label: '0등급',
+                        data: [unusedQty.zCnt, acceptableQty.zCnt, availQty.zCnt],
+                        fill: false,
+                        borderColor: '#f1dcff',
+                        hoverBackgroundColor: '#f1dcff',
+                        backgroundColor: '#f1dcff',
+                        hoverBorderColor: '#f1dcff',
+                        borderWidth: 1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        axis: 'y',
+                        label: '1등급',
+                        data: [unusedQty.oCnt, acceptableQty.oCnt, availQty.oCnt],
+                        fill: false,
+                        borderColor: '#e2b9ff',
+                        hoverBackgroundColor: '#e2b9ff',
+                        backgroundColor: '#e2b9ff',
+                        hoverBorderColor: '#e2b9ff',
+                        borderWidth: 1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        axis: 'y',
+                        label: '2등급',
+                        data: [unusedQty.tCnt, acceptableQty.tCnt, availQty.tCnt],
+                        fill: false,
+                        borderColor: '#d195ff',
+                        hoverBackgroundColor: '#d195ff',
+                        backgroundColor: '#d195ff',
+                        hoverBorderColor: '#d195ff',
+                        borderWidth: 1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        axis: 'y',
+                        label: '3등급',
+                        data: [unusedQty.thCnt, acceptableQty.thCnt, availQty.thCnt],
+                        fill: false,
+                        borderColor: '#bd71ff',
+                        hoverBackgroundColor: '#bd71ff',
+                        backgroundColor: '#bd71ff',
+                        hoverBorderColor: '#bd71ff',
+                        borderWidth: 1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        axis: 'y',
+                        label: '4등급',
+                        data: [unusedQty.fCnt, acceptableQty.fCnt, availQty.fCnt],
+                        fill: false,
+                        borderColor: '#a648ff',
+                        hoverBackgroundColor: '#a648ff',
+                        backgroundColor: '#a648ff',
+                        hoverBorderColor: '#a648ff',
+                        borderWidth: 0.1,
+                        hoverBorderWidth: 0.1,
+                    }, {
+                        type: 'bar',
+                        axis: 'y',
+                        label: '기타등급',
+                        data: [unusedQty.etcCnt, acceptableQty.etcCnt, availQty.etcCnt],
+                        fill: false,
+                        borderColor: '#8b00ff',
+                        hoverBackgroundColor: '#8b00ff',
+                        backgroundColor: '#8b00ff',
+                        hoverBorderColor: '#8b00ff',
+                        borderWidth: 0.1,
+                        hoverBorderWidth: 0.1,
+                    }],
+                    labels: ['불용', '가납', '보유'],
+                },
+                options: {
+                    // responsive: false,
+                    maxBarThickness: 25,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 8,
+                                font: {weight: 'bold', size: 11},
+                                color: '#8F95A0'
+                            },
                         },
                     },
-                },
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        display: false,
-                        stacked: true,
-                    },
-                    y: {
-                        stacked: true,
-                        ticks: {
-                            font: {
-                                size: 12,
-                                weight: 'bold'
-                            },
-                            color: '#8F95A0'
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            display: false,
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                color: '#8F95A0'
+                            }
                         }
                     }
-                }
-            },
-        });
+                },
+            });
+        }else{
+            console.log(this.mixedChart);
+            //개발해야함
+        }
+
     }
 
     colorChange(color: any): void {
@@ -1146,6 +1152,12 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.mixedChart.update();
         }
 
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    dashboardStock() {
+
+        this._dashboardsService.getDashboardStock();
     }
 }
 

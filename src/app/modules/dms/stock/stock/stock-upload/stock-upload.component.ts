@@ -29,12 +29,12 @@ export class StockUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     columns: Columns[];
     // @ts-ignore
     fields: DataFieldObject[] = [
-        {fieldName: 'errMsg', dataType: ValueType.TEXT}, // 에러 메시지
-        {fieldName: 'c001', dataType: ValueType.TEXT}, // 품목 코드
-        {fieldName: 'c002', dataType: ValueType.TEXT}, // 수량
-        {fieldName: 'c003', dataType: ValueType.TEXT}, // 유효기간
-        {fieldName: 'c004', dataType: ValueType.TEXT}, // 재조사 lot
-        {fieldName: 'c005', dataType: ValueType.TEXT}, // 사유
+        {fieldName: 'message', dataType: ValueType.TEXT}, // 에러 메시지
+        {fieldName: 'itemCd', dataType: ValueType.TEXT}, // 품목 코드
+        {fieldName: 'qty', dataType: ValueType.NUMBER}, // 수량
+        {fieldName: 'validity', dataType: ValueType.TEXT}, // 유효기간
+        {fieldName: 'lotNo', dataType: ValueType.TEXT}, // 재조사 lot
+        {fieldName: 'reason', dataType: ValueType.TEXT}, // 사유
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -62,42 +62,42 @@ export class StockUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
         this.columns = [
             {
-                name: 'errMsg', fieldName: 'errMsg', type: 'data', width: '300', styleName: 'left-cell-text'
+                name: 'message', fieldName: 'message', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '에러 메시지', styleName: 'center-cell-text black-font-color'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'c001', fieldName: 'c001', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'itemCd', fieldName: 'itemCd', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '품목코드', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'c002', fieldName: 'c002', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'qty', fieldName: 'qty', type: 'number', width: '120', styleName: 'left-cell-text'
                 , header: {text: '수량', styleName: 'center-cell-text red-font-color'},
                 renderer: {
                     showTooltip: true
-                }
+                }, numberFormat : '#,##0'
             },
             {
-                name: 'c003', fieldName: 'c003', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'validity', fieldName: 'validity', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '유효기간', styleName: 'center-cell-text black-font-color'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'c004', fieldName: 'c004', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'lotNo', fieldName: 'lotNo', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '제조사 lot', styleName: 'center-cell-text black-font-color'},
                 renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'c005', fieldName: 'c005', type: 'data', width: '120', styleName: 'left-cell-text'
+                name: 'reason', fieldName: 'reason', type: 'data', width: '120', styleName: 'left-cell-text'
                 , header: {text: '사유', styleName: 'center-cell-text black-font-color'},
                 renderer: {
                     showTooltip: true
@@ -152,16 +152,16 @@ export class StockUploadComponent implements OnInit, OnDestroy, AfterViewInit {
             const ret = {styleName: '', editable: false};
             if (dataCell.item.rowState === 'updated') {
 
-                const errMsg = grid.getValue(dataCell.index.itemIndex, 'errMsg');
+                const errMsg = grid.getValue(dataCell.index.itemIndex, 'message');
                 if (errMsg !== '') {
-                    if (dataCell.dataColumn.fieldName === 'errMsg') {
+                    if (dataCell.dataColumn.fieldName === 'message') {
                         ret.styleName = 'left-cell-text red-cell-color';
                     }
                 }
             }
 
             //추가시
-            if (dataCell.dataColumn.fieldName === 'errMsg') {
+            if (dataCell.dataColumn.fieldName === 'message') {
                 ret.editable = false;
                 return ret;
             } else {
@@ -179,8 +179,8 @@ export class StockUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 
             const focusCell = this.gridList.getCurrent();
             focusCell.dataRow = 0;
-            focusCell.column = 'c001';
-            focusCell.fieldName = 'c001';
+            focusCell.column = 'itemCd';
+            focusCell.fieldName = 'itemCd';
             //포커스된 셀 변경
             this.gridList.setCurrent(focusCell);
             const curr = this.gridList.getCurrent();
@@ -238,6 +238,7 @@ export class StockUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     alertMessage(param: any): void {
+        console.log(param);
         if (param.status === 'SUCCESS') {
             if(param.data.length > 0){
                 this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, param.data);

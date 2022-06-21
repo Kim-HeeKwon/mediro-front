@@ -328,6 +328,73 @@ export class SettingsPlanBillingComponent implements OnInit
         }
     }
 
+    saveCardInfo(): void
+    {
+        if(!this.planBillingForm.invalid){
+
+            this.planBillingForm.patchValue({'yearPay':this.yearlyBilling});
+            this.planBillingForm.patchValue({'mId':this._sessionStore.getValue().businessNumber});
+            //console.log()
+
+            const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
+                title: '',
+                message: '카드 정보를 변경하시겠습니까?',
+                icon: this._formBuilder.group({
+                    show: true,
+                    name: 'heroicons_outline:check',
+                    color: 'primary'
+                }),
+                actions: this._formBuilder.group({
+                    confirm: this._formBuilder.group({
+                        show: true,
+                        label: '변경',
+                        color: 'accent'
+                    }),
+                    cancel: this._formBuilder.group({
+                        show: true,
+                        label: '닫기'
+                    })
+                }),
+                dismissible: true
+            }).value);
+
+            confirmation.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                    if (result) {
+                        this._common.sendDataLoadingNoCancel(this.planBillingForm.getRawValue(),'/v1/api/payment/payment-basic-info-check-update')
+                            .subscribe((responseData: any) => {
+                                this._functionService.cfn_loadingBarClear();
+                                this.alertCheckMessage(responseData);
+                                if(responseData.data !== null){
+                                    const orderInfo = responseData.data[0];
+
+                                    localStorage.setItem('payYn', 'Y');
+                                    localStorage.setItem('freeYn', 'Y');
+                                    //window.location.reload();
+
+                                }
+
+                            });
+                    } else {
+                    }
+                });
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+
+
+        }else{
+            // Set the alert
+            this.alert = {
+                type   : 'error',
+                message: '성명(기업명), 카드번호, 유효기간 , CVC, 카드비밀번호, 생년월일 or 사업자번호를 입력해주세요.'
+            };
+
+            // Show the alert
+            this.showAlert = true;
+        }
+    }
+
     getBillingInfo(): void
     {
         const param = {
@@ -450,7 +517,6 @@ export class SettingsPlanBillingComponent implements OnInit
     alertCheckMessage(param: any, redirectUrl?: string): void
     {
         if(param.status !== 'SUCCESS'){
-
             const icon = 'information-circle';
             // Setup config form
             this.configForm = this._formBuilder.group({
@@ -459,7 +525,7 @@ export class SettingsPlanBillingComponent implements OnInit
                 icon       : this._formBuilder.group({
                     show : true,
                     name : 'heroicons_outline:' + icon,
-                    color: 'accent'
+                    color: 'warn'
                 }),
                 actions    : this._formBuilder.group({
                     confirm: this._formBuilder.group({

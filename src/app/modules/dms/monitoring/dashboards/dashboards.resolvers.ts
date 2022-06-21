@@ -33,7 +33,7 @@ export class DashboardsResolvers implements Resolve<any> {
                 //this._dashboardsService.getDashboardInfo2()
                 this._dashboardsService.getDashboardBill(),
                 this._dashboardsService.getDashboardUdi(),
-                this._dashboardsService.getDashboardStock(),
+                this._dashboardsService.getDashboardStockNull(),
             ]).then(
                 () => {
                     // @ts-ignore

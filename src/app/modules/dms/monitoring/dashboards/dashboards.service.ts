@@ -234,6 +234,25 @@ export class DashboardsService {
         return new Promise((resolve, reject) => {
             this._common.sendData(param, '/v1/api/dashboard/dashboard-stock')
                 .subscribe((response: any) => {
+                    this._stockInfo.next(response.data);
+                    resolve(response.data);
+                }, reject);
+        });
+    }
+
+    /**
+     * Post Stock
+     *
+     * @returns
+     */
+    getDashboardStockNull(): Observable<{order: any[]}> {
+
+        const param = {'name':'stock'};
+
+        // @ts-ignore
+        return new Promise((resolve, reject) => {
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-stock-null')
+                .subscribe((response: any) => {
                     //console.log(response);
                     this._stockInfo.next(response.data);
                     resolve(response.data);

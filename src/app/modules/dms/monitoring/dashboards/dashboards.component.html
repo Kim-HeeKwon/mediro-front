@@ -366,7 +366,9 @@
                  class="flex flex-col sm:col-span-2 flex-auto bg-card shadow rounded-md cursor-pointer overflow-hidden h-auto">
                 <div [ngClass]="{'my-tb' : isMobile}" class="flex flex-col">
                     <div class="text-7xl sm:text-8xl tracking-tight leading-none text-18s text-bold">
-                        <div class="text-center m-05">재고</div>
+                        <div class="text-center m-05">
+                            재고
+                        </div>
                     </div>
                     <hr style="margin: 0px !important; border-bottom-width: 2px;">
                 </div>
@@ -425,7 +427,7 @@
                             </canvas>
                         </div>
                     </div>
-                    <div [ngClass]="{'flex flex-col col-span-7 p-2': isMobile,
+                    <div [ngClass]="{'flex flex-col col-span-7 p-2 pb-10': isMobile,
                                     'flex flex-col w-full col-span-2': !isMobile}">
                         <table border="2" style="aborder: 2px solid #ffffff; width: 88%; height: 88%; margin: auto;">
                             <tr [style]="style">
@@ -463,6 +465,18 @@
                             </tr>
                             </tbody>
                         </table>
+                        <div style="text-align: center;">
+                            <button
+                                class="mt-2"
+                                style="margin: auto; width: 86%;"
+                                [style]="style"
+                                mat-flat-button
+                                [color]="'primary'"
+                                (click)="dashboardStock()">
+                                <mat-icon [svgIcon]="'heroicons_outline:search'"></mat-icon>
+                                <span class="ml-2 mr-1">재고 Analyze</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

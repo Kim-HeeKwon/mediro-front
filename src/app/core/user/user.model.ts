@@ -27,6 +27,7 @@ export interface User
     popBillId?: string;
     freeYn?: string;
     payYn?: string;
+    payFailYn?: string;
     version?: string;
     dashboardColor?: string;
 }

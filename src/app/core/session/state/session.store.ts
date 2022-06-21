@@ -25,6 +25,7 @@ export function createInitialState(): User {
         businessName: null,
         freeYn : null,
         payYn : null,
+        payFailYn: null,
         version: null,
         dashboardColor: null,
     };
