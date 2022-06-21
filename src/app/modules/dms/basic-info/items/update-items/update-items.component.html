@@ -6,7 +6,7 @@
             *ngIf="isLoading">
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
-        <div class="text-lg font-medium">품목 일괄 수정</div>
+        <div class="text-lg font-medium">품목 일괄 변경</div>
         <button
             mat-icon-button
             (click)="matDialogRef.close()"
@@ -34,7 +34,7 @@
                 [color]="'accent'"
                 (click)="updateItem()">
                 <mat-icon [svgIcon]="'file_upload'"></mat-icon>
-                <span class="ml-2 mr-1">일괄 수정</span>
+                <span class="ml-2 mr-1">일괄 변경</span>
             </button>
             <button
                 class="ml-2 mediro-btn-custom"

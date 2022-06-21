@@ -322,7 +322,7 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
         let detailCheck = false;
 
         if(rows.length < 1){
-            this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            this._functionService.cfn_alert('변경된 정보가 존재하지 않습니다.');
             detailCheck = true;
         }
         if (detailCheck) {

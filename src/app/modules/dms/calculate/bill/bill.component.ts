@@ -619,7 +619,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
 
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.billDataProvider);
         if(rows.length < 1){
-            this._functionService.cfn_alert('수정된 정보가 존재하지 않습니다.');
+            this._functionService.cfn_alert('변경된 정보가 존재하지 않습니다.');
             return;
         }
         let detailCheck = false;
@@ -628,7 +628,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         for (let i = 0; i < rows.length; i++) {
             console.log(rows[i].invoice);
             if (rows[i].invoice !== '' && rows[i].invoice !== null && rows[i].invoice !== undefined) {
-                this._functionService.cfn_alert('마감 정보는 수정할 수 없습니다.');
+                this._functionService.cfn_alert('마감 정보는 변경할 수 없습니다.');
                 detailCheck = true;
                 return;
             }

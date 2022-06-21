@@ -32,7 +32,6 @@ export class CommonPopupItemsService{
     }
     getDynamicSql(page: number = 0, size: number = 1000, sort: string = 'account', order: 'asc' | 'desc' | '' = 'asc', search: any = {}):
         Observable<{ pagenation: PopupPagenation; getList: any }>{
-
         const searchParam = {};
         searchParam['order'] = order;
         searchParam['sort'] = sort;
@@ -56,6 +55,7 @@ export class CommonPopupItemsService{
                     if(response.status === 'SUCCESS'){
                         this._getList.next(response.data);
                         this._pagenation.next(response.pageNation);
+                        console.log(response.pageNation);
                         resolve(this._getList);
                     }
                 }, reject);

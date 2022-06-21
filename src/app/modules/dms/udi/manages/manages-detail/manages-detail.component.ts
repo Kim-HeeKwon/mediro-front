@@ -300,7 +300,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             if(!this.selectedForm.invalid){
                 const confirmation = this._teamPlatConfirmationService.open({
                     title  : '',
-                    message: '수정하시겠습니까?',
+                    message: '변경하시겠습니까?',
                     actions: {
                         confirm: {
                             label: '확인'
@@ -351,7 +351,7 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
                 && this.selectedForm.getRawValue().suplyQty !== '') {
                 const confirmation = this._teamPlatConfirmationService.open({
                     title  : '',
-                    message: '수정하시겠습니까?',
+                    message: '변경하시겠습니까?',
                     actions: {
                         confirm: {
                             label: '확인'

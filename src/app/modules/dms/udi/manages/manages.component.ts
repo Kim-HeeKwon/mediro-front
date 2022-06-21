@@ -458,7 +458,7 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
     suplyUpdate() {
         const checkValues = this._realGridsService.gfn_GetCheckRows(this.gridList, this.managesDataProvider);
         if (checkValues.length < 1) {
-            this._functionService.cfn_alert('수정 대상을 선택해주세요.');
+            this._functionService.cfn_alert('변경 대상을 선택해주세요.');
             return;
         } else {
             const confirmation = this._teamPlatConfirmationService.open({

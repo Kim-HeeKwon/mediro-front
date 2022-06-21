@@ -408,7 +408,7 @@ export class SafetyComponent implements OnInit, OnDestroy, AfterViewInit {
         const rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.safetyDataProvider);
         let detailCheck = false;
         if (rows.length === 0) {
-            this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+            this._functionService.cfn_alert('변경된 행이 존재하지 않습니다.');
             detailCheck = true;
         }
 

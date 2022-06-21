@@ -186,7 +186,7 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const confirmation = this._teamPlatConfirmationService.open({
             title: '',
-            message: '일괄 수정 하시겠습니까?',
+            message: '일괄 변경 하시겠습니까?',
             actions: {
                 confirm: {
                     label: '확인'
@@ -262,7 +262,7 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '품목 일괄 수정');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '품목 일괄 변경');
     }
 
     updateInsertItem() {

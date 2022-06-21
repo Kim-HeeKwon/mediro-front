@@ -421,7 +421,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         checkValues.forEach((r) => {
             if(r.withdrawalFlag === 'Y'){
 
-                this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
+                this._functionService.cfn_alert('마감된 내역은 변경 및 삭제할 수 없습니다.');
                 this.selectHeader();
                 return;
             }
@@ -440,13 +440,13 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         let detailCheck = false;
 
         if (rows.length === 0) {
-            this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+            this._functionService.cfn_alert('변경된 행이 존재하지 않습니다.');
             detailCheck = true;
         }
         rows.forEach((r) => {
             if(r.withdrawalFlag === 'Y'){
 
-                this._functionService.cfn_alert('마감된 내역은 수정 및 삭제할 수 없습니다.');
+                this._functionService.cfn_alert('마감된 내역은 변경 및 삭제할 수 없습니다.');
                 detailCheck = true;
             }
         });

@@ -347,5 +347,6 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
     }
 }
