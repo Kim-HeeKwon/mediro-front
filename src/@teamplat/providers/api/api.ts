@@ -979,6 +979,36 @@ export class Api {
                 // }
             }
         }
+
+        if(this._sessionStore.getValue().payFailYn !== undefined){
+            if(this._sessionStore.getValue().payFailYn === 'Y'){
+                check = false;
+                const confirmation = this._teamPlatConfirmationService.open({
+                    title: '',
+                    message: '카드 정보가 유효하지 않아 결제가 이뤄지지 않았습니다. <br> 카드 정보를 변경해주세요.',
+                    actions: {
+                        confirm: {
+                            show : true,
+                            label: '정기 서비스 이동(카드 정보 변경)'
+                        },
+                        cancel : {
+                            show : true,
+                            label: '닫기'
+                        }
+                    }
+                });
+                confirmation.afterClosed()
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe((result) => {
+                        if (result) {
+                            this._matDialog.closeAll();
+                            this._router.navigateByUrl('/pages/settings');
+                            // Show the alert
+                        }
+                    });
+            }
+        }
+
         return check;
 
     }

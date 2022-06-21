@@ -286,6 +286,7 @@ export class SettingsPlanBillingComponent implements OnInit
 
                                     localStorage.setItem('payYn', 'Y');
                                     localStorage.setItem('freeYn', 'Y');
+                                    localStorage.setItem('payFailYn', 'N');
                                     window.location.reload();
 
                                     // loadTossPayments(environment.tossClientKey).then((tossPayments) => {
@@ -371,7 +372,8 @@ export class SettingsPlanBillingComponent implements OnInit
 
                                     localStorage.setItem('payYn', 'Y');
                                     localStorage.setItem('freeYn', 'Y');
-                                    //window.location.reload();
+                                    localStorage.setItem('payFailYn', 'N');
+                                    window.location.reload();
 
                                 }
 
