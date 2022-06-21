@@ -172,6 +172,7 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.incomeOutcomeBasicDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeBasicDataProvider, true);
                     const rtn = this._incomeOutcomeService.getBasic(this.incomeOutcomeBasicPagenation.page, this.incomeOutcomeBasicPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -322,6 +323,7 @@ export class IncomeOutcomeBasicComponent implements OnInit, OnDestroy, AfterView
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.incomeOutcomeBasicDataProvider, true);
         const rtn = this._incomeOutcomeService.getBasic(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

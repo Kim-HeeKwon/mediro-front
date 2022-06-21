@@ -16,7 +16,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
     Estimate,
     EstimateDetail,
-    EstimateDetailPagenation, EstimateHeaderPagenation
+    EstimateDetailPagenation
 } from '../estimate.types';
 import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../../@teamplat/services/realgrid/realgrid.types';
@@ -32,6 +32,7 @@ import {map, switchMap, takeUntil} from 'rxjs/operators';
 import {CommonReportComponent} from '../../../../../../@teamplat/components/common-report';
 import {ReportHeaderData} from '../../../../../../@teamplat/components/common-report/common-report.types';
 import {formatDate} from "@angular/common";
+
 @Component({
     selector: 'app-dms-estimate-detail',
     templateUrl: './estimate-detail.component.html',
@@ -143,8 +144,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 this._activatedRoute.snapshot.paramMap['params']
             );
 
-            this.estimateHeaderForm.patchValue({'qtAmt' :
-                    this.priceToString(this._activatedRoute.snapshot.paramMap['params'].qtAmt)});
+            this.estimateHeaderForm.patchValue({
+                'qtAmt':
+                    this.priceToString(this._activatedRoute.snapshot.paramMap['params'].qtAmt)
+            });
 
             this._estimateService.getDetail(0, 100, 'qtLineNo', 'asc', this.estimateHeaderForm.getRawValue());
         }
@@ -652,12 +655,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 } else {
                     sendData[i].deliveryDate = this.estimateHeaderForm.controls['deliveryDate'].value;
                 }
-                if(this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
+                if (this.estimateHeaderForm.getRawValue().qtDate.value === '' ||
                     this.estimateHeaderForm.getRawValue().qtDate === undefined ||
                     this.estimateHeaderForm.getRawValue().qtDate === null ||
-                    this.estimateHeaderForm.getRawValue().qtDate === ''){
+                    this.estimateHeaderForm.getRawValue().qtDate === '') {
                     sendData[i].qtDate = '';
-                }else{
+                } else {
                     sendData[i].qtDate = this.estimateHeaderForm.controls['qtDate'].value;
                 }
             }
@@ -707,7 +710,17 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._estimateService.getDetail(this._estimateDetailPagenator.pageIndex, this._estimateDetailPagenator.pageSize, 'qtLineNo', this.orderBy, this.estimateHeaderForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.estimateDetailDataProvider, true);
+        const rtn = this._estimateService.getDetail(this._estimateDetailPagenator.pageIndex, this._estimateDetailPagenator.pageSize, 'qtLineNo', this.orderBy, this.estimateHeaderForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            if(ex._value) {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.estimateDetailDataProvider, false);
+            }
+        });
     }
 
     setGridData(): void {

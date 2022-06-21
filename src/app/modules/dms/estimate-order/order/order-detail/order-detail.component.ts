@@ -715,7 +715,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._orderService.getDetail(this._orderDetailPagenator.pageIndex, this._orderDetailPagenator.pageSize, 'poLineNo', this.orderBy, this.orderHeaderForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.orderDetailDataProvider, true);
+        const rtn = this._orderService.getDetail(this._orderDetailPagenator.pageIndex, this._orderDetailPagenator.pageSize, 'poLineNo', this.orderBy, this.orderHeaderForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            if(ex._value) {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.orderDetailDataProvider, false);
+            }
+        });
     }
 
     alertMessage(param: any): void {

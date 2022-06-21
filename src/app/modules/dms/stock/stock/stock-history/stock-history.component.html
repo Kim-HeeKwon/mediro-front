@@ -117,10 +117,11 @@
     </div>
     <mat-paginator
         class="sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-        [ngClass]="{'pointer-events-none': isLoading}"
+        [ngClass]="{'pointer-events-none': false}"
         [length]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.length"
         [pageIndex]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.page"
         [pageSize]="stockHistoryPagenation === null ? 0 : stockHistoryPagenation.size"
         [pageSizeOptions]="[40, 60, 80, 100, 120]"
+        (page)="pageEvent($event)"
         [showFirstLastButtons]="true"></mat-paginator>
 </div>

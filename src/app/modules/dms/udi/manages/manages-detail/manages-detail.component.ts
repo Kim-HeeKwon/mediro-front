@@ -132,8 +132,6 @@ export class ManagesDetailComponent implements OnInit, OnDestroy
             active: [false]  // cell상태
         });
 
-        console.log(this.data);
-
         if(this.data !== (null || undefined)){
             this.selectedForm.patchValue(
                 this.data

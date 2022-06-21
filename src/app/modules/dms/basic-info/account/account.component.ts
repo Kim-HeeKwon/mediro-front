@@ -390,6 +390,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.accountDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.accountDataProvider, true);
                     const rtn = this._accountService.getAccount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -499,6 +500,7 @@ export class AccountComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.accountDataProvider, true);
         const rtn = this._accountService.getAccount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

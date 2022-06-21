@@ -222,6 +222,7 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
+        this._stockService.stockHistoryDestory();
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -230,18 +231,23 @@ export class StockHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectStockHistory(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockHistoryProvider, true);
-
         const rtn = this._stockService.getStockHistory(0, 40, 'seq', 'desc', this.stockHistoryForm.getRawValue());
-
         this.selectCallBack(rtn);
 
     }
 
+    //페이징
+    pageEvent($event: PageEvent): void {
+        // eslint-disable-next-line max-len
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockHistoryProvider, true);
+        const rtn = this._stockService.getStockHistory(this._stockHistoryPagenator.pageIndex, this._stockHistoryPagenator.pageSize, 'seq', this.orderBy, this.stockHistoryForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
-
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.stockHistoryProvider, ex.stockHistory);
-            this._stockService.stockPagenation$
+            this._stockService.stockHistoryPagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((stockHistoryPagenation: StockHistoryPagenation) => {
                     // Update the pagination

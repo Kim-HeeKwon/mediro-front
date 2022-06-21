@@ -208,8 +208,11 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._acceptableService.getDetail(this.acceptableDetailPagenation.page, this.acceptableDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.acceptableDetailDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDetailDataProvider, true);
+                    const rtn = this._acceptableService.getDetail(this.acceptableDetailPagenation.page, this.acceptableDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {
@@ -362,6 +365,7 @@ export class AcceptableDetailComponent implements OnInit, OnDestroy, AfterViewIn
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.acceptableDetailDataProvider, true);
         const rtn = this._acceptableService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

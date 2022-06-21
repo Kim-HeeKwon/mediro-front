@@ -579,7 +579,17 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._outboundService.getDetail(this._outBoundDetailPagenator.pageIndex, this._outBoundDetailPagenator.pageSize, 'obLineNo', this.orderBy, this.outBoundHeaderForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, true);
+        const rtn = this._outboundService.getDetail(this._outBoundDetailPagenator.pageIndex, this._outBoundDetailPagenator.pageSize, 'obLineNo', this.orderBy, this.outBoundHeaderForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            if(ex._value) {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, false);
+            }
+        });
     }
 
     alertMessage(param: any): void {

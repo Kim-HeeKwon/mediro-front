@@ -364,7 +364,8 @@ export class ItemPriceHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
     //페이징
     pageEvent($event: PageEvent): void {
-
-        this._itemPriceService.getHistory(this._paginator.pageIndex, this._paginator.pageSize, 'seq', this.orderBy, this.itemPriceHistoryForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceHistoryDataProvider, true);
+        const rtn = this._itemPriceService.getHistory(this._paginator.pageIndex, this._paginator.pageSize, 'seq', this.orderBy, this.itemPriceHistoryForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 }

@@ -195,6 +195,11 @@ export class StockService{
         });
     }
 
+    stockHistoryDestory(): void {
+        this._stockHistorys.next(null);
+        this._stockHistoryPagenation.next(null);
+    }
+
     /**
      *
      * @param manages

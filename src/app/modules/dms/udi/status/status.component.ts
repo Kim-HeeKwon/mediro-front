@@ -16,6 +16,8 @@ import {FuseRealGridService} from '../../../../../@teamplat/services/realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {map, switchMap, takeUntil} from 'rxjs/operators';
 import * as moment from 'moment';
+import {EstimateHeaderPagenation} from "../../estimate-order/estimate/estimate.types";
+import {StockHistoryPagenation} from "../../stock/stock/stock.types";
 
 @Component({
     selector: 'dms-supply-status',
@@ -316,7 +318,9 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
             if (clickData.cellType === 'header') {
                 if (clickData.cellType !== 'head') {
                     // eslint-disable-next-line max-len
-                    this._statusService.getHeader(this.supplyStatusPagenation.page, this.supplyStatusPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.suplyDataProvider, true);
+                    const rtn = this._statusService.getHeader(this.supplyStatusPagenation.page, this.supplyStatusPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
                 }
             }
             if (this.orderBy === 'asc') {
@@ -440,12 +444,32 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-        this._statusService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'serialkey', this.orderBy, this.searchForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.suplyDataProvider, true);
+        const rtn = this._statusService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'serialkey', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     enter(event): void {
         if (event.keyCode === 13) {
             this.selectHeader();
         }
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.suplyDataProvider, ex.estimateHeader);
+            this._statusService.suppleyStatusPagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((suppleyStatusPagenation: SupplyStatusPagenation) => {
+                    // Update the pagination
+                    this.supplyStatusPagenation = suppleyStatusPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex._value.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.suplyDataProvider, false);
+        });
     }
 }

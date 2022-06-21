@@ -226,8 +226,11 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._validityService.getDetail(this.validityDetailPagenation.page, this.validityDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.validityDetailDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDetailDataProvider, true);
+                    const rtn = this._validityService.getDetail(this.validityDetailPagenation.page, this.validityDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {
@@ -382,6 +385,7 @@ export class ValidityDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDetailDataProvider, true);
         const rtn = this._validityService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

@@ -259,6 +259,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.udiCodeDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeDataProvider, true);
                     const rtn = this._udiCodeService.getUdiCodes(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -409,6 +410,7 @@ export class UdiCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.udiCodeDataProvider, true);
         const rtn = this._udiCodeService.getUdiCodes(this._paginator.pageIndex, this._paginator.pageSize, 'itemCd', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

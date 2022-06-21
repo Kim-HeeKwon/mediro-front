@@ -329,8 +329,9 @@ export class CommonPopupItemsComponent implements OnInit, OnDestroy, AfterViewIn
 
     //페이징
     pageEvent($event: PageEvent): void {
-
-        this._popupService.getDynamicSql(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.popupDataProvider, true);
+        const rtn = this._popupService.getDynamicSql(this._paginator.pageIndex, this._paginator.pageSize, '', this.orderBy, this.searchForm.getRawValue());
+        this.selectCallBack(rtn);
     }
 
     setGridData(): void {

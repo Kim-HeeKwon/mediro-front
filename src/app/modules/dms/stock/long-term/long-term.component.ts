@@ -342,6 +342,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.longTermDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDataProvider, true);
                     const rtn = this._longTermService.getHeader(this.longTermPagenation.page, this.longTermPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -382,6 +383,7 @@ export class LongTermComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDataProvider, true);
         const rtn = this._longTermService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

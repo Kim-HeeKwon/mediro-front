@@ -359,6 +359,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.stockDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockDataProvider, true);
                     const rtn = this._stockService.getHeader(this.stockPagenation.page, this.stockPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -510,6 +511,7 @@ export class StockComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.stockDataProvider, true);
         const rtn = this._stockService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

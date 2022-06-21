@@ -286,6 +286,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.withdrawalDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.withdrawalDataProvider, true);
                     const rtn = this._withdrawalService.getHeader(this.withdrawalPagenation.page, this.withdrawalPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -370,6 +371,7 @@ export class WithdrawalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.withdrawalDataProvider, true);
         const rtn = this._withdrawalService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'withdrawalDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

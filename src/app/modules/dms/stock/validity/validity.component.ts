@@ -377,6 +377,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.validityDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDataProvider, true);
                     const rtn = this._validityService.getHeader(this.validityPagenation.page, this.validityPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -425,6 +426,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.validityDataProvider, true);
         const rtn = this._validityService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'itemNm', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

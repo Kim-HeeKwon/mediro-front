@@ -286,6 +286,7 @@ export class DepositComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.depositDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.depositDataProvider, true);
                     const rtn = this._depositService.getHeader(this.depositPagenation.page, this.depositPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -362,6 +363,7 @@ export class DepositComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.depositDataProvider, true);
         const rtn = this._depositService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'depositDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

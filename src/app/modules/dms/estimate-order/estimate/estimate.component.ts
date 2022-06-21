@@ -629,7 +629,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
-
         this.searchSetValue();
         const rtn = this._estimateService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'qtNo', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
@@ -794,7 +793,6 @@ export class EstimateComponent implements OnInit, OnDestroy, AfterViewInit {
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
-
             ex.estimateHeader.forEach((data) => {
                 if(data.cellPhoneNumber === 0){
                     data.cellPhoneNumber = '';

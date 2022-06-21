@@ -26,7 +26,6 @@ import RealGrid, {DataFieldObject, ValueType} from 'realgrid';
 import {Columns} from '../../../../../@teamplat/services/realgrid/realgrid.types';
 import {ItemPriceHistoryComponent} from './item-price-history/item-price-history.component';
 import {FunctionService} from '../../../../../@teamplat/services/function';
-import {InventoryPagination} from "../items/items.types";
 
 @Component({
     selector: 'dms-app-item-price',
@@ -297,6 +296,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.itemPriceDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceDataProvider, true);
                     const rtn = this._itemPriceService.getHeader(this.itemPricePagenation.page, this.itemPricePagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -509,6 +509,7 @@ export class ItemPriceComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemPriceDataProvider, true);
         const rtn = this._itemPriceService.getHeader(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

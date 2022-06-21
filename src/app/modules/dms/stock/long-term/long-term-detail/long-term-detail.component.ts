@@ -230,8 +230,11 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._longTermService.getDetail(this.longTermDetailPagenation.page, this.longTermDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.longTermDetailDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDetailDataProvider, true);
+                    const rtn = this._longTermService.getDetail(this.longTermDetailPagenation.page, this.longTermDetailPagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {
@@ -386,6 +389,7 @@ export class LongTermDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.longTermDetailDataProvider, true);
         const rtn = this._longTermService.getDetail(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

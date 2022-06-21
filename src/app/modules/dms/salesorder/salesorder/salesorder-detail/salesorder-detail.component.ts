@@ -529,7 +529,17 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._salesorderService.getDetail(this._salesorderDetailPagenator.pageIndex, this._salesorderDetailPagenator.pageSize, 'soLineNo', this.orderBy, this.salesorderHeaderForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.salesorderDetailDataProvider, true);
+        const rtn = this._salesorderService.getDetail(this._salesorderDetailPagenator.pageIndex, this._salesorderDetailPagenator.pageSize, 'soLineNo', this.orderBy, this.salesorderHeaderForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            if(ex._value) {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.salesorderDetailDataProvider, false);
+            }
+        });
     }
 
     alertMessage(param: any): void {

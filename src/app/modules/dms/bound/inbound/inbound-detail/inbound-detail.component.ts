@@ -665,7 +665,17 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
     //페이징
     pageEvent($event: PageEvent): void {
         // eslint-disable-next-line max-len
-        this._inboundService.getDetail(this._inBoundDetailPagenator.pageIndex, this._inBoundDetailPagenator.pageSize, 'ibLineNo', this.orderBy, this.inBoundHeaderForm.getRawValue());
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.inBoundDetailDataProvider, true);
+        const rtn = this._inboundService.getDetail(this._inBoundDetailPagenator.pageIndex, this._inBoundDetailPagenator.pageSize, 'ibLineNo', this.orderBy, this.inBoundHeaderForm.getRawValue());
+        this.selectCallBack(rtn);
+    }
+
+    selectCallBack(rtn: any): void {
+        rtn.then((ex) => {
+            if(ex._value) {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.inBoundDetailDataProvider, false);
+            }
+        });
     }
 
     alertMessage(param: any): void {

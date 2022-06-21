@@ -125,7 +125,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
             switchMap(() => {
                 this.isLoading = true;
                 // eslint-disable-next-line max-len
-                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction, this.searchForm.getRawValue());
+                return this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
             }),
             map(() => {
                 this.isLoading = false;
@@ -349,6 +349,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
                 if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.itemsDataProvider)){
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, true);
                     const rtn = this._itemService.getItems(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
                     this.selectCallBack(rtn);
                 }
@@ -648,6 +649,7 @@ export class ItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.itemsDataProvider, true);
         const rtn = this._itemService.getItems(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
