@@ -55,7 +55,6 @@ export class CommonPopupItemsService{
                     if(response.status === 'SUCCESS'){
                         this._getList.next(response.data);
                         this._pagenation.next(response.pageNation);
-                        console.log(response.pageNation);
                         resolve(this._getList);
                     }
                 }, reject);

@@ -165,6 +165,11 @@ export class SchedulerHistoryComponent implements OnInit, OnDestroy, AfterViewIn
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._schedulerHistoryService.getSchedulerHistory(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -181,6 +186,7 @@ export class SchedulerHistoryComponent implements OnInit, OnDestroy, AfterViewIn
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._schedulerHistoryService.getSchedulerHistory(this._paginator.pageIndex, this._paginator.pageSize, 'schedulerDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

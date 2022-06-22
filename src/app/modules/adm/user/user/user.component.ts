@@ -552,10 +552,12 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._userService.getUser(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.userDataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userDataProvider, true);
+                    const rtn = this._userService.getUser(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
-            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -570,7 +572,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         this._changeDetectorRef.markForCheck();
     }
 
-    selectUser() {
+    selectUser(): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userDataProvider, true);
         const rtn = this._userService.getUser(0, 100, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
@@ -578,6 +580,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userDataProvider, true);
         const rtn = this._userService.getUser(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
@@ -625,7 +628,6 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     userInfoBreak() {
         let rows = this._realGridsService.gfn_GetCheckRows(this.gridList, this.userDataProvider);
 
-        console.log(rows);
         let check = false;
         if (rows.length === 0) {
             this._functionService.cfn_alert('선택된 행이 존재하지 않습니다.');
@@ -673,7 +675,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         let rows = this._realGridsService.gfn_GetEditRows(this.gridList, this.userDataProvider);
         let check = false;
         if (rows.length === 0) {
-            this._functionService.cfn_alert('수정된 행이 존재하지 않습니다.');
+            this._functionService.cfn_alert('변경된 행이 존재하지 않습니다.');
             check = true;
         }
         if (check) {

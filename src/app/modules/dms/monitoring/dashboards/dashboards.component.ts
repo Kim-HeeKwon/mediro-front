@@ -1065,8 +1065,15 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             });
         }else{
-            console.log(this.mixedChart);
-            //개발해야함
+            let unusedQtyAnalyze = [unusedQty.zCnt, unusedQty.oCnt, unusedQty.tCnt, unusedQty.thCnt, unusedQty.fCnt, unusedQty.etcCnt];
+            let acceptableQtyAnalyze = [acceptableQty.zCnt, acceptableQty.oCnt, acceptableQty.tCnt, acceptableQty.thCnt, acceptableQty.fCnt, acceptableQty.etcCnt];
+            let availQtyAnalyze = [availQty.zCnt, availQty.oCnt, availQty.tCnt, availQty.thCnt, availQty.fCnt, availQty.etcCnt];
+            for(let i = 0; i < this.mixedChart.data.datasets.length; i++) {
+                this.mixedChart.data.datasets[i].data[0] = unusedQtyAnalyze[i];
+                this.mixedChart.data.datasets[i].data[1] = acceptableQtyAnalyze[i];
+                this.mixedChart.data.datasets[i].data[2] = availQtyAnalyze[i];
+            }
+            this.mixedChart.update();
         }
 
     }
@@ -1156,7 +1163,6 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     dashboardStock() {
-
         this._dashboardsService.getDashboardStock();
     }
 }

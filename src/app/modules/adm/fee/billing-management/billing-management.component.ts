@@ -55,6 +55,7 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
         {fieldName: 'udiCnt', dataType: ValueType.NUMBER},
         {fieldName: 'invoiceCnt', dataType: ValueType.NUMBER},
     ];
+
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
                 private _codeStore: CodeStore,
@@ -66,12 +67,12 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _billManagementService: BillingManagementService,
-                private readonly breakpointObserver: BreakpointObserver)
-    {
+                private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
         this.year = _utilService.commonValue(_codeStore.getValue().data, 'YEAR');
         this.month = _utilService.commonValue(_codeStore.getValue().data, 'MONTH');
     }
+
     ngAfterViewInit(): void {
         merge(this._paginator.page).pipe(
             switchMap(() => {
@@ -113,8 +114,14 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
         //그리드 컬럼
         this.columns = [
             {
-                name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '사업자번호', styleName: 'center-cell-text'}, renderer: {
+                name: 'businessNumber',
+                fieldName: 'businessNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '사업자번호', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
@@ -214,8 +221,11 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._billManagementService.getBillManagement(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._billManagementService.getBillManagement(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -239,6 +249,7 @@ export class BillingManagementComponent implements OnInit, OnDestroy, AfterViewI
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._billManagementService.getBillManagement(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

@@ -200,8 +200,11 @@ export class CommonCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._commonCodeService.getCommonCode(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._commonCodeService.getCommonCode(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';

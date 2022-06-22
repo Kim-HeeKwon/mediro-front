@@ -150,8 +150,11 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._userListService.getUserList(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.userListDataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userListDataProvider, true);
+                    const rtn = this._userListService.getUserList(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             };
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -206,10 +209,8 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.userListDataProvider, true);
         const rtn = this._userListService.getUserList(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
-
-
-
 }

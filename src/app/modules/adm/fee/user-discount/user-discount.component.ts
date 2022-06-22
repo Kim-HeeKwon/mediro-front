@@ -61,8 +61,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _teamPlatConfirmationService: TeamPlatConfirmationService,
                 private _userDiscountService: UserDiscountService,
                 private _deviceService: DeviceDetectorService,
-                private readonly breakpointObserver: BreakpointObserver)
-    {
+                private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -94,10 +93,17 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.columns = [
             {
-                name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '110', styleName: 'left-cell-text'
-                , header: {text: '사업자 번호', styleName: 'center-cell-text red-font-color'}
-                , renderer: 'mIdGrdPopup'
-                , popUpObject:
+                name: 'businessNumber',
+                fieldName: 'businessNumber',
+                type: 'data',
+                width: '110',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '사업자 번호', styleName: 'center-cell-text red-font-color'}
+                ,
+                renderer: 'mIdGrdPopup'
+                ,
+                popUpObject:
                     {
                         popUpId: 'P$_MID',
                         popUpHeaderText: '회원사 조회',
@@ -117,24 +123,37 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'discountTitle', fieldName: 'discountTitle', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '제목', styleName: 'center-cell-text red-font-color'}
-                , renderer: 'discountGrdPopup'
-                , popUpObject:
+                name: 'discountTitle',
+                fieldName: 'discountTitle',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '제목', styleName: 'center-cell-text red-font-color'}
+                ,
+                renderer: 'discountGrdPopup'
+                ,
+                popUpObject:
                     {
                         popUpId: 'P$_DISCOUNT',
                         popUpHeaderText: '할인율 조회',
                         popUpDataSet: 'discount:discount' +
-                            '|discountTitle:discountTitle'+
-                            '|discountComment:discountComment'+
-                            '|beginDate:beginDate'+
-                            '|endDate:endDate'+
+                            '|discountTitle:discountTitle' +
+                            '|discountComment:discountComment' +
+                            '|beginDate:beginDate' +
+                            '|endDate:endDate' +
                             '|discountRate:discountRate'
                     }
             },
             {
-                name: 'discountComment', fieldName: 'discountComment', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '내용', styleName: 'center-cell-text'}, renderer: {
+                name: 'discountComment',
+                fieldName: 'discountComment',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '내용', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
@@ -233,9 +252,12 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._userDiscountService.getUserDiscount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
-            };
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._userDiscountService.getUserDiscount(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
+            }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -249,7 +271,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (dataCell.item.rowState === 'created') {
                 return {editable: false};
-            }else{
+            } else {
                 this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopupmIdGrdPopup');
                 this._realGridsService.gfn_PopUpBtnHide('discountGrdPopup');
                 return {editable: false};
@@ -280,7 +302,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.userDiscount.length < 1){
+            if (ex.userDiscount.length < 1) {
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
             this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
@@ -343,6 +365,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._userDiscountService.getUserDiscount(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

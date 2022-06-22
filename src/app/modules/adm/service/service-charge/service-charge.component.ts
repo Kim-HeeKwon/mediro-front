@@ -216,10 +216,12 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._serviceChargeService.getServiceCharge(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if(this._realGridsService.gfn_GridDataCnt(this.gridList, this.serviceChargeDataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.serviceChargeDataProvider, true);
+                    const rtn = this._serviceChargeService.getServiceCharge(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
-            ;
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
             } else {
@@ -241,6 +243,7 @@ export class ServiceChargeComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.serviceChargeDataProvider, true);
         const rtn = this._serviceChargeService.getServiceCharge(this._paginator.pageIndex, this._paginator.pageSize, 'priority', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

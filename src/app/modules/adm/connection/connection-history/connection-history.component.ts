@@ -49,8 +49,7 @@ export class ConnectionHistoryComponent implements OnInit, OnDestroy, AfterViewI
                 private _formBuilder: FormBuilder,
                 private _functionService: FunctionService,
                 private _connectionHistoryService: ConnectionHistoryService,
-                private _changeDetectorRef: ChangeDetectorRef,)
-    {
+                private _changeDetectorRef: ChangeDetectorRef,) {
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -88,7 +87,11 @@ export class ConnectionHistoryComponent implements OnInit, OnDestroy, AfterViewI
 
         this.columns = [
             {
-                name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '100', styleName: 'left-cell-text',
+                name: 'businessNumber',
+                fieldName: 'businessNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text',
                 header: {text: '사업자번호', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
@@ -162,7 +165,11 @@ export class ConnectionHistoryComponent implements OnInit, OnDestroy, AfterViewI
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._connectionHistoryService.getConnectionHistory(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -201,6 +208,7 @@ export class ConnectionHistoryComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._connectionHistoryService.getConnectionHistory(this._paginator.pageIndex, this._paginator.pageSize, 'connectDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }

@@ -60,6 +60,7 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
 
     ];
+
     constructor(private _realGridsService: FuseRealGridService,
                 private _formBuilder: FormBuilder,
                 private _codeStore: CodeStore,
@@ -71,12 +72,12 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
                 private _functionService: FunctionService,
                 private _deviceService: DeviceDetectorService,
                 private _feeUserService: FeeUserService,
-                private readonly breakpointObserver: BreakpointObserver)
-    {
+                private readonly breakpointObserver: BreakpointObserver) {
         this.isMobile = this._deviceService.isMobile();
         this.year = _utilService.commonValue(_codeStore.getValue().data, 'YEAR');
         this.month = _utilService.commonValue(_codeStore.getValue().data, 'MONTH');
     }
+
     ngAfterViewInit(): void {
         merge(this._paginator.page).pipe(
             switchMap(() => {
@@ -118,8 +119,14 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         //그리드 컬럼
         this.columns = [
             {
-                name: 'businessNumber', fieldName: 'businessNumber', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '사업자번호', styleName: 'center-cell-text'}, renderer: {
+                name: 'businessNumber',
+                fieldName: 'businessNumber',
+                type: 'data',
+                width: '100',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '사업자번호', styleName: 'center-cell-text'},
+                renderer: {
                     showTooltip: true
                 }
             },
@@ -231,8 +238,11 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
-                const rtn = this._feeUserService.getFeeUser(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
-                this.selectCallBack(rtn);
+                if (this._realGridsService.gfn_GridDataCnt(this.gridList, this.dataProvider)) {
+                    this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
+                    const rtn = this._feeUserService.getFeeUser(this.pagenation.page, this.pagenation.size, clickData.column, this.orderBy, this.searchForm.getRawValue());
+                    this.selectCallBack(rtn);
+                }
             }
             ;
             if (this.orderBy === 'asc') {
@@ -258,6 +268,7 @@ export class FeeUserComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //페이징
     pageEvent($event: PageEvent): void {
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, true);
         const rtn = this._feeUserService.getFeeUser(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
