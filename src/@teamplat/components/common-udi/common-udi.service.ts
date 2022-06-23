@@ -82,7 +82,6 @@ export class CommonUdiService{
                         this._status.next(response);
                         this._msg.next('');
                         this._getList.next(response.data);
-                        console.log(response);
                         this._pagenation.next(response.pageNation);
                         resolve(this._getList);
                     }else{

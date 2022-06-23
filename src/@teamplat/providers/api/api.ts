@@ -53,8 +53,12 @@ export class Api {
         return this.http.get(this.url + '/' + endpoint, reqOpts);
     }
 
-    post(endpoint: string, body: any, reqOpts?: any): Observable<any> {
-
+    post(endpoint: string, body: any, loding?: boolean, reqOpts?: any): Observable<any> {
+        if(loding) {
+            const loading = this._matDialog.open(CommonLoadingBarComponent, {
+                id: 'loadingBar'
+            });
+        }
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()

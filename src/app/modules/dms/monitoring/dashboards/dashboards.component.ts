@@ -33,7 +33,8 @@ import {SessionStore} from '../../../../core/session/state/session.store';
 import {Chart} from 'chart.js';
 import {Context} from 'chartjs-plugin-datalabels';
 import {EmptyObject} from 'chart.js/types/basic';
-import {DashboardsColorChangeService} from "../../../../../@teamplat/components/dashboards-color-change/dashboards-color-change.service";
+import {DashboardsColorChangeService} from '../../../../../@teamplat/components/dashboards-color-change/dashboards-color-change.service';
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'app-dashboards',
@@ -96,6 +97,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     salbool: boolean = true;
     udiLastMonth: boolean = false;
     udiThisMonth: boolean = true;
+    stockData: boolean;
     racallTaleData: any = null;
     reacllItemsCount: number = 0;
     sumAvailQty: number = 0;
@@ -116,6 +118,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _dashBoardColorChangeService: DashboardsColorChangeService,
         private _sessionStore: SessionStore,
         private _codeStore: CodeStore,
+        private _functionService: FunctionService,
         private _utilService: FuseUtilsService,
         private _deviceService: DeviceDetectorService,
         private _router: Router,
@@ -440,7 +443,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
         this._dashBoardColorChangeService.dateCreated$.subscribe((val) => {
             this.colorChange(val);
         });
-        if(localStorage.getItem('dashboardColor') !== null) {
+        if (localStorage.getItem('dashboardColor') !== null) {
             this.colorChange(localStorage.getItem('dashboardColor'));
         }
         this._changeDetectorRef.markForCheck();
@@ -953,7 +956,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.stockTotalPrice = totalPrice;
         }
         const ctx = document.getElementById('stock_chart');
-        if(!this.mixedChart){
+        if (!this.mixedChart) {
             // @ts-ignore
             this.mixedChart = new Chart(ctx, {
                 data: {
@@ -1064,16 +1067,18 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 },
             });
-        }else{
+            this.stockData = true;
+        } else {
             let unusedQtyAnalyze = [unusedQty.zCnt, unusedQty.oCnt, unusedQty.tCnt, unusedQty.thCnt, unusedQty.fCnt, unusedQty.etcCnt];
             let acceptableQtyAnalyze = [acceptableQty.zCnt, acceptableQty.oCnt, acceptableQty.tCnt, acceptableQty.thCnt, acceptableQty.fCnt, acceptableQty.etcCnt];
             let availQtyAnalyze = [availQty.zCnt, availQty.oCnt, availQty.tCnt, availQty.thCnt, availQty.fCnt, availQty.etcCnt];
-            for(let i = 0; i < this.mixedChart.data.datasets.length; i++) {
+            for (let i = 0; i < this.mixedChart.data.datasets.length; i++) {
                 this.mixedChart.data.datasets[i].data[0] = unusedQtyAnalyze[i];
                 this.mixedChart.data.datasets[i].data[1] = acceptableQtyAnalyze[i];
                 this.mixedChart.data.datasets[i].data[2] = availQtyAnalyze[i];
             }
             this.mixedChart.update();
+            this.stockData = false;
         }
 
     }
@@ -1163,7 +1168,17 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     dashboardStock() {
-        this._dashboardsService.getDashboardStock();
+        if (this.stockData){
+            let rtn = this._dashboardsService.getDashboardStock();
+            this.lodingClose(rtn);
+        }
+    }
+
+    lodingClose(rtn: any): void {
+        rtn.then((ex) => {
+            this._functionService.cfn_loadingBarClear();
+        });
+
     }
 }
 
