@@ -232,7 +232,7 @@ export class DashboardsService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendData(param, '/v1/api/dashboard/dashboard-stock')
+            this._common.sendData(param, '/v1/api/dashboard/dashboard-stock', true)
                 .subscribe((response: any) => {
                     this._stockInfo.next(response.data);
                     resolve(response.data);

@@ -9,8 +9,8 @@ export class Common {
     constructor(public api: Api) {
     }
 
-    sendData(accountInfo: any, url: string): Observable<any> {
-        return this.api.post(url, accountInfo).pipe(share()); // seq;
+    sendData(accountInfo: any, url: string, loding?: boolean): Observable<any> {
+        return this.api.post(url, accountInfo, loding).pipe(share()); // seq;
     }
 
     sendDataLoading(accountInfo: any, url: string): Observable<any> {
