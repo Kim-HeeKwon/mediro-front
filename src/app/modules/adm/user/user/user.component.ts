@@ -218,7 +218,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             'subscriptionFeeYn',
-            'freeDate',
+            // 'freeDate',
             'payDate',
             'payAmt',
             'midGrade',
@@ -298,19 +298,19 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
                 lookupDisplay: true,
                 editor: this._realGridsService.gfn_ComboBox(this.yn)
             },
-            {
-                name: 'freeDate', fieldName: 'freeDate', type: 'data', width: '120', styleName: 'left-cell-text'
-                , header: {text: '무료서비스(종료)', styleName: 'center-cell-text blue-font-color'}, renderer: {
-                    showTooltip: true
-                }
-                , datetimeFormat: 'yyyy-MM-dd'
-                , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
-                , editor: {
-                    type: 'date',
-                    datetimeFormat: 'yyyy-MM-dd',
-                    textReadOnly: true,
-                }
-            },
+            // {
+            //     name: 'freeDate', fieldName: 'freeDate', type: 'data', width: '120', styleName: 'left-cell-text'
+            //     , header: {text: '무료서비스(종료)', styleName: 'center-cell-text blue-font-color'}, renderer: {
+            //         showTooltip: true
+            //     }
+            //     , datetimeFormat: 'yyyy-MM-dd'
+            //     , mask: {editMask: '9999-99-99', includeFormat: false, allowEmpty: true}
+            //     , editor: {
+            //         type: 'date',
+            //         datetimeFormat: 'yyyy-MM-dd',
+            //         textReadOnly: true,
+            //     }
+            // },
             {
                 name: 'payDate', fieldName: 'payDate', type: 'data', width: '100', styleName: 'left-cell-text'
                 , header: {text: '유료시작', styleName: 'center-cell-text blue-font-color'}, renderer: {
@@ -528,7 +528,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
             //추가시
             if (
                 dataCell.dataColumn.fieldName === 'subscriptionFeeYn' ||
-                dataCell.dataColumn.fieldName === 'freeDate' ||
+                // dataCell.dataColumn.fieldName === 'freeDate' ||
                 dataCell.dataColumn.fieldName === 'payDate' ||
                 dataCell.dataColumn.fieldName === 'commissionWindow' ||
                 dataCell.dataColumn.fieldName === 'commissionRate' ||

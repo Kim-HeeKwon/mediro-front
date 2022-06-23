@@ -474,15 +474,15 @@ export class SalesorderComponent implements OnInit, OnDestroy, AfterViewInit {
             this._functionService.cfn_alert('삭제 대상을 선택해주세요.');
             return;
         } else {
-            let check = true;
+            const check = true;
             // eslint-disable-next-line @typescript-eslint/prefer-for-of
-            for (let i = 0; i < checkValues.length; i++) {
-                if (checkValues[i].status !== 'N') {
-                    this._functionService.cfn_alert('접수 상태에서만 삭제할 수 있습니다. <br> 주문번호 : ' + checkValues[i].soNo);
-                    check = false;
-                    return false;
-                }
-            }
+            // for (let i = 0; i < checkValues.length; i++) {
+            //     if (checkValues[i].status !== 'N') {
+            //         this._functionService.cfn_alert('접수 상태에서만 삭제할 수 있습니다. <br> 주문번호 : ' + checkValues[i].soNo);
+            //         check = false;
+            //         return false;
+            //     }
+            // }
             if (check) {
                 const confirmation = this._teamPlatConfirmationService.open(this._formBuilder.group({
                     title: '',
