@@ -242,6 +242,12 @@ export const appRoutes: Route[] = [
                     {path: 'long-term', data: {key: 'long-term'}, loadChildren: () => import('app/modules/dms/stock/long-term/long-term.module').then(m => m.LongTermModule)},
 
                 ]},
+
+            {path: 'report', children: [
+                    {path: 'report-bill', data: {key: 'report-bill'}, loadChildren: () => import('app/modules/dms/report/report-bill/report-bill.module').then(m => m.ReportBillModule)},
+                    {path: 'report-bound', data: {key: 'report-bound'}, loadChildren: () => import('app/modules/dms/report/report-bound/report-bound.module').then(m => m.ReportBoundModule)},
+
+                ]},
             /*{path: 'bill', children: [
                     // bill
                     {path: 'bill', loadChildren: () => import('app/modules/admin/bill/bill/bill.module').then(m => m.BillModule)},

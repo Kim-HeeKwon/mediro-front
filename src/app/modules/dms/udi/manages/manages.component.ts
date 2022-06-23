@@ -193,14 +193,14 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'meddevItemSeq',
-                fieldName: 'meddevItemSeq',
-                type: 'data',
-                width: '150',
-                styleName: 'left-cell-text'
-                ,
-                header: {text: '품목일련번호', styleName: 'center-cell-text'},
-                renderer: {
+                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '300', styleName: 'left-cell-text'
+                , header: {text: '공급받은 자(반품한 자)', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'suplyDate', fieldName: 'suplyDate', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '공급일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -236,11 +236,30 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 , numberFormat: '#,##0'
             },
             {
+                name: 'suplyUntpc', fieldName: 'suplyUntpc', type: 'number', width: '100', styleName: 'right-cell-text'
+                , header: {text: '공급단가', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+                , numberFormat: '#,##0'
+            },
+            {
                 name: 'suplyAmt', fieldName: 'suplyAmt', type: 'number', width: '100', styleName: 'right-cell-text'
                 , header: {text: '공급금액', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , numberFormat: '#,##0'
+            },
+            {
+                name: 'meddevItemSeq',
+                fieldName: 'meddevItemSeq',
+                type: 'data',
+                width: '150',
+                styleName: 'left-cell-text'
+                ,
+                header: {text: '품목일련번호', styleName: 'center-cell-text'},
+                renderer: {
+                    showTooltip: true
+                }
             },
             {
                 name: 'stdCode', fieldName: 'stdCode', type: 'data', width: '200', styleName: 'left-cell-text'
@@ -273,12 +292,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'bcncEntpName', fieldName: 'bcncEntpName', type: 'data', width: '300', styleName: 'left-cell-text'
-                , header: {text: '공급받은 자(반품한 자)', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
                 name: 'dvyfgEntpName',
                 fieldName: 'dvyfgEntpName',
                 type: 'data',
@@ -289,19 +302,6 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 renderer: {
                     showTooltip: true
                 }
-            },
-            {
-                name: 'suplyDate', fieldName: 'suplyDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '공급일자', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-            },
-            {
-                name: 'suplyUntpc', fieldName: 'suplyUntpc', type: 'number', width: '100', styleName: 'right-cell-text'
-                , header: {text: '공급단가', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
-                }
-                , numberFormat: '#,##0'
             },
         ];
 

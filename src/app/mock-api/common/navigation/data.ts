@@ -279,6 +279,28 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     },
     {
+        id      : 'report',
+        title: '리포트 관리',
+        type    : 'collapsable',
+        icon    : 'fact_check',
+        children: [
+            {
+                id   : 'report.bound',
+                title: '수불 현황',
+                type : 'basic',
+                icon : 'analytics',
+                link : '/report/report-bound'
+            },
+            {
+                id   : 'report.bill',
+                title: '매입/매출 현황',
+                type : 'basic',
+                icon : 'leaderboard',
+                link : '/report/report-bill'
+            },
+        ]
+    },
+    {
         id      : 'basic-info',
         title   : '기준정보',
         type    : 'collapsable',
