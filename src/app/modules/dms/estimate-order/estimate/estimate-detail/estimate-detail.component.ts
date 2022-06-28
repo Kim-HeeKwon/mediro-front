@@ -386,8 +386,10 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.estimateDetailDataProvider, true);
                 // eslint-disable-next-line max-len
-                this._estimateService.getDetail(this.estimateDetailPagenation.page, this.estimateDetailPagenation.size, clickData.column, this.orderBy, this.estimateHeaderForm.getRawValue());
+                const rtn = this._estimateService.getDetail(this.estimateDetailPagenation.page, this.estimateDetailPagenation.size, clickData.column, this.orderBy, this.estimateHeaderForm.getRawValue());
+                this.loadingEnd(rtn);
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -431,6 +433,12 @@ export class EstimateDetailComponent implements OnInit, OnDestroy, AfterViewInit
 
     backPage(): void {
         this._router.navigate(['estimate-order/estimate']);
+    }
+
+    loadingEnd(rtn: any): void {
+        rtn.then(() => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.estimateDetailDataProvider, false);
+        });
     }
 
     reportEstimate(): void {

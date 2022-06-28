@@ -1,6 +1,6 @@
 /* tslint:disable:max-line-length */
-import { FuseNavigationItem } from '@teamplat/components/navigation';
-import {environment} from "../../../../environments/environment.prod";
+import {FuseNavigationItem} from '@teamplat/components/navigation';
+import {environment} from '../../../../environments/environment.prod';
 
 export const version = environment;
 export const defaultNavigation: FuseNavigationItem[] = [
@@ -95,46 +95,46 @@ export const defaultNavigation: FuseNavigationItem[] = [
             {
                 id   : 'estimate-order.estimate',
                 title: '견적 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:pencil-alt',
-                link : '/estimate-order/estimate'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil-alt',
+                link: '/estimate-order/estimate'
             },
             {
-                id      : 'estimate-order.order',
-                title   : '발주 관리',
+                id: 'estimate-order.order',
+                title: '발주 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/estimate-order/order'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/estimate-order/order'
             },
             {
-                id      : 'salesorder.salesorder',
-                title   : '주문 관리',
+                id: 'salesorder.salesorder',
+                title: '주문 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/salesorder/salesorder'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/salesorder/salesorder'
             },
             {
-                id   : 'bound.inbound',
+                id: 'bound.inbound',
                 title: '입고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-add',
-                link : '/bound/inbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-add',
+                link: '/bound/inbound'
             },
             {
-                id   : 'bound.outbound',
+                id: 'bound.outbound',
                 title: '출고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-remove',
-                link : '/bound/outbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-remove',
+                link: '/bound/outbound'
             },
             {
-                id   : 'stock.stock',
+                id: 'stock.stock',
                 title: '재고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/stock'
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/stock'
             },
         ]
     },
@@ -146,57 +146,57 @@ export const defaultNavigation: FuseNavigationItem[] = [
         tag: '',
         children: [
             {
-                id   : 'calculate.bill',
+                id: 'calculate.bill',
                 title: '정산 및 마감',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/bill'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/bill'
             },
             {
-                id   : 'calculate.tax',
+                id: 'calculate.tax',
                 title: '계산서 발행',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/tax'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/tax'
             },
             {
-                id   : 'deposit-withdrawal.deposit',
+                id: 'deposit-withdrawal.deposit',
                 title: '입금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/deposit',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/deposit',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.withdrawal',
+                id: 'deposit-withdrawal.withdrawal',
                 title: '출금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/withdrawal',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/withdrawal',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.income-outcome',
+                id: 'deposit-withdrawal.income-outcome',
                 title: '원장관리',
-                type : 'basic',
-                icon : 'credit_score',
-                link : '/deposit-withdrawal/income-outcome',
+                type: 'basic',
+                icon: 'credit_score',
+                link: '/deposit-withdrawal/income-outcome',
                 tag: ''
             },
         ]
     },
     {
-        id      : 'udi',
+        id: 'udi',
         title: '공급내역 보고',
-        type    : 'collapsable',
-        icon    : 'insert_chart',
+        type: 'collapsable',
+        icon: 'insert_chart',
         children: [
             {
-                id   : 'udi.manages',
+                id: 'udi.manages',
                 title: '식약처 공급내역보고',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/manages'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/manages'
             },
             // {
             //     id   : 'udi.manages-email',
@@ -206,11 +206,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link : '/udi/manages-email'
             // },
             {
-                id   : 'udi.status',
+                id: 'udi.status',
                 title: '통합시스템 전송내역',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/status'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/status'
             },
             // {
             //     id   : 'udi.manage-sample',
@@ -222,10 +222,10 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'smart-plus',
-        title   : '스마트플러스',
-        type    : 'collapsable',
-        icon    : 'playlist_add',
+        id: 'smart-plus',
+        title: '스마트플러스',
+        type: 'collapsable',
+        icon: 'playlist_add',
         tag: '',
         children: [
             // {
@@ -245,66 +245,66 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     tag: '개발중'
             // },
             {
-                id      : 'stock.safety',
-                title   : '안전재고',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/stock/safety',
+                id: 'stock.safety',
+                title: '안전재고',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/safety',
                 tag: ''
             },
             {
-                id   : 'stock.validity',
+                id: 'stock.validity',
                 title: '유효기간',
-                type : 'basic',
-                icon : 'heroicons_outline:calendar',
-                link : '/stock/validity',
+                type: 'basic',
+                icon: 'heroicons_outline:calendar',
+                link: '/stock/validity',
                 tag: ''
             },
             {
-                id   : 'smart-plus.status',
+                id: 'smart-plus.status',
                 title: '장기재고',
-                type : 'basic',
-                icon : 'receipt_long',
-                link : '/stock/long-term',
+                type: 'basic',
+                icon: 'receipt_long',
+                link: '/stock/long-term',
                 tag: ''
             },
             {
-                id      : 'stock.acceptable',
-                title   : '가납재고',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/stock/acceptable',
+                id: 'stock.acceptable',
+                title: '가납재고',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/acceptable',
                 tag: ''
             },
         ]
     },
     {
-        id      : 'report',
+        id: 'report',
         title: '리포트 관리',
-        type    : 'collapsable',
-        icon    : 'fact_check',
+        type: 'collapsable',
+        icon: 'fact_check',
         children: [
             {
-                id   : 'report.bound',
+                id: 'report.bound',
                 title: '수불 현황',
-                type : 'basic',
-                icon : 'analytics',
-                link : '/report/report-bound'
+                type: 'basic',
+                icon: 'analytics',
+                link: '/report/report-bound'
             },
             {
-                id   : 'report.bill',
+                id: 'report.bill',
                 title: '매입/매출 현황',
-                type : 'basic',
-                icon : 'leaderboard',
-                link : '/report/report-bill'
+                type: 'basic',
+                icon: 'leaderboard',
+                link: '/report/report-bill'
             },
         ]
     },
     {
-        id      : 'basic-info',
-        title   : '기준정보',
-        type    : 'collapsable',
-        icon    : 'info',
+        id: 'basic-info',
+        title: '기준정보',
+        type: 'collapsable',
+        icon: 'info',
         tag: '',
         children: [
             // {
@@ -315,70 +315,89 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link : '/pages/error/500'
             // },
             {
-                id      : 'basic-info.account',
-                title   : '거래처관리',
+                id: 'basic-info.account',
+                title: '거래처관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:library',
-                link    : '/basic-info/account'
+                type: 'basic',
+                icon: 'heroicons_outline:library',
+                link: '/basic-info/account'
             },
             {
-                id      : 'basic-info.items',
-                title   : '품목관리',
+                id: 'basic-info.items',
+                title: '품목관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/basic-info/items'
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/basic-info/items'
             },
             {
-                id      : 'basic-info.item-price',
-                title   : '계약단가 관리',
+                id: 'basic-info.item-price',
+                title: '계약단가 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:currency-dollar',
-                link    : '/basic-info/item-price'
+                type: 'basic',
+                icon: 'heroicons_outline:currency-dollar',
+                link: '/basic-info/item-price'
             },
             {
-                id      : 'basic-info.udi-code',
-                title   : 'UDI DI 코드 관리',
+                id: 'basic-info.udi-code',
+                title: 'UDI DI 코드 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'code',
-                link    : '/basic-info/udi-code',
+                type: 'basic',
+                icon: 'code',
+                link: '/basic-info/udi-code',
                 tag: '',
             },
             {
-                id      : 'basic-info.udi-code-group',
-                title   : 'UDI DI 그룹 관리',
+                id: 'basic-info.udi-code-group',
+                title: 'UDI DI 그룹 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'inventory_2',
-                link    : '/basic-info/udi-code-group',
+                type: 'basic',
+                icon: 'inventory_2',
+                link: '/basic-info/udi-code-group',
                 tag: '',
             },
         ]
     },
     {
-        id      : 'my-pages',
-        title   : '마이페이지',
+        id: 'my-pages',
+        title: '마이페이지',
         subtitle: '부가기능 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
+        type: 'group',
+        icon: 'heroicons_outline:home',
         children: [
             {
-                id   : 'my-pages.setting',
+                id: 'my-pages.setting',
                 title: '마이페이지',
-                type : 'basic',
-                icon : 'heroicons_outline:cog',
-                link : '/pages/settings'
+                type: 'basic',
+                icon: 'heroicons_outline:cog',
+                link: '/pages/settings'
             },
             {
-                id   : 'manual.manual',
+                id: 'manual',
                 title: '매뉴얼',
-                type : 'basic',
-                icon : 'heroicons_outline:play',
-                link : '/manual/manual'
+                type: 'collapsable',
+                icon: 'search',
+                tag: '',
+                children: [
+                    {
+                        id: 'manual.manual',
+                        title: '영상',
+                        subtitle: '',
+                        type: 'basic',
+                        icon: 'play_circle',
+                        link: '/manual/manual'
+                    },
+                    {
+                        id: 'manual.manual-book',
+                        title: '문서',
+                        subtitle: '',
+                        type: 'basic',
+                        icon: 'menu_book',
+                        link: '/manual/manual'
+                    },
+                ]
             },
+
             // {
             //     id   : 'payment.payment-history',
             //     title: '부가서비스',
@@ -503,18 +522,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //     ]
     // },
     {
-        id  : 'divider-2',
+        id: 'divider-2',
         type: 'divider'
     },
 ];
 
 export const defaultNavigationAdmin: FuseNavigationItem[] = [
     {
-        id      : 'admin',
-        title   : '회원',
+        id: 'admin',
+        title: '회원',
         subtitle: 'SaaS 유료 회원사 및 운영자 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
+        type: 'group',
+        icon: 'heroicons_outline:home',
         children: [
             {
                 id: 'user',
@@ -523,23 +542,23 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'people_alt',
                 children: [
                     {
-                        id   : 'user.user',
+                        id: 'user.user',
                         title: 'SaaS 회원사 목록',
-                        type : 'basic',
-                        icon : 'people_alt',
-                        link : '/admin/user/user'
-                    },{
-                        id   : 'user.userInfo',
+                        type: 'basic',
+                        icon: 'people_alt',
+                        link: '/admin/user/user'
+                    }, {
+                        id: 'user.userInfo',
                         title: '사업자 정보',
-                        type : 'basic',
-                        icon : 'domain',
-                        link : '/admin/user/userInfo'
-                    },{
-                        id   : 'user.userList',
+                        type: 'basic',
+                        icon: 'domain',
+                        link: '/admin/user/userInfo'
+                    }, {
+                        id: 'user.userList',
                         title: '사용자 목록',
-                        type : 'basic',
-                        icon : 'heroicons_outline:user',
-                        link : '/admin/user/userList'
+                        type: 'basic',
+                        icon: 'heroicons_outline:user',
+                        link: '/admin/user/userList'
                     },
                 ]
             }, {
@@ -549,17 +568,17 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'admin_panel_settings',
                 children: [
                     {
-                        id   : 'operator.operatorUserList',
+                        id: 'operator.operatorUserList',
                         title: '운영자 목록',
-                        type : 'basic',
-                        icon : 'supervisor_account',
+                        type: 'basic',
+                        icon: 'supervisor_account',
                         //link : '/admin/user'
                     },
                     {
-                        id   : 'operator.operatorUserDetList',
+                        id: 'operator.operatorUserDetList',
                         title: '운영자 세부',
-                        type : 'basic',
-                        icon : 'person',
+                        type: 'basic',
+                        icon: 'person',
                         //link : '/admin/user'
                     }
                 ]
@@ -580,66 +599,66 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'manage_accounts',
                 children: [
                     {
-                        id   : 'serviceCharge.serviceCharge',
+                        id: 'serviceCharge.serviceCharge',
                         title: '서비스 요금관리',
-                        type : 'basic',
-                        icon : 'payments',
-                        link : '/admin/service/serviceCharge'
+                        type: 'basic',
+                        icon: 'payments',
+                        link: '/admin/service/serviceCharge'
                     },
                     {
-                        id   : 'serviceCharge.promotion',
+                        id: 'serviceCharge.promotion',
                         title: '프로모션 관리',
-                        type : 'basic',
-                        icon : 'sell',
+                        type: 'basic',
+                        icon: 'sell',
                         //link : '/admin/user'
                     }
                 ]
-            },{
+            }, {
                 id: 'fee',
                 title: '사용료',
                 type: 'collapsable',
                 icon: 'paid',
                 children: [
                     {
-                        id   : 'fee.discount',
+                        id: 'fee.discount',
                         title: '할인율',
-                        type : 'basic',
-                        icon : 'heroicons_solid:cash',
-                        link : '/admin/fee/discount'
+                        type: 'basic',
+                        icon: 'heroicons_solid:cash',
+                        link: '/admin/fee/discount'
                     },
                     {
-                        id   : 'fee.userDiscount',
+                        id: 'fee.userDiscount',
                         title: '회원사 할인율',
-                        type : 'basic',
-                        icon : 'payment',
-                        link : '/admin/fee/userDiscount'
+                        type: 'basic',
+                        icon: 'payment',
+                        link: '/admin/fee/userDiscount'
                     },
                     {
-                        id   : 'fee.feeUser',
+                        id: 'fee.feeUser',
                         title: '사용료 목록',
-                        type : 'basic',
-                        icon : 'heroicons_solid:clipboard-check',
-                        link : '/admin/fee/feeUser'
+                        type: 'basic',
+                        icon: 'heroicons_solid:clipboard-check',
+                        link: '/admin/fee/feeUser'
                     },
                     {
-                        id   : 'fee.feeBilling',
+                        id: 'fee.feeBilling',
                         title: '청구서 관리',
-                        type : 'basic',
-                        icon : 'heroicons_solid:credit-card',
-                        link : '/admin/fee/billManagement'
+                        type: 'basic',
+                        icon: 'heroicons_solid:credit-card',
+                        link: '/admin/fee/billManagement'
                     }
                 ]
-            },{
+            }, {
                 id: 'feeDashboard',
                 title: '대시보드',
                 type: 'collapsable',
                 icon: 'space_dashboard',
                 children: [
                     {
-                        id   : 'feeDashboard.feeDashboard',
+                        id: 'feeDashboard.feeDashboard',
                         title: '대시보드',
-                        type : 'basic',
-                        icon : 'dashboard_customize',
+                        type: 'basic',
+                        icon: 'dashboard_customize',
                         //link : '/admin/user'
                     },
                 ]
@@ -660,25 +679,25 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'link',
                 children: [
                     {
-                        id   : 'userLog.userLog',
+                        id: 'userLog.userLog',
                         title: '접속 이력',
-                        type : 'basic',
-                        icon : 'share',
-                        link : '/admin/connection/connectionHistory'
+                        type: 'basic',
+                        icon: 'share',
+                        link: '/admin/connection/connectionHistory'
                     },
                     {
-                        id   : 'userLog.errorLog',
+                        id: 'userLog.errorLog',
                         title: '에러 이력',
-                        type : 'basic',
-                        icon : 'error',
-                        link : '/admin/connection/errorHistory'
+                        type: 'basic',
+                        icon: 'error',
+                        link: '/admin/connection/errorHistory'
                     },
                     {
-                        id   : 'userLog.scheduler',
+                        id: 'userLog.scheduler',
                         title: '스케줄러 이력',
-                        type : 'basic',
-                        icon : 'heroicons_solid:clipboard-list',
-                        link : '/admin/connection/schedulerHistory'
+                        type: 'basic',
+                        icon: 'heroicons_solid:clipboard-list',
+                        link: '/admin/connection/schedulerHistory'
                     },
                 ]
             },
@@ -698,25 +717,25 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
                 icon: 'link',
                 children: [
                     {
-                        id   : 'common.code',
+                        id: 'common.code',
                         title: '공통코드 관리',
-                        type : 'basic',
-                        icon : 'heroicons_solid:save',
-                        link : '/admin/common/commonCode'
+                        type: 'basic',
+                        icon: 'heroicons_solid:save',
+                        link: '/admin/common/commonCode'
                     },
                     {
-                        id   : 'common.popup',
+                        id: 'common.popup',
                         title: '공통팝업 관리',
-                        type : 'basic',
-                        icon : 'heroicons_solid:folder',
-                        link : '/admin/common/commonPopup'
+                        type: 'basic',
+                        icon: 'heroicons_solid:folder',
+                        link: '/admin/common/commonPopup'
                     },
                 ]
             },
         ]
     },
     {
-        id  : 'divider-2',
+        id: 'divider-2',
         type: 'divider'
     },
     // {
@@ -781,17 +800,17 @@ export const defaultNavigationAdmin: FuseNavigationItem[] = [
 ];
 export const defaultNavigationTest: FuseNavigationItem[] = [
     {
-        id      : 'monitoring',
-        title   : '대시보드',
-        type    : 'collapsable',
-        icon    : 'space_dashboard',
+        id: 'monitoring',
+        title: '대시보드',
+        type: 'collapsable',
+        icon: 'space_dashboard',
         children: [
             {
-                id   : 'monitoring.dashboards',
+                id: 'monitoring.dashboards',
                 title: '모니터링',
-                type : 'basic',
-                icon : 'heroicons_outline:presentation-chart-bar',
-                link : '/monitoring/dashboards'
+                type: 'basic',
+                icon: 'heroicons_outline:presentation-chart-bar',
+                link: '/monitoring/dashboards'
             },
             // {
             //     id   : 'analytics.dashboards',
@@ -804,54 +823,54 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'monitoring',
-        title   : '유통관리',
-        type    : 'collapsable',
-        icon    : 'local_shipping',
+        id: 'monitoring',
+        title: '유통관리',
+        type: 'collapsable',
+        icon: 'local_shipping',
         children: [
             {
-                id   : 'estimate-order.estimate',
+                id: 'estimate-order.estimate',
                 title: '견적 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:pencil-alt',
-                link : '/estimate-order/estimate'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil-alt',
+                link: '/estimate-order/estimate'
             },
             {
-                id      : 'estimate-order.order',
-                title   : '발주 관리',
+                id: 'estimate-order.order',
+                title: '발주 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/estimate-order/order'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/estimate-order/order'
             },
             {
-                id      : 'salesorder.salesorder',
-                title   : '주문 관리',
+                id: 'salesorder.salesorder',
+                title: '주문 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/salesorder/salesorder'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/salesorder/salesorder'
             },
             {
-                id   : 'bound.inbound',
+                id: 'bound.inbound',
                 title: '입고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-add',
-                link : '/bound/inbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-add',
+                link: '/bound/inbound'
             },
             {
-                id   : 'bound.outbound',
+                id: 'bound.outbound',
                 title: '출고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-remove',
-                link : '/bound/outbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-remove',
+                link: '/bound/outbound'
             },
             {
-                id   : 'stock.stock',
+                id: 'stock.stock',
                 title: '재고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/stock'
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/stock'
             },
         ]
     },
@@ -863,57 +882,57 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
         tag: '',
         children: [
             {
-                id   : 'calculate.bill',
+                id: 'calculate.bill',
                 title: '정산 및 마감',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/bill'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/bill'
             },
             {
-                id   : 'calculate.tax',
+                id: 'calculate.tax',
                 title: '계산서 발행',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/tax'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/tax'
             },
             {
-                id   : 'deposit-withdrawal.deposit',
+                id: 'deposit-withdrawal.deposit',
                 title: '입금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/deposit',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/deposit',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.withdrawal',
+                id: 'deposit-withdrawal.withdrawal',
                 title: '출금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/withdrawal',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/withdrawal',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.income-outcome',
+                id: 'deposit-withdrawal.income-outcome',
                 title: '원장관리',
-                type : 'basic',
-                icon : 'credit_score',
-                link : '/deposit-withdrawal/income-outcome',
+                type: 'basic',
+                icon: 'credit_score',
+                link: '/deposit-withdrawal/income-outcome',
                 tag: ''
             },
         ]
     },
     {
-        id      : 'udi',
+        id: 'udi',
         title: '공급내역 보고',
-        type    : 'collapsable',
-        icon    : 'insert_chart',
+        type: 'collapsable',
+        icon: 'insert_chart',
         children: [
             {
-                id   : 'udi.manages',
+                id: 'udi.manages',
                 title: '식약처 공급내역보고',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/manages'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/manages'
             },
             // {
             //     id   : 'udi.manages-email',
@@ -923,11 +942,11 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
             //     link : '/udi/manages-email'
             // },
             {
-                id   : 'udi.status',
+                id: 'udi.status',
                 title: '통합시스템 전송내역',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/status'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/status'
             },
             // {
             //     id   : 'udi.manage-sample',
@@ -939,10 +958,10 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'smart-plus',
-        title   : '스마트플러스',
-        type    : 'collapsable',
-        icon    : 'playlist_add',
+        id: 'smart-plus',
+        title: '스마트플러스',
+        type: 'collapsable',
+        icon: 'playlist_add',
         tag: '',
         children: [
             // {
@@ -962,35 +981,35 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
             //     tag: '개발중'
             // },
             {
-                id      : 'stock.safety',
-                title   : '안전재고',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/stock/safety',
+                id: 'stock.safety',
+                title: '안전재고',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/safety',
                 tag: ''
             },
             {
-                id   : 'stock.validity',
+                id: 'stock.validity',
                 title: '유효기간',
-                type : 'basic',
-                icon : 'heroicons_outline:calendar',
-                link : '/stock/validity',
+                type: 'basic',
+                icon: 'heroicons_outline:calendar',
+                link: '/stock/validity',
                 tag: ''
             },
             {
-                id   : 'smart-plus.status',
+                id: 'smart-plus.status',
                 title: '장기재고',
-                type : 'basic',
-                icon : 'receipt_long',
-                link : '/stock/long-term',
+                type: 'basic',
+                icon: 'receipt_long',
+                link: '/stock/long-term',
                 tag: ''
             },
             {
-                id      : 'stock.acceptable',
-                title   : '가납재고',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/stock/acceptable',
+                id: 'stock.acceptable',
+                title: '가납재고',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/acceptable',
                 tag: ''
             },
         ]
@@ -1051,82 +1070,82 @@ export const defaultNavigationTest: FuseNavigationItem[] = [
     //     ]
     // },
     {
-        id  : 'divider-2',
+        id: 'divider-2',
         type: 'divider'
     },
 ];
 export const defaultNavigationM: FuseNavigationItem[] = [
-     // {
-     //     id      : 'user-interface',
-     //     title   : 'User Interface',
-     //     subtitle: '개발자 참고',
-     //     type    : 'group',
-     //     icon    : 'heroicons_outline:collection',
-     //     children: [
-     //         {
-     //                      id      : 'user-interface.icons',
-     //                      title   : 'Icons',
-     //                      type    : 'collapsable',
-     //                      icon    : 'heroicons_outline:lightning-bolt',
-     //                      children: [
-     //                          {
-     //                              id   : 'user-interface.icons.heroicons-outline',
-     //                              title: 'Heroicons Outline',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/heroicons-outline'
-     //                          },
-     //                          {
-     //                              id   : 'user-interface.icons.heroicons-solid',
-     //                              title: 'Heroicons Solid',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/heroicons-solid'
-     //                          },
-     //         {
-     //                              id   : 'user-interface.icons.material-twotone',
-     //                              title: 'Material Twotone',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/material-twotone'
-     //                          },
-     //                          {
-     //                              id   : 'user-interface.icons.material-outline',
-     //                              title: 'Material Outline',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/material-outline'
-     //                          },
-     //                          {
-     //                              id   : 'user-interface.icons.material-solid',
-     //                              title: 'Material Solid',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/material-solid'
-     //                          },
-     //                          {
-     //                              id   : 'user-interface.icons.iconsmind',
-     //                              title: 'Iconsmind',
-     //                              type : 'basic',
-     //                              link : '/ui/icons/iconsmind'
-     //                          },
-     //                          {
-     //                              id   : 'user-interface.icons.feather',
-     //                              title: 'Feather',
-     //                              type : 'basic',
-     //                             link : '/ui/icons/feather'
-     //                          }
-     //                      ]
-     //                  },
-     //    ]
-     // },
+    // {
+    //     id      : 'user-interface',
+    //     title   : 'User Interface',
+    //     subtitle: '개발자 참고',
+    //     type    : 'group',
+    //     icon    : 'heroicons_outline:collection',
+    //     children: [
+    //         {
+    //                      id      : 'user-interface.icons',
+    //                      title   : 'Icons',
+    //                      type    : 'collapsable',
+    //                      icon    : 'heroicons_outline:lightning-bolt',
+    //                      children: [
+    //                          {
+    //                              id   : 'user-interface.icons.heroicons-outline',
+    //                              title: 'Heroicons Outline',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/heroicons-outline'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.heroicons-solid',
+    //                              title: 'Heroicons Solid',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/heroicons-solid'
+    //                          },
+    //         {
+    //                              id   : 'user-interface.icons.material-twotone',
+    //                              title: 'Material Twotone',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-twotone'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.material-outline',
+    //                              title: 'Material Outline',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-outline'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.material-solid',
+    //                              title: 'Material Solid',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/material-solid'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.iconsmind',
+    //                              title: 'Iconsmind',
+    //                              type : 'basic',
+    //                              link : '/ui/icons/iconsmind'
+    //                          },
+    //                          {
+    //                              id   : 'user-interface.icons.feather',
+    //                              title: 'Feather',
+    //                              type : 'basic',
+    //                             link : '/ui/icons/feather'
+    //                          }
+    //                      ]
+    //                  },
+    //    ]
+    // },
     {
-        id      : 'monitoring',
-        title   : '대시보드',
-        type    : 'collapsable',
-        icon    : 'space_dashboard',
+        id: 'monitoring',
+        title: '대시보드',
+        type: 'collapsable',
+        icon: 'space_dashboard',
         children: [
             {
-                id   : 'monitoring.dashboards',
+                id: 'monitoring.dashboards',
                 title: '모니터링',
-                type : 'basic',
-                icon : 'heroicons_outline:presentation-chart-bar',
-                link : '/monitoring/dashboards'
+                type: 'basic',
+                icon: 'heroicons_outline:presentation-chart-bar',
+                link: '/monitoring/dashboards'
             },
             // {
             //     id   : 'analytics.dashboards',
@@ -1139,54 +1158,54 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'monitoring',
-        title   : '유통관리',
-        type    : 'collapsable',
-        icon    : 'local_shipping',
+        id: 'monitoring',
+        title: '유통관리',
+        type: 'collapsable',
+        icon: 'local_shipping',
         children: [
             {
-                id   : 'estimate-order.estimate',
+                id: 'estimate-order.estimate',
                 title: '견적 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:pencil-alt',
-                link : '/estimate-order/estimate'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil-alt',
+                link: '/estimate-order/estimate'
             },
             {
-                id      : 'estimate-order.order',
-                title   : '발주 관리',
+                id: 'estimate-order.order',
+                title: '발주 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/estimate-order/order'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/estimate-order/order'
             },
             {
-                id      : 'salesorder.salesorder',
-                title   : '주문 관리',
+                id: 'salesorder.salesorder',
+                title: '주문 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:pencil',
-                link    : '/salesorder/salesorder'
+                type: 'basic',
+                icon: 'heroicons_outline:pencil',
+                link: '/salesorder/salesorder'
             },
             {
-                id   : 'bound.inbound',
+                id: 'bound.inbound',
                 title: '입고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-add',
-                link : '/bound/inbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-add',
+                link: '/bound/inbound'
             },
             {
-                id   : 'bound.outbound',
+                id: 'bound.outbound',
                 title: '출고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:folder-remove',
-                link : '/bound/outbound'
+                type: 'basic',
+                icon: 'heroicons_outline:folder-remove',
+                link: '/bound/outbound'
             },
             {
-                id   : 'stock.stock',
+                id: 'stock.stock',
                 title: '재고 관리',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/stock'
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/stock'
             },
         ]
     },
@@ -1198,57 +1217,57 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         tag: '',
         children: [
             {
-                id   : 'calculate.bill',
+                id: 'calculate.bill',
                 title: '정산 및 마감',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/bill'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/bill'
             },
             {
-                id   : 'calculate.tax',
+                id: 'calculate.tax',
                 title: '계산서 발행',
-                type : 'basic',
-                icon : 'heroicons_outline:archive',
-                link : '/calculate/tax'
+                type: 'basic',
+                icon: 'heroicons_outline:archive',
+                link: '/calculate/tax'
             },
             {
-                id   : 'deposit-withdrawal.deposit',
+                id: 'deposit-withdrawal.deposit',
                 title: '입금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/deposit',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/deposit',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.withdrawal',
+                id: 'deposit-withdrawal.withdrawal',
                 title: '출금관리',
-                type : 'basic',
-                icon : 'monetization_on',
-                link : '/deposit-withdrawal/withdrawal',
+                type: 'basic',
+                icon: 'monetization_on',
+                link: '/deposit-withdrawal/withdrawal',
                 tag: ''
             },
             {
-                id   : 'deposit-withdrawal.income-outcome',
+                id: 'deposit-withdrawal.income-outcome',
                 title: '원장관리',
-                type : 'basic',
-                icon : 'credit_score',
-                link : '/deposit-withdrawal/income-outcome',
+                type: 'basic',
+                icon: 'credit_score',
+                link: '/deposit-withdrawal/income-outcome',
                 tag: ''
             },
         ]
     },
     {
-        id      : 'udi',
+        id: 'udi',
         title: '공급내역 보고',
-        type    : 'collapsable',
-        icon    : 'insert_chart',
+        type: 'collapsable',
+        icon: 'insert_chart',
         children: [
             {
-                id   : 'udi.manages',
+                id: 'udi.manages',
                 title: '식약처 공급내역보고',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/manages'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/manages'
             },
             // {
             //     id   : 'udi.manages-email',
@@ -1258,11 +1277,11 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             //     link : '/udi/manages-email'
             // },
             {
-                id   : 'udi.status',
+                id: 'udi.status',
                 title: '통합시스템 전송내역',
-                type : 'basic',
-                icon : 'heroicons_outline:identification',
-                link : '/udi/status'
+                type: 'basic',
+                icon: 'heroicons_outline:identification',
+                link: '/udi/status'
             },
             // {
             //     id   : 'udi.manage-sample',
@@ -1274,10 +1293,10 @@ export const defaultNavigationM: FuseNavigationItem[] = [
         ]
     },
     {
-        id      : 'smart-plus',
-        title   : '스마트플러스',
-        type    : 'collapsable',
-        icon    : 'playlist_add',
+        id: 'smart-plus',
+        title: '스마트플러스',
+        type: 'collapsable',
+        icon: 'playlist_add',
         tag: '',
         children: [
             // {
@@ -1297,44 +1316,44 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             //     tag: '개발중'
             // },
             {
-                id   : 'stock.safety',
+                id: 'stock.safety',
                 title: '안전재고',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/safety',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/safety',
                 tag: ''
             },
             {
-                id   : 'stock.validity',
+                id: 'stock.validity',
                 title: '유효기간',
-                type : 'basic',
-                icon : 'heroicons_outline:calendar',
-                link : '/stock/validity',
+                type: 'basic',
+                icon: 'heroicons_outline:calendar',
+                link: '/stock/validity',
                 tag: ''
             },
             {
-                id   : 'smart-plus.status',
+                id: 'smart-plus.status',
                 title: '장기재고',
-                type : 'basic',
-                icon : 'receipt_long',
-                link : '/stock/long-term',
+                type: 'basic',
+                icon: 'receipt_long',
+                link: '/stock/long-term',
                 tag: ''
             },
             {
-                id   : 'stock.acceptable',
+                id: 'stock.acceptable',
                 title: '가납재고',
-                type : 'basic',
-                icon : 'heroicons_outline:cube',
-                link : '/stock/acceptable',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/stock/acceptable',
                 tag: ''
             }
         ]
     },
     {
-        id      : 'basic-info',
-        title   : '기준정보',
-        type    : 'collapsable',
-        icon    : 'info',
+        id: 'basic-info',
+        title: '기준정보',
+        type: 'collapsable',
+        icon: 'info',
         tag: '',
         children: [
             // {
@@ -1345,69 +1364,69 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             //     link : '/pages/error/500'
             // },
             {
-                id      : 'basic-info.account',
-                title   : '거래처관리',
+                id: 'basic-info.account',
+                title: '거래처관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:library',
-                link    : '/basic-info/account'
+                type: 'basic',
+                icon: 'heroicons_outline:library',
+                link: '/basic-info/account'
             },
             {
-                id      : 'basic-info.items',
-                title   : '품목관리',
+                id: 'basic-info.items',
+                title: '품목관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:cube',
-                link    : '/basic-info/items'
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/basic-info/items'
             },
             {
-                id      : 'basic-info.item-price',
-                title   : '계약단가 관리',
+                id: 'basic-info.item-price',
+                title: '계약단가 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'heroicons_outline:currency-dollar',
-                link    : '/basic-info/item-price'
+                type: 'basic',
+                icon: 'heroicons_outline:currency-dollar',
+                link: '/basic-info/item-price'
             },
             {
-                id      : 'basic-info.udi-code',
-                title   : 'UDI DI 코드 관리',
+                id: 'basic-info.udi-code',
+                title: 'UDI DI 코드 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'code',
-                link    : '/basic-info/udi-code',
+                type: 'basic',
+                icon: 'code',
+                link: '/basic-info/udi-code',
                 tag: '',
             },
             {
-                id      : 'basic-info.udi-code-group',
-                title   : 'UDI DI 그룹 관리',
+                id: 'basic-info.udi-code-group',
+                title: 'UDI DI 그룹 관리',
                 subtitle: '',
-                type    : 'basic',
-                icon    : 'inventory_2',
-                link    : '/basic-info/udi-code-group',
+                type: 'basic',
+                icon: 'inventory_2',
+                link: '/basic-info/udi-code-group',
                 tag: '',
             },
         ]
     },
     {
-        id      : 'my-pages',
-        title   : '마이페이지',
+        id: 'my-pages',
+        title: '마이페이지',
         subtitle: '부가기능 관리',
-        type    : 'group',
-        icon    : 'heroicons_outline:home',
+        type: 'group',
+        icon: 'heroicons_outline:home',
         children: [
             {
-                id   : 'my-pages.setting',
+                id: 'my-pages.setting',
                 title: '마이페이지',
-                type : 'basic',
-                icon : 'heroicons_outline:cog',
-                link : '/pages/settings'
+                type: 'basic',
+                icon: 'heroicons_outline:cog',
+                link: '/pages/settings'
             },
             {
-                id   : 'manual.manual',
+                id: 'manual.manual',
                 title: '매뉴얼',
-                type : 'basic',
-                icon : 'heroicons_outline:play',
-                link : '/manual/manual'
+                type: 'basic',
+                icon: 'heroicons_outline:play',
+                link: '/manual/manual'
             },
             // {
             //     id   : 'realgrid.realgrid',
@@ -1525,93 +1544,93 @@ export const defaultNavigationM: FuseNavigationItem[] = [
     //     ]
     // },
     {
-        id  : 'divider-2',
+        id: 'divider-2',
         type: 'divider'
     },
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'estimate-order.estimate',
+        id: 'estimate-order.estimate',
         title: '견적',
-        type : 'basic',
-        icon : 'heroicons_outline:pencil-alt',
-        link : '/estimate-order/estimate'
+        type: 'basic',
+        icon: 'heroicons_outline:pencil-alt',
+        link: '/estimate-order/estimate'
     },
     {
-        id      : 'estimate-order.order',
-        title   : '발주',
+        id: 'estimate-order.order',
+        title: '발주',
         subtitle: '',
-        type    : 'basic',
-        icon    : 'heroicons_outline:pencil',
-        link    : '/estimate-order/order'
+        type: 'basic',
+        icon: 'heroicons_outline:pencil',
+        link: '/estimate-order/order'
     },
     {
-        id      : 'salesorder.salesorder',
-        title   : '주문',
+        id: 'salesorder.salesorder',
+        title: '주문',
         subtitle: '',
-        type    : 'basic',
-        icon    : 'heroicons_outline:pencil',
-        link    : '/salesorder/salesorder'
+        type: 'basic',
+        icon: 'heroicons_outline:pencil',
+        link: '/salesorder/salesorder'
     },
     {
-        id   : 'bound.inbound',
+        id: 'bound.inbound',
         title: '입고',
-        type : 'basic',
-        icon : 'heroicons_outline:folder-add',
-        link : '/bound/inbound'
+        type: 'basic',
+        icon: 'heroicons_outline:folder-add',
+        link: '/bound/inbound'
     },
     {
-        id   : 'bound.outbound',
+        id: 'bound.outbound',
         title: '출고',
-        type : 'basic',
-        icon : 'heroicons_outline:folder-remove',
-        link : '/bound/outbound'
+        type: 'basic',
+        icon: 'heroicons_outline:folder-remove',
+        link: '/bound/outbound'
     },
     {
-        id   : 'stock.stock',
+        id: 'stock.stock',
         title: '재고',
-        type : 'basic',
-        icon : 'heroicons_outline:cube',
-        link : '/stock/stock'
+        type: 'basic',
+        icon: 'heroicons_outline:cube',
+        link: '/stock/stock'
     },
     {
-        id   : 'stock.validity',
+        id: 'stock.validity',
         title: '유효기간',
-        type : 'basic',
-        icon : 'heroicons_outline:calendar',
-        link : '/stock/validity'
+        type: 'basic',
+        icon: 'heroicons_outline:calendar',
+        link: '/stock/validity'
     },
     {
-        id   : 'calculate.bill',
+        id: 'calculate.bill',
         title: '정산 및 마감',
-        type : 'basic',
-        icon : 'heroicons_outline:archive',
-        link : '/calculate/bill'
+        type: 'basic',
+        icon: 'heroicons_outline:archive',
+        link: '/calculate/bill'
     },
     {
-        id   : 'calculate.tax',
+        id: 'calculate.tax',
         title: '계산서 발행',
-        type : 'basic',
-        icon : 'heroicons_outline:archive',
-        link : '/calculate/tax'
+        type: 'basic',
+        icon: 'heroicons_outline:archive',
+        link: '/calculate/tax'
     },
     // {
     //     id   : 'calculate.bill2',
@@ -1621,17 +1640,17 @@ export const horizontalNavigation: FuseNavigationItem[] = [
     //     link : '/pages/error/500'
     // },
     {
-        id   : 'realgrid.realgrid',
+        id: 'realgrid.realgrid',
         title: '그리드',
-        type : 'basic',
+        type: 'basic',
         //icon : 'heroicons_outline:desktop-computer',
-        link : '/realgrid/realgrid'
+        link: '/realgrid/realgrid'
     },
     {
-        id   : 'realgrid.realgridHD',
+        id: 'realgrid.realgridHD',
         title: '그리드(2)',
-        type : 'basic',
+        type: 'basic',
         //icon : 'heroicons_outline:desktop-computer',
-        link : '/realgrid/realgridHD'
+        link: '/realgrid/realgridHD'
     },
 ];

@@ -372,8 +372,10 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.salesorderDetailDataProvider, true);
                 // eslint-disable-next-line max-len
-                this._salesorderService.getDetail(this.salesorderDetailPagenation.page, this.salesorderDetailPagenation.size, clickData.column, this.orderBy, this.salesorderHeaderForm.getRawValue());
+                const rtn = this._salesorderService.getDetail(this.salesorderDetailPagenation.page, this.salesorderDetailPagenation.size, clickData.column, this.orderBy, this.salesorderHeaderForm.getRawValue());
+                this.loadingEnd(rtn);
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -413,6 +415,12 @@ export class SalesorderDetailComponent implements OnInit, OnDestroy, AfterViewIn
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
         this._realGridsService.gfn_Destory(this.gridList, this.salesorderDetailDataProvider);
+    }
+
+    loadingEnd(rtn: any): void {
+        rtn.then(() => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.salesorderDetailDataProvider, false);
+        });
     }
 
     setGridData(): void {

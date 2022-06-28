@@ -37,6 +37,17 @@
                         <!-- Name -->
                         <div class="sm:col-span-4">
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
+                                <mat-select (ngModelChange)="selectHeader()" [formControlName]="'status'">
+                                    <ng-container *ngFor="let status of status">
+                                        <mat-option [value]="status.id">
+                                            {{status.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full pr-4 pl-4">
                                 <mat-select (ngModelChange)="selectHeader()" [formControlName]="'taxGbn'">
                                     <ng-container *ngFor="let taxGbn of taxGbn">
                                         <mat-option [value]="taxGbn.id">
@@ -202,15 +213,25 @@
                                             </div>
                                         </div>
                                         <div *ngIf="isSearchForm" class="flex w-full">
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>출고번호</mat-label>
                                                 <input
                                                     matInput
                                                     (window:onkeypress)="enter($event)"
                                                     [formControlName]="'obNo'"
                                                     [autocomplete]="'off'">
-                                            </mat-form-field>
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            </mat-form-field><mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            <mat-label>마감유형</mat-label>
+                                            <mat-select (ngModelChange)="selectHeader()"
+                                                        [formControlName]="'status'">
+                                                <ng-container *ngFor="let status of status">
+                                                    <mat-option [value]="status.id">
+                                                        {{status.name}}
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-select>
+                                        </mat-form-field>
+                                            <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>거래유형</mat-label>
                                                 <mat-select (ngModelChange)="selectHeader()"
                                                             [formControlName]="'taxGbn'">
@@ -221,7 +242,7 @@
                                                     </ng-container>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <mat-form-field class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                            <mat-form-field class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>유형</mat-label>
                                                 <mat-select (ngModelChange)="selectTypeHeader(type)" [formControlName]="'type'">
                                                     <ng-container *ngFor="let type of type">
@@ -233,7 +254,7 @@
                                             </mat-form-field>
                                             <mat-form-field
                                                 *ngIf="isAccount"
-                                                class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>공급자</mat-label>
                                                 <input
                                                     matInput
@@ -243,7 +264,7 @@
                                             </mat-form-field>
                                             <mat-form-field
                                                 *ngIf="isToAccount"
-                                                class="w-1/5 fuse-mat-dense fuse-mat-no-subscript pr-2">
+                                                class="w-1/6 fuse-mat-dense fuse-mat-no-subscript pr-2">
                                                 <mat-label>공급받는 자</mat-label>
                                                 <input
                                                     matInput

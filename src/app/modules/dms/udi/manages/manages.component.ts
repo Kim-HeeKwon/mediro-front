@@ -20,6 +20,7 @@ import {ManagesDetailComponent} from './manages-detail/manages-detail.component'
 import {ManagesNewComponent} from './manages-new';
 import {ManagesEmailComponent} from './manages-email/manages-email.component';
 import {CommonLoadingBarComponent} from "../../../../../@teamplat/components/common-loding-bar/common-loading-bar.component";
+import {ManagesPackageComponent} from "./manages-package/manages-package.component";
 
 @Component({
     selector: 'dms-manages',
@@ -618,6 +619,37 @@ export class ManagesComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (result) {
                 }
             });
+    }
+
+    suplyPackageCreate(): void {
+        if (!this.isMobile) {
+            const popup = this._matDialog.open(ManagesPackageComponent, {
+                autoFocus: false,
+                maxHeight: '90vh',
+                disableClose: true
+            });
+            popup.afterClosed()
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result) => {
+                });
+        } else {
+            const d = this._matDialog.open(ManagesPackageComponent, {
+                autoFocus: false,
+                width: 'calc(100% - 50px)',
+                maxWidth: '100vw',
+                maxHeight: '80vh',
+                disableClose: true,
+            });
+            const smallDialogSubscription = this.isExtraSmall.subscribe((size: any) => {
+                if (size.matches) {
+                    d.updateSize('calc(100vw - 10px)', '');
+                }
+            });
+            d.afterClosed().subscribe(() => {
+                smallDialogSubscription.unsubscribe();
+            });
+        }
+
     }
 
     selectDoubleClickRow(row: any): void {

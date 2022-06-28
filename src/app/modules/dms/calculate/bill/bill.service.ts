@@ -6,7 +6,6 @@ import {Common} from "../../../../../@teamplat/providers/common/common";
 import * as moment from "moment";
 import {map, switchMap, take} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
-import {Estimate} from "../../estimate-order/estimate/estimate.types";
 
 @Injectable({
     providedIn: 'root'

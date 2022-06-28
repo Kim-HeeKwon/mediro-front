@@ -1169,7 +1169,7 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     dashboardStock() {
         if (this.stockData){
-            let rtn = this._dashboardsService.getDashboardStock();
+            const rtn = this._dashboardsService.getDashboardStock();
             this.lodingClose(rtn);
         }
     }

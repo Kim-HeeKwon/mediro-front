@@ -89,6 +89,16 @@
                             mat-stroked-button
                             [color]="'accent'"
                             [ngStyle]="{'width': '94%'}"
+                            (click)="suplyPackageCreate()">
+                            <span class="ml-2 mr-1">일괄추가</span>
+                        </button>
+                    </div>
+                    <div class="col-span-12">
+                        <button
+                            class="ml-3"
+                            mat-stroked-button
+                            [color]="'accent'"
+                            [ngStyle]="{'width': '94%'}"
                             (click)="suplyDelete()">
                             <span class="ml-2 mr-1">삭제</span>
                         </button>
@@ -243,6 +253,13 @@
                                     [color]="'accent'"
                                     (click)="suplyCreate()">
                                     <span class="ml-2 mr-1">추가</span>
+                                </button>
+                                <button
+                                    class="ml-2 mediro-btn-custom"
+                                    mat-stroked-button
+                                    [color]="'accent'"
+                                    (click)="suplyPackageCreate()">
+                                    <span class="ml-2 mr-1">일괄추가</span>
                                 </button>
                                 <button
                                     class="ml-2 mediro-btn-custom"

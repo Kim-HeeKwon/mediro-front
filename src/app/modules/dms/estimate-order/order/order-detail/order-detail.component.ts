@@ -382,8 +382,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.orderDetailDataProvider, true);
                 // eslint-disable-next-line max-len
-                this._orderService.getDetail(this.orderDetailPagenation.page, this.orderDetailPagenation.size, clickData.column, this.orderBy, this.orderHeaderForm.getRawValue());
+                const rtn = this._orderService.getDetail(this.orderDetailPagenation.page, this.orderDetailPagenation.size, clickData.column, this.orderBy, this.orderHeaderForm.getRawValue());
+                this.loadingEnd(rtn);
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -504,6 +506,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 });
         }
+    }
+
+    loadingEnd(rtn: any): void {
+        rtn.then(() => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.orderDetailDataProvider, false);
+        });
     }
 
     orderReport(): void {

@@ -554,8 +554,10 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
             if (clickData.cellType === 'header') {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.inBoundDetailDataProvider, true);
                 // eslint-disable-next-line max-len
-                this._inboundService.getDetail(this.inBoundDetailPagenation.page, this.inBoundDetailPagenation.size, clickData.column, this.orderBy, this.inBoundHeaderForm.getRawValue());
+                const rtn = this._inboundService.getDetail(this.inBoundDetailPagenation.page, this.inBoundDetailPagenation.size, clickData.column, this.orderBy, this.inBoundHeaderForm.getRawValue());
+                this.loadingEnd(rtn);
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -574,6 +576,12 @@ export class InboundDetailComponent implements OnInit, OnDestroy, AfterViewInit 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+    }
+
+    loadingEnd(rtn: any): void {
+        rtn.then(() => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.inBoundDetailDataProvider, false);
+        });
     }
 
     setGridData(): void {

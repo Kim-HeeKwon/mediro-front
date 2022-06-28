@@ -21,7 +21,6 @@ import {FunctionService} from "../../../../../../@teamplat/services/function";
 import {TeamPlatConfirmationService} from "../../../../../../@teamplat/services/confirmation";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {takeUntil} from "rxjs/operators";
-import {CommonPopupComponent} from "../../../../../../@teamplat/components/common-popup";
 import {CommonPopupItemsComponent} from "../../../../../../@teamplat/components/common-popup-items";
 
 @Component({

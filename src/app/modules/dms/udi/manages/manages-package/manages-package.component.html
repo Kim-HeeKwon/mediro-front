@@ -1,0 +1,412 @@
+<div class="flex flex-col flex-auto md:w-240 md:min-w-240 -m-6">
+    <div
+        class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary mediro-custom-background-color">
+        <div class="text-lg font-medium">공급내역 보고자료</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <fuse-alert
+        class="mt-4 -mb-4 mr-12 ml-12"
+        *ngIf="showAlert"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+    <div class="m-4">
+        <form
+            class="flex flex-col border-b"
+            [formGroup]="selectedForm">
+            <div class="p-4 sm:p-4">
+                <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
+                    <div class="sm:col-span-2">
+                        <!-- Name -->
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>연도
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <mat-select [formControlName]="'year'"
+                                        (ngModelChange)="changeDate()">
+                                <ng-container *ngFor="let year of year">
+                                    <mat-option [value]="year.id">
+                                        {{year.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <!-- Name -->
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>월
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <mat-select [formControlName]="'month'"
+                                        (ngModelChange)="changeDate()">
+                                <ng-container *ngFor="let month of month">
+                                    <mat-option [value]="month.id">
+                                        {{month.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <!-- Name -->
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>공급구분
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <mat-select [formControlName]="'suplyFlagCode'"
+                                        (ngModelChange)="changeSuplyFlagCode()">
+                                <ng-container *ngFor="let suplyFlagCode of suplyFlagCode">
+                                    <mat-option [value]="suplyFlagCode.id">
+                                        {{suplyFlagCode.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2" *ngIf="suplyTypeCodeHidden">
+                        <!-- Name -->
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>공급형태
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <mat-select [formControlName]="'suplyTypeCode'">
+                                <ng-container *ngFor="let suplyTypeCode of suplyTypeCode">
+                                    <mat-option [value]="suplyTypeCode.id">
+                                        {{suplyTypeCode.name}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="changeAccountHidden" class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-emphasized-affix w-full">
+                            <mat-label>{{changeAccountText}}
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'bcncEntpName'">
+                            <mat-icon matSuffix
+                                      class="icon-size-5 cursor-pointer"
+                                      svgIcon="search"
+                                      (click)="accountSearch()"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래처 소재지</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'bcncEntpAddr'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="changeAccountHidden" class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래처 업종</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'cobTypeName'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>거래처 사업자등록번호</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'bcncTaxNo'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="changeIsDiffDvyfgHidden" class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-4">
+                        <mat-checkbox
+                            [formControlName]="'isDiffDvyfg'"
+                            (ngModelChange)="updateIsDiffDvyfg()">
+                            <mat-label>공급받는 자와 납품장소가 다름</mat-label>
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div *ngIf="changeDlvAccountHidden" class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-emphasized-affix w-full">
+                            <mat-label>납품장소 <span class="text-10s text-bold-600" style="color: red;">* 공급받는 자와 납품장소가 다를경우 *</span>
+                            </mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'dvyfgEntpName'"
+                                (click)="dlvAccountSearch()">
+                            <mat-icon matSuffix
+                                      class="icon-size-5 cursor-pointer"
+                                      svgIcon="search"
+                                      (click)="dlvAccountSearch()"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>납품장소 소재지</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'dvyfgEntpAddr'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="changeDlvAccountHidden" class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>납품장소 업종</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'dvyfgCobTypeName'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>납품장소 사업자등록번호</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'dvyfgTaxNo'"
+                                [attr.disabled]="is_edit?'':false">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="grid grid-cols-4 sm:grid-cols-4 gap-2 w-full sm:pr-2 mt-2">
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>{{changeText}}일자
+                                <mat-icon class="icon-size-3 icon-red"
+                                          svgIcon="heroicons_solid:check-circle"></mat-icon>
+                            </mat-label>
+                            <input
+                                matInput
+                                type="date"
+                                min="{{minDate}}"
+                                max="{{maxDate}}"
+                                [formControlName]="'suplyDate'">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <form
+                    class="flex flex-col border-b"
+                    [formGroup]="searchForm">
+                    <!-- Alert -->
+                    <fuse-alert
+                        class="mt-2 mb-2 mr-2 ml-2"
+                        *ngIf="showAlert"
+                        [appearance]="'outline'"
+                        [showIcon]="false"
+                        [type]="alert.type"
+                        [@shake]="alert.type === 'error'">
+                        {{alert.message}}
+                    </fuse-alert>
+                    <div class="grid sm:grid-cols-8 gap-2 w-full sm:pr-2 mt-2 mb-2">
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>입력한 바코드</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'stdCode'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>GTIN</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'gtin'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>제조일자(11)</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'manufYm'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>유통기한(17)</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'useTmlmt'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>Lot No.(10)</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'lotNo'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>일련번호(21)</mat-label>
+                                <input
+                                    class="barcode-bold"
+                                    matInput
+                                    [formControlName]="'itemSeq'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>스캔 유형</mat-label>
+                                <mat-select (selectionChange)="selectUdiScan($event)"
+                                            [formControlName]="'udiScan'">
+                                    <ng-container *ngFor="let udiScan of udiScan">
+                                        <mat-option [value]="udiScan.id">
+                                            {{udiScan.name}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiAll" class="sm:col-span-5">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>
+                                    표준코드(UDI) 스캔
+                                    <span *ngIf="udiAll" class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 *</span>
+                                </mat-label>
+                                <input
+                                    #udiCode
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDiCode($event)"
+                                    [formControlName]="'udiCode'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDiPi" class="sm:col-span-2">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>
+                                    고유식별자(UDI-DI) 스캔
+                                    <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                </mat-label>
+                                <input
+                                    #udiDiCode
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDiPiCode($event)"
+                                    [formControlName]="'udiDiCode'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDiPi" class="sm:col-span-3">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>
+                                    생산식별자(UDI-PI) 스캔
+                                    <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
+                                </mat-label>
+                                <input
+                                    #udiPiCode
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDiPiCode2($event)"
+                                    [formControlName]="'udiPiCode'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDirect" class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>GTIN(01)</mat-label>
+                                <input
+                                    #udiDirectCodes
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDirectCode()"
+                                    [formControlName]="'gtinDirect'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDirect" class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>제조일자(11)</mat-label>
+                                <input
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDirectCode()"
+                                    [formControlName]="'manufYmDirect'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDirect" class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>유통기한(17)</mat-label>
+                                <input
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDirectCode()"
+                                    [formControlName]="'useTmlmtDirect'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDirect" class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>Lot No.(10)</mat-label>
+                                <input
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDirectCode()"
+                                    [formControlName]="'lotNoDirect'">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="udiDirect" class="sm:col-span-1">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                <mat-label>일련번호(21)</mat-label>
+                                <input
+                                    matInput
+                                    onfocus="this.select()"
+                                    (keydown.enter)="udiDirectCode()"
+                                    [formControlName]="'itemSeqDirect'">
+                            </mat-form-field>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <button
+                                class="fuse-mat-dense fuse-mat-no-subscript w-full mediro-btn-custom mediro-btn-custom-background-color mt-6"
+                                mat-flat-button
+                                [color]="'primary'"
+                                (click)="udiDiCodeScanDelete()">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'delete'"></mat-icon>
+                                <span class="ml-2 mr-1">삭제</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div
+                    style="height: 200px;"
+                    class="realgrid"
+                    id="gridList">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -37,6 +37,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
     taxGbn: CommonCode[] = null;
     taxGbnFilter: CommonCode[] = null;
     type: CommonCode[] = null;
+    status: CommonCode[] = null;
     itemGrades: CommonCode[] = [];
     billColumns: Columns[];
     bills$: Observable<Bill[]>;
@@ -73,6 +74,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'refItemNm', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'status', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'itemGrade', dataType: ValueType.TEXT},
         {fieldName: 'type', dataType: ValueType.TEXT},
@@ -103,6 +105,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
         this.taxGbnFilter = _utilService.commonValueFilter(_codeStore.getValue().data, 'TAX_GBN',['ALL']);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
+        // this.status = _utilService.commonValue(_codeStore.getValue().data, 'BL_STATUS');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -110,6 +113,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         let dashboard = false;
         // 검색 Form 생성
         this.searchForm = this._formBuilder.group({
+            status: ['ALL'],
             taxGbn: ['ALL'],
             type: ['ALL'],
             accountNm: [''],
@@ -127,6 +131,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this._activatedRoute.snapshot.paramMap['params'] !== (null || undefined)
             && Object.keys(this._activatedRoute.snapshot.paramMap['params']).length > 0) {
             this.searchForm = this._formBuilder.group({
+                status: ['ALL'],
                 taxGbn: ['ALL'],
                 type: ['ALL'],
                 accountNm: [''],
@@ -150,6 +155,9 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         const valuesTaxGbn = [];
         const lablesTaxGbn = [];
 
+        // const valuesStatus = [];
+        // const lablesStatus = [];
+
         this.type.forEach((param: any) => {
             valuesType.push(param.id);
             lablesType.push(param.name);
@@ -159,6 +167,13 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             valuesTaxGbn.push(param.id);
             lablesTaxGbn.push(param.name);
         });
+
+        // this.status.forEach((param: any) => {
+        //     valuesStatus.push(param.id);
+        //     lablesStatus.push(param.name);
+        // });
+        // console.log(valuesStatus);
+        // console.log(lablesStatus);
 
         const values = [];
         const lables = [];
@@ -196,6 +211,12 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
                 ,
                 header: {text: '청구일자', styleName: 'center-cell-text'},
                 renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text'
+                , header: {text: '마감유형', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },

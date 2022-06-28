@@ -467,9 +467,11 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, true);
             if (clickData.cellType === 'header') {
                 // eslint-disable-next-line max-len
-                this._outboundService.getDetail(this.outBoundDetailPagenation.page, this.outBoundDetailPagenation.size, clickData.column, this.orderBy, this.outBoundHeaderForm.getRawValue());
+                const rtn = this._outboundService.getDetail(this.outBoundDetailPagenation.page, this.outBoundDetailPagenation.size, clickData.column, this.orderBy, this.outBoundHeaderForm.getRawValue());
+                this.loadingEnd(rtn);
             }
             if (this.orderBy === 'asc') {
                 this.orderBy = 'desc';
@@ -516,6 +518,12 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+    }
+
+    loadingEnd(rtn: any): void {
+        rtn.then(() => {
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, false);
+        });
     }
 
     ngAfterViewInit(): void {

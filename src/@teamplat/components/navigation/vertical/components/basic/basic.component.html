@@ -8,7 +8,7 @@
     <a
         class="fuse-vertical-navigation-item"
         *ngIf="item.link && !item.externalLink && !item.function && !item.disabled"
-        [ngClass]="{'fuse-vertical-navigation-item-active-forced': item.active}"
+        [ngClass]="{'fuse-vertical-navigation-item-active-forced': item.active, 'back': item.id === 'manual.manual-book'}"
         [routerLink]="[item.link]"
         [routerLinkActive]="'fuse-vertical-navigation-item-active'"
         [routerLinkActiveOptions]="isActiveMatchOptions"

@@ -28,6 +28,7 @@ import {CommonLoadingBarModule} from "../../../../../@teamplat/components/common
 import {ManagesReportComponent} from "./manages-report/manages-report.component";
 import {ManagesDetailComponent} from "./manages-detail/manages-detail.component";
 import {ManagesEmailComponent} from "./manages-email/manages-email.component";
+import {ManagesPackageComponent} from "./manages-package/manages-package.component";
 
 const managesRoutes: Route[] = [
     {
@@ -44,7 +45,8 @@ const managesRoutes: Route[] = [
         ManagesComponent,
         ManagesReportComponent,
         ManagesDetailComponent,
-        ManagesEmailComponent
+        ManagesEmailComponent,
+        ManagesPackageComponent
     ],
     imports: [
         CommonModule,
