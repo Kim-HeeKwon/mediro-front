@@ -774,7 +774,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiCode': ''});
+                    this.searchForm.patchValue({'udiDiCode': ''});
                     this.gridList1.clearSelection();
                 }, 100);
                 // Set the alert
@@ -912,7 +912,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiCode': ''});
+                    this.searchForm.patchValue({'udiPiCode': ''});
                     this.gridList1.clearSelection();
                 }, 100);
                 // Set the alert
@@ -2051,7 +2051,7 @@ export class InboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if(!this.searchForm.getRawValue().lotNoDirect) {
                 lotNo = '';
-            } else if(this.searchForm.getRawValue().lotNoDirect.includes('10')) {
+            } else if(this.searchForm.getRawValue().lotNoDirect.includes('(10)')) {
                 lotNo = this.searchForm.getRawValue().lotNoDirect;
             } else {
                 lotNo = '(10)' + this.searchForm.getRawValue().lotNoDirect;

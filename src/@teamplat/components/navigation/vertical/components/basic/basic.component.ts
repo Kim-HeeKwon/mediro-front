@@ -92,7 +92,6 @@ export class FuseVerticalNavigationBasicItemComponent implements OnInit, OnDestr
     }
 
     createShortcut(item): void{
-        console.log(item);
         if(item.id === 'manual.manual-book') {
             window.open('https://teamplat.notion.site/V2-767bedf8500c41768b2e7a82ba72d113', '','top=50,left=200,width=1100,height=700');
         }

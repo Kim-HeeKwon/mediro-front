@@ -11,21 +11,11 @@
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </button>
     </div>
-
-    <fuse-alert
-        class="mt-4 -mb-4 mr-12 ml-12"
-        *ngIf="showAlert"
-        [appearance]="'outline'"
-        [showIcon]="false"
-        [type]="alert.type"
-        [@shake]="alert.type === 'error'">
-        {{alert.message}}
-    </fuse-alert>
     <div class="m-4">
         <form
             class="flex flex-col border-b"
             [formGroup]="selectedForm">
-            <div class="p-4 sm:p-4">
+            <div class="p-2 sm:p-2">
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
                     <div class="sm:col-span-2">
                         <!-- Name -->
@@ -312,7 +302,6 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                 <mat-label>
                                     고유식별자(UDI-DI) 스캔
-                                    <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
                                 </mat-label>
                                 <input
                                     #udiDiCode
@@ -326,7 +315,6 @@
                             <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                                 <mat-label>
                                     생산식별자(UDI-PI) 스캔
-                                    <!--                                                <span class="text-10s text-bold-600" style="color: red;"> * 사용 전 멸균 정형용품이 세트화 되어 제공하는 의료기기에 해당하는 경우 자동으로 생산식별자[UDI-PI] 제외 : (제조일자, 유통기한, Lot No, 일련번호) *</span>-->
                                 </mat-label>
                                 <input
                                     #udiPiCode
@@ -404,7 +392,7 @@
                 <div
                     style="height: 200px;"
                     class="realgrid"
-                    id="gridList">
+                    id="package">
                 </div>
             </div>
         </form>
