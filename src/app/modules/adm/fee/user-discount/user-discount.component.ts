@@ -140,8 +140,6 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                         popUpDataSet: 'discount:discount' +
                             '|discountTitle:discountTitle' +
                             '|discountComment:discountComment' +
-                            '|beginDate:beginDate' +
-                            '|endDate:endDate' +
                             '|discountRate:discountRate'
                     }
             },
@@ -159,7 +157,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'beginDate', fieldName: 'beginDate', type: 'date', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(시작)', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '기간(시작)', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 },
                 datetimeFormat: 'yyyy-MM',
@@ -173,7 +171,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'endDate', fieldName: 'endDate', type: 'data', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(종료)', styleName: 'center-cell-text'}, renderer: {
+                , header: {text: '기간(종료)', styleName: 'center-cell-text red-font-color'}, renderer: {
                     showTooltip: true
                 },
                 datetimeFormat: 'yyyy-MM',
@@ -245,7 +243,7 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.validateOnEdited = true;
         this._realGridsService.gfn_EditGrid(this.gridList);
-        const validationList = ['businessNumber', 'discountTitle'];
+        const validationList = ['businessNumber', 'discountTitle', 'beginDate', 'endDate'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
         this._realGridsService.gfn_PopUp(this.isMobile, this.isExtraSmall, this.gridList, this.dataProvider, this.columns, this._matDialogPopup, this._unsubscribeAll, this._changeDetectorRef);
 
@@ -270,11 +268,23 @@ export class UserDiscountComponent implements OnInit, OnDestroy, AfterViewInit {
 
             //추가시
             if (dataCell.item.rowState === 'created') {
-                return {editable: false};
+                if(dataCell.dataColumn.fieldName === 'beginDate' ||
+                    dataCell.dataColumn.fieldName === 'endDate'){
+                    return {editable: true};
+                }else{
+                    return {editable: false};
+                }
             } else {
-                this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopupmIdGrdPopup');
-                this._realGridsService.gfn_PopUpBtnHide('discountGrdPopup');
-                return {editable: false};
+                if(dataCell.dataColumn.fieldName === 'beginDate' ||
+                    dataCell.dataColumn.fieldName === 'endDate'){
+                    this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopup');
+                    this._realGridsService.gfn_PopUpBtnHide('discountGrdPopup');
+                    return {editable: true};
+                }else{
+                    this._realGridsService.gfn_PopUpBtnHide('mIdGrdPopup');
+                    this._realGridsService.gfn_PopUpBtnHide('discountGrdPopup');
+                    return {editable: false};
+                }
             }
         });
 

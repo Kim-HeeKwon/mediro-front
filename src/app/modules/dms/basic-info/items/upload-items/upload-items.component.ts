@@ -33,6 +33,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     // @ts-ignore
     fields: DataFieldObject[] = [
         {fieldName: 'udiDiCode', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'buyPrice', dataType: ValueType.TEXT},
         {fieldName: 'salesPrice', dataType: ValueType.TEXT},
@@ -72,6 +73,13 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
             {
                 name: 'udiDiCode', fieldName: 'udiDiCode', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: 'UDI DI 코드 (GTIN 14자리)', styleName: 'center-cell-text red-font-color'},
+                renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'standard', fieldName: 'standard', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '규격', styleName: 'center-cell-text'},
                 renderer: {
                     showTooltip: true
                 }
@@ -175,7 +183,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         setTimeout(() => {
             const values = [
-                '', '', 0, 0, '',
+                '', '', '', 0, 0, '',
             ];
 
             this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
@@ -289,7 +297,7 @@ export class UploadItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     uploadInsertItem() {
         const values = [
-            '', '', 0, 0, '',
+            '', '', '', 0, 0, '',
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);

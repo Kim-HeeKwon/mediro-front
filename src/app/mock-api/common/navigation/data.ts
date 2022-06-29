@@ -280,7 +280,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     },
     {
         id: 'report',
-        title: '리포트 관리',
+        title: '리포트관리',
         type: 'collapsable',
         icon: 'fact_check',
         children: [
@@ -293,7 +293,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id: 'report.bill',
-                title: '매입/매출 현황',
+                title: '마감 현황',
                 type: 'basic',
                 icon: 'leaderboard',
                 link: '/report/report-bill'
@@ -340,7 +340,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id: 'basic-info.udi-code',
-                title: 'UDI DI 코드 관리',
+                title: 'UDI DI 코드관리',
                 subtitle: '',
                 type: 'basic',
                 icon: 'code',
@@ -349,7 +349,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id: 'basic-info.udi-code-group',
-                title: 'UDI DI 그룹 관리',
+                title: 'UDI DI 그룹관리',
                 subtitle: '',
                 type: 'basic',
                 icon: 'inventory_2',
@@ -1389,7 +1389,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
             {
                 id: 'basic-info.udi-code',
-                title: 'UDI DI 코드 관리',
+                title: 'UDI DI 코드관리',
                 subtitle: '',
                 type: 'basic',
                 icon: 'code',
@@ -1398,7 +1398,7 @@ export const defaultNavigationM: FuseNavigationItem[] = [
             },
             {
                 id: 'basic-info.udi-code-group',
-                title: 'UDI DI 그룹 관리',
+                title: 'UDI DI 그룹관리',
                 subtitle: '',
                 type: 'basic',
                 icon: 'inventory_2',

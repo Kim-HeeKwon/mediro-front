@@ -43,8 +43,6 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'discount', dataType: ValueType.TEXT},
         {fieldName: 'discountTitle', dataType: ValueType.TEXT},
         {fieldName: 'discountComment', dataType: ValueType.TEXT},
-        {fieldName: 'beginDate', dataType: ValueType.TEXT},
-        {fieldName: 'endDate', dataType: ValueType.TEXT},
         {fieldName: 'discountRate', dataType: ValueType.NUMBER},
         {fieldName: 'remark', dataType: ValueType.TEXT},
     ];
@@ -144,34 +142,6 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'beginDate', fieldName: 'beginDate', type: 'date', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(시작)', styleName: 'center-cell-text red-font-color'}, renderer: {
-                    showTooltip: true
-                },
-                datetimeFormat: 'yyyy-MM',
-                mask: {editMask: '9999-99', includeFormat: false, allowEmpty: true}
-                ,
-                editor: {
-                    type: 'date',
-                    datetimeFormat: 'yyyy-MM',
-                    textReadOnly: true,
-                }
-            },
-            {
-                name: 'endDate', fieldName: 'endDate', type: 'data', width: '120', styleName: 'center-cell-text'
-                , header: {text: '기간(종료)', styleName: 'center-cell-text red-font-color'}, renderer: {
-                    showTooltip: true
-                },
-                datetimeFormat: 'yyyy-MM',
-                mask: {editMask: '9999-99', includeFormat: false, allowEmpty: true}
-                ,
-                editor: {
-                    type: 'date',
-                    datetimeFormat: 'yyyy-MM',
-                    textReadOnly: true,
-                }
-            },
-            {
                 name: 'discountRate',
                 fieldName: 'discountRate',
                 type: 'data',
@@ -241,7 +211,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
         this.gridList.editOptions.validateOnEdited = true;
 
         this._realGridsService.gfn_EditGrid(this.gridList);
-        const validationList = ['discountTitle', 'startDate', 'endDate', 'discountRate'];
+        const validationList = ['discountTitle', 'discountRate'];
         this._realGridsService.gfn_ValidationOption(this.gridList, validationList);
 
         //정렬
@@ -315,7 +285,7 @@ export class DiscountComponent implements OnInit, OnDestroy, AfterViewInit {
     addRow(): boolean {
 
         const values = [
-            '','','','','',''
+            '','','',''
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);

@@ -66,7 +66,7 @@ export class ReportBillService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, '')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/report/bill/list')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._reportBillDatas.next(response.data);

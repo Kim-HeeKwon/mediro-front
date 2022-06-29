@@ -4,8 +4,6 @@ export interface DiscountData
     discount: string; // 번호
     discountTitle: string; // 제목
     discountComment: string; // 내용
-    beginDate: string; // 시작일자
-    endDate: string; // 종료 일자
     discountRate: number; // 할인율
     remark: string;
 }

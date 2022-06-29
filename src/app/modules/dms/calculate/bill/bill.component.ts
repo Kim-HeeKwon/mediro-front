@@ -105,7 +105,7 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         this.taxGbn = _utilService.commonValue(_codeStore.getValue().data, 'TAX_GBN');
         this.taxGbnFilter = _utilService.commonValueFilter(_codeStore.getValue().data, 'TAX_GBN',['ALL']);
         this.itemGrades = _utilService.commonValue(_codeStore.getValue().data, 'ITEM_GRADE');
-        // this.status = _utilService.commonValue(_codeStore.getValue().data, 'BL_STATUS');
+        this.status = _utilService.commonValue(_codeStore.getValue().data, 'BILL_STATUS');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -155,8 +155,8 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
         const valuesTaxGbn = [];
         const lablesTaxGbn = [];
 
-        // const valuesStatus = [];
-        // const lablesStatus = [];
+        const valuesStatus = [];
+        const lablesStatus = [];
 
         this.type.forEach((param: any) => {
             valuesType.push(param.id);
@@ -168,12 +168,10 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             lablesTaxGbn.push(param.name);
         });
 
-        // this.status.forEach((param: any) => {
-        //     valuesStatus.push(param.id);
-        //     lablesStatus.push(param.name);
-        // });
-        // console.log(valuesStatus);
-        // console.log(lablesStatus);
+        this.status.forEach((param: any) => {
+            valuesStatus.push(param.id);
+            lablesStatus.push(param.name);
+        });
 
         const values = [];
         const lables = [];
@@ -216,8 +214,11 @@ export class BillComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             {
                 name: 'status', fieldName: 'status', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '마감유형', styleName: 'center-cell-text'}, renderer: {
-                    showTooltip: true
+                , header: {text: '마감여부', styleName: 'center-cell-text'},
+                values: valuesStatus,
+                labels: lablesStatus,
+                lookupDisplay: true, renderer:{
+                    showTooltip:true
                 }
             },
             {

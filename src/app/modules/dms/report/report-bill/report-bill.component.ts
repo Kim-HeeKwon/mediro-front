@@ -5,7 +5,7 @@ import {BreakpointObserver, Breakpoints, BreakpointState} from "@angular/cdk/lay
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {FuseUtilsService} from "../../../../../@teamplat/services/utils";
+import {CommonCode, FuseUtilsService} from "../../../../../@teamplat/services/utils";
 import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
 import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
@@ -16,6 +16,7 @@ import * as moment from "moment";
 import {ReportBillService} from "./report-bill.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {ReportBillPagenation} from "./report-bill.types";
+import {CodeStore} from "../../../../core/common-code/state/code.store";
 
 @Component({
     selector: 'dms-report-bill',
@@ -34,6 +35,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator, {static: true}) _paginator: MatPaginator;
     drawerMode: 'over' | 'side' = 'over';
     orderBy: any = 'asc';
+    type: CommonCode[] = null;
     searchForm: FormGroup;
     // @ts-ignore
     gridList: RealGrid.GridView;
@@ -41,22 +43,23 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
     reportBillDataProvider: RealGrid.LocalDataProvider;
     reportBillColumns: Columns[];
     reportBillFields: DataFieldObject[] = [
+        {fieldName: 'type', dataType: ValueType.TEXT},
         {fieldName: 'mId', dataType: ValueType.TEXT},
         {fieldName: 'addDate', dataType: ValueType.TEXT},
-        {fieldName: 'custBusinessNumber', dataType: ValueType.TEXT},
+        {fieldName: 'bisNo', dataType: ValueType.TEXT},
         {fieldName: 'account', dataType: ValueType.TEXT},
         {fieldName: 'accountNm', dataType: ValueType.TEXT},
         {fieldName: 'itemCd', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'standard', dataType: ValueType.TEXT},
         {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'qty', dataType: ValueType.NUMBER},
-        {fieldName: 'amt', dataType: ValueType.NUMBER},
-        {fieldName: 'supplyprice', dataType: ValueType.NUMBER},
-        {fieldName: 'vat', dataType: ValueType.NUMBER},
-        {fieldName: 'totalAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'unitPrice', dataType: ValueType.NUMBER},
+        {fieldName: 'billingAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'taxAmt', dataType: ValueType.NUMBER},
+        {fieldName: 'billingTotalAmt', dataType: ValueType.NUMBER},
         {fieldName: 'manager', dataType: ValueType.TEXT},
-        {fieldName: 'incomeOutcome', dataType: ValueType.TEXT}
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     _range: { start: any | null; end: any | null } = {
@@ -66,6 +69,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private _realGridsService: FuseRealGridService,
         private _matDialog: MatDialog,
+        private _codeStore: CodeStore,
         private _deviceService: DeviceDetectorService,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _formBuilder: FormBuilder,
@@ -75,6 +79,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private readonly breakpointObserver: BreakpointObserver)
     {
+        this.type = _utilService.commonValue(_codeStore.getValue().data, 'BL_TYPE');
         this.isMobile = this._deviceService.isMobile();
     }
 
@@ -86,7 +91,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
         this.searchForm = this._formBuilder.group({
             accountNm: [''],
             itemNm: [''],
-            incomeOutcome: [''],
+            type: ['ALL'],
             manager: [''],
             range: [{
                 start: firstDay,
@@ -96,6 +101,13 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
             end: []
         });
 
+        const valuesType = [];
+        const lablesType = [];
+
+        this.type.forEach((param: any) => {
+            valuesType.push(param.id);
+            lablesType.push(param.name);
+        });
         this._range = {
             start: moment().utc(true).add(-1, 'month').endOf('day').toISOString(),
             end: moment().utc(true).startOf('day').toISOString()
@@ -104,8 +116,17 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
         //그리드 컬럼
         this.reportBillColumns = [
             {
+                name: 'type', fieldName: 'type', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '유형', styleName: 'center-cell-text'},
+                values: valuesType,
+                labels: lablesType,
+                lookupDisplay: true, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
                 name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '일자', styleName: 'center-cell-text red-font-color'}, renderer: {
+                , header: {text: '일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , datetimeFormat: 'yyyy-MM-dd'
@@ -117,17 +138,17 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
-                name: 'custBusinessNumber', fieldName: 'custBusinessNumber', type: 'data', width: '150', styleName: 'left-cell-text'
+                name: 'bisNo', fieldName: 'bisNo', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '사업자번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
-            {
-                name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'center-cell-text red-font-color'}, renderer: {
-                    showTooltip: true
-                }
-            },
+            // {
+            //     name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
+            //     , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
@@ -143,6 +164,12 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'fomlInfo', fieldName: 'fomlInfo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '모델명', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -167,35 +194,35 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
             {
-                name: 'qty', fieldName: 'qty', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'qty', fieldName: 'qty', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'amt', fieldName: 'amt', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'unitPrice', fieldName: 'unitPrice', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '단가', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'supplyprice', fieldName: 'supplyprice', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'billingAmt', fieldName: 'billingAmt', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '공급가액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'vat', fieldName: 'vat', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'taxAmt', fieldName: 'taxAmt', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '부가세', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'totalAmt', fieldName: 'totalAmt', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'billingTotalAmt', fieldName: 'billingTotalAmt', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '합계금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
@@ -216,7 +243,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
         const gridListOption = {
             stateBar: false,
             checkBar: true,
-            footers: false,
+            footers: true,
         };
 
         this.reportBillDataProvider.setOptions({
@@ -303,7 +330,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '매입/매출 현황 목록');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '매입/매출 현황');
     }
 
     //페이징
@@ -316,7 +343,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
-            this._realGridsService.gfn_DataSetGrid(this.gridList, this.reportBillDataProvider, ex.deposit);
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.reportBillDataProvider, ex.reportBillData);
             this._reportBillService.reportBillPagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((reportBillPagenation: ReportBillPagenation) => {
@@ -325,7 +352,7 @@ export class ReportBillComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.reportBill.length < 1){
+            if(ex.reportBillData.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
             this._realGridsService.gfn_GridLoadingBar(this.gridList, this.reportBillDataProvider, false);

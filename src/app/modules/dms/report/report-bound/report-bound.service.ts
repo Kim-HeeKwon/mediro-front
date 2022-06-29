@@ -67,7 +67,7 @@ export class ReportBoundService {
 
         // @ts-ignore
         return new Promise((resolve, reject) => {
-            this._common.sendDataWithPageNation(searchParam, pageParam, '')
+            this._common.sendDataWithPageNation(searchParam, pageParam, 'v1/api/report/bound/list')
                 .subscribe((response: any) => {
                     if (response.status === 'SUCCESS') {
                         this._reportBoundDatas.next(response.data);

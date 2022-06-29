@@ -74,7 +74,7 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly breakpointObserver: BreakpointObserver)
     {
         this.isMobile = this._deviceService.isMobile();
-        // this.reportType = _utilService.commonValue(_codeStore.getValue().data, 'RB_TYPE');
+        this.reportType = _utilService.commonValue(_codeStore.getValue().data, 'RB_TYPE');
     }
 
     ngOnInit(): void {
@@ -93,29 +93,29 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
         const valuesType = [];
         const lablesType = [];
 
-        // this.reportType.forEach((param: any) => {
-        //     valuesType.push(param.id);
-        //     lablesType.push(param.name);
-        // });
+        this.reportType.forEach((param: any) => {
+            valuesType.push(param.id);
+            lablesType.push(param.name);
+        });
 
         //그리드 컬럼
         this.reportBoundColumns = [
             {
-                name: 'reportType', fieldName: 'reportType', type: 'data', width: '100', styleName: 'center-cell-text',
-                header: {text: '입출고 유형', styleName: 'center-cell-text'},
+                name: 'reportType', fieldName: 'reportType', type: 'data', width: '100', styleName: 'left-cell-text',
+                header: {text: '유형', styleName: 'center-cell-text'},
                 values: valuesType,
                 labels: lablesType,
                 lookupDisplay: true,
             },
             {
-                name: 'orderNo', fieldName: 'orderNo', type: 'data', width: '250', styleName: 'left-cell-text'
-                , header: {text: '오더번호(입고번호 or 출고번호)', styleName: 'center-cell-text'}, renderer: {
+                name: 'orderNo', fieldName: 'orderNo', type: 'data', width: '150', styleName: 'left-cell-text'
+                , header: {text: '오더번호', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
                 name: 'addDate', fieldName: 'addDate', type: 'data', width: '100', styleName: 'left-cell-text'
-                , header: {text: '일자', styleName: 'center-cell-text red-font-color'}, renderer: {
+                , header: {text: '일자', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
                 , datetimeFormat: 'yyyy-MM-dd'
@@ -126,12 +126,12 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
                     textReadOnly: true,
                 }
             },
-            {
-                name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
-                , header: {text: '거래처 코드', styleName: 'center-cell-text red-font-color'}, renderer: {
-                    showTooltip: true
-                }
-            },
+            // {
+            //     name: 'account', fieldName: 'account', type: 'data', width: '150', styleName: 'left-cell-text'
+            //     , header: {text: '거래처 코드', styleName: 'center-cell-text'}, renderer: {
+            //         showTooltip: true
+            //     }
+            // },
             {
                 name: 'accountNm', fieldName: 'accountNm', type: 'data', width: '150', styleName: 'left-cell-text'
                 , header: {text: '거래처 명', styleName: 'center-cell-text'}, renderer: {
@@ -177,24 +177,36 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             },
             {
-                name: 'ibQty', fieldName: 'ibQty', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'ibQty', fieldName: 'ibQty', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '입고수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
+                }, footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0',
                 }
             },
             {
-                name: 'obQty', fieldName: 'obQty', type: 'number', width: '100', styleName: 'right-cell-text'
+                name: 'obQty', fieldName: 'obQty', type: 'number', width: '120', styleName: 'right-cell-text'
                 , header: {text: '출고수량', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
+                }, footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0',
                 }
             },
             {
-                name: 'totalAmt', fieldName: 'totalAmt', type: 'number', width: '200', styleName: 'right-cell-text'
-                , header: {text: '입출금액(매입, 매출금액)', styleName: 'center-cell-text'}
+                name: 'totalAmt', fieldName: 'totalAmt', type: 'number', width: '150', styleName: 'right-cell-text'
+                , header: {text: '매입/매출금액', styleName: 'center-cell-text'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
+                }, footer: {
+                    text: '',
+                    expression: 'sum',
+                    numberFormat : '#,##0',
                 }
             },
         ];
@@ -206,7 +218,7 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
         const gridListOption = {
             stateBar: false,
             checkBar: true,
-            footers: false,
+            footers: true,
         };
 
         this.reportBoundDataProvider.setOptions({
@@ -282,7 +294,7 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
     selectHeader(): void {
         this.isSearchForm = true;
         this.searchSetValue();
-        const rtn = this._reportBoundService.getSearch(0, 40, 'orderNo', 'desc', this.searchForm.getRawValue());
+        const rtn = this._reportBoundService.getSearch(0, 40, 'addDate', 'desc', this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
@@ -307,20 +319,20 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     excelExport(): void {
-        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '수불 현황 목록');
+        this._realGridsService.gfn_ExcelExportGrid(this.gridList, '수불 현황');
     }
 
     //페이징
     pageEvent($event: PageEvent): void {
         this._realGridsService.gfn_GridLoadingBar(this.gridList, this.reportBoundDataProvider, true);
-        const rtn = this._reportBoundService.getSearch(this._paginator.pageIndex, this._paginator.pageSize, 'orderNo', this.orderBy, this.searchForm.getRawValue());
+        const rtn = this._reportBoundService.getSearch(this._paginator.pageIndex, this._paginator.pageSize, 'addDate', this.orderBy, this.searchForm.getRawValue());
         this.selectCallBack(rtn);
     }
 
     selectCallBack(rtn: any): void {
         rtn.then((ex) => {
 
-            this._realGridsService.gfn_DataSetGrid(this.gridList, this.reportBoundDataProvider, ex.deposit);
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.reportBoundDataProvider, ex.reportBoundData);
             this._reportBoundService.reportBoundPagenation$
                 .pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((reportBoundPagenation: ReportBoundPagenation) => {
@@ -329,7 +341,7 @@ export class ReportBoundComponent implements OnInit, OnDestroy, AfterViewInit {
                     // Mark for check
                     this._changeDetectorRef.markForCheck();
                 });
-            if(ex.reportBound.length < 1){
+            if(ex.reportBoundData.length < 1){
                 this._functionService.cfn_alert('검색된 정보가 없습니다.');
             }
             this._realGridsService.gfn_GridLoadingBar(this.gridList, this.reportBoundDataProvider, false);
