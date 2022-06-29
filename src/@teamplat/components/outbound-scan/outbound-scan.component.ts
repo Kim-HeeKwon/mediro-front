@@ -767,6 +767,8 @@ export class OutboundScanComponent implements OnInit, OnDestroy, AfterViewInit {
                                     this.refUdiPiCode.nativeElement.focus();
                                 } else {
                                     setTimeout(() => {
+                                        this.searchForm.patchValue({'udiDiCode': ''});
+                                        this.searchForm.patchValue({'udiPiCode': ''});
                                         this.gridList1.clearSelection();
                                     }, 100);
                                     this.alert = {

@@ -42,7 +42,6 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         Breakpoints.XSmall
     );
     selectedForm: FormGroup;
-    searchForm: FormGroup;
     showAlert: boolean = false;
     isMobile: boolean = false;
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -57,7 +56,6 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
     suplyFlagCode: CommonCode[] = null;
     minDate: string;
     maxDate: string;
-
     changeText: string = '';
     changeAccountText: string = '거래처';
     udiScan: CommonCode[] = [
@@ -96,7 +94,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         {fieldName: 'manufYm', dataType: ValueType.TEXT},
         {fieldName: 'useTmlmt', dataType: ValueType.TEXT},
         {fieldName: 'itemSeq', dataType: ValueType.TEXT},
-        {fieldName: 'obQty', dataType: ValueType.NUMBER},
+        {fieldName: 'packageQty', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -158,10 +156,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             totalCnt: [''],
             udiDiSeq: [''],
             grade: [{value: '', disabled: true}],
-            active: [false]  // cell상태
-        });
-
-        this.searchForm = this._formBuilder.group({
+            active: [false],  // cell상태
             udiCode: [''],   // 바코드
             udiDiCode: [''],
             udiPiCode: [''],
@@ -172,9 +167,9 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             manufYm: [''],   //
             useTmlmt: [''],   //
             itemSeq: [''],   //
-            suplyTypeCode: [''],
-            suplyContStdmt: [''],
-            active: [false],  // cell상태
+            // suplyTypeCode: [''],
+            // suplyContStdmt: [''],
+            // active: [false],  // cell상태
             udiScan: ['ALL'],
             gtinDirect: [''],   // UDI NO
             manufYmDirect: [''],   // 제조일자
@@ -182,14 +177,14 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             lotNoDirect: [''],   // LOT NO
             itemSeqDirect: [''],   // 일련번호
         });
-        this.searchForm.patchValue({'suplyContStdmt': this.searchForm.getRawValue().year + this.searchForm.getRawValue().month + ''});
 
-        this.searchForm.controls['stdCode'].disable();
-        this.searchForm.controls['gtin'].disable();
-        this.searchForm.controls['lotNo'].disable();
-        this.searchForm.controls['manufYm'].disable();
-        this.searchForm.controls['useTmlmt'].disable();
-        this.searchForm.controls['itemSeq'].disable();
+        this.selectedForm.patchValue({'suplyContStdmt': this.selectedForm.getRawValue().year + this.selectedForm.getRawValue().month + ''});
+        this.selectedForm.controls['stdCode'].disable();
+        this.selectedForm.controls['gtin'].disable();
+        this.selectedForm.controls['lotNo'].disable();
+        this.selectedForm.controls['manufYm'].disable();
+        this.selectedForm.controls['useTmlmt'].disable();
+        this.selectedForm.controls['itemSeq'].disable();
         //그리드 컬럼
         this.gridListColumns = [
             {
@@ -233,8 +228,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                 }
             },
             {
-                name: 'obQty', fieldName: 'obQty', type: 'data', width: '100', styleName: 'right-cell-text'
-                , header: {text: '출고수량', styleName: 'center-cell-text red-font-color'}
+                name: 'packageQty', fieldName: 'packageQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
@@ -289,7 +284,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
 
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             const ret = {styleName: '', editable: false};
-            if (dataCell.dataColumn.fieldName === 'obQty') {
+            if (dataCell.dataColumn.fieldName === 'packageQty') {
                 ret.editable = true;
             }
 
@@ -497,14 +492,14 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
 
     selectUdiScan(val: any): void {
         if (val.value === 'ALL') {
-            this.searchForm.patchValue({'udiCode': ''});
-            this.searchForm.patchValue({'udiDiCode': ''});
-            this.searchForm.patchValue({'udiPiCode': ''});
-            this.searchForm.patchValue({'gtinDirect': ''});
-            this.searchForm.patchValue({'manufYmDirect': ''});
-            this.searchForm.patchValue({'useTmlmtDirect': ''});
-            this.searchForm.patchValue({'lotNoDirect': ''});
-            this.searchForm.patchValue({'itemSeqDirect': ''});
+            this.selectedForm.patchValue({'udiCode': ''});
+            this.selectedForm.patchValue({'udiDiCode': ''});
+            this.selectedForm.patchValue({'udiPiCode': ''});
+            this.selectedForm.patchValue({'gtinDirect': ''});
+            this.selectedForm.patchValue({'manufYmDirect': ''});
+            this.selectedForm.patchValue({'useTmlmtDirect': ''});
+            this.selectedForm.patchValue({'lotNoDirect': ''});
+            this.selectedForm.patchValue({'itemSeqDirect': ''});
             this.udiAll = true;
             this.udiDiPi = false;
             this.udiDirect = false;
@@ -518,14 +513,14 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                 }, 200);
             }
         } else if (val.value === '0') {
-            this.searchForm.patchValue({'udiCode': ''});
-            this.searchForm.patchValue({'udiDiCode': ''});
-            this.searchForm.patchValue({'udiPiCode': ''});
-            this.searchForm.patchValue({'gtinDirect': ''});
-            this.searchForm.patchValue({'manufYmDirect': ''});
-            this.searchForm.patchValue({'useTmlmtDirect': ''});
-            this.searchForm.patchValue({'lotNoDirect': ''});
-            this.searchForm.patchValue({'itemSeqDirect': ''});
+            this.selectedForm.patchValue({'udiCode': ''});
+            this.selectedForm.patchValue({'udiDiCode': ''});
+            this.selectedForm.patchValue({'udiPiCode': ''});
+            this.selectedForm.patchValue({'gtinDirect': ''});
+            this.selectedForm.patchValue({'manufYmDirect': ''});
+            this.selectedForm.patchValue({'useTmlmtDirect': ''});
+            this.selectedForm.patchValue({'lotNoDirect': ''});
+            this.selectedForm.patchValue({'itemSeqDirect': ''});
             this.udiDiPi = true;
             this.udiAll = false;
             this.udiDirect = false;
@@ -539,14 +534,14 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                 }, 200);
             }
         } else if (val.value === '1') {
-            this.searchForm.patchValue({'udiCode': ''});
-            this.searchForm.patchValue({'udiDiCode': ''});
-            this.searchForm.patchValue({'udiPiCode': ''});
-            this.searchForm.patchValue({'gtinDirect': ''});
-            this.searchForm.patchValue({'manufYmDirect': ''});
-            this.searchForm.patchValue({'useTmlmtDirect': ''});
-            this.searchForm.patchValue({'lotNoDirect': ''});
-            this.searchForm.patchValue({'itemSeqDirect': ''});
+            this.selectedForm.patchValue({'udiCode': ''});
+            this.selectedForm.patchValue({'udiDiCode': ''});
+            this.selectedForm.patchValue({'udiPiCode': ''});
+            this.selectedForm.patchValue({'gtinDirect': ''});
+            this.selectedForm.patchValue({'manufYmDirect': ''});
+            this.selectedForm.patchValue({'useTmlmtDirect': ''});
+            this.selectedForm.patchValue({'lotNoDirect': ''});
+            this.selectedForm.patchValue({'itemSeqDirect': ''});
             this.udiDiPi = false;
             this.udiAll = false;
             this.udiDirect = true;
@@ -565,14 +560,14 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
     failAlert(): void {
 
         setTimeout(() => {
-            this.searchForm.patchValue({'udiCode': ''});
-            this.searchForm.patchValue({'udiDiCode': ''});
-            this.searchForm.patchValue({'udiPiCode': ''});
-            this.searchForm.patchValue({'gtinDirect': ''});
-            this.searchForm.patchValue({'manufYmDirect': ''});
-            this.searchForm.patchValue({'useTmlmtDirect': ''});
-            this.searchForm.patchValue({'lotNoDirect': ''});
-            this.searchForm.patchValue({'itemSeqDirect': ''});
+            this.selectedForm.patchValue({'udiCode': ''});
+            this.selectedForm.patchValue({'udiDiCode': ''});
+            this.selectedForm.patchValue({'udiPiCode': ''});
+            this.selectedForm.patchValue({'gtinDirect': ''});
+            this.selectedForm.patchValue({'manufYmDirect': ''});
+            this.selectedForm.patchValue({'useTmlmtDirect': ''});
+            this.selectedForm.patchValue({'lotNoDirect': ''});
+            this.selectedForm.patchValue({'itemSeqDirect': ''});
             this.gridList.clearSelection();
         }, 100);
         // Set the alert
@@ -621,7 +616,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiCode': ''});
+                    this.selectedForm.patchValue({'udiCode': ''});
                     this.gridList.clearSelection();
                 }, 100);
                 // Set the alert
@@ -900,12 +895,12 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                         this.alertMessage(manages);
 
                         if (manages.data !== null) {
-                            this.searchForm.patchValue({'stdCode': udiCode});
-                            this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')', '')});
-                            this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
-                            this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
-                            this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
-                            this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
+                            this.selectedForm.patchValue({'stdCode': udiCode});
+                            this.selectedForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')', '')});
+                            this.selectedForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
+                            this.selectedForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
+                            this.selectedForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
+                            this.selectedForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
 
                             let useTmlmtUse = '-';
                             if (useTmlmt !== undefined) {
@@ -1010,7 +1005,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
@@ -1022,7 +1017,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'obQty');
+                                    dataRow2, 'packageQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
@@ -1031,7 +1026,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'obQty',
+                                        'packageQty',
                                         sumQty2);
                                 }, 100);
 
@@ -1039,7 +1034,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 this._realGridsService.gfn_AddRow(this.gridList, this.gridListDataProvider, values);
                             }
                             setTimeout(() => {
-                                this.searchForm.patchValue({'udiCode': ''});
+                                this.selectedForm.patchValue({'udiCode': ''});
                             }, 100);
 
                             if (!this.barcodeYn) {
@@ -1060,8 +1055,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'obQty';
-                                focusCell.fieldName = 'obQty';
+                                focusCell.column = 'packageQty';
+                                focusCell.fieldName = 'packageQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
@@ -1100,7 +1095,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiDiCode': ''});
+                    this.selectedForm.patchValue({'udiDiCode': ''});
                 }, 100);
                 // Set the alert
                 this.alert = {
@@ -1144,8 +1139,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
 
             if (noCode) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiDiCode': ''});
-                    this.searchForm.patchValue({'udiPiCode': ''});
+                    this.selectedForm.patchValue({'udiDiCode': ''});
+                    this.selectedForm.patchValue({'udiPiCode': ''});
                 }, 100);
                 // Set the alert
                 this.alert = {
@@ -1175,6 +1170,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 this.showAlert = true;
                                 this.refUdiPiCode.nativeElement.focus();
                             } else {
+                                this.selectedForm.patchValue({'udiDiCode': ''});
+                                this.selectedForm.patchValue({'udiPiCode': ''});
                                 this.alert = {
                                     type: 'error',
                                     message: '해당 바코드로 일치하는 품목 또는 모델이 없습니다.'
@@ -1195,10 +1192,10 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
 
         let udiDiCodes;
         let udiPiCodes = $event.target.value;
-        if (!this.searchForm.getRawValue().udiDiCode.includes('(')) {
-            udiDiCodes = '(' + this.searchForm.getRawValue().udiDiCode.substring(0, 2) + ')' + this.searchForm.getRawValue().udiDiCode.substring(2, 16);
+        if (!this.selectedForm.getRawValue().udiDiCode.includes('(')) {
+            udiDiCodes = '(' + this.selectedForm.getRawValue().udiDiCode.substring(0, 2) + ')' + this.selectedForm.getRawValue().udiDiCode.substring(2, 16);
         } else {
-            udiDiCodes = this.searchForm.getRawValue().udiDiCode;
+            udiDiCodes = this.selectedForm.getRawValue().udiDiCode;
         }
         let udiCode = udiDiCodes + udiPiCodes;
         if (udiCode === '') {
@@ -1217,7 +1214,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'udiPiCode': ''});
+                    this.selectedForm.patchValue({'udiPiCode': ''});
                 }, 100);
                 // Set the alert
                 this.alert = {
@@ -1367,12 +1364,12 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                         this.alertMessage(manages);
 
                         if (manages.data !== null) {
-                            this.searchForm.patchValue({'stdCode': udiCode});
-                            this.searchForm.patchValue({'gtin': udiDiCodes.replace('(' + '01' + ')', '')});
-                            this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
-                            this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
-                            this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
-                            this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
+                            this.selectedForm.patchValue({'stdCode': udiCode});
+                            this.selectedForm.patchValue({'gtin': udiDiCodes.replace('(' + '01' + ')', '')});
+                            this.selectedForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
+                            this.selectedForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
+                            this.selectedForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
+                            this.selectedForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
 
                             let useTmlmtUse = '-';
                             if (useTmlmt !== undefined) {
@@ -1477,7 +1474,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
@@ -1490,7 +1487,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'obQty');
+                                    dataRow2, 'packageQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
@@ -1499,15 +1496,15 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'obQty',
+                                        'packageQty',
                                         sumQty2);
                                 }, 100);
                             } else {
                                 this._realGridsService.gfn_AddRow(this.gridList, this.gridListDataProvider, values);
                             }
                             setTimeout(() => {
-                                this.searchForm.patchValue({'udiDiCode': ''});
-                                this.searchForm.patchValue({'udiPiCode': ''});
+                                this.selectedForm.patchValue({'udiDiCode': ''});
+                                this.selectedForm.patchValue({'udiPiCode': ''});
                             }, 100);
 
                             if (!this.barcodeYn) {
@@ -1528,8 +1525,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'obQty';
-                                focusCell.fieldName = 'obQty';
+                                focusCell.column = 'packageQty';
+                                focusCell.fieldName = 'packageQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
@@ -1557,20 +1554,20 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         let lotNo;
         let itemSeq;
         let stdCode;
-        let udiCode = this.searchForm.getRawValue().gtinDirect +
-            this.searchForm.getRawValue().manufYmDirect +
-            this.searchForm.getRawValue().useTmlmtDirect +
-            this.searchForm.getRawValue().lotNoDirect +
-            this.searchForm.getRawValue().itemSeqDirect;
+        let udiCode = this.selectedForm.getRawValue().gtinDirect +
+            this.selectedForm.getRawValue().manufYmDirect +
+            this.selectedForm.getRawValue().useTmlmtDirect +
+            this.selectedForm.getRawValue().lotNoDirect +
+            this.selectedForm.getRawValue().itemSeqDirect;
         let udi;
 
-        if (!this.searchForm.getRawValue().gtinDirect) {
+        if (!this.selectedForm.getRawValue().gtinDirect) {
             setTimeout(() => {
-                this.searchForm.patchValue({'gtinDirect': ''});
-                this.searchForm.patchValue({'manufYmDirect': ''});
-                this.searchForm.patchValue({'useTmlmtDirect': ''});
-                this.searchForm.patchValue({'lotNoDirect': ''});
-                this.searchForm.patchValue({'itemSeqDirect': ''});
+                this.selectedForm.patchValue({'gtinDirect': ''});
+                this.selectedForm.patchValue({'manufYmDirect': ''});
+                this.selectedForm.patchValue({'useTmlmtDirect': ''});
+                this.selectedForm.patchValue({'lotNoDirect': ''});
+                this.selectedForm.patchValue({'itemSeqDirect': ''});
             }, 100);
             this.alert = {
                 type: 'error',
@@ -1579,7 +1576,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             // Show the alert
             this.showAlert = true;
         } else {
-            if (this.searchForm.getRawValue().gtinDirect.length < 14) {
+            if (this.selectedForm.getRawValue().gtinDirect.length < 14) {
                 this.failAlert();
                 return;
             }
@@ -1587,11 +1584,11 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
             if (check_kor.test(udiCode)) {
                 setTimeout(() => {
-                    this.searchForm.patchValue({'gtinDirect': ''});
-                    this.searchForm.patchValue({'manufYmDirect': ''});
-                    this.searchForm.patchValue({'useTmlmtDirect': ''});
-                    this.searchForm.patchValue({'lotNoDirect': ''});
-                    this.searchForm.patchValue({'itemSeqDirect': ''});
+                    this.selectedForm.patchValue({'gtinDirect': ''});
+                    this.selectedForm.patchValue({'manufYmDirect': ''});
+                    this.selectedForm.patchValue({'useTmlmtDirect': ''});
+                    this.selectedForm.patchValue({'lotNoDirect': ''});
+                    this.selectedForm.patchValue({'itemSeqDirect': ''});
                 }, 100);
                 // Set the alert
                 this.alert = {
@@ -1603,59 +1600,59 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            if(!this.searchForm.getRawValue().gtinDirect) {
+            if(!this.selectedForm.getRawValue().gtinDirect) {
                 stdCode = '';
-            } else if(this.searchForm.getRawValue().gtinDirect.includes('(01)')) {
-                stdCode = this.searchForm.getRawValue().gtinDirect;
+            } else if(this.selectedForm.getRawValue().gtinDirect.includes('(01)')) {
+                stdCode = this.selectedForm.getRawValue().gtinDirect;
             } else {
-                stdCode = '(01)' + this.searchForm.getRawValue().gtinDirect;
+                stdCode = '(01)' + this.selectedForm.getRawValue().gtinDirect;
             }
-            if(!this.searchForm.getRawValue().manufYmDirect) {
+            if(!this.selectedForm.getRawValue().manufYmDirect) {
                 manufYm = '';
-            } else if(this.searchForm.getRawValue().manufYmDirect.includes('(11)')) {
-                manufYm = this.searchForm.getRawValue().manufYmDirect;
+            } else if(this.selectedForm.getRawValue().manufYmDirect.includes('(11)')) {
+                manufYm = this.selectedForm.getRawValue().manufYmDirect;
                 if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
                     this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
                     return;
                 }
             } else {
-                manufYm = '(11)' + this.searchForm.getRawValue().manufYmDirect;
+                manufYm = '(11)' + this.selectedForm.getRawValue().manufYmDirect;
                 if (manufYm.replace('(' + '11' + ')', '').length !== 6) {
                     this._functionService.cfn_alert('제조연월이 잘못되었습니다. <br> 제조연월 형식은 (11)YYMMDD 입니다.');
                     return;
                 }
             }
 
-            if(!this.searchForm.getRawValue().useTmlmtDirect) {
+            if(!this.selectedForm.getRawValue().useTmlmtDirect) {
                 useTmlmt = '';
-            } else if(this.searchForm.getRawValue().useTmlmtDirect.includes('(17)')) {
-                useTmlmt = this.searchForm.getRawValue().useTmlmtDirect;
+            } else if(this.selectedForm.getRawValue().useTmlmtDirect.includes('(17)')) {
+                useTmlmt = this.selectedForm.getRawValue().useTmlmtDirect;
                 if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
                     this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
                     return;
                 }
             } else {
-                useTmlmt = '(17)' + this.searchForm.getRawValue().useTmlmtDirect;
+                useTmlmt = '(17)' + this.selectedForm.getRawValue().useTmlmtDirect;
                 if (useTmlmt.replace('(' + '17' + ')', '').length !== 6) {
                     this._functionService.cfn_alert('유통기한이 잘못되었습니다. <br> 유통기한 형식은 (17)YYMMDD 입니다.');
                     return;
                 }
             }
 
-            if(!this.searchForm.getRawValue().lotNoDirect) {
+            if(!this.selectedForm.getRawValue().lotNoDirect) {
                 lotNo = '';
-            } else if(this.searchForm.getRawValue().lotNoDirect.includes('(10)')) {
-                lotNo = this.searchForm.getRawValue().lotNoDirect;
+            } else if(this.selectedForm.getRawValue().lotNoDirect.includes('(10)')) {
+                lotNo = this.selectedForm.getRawValue().lotNoDirect;
             } else {
-                lotNo = '(10)' + this.searchForm.getRawValue().lotNoDirect;
+                lotNo = '(10)' + this.selectedForm.getRawValue().lotNoDirect;
             }
 
-            if(!this.searchForm.getRawValue().itemSeqDirect) {
+            if(!this.selectedForm.getRawValue().itemSeqDirect) {
                 itemSeq = '';
-            } else if(this.searchForm.getRawValue().itemSeqDirect.includes('(21)')) {
-                itemSeq = this.searchForm.getRawValue().itemSeqDirect;
+            } else if(this.selectedForm.getRawValue().itemSeqDirect.includes('(21)')) {
+                itemSeq = this.selectedForm.getRawValue().itemSeqDirect;
             } else {
-                itemSeq = '(21)' + this.searchForm.getRawValue().itemSeqDirect;
+                itemSeq = '(21)' + this.selectedForm.getRawValue().itemSeqDirect;
             }
 
             udi = stdCode + manufYm + useTmlmt + lotNo + itemSeq;
@@ -1671,12 +1668,12 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                         this.alertMessage(manages);
 
                         if (manages.data !== null) {
-                            this.searchForm.patchValue({'stdCode': udi});
-                            this.searchForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')', '')});
-                            this.searchForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
-                            this.searchForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
-                            this.searchForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
-                            this.searchForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
+                            this.selectedForm.patchValue({'stdCode': udi});
+                            this.selectedForm.patchValue({'gtin': stdCode.replace('(' + '01' + ')', '')});
+                            this.selectedForm.patchValue({'lotNo': lotNo.replace('(' + '10' + ')', '')});
+                            this.selectedForm.patchValue({'itemSeq': itemSeq.replace('(' + '21' + ')', '')});
+                            this.selectedForm.patchValue({'manufYm': manufYm.replace('(' + '11' + ')', '')});
+                            this.selectedForm.patchValue({'useTmlmt': useTmlmt.replace('(' + '17' + ')', '')});
 
                             let useTmlmtUse = '-';
                             if (useTmlmt !== undefined) {
@@ -1781,7 +1778,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.searchForm.getRawValue().stdCode))
+                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
@@ -1794,7 +1791,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'obQty');
+                                    dataRow2, 'packageQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
@@ -1803,7 +1800,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'obQty',
+                                        'packageQty',
                                         sumQty2);
                                 }, 100);
 
@@ -1811,11 +1808,11 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 this._realGridsService.gfn_AddRow(this.gridList, this.gridListDataProvider, values);
                             }
                             setTimeout(() => {
-                                this.searchForm.patchValue({'gtinDirect': ''});
-                                this.searchForm.patchValue({'manufYmDirect': ''});
-                                this.searchForm.patchValue({'useTmlmtDirect': ''});
-                                this.searchForm.patchValue({'lotNoDirect': ''});
-                                this.searchForm.patchValue({'itemSeqDirect': ''});
+                                this.selectedForm.patchValue({'gtinDirect': ''});
+                                this.selectedForm.patchValue({'manufYmDirect': ''});
+                                this.selectedForm.patchValue({'useTmlmtDirect': ''});
+                                this.selectedForm.patchValue({'lotNoDirect': ''});
+                                this.selectedForm.patchValue({'itemSeqDirect': ''});
                             }, 100);
 
                             if (!this.barcodeYn) {
@@ -1836,8 +1833,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'obQty';
-                                focusCell.fieldName = 'obQty';
+                                focusCell.column = 'packageQty';
+                                focusCell.fieldName = 'packageQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
