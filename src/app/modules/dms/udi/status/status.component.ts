@@ -379,13 +379,14 @@ export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectHeader(): void {
-
+        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.suplyDataProvider, true);
         this.searchForm.patchValue({'start': this.searchForm.get('range').value.start});
         this.searchForm.patchValue({'end': this.searchForm.get('range').value.end});
 
-        this._statusService.getHeader(0, 20, 'serialkey', 'desc', this.searchForm.getRawValue());
+        const rtn = this._statusService.getHeader(0, 20, 'serialkey', 'desc', this.searchForm.getRawValue());
 
-        this.setGridData();
+        this.selectCallBack(rtn);
+        // this.setGridData();
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
