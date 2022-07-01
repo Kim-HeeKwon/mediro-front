@@ -1170,11 +1170,11 @@ export class DashboardsComponent implements OnInit, AfterViewInit, OnDestroy {
     dashboardStock() {
         if (this.stockData){
             const rtn = this._dashboardsService.getDashboardStock();
-            this.lodingClose(rtn);
+            this.loadingClose(rtn);
         }
     }
 
-    lodingClose(rtn: any): void {
+    loadingClose(rtn: any): void {
         rtn.then((ex) => {
             this._functionService.cfn_loadingBarClear();
         });

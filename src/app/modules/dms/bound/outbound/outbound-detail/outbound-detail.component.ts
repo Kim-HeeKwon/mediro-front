@@ -325,6 +325,7 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         });
         this.gridList.setPasteOptions({
             enabled: true,
+            startEdit: false,
             commitEdit: true,
             checkReadOnly: true
         });
@@ -467,8 +468,8 @@ export class OutboundDetailComponent implements OnInit, OnDestroy, AfterViewInit
         //정렬
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type,prefer-arrow/prefer-arrow-functions
         this.gridList.onCellClicked = (grid, clickData) => {
-            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, true);
             if (clickData.cellType === 'header') {
+                this._realGridsService.gfn_GridLoadingBar(this.gridList, this.outBoundDetailDataProvider, true);
                 // eslint-disable-next-line max-len
                 const rtn = this._outboundService.getDetail(this.outBoundDetailPagenation.page, this.outBoundDetailPagenation.size, clickData.column, this.orderBy, this.outBoundHeaderForm.getRawValue());
                 this.loadingEnd(rtn);

@@ -245,7 +245,7 @@ export class OutboundComponent implements OnInit, OnDestroy, AfterViewInit {
 
         //그리드 옵션
         const gridListOption = {
-            stateBar: true,
+            stateBar: false,
             checkBar: true,
             footers: false,
         };

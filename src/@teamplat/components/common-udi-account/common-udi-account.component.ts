@@ -198,7 +198,6 @@ export class CommonUdiAccountComponent implements OnInit, OnDestroy, AfterViewIn
                     const obj = new Object();
                     obj['row'] = grid.getValues(clickData.dataRow);
                     obj['cobFlagCode'] = this.searchForm.getRawValue().cobFlagCode;
-                    console.log(obj);
                     this.matDialogRef.close(obj);
                 }
             }
