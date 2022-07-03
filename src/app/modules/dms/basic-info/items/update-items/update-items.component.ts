@@ -34,6 +34,8 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
     fields: DataFieldObject[] = [
         {fieldName: 'fomlInfo', dataType: ValueType.TEXT},
         {fieldName: 'itemNm', dataType: ValueType.TEXT},
+        {fieldName: 'standard', dataType: ValueType.TEXT},
+        {fieldName: 'unit', dataType: ValueType.TEXT},
         {fieldName: 'message', dataType: ValueType.TEXT},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -77,6 +79,26 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
                 name: 'itemNm', fieldName: 'itemNm', type: 'data', width: '200', styleName: 'left-cell-text'
                 , header: {text: '품목명', styleName: 'center-cell-text red-font-color'},
                 renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'standard',
+                fieldName: 'standard',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '규격', styleName: 'center-cell-text'}, renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'unit',
+                fieldName: 'unit',
+                type: 'data',
+                width: '120',
+                styleName: 'left-cell-text',
+                header: {text: '단위', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
@@ -158,7 +180,7 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         setTimeout(() => {
             const values = [
-                '', '',
+                '', '', '', ''
             ];
 
             this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
@@ -267,7 +289,7 @@ export class UpdateItemsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     updateInsertItem() {
         const values = [
-            '', '', 0, 0, '',
+            '', '', '', '', '',
         ];
 
         this._realGridsService.gfn_AddRow(this.gridList, this.dataProvider, values);
