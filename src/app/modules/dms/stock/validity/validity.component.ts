@@ -319,7 +319,7 @@ export class ValidityComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const gridListOption = {
             stateBar: false,
-            checkBar: true,
+            checkBar: false,
             footers: false,
         };
 
