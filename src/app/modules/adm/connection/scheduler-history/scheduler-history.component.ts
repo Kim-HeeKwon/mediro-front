@@ -6,9 +6,11 @@ import RealGrid, {DataFieldObject, ValueType} from "realgrid";
 import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {merge, Subject} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {map, switchMap, takeUntil} from "rxjs/operators";
 import {SchedulerHistoryService} from "./scheduler-history.service";
 import * as moment from "moment";
+import {SchedulerHistoryPagenation} from "./scheduler-history.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'app-admin-scheduler-history',
@@ -48,6 +50,7 @@ export class SchedulerHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     constructor(private _realGridsService: FuseRealGridService,
                 private _deviceService: DeviceDetectorService,
                 private _schedulerHistoryService: SchedulerHistoryService,
+                private _functionService: FunctionService,
                 private _changeDetectorRef: ChangeDetectorRef,
                 private _formBuilder: FormBuilder,)
     {
@@ -198,8 +201,21 @@ export class SchedulerHistoryComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     selectCallBack(rtn: any): void {
-        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
-
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.schedulerHistory);
+            this._schedulerHistoryService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((schedulerHistoryPagenation: SchedulerHistoryPagenation) => {
+                    // Update the pagination
+                    this.pagenation = schedulerHistoryPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.schedulerHistory.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        });
     }
 
     //엑셀 다운로드

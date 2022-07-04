@@ -13,10 +13,8 @@ import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {FunctionService} from "../../../../../@teamplat/services/function";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {UserService} from "../user/user.service";
 import {UserInfoService} from "./user-info.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
-import {UserPagenation} from "../user/user.types";
 import {UserInfoPagenation} from "./user-info.types";
 
 @Component({
@@ -60,7 +58,6 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit{
         {fieldName: 'payGrade', dataType: ValueType.TEXT},
         {fieldName: 'yearUser', dataType: ValueType.TEXT},
         {fieldName: 'midGrade', dataType: ValueType.TEXT},
-
         {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'delFlag', dataType: ValueType.TEXT},
     ];

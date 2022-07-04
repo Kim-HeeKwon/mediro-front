@@ -6,9 +6,11 @@ import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types
 import {FuseRealGridService} from "../../../../../@teamplat/services/realgrid";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {merge, Subject} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {map, switchMap, takeUntil} from "rxjs/operators";
 import {ErrorHistoryService} from "./error-history.service";
 import * as moment from "moment";
+import {ErrorHistoryPagenation} from "./error-history.types";
+import {FunctionService} from "../../../../../@teamplat/services/function";
 
 @Component({
     selector: 'app-admin-error-history',
@@ -47,6 +49,7 @@ export class ErrorHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(private _realGridsService: FuseRealGridService,
                 private _deviceService: DeviceDetectorService,
                 private _changeDetectorRef: ChangeDetectorRef,
+                private _functionService: FunctionService,
                 private _errorHistoryService: ErrorHistoryService,
                 private _formBuilder: FormBuilder,)
     {
@@ -189,8 +192,21 @@ export class ErrorHistoryComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     selectCallBack(rtn: any): void {
-        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
-
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.errorHistory);
+            this._errorHistoryService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((errorHistoryPagenation: ErrorHistoryPagenation) => {
+                    // Update the pagination
+                    this.pagenation = errorHistoryPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.errorHistory.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        });
     }
 
     //엑셀 다운로드

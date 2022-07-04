@@ -10,6 +10,7 @@ import {Columns} from "../../../../../@teamplat/services/realgrid/realgrid.types
 import {ConnectionHistoryService} from "./connection-history.service";
 import {map, switchMap, takeUntil} from "rxjs/operators";
 import {FunctionService} from "../../../../../@teamplat/services/function";
+import {ConnectionHistoryPagenation} from "./connection-history.types";
 
 @Component({
     selector: 'app-admin-connection-history',
@@ -193,7 +194,21 @@ export class ConnectionHistoryComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     selectCallBack(rtn: any): void {
-        this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        rtn.then((ex) => {
+            this._realGridsService.gfn_DataSetGrid(this.gridList, this.dataProvider, ex.connectionHistory);
+            this._connectionHistoryService.pagenation$
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((connectionHistoryPagenation: ConnectionHistoryPagenation) => {
+                    // Update the pagination
+                    this.pagenation = connectionHistoryPagenation;
+                    // Mark for check
+                    this._changeDetectorRef.markForCheck();
+                });
+            if(ex.connectionHistory.length < 1){
+                this._functionService.cfn_alert('검색된 정보가 없습니다.');
+            }
+            this._realGridsService.gfn_GridLoadingBar(this.gridList, this.dataProvider, false);
+        });
     }
 
     enter(event): void {

@@ -21,6 +21,7 @@ export class FunctionService implements OnInit, OnDestroy{
         private _formBuilder: FormBuilder,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         public _matDialog: MatDialog,
+        // @Optional() 인스턴스가 존재하지 않아도 에러가 발생하지 않습니다.
         @Optional() public _matDialogRef: MatDialogRef<any>,
         )
     {

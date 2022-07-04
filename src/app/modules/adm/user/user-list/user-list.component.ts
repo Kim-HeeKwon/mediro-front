@@ -177,9 +177,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit{
     }
 
     selectCallBack(rtn: any): void {
-
         rtn.then((ex) => {
-
             this._realGridsService.gfn_DataSetGrid(this.gridList, this.userListDataProvider, ex.userList);
             this._userListService.pagenation$
                 .pipe(takeUntil(this._unsubscribeAll))

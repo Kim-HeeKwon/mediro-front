@@ -798,9 +798,8 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
         if(year === null || year === undefined) {
             year = new Date().getFullYear();
         }
-        const lastDate = new Date(year, m, 0).getDate();
-        const startDay = year + '-' + m + '-' + '1';
-        const endDay = year + '-' + m + '-' + lastDate;
+        const startDay = new Date(year, m, 1).setHours(9);
+        const endDay = new Date(year, m + 1, 0).setHours(9);
         this.range = {
             end: endDay,
             start  : startDay
@@ -809,87 +808,81 @@ export class FuseDateRangeComponent implements ControlValueAccessor, OnInit, OnD
     }
 
     selectYear(y: any): void {
-        this.yearDate = y;
-        let mon = this.monDate;
-        if(mon === null || mon === undefined) {
-            mon = 1;
+        if(y !== null || y !== undefined) {
+            this.yearDate = y;
         }
-        const lastDate = new Date(y, mon, 0).getDate();
-        const startDay = y + '-' + mon + '-' + '1';
-        const endDay = y + '-' + mon + '-' + lastDate;
+        const m = 0;
+        const startDay = new Date(y, m, 1).setHours(9);
+        const endDay = new Date(y, m + 12, 0).setHours(9);
         this.range = {
             start: startDay,
             end: endDay
         };
     }
     selectDateYear(date: string): void {
-        const today = new Date();
-        const y = today.getFullYear();
+        let y;
+        y = this.yearDate;
+        if(y === null || y === undefined) {
+            y = new Date().getFullYear();
+        }
         if(date === '1/4') {
-            const m = 1;
-            const lastDate = new Date(y, m+2, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            const m = 0;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 3, 0).setHours(9);
                 this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '2/4') {
-            const m = 4;
-            const lastDate = new Date(y, m+2, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            const m = 3;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 3, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '3/4') {
-            const m = 7;
-            const lastDate = new Date(y, m+2, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            const m = 6;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 3, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '4/4') {
-            const m = 10;
-            const lastDate = new Date(y, m+2, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+2) + '-' + lastDate;
+            const m = 9;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 3, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '상반기') {
-            const m = 1;
-            const lastDate = new Date(y, m+5, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+5) + '-' + lastDate;
+            const m = 0;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 6, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '하반기') {
-            const m = 7;
-            const lastDate = new Date(y, m+5, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+5) + '-' + lastDate;
+            const m = 6;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 6, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay
             };
         }
         if(date === '년') {
-            const m = 1;
-            const lastDate = new Date(y, m+11, 0).getDate();
-            const startDay = y + '-' + m + '-' + '1';
-            const endDay = y + '-' + (m+11) + '-' + lastDate;
+            const m = 0;
+            const startDay = new Date(y, m, 1).setHours(9);
+            const endDay = new Date(y, m + 12, 0).setHours(9);
             this.range = {
                 start: startDay,
                 end: endDay

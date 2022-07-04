@@ -37,12 +37,10 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     orderBy: any = 'asc';
     yearUser: CommonCode[] = null;
     payGrade: CommonCode[] = null;
-
     channel: CommonCode[] = null;
     area: CommonCode[] = null;
     talkYn: CommonCode[] = null;
     promotion: CommonCode[] = null;
-
     yn: CommonCode[] = null;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -65,7 +63,6 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'businessName', dataType: ValueType.TEXT},
         {fieldName: 'userId', dataType: ValueType.TEXT},
         {fieldName: 'email', dataType: ValueType.TEXT},
-
         {fieldName: 'subscriptionFeeYn', dataType: ValueType.TEXT},
         {fieldName: 'freeDate', dataType: ValueType.TEXT},
         {fieldName: 'payDate', dataType: ValueType.TEXT},
@@ -73,15 +70,12 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'commissionWindow', dataType: ValueType.TEXT},
         {fieldName: 'commissionRate', dataType: ValueType.NUMBER},
         {fieldName: 'commissionAmt', dataType: ValueType.NUMBER},
-
         {fieldName: 'phoneNumber', dataType: ValueType.TEXT},
         {fieldName: 'representName', dataType: ValueType.TEXT},
         {fieldName: 'payGrade', dataType: ValueType.TEXT},
         {fieldName: 'yearUser', dataType: ValueType.TEXT},
         {fieldName: 'midGrade', dataType: ValueType.TEXT},
-
         {fieldName: 'address', dataType: ValueType.TEXT},
-
         {fieldName: 'channel', dataType: ValueType.TEXT},
         {fieldName: 'area', dataType: ValueType.TEXT},
         {fieldName: 'talkYn', dataType: ValueType.TEXT},
@@ -94,7 +88,6 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
         {fieldName: 'scale', dataType: ValueType.TEXT},
         {fieldName: 'currentUse', dataType: ValueType.TEXT},
         {fieldName: 'remark', dataType: ValueType.TEXT},
-
         {fieldName: 'addDate', dataType: ValueType.TEXT},
         {fieldName: 'delFlag', dataType: ValueType.TEXT},
     ];
@@ -114,14 +107,11 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     {
         this.yearUser = _utilService.commonValue(_codeStore.getValue().data, 'YEAR_USER');
         this.payGrade = _utilService.commonValue(_codeStore.getValue().data, 'PAY_GRADE');
-
-
         this.channel = _utilService.commonValue(_codeStore.getValue().data, 'CHANNEL');
         this.area = _utilService.commonValue(_codeStore.getValue().data, 'AREA');
         this.talkYn = _utilService.commonValue(_codeStore.getValue().data, 'TALK_YN');
         this.promotion = _utilService.commonValue(_codeStore.getValue().data, 'PROMOTION');
         this.yn = _utilService.commonValue(_codeStore.getValue().data, 'YN');
-
         this.isMobile = this._deviceService.isMobile();
     }
     ngAfterViewInit(): void {
@@ -158,10 +148,13 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const valuesChannel = [];
         const lablesChannel = [];
+
         const valuesArea = [];
         const lablesArea = [];
+
         const valuesTalkYn = [];
         const lablesTalkYn = [];
+
         const valuesPromotion = [];
         const lablesPromotion = [];
 
