@@ -7,7 +7,7 @@ import {
     ViewEncapsulation
 } from "@angular/core";
 import {fuseAnimations} from "../../../../../../@teamplat/animations";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FuseAlertType} from "../../../../../../@teamplat/components/alert";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CommonCode, FuseUtilsService} from "../../../../../../@teamplat/services/utils";
@@ -24,6 +24,8 @@ import {Columns} from "../../../../../../@teamplat/services/realgrid/realgrid.ty
 import {FuseRealGridService} from "../../../../../../@teamplat/services/realgrid";
 import {formatDate} from "@angular/common";
 import {ManagesPackageService} from "./manages-package.service";
+import {OutboundService} from "../../../bound/outbound/outbound.service";
+import {ManagesNewService} from "../manages-new/manages-new.service";
 
 @Component({
     selector       : 'dms-manages-package',
@@ -89,16 +91,19 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         {fieldName: 'userSterilizationYn', dataType: ValueType.TEXT},
         {fieldName: 'kitYn', dataType: ValueType.TEXT},
         {fieldName: 'typeName', dataType: ValueType.TEXT},
-        {fieldName: 'udiCode', dataType: ValueType.TEXT},
+        {fieldName: 'stdCode', dataType: ValueType.TEXT},
         {fieldName: 'lotNo', dataType: ValueType.TEXT},
         {fieldName: 'manufYm', dataType: ValueType.TEXT},
         {fieldName: 'useTmlmt', dataType: ValueType.TEXT},
         {fieldName: 'itemSeq', dataType: ValueType.TEXT},
-        {fieldName: 'packageQty', dataType: ValueType.NUMBER},
+        {fieldName: 'suplyQty', dataType: ValueType.NUMBER},
+        {fieldName: 'suplyUntpc', dataType: ValueType.NUMBER},
+        {fieldName: 'suplyAmt', dataType: ValueType.NUMBER},
     ];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
+        private _outboundService: OutboundService,
         private _realGridsService: FuseRealGridService,
         private _codeStore: CodeStore,
         private _functionService: FunctionService,
@@ -109,6 +114,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         private readonly breakpointObserver: BreakpointObserver,
         private _teamPlatConfirmationService: TeamPlatConfirmationService,
         private _utilService: FuseUtilsService,
+        private _managesNewService: ManagesNewService,
         public matDialogRef: MatDialogRef<ManagesPackageComponent>,
         private _formBuilder: FormBuilder,) {
         this.isMobile = this._deviceService.isMobile();
@@ -130,11 +136,11 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             year: [{value: ''}, [Validators.required]],
             month: [{value: ''}, [Validators.required]],
             suplyContStdmt: [{value: ''}],
-            suplyFlagCode: [{value: ''}, [Validators.required]], // 공급구분
-            suplyTypeCode: [{value: ''}], // 공급형태
+            suplyFlagCode: [{value: '', disabled: false}, [Validators.required]], // 공급구분
+            suplyTypeCode: [{value: '', disabled: false}], // 공급형태
             suplyDate: [''],
             bcncCobTypeName: [''],
-            bcncCode: [{value: ''}],
+            bcncCode: [{value: '', disabled: false}],
             bcncEntpAddr: [{value: '', disabled: true}],
             bcncEntpName: [{value: '', disabled: true}],
             bcncHptlCode: [''],
@@ -176,6 +182,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
             useTmlmtDirect: [''],   // 유통기한
             lotNoDirect: [''],   // LOT NO
             itemSeqDirect: [''],   // 일련번호
+            remarkHeader: [''],   // 비고
         });
 
         this.selectedForm.patchValue({'suplyContStdmt': this.selectedForm.getRawValue().year + this.selectedForm.getRawValue().month + ''});
@@ -222,19 +229,32 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                 }
             },
             {
-                name: 'udiCode', fieldName: 'udiCode', type: 'data', width: '300', styleName: 'left-cell-text'
+                name: 'stdCode', fieldName: 'stdCode', type: 'data', width: '300', styleName: 'left-cell-text'
                 , header: {text: '바코드', styleName: 'center-cell-text'}, renderer: {
                     showTooltip: true
                 }
             },
             {
-                name: 'packageQty', fieldName: 'packageQty', type: 'data', width: '100', styleName: 'right-cell-text'
+                name: 'suplyQty', fieldName: 'suplyQty', type: 'data', width: '100', styleName: 'right-cell-text'
                 , header: {text: '수량', styleName: 'center-cell-text red-font-color'}
                 , numberFormat: '#,##0', renderer: {
                     showTooltip: true
                 }
             },
-
+            {
+                name: 'suplyUntpc', fieldName: 'suplyUntpc', type: 'data', width: '150', styleName: 'right-cell-text'
+                , header: {text: '단가(VAT포함)', styleName: 'center-cell-text blue-font-color'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
+            {
+                name: 'suplyAmt', fieldName: 'suplyAmt', type: 'data', width: '100', styleName: 'right-cell-text'
+                , header: {text: '금액', styleName: 'center-cell-text'}
+                , numberFormat: '#,##0', renderer: {
+                    showTooltip: true
+                }
+            },
         ];
 
         this.gridListDataProvider = this._realGridsService.gfn_CreateDataProvider(true);
@@ -277,14 +297,37 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         });
         this.gridList.editOptions.commitByCell = true;
         this.gridList.editOptions.validateOnEdited = true;
-        this.gridList.displayOptions.hscrollBar = false;
-        this.gridList.displayOptions.vscrollBar = false;
+        this.gridList.displayOptions.hscrollBar = true;
+        this.gridList.displayOptions.vscrollBar = true;
         this._realGridsService.gfn_EditGrid(this.gridList);
 
+        this.gridList.onCellEdited = ((grid, itemIndex, row, field) => {
+
+            if(this.gridListDataProvider.getOrgFieldName(field) === 'suplyQty' ||
+                this.gridListDataProvider.getOrgFieldName(field) === 'suplyUntpc'){
+                const that = this;
+                setTimeout(() =>{
+                    const packageQty = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.gridListDataProvider,
+                        itemIndex,'suplyQty');
+                    const unitPrice = that._realGridsService.gfn_CellDataGetRow(
+                        this.gridList,
+                        this.gridListDataProvider,
+                        itemIndex,'suplyUntpc');
+                    that._realGridsService.gfn_CellDataSetRow(that.gridList,
+                        that.gridListDataProvider,
+                        itemIndex,
+                        'suplyAmt',
+                        packageQty * unitPrice);
+                },100);
+            }
+
+        });
 
         this.gridList.setCellStyleCallback((grid, dataCell) => {
             const ret = {styleName: '', editable: false};
-            if (dataCell.dataColumn.fieldName === 'packageQty') {
+            if (dataCell.dataColumn.fieldName === 'suplyQty' || dataCell.dataColumn.fieldName === 'suplyUntpc') {
                 ret.editable = true;
             }
 
@@ -347,7 +390,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         } else if (suplyFlagCode === '3') {
             this.changeText = '폐기';
             this.changeAccountHidden = false;
-            this.suplyTypeCodeHidden = true;
+            this.suplyTypeCodeHidden = false;
             this.hidden = true;
         } else if (suplyFlagCode === '4') {
             this.changeText = '임대';
@@ -999,35 +1042,50 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 manages.data[0].userSterilizationYn,
                                 manages.data[0].kitYn,
                                 manages.data[0].typeName, udiCode,
-                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
+                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1, 0, 0
                             ];
 
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
+                                (detail.stdCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
+
                                 const dataRow2 = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udiCode]
                                 });
                                 let sumQty2 = 1;
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'packageQty');
+                                    dataRow2, 'suplyQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
                                 sumQty2 = sumQty2 + qty2;
+
+                                const unitPrice = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList,
+                                    this.gridListDataProvider,
+                                    dataRow2, 'suplyUntpc' );
+
+                                const sumUnitPrice = sumQty2 * unitPrice;
+
                                 setTimeout(() => {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'packageQty',
+                                        'suplyQty',
                                         sumQty2);
+
+                                    this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                                        this.gridListDataProvider,
+                                        dataRow2,
+                                        'suplyAmt',
+                                        sumUnitPrice);
                                 }, 100);
 
                             } else {
@@ -1044,7 +1102,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                             } else {
                                 const dataRow = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udiCode]
                                 });
                                 //셀이동
@@ -1055,8 +1113,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'packageQty';
-                                focusCell.fieldName = 'packageQty';
+                                focusCell.column = 'suplyQty';
+                                focusCell.fieldName = 'suplyQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
@@ -1468,36 +1526,50 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 manages.data[0].userSterilizationYn,
                                 manages.data[0].kitYn,
                                 manages.data[0].typeName, udiCode,
-                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
+                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1, 0, 0
                             ];
 
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
+                                (detail.stdCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
 
                                 const dataRow2 = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udiCode]
                                 });
                                 let sumQty2 = 1;
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'packageQty');
+                                    dataRow2, 'suplyQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
                                 sumQty2 = sumQty2 + qty2;
+
+                                const unitPrice = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList,
+                                    this.gridListDataProvider,
+                                    dataRow2, 'suplyUntpc' );
+
+                                const sumUnitPrice = sumQty2 * unitPrice;
+
                                 setTimeout(() => {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'packageQty',
+                                        'suplyQty',
                                         sumQty2);
+
+                                    this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                                        this.gridListDataProvider,
+                                        dataRow2,
+                                        'suplyAmt',
+                                        sumUnitPrice);
                                 }, 100);
                             } else {
                                 this._realGridsService.gfn_AddRow(this.gridList, this.gridListDataProvider, values);
@@ -1514,7 +1586,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                             } else {
                                 const dataRow = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udiCode]
                                 });
                                 //셀이동
@@ -1525,8 +1597,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'packageQty';
-                                focusCell.fieldName = 'packageQty';
+                                focusCell.column = 'suplyQty';
+                                focusCell.fieldName = 'suplyQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
@@ -1772,36 +1844,50 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 manages.data[0].userSterilizationYn,
                                 manages.data[0].kitYn,
                                 manages.data[0].typeName, udiCode,
-                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1
+                                lotNo.replace('(' + '10' + ')', ''), manufYm.replace('(' + '11' + ')', ''), useTmlmt.replace('(' + '17' + ')', ''), itemSeq.replace('(' + '21' + ')', ''), 1, 0, 0
                             ];
 
                             let rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
 
                             rows = rows.filter((detail: any) =>
-                                (detail.udiCode === this.selectedForm.getRawValue().stdCode))
+                                (detail.stdCode === this.selectedForm.getRawValue().stdCode))
                                 .map((param: any) => param);
 
                             if (rows.length > 0) {
 
                                 const dataRow2 = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udi]
                                 });
                                 let sumQty2 = 1;
                                 let qty2 = this._realGridsService.gfn_CellDataGetRow(
                                     this.gridList,
                                     this.gridListDataProvider,
-                                    dataRow2, 'packageQty');
+                                    dataRow2, 'suplyQty');
                                 if (qty2 === undefined) {
                                     qty2 = 0;
                                 }
                                 sumQty2 = sumQty2 + qty2;
+
+                                const unitPrice = this._realGridsService.gfn_CellDataGetRow(
+                                    this.gridList,
+                                    this.gridListDataProvider,
+                                    dataRow2, 'suplyUntpc' );
+
+                                const sumUnitPrice = sumQty2 * unitPrice;
+
                                 setTimeout(() => {
                                     this._realGridsService.gfn_CellDataSetRow(this.gridList,
                                         this.gridListDataProvider,
                                         dataRow2,
-                                        'packageQty',
+                                        'suplyQty',
                                         sumQty2);
+
+                                    this._realGridsService.gfn_CellDataSetRow(this.gridList,
+                                        this.gridListDataProvider,
+                                        dataRow2,
+                                        'suplyAmt',
+                                        sumUnitPrice);
                                 }, 100);
 
                             } else {
@@ -1822,7 +1908,7 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                             } else {
                                 const dataRow = this.gridListDataProvider.searchDataRow({
-                                    fields: ['udiCode'],
+                                    fields: ['stdCode'],
                                     values: [udi]
                                 });
                                 //셀이동
@@ -1833,8 +1919,8 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
                                 }, 100);
                                 const focusCell = this.gridList.getCurrent();
                                 focusCell.dataRow = dataRow;
-                                focusCell.column = 'packageQty';
-                                focusCell.fieldName = 'packageQty';
+                                focusCell.column = 'suplyQty';
+                                focusCell.fieldName = 'suplyQty';
                                 //포커스된 셀 변경
                                 this.gridList.setCurrent(focusCell);
                                 const curr = this.gridList.getCurrent();
@@ -1866,5 +1952,66 @@ export class ManagesPackageComponent implements OnInit, OnDestroy {
         }
 
         this._realGridsService.gfn_DelRows(this.gridList, this.gridListDataProvider);
+    }
+
+    sendReport(): void {
+
+        const confirmation = this._teamPlatConfirmationService.open({
+            title: '보고',
+            message: '보고 처리 하시겠습니까?',
+            actions: {
+                confirm: {
+                    label: '보고'
+                },
+                cancel: {
+                    label: '닫기'
+                }
+            }
+        });
+
+        const year: number = this.selectedForm.value.suplyDate.substr(0, 4);
+        const month: number = this.selectedForm.value.suplyDate.substr(5, 2);
+        const suplyContStdmt = year+month;
+
+        const rows = this._realGridsService.gfn_GetRows(this.gridList, this.gridListDataProvider);
+
+        confirmation.afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                    for (let i = 0; i < rows.length; i++) {
+
+                        // rows[i].suplyTypeCode = this.selectedForm.getRawValue().suplyTypeCode;
+                        rows[i].suplyTypeCode = this.selectedForm.controls['suplyTypeCode'].value;
+                        rows[i].suplyDate = this.selectedForm.getRawValue().suplyDate;
+                        rows[i].suplyContStdmt = suplyContStdmt;
+                        rows[i].suplyFlagCode = this.selectedForm.getRawValue().suplyFlagCode;
+                        rows[i].bcncCode = this.selectedForm.getRawValue().bcncCode;
+                        rows[i].isDiffDvyfg = this.selectedForm.getRawValue().isDiffDvyfg;
+                        rows[i].dvyfgPlaceBcncCode = this.selectedForm.getRawValue().dvyfgPlaceBcncCode;
+                        rows[i].cobTypeName = this.selectedForm.getRawValue().cobTypeName;
+                        rows[i].remark = this.selectedForm.getRawValue().remarkHeader;
+                        if(this.selectedForm.getRawValue().suplyFlagCode === "5") { // 공급구분이 회수 일때만
+                            rows[i].indvdlzSuplyQty = rows[i].suplyQty;
+                        }
+
+                        // rows[i].suplyQty = '';
+                        // rows[i].stdCode = '';
+
+                    }
+
+                    console.log(rows);
+
+                    this._managesNewService.createSupplyInfo(rows)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((manage: any) => {
+                            this._functionService.cfn_loadingBarClear();
+                            this._functionService.cfn_alertCheckMessage(manage);
+                            // Mark for check
+                            this._changeDetectorRef.markForCheck();
+                        });
+                }
+            });
     }
 }

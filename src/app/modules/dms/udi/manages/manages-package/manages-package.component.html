@@ -17,7 +17,19 @@
             [formGroup]="selectedForm">
             <div class="p-2 sm:p-2">
                 <div class="grid sm:grid-cols-4 gap-2 w-full sm:pr-2">
-                    <div class="sm:col-span-2">
+                    <div class="flex items-center mt-0 ml-2 sm:mt-0 sm:ml-2 space-x-3">
+                        <button
+                            class="fuse-mat-button-rounded mediro-btn-custom mediro-btn-custom-background-color"
+                            mat-flat-button
+                            [color]="'primary'"
+                            (click)="sendReport()">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:save'"></mat-icon>
+                            <span class="ml-2 mr-1 mediro-font-custom">보고</span>
+                        </button>
+                    </div>
+                    <div class="sm:col-span-2" [hidden]="true">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>연도
@@ -34,7 +46,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="sm:col-span-2">
+                    <div class="sm:col-span-2" [hidden]="true">
                         <!-- Name -->
                         <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
                             <mat-label>월
@@ -200,6 +212,18 @@
                                 min="{{minDate}}"
                                 max="{{maxDate}}"
                                 [formControlName]="'suplyDate'">
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                            <mat-label>비고</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:document-text'"
+                                matPrefix></mat-icon>
+                            <input type="text"
+                                   matInput
+                                   [formControlName]="'remarkHeader'">
                         </mat-form-field>
                     </div>
                 </div>
